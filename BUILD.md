@@ -32,6 +32,6 @@ To run/debug the plugin, use the `Spoofax Plugin` run/debug configuration.
 To debug the target builder, run the `Spoofax Plugin (Builder)` run configuration. In the newly started IntelliJ IDEA Plugin instance, click _Build_ &rarr; _Make Project_. The plugin instance will wait for you to attach a debugger. Now use the `Spoofax Remote` debug configuration to attach a debugger to the plugin instance. The build will continue with debugging enabled.
 
 
-# Deploy
+## Deploying
 
 To deploy the plugin, click _Build_ &rarr; _Prepare All Plugin Module For Deployment_.
