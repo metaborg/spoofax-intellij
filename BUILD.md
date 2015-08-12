@@ -10,12 +10,12 @@ First of all, clone the project:
 ## Setting up IntelliJ IDEA
 
 > **Note**: You can invoke the `scripts/install-intellij` script to
-> do perform the following steps automatically.
+> perform the following steps automatically.
 
 1. Install IntelliJ IDEA Community Edition.
 2. Clone the IntelliJ IDEA Community Edition source code from `https://github.com/JetBrains/intellij-community`.
-3. in IntelliJ IDEA, add the Java SDK.
-4. Add the IntelliJ IDEA Plugin SDK, and set its sourcepath to the downloaded IDEA source.
+3. In IntelliJ IDEA, add the Java SDK.
+4. Also add the IntelliJ IDEA Plugin SDK, and set its sourcepath to the downloaded IDEA source.
 
 
 ## Setting up the project
