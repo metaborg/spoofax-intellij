@@ -19,7 +19,8 @@ APPS_DIR="${__dir}/apps"
 IDEA_DIR="${APPS_DIR}/idea"
 IDEA_SRC_DIR="${IDEA_DIR}/src"
 SHORTCUT_DIR="${__dir}"
-IDEA_URL="https://download.jetbrains.com/idea/ideaIC-14.1.4.tar.gz"
+IDEA_VERSION="14.1.4"
+IDEA_URL="https://download.jetbrains.com/idea/ideaIC-${IDEA_VERSION}.tar.gz"
 JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
 JAVA_VERSION=$(java -version 2>&1 | head -n 1)
 
@@ -44,17 +45,29 @@ JAVA_VERSION=$(echo "${JAVA_VERSION}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt
 echo "Downloading IntelliJ IDEA..."
 rm -rf ${IDEA_DIR}
 mkdir -p ${APPS_DIR}
-
 #wget -O idea.tar.gz ${IDEA_URL}
+
+echo "Installing IntelliJ IDEA..."
 tar -zxf idea.tar.gz
 mv idea-IC-141.1532.4 ${IDEA_DIR}
-rm idea.tar.gz
+
+# Install IntelliJ IDEA in the local repo
+echo "Installing IntelliJ IDEA in local repo..."
+mvn install:install-file \
+	"-Dfile=idea.tar.gz" \
+	"-DgroupId=org.jetbrains" \
+	"-DartifactId=org.jetbrains.intellij-ce" \
+	"-Dversion=${IDEA_VERSION}" \
+	"-Dpackaging=tar.gz" \
+	"-DlocalRepositoryPath=../repository" \
+	"-DgeneratePom=true"
+
+#rm idea.tar.gz
 
 # Download the source files
 echo "Downloading IntelliJ IDEA source..."
+#git clone --depth 1 https://github.com/JetBrains/intellij-community.git "${IDEA_SRC_DIR}"
 cp -r "${__dir}/src" "${IDEA_SRC_DIR}"
-cd ${IDEA_DIR}
-git clone --depth 1 https://github.com/JetBrains/intellij-community.git src
 
 # Move the configuration files
 echo "Configuring..."
