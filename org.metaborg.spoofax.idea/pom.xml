@@ -114,7 +114,7 @@
                                         <include name="src/main/resources" />
                                     </dirset>
                                 </path>
-                                <instrumentIdeaExtensions destdir="${project.build.outputDirectory}" extdirs="${project.build.directory}/dependency/${idea.foldername}/lib">
+                                <instrumentIdeaExtensions destdir="${project.build.outputDirectory}" extdirs="${project.build.directory}/dependency/${idea.foldername}/lib" includeantruntime="false">
                                     <classpath refid="maven.compile.classpath" />
                                     <src refid="sourcepath" />
                                 </instrumentIdeaExtensions>

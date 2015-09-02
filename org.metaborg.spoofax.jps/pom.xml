@@ -114,7 +114,7 @@
                                         <include name="src/main/resources" />
                                     </dirset>
                                 </path>
-                                <instrumentIdeaExtensions destdir="${project.build.outputDirectory}" extdirs="${project.build.directory}/dependency/${idea.foldername}/lib">
+                                <instrumentIdeaExtensions destdir="${project.build.outputDirectory}" extdirs="${project.build.directory}/dependency/${idea.foldername}/lib" includeantruntime="false">
                                     <classpath refid="maven.compile.classpath" />
                                     <src refid="sourcepath" />
                                 </instrumentIdeaExtensions>
@@ -131,6 +131,20 @@
                         <systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
