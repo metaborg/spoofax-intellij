@@ -1,10 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Spoofax Plugin" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-    <module name="spoofax-intellij" />
+    <module name="spoofax-idea" />
     <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
     <option name="PROGRAM_PARAMETERS" value="" />
+    <log_file path="$USER_HOME$/.IdeaIC14/system/plugins-sandbox/system/log/idea.log" checked="false" skipped="true" show_all="false" alias="IDEA LOG" />
     <method>
-      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="process-resources -Pdev" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/org.metaborg.spoofax.jps/pom.xml" goal="process-resources -Pdev" />
       <option name="Make" enabled="true" />
     </method>
   </configuration>
