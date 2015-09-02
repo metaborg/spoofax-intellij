@@ -3,9 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>org.metaborg.spoofax.idea</groupId>
     <artifactId>spoofax-idea</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
     <name>Spoofax</name>
     <description>Plugin for building and using Spoofax languages in IntelliJ IDEA.</description>
 
@@ -13,8 +16,10 @@
         <vendor.name>Metaborg</vendor.name>
         <vendor.url>http://www.metaborg.org/</vendor.url>
         <vendor.email>d.a.a.pelsmaeker@student.tudelft.nl</vendor.email>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <ij.plugin>true</ij.plugin>
 
         <jdk.version>1.8</jdk.version>
         <idea.version>14.1.4</idea.version>
