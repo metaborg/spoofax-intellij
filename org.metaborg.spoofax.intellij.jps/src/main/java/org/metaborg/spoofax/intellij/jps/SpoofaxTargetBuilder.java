@@ -9,6 +9,7 @@ import org.jetbrains.jps.incremental.TargetBuilder;
 import org.jetbrains.jps.incremental.java.JavaBuilder;
 import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
+import org.jetbrains.jps.incremental.messages.ProgressMessage;
 import org.metaborg.spoofax.intellij.SpoofaxBuildTarget;
 import org.metaborg.spoofax.intellij.SpoofaxBuildTargetType;
 import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
@@ -16,6 +17,9 @@ import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
 import java.io.IOException;
 import java.util.Collections;
 
+/**
+ * Builds the Spoofax build target.
+ */
 public class SpoofaxTargetBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxBuildTarget> {
 
     protected SpoofaxTargetBuilder() {
@@ -29,7 +33,15 @@ public class SpoofaxTargetBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
 
     @Override
     public void build(SpoofaxBuildTarget target, DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxBuildTarget> holder, BuildOutputConsumer outputConsumer, CompileContext context) throws ProjectBuildException, IOException {
+        System.out.println(target.getOutputRoots(context));
+        //File outputDirectory = getBuildOutputDirectory(target.getModule(), false, compileContext);
+        context.processMessage(new ProgressMessage("Compiling Spoofax sources"));
+        //buildSpoofax(target.getModule());
+        context.checkCanceled();
+
         context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.WARNING, "Compilation not implemented!"));
+
+        // https://github.com/pbuda/intellij-pony/blob/52e40c55d56adc4d85a34ad8dffe45ca0c64967f/jps-plugin/src/me/piotrbuda/intellij/pony/jps/PonyBuilder.java
     }
 
     @NotNull

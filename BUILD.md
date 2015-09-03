@@ -29,4 +29,4 @@ To debug the target builder, run the `Spoofax IDEA Plugin (Debug JPS)` run confi
 
 ## Deploying
 
-To deploy the plugin, click _Build_ &rarr; _Prepare All Plugin Module For Deployment_.
+To deploy the plugin, click _Build_ &rarr; _Prepare All Plugin Modules For Deployment_.

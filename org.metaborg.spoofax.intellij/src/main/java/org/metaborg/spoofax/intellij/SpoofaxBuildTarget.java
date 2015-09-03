@@ -21,7 +21,6 @@ import java.util.List;
  * The compilation process of a single Spoofax project.
  */
 public class SpoofaxBuildTarget extends BuildTarget<SpoofaxSourceRootDescriptor> {
-//public class SpoofaxBuildTarget extends BuildTarget<SpoofaxSourceRootDescriptor> {
 
     /**
      * The ID used for the {@link SpoofaxBuildTarget}.
@@ -62,8 +61,6 @@ public class SpoofaxBuildTarget extends BuildTarget<SpoofaxSourceRootDescriptor>
     @Override
     public List<SpoofaxSourceRootDescriptor> computeRootDescriptors(JpsModel model, ModuleExcludeIndex index, IgnoredFileIndex ignoredFileIndex, BuildDataPaths dataPaths) {
         return Collections.emptyList();
-        //List<SpoofaxSourceRootDescriptor> result = new ArrayList<>();
-        //return result;
     }
 
     @Nullable
