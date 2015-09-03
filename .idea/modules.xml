@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/org.metaborg.spoofax.idea/spoofax-idea.iml" filepath="$PROJECT_DIR$/org.metaborg.spoofax.idea/spoofax-idea.iml" />
-      <module fileurl="file://$PROJECT_DIR$/org.metaborg.spoofax.jps/spoofax-jps.iml" filepath="$PROJECT_DIR$/org.metaborg.spoofax.jps/spoofax-jps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.metaborg.spoofax.intellij/org.metaborg.spoofax.intellij.iml" filepath="$PROJECT_DIR$/org.metaborg.spoofax.intellij/org.metaborg.spoofax.intellij.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.metaborg.spoofax.intellij.idea/org.metaborg.spoofax.intellij.idea.iml" filepath="$PROJECT_DIR$/org.metaborg.spoofax.intellij.idea/org.metaborg.spoofax.intellij.idea.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.metaborg.spoofax.intellij.jps/org.metaborg.spoofax.intellij.jps.iml" filepath="$PROJECT_DIR$/org.metaborg.spoofax.intellij.jps/org.metaborg.spoofax.intellij.jps.iml" />
     </modules>
   </component>
 </project>

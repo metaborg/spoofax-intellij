@@ -1,3 +1,5 @@
+package org.metaborg.spoofax.intellij.idea;
+
 import com.intellij.openapi.components.ApplicationComponent;
 import org.jetbrains.annotations.NotNull;
 
