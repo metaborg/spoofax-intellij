@@ -16,7 +16,7 @@ public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
     }
 
     protected void bindBuildTargets() {
-        bind(SpoofaxTargetType.class).in(Singleton.class);
+        bind(SpoofaxProductionTargetType.class).in(Singleton.class);
         bind(JpsSpoofaxModuleType.class).in(Singleton.class);
     }
 }

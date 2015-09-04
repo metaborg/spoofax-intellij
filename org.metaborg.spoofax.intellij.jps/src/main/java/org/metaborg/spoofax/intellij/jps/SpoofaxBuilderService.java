@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.BuilderService;
 import org.jetbrains.jps.incremental.TargetBuilder;
+import org.metaborg.spoofax.intellij.SpoofaxProductionTargetType;
 import org.metaborg.spoofax.intellij.SpoofaxTargetType;
 
 import java.util.Collections;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public final class SpoofaxBuilderService extends BuilderService {
 
-    private SpoofaxTargetType targetType;
+    private SpoofaxProductionTargetType targetType;
     private SpoofaxTargetBuilder targetBuilder;
 
     /**
@@ -30,7 +31,7 @@ public final class SpoofaxBuilderService extends BuilderService {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(SpoofaxTargetType targetType, SpoofaxTargetBuilder targetBuilder) {
+    private void inject(SpoofaxProductionTargetType targetType, SpoofaxTargetBuilder targetBuilder) {
         this.targetType = targetType;
         this.targetBuilder = targetBuilder;
     }

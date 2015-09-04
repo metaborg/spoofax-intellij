@@ -39,11 +39,9 @@ public class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor
         this.moduleType = moduleType;
     }
 
-    // --- //
-
     @Override
     public boolean isTests() {
-        return false;
+        return getSpoofaxTargetType().getKind() == BuildTargetKind.TEST;
     }
 
     @Override

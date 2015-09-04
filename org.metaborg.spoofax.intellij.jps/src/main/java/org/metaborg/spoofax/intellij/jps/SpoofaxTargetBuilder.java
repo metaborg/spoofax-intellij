@@ -24,7 +24,7 @@ import java.util.Collections;
 public final class SpoofaxTargetBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxTarget> {
 
     @Inject
-    private SpoofaxTargetBuilder(SpoofaxTargetType targetType) {
+    private SpoofaxTargetBuilder(SpoofaxProductionTargetType targetType) {
         super(Collections.singletonList(targetType));
     }
 

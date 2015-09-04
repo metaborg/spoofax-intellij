@@ -16,29 +16,30 @@ import java.util.List;
 /**
  * The Spoofax build target type.
  */
-@Singleton
 public class SpoofaxTargetType extends ModuleBasedBuildTargetType<SpoofaxTarget> {
 
-    public static final String TARGET_TYPE_ID = "spoofax_production";
+    private final JpsSpoofaxModuleType moduleType;
+    private final BuildTargetKind kind;
 
-    private final JpsSpoofaxModuleType spoofaxModuleType;
+    /**
+     * Initializes a new instance of the {@link SpoofaxTargetType} class.
+     * @param typeId The type ID of the build target.
+     * @param kind The kind of build target.
+     * @param moduleType The Spoofax module type.
+     */
+    protected SpoofaxTargetType(String typeId, BuildTargetKind kind, JpsSpoofaxModuleType moduleType) {
+        super(typeId);
 
-    @Inject
-    private SpoofaxTargetType(JpsSpoofaxModuleType spoofaxModuleType) {
-        // TODO: Distinguish between the Production and Test target, by making `typeId` a parameter.
-        // Or, equivalently, make Production and Test two different classes.
-        // See: https://github.com/pbuda/intellij-pony/blob/52e40c55d56adc4d85a34ad8dffe45ca0c64967f/jps-plugin/src/me/piotrbuda/intellij/pony/jps/PonyTargetType.java
-        super(TARGET_TYPE_ID);
-
-        this.spoofaxModuleType = spoofaxModuleType;
+        this.moduleType = moduleType;
+        this.kind = kind;
     }
 
     @NotNull
     @Override
     public List<SpoofaxTarget> computeAllTargets(JpsModel model) {
         List<SpoofaxTarget> targets = new ArrayList<>();
-        for (JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(this.spoofaxModuleType)) {
-            targets.add(new SpoofaxTarget(module, this, this.spoofaxModuleType));
+        for (JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(this.moduleType)) {
+            targets.add(new SpoofaxTarget(module, this, this.moduleType));
         }
         return targets;
     }
@@ -50,13 +51,21 @@ public class SpoofaxTargetType extends ModuleBasedBuildTargetType<SpoofaxTarget>
             @Nullable
             @Override
             public SpoofaxTarget createTarget(@NotNull String targetId) {
-                for (JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(SpoofaxTargetType.this.spoofaxModuleType)) {
+                for (JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(SpoofaxTargetType.this.moduleType)) {
                     if (module.getName().equals(targetId)) {
-                        return new SpoofaxTarget(module, SpoofaxTargetType.this, SpoofaxTargetType.this.spoofaxModuleType);
+                        return new SpoofaxTarget(module, SpoofaxTargetType.this, SpoofaxTargetType.this.moduleType);
                     }
                 }
                 return null;
             }
         };
+    }
+
+    /**
+     * Gets the kind of build target.
+     * @return A member of the {@link BuildTargetKind} enumeration.
+     */
+    public BuildTargetKind getKind() {
+        return this.kind;
     }
 }
