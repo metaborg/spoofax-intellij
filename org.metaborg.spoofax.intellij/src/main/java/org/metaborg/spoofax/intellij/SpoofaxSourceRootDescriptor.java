@@ -6,12 +6,20 @@ import org.jetbrains.jps.builders.BuildTarget;
 
 import java.io.File;
 
+/**
+ * Describes a source root for the Spoofax build target.
+ */
 public class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
 
     private final File root;
-    private final SpoofaxBuildTarget target;
+    private final SpoofaxTarget target;
 
-    public SpoofaxSourceRootDescriptor(File root, SpoofaxBuildTarget target)
+    /**
+     * Initializes a new instance of the {@link SpoofaxSourceRootDescriptor} class.
+     * @param root The directory of the source root.
+     * @param target The build target to which the source root belongs.
+     */
+    public SpoofaxSourceRootDescriptor(File root, SpoofaxTarget target)
     {
         Preconditions.checkNotNull(root);
         Preconditions.checkNotNull(target);
@@ -22,7 +30,7 @@ public class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
 
     @Override
     public String getRootId() {
-        return "SpoofaxSourceRootDescriptor";
+        return this.root.getAbsolutePath();
     }
 
     @Override
@@ -35,6 +43,4 @@ public class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
         return this.target;
     }
 
-    // https://github.com/kingsleyh/DLanguage/blob/326b0920b44fcf1b72b81c98a1c8814b2879122f/jps-plugin/src/net/masterthought/dlanguage/jps/DSourceRootDescriptor.java
-    // https://github.com/pantsbuild/intellij-pants-plugin/blob/6fe84a536b4275358a38487f751fd64d6d5c9163/jps-plugin/com/twitter/intellij/pants/jps/incremental/model/PantsSourceRootDescriptor.java
 }

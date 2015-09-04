@@ -65,8 +65,12 @@
       <root url="jar://$MAVEN_REPOSITORY$/org/metaborg/strategoxt-min-jar/1.5.0-SNAPSHOT/strategoxt-min-jar-1.5.0-SNAPSHOT.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/metaborg/org.metaborg.runtime.task/1.5.0-SNAPSHOT/org.metaborg.runtime.task-1.5.0-SNAPSHOT.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/functionaljava/functionaljava/4.1/functionaljava-4.1.jar!/" />
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.spoofax.core" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.spoofax.core/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.spoofax.core/src/test/java" />
+    </SOURCES>
   </library>
 </component>

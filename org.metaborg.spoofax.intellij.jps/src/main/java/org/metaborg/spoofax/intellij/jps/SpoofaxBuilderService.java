@@ -1,10 +1,11 @@
 package org.metaborg.spoofax.intellij.jps;
 
+import com.google.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.BuilderService;
 import org.jetbrains.jps.incremental.TargetBuilder;
-import org.metaborg.spoofax.intellij.SpoofaxBuildTargetType;
+import org.metaborg.spoofax.intellij.SpoofaxTargetType;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,23 @@ import java.util.List;
  */
 public final class SpoofaxBuilderService extends BuilderService {
 
+    private SpoofaxTargetType targetType;
+    private SpoofaxTargetBuilder targetBuilder;
+
+    /**
+     * This instance is created by IntelliJ's plugin system.
+     * Do not call this method manually.
+     */
+    public SpoofaxBuilderService() {
+        JpsPlugin.injectMembers(this);
+    }
+
+    @Inject
+    @SuppressWarnings("unused")
+    private void inject(SpoofaxTargetType targetType, SpoofaxTargetBuilder targetBuilder) {
+        this.targetType = targetType;
+        this.targetBuilder = targetBuilder;
+    }
 
     /**
      * Gets the list of build target types contributed by this plugin.
@@ -24,7 +42,7 @@ public final class SpoofaxBuilderService extends BuilderService {
     @NotNull
     @Override
     public List<? extends BuildTargetType<?>> getTargetTypes() {
-        return Collections.singletonList(SpoofaxBuildTargetType.INSTANCE);
+        return Collections.singletonList(this.targetType);
     }
 
     /**
@@ -34,6 +52,6 @@ public final class SpoofaxBuilderService extends BuilderService {
     @NotNull
     @Override
     public List<? extends TargetBuilder<?,?>> createBuilders() {
-        return Collections.singletonList(new SpoofaxTargetBuilder());
+        return Collections.singletonList(this.targetBuilder);
     }
 }
