@@ -6,7 +6,13 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.intellij.openapi.components.ApplicationComponent;
+import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.MetaborgException;
+import org.metaborg.core.language.ILanguageComponent;
+import org.metaborg.core.language.ILanguageDiscoveryService;
+import org.metaborg.core.resource.IResourceService;
+import org.metaborg.spoofax.intellij.SpoofaxProductionTargetType;
 import org.metaborg.spoofax.intellij.SpoofaxTargetType;
 
 /**
@@ -15,6 +21,9 @@ import org.metaborg.spoofax.intellij.SpoofaxTargetType;
 public final class IdeaPlugin implements ApplicationComponent {
 
     protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
+
+    private ILanguageDiscoveryService languageDiscoveryService;
+    private IResourceService resourceService;
 
     // FIXME: Is there a way to automatically inject dependencies into object
     // that were not created by Guice?
@@ -49,8 +58,35 @@ public final class IdeaPlugin implements ApplicationComponent {
         injector.get().injectMembers(o);
     }
 
-    public void initComponent() {
+    /**
+     * This instance is created by IntelliJ's plugin system.
+     * Do not call this method manually.
+     */
+    public IdeaPlugin() {
+        IdeaPlugin.injectMembers(this);
+    }
 
+    @Inject @SuppressWarnings("unused")
+    private void inject(ILanguageDiscoveryService languageDiscoveryService, IResourceService resourceService) {
+        this.languageDiscoveryService = languageDiscoveryService;
+        this.resourceService = resourceService;
+    }
+
+    public void initComponent() {
+        try {
+            loadLanguages();
+        } catch (MetaborgException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads languages.
+     */
+    private void loadLanguages() throws MetaborgException {
+        FileObject location = resourceService.resolve("file:///home/daniel/repos/metaborg-spoofax-intellij/meta/sdf.spoofax-language");
+        Iterable<ILanguageComponent> languageComponents = languageDiscoveryService.discover(location);
+        System.out.println(languageComponents);
     }
 
     public void disposeComponent() {

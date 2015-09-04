@@ -16,6 +16,8 @@
   <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
   <idea-version since-build="131"/>
 
+  <depends>org.jetbrains.idea.maven</depends>
+
   <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
   <!-- uncomment to enable plugin in all products
@@ -30,6 +32,9 @@
 
   <application-components>
     <!-- Add your application components here -->
+    <!--<component>
+      <implementation-class>org.metaborg.spoofax.intellij.idea.IdeaPlugin</implementation-class>
+    </component>-->
   </application-components>
 
   <project-components>
