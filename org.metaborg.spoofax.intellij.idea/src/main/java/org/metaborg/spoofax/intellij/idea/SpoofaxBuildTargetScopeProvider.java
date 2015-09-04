@@ -7,7 +7,7 @@ import com.intellij.openapi.compiler.CompilerFilter;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.api.CmdlineProtoUtil;
-import org.jetbrains.jps.api.CmdlineRemoteProto;
+import org.jetbrains.jps.api.CmdlineRemoteProto.Message.ControllerMessage.ParametersMessage.TargetTypeBuildScope;
 import org.metaborg.spoofax.intellij.SpoofaxProductionTargetType;
 
 import java.util.Collections;
@@ -35,7 +35,7 @@ public class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
 
     @NotNull
     @Override
-    public List<CmdlineRemoteProto.Message.ControllerMessage.ParametersMessage.TargetTypeBuildScope> getBuildTargetScopes(CompileScope baseScope, CompilerFilter filter, Project project, boolean forceBuild) {
+    public List<TargetTypeBuildScope> getBuildTargetScopes(CompileScope baseScope, CompilerFilter filter, Project project, boolean forceBuild) {
         return Collections.singletonList(CmdlineProtoUtil.createAllTargetsScope(this.productionTargetType, forceBuild));
     }
 }

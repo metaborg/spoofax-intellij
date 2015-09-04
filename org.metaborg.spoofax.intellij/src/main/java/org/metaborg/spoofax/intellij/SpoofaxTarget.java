@@ -88,7 +88,7 @@ public class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor
     @NotNull
     @Override
     public String getPresentableName() {
-        return "Spoofax";
+        return "Spoofax '" + super.myModule.getName() + "'";
     }
 
     @NotNull
