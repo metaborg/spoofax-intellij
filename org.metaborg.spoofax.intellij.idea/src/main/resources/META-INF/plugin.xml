@@ -32,9 +32,9 @@
 
   <application-components>
     <!-- Add your application components here -->
-    <!--<component>
+    <component>
       <implementation-class>org.metaborg.spoofax.intellij.idea.IdeaPlugin</implementation-class>
-    </component>-->
+    </component>
   </application-components>
 
   <project-components>

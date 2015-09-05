@@ -95,7 +95,7 @@ public final class IdeaPlugin implements ApplicationComponent {
 
     @NotNull
     public String getComponentName() {
-        return null;
+        return "Spoofax IDEA plugin";
     }
 
 }

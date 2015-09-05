@@ -2,16 +2,12 @@ package org.metaborg.spoofax.intellij;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
-import org.jetbrains.idea.maven.utils.actions.MavenActionUtil;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.core.project.IMavenProjectService;

@@ -12,8 +12,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.apache.commons:commons-vfs2:2.0" level="project" />
+    <orderEntry type="library" name="org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT" level="project" />
   </component>
 </module>
