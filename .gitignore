@@ -3,6 +3,7 @@
 /meta
 *.zip
 /external
+lib/
 
 ### Java ###
 *.class

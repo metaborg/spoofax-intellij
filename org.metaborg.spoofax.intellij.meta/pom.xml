@@ -18,5 +18,12 @@
         <vendor.email>d.a.a.pelsmaeker@student.tudelft.nl</vendor.email>
     </properties>
 
-
+	<dependencies>
+		<dependency>
+		  <groupId>org.metaborg</groupId>
+		  <artifactId>org.metaborg.meta.lang.sdf</artifactId>
+		  <version>1.5.0-SNAPSHOT</version>
+		  <type>spoofax-language</type>
+		</dependency>
+	</dependencies>
 </project>
