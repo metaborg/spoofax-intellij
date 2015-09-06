@@ -4,16 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+    
     <groupId>org.metaborg.spoofax.intellij.meta</groupId>
     <artifactId>spoofax-intellij-meta</artifactId>
     <version>0.1.0-alpha</version>
+    
     <name>Spoofax Meta Plugin for IntelliJ</name>
     <description>A Meta plugin.</description>
 
     <properties>
         <vendor.name>Metaborg</vendor.name>
         <vendor.url>http://www.metaborg.org</vendor.url>
-        <vendor.email>d.a.a.pelsmaeker@student.tudelf.nl</vendor.email>
+        <vendor.email>d.a.a.pelsmaeker@student.tudelft.nl</vendor.email>
     </properties>
 
 
