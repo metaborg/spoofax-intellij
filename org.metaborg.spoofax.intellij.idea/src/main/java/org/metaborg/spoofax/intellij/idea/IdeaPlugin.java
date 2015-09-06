@@ -7,69 +7,52 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.intellij.openapi.components.ApplicationComponent;
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.core.language.ILanguageDiscoveryService;
+import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.intellij.SpoofaxProductionTargetType;
 import org.metaborg.spoofax.intellij.SpoofaxTargetType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * IntelliJ IDEA plugin class.
  */
 public final class IdeaPlugin implements ApplicationComponent {
 
+    final Logger logger = LoggerFactory.getLogger(IdeaPlugin.class);
+
     protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
+
+    /**
+     * Gets the injector.
+     * @return The current injector.
+     */
+    public static Injector injector() {
+        return injector.get();
+    }
 
     private ILanguageDiscoveryService languageDiscoveryService;
     private IResourceService resourceService;
-
-    // FIXME: Is there a way to automatically inject dependencies into object
-    // that were not created by Guice?
-    /**
-     * Injects the members of an existing object.
-     *
-     * Generally this method should not be used except in exceptional circumstances
-     * where the object is not constructed by Guice. Usage example:
-     *
-     * <pre>
-     * {@code
-     * public class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
-     *
-     *     private SpoofaxTargetType targetType;
-     *
-     *     // Constructor called by IntelliJ.
-     *     public SpoofaxBuildTargetScopeProvider() {
-     *         IdeaPlugin.injectMembers(this);
-     *     }
-     *
-     *     @Inject @SuppressWarnings("unused")
-     *     private void inject(SpoofaxTargetType targetType) {
-     *         this.targetType = targetType;
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param o The object whose members need to be injected.
-     */
-    public static void injectMembers(Object o) {
-        injector.get().injectMembers(o);
-    }
+    private ILanguageService languageService;
 
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
     public IdeaPlugin() {
-        IdeaPlugin.injectMembers(this);
+        IdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject @SuppressWarnings("unused")
-    private void inject(ILanguageDiscoveryService languageDiscoveryService, IResourceService resourceService) {
+    private void inject(ILanguageService languageService, ILanguageDiscoveryService languageDiscoveryService, IResourceService resourceService) {
         this.languageDiscoveryService = languageDiscoveryService;
         this.resourceService = resourceService;
+        this.languageService = languageService;
     }
 
     public void initComponent() {
@@ -84,9 +67,12 @@ public final class IdeaPlugin implements ApplicationComponent {
      * Loads languages.
      */
     private void loadLanguages() throws MetaborgException {
-        FileObject location = resourceService.resolve("file:///home/daniel/repos/metaborg-spoofax-intellij/meta/sdf.spoofax-language");
+        FileObject location = resourceService.resolve("zip:///home/daniel/repos/metaborg-spoofax-intellij/meta/sdf.spoofax-language");
         Iterable<ILanguageComponent> languageComponents = languageDiscoveryService.discover(location);
-        System.out.println(languageComponents);
+
+        System.out.println(this.languageService.getAllLanguages());
+
+        //System.out.println(languageComponents.iterator().next().contributesTo());
     }
 
     public void disposeComponent() {
@@ -95,7 +81,7 @@ public final class IdeaPlugin implements ApplicationComponent {
 
     @NotNull
     public String getComponentName() {
-        return "Spoofax IDEA plugin";
+        return IdeaPlugin.class.getName();
     }
 
 }

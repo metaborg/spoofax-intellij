@@ -1,6 +1,8 @@
 ### Misc ###
 /repository
 /meta
+*.zip
+/external
 
 ### Java ###
 *.class

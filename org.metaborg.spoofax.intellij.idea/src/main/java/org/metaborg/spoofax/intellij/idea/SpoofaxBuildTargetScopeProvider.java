@@ -25,7 +25,7 @@ public class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
      * Do not call this method manually.
      */
     public SpoofaxBuildTargetScopeProvider() {
-        IdeaPlugin.injectMembers(this);
+        IdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject @SuppressWarnings("unused")
