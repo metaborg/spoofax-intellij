@@ -4,6 +4,7 @@
 *.zip
 /external
 lib/
+*.spoofax-language
 
 ### Java ###
 *.class
