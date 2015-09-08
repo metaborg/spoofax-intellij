@@ -3,6 +3,7 @@ package org.metaborg.spoofax.intellij.jps;
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.intellij.openapi.components.StoragePathMacros;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildOutputConsumer;
 import org.jetbrains.jps.builders.DirtyFilesHolder;
@@ -45,8 +46,7 @@ public final class SpoofaxTargetBuilder extends TargetBuilder<SpoofaxSourceRootD
         context.processMessage(new ProgressMessage("Compiling Spoofax sources"));
         //buildSpoofax(target.getModule());
         context.checkCanceled();
-
-
+        
         context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.INFO, "Using these languages: " + Joiner.on(", ").join(languageService.getAllLanguages())));
 
         context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.WARNING, "Compilation not implemented! (II)"));
