@@ -3,6 +3,7 @@ package org.metaborg.spoofax.intellij.meta;
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.intellij.compiler.server.impl.BuildProcessClasspathManager;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.metaborg.core.MetaborgException;
@@ -36,7 +37,7 @@ public final class MetaLanguageManager {
     }
 
     public void loadLanguages() {
-        loadLanguage("org.metaborg.meta.lang.sdf");
+        loadLanguage("org.metaborg.meta.lang.nabl");
     }
 
     private void loadLanguage(String id) {

@@ -1,5 +1,6 @@
 package org.metaborg.spoofax.intellij.jps;
 
+import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,7 @@ import org.jetbrains.jps.incremental.java.JavaBuilder;
 import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
 import org.jetbrains.jps.incremental.messages.ProgressMessage;
+import org.metaborg.core.language.ILanguageService;
 import org.metaborg.spoofax.intellij.*;
 
 import java.io.IOException;
@@ -23,9 +25,12 @@ import java.util.Collections;
 @Singleton
 public final class SpoofaxTargetBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxTarget> {
 
+    private final ILanguageService languageService;
+
     @Inject
-    private SpoofaxTargetBuilder(SpoofaxProductionTargetType targetType) {
+    private SpoofaxTargetBuilder(ILanguageService languageService, SpoofaxProductionTargetType targetType) {
         super(Collections.singletonList(targetType));
+        this.languageService = languageService;
     }
 
     @Override
@@ -41,7 +46,11 @@ public final class SpoofaxTargetBuilder extends TargetBuilder<SpoofaxSourceRootD
         //buildSpoofax(target.getModule());
         context.checkCanceled();
 
-        context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.WARNING, "Compilation not implemented!"));
+
+        context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.INFO, "Using these languages: " + Joiner.on(", ").join(languageService.getAllLanguages())));
+
+        context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.WARNING, "Compilation not implemented! (II)"));
+
 
         // https://github.com/pbuda/intellij-pony/blob/52e40c55d56adc4d85a34ad8dffe45ca0c64967f/jps-plugin/src/me/piotrbuda/intellij/pony/jps/PonyBuilder.java
     }
