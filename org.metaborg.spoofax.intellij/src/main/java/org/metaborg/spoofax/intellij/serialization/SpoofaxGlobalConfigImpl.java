@@ -8,17 +8,12 @@ import org.jetbrains.jps.model.ex.JpsElementChildRoleBase;
 /**
  * Created by daniel on 9/8/15.
  */
-public class SpoofaxGlobalConfigImpl extends JpsElementBase<SpoofaxGlobalConfigImpl> implements SpoofaxGlobalConfig {
-    public static final JpsElementChildRole<SpoofaxGlobalConfig> ROLE = JpsElementChildRoleBase.create("Spoofax");
+public class SpoofaxGlobalConfigImpl extends JpsElementBase<SpoofaxGlobalConfigImpl> {
+    public static final JpsElementChildRole<SpoofaxGlobalConfigImpl> ROLE = JpsElementChildRoleBase.create("Spoofax");
 
-    private String myName = "<DEFAULT>";
-    @Override
-    public String getMyName() {
-        return this.myName;
-    }
-    public void setMyName(String value) {
-        this.myName = value;
-    }
+    private SpoofaxGlobalState state = new SpoofaxGlobalState();
+    public SpoofaxGlobalState getState() { return this.state; }
+    public void loadState(SpoofaxGlobalState value) { this.state = value; }
 
     @NotNull
     @Override
@@ -28,7 +23,7 @@ public class SpoofaxGlobalConfigImpl extends JpsElementBase<SpoofaxGlobalConfigI
 
     @Override
     public void applyChanges(@NotNull SpoofaxGlobalConfigImpl modified) {
-        this.myName = modified.myName;
+        this.state = modified.state;
 
     }
 }

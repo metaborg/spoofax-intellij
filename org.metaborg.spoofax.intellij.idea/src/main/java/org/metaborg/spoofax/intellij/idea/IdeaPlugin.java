@@ -6,6 +6,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.ServiceManager;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +17,7 @@ import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.intellij.SpoofaxProductionTargetType;
 import org.metaborg.spoofax.intellij.SpoofaxTargetType;
+import org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,6 +73,8 @@ public final class IdeaPlugin implements ApplicationComponent {
         Iterable<ILanguageComponent> languageComponents = languageDiscoveryService.discover(location);
 
         System.out.println(this.languageService.getAllLanguages());
+
+        ServiceManager.getService(SpoofaxGlobalComponent.class).getState().setMyName("test name!");
 
         //System.out.println(languageComponents.iterator().next().contributesTo());
     }

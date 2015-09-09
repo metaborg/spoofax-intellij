@@ -46,7 +46,7 @@ public final class SpoofaxTargetBuilder extends TargetBuilder<SpoofaxSourceRootD
         context.processMessage(new ProgressMessage("Compiling Spoofax sources"));
         //buildSpoofax(target.getModule());
         context.checkCanceled();
-        
+
         context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.INFO, "Using these languages: " + Joiner.on(", ").join(languageService.getAllLanguages())));
 
         context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.WARNING, "Compilation not implemented! (II)"));

@@ -11,7 +11,7 @@ public abstract class SpoofaxExtensionService {
     }
 
     @NotNull
-    public abstract SpoofaxGlobalConfig getConfiguration(@NotNull JpsGlobal global);
+    public abstract SpoofaxGlobalConfigImpl getConfiguration(@NotNull JpsGlobal global);
 
-    public abstract void setConfiguration(@NotNull JpsGlobal global, @NotNull SpoofaxGlobalConfig config);
+    public abstract void setConfiguration(@NotNull JpsGlobal global, @NotNull SpoofaxGlobalConfigImpl config);
 }

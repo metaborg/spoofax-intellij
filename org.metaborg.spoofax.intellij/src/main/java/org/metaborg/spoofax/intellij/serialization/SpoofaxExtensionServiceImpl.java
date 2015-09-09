@@ -6,12 +6,12 @@ import org.jetbrains.jps.model.JpsGlobal;
 public class SpoofaxExtensionServiceImpl extends SpoofaxExtensionService {
     @NotNull
     @Override
-    public SpoofaxGlobalConfig getConfiguration(@NotNull JpsGlobal global) {
+    public SpoofaxGlobalConfigImpl getConfiguration(@NotNull JpsGlobal global) {
         return global.getContainer().getChild(SpoofaxGlobalConfigImpl.ROLE);
     }
 
     @Override
-    public void setConfiguration(@NotNull JpsGlobal global, @NotNull SpoofaxGlobalConfig config) {
+    public void setConfiguration(@NotNull JpsGlobal global, @NotNull SpoofaxGlobalConfigImpl config) {
         global.getContainer().setChild(SpoofaxGlobalConfigImpl.ROLE, config);
     }
 }
