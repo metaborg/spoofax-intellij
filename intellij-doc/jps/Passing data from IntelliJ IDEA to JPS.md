@@ -1,138 +1,200 @@
 # Passing data from IntelliJ IDEA to JPS
 All kinds of information about the project, its modules, its dependencies and settings is configured in IntelliJ IDEA and needed in the JPS plugin. Since the IDE and the JPS plugin don't share a process, we need to somehow communicate the data over the process barrier. Serialization to the rescue.
 
-## Persisting IDEA state
-First we need to store anything we want to send from IntelliJ IDEA to JPS.
+## Serializing and deserializing IntelliJ IDEA state
+First we need to store anything we want to keep between IntelliJ sessions. This also happens to be readable by the JPS plugin.
 
-TODO
+### State class
+Create a class that will contain the state you want to save. It must be a simple class, preferably `final`, with `equals` and `hashCode` overridden, and defaults assigned in a parameterless constructor. For example:
 
-#### See also
-
-* [Persisting State of Components](http://www.jetbrains.org/intellij/sdk/docs/basics/persisting_state_of_components.html)
-
-
-## Model serializer extension
-In the JPS plugin, extend the `JpsModelSerializerExtension` class to notify IntelliJ about the data serializers that you have implemented.
-
-Register the serializer extension with the JPS plugin. To do this, create a file named `org.jetbrains.jps.model.serialization.JpsModelSerializerExtension` (no extension) in the `/src/main/resources/META-INF/services/` directory of the JPS module. In the file, write the fully qualified class name of the serializer extension. For example:
 
 ```
-org.metaborg.spoofax.intellij.jps.JpsSpoofaxModelSerializerExtension
+public final class MyGlobalState {
+
+    private String myName;
+    public String getMyName() { return this.myName; }
+    public void setMyName(String value) { this.myName = value; }
+
+    public MyGlobalState() {
+        // Defaults
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MyGlobalState))
+            return false;
+        return equals((MyGlobalState)obj);
+    }
+
+    public boolean equals(MyGlobalState other) {
+        if (other == this)
+            return true;
+        if (other == null)
+            return false;
+
+        return new EqualsBuilder()
+                .append(this.myName, other.myName)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(19, 31)
+                .append(this.myName)
+                .toHashCode();
+    }
+
+}
 ```
 
-### Root model serializer
-TODO
+### PersistentStateComponent class
+In IntelliJ the `PersistentStateComponent<T>` interface is used for classes that can store their own state. However, these classes must be either an:
 
-### Module options serializer
-TODO
+* application component;
+* project component;
+* module component; or
+* application service;
+* project service;
+* module service.
 
-### Module dependency properties serializer
-TODO
+In this example we'll create an _application service_, that is, a class for which only one instance exists for the whole IntelliJ application.
 
-## Serializers
-These are the serializers you can implement.
-
-### Global extension serializer
-Extend the `JpsGlobalExtensionSerializer` class. Implement the `loadExtension()` and `loadExtensionWithDefaultSettings()` methods. Usually you'd want to create a new JSP element and read its properties from the JDOM, then add it to the element container of the Global. See [Element containers](Element containers.md) for more info about using element containers.
-
-> **Note**: The `configFileName` constructor parameter is relative to `StoragePathMacros.APP_CONFIG`. See [Persisting IDEA state](#Persisting IDEA state) for more information.
+The class must implement the `PersistentStateComponent<T>` interface, where `T` is the state class. It must also have a parameterless constructor that initializes the default state, override the `equals` and `hashCode` methods, and have the `@State` attribute applied to it. The `@State` attribute describes the object and where it must be stored. See [Persisting State of Components](<http://www.jetbrains.org/intellij/sdk/docs/basics/persisting_state_of_components.html>) for more information.
 
 ```
-public class ContosoGlobalSerializer extends JpsGlobalExtensionSerializer {
-    private static final String MY_NAME_NAME = "MY_NAME";
+@State(
+        name = "MyGlobalService",
+        storages = {
+                @Storage(id = "default", file = StoragePathMacros.APP_CONFIG + "/My.xml")
+        }
+)
+public final class MyGlobalService implements PersistentStateComponent<MyGlobalState> {
 
-    public ContosoGlobalSerializer() {
-        super("Contoso.xml", "ContosoGlobalConfig");
+    private MyGlobalState state;
+
+    public MyGlobalService() {
+        state = new SpoofaxGlobalState();
+    }
+
+    @Nullable @Override public MyGlobalState getState() { return this.state; }
+
+    @Override
+    public void loadState(MyGlobalState state) {
+        this.state = state;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MyGlobalService))
+            return false;
+        return this.state.equals(((MyGlobalService)obj).state);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.state.hashCode();
+    }
+}
+```
+
+Register your application service in the `plugin.xml` file:
+
+```
+<extensions defaultExtensionNs="com.intellij">
+  <applicationService serviceImplementation="org.contoso.MyGlobalService"/>
+</extensions>
+```
+
+Now the state is persisted between IntelliJ sessions.
+
+### JPS element
+We want to load the state in JPS, and this means we have to add it to the JPS model. Since the JPS model consists of elements, we have to define our own. For example:
+
+```
+public class MyGlobalConfig extends JpsElementBase<MyGlobalConfig> {
+    public static final JpsElementChildRole<MyGlobalConfig> ROLE = JpsElementChildRoleBase.create("My");
+
+    private MyGlobalState state = new MyGlobalState();
+    public MyGlobalState getState() { return this.state; }
+    public void loadState(MyGlobalState value) { this.state = value; }
+
+    @NotNull
+    @Override
+    public MyGlobalConfig createCopy() {
+        return new MyGlobalConfig();
+    }
+
+    @Override
+    public void applyChanges(@NotNull MyGlobalConfig modified) {
+        this.state = modified.state;
+    }
+}
+```
+
+### Deserializing the JPS element
+And finally we have to deserialize the JPS element and add it to the model. See [Element containers](Element containers.md) for more information about adding elements to element containers. See [Serialization](Serialization.md) for more information about serialization.
+
+
+```
+public class MyGlobalSerializer extends JpsGlobalExtensionSerializer {
+
+    public MyGlobalSerializer() {
+        super("My.xml", "MyGlobalService");
     }
 
     @Override
     public void loadExtensionWithDefaultSettings(JpsGlobal global) {
-        loadExtensionFromJDom(global, null);
+        loadExtensionWithState(global, null);
     }
 
     @Override
-    public void loadExtension(JpsGlobal global, Element componentTag) {
-        loadExtensionFromJDom(global, componentTag);
+    public void loadExtension(JpsGlobal global, Element element) {
+        MyGlobalState state = XmlSerializer.deserialize(element, MyGlobalState.class);
+        loadExtensionWithState(global, state);
     }
 
-    private void loadExtensionFromJDom(JpsGlobal global, @Nullable Element componentTag) {
-        final ContosoGlobalConfigImpl configuration = new ContosoGlobalConfigImpl();
-
-        if (componentTag != null) {
-            final String myName = JDOMExternalizerUtil.readField(componentTag, MY_NAME_NAME);
-            if (myName != null) {
-                configuration.setMyName(myName);
-            }
-        }
-
-        global.getContainer().setChild(ContosoGlobalConfigImpl.ROLE, config);
+    private void loadExtensionWithState(JpsGlobal global, MyGlobalState state)
+    {
+        final MyGlobalConfig config = new MyGlobalConfig();
+        if (state != null)
+            config.loadState(state);
+        global.getContainer().setChild(MyGlobalConfig.ROLE, config);
     }
 
     @Override
-    public void saveExtension(JpsGlobal jpsGlobal, Element componentTag) {
-
+    public void saveExtension(JpsGlobal jpsGlobal, Element element) {
+        throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
     }
 }
 ```
 
-Return your serializer from the `JpsModelSerializerExtension.getGlobalExtensionSerializers()` method.
+> **Note**: `saveExtension` is not currently used.
+
+And return it from the JPS model serializer extension
 
 ```
-@NotNull @Override
-public List<? extends JpsGlobalExtensionSerializer> getGlobalExtensionSerializers() {
-	return Collections.singletonList(new ContosoGlobalSerializer());
+
+public class MyModelSerializerExtension extends JpsModelSerializerExtension {
+
+    @NotNull
+    @Override
+    public List<? extends JpsGlobalExtensionSerializer> getGlobalExtensionSerializers() {
+        return Collections.singletonList(new SpoofaxGlobalSerializer());
+    }
 }
 ```
 
-#### See also
+which we register by creating a file `org.jetbrains.jps.model.serialization.JpsModelSerializerExtension` (no extension) in the `/src/main/resources/META-INF/services` folder of the JPS module, with the fully qualified name of the serializer extension in it. For example:
 
-* [Use ServiceManager in ExternalBuilder](https://devnet.jetbrains.com/message/5502117#5502117)
-* [`JpsIntelliLangModelSerializerExtension`](https://github.com/JetBrains/intellij-community/blob/master/plugins/IntelliLang/intellilang-jps-plugin/src/org/jetbrains/jps/intellilang/model/impl/JpsIntelliLangModelSerializerExtension.java)
-* [`JpsIntelliLangConfigurationSerializer`](https://github.com/JetBrains/intellij-community/blob/master/plugins/IntelliLang/intellilang-jps-plugin/src/org/jetbrains/jps/intellilang/model/impl/JpsIntelliLangConfigurationSerializer.java)
-* [`JpsIntelliLangConfiguration`](https://github.com/JetBrains/intellij-community/blob/master/plugins/IntelliLang/intellilang-jps-plugin/src/org/jetbrains/jps/intellilang/model/JpsIntelliLangConfiguration.java)
-* [`JpsIntelliLangConfigurationImpl`](https://github.com/JetBrains/intellij-community/blob/master/plugins/IntelliLang/intellilang-jps-plugin/src/org/jetbrains/jps/intellilang/model/impl/JpsIntelliLangConfigurationImpl.java)
-* [`JpsIntelliLangExtensionService`](https://github.com/JetBrains/intellij-community/blob/master/plugins/IntelliLang/intellilang-jps-plugin/src/org/jetbrains/jps/intellilang/model/JpsIntelliLangExtensionService.java)
-* [`JpsIntelliLangExtensionServiceImpl`](https://github.com/JetBrains/intellij-community/blob/master/plugins/IntelliLang/intellilang-jps-plugin/src/org/jetbrains/jps/intellilang/model/impl/JpsIntelliLangExtensionServiceImpl.java)
-* [`Configuration`](https://github.com/JetBrains/intellij-community/blob/master/plugins/IntelliLang/src/org/intellij/plugins/intelliLang/Configuration.java)
+```
+org.contoso.jps.MyModelSerializerExtension
+```
+  
 
-### Project extension serializer
-TODO
+### See also
 
-### Module properties serializer
-TODO
-
-### Module source root properties serializer
-TODO
-
-### Library root type serializer
-TODO
-
-### Library properties serializer
-TODO
-
-### SDK root type serializer
-TODO
-
-### SDK properties serializer
-TODO
-
-### Facet configuration serializer
-TODO
-
-### Packaging element serializer
-TODO
-
-### Artifact type properties serializer
-TODO
-
-### Artifact extension serializer
-TODO
-
-### Classpath serializer
-TODO
-
-### Run configuration properties serializer
-TODO
+* [Persisting State of Components](<http://www.jetbrains.org/intellij/sdk/docs/basics/persisting_state_of_components.html>)
+* [IntelliJ IDEA Plugin Structure](<https://confluence.jetbrains.com/display/IDEADEV/IntelliJ+IDEA+Plugin+Structure#IntelliJIDEAPluginStructure-PluginComponents>)
 
 
 

@@ -1,13 +1,9 @@
 package org.metaborg.spoofax.intellij.serialization;
 
-import com.intellij.openapi.util.JDOMExternalizerUtil;
 import com.intellij.util.xmlb.XmlSerializer;
 import org.jdom.Element;
 import org.jetbrains.jps.model.JpsGlobal;
 import org.jetbrains.jps.model.serialization.JpsGlobalExtensionSerializer;
-import org.jetbrains.jps.model.serialization.JpsProjectExtensionSerializer;
-
-import javax.annotation.Nullable;
 
 public class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
 
@@ -28,7 +24,7 @@ public class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
 
     private void loadExtensionWithState(JpsGlobal global, SpoofaxGlobalState state)
     {
-        final SpoofaxGlobalConfigImpl config = new SpoofaxGlobalConfigImpl();
+        final SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();
         if (state != null)
             config.loadState(state);
         SpoofaxExtensionService.getInstance().setConfiguration(global, config);
