@@ -1,10 +1,9 @@
 ### Misc ###
-/repository
-/meta
 *.zip
-/external
-lib/
+*.tar.gz
+*.tar.bz2
 *.spoofax-language
+
 
 ### Java ###
 *.class

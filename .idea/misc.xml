@@ -6,12 +6,12 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/org.metaborg.spoofax.intellij.meta/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/org.metaborg.spoofax.intellij.meta/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </set>
     </option>
   </component>
