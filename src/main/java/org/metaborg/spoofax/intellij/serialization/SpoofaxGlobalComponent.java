@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 @State(
         name = "SpoofaxGlobalComponent",
         storages = {
-                @Storage(id = "default", file = StoragePathMacros.APP_CONFIG + "/Spoofax.xml")
+                @Storage(file = StoragePathMacros.APP_CONFIG + "/Spoofax.xml")
         }
 )
 public final class SpoofaxGlobalComponent implements PersistentStateComponent<SpoofaxGlobalState> {

@@ -61,11 +61,12 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
         //buildSpoofax(target.getModule());
         context.checkCanceled();
 
+
         context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.INFO, "Using these languages: " + Joiner.on(", ").join(languageService.getAllLanguages())));
 
         context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.WARNING, "Compilation not implemented! (II)"));
 
-
+        throw new ProjectBuildException("Compilation not implemented");
     }
 
     // https://github.com/pbuda/intellij-pony/blob/52e40c55d56adc4d85a34ad8dffe45ca0c64967f/jps-plugin/src/me/piotrbuda/intellij/pony/jps/PonyBuilder.java

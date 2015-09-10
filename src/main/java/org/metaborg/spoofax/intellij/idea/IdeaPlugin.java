@@ -17,6 +17,7 @@ import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalComponent;
+import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,6 +87,7 @@ public final class IdeaPlugin implements ApplicationComponent {
         System.out.println(this.languageService.getAllLanguages());
 
         ServiceManager.getService(SpoofaxGlobalComponent.class).getState().setMyName("test name!");
+        ServiceManager.getService(SpoofaxProjectComponent.class).getState().setMyName("Project name!");
 
         //System.out.println(languageComponents.iterator().next().contributesTo());
     }

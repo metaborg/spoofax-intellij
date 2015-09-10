@@ -10,12 +10,14 @@ import org.jetbrains.jps.model.JpsElementFactory;
 import org.jetbrains.jps.model.ex.JpsElementBase;
 import org.jetbrains.jps.model.serialization.JpsGlobalExtensionSerializer;
 import org.jetbrains.jps.model.serialization.JpsModelSerializerExtension;
+import org.jetbrains.jps.model.serialization.JpsProjectExtensionSerializer;
 import org.jetbrains.jps.model.serialization.library.JpsLibraryTableSerializer;
 import org.jetbrains.jps.model.serialization.module.JpsModulePropertiesSerializer;
 import org.metaborg.spoofax.intellij.JpsSpoofaxModuleType;
 import org.metaborg.spoofax.intellij.SpoofaxTargetType;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalSerializer;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxModuleSerializer;
+import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectSerializer;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,6 +38,12 @@ public class JpsSpoofaxModelSerializerExtension extends JpsModelSerializerExtens
     @Override
     public List<? extends JpsGlobalExtensionSerializer> getGlobalExtensionSerializers() {
         return Collections.singletonList(new SpoofaxGlobalSerializer());
+    }
+
+    @NotNull
+    @Override
+    public List<? extends JpsProjectExtensionSerializer> getProjectExtensionSerializers() {
+        return Collections.singletonList(new SpoofaxProjectSerializer());
     }
 
     @NotNull

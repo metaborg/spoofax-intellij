@@ -35,6 +35,7 @@ import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Singleton
@@ -132,20 +133,22 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
 
             @Override
             public void projectOpened(Project project) {
+                /*
+                MavenProjectsManager manager = MavenProjectsManager.getInstance(project);
+                String pomPath = project.getBaseDir().getPath() + "/pom.xml";
+                manager.setIgnoredFilesPaths(Collections.singletonList(pomPath));
+                */
 
-                List<VirtualFile> pomFiles = new ArrayList<>();
+                /*
+                VirtualFile pomFile = project.getBaseDir().findChild("pom.xml");
 
-                if (project.getBaseDir().findChild("pomx.xml") == null) {
-                    displayInitError(String.format("Unable to create new Spoofax project"), project);
+                if (pomFile == null) {
+                    displayInitError(String.format("Couldn't find POM?"), project);
                 } else {
 
-                    pomFiles.add(project.getBaseDir().findChild("pom.xml"));
-
-                    MavenProjectsManager manager = MavenProjectsManager.getInstance(project);
-
-                    manager.addManagedFiles(pomFiles);
+                    manager.addManagedFiles(Collections.singletonList(pomFile));
                 }
-
+*/
             }
 
             @Override
