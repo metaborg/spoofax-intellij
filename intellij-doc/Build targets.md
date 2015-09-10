@@ -72,3 +72,4 @@ You register your build target scope provider in the `plugin.xml` file.
 ## See also
 
 * [IntelliJ Platform SDK DevGuide - External Builder API and Plugins](http://www.jetbrains.org/intellij/sdk/docs/reference_guide/frameworks_and_external_apis/external_builder_api.html)
+* [Activate DummySourceGeneratingCompiler in test plugin for test purposes](https://devnet.jetbrains.com/message/5484095#5484095)

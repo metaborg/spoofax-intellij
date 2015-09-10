@@ -32,12 +32,15 @@ First we create a new IntelliJ Plugin module, then fix it up to match Maven's de
     > * `/src/test/resources/` is a _Test Resources_ folder;
     > * `/target/` is an _Excluded_ folder.
 
-5. On the _Plugin Deployment_ tab of the module, fix the _Path to META-INF/plugin.xml_ to point to the new location of the `META-INF/plugin.xml` file at `/src/main/resources/`.
+5. On the _Paths_ tab of the module, fix the module's output path. _Output path_ should be the `/target/classes/` subdirectory, and _Test output path_ should be the `/target/test-classes/` subdirectory.
+
+6. Uncheck the _Exclude output path_ checkbox.
+
+7. On the _Plugin Deployment_ tab of the module, fix the _Path to META-INF/plugin.xml_ to point to the new location of the `META-INF/plugin.xml` file at `/src/main/resources/`.
 
     > You can see where IntelliJ expects the `plugin.xml` file to be in the `/my-plugin.iml` file.
 
-6. Delete the `/META-INF/` directory from the root of the module.
-
+8. Delete the `/META-INF/` directory from the root of the module.
 
 
 
