@@ -25,7 +25,7 @@ public final class SpoofaxBuilderService extends BuilderService {
      * Do not call this method manually.
      */
     public SpoofaxBuilderService() {
-        JpsPlugin.injectMembers(this);
+        JpsPlugin.injector().injectMembers(this);
     }
 
     @Inject

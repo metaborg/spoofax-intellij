@@ -19,6 +19,8 @@ public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
         super.configure();
 
         bindBuildTargets();
+
+        bind(LanguageManager.class).in(Singleton.class);
     }
 
     @Override
