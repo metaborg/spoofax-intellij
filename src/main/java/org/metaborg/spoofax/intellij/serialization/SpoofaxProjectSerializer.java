@@ -9,7 +9,7 @@ import org.jetbrains.jps.model.serialization.JpsProjectExtensionSerializer;
 
 public class SpoofaxProjectSerializer extends JpsProjectExtensionSerializer {
 
-    public static final String NAME = "SpoofaxProjectComponent";
+    public static final String NAME = "SpoofaxProjectService";
     public static final String CONFIG_FILE = "SpoofaxProject.xml";
 
     public SpoofaxProjectSerializer() {

@@ -7,8 +7,11 @@ import org.jetbrains.jps.model.serialization.JpsGlobalExtensionSerializer;
 
 public class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
 
+    public static final String NAME = "SpoofaxGlobalService";
+    public static final String CONFIG_FILE = "Spoofax.xml";
+
     public SpoofaxGlobalSerializer() {
-        super("Spoofax.xml", "SpoofaxGlobalComponent");
+        super(CONFIG_FILE, NAME);
     }
 
     @Override
