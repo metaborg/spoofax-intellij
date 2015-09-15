@@ -22,11 +22,12 @@ public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
 
         bind(LanguageManager.class).in(Singleton.class);
     }
-
+/*
     @Override
     protected void bindMavenProject() {
-        bind(IMavenProjectService.class).to(IntelliJMavenProjectService.class).in(Singleton.class);
+        //bind(IMavenProjectService.class).to(IntelliJMavenProjectService.class).in(Singleton.class);
     }
+*/
 
     @Override
     protected void bindResource() {

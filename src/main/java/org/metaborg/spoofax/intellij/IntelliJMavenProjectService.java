@@ -2,12 +2,18 @@ package org.metaborg.spoofax.intellij;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Pair;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.jetbrains.idea.maven.project.*;
+import org.jetbrains.idea.maven.server.MavenEmbedderWrapper;
+//import org.jetbrains.idea.maven.server.NativeMavenProjectHolder;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.core.project.IMavenProjectService;
@@ -53,16 +59,36 @@ public final class IntelliJMavenProjectService implements IMavenProjectService {
     {
         if (!(project instanceof IdeaModule))
             return null;
+        /*
 
-        //IdeaModule ideaModule = (IdeaModule)project;
-        //Module m = ideaModule.module();
-        //Project ideaProject = m.getProject();
+        IdeaModule ideaModule = (IdeaModule)project;
+        Module m = ideaModule.module();
+        Project ideaProject = m.getProject();
 
-        //final MavenProjectsManager projectsManager = MavenProjectsManager.getInstance(ideaProject);
-        //org.jetbrains.idea.maven.project.MavenProject mavenProject = projectsManager.findProject(m);
+        final MavenProjectsManager projectsManager = MavenProjectsManager.getInstance(ideaProject);
+        org.jetbrains.idea.maven.project.MavenProject mavenProject = projectsManager.findProject(m);
+        MavenGeneralSettings generalSettings;
+        MavenEmbeddersManager embeddersManager;
+        MavenProjectsTree t;
+        //t.resolve();
+        NativeMavenProjectHolder h;
+
+
+        MavenEmbedderWrapper embedder = embeddersManager.getEmbedder(MavenEmbeddersManager.FOR_DEPENDENCIES_RESOLVE);
+        embedder.customizeForResolve(getWorkspaceMap(), console, process, generalSettings.isAlwaysUpdateSnapshots());
+        MavenProjectReaderProjectLocator locator;
+        ResolveContext context;
+        try {
+            Pair<MavenProjectChanges, MavenProject> resolveResult =
+                mavenProject.resolve(ideaProject, generalSettings, embedder, new MavenProjectReader(), locator, context);
+        }
+        finally {
+            embeddersManager.release(embedder);
+        }
 
         // FIXME THIS?
         //org.apache.maven.project.MavenProject <-> org.jetbrains.idea.maven.project.MavenProject
+        */
         return null;
     }
 
@@ -76,6 +102,8 @@ public final class IntelliJMavenProjectService implements IMavenProjectService {
     @Nullable
     private MavenProject tryGetFromLocation(final FileObject location)
     {
+        return null;
+        /*
         final FileObject pomResource;
         Model model = null;
         try {
@@ -103,5 +131,6 @@ public final class IntelliJMavenProjectService implements IMavenProjectService {
         //mavenProject.addCompileSourceRoot(pomFile.getParentFile().getPath() + "/src/main/java");
         //mavenProject.addTestCompileSourceRoot(pomFile.getParentFile().getPath() + "/src/test/java");
         return mavenProject;
+        */
     }
 }

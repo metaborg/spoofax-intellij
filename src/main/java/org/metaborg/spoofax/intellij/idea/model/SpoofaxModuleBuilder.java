@@ -19,7 +19,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
+//import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.language.LanguageVersion;
 import org.metaborg.core.project.IProject;

@@ -13,11 +13,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="com.google.inject:guice:3.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="org.slf4j:slf4j-api:1.7.12" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="org.slf4j:slf4j-simple:1.7.12" level="project" />
+    <orderEntry type="library" name="org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.metaborg:org.metaborg.spoofax.generator:1.5.0-SNAPSHOT" level="project" />
   </component>
 </module>
