@@ -1,0 +1,55 @@
+---
+identifier:
+  groupId: "org.metaborg"
+  id: "org.metaborg.meta.lang.esv"
+  version:
+    major: 1
+    minor: 5
+    patch: 0
+    qualifier: "baseline-20150905-200051"
+name: "EditorService"
+compileDependencies:
+- groupId: "org.metaborg"
+  id: "org.metaborg.meta.lib.analysis"
+  version:
+    major: 1
+    minor: 5
+    patch: 0
+    qualifier: "baseline-20150905-200051"
+- groupId: "org.metaborg"
+  id: "org.metaborg.meta.lang.sdf"
+  version:
+    major: 1
+    minor: 5
+    patch: 0
+    qualifier: "baseline-20150905-200051"
+- groupId: "org.metaborg"
+  id: "org.metaborg.meta.lang.esv"
+  version:
+    major: 1
+    minor: 5
+    patch: 0
+    qualifier: "baseline-20150903-172321"
+runtimeDependencies:
+- groupId: "org.metaborg"
+  id: "org.metaborg.meta.lib.analysis"
+  version:
+    major: 1
+    minor: 5
+    patch: 0
+    qualifier: "baseline-20150905-200051"
+- groupId: "org.metaborg"
+  id: "org.metaborg.meta.lang.sdf"
+  version:
+    major: 1
+    minor: 5
+    patch: 0
+    qualifier: "baseline-20150905-200051"
+- groupId: "org.metaborg"
+  id: "org.metaborg.meta.lang.esv"
+  version:
+    major: 1
+    minor: 5
+    patch: 0
+    qualifier: "baseline-20150903-172321"
+languageContributions: []

@@ -28,6 +28,7 @@ import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.messages.IMessage;
+import org.metaborg.core.processing.IProgressReporter;
 import org.metaborg.core.processing.ITask;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.IProjectService;
@@ -37,6 +38,7 @@ import org.metaborg.spoofax.core.processing.ISpoofaxProcessorRunner;
 import org.metaborg.spoofax.core.processing.SpoofaxProcessorRunner;
 import org.metaborg.spoofax.core.resource.SpoofaxIgnoresSelector;
 import org.metaborg.spoofax.intellij.*;
+import org.metaborg.spoofax.intellij.jps.processing.SimpleProgressReporter;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.intellij.resources.IntelliJResourceService;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalService;
@@ -106,6 +108,7 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
 
         IntelliJResourceService resourceService = JpsPlugin.injector().getInstance(IntelliJResourceService.class);
         FileObject location = resourceService.resolve("idea:///home/daniel/repos/spoofax-test-project");
+        //IProject project = projectService.get(location);
         IProject project = new SpoofaxProject(location);    // TODO: Get the project
         BuildInput input = getBuildInput(project);
 
@@ -114,22 +117,19 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
                     this.processorRunner.build(input, null, null)
                             .schedule().block();
 
+
+
             if (!task.cancelled())
             {
                 final IBuildOutput<?, ?, ?> output = task.result();
                 if (output != null) {
                     for (IMessage msg : output.allMessages())
                     {
-                        BuildMessage.Kind kind;
-                        switch (msg.severity())
-                        {
-                            case NOTE: kind = BuildMessage.Kind.INFO; break;
-                            case WARNING: kind = BuildMessage.Kind.WARNING; break;
-                            case ERROR: kind = BuildMessage.Kind.ERROR; break;
-                            default:
-                                throw new UnsupportedOperationException();
-                        }
-                        context.processMessage(new CompilerMessage("Spoofax", kind, msg.message()));
+                        displayMessage(msg, context);
+                    }
+                    for (IMessage msg : output.extraMessages())
+                    {
+                        displayMessage(msg, context);
                     }
                     if (output.success())
                         context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.INFO, "Compilation finished successfully!"));
@@ -146,6 +146,20 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void displayMessage(IMessage msg, @NotNull CompileContext context)
+    {
+        BuildMessage.Kind kind;
+        switch (msg.severity())
+        {
+            case NOTE: kind = BuildMessage.Kind.INFO; break;
+            case WARNING: kind = BuildMessage.Kind.WARNING; break;
+            case ERROR: kind = BuildMessage.Kind.ERROR; break;
+            default:
+                throw new UnsupportedOperationException();
+        }
+        context.processMessage(new CompilerMessage("Spoofax", kind, msg.message()));
     }
 
     private BuildInput getBuildInput(IProject project) {
@@ -169,4 +183,6 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
     // https://github.com/pbuda/intellij-pony/blob/52e40c55d56adc4d85a34ad8dffe45ca0c64967f/jps-plugin/src/me/piotrbuda/intellij/pony/jps/PonyBuilder.java
     // https://github.com/RudyChin/platform_tools_adt_idea/blob/ac0e992c63f9962b3b3fb7417a398b641f2bb1dc/android/jps-plugin/src/org/jetbrains/jps/android/AndroidLibraryPackagingBuilder.java
     // https://github.com/pantsbuild/intellij-pants-plugin/blob/6fe84a536b4275358a38487f751fd64d6d5c9163/jps-plugin/com/twitter/intellij/pants/jps/incremental/PantsTargetBuilder.java
+
+
 }

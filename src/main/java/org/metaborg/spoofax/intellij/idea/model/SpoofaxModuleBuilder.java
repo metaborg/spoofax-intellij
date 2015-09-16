@@ -8,6 +8,7 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.module.StdModuleTypes;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -211,6 +212,11 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         return SpoofaxModuleType.getModuleType();
     }
 
+    @Override
+    public ModuleWizardStep modifyProjectTypeStep(@NotNull SettingsStep settingsStep) {
+        return StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
+        //return super.modifyProjectTypeStep(settingsStep);
+    }
 
     @Nullable
     public ModuleWizardStep modifySettingsStep(@NotNull SettingsStep settingsStep) {
