@@ -134,21 +134,23 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
                         displayMessage(msg, context);
                     }
                     if (output.success())
-                        context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.INFO, "Compilation finished successfully!"));
+                        context.processMessage(new CompilerMessage(COMPILER_MSG_NAME, BuildMessage.Kind.INFO, "Compilation finished successfully!"));
                     else
-                        context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.INFO, "Compilation finished but failed!"));
+                        context.processMessage(new CompilerMessage(COMPILER_MSG_NAME, BuildMessage.Kind.WARNING, "Compilation finished but failed!"));
                 }
                 else {
-                    context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.WARNING, "Compilation has no output?"));
+                    context.processMessage(new CompilerMessage(COMPILER_MSG_NAME, BuildMessage.Kind.WARNING, "Compilation has no output?"));
                 }
             }
             else {
-                context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.WARNING, "Compilation cancelled!"));
+                context.processMessage(new CompilerMessage(COMPILER_MSG_NAME, BuildMessage.Kind.WARNING, "Compilation cancelled!"));
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+
+    private static final String COMPILER_MSG_NAME = "Spoofax";
 
     private void displayMessage(IMessage msg, @NotNull CompileContext context)
     {
@@ -161,7 +163,29 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
             default:
                 throw new UnsupportedOperationException();
         }
-        context.processMessage(new CompilerMessage("Spoofax", kind, msg.message()));
+
+        String msgString = msg.message();
+        if (msg.exception() != null) {
+            msgString += "\n" + msg.exception().toString();
+        }
+
+        String sourcePath = null;
+        long problemBeginOffset = -1L;
+        long problemEndOffset = -1L;
+        long problemLocationOffset = -1L;
+        long locationLine = -1L;
+        long locationColumn = -1L;
+
+        if (msg.source() != null && msg.region() != null && !(msg.region().startOffset() == 0 && msg.region().endOffset() == 0 && msg.region().startRow() == 0 && msg.region().endRow() == 0 && msg.region().startColumn() == 0 && msg.region().endColumn() == 0)) {
+            sourcePath = msg.source().getName().getPath();
+            problemBeginOffset = msg.region().startOffset();
+            problemEndOffset = msg.region().endOffset();
+            problemLocationOffset = msg.region().startOffset();
+            locationLine = msg.region().startRow() + 1;
+            locationColumn = msg.region().startColumn() + 1;
+        }
+
+        context.processMessage(new CompilerMessage(COMPILER_MSG_NAME, kind, msgString, sourcePath, problemBeginOffset, problemEndOffset, problemLocationOffset, locationLine, locationColumn));
     }
 
     private BuildInput getBuildInput(IDependencyService dependencyService, ILanguagePathService languagePathService, IProject project) {
