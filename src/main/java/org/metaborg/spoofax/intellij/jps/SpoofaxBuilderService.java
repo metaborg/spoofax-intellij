@@ -18,21 +18,16 @@ import java.util.List;
  */
 public final class SpoofaxBuilderService extends BuilderService {
 
-    private SpoofaxBuilder targetBuilder;
+
 
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
     public SpoofaxBuilderService() {
-        JpsPlugin.injector().injectMembers(this);
+
     }
 
-    @Inject
-    @SuppressWarnings("unused")
-    private void inject(SpoofaxBuilder targetBuilder) {
-        this.targetBuilder = targetBuilder;
-    }
 
     /**
      * Gets the list of build target types contributed by this plugin.
@@ -47,7 +42,7 @@ public final class SpoofaxBuilderService extends BuilderService {
     @NotNull
     @Override
     public List<? extends TargetBuilder<?, ?>> createBuilders() {
-        return Collections.singletonList(this.targetBuilder);
+        return Collections.singletonList(SpoofaxBuilder.INSTANCE);
     }
 
 }

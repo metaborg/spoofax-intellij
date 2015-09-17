@@ -19,6 +19,7 @@ import org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalSerializer;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxModuleSerializer;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectSerializer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,7 @@ public class JpsSpoofaxModelSerializerExtension extends JpsModelSerializerExtens
     @NotNull
     @Override
     public List<? extends JpsProjectExtensionSerializer> getProjectExtensionSerializers() {
+        //Arrays.asList(new SpoofaxProjectSerializer());
         return Collections.singletonList(new SpoofaxProjectSerializer());
     }
 

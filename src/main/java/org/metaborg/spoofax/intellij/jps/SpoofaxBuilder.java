@@ -1,52 +1,45 @@
 package org.metaborg.spoofax.intellij.jps;
 
 import com.google.common.base.Joiner;
+import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import com.intellij.openapi.components.StoragePathMacros;
 import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jps.ModuleChunk;
 import org.jetbrains.jps.builders.BuildOutputConsumer;
 import org.jetbrains.jps.builders.DirtyFilesHolder;
-import org.jetbrains.jps.builders.java.JavaSourceRootDescriptor;
 import org.jetbrains.jps.incremental.*;
-import org.jetbrains.jps.incremental.java.JavaBuilder;
 import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
 import org.jetbrains.jps.incremental.messages.ProgressMessage;
-import org.jetbrains.jps.incremental.resources.ResourcesBuilder;
 import org.metaborg.core.MetaborgException;
-import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.build.BuildInput;
 import org.metaborg.core.build.BuildInputBuilder;
 import org.metaborg.core.build.IBuildOutput;
+import org.metaborg.core.build.dependency.DependencyService;
 import org.metaborg.core.build.dependency.IDependencyService;
 import org.metaborg.core.build.paths.ILanguagePathService;
-import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.messages.IMessage;
-import org.metaborg.core.processing.IProgressReporter;
 import org.metaborg.core.processing.ITask;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.IProjectService;
-import org.metaborg.core.resource.IResourceService;
+import org.metaborg.core.project.settings.YAMLProjectSettingsSerializer;
 import org.metaborg.core.transform.CompileGoal;
 import org.metaborg.spoofax.core.processing.ISpoofaxProcessorRunner;
 import org.metaborg.spoofax.core.processing.SpoofaxProcessorRunner;
 import org.metaborg.spoofax.core.resource.SpoofaxIgnoresSelector;
 import org.metaborg.spoofax.intellij.*;
-import org.metaborg.spoofax.intellij.jps.processing.SimpleProgressReporter;
+import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
+import org.metaborg.spoofax.intellij.jps.project.SpoofaxProject;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.intellij.resources.IntelliJResourceService;
-import org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Builds the Spoofax build target.
@@ -54,26 +47,22 @@ import java.util.Collections;
 @Singleton
 public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxTarget> {
 
-    private final ILanguageService languageService;
-    private final ILanguagePathService languagePathService;
-    private final IProjectService projectService;
-    private final IDependencyService dependencyService;
-    private final ISpoofaxProcessorRunner processorRunner;
-    private final ILanguageDiscoveryService discoveryService;
-    private final IIntelliJResourceService resourceService;
-    private final LanguageManager languageManager;
+    public static final SpoofaxBuilder INSTANCE = new SpoofaxBuilder();
+
+//    private final ILanguageService languageService;
+//    private final ILanguagePathService languagePathService;
+//    //private final IProjectService projectService;
+//    private final IDependencyService dependencyService;
+//    private final ISpoofaxProcessorRunner processorRunner;
+//    private final ILanguageDiscoveryService discoveryService;
+//    private final IIntelliJResourceService resourceService;
+//    private final LanguageManager languageManager;
 
     @Inject
-    private SpoofaxBuilder(ILanguageService languageService) {
+    private SpoofaxBuilder() {
         super(Arrays.asList(SpoofaxTargetType.PRODUCTION)); //, SpoofaxTargetType.TESTS));
-        this.languageService = languageService;
-        this.languagePathService = JpsPlugin.injector().getInstance(ILanguagePathService.class);
-        this.projectService = JpsPlugin.injector().getInstance(IProjectService.class);
-        this.dependencyService = JpsPlugin.injector().getInstance(IDependencyService.class);
-        this.processorRunner = JpsPlugin.injector().getInstance(SpoofaxProcessorRunner.class);
-        this.discoveryService = JpsPlugin.injector().getInstance(ILanguageDiscoveryService.class);
-        this.resourceService = JpsPlugin.injector().getInstance(IIntelliJResourceService.class);
-        this.languageManager = JpsPlugin.injector().getInstance(LanguageManager.class);
+
+
         //ResourcesBuilder.registerEnabler(module -> module.getModuleType() != JpsSpoofaxModuleType.INSTANCE);
     }
 
@@ -94,6 +83,20 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
                       @NotNull DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxTarget> holder,
                       @NotNull BuildOutputConsumer consumer,
                       @NotNull CompileContext context) throws ProjectBuildException, IOException {
+
+        //JpsProjectService projectService = new JpsProjectService(target.getModule());
+
+        Injector injector = Guice.createInjector(new SpoofaxJpsDependencyModule(target.getModule()));
+
+        ILanguageService languageService = injector.getInstance(ILanguageService.class);
+        ILanguagePathService languagePathService = injector.getInstance(ILanguagePathService.class);
+        IProjectService projectService = injector.getInstance(IProjectService.class);
+        IDependencyService dependencyService = injector.getInstance(IDependencyService.class);
+        SpoofaxProcessorRunner processorRunner = injector.getInstance(SpoofaxProcessorRunner.class);
+        ILanguageDiscoveryService discoveryService = injector.getInstance(ILanguageDiscoveryService.class);
+        IIntelliJResourceService resourceService = injector.getInstance(IIntelliJResourceService.class);
+        LanguageManager languageManager = injector.getInstance(LanguageManager.class);
+
         //System.out.println(target.getOutputRoots(context));
         //File outputDirectory = getBuildOutputDirectory(target.getModule(), false, compileContext);
         context.processMessage(new ProgressMessage("Compiling Spoofax sources"));
@@ -106,15 +109,14 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
 
 
 
-        IntelliJResourceService resourceService = JpsPlugin.injector().getInstance(IntelliJResourceService.class);
-        FileObject location = resourceService.resolve("idea:///home/daniel/repos/spoofax-test-project");
+        FileObject location = resourceService.resolve("file:///home/daniel/repos/spoofax-test-project");
         //IProject project = projectService.get(location);
         IProject project = new SpoofaxProject(location);    // TODO: Get the project
-        BuildInput input = getBuildInput(project);
+        BuildInput input = getBuildInput(dependencyService, languagePathService, project);
 
         try {
             ITask<IBuildOutput<IStrategoTerm, IStrategoTerm, IStrategoTerm>> task =
-                    this.processorRunner.build(input, null, null)
+                    processorRunner.build(input, null, null)
                             .schedule().block();
 
 
@@ -162,7 +164,7 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
         context.processMessage(new CompilerMessage("Spoofax", kind, msg.message()));
     }
 
-    private BuildInput getBuildInput(IProject project) {
+    private BuildInput getBuildInput(IDependencyService dependencyService, ILanguagePathService languagePathService, IProject project) {
         BuildInputBuilder inputBuilder = new BuildInputBuilder(project);
         BuildInput input = null;
         try {
@@ -172,7 +174,7 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
             inputBuilder.withSourcesFromDefaultSourceLocations(true);
             inputBuilder.withSelector(new SpoofaxIgnoresSelector());
             inputBuilder.addTransformGoal(new CompileGoal());
-            input = inputBuilder.build(this.dependencyService, this.languagePathService);
+            input = inputBuilder.build(dependencyService, languagePathService);
         } catch (MetaborgException e) {
             e.printStackTrace();
         }

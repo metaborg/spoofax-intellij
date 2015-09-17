@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.jps;
+package org.metaborg.spoofax.intellij.jps.project;
 
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.project.IProject;

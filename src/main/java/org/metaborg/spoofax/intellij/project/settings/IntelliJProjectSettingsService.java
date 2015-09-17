@@ -28,6 +28,8 @@ public final class IntelliJProjectSettingsService implements IProjectSettingsSer
 
     @Override public @Nullable IProjectSettings get(FileObject location) {
         IProject project = projectService.get(location);
+        if (project == null)
+            return null;
         return get(project);
     }
 }

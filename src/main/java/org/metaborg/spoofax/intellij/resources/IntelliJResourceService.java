@@ -20,7 +20,8 @@ public class IntelliJResourceService extends ResourceService implements IIntelli
 
     @Override
     public FileObject resolve(VirtualFile resource) {
-        return resolve("idea://" + resource.getPath());
+        return resolve("file://" + resource.getPath());
+//        return resolve("idea://" + resource.getPath());
     }
 
     @Nullable

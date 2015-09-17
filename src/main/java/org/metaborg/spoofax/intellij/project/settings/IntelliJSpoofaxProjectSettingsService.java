@@ -9,12 +9,12 @@ import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 
 @Singleton
-public final class YamlSpoofaxProjectSettingsService implements ISpoofaxProjectSettingsService {
+public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProjectSettingsService {
 
     private final IProjectSettingsService2 projectSettingsService;
 
     @Inject
-    private YamlSpoofaxProjectSettingsService(IProjectSettingsService2 projectSettingsService) {
+    private IntelliJSpoofaxProjectSettingsService(IProjectSettingsService2 projectSettingsService) {
         this.projectSettingsService = projectSettingsService;
     }
 
