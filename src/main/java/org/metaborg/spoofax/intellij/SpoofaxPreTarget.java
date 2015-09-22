@@ -24,17 +24,17 @@ import java.util.*;
 /**
  * A Spoofax module build target.
  */
-public class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
+public class SpoofaxPreTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
 
 
     /**
-     * Initializes a new instance of the {@link SpoofaxTarget} class.
+     * Initializes a new instance of the {@link SpoofaxPreTarget} class.
      * @param module The JPS module to which this target applies.
      * @param targetType The target type.
      */
-    public SpoofaxTarget(
+    public SpoofaxPreTarget(
             @NotNull final JpsModule module,
-            @NotNull final SpoofaxTargetType targetType) {
+            @NotNull final SpoofaxPreTargetType targetType) {
         super(targetType, module);
     }
 
@@ -48,32 +48,30 @@ public class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor
         return super.myModule.getName();
     }
 
-    @Override
-    public boolean isCompiledBeforeModuleLevelBuilders() {
-        return false;
-    }
+//    @Override
+//    public boolean isCompiledBeforeModuleLevelBuilders() {
+//        return true;
+//    }
 
     @Override
     public Collection<BuildTarget<?>> computeDependencies(BuildTargetRegistry targetRegistry, TargetOutputIndex outputIndex) {
         final List<BuildTarget<?>> dependencies = new ArrayList<>();
-//        final Set<JpsModule> modules = JpsJavaExtensionService
-//                .dependencies(super.myModule)
-//                .includedIn(JpsJavaClasspathKind.compile(isTests()))
-//                .getModules();
-//        for (JpsModule module : modules) {
-//            if (module.getModuleType().equals(JpsSpoofaxModuleType.INSTANCE)) {
-//                dependencies.add(new SpoofaxTarget(module, getSpoofaxTargetType()));
-//            }
-//        }
-
-        dependencies.add(new SpoofaxPreTarget(super.myModule, SpoofaxPreTargetType.PRODUCTION));
-
+        dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
+        final Set<JpsModule> modules = JpsJavaExtensionService
+                .dependencies(super.myModule)
+                .includedIn(JpsJavaClasspathKind.compile(isTests()))
+                .getModules();
+        for (JpsModule module : modules) {
+            if (module.getModuleType().equals(JpsSpoofaxModuleType.INSTANCE)) {
+                dependencies.add(new SpoofaxPreTarget(module, getSpoofaxTargetType()));
+            }
+        }
 
         return dependencies;
     }
 
-    private SpoofaxTargetType getSpoofaxTargetType(){
-        return (SpoofaxTargetType)getTargetType();
+    private SpoofaxPreTargetType getSpoofaxTargetType(){
+        return (SpoofaxPreTargetType)getTargetType();
     }
 
     @NotNull

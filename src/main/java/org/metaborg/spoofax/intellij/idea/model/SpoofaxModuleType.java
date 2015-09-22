@@ -2,10 +2,7 @@ package org.metaborg.spoofax.intellij.idea.model;
 
 
 import com.intellij.ide.util.projectWizard.*;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleType;
-import com.intellij.openapi.module.ModuleTypeManager;
-import com.intellij.openapi.module.StdModuleTypes;
+import com.intellij.openapi.module.*;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.util.ArrayUtil;
@@ -71,6 +68,7 @@ public class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
     public ModuleWizardStep modifyProjectTypeStep(@NotNull SettingsStep settingsStep, @NotNull ModuleBuilder moduleBuilder) {
         return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, o -> true);
     }
+
 
     @NotNull
     @Override

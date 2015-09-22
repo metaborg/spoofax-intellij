@@ -4,8 +4,12 @@ import com.google.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.BuilderService;
+import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.jetbrains.jps.incremental.TargetBuilder;
+import org.metaborg.spoofax.intellij.SpoofaxPreTargetType;
 import org.metaborg.spoofax.intellij.SpoofaxTargetType;
+import org.metaborg.spoofax.intellij.jps.builders.SpoofaxRegularBuilder;
+import org.metaborg.spoofax.intellij.jps.builders.SpoofaxSourceGenBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,7 +32,6 @@ public final class SpoofaxBuilderService extends BuilderService {
 
     }
 
-
     /**
      * Gets the list of build target types contributed by this plugin.
      * @return A list of build target types.
@@ -36,13 +39,18 @@ public final class SpoofaxBuilderService extends BuilderService {
     @NotNull
     @Override
     public List<? extends BuildTargetType<?>> getTargetTypes() {
-        return Arrays.asList(SpoofaxTargetType.PRODUCTION); //, SpoofaxTargetType.TESTS);
+        return Arrays.asList(SpoofaxPreTargetType.PRODUCTION, SpoofaxTargetType.PRODUCTION);
     }
 
     @NotNull
     @Override
     public List<? extends TargetBuilder<?, ?>> createBuilders() {
-        return Collections.singletonList(SpoofaxBuilder.INSTANCE);
+        return Arrays.asList(SpoofaxBuilder.INSTANCE, SpoofaxPreBuilder.INSTANCE);
     }
 
+    @NotNull
+    @Override
+    public List<? extends ModuleLevelBuilder> createModuleLevelBuilders() {
+        return Arrays.asList(new SpoofaxSourceGenBuilder());
+    }
 }

@@ -40,6 +40,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Singleton
+//public final class SpoofaxModuleBuilder extends JavaModuleBuilder implements ModuleBuilderListener {
 public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleBuilderListener {
 
     private Project myProject;
@@ -86,7 +87,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         // Generate the module structure (files and directories).
         generateModuleStructure(this.myModule, rootModel, contentEntry);
 
-        addAsMavenProject(rootModel);
+        //addAsMavenProject(rootModel);
     }
 
     private void generateModuleStructure(IProject project, ModifiableRootModel rootModel, ContentEntry contentEntry)
@@ -106,6 +107,9 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
             generator.generateAll();
 
             // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
+            VirtualFile f = resourceService.unresolve(project.location().resolveFile("editor/java/"));
+            contentEntry.addSourceFolder(f, false, "");
+
 
         } catch (ProjectException e) {
             // Invalid project settings

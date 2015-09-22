@@ -66,7 +66,8 @@ public final class SpoofaxBuilder extends TargetBuilder<SpoofaxSourceRootDescrip
         //ResourcesBuilder.registerEnabler(module -> module.getModuleType() != JpsSpoofaxModuleType.INSTANCE);
     }
 
-    //@Override
+
+//@Override
     //public void buildStarted(CompileContext context) {
     //    JavaBuilder.IS_ENABLED.set(context, Boolean.FALSE);
     //}
