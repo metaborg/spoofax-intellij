@@ -6,14 +6,10 @@ import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.BuilderService;
 import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.jetbrains.jps.incremental.TargetBuilder;
-import org.metaborg.spoofax.intellij.SpoofaxPreTargetType;
 import org.metaborg.spoofax.intellij.SpoofaxTargetType;
-import org.metaborg.spoofax.intellij.jps.builders.SpoofaxRegularBuilder;
 import org.metaborg.spoofax.intellij.jps.builders.SpoofaxSourceGenBuilder;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * The Spoofax builder service.
@@ -22,14 +18,21 @@ import java.util.List;
  */
 public final class SpoofaxBuilderService extends BuilderService {
 
-
+    private List<SpoofaxTargetType<?>> targets;
+    private List<SpoofaxBuilder<?>> builders;
 
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
     public SpoofaxBuilderService() {
+        JpsPlugin.injector().injectMembers(this);
+    }
 
+    @Inject
+    private void inject(Collection<SpoofaxTargetType<?>> targets, Collection<SpoofaxBuilder<?>> builders) {
+        this.targets = Collections.unmodifiableList(new ArrayList<>(targets));
+        this.builders = Collections.unmodifiableList(new ArrayList<>(builders));
     }
 
     /**
@@ -39,13 +42,15 @@ public final class SpoofaxBuilderService extends BuilderService {
     @NotNull
     @Override
     public List<? extends BuildTargetType<?>> getTargetTypes() {
-        return Arrays.asList(SpoofaxPreTargetType.PRODUCTION, SpoofaxTargetType.PRODUCTION);
+        return this.targets;
+        //return Arrays.asList(SpoofaxPreTargetType.PRODUCTION, SpoofaxPostTargetType.PRODUCTION);
     }
 
     @NotNull
     @Override
     public List<? extends TargetBuilder<?, ?>> createBuilders() {
-        return Arrays.asList(SpoofaxBuilder.INSTANCE, SpoofaxPreBuilder.INSTANCE);
+        return this.builders;
+        //return Arrays.asList(SpoofaxOldBuilder.INSTANCE, SpoofaxBuilder.INSTANCE);
     }
 
     @NotNull

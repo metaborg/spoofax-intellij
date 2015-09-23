@@ -14,6 +14,8 @@ import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.resource.IResourceService;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A project service for JPS.
@@ -22,32 +24,36 @@ import javax.annotation.Nullable;
  */
 public final class JpsProjectService implements IProjectService {
 
+    private final List<SpoofaxJpsProject> projects = new ArrayList<>();
     private final IResourceService resourceService;
-    private final JpsModule module;
 
-    @Inject private JpsProjectService(JpsModule module, IResourceService resourceService) {
-        this.module = module;
+    @Inject private JpsProjectService(IResourceService resourceService) {
         this.resourceService = resourceService;
+    }
+
+    /**
+     * Adds a project to this service.
+     * @param project The project to add.
+     */
+    public void add(SpoofaxJpsProject project) {
+        Preconditions.checkNotNull(project);
+
+        this.projects.add(project);
     }
 
     @Nullable
     @Override
     public IProject get(FileObject resource) {
-        if (!isInContentRoot(resource))
-            return null;
-
-        // FIXME: A module can have multiple content roots, or none at all.
-        // Instead of trying to do everything relative to the project root,
-        // we should use explicit directories for generated files and such.
-        // Those would be configurable in the IDE, and can be found in the
-        // content roots list as directories for generated files. Then we'd
-        // simply pick the first, or error when there are none.
-        String projectRoot = this.module.getContentRootsList().getUrls().get(0);
-        return new SpoofaxJpsProject(this.resourceService.resolve(projectRoot));
+        for (SpoofaxJpsProject project : this.projects) {
+            JpsModule module = project.module();
+            if (isInContentRoot(module, resource))
+                return project;
+        }
+        return null;
     }
 
-    private boolean isInContentRoot(FileObject resource) {
-        JpsUrlList contentRootsList = this.module.getContentRootsList();
+    private boolean isInContentRoot(JpsModule module, FileObject resource) {
+        JpsUrlList contentRootsList = module.getContentRootsList();
         for (String url : contentRootsList.getUrls()) {
             if (hasDescendant(url, resource))
                 return true;

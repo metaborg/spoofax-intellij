@@ -19,5 +19,6 @@
     <orderEntry type="library" name="org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.metaborg:org.metaborg.spoofax.generator:1.5.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.metaborg:org.metaborg.spoofax.meta.core:1.5.0-SNAPSHOT" level="project" />
   </component>
 </module>

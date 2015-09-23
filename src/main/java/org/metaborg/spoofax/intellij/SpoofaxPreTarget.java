@@ -13,10 +13,12 @@ import org.jetbrains.jps.indices.ModuleExcludeIndex;
 import org.jetbrains.jps.model.JpsModel;
 import org.jetbrains.jps.model.java.JavaSourceRootProperties;
 import org.jetbrains.jps.model.java.JavaSourceRootType;
-import org.jetbrains.jps.model.java.JpsJavaClasspathKind;
 import org.jetbrains.jps.model.java.JpsJavaExtensionService;
 import org.jetbrains.jps.model.module.JpsModule;
 import org.jetbrains.jps.model.module.JpsTypedModuleSourceRoot;
+import org.metaborg.core.project.IProject;
+import org.metaborg.spoofax.intellij.jps.builders.IBuildStep;
+import org.metaborg.spoofax.intellij.jps.builders.IBuildStepDescriptor;
 
 import java.io.File;
 import java.util.*;
@@ -24,53 +26,48 @@ import java.util.*;
 /**
  * A Spoofax module build target.
  */
-public class SpoofaxPreTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
-
+public class SpoofaxPreTarget extends SpoofaxTarget {
 
     /**
      * Initializes a new instance of the {@link SpoofaxPreTarget} class.
-     * @param module The JPS module to which this target applies.
+     * @param spoofaxModule The Spoofax module.
+     * @param steps The ordered list of build steps.
+     * @param jpsModule The JPS module to which this target applies.
      * @param targetType The target type.
      */
     public SpoofaxPreTarget(
-            @NotNull final JpsModule module,
+            @NotNull final IProject spoofaxModule,
+            @NotNull final List<IBuildStep> steps,
+            @NotNull final JpsModule jpsModule,
             @NotNull final SpoofaxPreTargetType targetType) {
-        super(targetType, module);
+        super(spoofaxModule, steps, jpsModule, targetType);
     }
 
     @Override
-    public boolean isTests() {
-        return getSpoofaxTargetType().kind() == BuildTargetKind.TEST;
+    public boolean isCompiledBeforeModuleLevelBuilders() {
+        return true;
     }
 
-    @Override
-    public String getId() {
-        return super.myModule.getName();
-    }
-
-//    @Override
-//    public boolean isCompiledBeforeModuleLevelBuilders() {
-//        return true;
-//    }
 
     @Override
     public Collection<BuildTarget<?>> computeDependencies(BuildTargetRegistry targetRegistry, TargetOutputIndex outputIndex) {
-        final List<BuildTarget<?>> dependencies = new ArrayList<>();
-        dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
-        final Set<JpsModule> modules = JpsJavaExtensionService
-                .dependencies(super.myModule)
-                .includedIn(JpsJavaClasspathKind.compile(isTests()))
-                .getModules();
-        for (JpsModule module : modules) {
-            if (module.getModuleType().equals(JpsSpoofaxModuleType.INSTANCE)) {
-                dependencies.add(new SpoofaxPreTarget(module, getSpoofaxTargetType()));
-            }
-        }
+//        final List<BuildTarget<?>> dependencies = new ArrayList<>();
+//        dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
+//        final Set<JpsModule> modules = JpsJavaExtensionService
+//                .dependencies(super.myModule)
+//                .includedIn(JpsJavaClasspathKind.compile(isTests()))
+//                .getModules();
+//        for (JpsModule module : modules) {
+//            if (module.getModuleType().equals(JpsSpoofaxModuleType.INSTANCE)) {
+//                dependencies.add(new SpoofaxPreTarget(module, getSpoofaxTargetType()));
+//            }
+//        }
 
-        return dependencies;
+        return Collections.emptyList();
     }
 
-    private SpoofaxPreTargetType getSpoofaxTargetType(){
+    @Override
+    protected SpoofaxPreTargetType getSpoofaxTargetType(){
         return (SpoofaxPreTargetType)getTargetType();
     }
 
@@ -94,7 +91,7 @@ public class SpoofaxPreTarget extends ModuleBasedTarget<SpoofaxSourceRootDescrip
     @NotNull
     @Override
     public String getPresentableName() {
-        return "Spoofax '" + super.myModule.getName() + "'";
+        return "Spoofax PRE '" + super.myModule.getName() + "'";
     }
 
     @NotNull

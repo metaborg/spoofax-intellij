@@ -6,6 +6,7 @@ import org.jetbrains.jps.model.JpsElementFactory;
 import org.jetbrains.jps.model.module.JpsModuleType;
 import org.jetbrains.jps.model.serialization.module.JpsModulePropertiesSerializer;
 import org.metaborg.spoofax.intellij.JpsSpoofaxModuleType;
+import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
 
 public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer<JpsDummyElement> {
 
@@ -16,8 +17,6 @@ public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer
     @Override
     public JpsDummyElement loadProperties(Element element) {
         JpsDummyElement result = JpsElementFactory.getInstance().createDummyElement();
-
-
 
         return result;
     }

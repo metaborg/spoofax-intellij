@@ -12,16 +12,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class JpsPlugin {
 
+    private static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxJpsDependencyModule()));
 
-    //protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxJpsDependencyModule()));
-
-//    /**
-//     * Gets the injector.
-//     * @return The current injector.
-//     */
-//    public static Injector injector() {
-//        return injector.get();
-//    }
+    /**
+     * Gets the injector.
+     * @return The current injector.
+     */
+    public static Injector injector() {
+        return injector.get();
+    }
 
 
     private JpsPlugin() { }

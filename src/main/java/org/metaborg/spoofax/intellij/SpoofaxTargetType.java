@@ -1,7 +1,7 @@
 package org.metaborg.spoofax.intellij;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jps.builders.BuildTargetLoader;
@@ -9,52 +9,58 @@ import org.jetbrains.jps.builders.ModuleBasedBuildTargetType;
 import org.jetbrains.jps.model.JpsDummyElement;
 import org.jetbrains.jps.model.JpsModel;
 import org.jetbrains.jps.model.module.JpsTypedModule;
+import org.metaborg.core.project.IProject;
+import org.metaborg.spoofax.intellij.jps.builders.IBuildStep;
+import org.metaborg.spoofax.intellij.jps.builders.IBuildStepDescriptor;
+import org.metaborg.spoofax.intellij.jps.builders.IBuildStepProvider;
+import org.metaborg.spoofax.intellij.jps.project.SpoofaxProject;
+import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
- * The Spoofax build target type.
+ * Base class for Spoofax build target types.
  */
-public final class SpoofaxTargetType extends ModuleBasedBuildTargetType<SpoofaxTarget> {
+public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleBasedBuildTargetType<T> {
 
-    public static final SpoofaxTargetType PRODUCTION = new SpoofaxTargetType("spoofax_production", BuildTargetKind.PRODUCTION);
-    public static final SpoofaxTargetType TESTS = new SpoofaxTargetType("spoofax_tests", BuildTargetKind.TEST);
+    protected final IIntelliJResourceService resourceService;
+    protected final IBuildStepProvider buildStepProvider;
 
-    private final BuildTargetKind kind;
-
-    public BuildTargetKind kind() { return this.kind; }
-
-    /**
-     * Initializes a new instance of the {@link SpoofaxTargetType} class.
-     * @param typeId The type ID of the build target.
-     */
-    protected SpoofaxTargetType(String typeId, BuildTargetKind kind) {
+    protected SpoofaxTargetType(String typeId, IBuildStepProvider buildStepProvider, IIntelliJResourceService resourceService) {
         super(typeId);
-        this.kind = kind;
+        this.buildStepProvider = buildStepProvider;
+        this.resourceService = resourceService;
     }
 
     @NotNull
+    public abstract T createTarget(IProject project, JpsTypedModule<JpsDummyElement> module);
+
+    @NotNull
     @Override
-    public List<SpoofaxTarget> computeAllTargets(@NotNull JpsModel model) {
-        List<SpoofaxTarget> targets = new ArrayList<>();
+    public final List<T> computeAllTargets(@NotNull JpsModel model) {
+        FileObject location = resourceService.resolve("file:///home/daniel/repos/spoofax-test-project");
+        IProject project = new SpoofaxProject(location);    // TODO: Get the project
+        List<IBuildStep> steps = buildStepProvider.getBuildSteps(project);
+
+        List<T> targets = new ArrayList<>();
         for (JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(JpsSpoofaxModuleType.INSTANCE)) {
-            targets.add(new SpoofaxTarget(module, this));
+            targets.add(createTarget(project, module));
         }
         return targets;
     }
 
     @NotNull
     @Override
-    public BuildTargetLoader<SpoofaxTarget> createLoader(@NotNull JpsModel model) {
-        return new BuildTargetLoader<SpoofaxTarget>() {
+    public final BuildTargetLoader<T> createLoader(@NotNull JpsModel model) {
+        return new BuildTargetLoader<T>() {
             @Nullable
             @Override
-            public SpoofaxTarget createTarget(@NotNull String targetId) {
-                for (JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(JpsSpoofaxModuleType.INSTANCE)) {
-                    if (module.getName().equals(targetId)) {
-                        return new SpoofaxTarget(module, SpoofaxTargetType.this);
-                    }
+            public T createTarget(@NotNull String targetId) {
+                for (T target : computeAllTargets(model)) {
+                    if (target.getModule().getName().equals(targetId))
+                        return target;
                 }
                 return null;
             }
