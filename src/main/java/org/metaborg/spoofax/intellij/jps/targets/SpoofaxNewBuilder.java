@@ -54,10 +54,6 @@ public final class SpoofaxNewBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         //buildSpoofax(target.getModule());
         context.checkCanceled();
 
-//        for (IBuildStep step : target.steps()) {
-//            step.onBuild();
-//        }
-
     }
 
 

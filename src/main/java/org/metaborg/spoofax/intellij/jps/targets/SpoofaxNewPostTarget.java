@@ -3,12 +3,9 @@ package org.metaborg.spoofax.intellij.jps.targets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTarget;
 import org.jetbrains.jps.builders.BuildTargetRegistry;
-import org.jetbrains.jps.builders.ModuleBasedBuildTargetType;
 import org.jetbrains.jps.builders.TargetOutputIndex;
 import org.jetbrains.jps.builders.java.JavaModuleBuildTargetType;
 import org.jetbrains.jps.incremental.ModuleBuildTarget;
-import org.jetbrains.jps.model.module.JpsModule;
-import org.metaborg.spoofax.intellij.jps.builders.IBuildStep;
 import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 
 import java.util.ArrayList;
@@ -22,8 +19,8 @@ public final class SpoofaxNewPostTarget extends SpoofaxNewTarget {
 
     private final SpoofaxNewPreTargetType preTargetType;
 
-    public SpoofaxNewPostTarget(@NotNull SpoofaxJpsProject project, @NotNull List<IBuildStep> steps, @NotNull SpoofaxNewPostTargetType targetType, @NotNull SpoofaxNewPreTargetType preTargetType) {
-        super(project, steps, targetType);
+    public SpoofaxNewPostTarget(@NotNull SpoofaxJpsProject project,  @NotNull SpoofaxNewPostTargetType targetType, @NotNull SpoofaxNewPreTargetType preTargetType) {
+        super(project, targetType);
         this.preTargetType = preTargetType;
     }
 

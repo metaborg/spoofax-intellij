@@ -6,8 +6,6 @@ import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.BuilderService;
 import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.jetbrains.jps.incremental.TargetBuilder;
-import org.metaborg.spoofax.intellij.SpoofaxTargetType;
-import org.metaborg.spoofax.intellij.jps.builders.SpoofaxSourceGenBuilder;
 
 import java.util.*;
 

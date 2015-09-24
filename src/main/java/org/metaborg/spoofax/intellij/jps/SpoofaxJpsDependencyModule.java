@@ -48,10 +48,6 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
 
         bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
 
-        bind(IBuildStepProvider.class).to(SpoofaxBuildStepProvider.class).in(Singleton.class);
-
-        bind(InitializationBuildStep.InitializationBuildStepDescriptor.class).in(Singleton.class);
-        bind(IntellijJavaBuildStep.IntellijJavaBuildStepDescriptor.class).in(Singleton.class);
 
         bind(IAntRunnerService.class).to(DefaultAntRunnerService.class).in(Singleton.class);
     }
@@ -75,13 +71,6 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     @Inject
     public Collection<ModuleLevelBuilder> provideModuleLevelBuilders(SpoofaxSourceGenBuilder sourceGenBuilder) {
         return Arrays.asList(sourceGenBuilder);
-    }
-
-    @Singleton
-    @Provides
-    @Inject
-    public Collection<IBuildStepDescriptor> provideRootBuildStepDescriptors() {
-        return Arrays.asList();
     }
 
     @Override
