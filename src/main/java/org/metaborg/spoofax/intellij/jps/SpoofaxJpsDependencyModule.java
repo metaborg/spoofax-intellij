@@ -9,6 +9,7 @@ import org.metaborg.core.project.IProjectService;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.jps.builders.IBuildStepProvider;
 import org.metaborg.spoofax.intellij.jps.builders.SpoofaxBuildStepProvider;
+import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
 import org.metaborg.spoofax.intellij.jps.targets.*;
 
@@ -36,12 +37,14 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     protected void configure() {
         super.configure();
 
-        bind(SpoofaxNewPreTargetType.class).toInstance(SpoofaxNewPreTargetType.INSTANCE);
-        bind(SpoofaxNewPostTargetType.class).toInstance(SpoofaxNewPostTargetType.INSTANCE);
+        bind(SpoofaxNewPreTargetType.class).in(Singleton.class);
+        bind(SpoofaxNewPostTargetType.class).in(Singleton.class);
 
         //bind(SpoofaxNewPreBuilder.class).in(Singleton.class);
         //bind(SpoofaxNewPostBuilder.class).in(Singleton.class);
         bind(SpoofaxNewBuilder.class).in(Singleton.class);
+
+        bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
 
         bind(IBuildStepProvider.class).to(SpoofaxBuildStepProvider.class).in(Singleton.class);
 

@@ -3,10 +3,13 @@ package org.metaborg.spoofax.intellij.jps.targets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTarget;
 import org.jetbrains.jps.builders.BuildTargetRegistry;
+import org.jetbrains.jps.builders.ModuleBasedBuildTargetType;
 import org.jetbrains.jps.builders.TargetOutputIndex;
 import org.jetbrains.jps.builders.java.JavaModuleBuildTargetType;
 import org.jetbrains.jps.incremental.ModuleBuildTarget;
 import org.jetbrains.jps.model.module.JpsModule;
+import org.metaborg.spoofax.intellij.jps.builders.IBuildStep;
+import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,8 +20,11 @@ import java.util.List;
  */
 public final class SpoofaxNewPostTarget extends SpoofaxNewTarget {
 
-    public SpoofaxNewPostTarget(SpoofaxNewPostTargetType targetType, @NotNull JpsModule module) {
-        super(targetType, module);
+    private final SpoofaxNewPreTargetType preTargetType;
+
+    public SpoofaxNewPostTarget(@NotNull SpoofaxJpsProject project, @NotNull List<IBuildStep> steps, @NotNull SpoofaxNewPostTargetType targetType, @NotNull SpoofaxNewPreTargetType preTargetType) {
+        super(project, steps, targetType);
+        this.preTargetType = preTargetType;
     }
 
     @NotNull
@@ -36,8 +42,7 @@ public final class SpoofaxNewPostTarget extends SpoofaxNewTarget {
     public Collection<BuildTarget<?>> computeDependencies(BuildTargetRegistry buildTargetRegistry, TargetOutputIndex targetOutputIndex) {
         final List<BuildTarget<?>> dependencies = new ArrayList<>();
         dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
-        SpoofaxNewPreTargetType tt = SpoofaxNewPreTargetType.INSTANCE; // TODO: Refactor
-        dependencies.add(tt.createTarget(null, super.myModule));
+        dependencies.add(this.preTargetType.createTarget(super.myModule));
         return dependencies;
     }
 

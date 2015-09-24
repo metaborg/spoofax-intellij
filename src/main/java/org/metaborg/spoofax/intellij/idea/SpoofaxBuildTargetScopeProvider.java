@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
 
-    //private SpoofaxPostTargetType postTargetType;
+    private SpoofaxNewPostTargetType postTargetType;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -30,14 +30,13 @@ public class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
     }
 
     @Inject
-    private void inject() {//SpoofaxPostTargetType postTargetType) {
-        //this.postTargetType = postTargetType;
+    private void inject(SpoofaxNewPostTargetType postTargetType) {
+        this.postTargetType = postTargetType;
     }
 
     @NotNull
     @Override
     public List<TargetTypeBuildScope> getBuildTargetScopes(CompileScope baseScope, CompilerFilter filter, Project project, boolean forceBuild) {
-        return Collections.singletonList(CmdlineProtoUtil.createAllTargetsScope(SpoofaxNewPostTargetType.INSTANCE, forceBuild));
-        //return Collections.singletonList(CmdlineProtoUtil.createAllTargetsScope(postTargetType, forceBuild));
+        return Collections.singletonList(CmdlineProtoUtil.createAllTargetsScope(postTargetType, forceBuild));
     }
 }

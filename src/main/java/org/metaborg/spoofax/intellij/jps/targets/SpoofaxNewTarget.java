@@ -16,7 +16,10 @@ import org.jetbrains.jps.model.java.JavaSourceRootType;
 import org.jetbrains.jps.model.java.JpsJavaExtensionService;
 import org.jetbrains.jps.model.module.JpsModule;
 import org.jetbrains.jps.model.module.JpsTypedModuleSourceRoot;
+import org.metaborg.core.project.IProject;
 import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
+import org.metaborg.spoofax.intellij.jps.builders.IBuildStep;
+import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,10 +27,37 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Base class for Spoofax build targets.
+ */
 public abstract class SpoofaxNewTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
 
-    protected SpoofaxNewTarget(ModuleBasedBuildTargetType<?> targetType, @NotNull JpsModule module) {
-        super(targetType, module);
+    private final SpoofaxJpsProject project;
+    /**
+     * Gets the project that is being built.
+     * @return The project.
+     */
+    public SpoofaxJpsProject project() {
+        return this.project;
+    }
+
+    private final List<IBuildStep> steps;
+    /**
+     * Gets the build steps that this target has to execute.
+     * @return An ordered list of build steps, from first to last.
+     */
+    public List<IBuildStep> steps() { return this.steps; }
+
+    /**
+     * Initializes a new instance of the {@link SpoofaxNewTarget} class.
+     * @param project The project being built.
+     * @param steps An ordered list of build steps to execute.
+     * @param targetType The target type.
+     */
+    protected SpoofaxNewTarget(@NotNull SpoofaxJpsProject project, @NotNull List<IBuildStep> steps, @NotNull ModuleBasedBuildTargetType<?> targetType) {
+        super(targetType, project.module());
+        this.project = project;
+        this.steps = steps;
     }
 
     @Override
@@ -35,17 +65,6 @@ public abstract class SpoofaxNewTarget extends ModuleBasedTarget<SpoofaxSourceRo
         // Default implementation.
         return false;
     }
-
-//    @NotNull
-//    @Override
-//    public String getPresentableName() {
-//        return "Spoofax POST target 2 '" + getId() + "'";
-//    }
-//
-//    @Override
-//    public boolean isCompiledBeforeModuleLevelBuilders() {
-//        return false;
-//    }
 
     private final SpoofaxNewTargetType<?> getSpoofaxTargetType() {
         // Default implementation.
@@ -56,15 +75,6 @@ public abstract class SpoofaxNewTarget extends ModuleBasedTarget<SpoofaxSourceRo
     public final String getId() {
         // Default implementation.
         return super.myModule.getName();
-    }
-
-    @Override
-    public Collection<BuildTarget<?>> computeDependencies(BuildTargetRegistry buildTargetRegistry, TargetOutputIndex targetOutputIndex) {
-        final List<BuildTarget<?>> dependencies = new ArrayList<>();
-        dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
-        SpoofaxNewPreTargetType tt = SpoofaxNewPreTargetType.INSTANCE; // TODO: Refactor
-        dependencies.add(tt.createTarget(null, super.myModule));
-        return dependencies;
     }
 
     @NotNull

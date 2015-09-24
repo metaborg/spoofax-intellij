@@ -22,7 +22,8 @@ import java.util.List;
  *
  * Due to how JPS works, we'll have one project service per JPS module.
  */
-public final class JpsProjectService implements IProjectService {
+@Singleton
+public final class JpsProjectService implements IJpsProjectService {
 
     private final List<SpoofaxJpsProject> projects = new ArrayList<>();
     private final IResourceService resourceService;
@@ -31,22 +32,46 @@ public final class JpsProjectService implements IProjectService {
         this.resourceService = resourceService;
     }
 
-    /**
-     * Adds a project to this service.
-     * @param project The project to add.
-     */
-    public void add(SpoofaxJpsProject project) {
-        Preconditions.checkNotNull(project);
+//    /**
+//     * {@inheritDoc}
+//     */
+//    public void add(SpoofaxJpsProject project) {
+//        Preconditions.checkNotNull(project);
+//
+//        this.projects.add(project);
+//    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public SpoofaxJpsProject create(JpsModule module) {
+        FileObject location = resourceService.resolve(module.getContentRootsList().getUrls().get(0));
+        SpoofaxJpsProject project = new SpoofaxJpsProject(module, location);
         this.projects.add(project);
+        return project;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
-    public IProject get(FileObject resource) {
+    public SpoofaxJpsProject get(FileObject resource) {
         for (SpoofaxJpsProject project : this.projects) {
             JpsModule module = project.module();
             if (isInContentRoot(module, resource))
+                return project;
+        }
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    public SpoofaxJpsProject get(JpsModule module) {
+        for (SpoofaxJpsProject project : this.projects) {
+            if (project.module().equals(module))
                 return project;
         }
         return null;

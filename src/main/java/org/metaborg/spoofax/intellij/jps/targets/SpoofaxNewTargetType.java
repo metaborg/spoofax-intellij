@@ -10,28 +10,39 @@ import org.jetbrains.jps.model.module.JpsModule;
 import org.jetbrains.jps.model.module.JpsTypedModule;
 import org.metaborg.core.project.IProject;
 import org.metaborg.spoofax.intellij.JpsSpoofaxModuleType;
+import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
+import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SpoofaxNewTargetType<T extends SpoofaxNewTarget> extends ModuleBasedBuildTargetType<T> {
 
-    protected SpoofaxNewTargetType(String typeId) {
+    private final IJpsProjectService projectService;
+
+    protected SpoofaxNewTargetType(String typeId, IJpsProjectService projectService) {
         super(typeId);
+        this.projectService = projectService;
     }
 
     @NotNull
-    public abstract T createTarget(IProject project, JpsModule module);
+    public abstract T createTarget(@NotNull SpoofaxJpsProject project);
+
+    @NotNull
+    public final T createTarget(@NotNull JpsModule module) {
+        SpoofaxJpsProject project = projectService.get(module);
+        if (project == null)
+            project = projectService.create(module);
+        return createTarget(project);
+    }
 
     @NotNull
     @Override
     public final List<T> computeAllTargets(@NotNull JpsModel model) {
-        IProject project = null;
-
         // Default implementation.
         List<T> targets = new ArrayList<>();
         for (JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(JpsSpoofaxModuleType.INSTANCE)) {
-            targets.add(createTarget(project, module));
+            targets.add(createTarget(module));
         }
         return targets;
     }
