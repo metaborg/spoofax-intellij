@@ -10,10 +10,7 @@ import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.jps.builders.IBuildStepProvider;
 import org.metaborg.spoofax.intellij.jps.builders.SpoofaxBuildStepProvider;
 import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
-import org.metaborg.spoofax.intellij.jps.targets.SpoofaxNewPostBuilder;
-import org.metaborg.spoofax.intellij.jps.targets.SpoofaxNewPostTargetType;
-import org.metaborg.spoofax.intellij.jps.targets.SpoofaxNewPreBuilder;
-import org.metaborg.spoofax.intellij.jps.targets.SpoofaxNewPreTargetType;
+import org.metaborg.spoofax.intellij.jps.targets.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,8 +39,9 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
         bind(SpoofaxNewPreTargetType.class).toInstance(SpoofaxNewPreTargetType.INSTANCE);
         bind(SpoofaxNewPostTargetType.class).toInstance(SpoofaxNewPostTargetType.INSTANCE);
 
-        bind(SpoofaxNewPreBuilder.class).in(Singleton.class);
-        bind(SpoofaxNewPostBuilder.class).in(Singleton.class);
+        //bind(SpoofaxNewPreBuilder.class).in(Singleton.class);
+        //bind(SpoofaxNewPostBuilder.class).in(Singleton.class);
+        bind(SpoofaxNewBuilder.class).in(Singleton.class);
 
         bind(IBuildStepProvider.class).to(SpoofaxBuildStepProvider.class).in(Singleton.class);
 
@@ -59,8 +57,8 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     @Singleton
     @Provides
     @Inject
-    public Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxNewPreBuilder preBuilder, SpoofaxNewPostBuilder postBuilder) {
-        return Arrays.asList(preBuilder, postBuilder);
+    public Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxNewBuilder builder) { //SpoofaxNewPreBuilder preBuilder, SpoofaxNewPostBuilder postBuilder) {
+        return Arrays.asList(builder);//preBuilder, postBuilder);
     }
 
     @Override
