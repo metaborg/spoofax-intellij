@@ -1,37 +1,54 @@
 package org.metaborg.spoofax.intellij.jps.targetbuilders;
 
 import com.google.common.base.Preconditions;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
+import org.jetbrains.jps.incremental.messages.ProgressMessage;
 import org.metaborg.core.messages.IMessage;
 
 public final class BuilderUtils {
 
     /**
+     * Formats a progress message.
+     *
+     * @param done The percentage progress.
+     * @param message The message string to format.
+     * @param args The message string arguments.
+     * @return The formatted progress message.
+     */
+    @NotNull
+    public static ProgressMessage formatProgress(float done, @NotNull String message, Object... args) {
+        final String msgString = String.format(message, args);
+        return new ProgressMessage(msgString, done);
+    }
+
+    /**
      * Formats a compiler message.
+     *
      * @param builderName The name of the builder.
      * @param kind The kind of message.
      * @param message The message string to format.
      * @param args The message string arguments.
      * @return The formatted message.
      */
-    public static CompilerMessage formatMessage(String builderName, BuildMessage.Kind kind, String message, Object... args) {
-        String msgString = String.format(message, args);
+    @NotNull
+    public static CompilerMessage formatMessage(@NotNull String builderName, @NotNull BuildMessage.Kind kind, @NotNull String message, Object... args) {
+        final String msgString = String.format(message, args);
         return new CompilerMessage(builderName, kind, msgString);
     }
 
     /**
      * Formats a compiler message.
+     *
      * @param builderName The name of the builder.
      * @param message The message to format.
      * @return The formatted message.
      */
-    public static CompilerMessage formatMessage(String builderName, IMessage message)
+    @NotNull
+    public static CompilerMessage formatMessage(@NotNull String builderName, @NotNull IMessage message)
     {
-        Preconditions.checkNotNull(builderName);
-        Preconditions.checkNotNull(message);
-
-        BuildMessage.Kind kind;
+        final BuildMessage.Kind kind;
         switch (message.severity())
         {
             case NOTE: kind = BuildMessage.Kind.INFO; break;
