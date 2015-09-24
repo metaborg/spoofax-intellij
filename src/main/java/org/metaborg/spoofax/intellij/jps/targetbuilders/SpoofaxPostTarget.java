@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.jps.targets;
+package org.metaborg.spoofax.intellij.jps.targetbuilders;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTarget;
@@ -15,11 +15,11 @@ import java.util.List;
 /**
  * Build target for Spoofax projects post-Java.
  */
-public final class SpoofaxNewPostTarget extends SpoofaxNewTarget {
+public final class SpoofaxPostTarget extends SpoofaxTarget {
 
-    private final SpoofaxNewPreTargetType preTargetType;
+    private final SpoofaxPreTargetType preTargetType;
 
-    public SpoofaxNewPostTarget(@NotNull SpoofaxJpsProject project,  @NotNull SpoofaxNewPostTargetType targetType, @NotNull SpoofaxNewPreTargetType preTargetType) {
+    public SpoofaxPostTarget(@NotNull SpoofaxJpsProject project, @NotNull SpoofaxPostTargetType targetType, @NotNull SpoofaxPreTargetType preTargetType) {
         super(project, targetType);
         this.preTargetType = preTargetType;
     }

@@ -1,12 +1,10 @@
-package org.metaborg.spoofax.intellij.jps.targets;
+package org.metaborg.spoofax.intellij.jps.targetbuilders;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildOutputConsumer;
-import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.builders.DirtyFilesHolder;
-import org.jetbrains.jps.builders.ModuleBasedTarget;
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.ProjectBuildException;
 import org.jetbrains.jps.incremental.TargetBuilder;
@@ -15,24 +13,22 @@ import org.jetbrains.jps.model.module.JpsModule;
 import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @Singleton
-public final class SpoofaxNewBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxNewTarget> {
+public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> {
 
     @SuppressWarnings("unchecked")
     @Inject
-    public SpoofaxNewBuilder(Collection<BuildTargetType<?>> targetTypes){
-        super((Collection<? extends BuildTargetType<? extends SpoofaxNewTarget>>)(Collection<?>)targetTypes);
+    public SpoofaxPreBuilder(SpoofaxPreTargetType targetType){
+        super(Collections.singletonList(targetType));
     }
 
     @NotNull
     @Override
     public String getPresentableName() {
-        return "Spoofax builder";
+        return "Spoofax pre-Java builder";
     }
 
     @Override
@@ -42,8 +38,8 @@ public final class SpoofaxNewBuilder extends TargetBuilder<SpoofaxSourceRootDesc
     }
 
     @Override
-    public void build(@NotNull SpoofaxNewTarget target,
-                      @NotNull DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxNewTarget> holder,
+    public void build(@NotNull SpoofaxPreTarget target,
+                      @NotNull DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
                       @NotNull BuildOutputConsumer consumer,
                       @NotNull CompileContext context) throws ProjectBuildException, IOException {
 

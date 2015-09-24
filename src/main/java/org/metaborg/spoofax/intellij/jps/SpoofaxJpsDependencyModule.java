@@ -9,16 +9,13 @@ import org.jetbrains.jps.incremental.TargetBuilder;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.jps.ant.DefaultAntRunnerService;
-import org.metaborg.spoofax.intellij.jps.builders.*;
 import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
-import org.metaborg.spoofax.intellij.jps.targets.*;
-import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
+import org.metaborg.spoofax.intellij.jps.targetbuilders.*;
 import org.metaborg.spoofax.meta.core.ant.IAntRunnerService;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * The Guice dependency injection module for the Spoofax JPS plugin.
@@ -40,11 +37,12 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     protected void configure() {
         super.configure();
 
-        bind(SpoofaxNewPreTargetType.class).in(Singleton.class);
-        bind(SpoofaxNewPostTargetType.class).in(Singleton.class);
+        bind(SpoofaxPreTargetType.class).in(Singleton.class);
+        bind(SpoofaxPostTargetType.class).in(Singleton.class);
         bind(SpoofaxSourceGenBuilder.class).in(Singleton.class);
 
-        bind(SpoofaxNewBuilder.class).in(Singleton.class);
+        bind(SpoofaxPreBuilder.class).in(Singleton.class);
+        bind(SpoofaxPostBuilder.class).in(Singleton.class);
 
         bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
 
@@ -55,15 +53,15 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     @Singleton
     @Provides
     @Inject
-    public Collection<BuildTargetType<?>> provideTargetTypes(SpoofaxNewPreTargetType preTargetType, SpoofaxNewPostTargetType postTargetType) {
+    public Collection<BuildTargetType<?>> provideTargetTypes(SpoofaxPreTargetType preTargetType, SpoofaxPostTargetType postTargetType) {
         return Arrays.asList(preTargetType, postTargetType);
     }
 
     @Singleton
     @Provides
     @Inject
-    public Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxNewBuilder builder) {
-        return Arrays.asList(builder);
+    public Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxPreBuilder preBuilder, SpoofaxPostBuilder postBuilder) {
+        return Arrays.asList(preBuilder, postBuilder);
     }
 
     @Singleton

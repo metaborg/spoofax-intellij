@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.jps.targets;
+package org.metaborg.spoofax.intellij.jps.targetbuilders;
 
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
@@ -23,9 +23,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Base class for Spoofax build targets.
+ * Base class for Spoofax build targetbuilders.
  */
-public abstract class SpoofaxNewTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
+public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
 
     private final SpoofaxJpsProject project;
     /**
@@ -37,11 +37,11 @@ public abstract class SpoofaxNewTarget extends ModuleBasedTarget<SpoofaxSourceRo
     }
 
     /**
-     * Initializes a new instance of the {@link SpoofaxNewTarget} class.
+     * Initializes a new instance of the {@link SpoofaxTarget} class.
      * @param project The project being built.
      * @param targetType The target type.
      */
-    protected SpoofaxNewTarget(@NotNull SpoofaxJpsProject project, @NotNull ModuleBasedBuildTargetType<?> targetType) {
+    protected SpoofaxTarget(@NotNull SpoofaxJpsProject project, @NotNull ModuleBasedBuildTargetType<?> targetType) {
         super(targetType, project.module());
         this.project = project;
     }
@@ -52,9 +52,9 @@ public abstract class SpoofaxNewTarget extends ModuleBasedTarget<SpoofaxSourceRo
         return false;
     }
 
-    private final SpoofaxNewTargetType<?> getSpoofaxTargetType() {
+    private final SpoofaxTargetType<?> getSpoofaxTargetType() {
         // Default implementation.
-        return (SpoofaxNewTargetType<?>)getTargetType();
+        return (SpoofaxTargetType<?>)getTargetType();
     }
 
     @Override

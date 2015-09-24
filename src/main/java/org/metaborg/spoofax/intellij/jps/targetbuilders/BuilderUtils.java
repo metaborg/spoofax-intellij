@@ -1,8 +1,6 @@
-package org.metaborg.spoofax.intellij.jps.builders;
+package org.metaborg.spoofax.intellij.jps.targetbuilders;
 
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
 import org.metaborg.core.messages.IMessage;

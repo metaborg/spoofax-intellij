@@ -9,17 +9,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.api.CmdlineProtoUtil;
 import org.jetbrains.jps.api.CmdlineRemoteProto.Message.ControllerMessage.ParametersMessage.TargetTypeBuildScope;
 import org.metaborg.spoofax.intellij.jps.JpsPlugin;
-import org.metaborg.spoofax.intellij.jps.targets.SpoofaxNewPostTargetType;
+import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPostTargetType;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Controls the list of build targets when Make is invoked for a particular scope.
+ * Controls the list of build targetbuilders when Make is invoked for a particular scope.
  */
 public class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
 
-    private SpoofaxNewPostTargetType postTargetType;
+    private SpoofaxPostTargetType postTargetType;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -30,7 +30,7 @@ public class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
     }
 
     @Inject
-    private void inject(SpoofaxNewPostTargetType postTargetType) {
+    private void inject(SpoofaxPostTargetType postTargetType) {
         this.postTargetType = postTargetType;
     }
 

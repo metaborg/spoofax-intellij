@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.jps;
+package org.metaborg.spoofax.intellij.jps.targetbuilders;
 
 import com.google.inject.Inject;
 import org.jetbrains.annotations.NotNull;
@@ -6,13 +6,14 @@ import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.BuilderService;
 import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.jetbrains.jps.incremental.TargetBuilder;
+import org.metaborg.spoofax.intellij.jps.JpsPlugin;
 
 import java.util.*;
 
 /**
  * The Spoofax builder service.
  *
- * This service tells the JPS build system which build targets and target builders are available.
+ * This service tells the JPS build system which build targetbuilders and target builders are available.
  */
 public final class SpoofaxBuilderService extends BuilderService {
 

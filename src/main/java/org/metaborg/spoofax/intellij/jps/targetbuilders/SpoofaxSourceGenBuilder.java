@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.jps.builders;
+package org.metaborg.spoofax.intellij.jps.targetbuilders;
 
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
