@@ -13,6 +13,7 @@ import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
 import org.metaborg.spoofax.intellij.jps.targets.*;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
+import org.metaborg.spoofax.meta.core.ant.IAntRunnerService;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,6 +51,8 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
 
         bind(InitializationBuildStep.InitializationBuildStepDescriptor.class).in(Singleton.class);
         bind(IntellijJavaBuildStep.IntellijJavaBuildStepDescriptor.class).in(Singleton.class);
+
+        bind(IAntRunnerService.class).to(IntelliJAntRunnerService.class).in(Singleton.class);
     }
 
     @Singleton
