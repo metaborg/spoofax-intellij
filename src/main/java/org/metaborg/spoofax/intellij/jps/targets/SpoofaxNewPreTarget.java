@@ -22,57 +22,57 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public final class SpoofaxNewPreTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
+public final class SpoofaxNewPreTarget extends SpoofaxNewTarget {
 
     public SpoofaxNewPreTarget(SpoofaxNewPreTargetType targetType, @NotNull JpsModule module) {
         super(targetType, module);
     }
-
-    @Override
-    public boolean isTests() {
-        // Default implementation.
-        return false;
-    }
-
-    @Override
-    public String getId() {
-        // Default implementation.
-        return super.myModule.getName();
-    }
+//
+//    @Override
+//    public boolean isTests() {
+//        // Default implementation.
+//        return false;
+//    }
+//
+//    @Override
+//    public String getId() {
+//        // Default implementation.
+//        return super.myModule.getName();
+//    }
 
     @Override
     public boolean isCompiledBeforeModuleLevelBuilders() {
         return true;
     }
-
-    public SpoofaxNewPreTargetType getSpoofaxTargetType() {
-        // Default implementation.
-        return (SpoofaxNewPreTargetType)getTargetType();
-    }
+//
+//    public SpoofaxNewPreTargetType getSpoofaxTargetType() {
+//        // Default implementation.
+//        return (SpoofaxNewPreTargetType)getTargetType();
+//    }
 
     @Override
     public Collection<BuildTarget<?>> computeDependencies(BuildTargetRegistry buildTargetRegistry, TargetOutputIndex targetOutputIndex) {
         return Collections.emptyList();
     }
-
-    @NotNull
-    @Override
-    public List<SpoofaxSourceRootDescriptor> computeRootDescriptors(JpsModel jpsModel, ModuleExcludeIndex moduleExcludeIndex, IgnoredFileIndex ignoredFileIndex, BuildDataPaths buildDataPaths) {
-        // Default implementation.
-        List<SpoofaxSourceRootDescriptor> result = new ArrayList<>();
-        JavaSourceRootType type = isTests() ? JavaSourceRootType.TEST_SOURCE : JavaSourceRootType.SOURCE;
-        for (JpsTypedModuleSourceRoot<JavaSourceRootProperties> root : super.myModule.getSourceRoots(type)) {
-            result.add(new SpoofaxSourceRootDescriptor(root.getFile(), this));
-        }
-        return result;
-    }
-
-    @Nullable
-    @Override
-    public SpoofaxSourceRootDescriptor findRootDescriptor(String rootId, BuildRootIndex rootIndex) {
-        // Default implementation.
-        return ContainerUtil.getFirstItem(rootIndex.getRootDescriptors(new File(rootId), Collections.singletonList(getSpoofaxTargetType()), null));
-    }
+//
+//    @NotNull
+//    @Override
+//    public List<SpoofaxSourceRootDescriptor> computeRootDescriptors(JpsModel jpsModel, ModuleExcludeIndex moduleExcludeIndex, IgnoredFileIndex ignoredFileIndex, BuildDataPaths buildDataPaths) {
+//        // Default implementation.
+//        List<SpoofaxSourceRootDescriptor> result = new ArrayList<>();
+//        JavaSourceRootType type = isTests() ? JavaSourceRootType.TEST_SOURCE : JavaSourceRootType.SOURCE;
+//        for (JpsTypedModuleSourceRoot<JavaSourceRootProperties> root : super.myModule.getSourceRoots(type)) {
+//            result.add(new SpoofaxSourceRootDescriptor(root.getFile(), this));
+//        }
+//        return result;
+//    }
+//
+//    @Nullable
+//    @Override
+//    public SpoofaxSourceRootDescriptor findRootDescriptor(String rootId, BuildRootIndex rootIndex) {
+//        // Default implementation.
+//        return ContainerUtil.getFirstItem(rootIndex.getRootDescriptors(new File(rootId), Collections.singletonList(getSpoofaxTargetType()), null));
+//    }
 
     @NotNull
     @Override
@@ -80,10 +80,10 @@ public final class SpoofaxNewPreTarget extends ModuleBasedTarget<SpoofaxSourceRo
         return "Spoofax PRE target 2 '" + getId() + "'";
     }
 
-    @NotNull
-    @Override
-    public Collection<File> getOutputRoots(CompileContext compileContext) {
-        // Default implementation.
-        return ContainerUtil.createMaybeSingletonList(JpsJavaExtensionService.getInstance().getOutputDirectory(super.myModule, isTests()));
-    }
+//    @NotNull
+//    @Override
+//    public Collection<File> getOutputRoots(CompileContext compileContext) {
+//        // Default implementation.
+//        return ContainerUtil.createMaybeSingletonList(JpsJavaExtensionService.getInstance().getOutputDirectory(super.myModule, isTests()));
+//    }
 }
