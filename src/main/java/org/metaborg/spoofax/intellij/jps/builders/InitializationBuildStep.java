@@ -1,6 +1,7 @@
 package org.metaborg.spoofax.intellij.jps.builders;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileSystemException;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.ProjectException;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public final class InitializationBuildStep extends BuildStep {
 
+    @Singleton
     public final static class InitializationBuildStepDescriptor implements IBuildStepDescriptor {
 
         private final SpoofaxMetaBuilder metaBuilder;

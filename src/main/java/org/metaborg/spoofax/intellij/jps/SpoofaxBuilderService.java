@@ -20,6 +20,7 @@ public final class SpoofaxBuilderService extends BuilderService {
 
     private List<BuildTargetType<?>> targets;
     private List<TargetBuilder<?, ?>> builders;
+    private List<ModuleLevelBuilder> moduleLevelBuilders;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -30,9 +31,10 @@ public final class SpoofaxBuilderService extends BuilderService {
     }
 
     @Inject
-    private void inject(Collection<BuildTargetType<?>> targets, Collection<TargetBuilder<?, ?>> builders) {
+    private void inject(Collection<BuildTargetType<?>> targets, Collection<TargetBuilder<?, ?>> builders, Collection<ModuleLevelBuilder> moduleLevelBuilders) {
         this.targets = Collections.unmodifiableList(new ArrayList<>(targets));
         this.builders = Collections.unmodifiableList(new ArrayList<>(builders));
+        this.moduleLevelBuilders = Collections.unmodifiableList(new ArrayList<>(moduleLevelBuilders));
     }
 
     /**
@@ -43,19 +45,17 @@ public final class SpoofaxBuilderService extends BuilderService {
     @Override
     public List<? extends BuildTargetType<?>> getTargetTypes() {
         return this.targets;
-        //return Arrays.asList(SpoofaxNewPreTargetType.PRODUCTION, SpoofaxPostTargetType.PRODUCTION);
     }
 
     @NotNull
     @Override
     public List<? extends TargetBuilder<?, ?>> createBuilders() {
         return this.builders;
-        //return Arrays.asList(SpoofaxOldBuilder.INSTANCE, SpoofaxBuilder.INSTANCE);
     }
 
     @NotNull
     @Override
     public List<? extends ModuleLevelBuilder> createModuleLevelBuilders() {
-        return Arrays.asList(new SpoofaxSourceGenBuilder());
+        return this.moduleLevelBuilders;
     }
 }

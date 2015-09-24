@@ -10,6 +10,9 @@ import org.jetbrains.jps.model.module.JpsModule;
 import org.jetbrains.jps.model.module.JpsTypedModule;
 import org.metaborg.core.project.IProject;
 import org.metaborg.spoofax.intellij.JpsSpoofaxModuleType;
+import org.metaborg.spoofax.intellij.jps.builders.IBuildStep;
+import org.metaborg.spoofax.intellij.jps.builders.IBuildStepProvider;
+import org.metaborg.spoofax.intellij.jps.builders.IJavaBuildStep;
 import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 
@@ -19,10 +22,38 @@ import java.util.List;
 public abstract class SpoofaxNewTargetType<T extends SpoofaxNewTarget> extends ModuleBasedBuildTargetType<T> {
 
     private final IJpsProjectService projectService;
+    private final IBuildStepProvider buildStepProvider;
 
-    protected SpoofaxNewTargetType(String typeId, IJpsProjectService projectService) {
+    protected SpoofaxNewTargetType(@NotNull String typeId, @NotNull IJpsProjectService projectService, @NotNull IBuildStepProvider buildStepProvider) {
         super(typeId);
         this.projectService = projectService;
+        this.buildStepProvider = buildStepProvider;
+    }
+
+    /**
+     * Gets the build steps before/after the Java build.
+     * @param project The project.
+     * @param beforeJava <code>true</code> to get the steps before the Java build;
+     *                   otherwise, <code>false</code> to get the steps after the Java build.
+     * @return The steps, which may be an empty list.
+     */
+    @NotNull
+    protected List<IBuildStep> getSteps(@NotNull IProject project, boolean beforeJava) {
+        List<IBuildStep> steps = this.buildStepProvider.getBuildSteps(project);
+        List<IBuildStep> stepsBeforeJava = new ArrayList<IBuildStep>();
+        List<IBuildStep> stepsAfterJava = new ArrayList<IBuildStep>();
+        List<IBuildStep> current = stepsBeforeJava;
+        for (IBuildStep step : steps) {
+            if (step instanceof IJavaBuildStep)
+            {
+                current = stepsAfterJava;
+                continue;
+            }
+
+            current.add(step);
+        }
+
+        return beforeJava ? stepsBeforeJava : stepsAfterJava;
     }
 
     @NotNull

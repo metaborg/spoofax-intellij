@@ -1,5 +1,6 @@
 package org.metaborg.spoofax.intellij.jps.builders;
 
+import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.ModuleChunk;
 import org.jetbrains.jps.builders.DirtyFilesHolder;
@@ -13,7 +14,8 @@ import java.io.IOException;
 /**
  * Created by daniel on 9/22/15.
  */
-public class SpoofaxSourceGenBuilder extends ModuleLevelBuilder {
+@Singleton
+public final class SpoofaxSourceGenBuilder extends ModuleLevelBuilder {
 
     public SpoofaxSourceGenBuilder() {
         super(BuilderCategory.SOURCE_GENERATOR);

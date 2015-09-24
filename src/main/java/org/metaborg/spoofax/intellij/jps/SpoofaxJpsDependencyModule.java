@@ -4,14 +4,15 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.jetbrains.jps.builders.BuildTargetType;
+import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.jetbrains.jps.incremental.TargetBuilder;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
-import org.metaborg.spoofax.intellij.jps.builders.IBuildStepProvider;
-import org.metaborg.spoofax.intellij.jps.builders.SpoofaxBuildStepProvider;
+import org.metaborg.spoofax.intellij.jps.builders.*;
 import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
 import org.metaborg.spoofax.intellij.jps.targets.*;
+import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,15 +40,16 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
 
         bind(SpoofaxNewPreTargetType.class).in(Singleton.class);
         bind(SpoofaxNewPostTargetType.class).in(Singleton.class);
+        bind(SpoofaxSourceGenBuilder.class).in(Singleton.class);
 
-        //bind(SpoofaxNewPreBuilder.class).in(Singleton.class);
-        //bind(SpoofaxNewPostBuilder.class).in(Singleton.class);
         bind(SpoofaxNewBuilder.class).in(Singleton.class);
 
         bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
 
         bind(IBuildStepProvider.class).to(SpoofaxBuildStepProvider.class).in(Singleton.class);
 
+        bind(InitializationBuildStep.InitializationBuildStepDescriptor.class).in(Singleton.class);
+        bind(IntellijJavaBuildStep.IntellijJavaBuildStepDescriptor.class).in(Singleton.class);
     }
 
     @Singleton
@@ -57,13 +59,25 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
         return Arrays.asList(preTargetType, postTargetType);
     }
 
-    //public Collection<? extends BuildTargetType<? extends SpoofaxNewTarget>> provideTargetTypes
+    @Singleton
+    @Provides
+    @Inject
+    public Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxNewBuilder builder) {
+        return Arrays.asList(builder);
+    }
 
     @Singleton
     @Provides
     @Inject
-    public Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxNewBuilder builder) { //SpoofaxNewPreBuilder preBuilder, SpoofaxNewPostBuilder postBuilder) {
-        return Arrays.asList(builder);//preBuilder, postBuilder);
+    public Collection<ModuleLevelBuilder> provideModuleLevelBuilders(SpoofaxSourceGenBuilder sourceGenBuilder) {
+        return Arrays.asList(sourceGenBuilder);
+    }
+
+    @Singleton
+    @Provides
+    @Inject
+    public Collection<IBuildStepDescriptor> provideRootBuildStepDescriptors() {
+        return Arrays.asList();
     }
 
     @Override

@@ -3,7 +3,7 @@
 *.tar.gz
 *.tar.bz2
 *.spoofax-language
-
+/classpath
 
 ### Java ###
 *.class
