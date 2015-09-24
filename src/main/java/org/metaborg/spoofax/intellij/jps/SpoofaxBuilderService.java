@@ -18,8 +18,8 @@ import java.util.*;
  */
 public final class SpoofaxBuilderService extends BuilderService {
 
-    private List<SpoofaxTargetType<?>> targets;
-    private List<SpoofaxBuilder<?>> builders;
+    private List<BuildTargetType<?>> targets;
+    private List<TargetBuilder<?, ?>> builders;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -30,7 +30,7 @@ public final class SpoofaxBuilderService extends BuilderService {
     }
 
     @Inject
-    private void inject(Collection<SpoofaxTargetType<?>> targets, Collection<SpoofaxBuilder<?>> builders) {
+    private void inject(Collection<BuildTargetType<?>> targets, Collection<TargetBuilder<?, ?>> builders) {
         this.targets = Collections.unmodifiableList(new ArrayList<>(targets));
         this.builders = Collections.unmodifiableList(new ArrayList<>(builders));
     }
@@ -43,7 +43,7 @@ public final class SpoofaxBuilderService extends BuilderService {
     @Override
     public List<? extends BuildTargetType<?>> getTargetTypes() {
         return this.targets;
-        //return Arrays.asList(SpoofaxPreTargetType.PRODUCTION, SpoofaxPostTargetType.PRODUCTION);
+        //return Arrays.asList(SpoofaxNewPreTargetType.PRODUCTION, SpoofaxPostTargetType.PRODUCTION);
     }
 
     @NotNull

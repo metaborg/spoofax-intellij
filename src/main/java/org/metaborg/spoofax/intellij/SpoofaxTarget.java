@@ -82,7 +82,7 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
 //                .getModules();
 //        for (JpsModule module : modules) {
 //            if (module.getModuleType().equals(JpsSpoofaxModuleType.INSTANCE)) {
-//                dependencies.add(new SpoofaxPreTarget(module, getSpoofaxTargetType()));
+//                dependencies.add(new SpoofaxNewPreTarget(module, getSpoofaxTargetType()));
 //            }
 //        }
 //

@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.jps;
+package org.metaborg.spoofax.intellij.jps.targets;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildOutputConsumer;
 import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.builders.DirtyFilesHolder;
+import org.jetbrains.jps.builders.ModuleBasedTarget;
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.ProjectBuildException;
 import org.jetbrains.jps.incremental.TargetBuilder;
@@ -18,7 +19,7 @@ import org.metaborg.spoofax.intellij.jps.builders.IBuildStep;
 import java.io.IOException;
 import java.util.*;
 
-public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuilder<SpoofaxSourceRootDescriptor, T> {
+public abstract class SpoofaxBuilder<T extends ModuleBasedTarget<SpoofaxSourceRootDescriptor>> extends TargetBuilder<SpoofaxSourceRootDescriptor, T> {
 
     //public static final SpoofaxBuilder INSTANCE = new SpoofaxBuilder();
 
@@ -52,9 +53,9 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
         //buildSpoofax(target.getModule());
         context.checkCanceled();
 
-        for (IBuildStep step : target.steps()) {
-            step.onBuild();
-        }
+//        for (IBuildStep step : target.steps()) {
+//            step.onBuild();
+//        }
 
     }
 
