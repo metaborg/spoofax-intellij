@@ -54,6 +54,8 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
         return Arrays.asList(preTargetType, postTargetType);
     }
 
+    //public Collection<? extends BuildTargetType<? extends SpoofaxNewTarget>> provideTargetTypes
+
     @Singleton
     @Provides
     @Inject

@@ -1,5 +1,6 @@
 package org.metaborg.spoofax.intellij.jps.targets;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildOutputConsumer;
@@ -15,17 +16,17 @@ import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @Singleton
 public final class SpoofaxNewBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxNewTarget> {
 
-    //public static final SpoofaxBuilder INSTANCE = new SpoofaxBuilder();
-
-
-    public SpoofaxNewBuilder() {
-        super(Arrays.asList(SpoofaxNewPostTargetType.INSTANCE, SpoofaxNewPreTargetType.INSTANCE));
+    @SuppressWarnings("unchecked")
+    @Inject
+    public SpoofaxNewBuilder(Collection<BuildTargetType<?>> targetTypes){
+        super((Collection<? extends BuildTargetType<? extends SpoofaxNewTarget>>)(Collection<?>)targetTypes);
     }
 
     @NotNull
