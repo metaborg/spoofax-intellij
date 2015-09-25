@@ -10,3 +10,14 @@ Spoofax is a platform for developing textual domain-specific languages, and this
 The `{S}` part is also used as an icon for Spoofax projects.
 
 
+
+## Icons
+The following icons are based on this logo, and available in PNG, SVG (Linux), ICO (Windows), ICNS and HQX (Mac) formats.
+
+* Spoofax
+
+	![Spoofax icon](./icons/spoofax256.png)
+	
+* Spoofax for Eclipse
+
+	![Spoofax for Eclipse icon](./icons/spoofax_eclipse256.png)
