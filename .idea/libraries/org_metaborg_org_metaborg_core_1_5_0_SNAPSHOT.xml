@@ -54,6 +54,15 @@
       <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.15/snakeyaml-1.15.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.core.test/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.core/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.core/src/test/java" />
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.spoofax.core/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.spoofax.core/src/test/java" />
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.spoofax.generator/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.spoofax.meta.core/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../spoofax-core-releng/spoofax/org.metaborg.spoofax.nativebundle/src/main/java" />
+    </SOURCES>
   </library>
 </component>

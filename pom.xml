@@ -83,12 +83,22 @@
         <dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.metaborg.spoofax.generator</artifactId>
-			<version>1.5.0-SNAPSHOT</version>
+            <version>${spoofax.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.metaborg</groupId>
+            <artifactId>org.metaborg.spoofax.meta.core</artifactId>
+            <version>${spoofax.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.9.6</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -102,13 +112,13 @@
             <version>1.7.12</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven</artifactId>
 			<version>3.2.5</version>
 			<type>pom</type>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>-->
     </dependencies>
 
     <build>

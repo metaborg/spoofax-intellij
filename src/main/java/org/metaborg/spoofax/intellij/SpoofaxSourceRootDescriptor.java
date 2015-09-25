@@ -12,14 +12,14 @@ import java.io.File;
 public class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
 
     private final File root;
-    private final SpoofaxTarget target;
+    private final BuildTarget<?> target;
 
     /**
      * Initializes a new instance of the {@link SpoofaxSourceRootDescriptor} class.
      * @param root The directory of the source root.
      * @param target The build target to which the source root belongs.
      */
-    public SpoofaxSourceRootDescriptor(File root, SpoofaxTarget target)
+    public SpoofaxSourceRootDescriptor(File root, BuildTarget<?> target)
     {
         Preconditions.checkNotNull(root);
         Preconditions.checkNotNull(target);

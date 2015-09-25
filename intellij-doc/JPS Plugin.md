@@ -210,7 +210,7 @@ public final class SpoofaxBuilderService extends BuilderService {
 Finally, you need to register the builder service with the JPS plugin. To do this, add a file named `org.jetbrains.jps.incremental.BuilderService` (it has no extension) to the `META-INF/services` directory of the JPS module. In it you put the fully qualified name of the builder service, for example:
 
 ```
-org.metaborg.spoofax.intellij.jps.SpoofaxBuilderService
+org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxBuilderService
 ```
 
 ## Debugging

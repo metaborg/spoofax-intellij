@@ -20,7 +20,9 @@ IDEA_SRC_URL="http://download.jetbrains.com/idea/ideaIC-${IDEA_VERSION}-src.tar.
 #----------------------------------------------------------------------#
 echo "Downloading IntelliJ IDEA..."
 
-#wget -O idea.tar.gz ${IDEA_URL}
+if [ ! -f idea.tar.gz ]; then
+    wget -O idea.tar.gz ${IDEA_URL}
+fi
 
 #----------------------------------------------------------------------#
 echo "Installing IntelliJ IDEA in local repo..."

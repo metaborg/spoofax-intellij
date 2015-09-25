@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class JpsPlugin {
 
-    protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxJpsDependencyModule()));
+    private static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxJpsDependencyModule()));
 
     /**
      * Gets the injector.
@@ -24,4 +24,5 @@ public final class JpsPlugin {
 
 
     private JpsPlugin() { }
+
 }
