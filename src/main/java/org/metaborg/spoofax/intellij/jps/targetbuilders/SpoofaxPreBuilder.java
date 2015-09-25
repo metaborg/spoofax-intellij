@@ -10,20 +10,26 @@ import org.jetbrains.jps.builders.DirtyFilesHolder;
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.ProjectBuildException;
 import org.jetbrains.jps.incremental.TargetBuilder;
+import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.ProgressMessage;
 import org.jetbrains.jps.model.module.JpsModule;
+import org.metaborg.core.MetaborgException;
 import org.metaborg.core.build.BuildInput;
 import org.metaborg.core.build.BuildInputBuilder;
+import org.metaborg.core.build.IBuildOutput;
 import org.metaborg.core.build.dependency.IDependencyService;
 import org.metaborg.core.build.paths.ILanguagePathService;
-import org.metaborg.core.language.ILanguageDiscoveryService;
-import org.metaborg.core.language.ILanguageService;
+import org.metaborg.core.language.*;
+import org.metaborg.core.messages.IMessage;
+import org.metaborg.core.processing.ITask;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.project.ProjectException;
+import org.metaborg.core.transform.CompileGoal;
 import org.metaborg.spoofax.core.processing.SpoofaxProcessorRunner;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
+import org.metaborg.spoofax.core.resource.SpoofaxIgnoresSelector;
 import org.metaborg.spoofax.intellij.LanguageManager;
 import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
 import org.metaborg.spoofax.intellij.jps.JpsPlugin;
@@ -35,7 +41,9 @@ import org.metaborg.spoofax.meta.core.MetaBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.spoofax.interpreter.terms.IStrategoTerm;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -77,7 +85,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
 
             initialize(input, context);
             generateSources(input, context);
-            // regular build
+            regularBuild(project, context);
             compilePreJava(input, null, null, context);
 
         } catch (FileSystemException e) {
@@ -110,18 +118,18 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
 
         //Injector injector = Guice.createInjector(new SpoofaxJpsDependencyModule(target.getModule()));
 
-        ILanguageService languageService = JpsPlugin.injector().getInstance(ILanguageService.class);
+//        ILanguageService languageService = JpsPlugin.injector().getInstance(ILanguageService.class);
         ILanguagePathService languagePathService = JpsPlugin.injector().getInstance(ILanguagePathService.class);
-        IProjectService projectService = JpsPlugin.injector().getInstance(IProjectService.class);
+//        IProjectService projectService = JpsPlugin.injector().getInstance(IProjectService.class);
         IDependencyService dependencyService = JpsPlugin.injector().getInstance(IDependencyService.class);
         SpoofaxProcessorRunner processorRunner = JpsPlugin.injector().getInstance(SpoofaxProcessorRunner.class);
-        ILanguageDiscoveryService discoveryService = JpsPlugin.injector().getInstance(ILanguageDiscoveryService.class);
-        IIntelliJResourceService resourceService = JpsPlugin.injector().getInstance(IIntelliJResourceService.class);
+//        ILanguageDiscoveryService discoveryService = JpsPlugin.injector().getInstance(ILanguageDiscoveryService.class);
+//        IIntelliJResourceService resourceService = JpsPlugin.injector().getInstance(IIntelliJResourceService.class);
         LanguageManager languageManager = JpsPlugin.injector().getInstance(LanguageManager.class);
 
         //System.out.println(target.getOutputRoots(context));
         //File outputDirectory = getBuildOutputDirectory(target.getModule(), false, compileContext);
-        context.processMessage(BuilderUtils.formatProgress(0f, "Analyzing and transforming language files {}", input.project));
+        context.processMessage(BuilderUtils.formatProgress(0f, "Analyzing and transforming language files {}", project));
         //buildSpoofax(target.getModule());
         context.checkCanceled();
 
@@ -137,60 +145,62 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         BuildInput input = getBuildInput(dependencyService, languagePathService, project);
 
         try {
-            ITask<IBuildOutput<IStrategoTerm, IStrategoTerm, IStrategoTerm>> task =
-                    processorRunner.build(input, null, null)
-                            .schedule().block();
-
-
+            ITask<IBuildOutput<IStrategoTerm, IStrategoTerm, IStrategoTerm>> task = processorRunner
+                    .build(input, null, null)
+                    .schedule()
+                    .block();
 
             if (!task.cancelled())
             {
                 final IBuildOutput<?, ?, ?> output = task.result();
                 if (output != null) {
-                    for (IMessage msg : output.allMessages())
-                    {
-                        displayMessage(msg, context);
+                    for (IMessage msg : output.allMessages()) {
+                        context.processMessage(BuilderUtils.formatMessage("Spoofax", msg));
                     }
-                    for (IMessage msg : output.extraMessages())
-                    {
-                        displayMessage(msg, context);
+                    for (IMessage msg : output.extraMessages()) {
+                        context.processMessage(BuilderUtils.formatMessage("Spoofax", msg));
                     }
-                    if (output.success())
-                        context.processMessage(new CompilerMessage(COMPILER_MSG_NAME, BuildMessage.Kind.INFO, "Compilation finished successfully!"));
-                    else
-                        context.processMessage(new CompilerMessage(COMPILER_MSG_NAME, BuildMessage.Kind.WARNING, "Compilation finished but failed!"));
+                    // TODO:
+//                    if (!output.success()) {
+//                        throw new ProjectBuildException("Compilation finished but failed.");
+//                    }
                 }
                 else {
-                    context.processMessage(new CompilerMessage(COMPILER_MSG_NAME, BuildMessage.Kind.WARNING, "Compilation has no output?"));
+                    throw new ProjectBuildException("Compilation finished with no output.");
                 }
             }
             else {
-                context.processMessage(new CompilerMessage(COMPILER_MSG_NAME, BuildMessage.Kind.WARNING, "Compilation cancelled!"));
+                throw new ProjectBuildException("Compilation cancelled.");
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new ProjectBuildException("Interrupted!", e);
         }
     }
 
-    private void compilePreJava(@NotNull MetaBuildInput input, @NotNull URL[] classpath, @NotNull BuildListener listener, @NotNull CompileContext context) throws Exception, ProjectBuildException {
+    private void compilePreJava(@NotNull MetaBuildInput input, @Nullable URL[] classpath, @Nullable BuildListener listener, @NotNull CompileContext context) throws Exception, ProjectBuildException {
         context.checkCanceled();
         context.processMessage(BuilderUtils.formatProgress(0f, "Building language project {}", input.project));
         this.builder.compilePreJava(input, classpath, listener);
     }
 
-    private BuildInput getBuildInput(IDependencyService dependencyService, ILanguagePathService languagePathService, IProject project) {
+    private BuildInput getBuildInput(IDependencyService dependencyService, ILanguagePathService languagePathService, IProject project) throws ProjectBuildException {
         BuildInputBuilder inputBuilder = new BuildInputBuilder(project);
         BuildInput input = null;
         try {
-            //org.codehaus.plexus.util.xml.pull.MXParser p;
-
             inputBuilder.withDefaultIncludePaths(true);
             inputBuilder.withSourcesFromDefaultSourceLocations(true);
             inputBuilder.withSelector(new SpoofaxIgnoresSelector());
             inputBuilder.addTransformGoal(new CompileGoal());
+//            // TODO: Pardon ESV
+//            ILanguageService ls;
+//            ILanguageIdentifierService lis;
+//            inputBuilder.addPardonedLanguage(ls.getImpl(new LanguageIdentifier("", "", LanguageVersion.parse(""))));
+            // <pardonedLanguage>EditorService</pardonedLanguage>
+            //<pardonedLanguage>SDF</pardonedLanguage>
+            //<pardonedLanguage>Stratego-Sugar</pardonedLanguage>
             input = inputBuilder.build(dependencyService, languagePathService);
         } catch (MetaborgException e) {
-            e.printStackTrace();
+            throw new ProjectBuildException(e);
         }
         assert input != null;
         return input;

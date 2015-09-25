@@ -17,6 +17,7 @@ To update this list:
 
 	* `slf4j-api`
 	* `slf4j-simple`
+	* `ant-1.5`
 
 5. Replace all `::` by `;`.
 6. Remove the `:` prefix.

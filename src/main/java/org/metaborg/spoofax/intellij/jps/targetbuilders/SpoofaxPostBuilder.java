@@ -23,6 +23,7 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -77,7 +78,7 @@ public final class SpoofaxPostBuilder extends TargetBuilder<SpoofaxSourceRootDes
 
     }
 
-    private void compilePostJava(@NotNull MetaBuildInput input, @NotNull URL[] classpath, @NotNull BuildListener listener, @NotNull CompileContext context) throws Exception, ProjectBuildException {
+    private void compilePostJava(@NotNull MetaBuildInput input, @Nullable URL[] classpath, @Nullable BuildListener listener, @NotNull CompileContext context) throws Exception, ProjectBuildException {
         context.checkCanceled();
         context.processMessage(BuilderUtils.formatProgress(0f, "Packaging language project {}", input.project));
         this.builder.compilePostJava(input, classpath, listener);

@@ -72,7 +72,6 @@
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant/1.9.2/ant-1.9.2.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-launcher/1.9.2/ant-launcher-1.9.2.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/ant/ant/1.5/ant-1.5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

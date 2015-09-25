@@ -22,7 +22,8 @@ public final class DefaultAntRunner implements IAntRunner {
         this.antProject.setUserProperty("ant.file", antFile.getAbsolutePath());
         properties.put("basedir", baseDir.getPath());
         addUserProperties(this.antProject, properties);
-        setCustomClasspath(this.antProject, classpaths);
+        if (classpaths != null)
+            setCustomClasspath(this.antProject, classpaths);
         this.antProject.init();
         ProjectHelper helper = ProjectHelper.getProjectHelper();
         this.antProject.addReference("ant.projectHelper", helper);
@@ -41,7 +42,7 @@ public final class DefaultAntRunner implements IAntRunner {
 
     private void addUserProperties(Project antProject, Map<String, String> properties) {
         for (Map.Entry<String, String> entry : properties.entrySet()) {
-            antProject.setUserProperty(entry.getKey(), entry.getValue());
+            this.antProject.setUserProperty(entry.getKey(), entry.getValue());
         }
     }
 
