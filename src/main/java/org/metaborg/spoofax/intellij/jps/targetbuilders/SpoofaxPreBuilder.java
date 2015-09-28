@@ -85,7 +85,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
 
             initialize(input, context);
             generateSources(input, context);
-            regularBuild(project, context);
+            regularBuild(input, context);
             compilePreJava(input, null, null, context);
 
         } catch (FileSystemException e) {
@@ -113,7 +113,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         this.builder.generateSources(input);
     }
 
-    private void regularBuild(@NotNull SpoofaxJpsProject project, @NotNull CompileContext context) throws ProjectBuildException {
+    private void regularBuild(@NotNull MetaBuildInput input, @NotNull CompileContext context) throws ProjectBuildException {
         //JpsProjectService projectService = new JpsProjectService(target.getModule());
 
         //Injector injector = Guice.createInjector(new SpoofaxJpsDependencyModule(target.getModule()));
@@ -129,7 +129,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
 
         //System.out.println(target.getOutputRoots(context));
         //File outputDirectory = getBuildOutputDirectory(target.getModule(), false, compileContext);
-        context.processMessage(BuilderUtils.formatProgress(0f, "Analyzing and transforming language files {}", project));
+        context.processMessage(BuilderUtils.formatProgress(0f, "Analyzing and transforming language files {}", input.project));
         //buildSpoofax(target.getModule());
         context.checkCanceled();
 
@@ -142,11 +142,11 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         //FileObject location = resourceService.resolve("file:///home/daniel/repos/spoofax-test-project");
         //IProject project = projectService.get(location);
         //IProject project = new SpoofaxProject(location);    // TODO: Get the project
-        BuildInput input = getBuildInput(dependencyService, languagePathService, project);
+        BuildInput regularInput = getBuildInput(input, dependencyService, languagePathService);
 
         try {
             ITask<IBuildOutput<IStrategoTerm, IStrategoTerm, IStrategoTerm>> task = processorRunner
-                    .build(input, null, null)
+                    .build(regularInput, null, null)
                     .schedule()
                     .block();
 
@@ -161,9 +161,9 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
                         context.processMessage(BuilderUtils.formatMessage("Spoofax", msg));
                     }
                     // TODO:
-//                    if (!output.success()) {
-//                        throw new ProjectBuildException("Compilation finished but failed.");
-//                    }
+                    if (!output.success()) {
+                        throw new ProjectBuildException("Compilation finished but failed.");
+                    }
                 }
                 else {
                     throw new ProjectBuildException("Compilation finished with no output.");
@@ -183,22 +183,18 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         this.builder.compilePreJava(input, classpath, listener);
     }
 
-    private BuildInput getBuildInput(IDependencyService dependencyService, ILanguagePathService languagePathService, IProject project) throws ProjectBuildException {
-        BuildInputBuilder inputBuilder = new BuildInputBuilder(project);
+    private BuildInput getBuildInput(MetaBuildInput metaInput, IDependencyService dependencyService, ILanguagePathService languagePathService) throws ProjectBuildException {
         BuildInput input = null;
         try {
-            inputBuilder.withDefaultIncludePaths(true);
-            inputBuilder.withSourcesFromDefaultSourceLocations(true);
-            inputBuilder.withSelector(new SpoofaxIgnoresSelector());
-            inputBuilder.addTransformGoal(new CompileGoal());
-//            // TODO: Pardon ESV
-//            ILanguageService ls;
-//            ILanguageIdentifierService lis;
-//            inputBuilder.addPardonedLanguage(ls.getImpl(new LanguageIdentifier("", "", LanguageVersion.parse(""))));
-            // <pardonedLanguage>EditorService</pardonedLanguage>
-            //<pardonedLanguage>SDF</pardonedLanguage>
-            //<pardonedLanguage>Stratego-Sugar</pardonedLanguage>
-            input = inputBuilder.build(dependencyService, languagePathService);
+            input = new BuildInputBuilder(metaInput.project)
+                    .withDefaultIncludePaths(true)
+                    .withSourcesFromDefaultSourceLocations(true)
+                    .withSelector(new SpoofaxIgnoresSelector())
+                    //.withMessagePrinter()
+                    .withThrowOnErrors(true)
+                    .withPardonedLanguageStrings(metaInput.settings.pardonedLanguages())
+                    .addTransformGoal(new CompileGoal())
+                    .build(dependencyService, languagePathService);
         } catch (MetaborgException e) {
             throw new ProjectBuildException(e);
         }
