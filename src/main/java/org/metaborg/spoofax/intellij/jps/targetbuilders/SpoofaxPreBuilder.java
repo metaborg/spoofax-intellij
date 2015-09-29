@@ -82,16 +82,16 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         try {
             final SpoofaxJpsProject project = projectService.get(target.getModule());
             final SpoofaxProjectSettings settings = settingsService.get(project);
-            final MetaBuildInput input = new MetaBuildInput(project, settings);
+            final MetaBuildInput metaInput = new MetaBuildInput(project, settings);
 
-            initialize(input, context);
-            generateSources(input, context);
-            regularBuild(input, context);
-            compilePreJava(input, null, null, context);
+            LanguageManager languageManager = JpsPlugin.injector().getInstance(LanguageManager.class);
+            languageManager.loadMetaLanguages();
 
-        } catch (FileSystemException e) {
-            logger.error("An unexpected IO exception occurred.", e);
-            throw e;
+            initialize(metaInput, context);
+            generateSources(metaInput, context);
+            regularBuild(metaInput, context);
+            compilePreJava(metaInput, null, null, context);
+
         } catch (ProjectException e) {
             logger.error("An unexpected project exception occurred.", e);
             throw new ProjectBuildException(e);
@@ -102,52 +102,42 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
 
     }
 
-    private void initialize(@NotNull MetaBuildInput input, @NotNull CompileContext context) throws FileSystemException, ProjectBuildException {
-        context.checkCanceled();
-        context.processMessage(BuilderUtils.formatProgress(0f, "Initializing language project {}", input.project));
-        this.builder.initialize(input);
+    private void initialize(@NotNull MetaBuildInput metaInput, @NotNull CompileContext context) throws ProjectBuildException {
+        try {
+            context.checkCanceled();
+            context.processMessage(BuilderUtils.formatProgress(0f, "Initializing {}", metaInput.project));
+
+            this.builder.initialize(metaInput);
+        } catch (FileSystemException e) {
+            throw new ProjectBuildException("Error initializing", e);
+        }
     }
 
-    private void generateSources(@NotNull MetaBuildInput input, @NotNull CompileContext context) throws Exception, ProjectBuildException {
-        context.checkCanceled();
-        context.processMessage(BuilderUtils.formatProgress(0f, "Generating sources for language project {}", input.project));
-        this.builder.generateSources(input);
+    private void generateSources(@NotNull MetaBuildInput metaInput, @NotNull CompileContext context) throws Exception, ProjectBuildException {
+        try {
+            context.checkCanceled();
+            context.processMessage(BuilderUtils.formatProgress(0f, "Generating Spoofax sources for {}", metaInput.project));
+
+            this.builder.generateSources(metaInput);
+        } catch (Exception e) {
+            throw new ProjectBuildException(e.getMessage(), e);
+        }
     }
 
-    private void regularBuild(@NotNull MetaBuildInput input, @NotNull CompileContext context) throws ProjectBuildException {
-        //JpsProjectService projectService = new JpsProjectService(target.getModule());
+    private void regularBuild(@NotNull MetaBuildInput metaInput, @NotNull CompileContext context) throws ProjectBuildException {
 
-        //Injector injector = Guice.createInjector(new SpoofaxJpsDependencyModule(target.getModule()));
-
-//        ILanguageService languageService = JpsPlugin.injector().getInstance(ILanguageService.class);
         ILanguagePathService languagePathService = JpsPlugin.injector().getInstance(ILanguagePathService.class);
-//        IProjectService projectService = JpsPlugin.injector().getInstance(IProjectService.class);
         IDependencyService dependencyService = JpsPlugin.injector().getInstance(IDependencyService.class);
         SpoofaxProcessorRunner processorRunner = JpsPlugin.injector().getInstance(SpoofaxProcessorRunner.class);
-//        ILanguageDiscoveryService discoveryService = JpsPlugin.injector().getInstance(ILanguageDiscoveryService.class);
-//        IIntelliJResourceService resourceService = JpsPlugin.injector().getInstance(IIntelliJResourceService.class);
-        LanguageManager languageManager = JpsPlugin.injector().getInstance(LanguageManager.class);
 
-        //System.out.println(target.getOutputRoots(context));
-        //File outputDirectory = getBuildOutputDirectory(target.getModule(), false, compileContext);
-        context.processMessage(BuilderUtils.formatProgress(0f, "Analyzing and transforming language files {}", input.project));
-        //buildSpoofax(target.getModule());
+        context.processMessage(BuilderUtils.formatProgress(0f, "Analyzing and transforming {}", metaInput.project));
         context.checkCanceled();
 
-        languageManager.loadMetaLanguages();
-
-        //context.processMessage(new CompilerMessage("Spoofax", BuildMessage.Kind.INFO, "Using these languages: " + Joiner.on(", ").join(languageService.getAllLanguages())));
-
-
-
-        //FileObject location = resourceService.resolve("file:///home/daniel/repos/spoofax-test-project");
-        //IProject project = projectService.get(location);
-        //IProject project = new SpoofaxProject(location);    // TODO: Get the project
-        BuildInput regularInput = getBuildInput(input, dependencyService, languagePathService);
+        BuildInput input = getBuildInput(metaInput, dependencyService, languagePathService);
 
         try {
             ITask<IBuildOutput<IStrategoTerm, IStrategoTerm, IStrategoTerm>> task = processorRunner
-                    .build(regularInput, null, null)
+                    .build(input, null, null)
                     .schedule()
                     .block();
 
@@ -175,10 +165,10 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         }
     }
 
-    private void compilePreJava(@NotNull MetaBuildInput input, @Nullable URL[] classpath, @Nullable BuildListener listener, @NotNull CompileContext context) throws Exception, ProjectBuildException {
+    private void compilePreJava(@NotNull MetaBuildInput metaInput, @Nullable URL[] classpath, @Nullable BuildListener listener, @NotNull CompileContext context) throws Exception, ProjectBuildException {
         context.checkCanceled();
-        context.processMessage(BuilderUtils.formatProgress(0f, "Building language project {}", input.project));
-        this.builder.compilePreJava(input, classpath, listener);
+        context.processMessage(BuilderUtils.formatProgress(0f, "Building language project {}", metaInput.project));
+        this.builder.compilePreJava(metaInput, classpath, listener);
     }
 
     private BuildInput getBuildInput(MetaBuildInput metaInput, IDependencyService dependencyService, ILanguagePathService languagePathService) throws ProjectBuildException {
