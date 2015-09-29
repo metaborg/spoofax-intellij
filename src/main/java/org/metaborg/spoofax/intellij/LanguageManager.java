@@ -40,6 +40,9 @@ public final class LanguageManager {
         loadLanguage("org.metaborg.meta.lang.esv");
         loadLanguage("org.metaborg.meta.lang.sdf");
         loadLanguage("org.metaborg.meta.lang.stratego");
+        loadLanguage("org.metaborg.meta.lang.ts");
+        loadLanguage("org.metaborg.meta.lang.nabl");
+        loadLanguage("org.metaborg.meta.lang.template");
         loadLanguage("org.metaborg.meta.lib.analysis");
     }
 

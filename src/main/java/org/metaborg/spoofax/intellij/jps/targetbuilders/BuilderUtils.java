@@ -6,6 +6,10 @@ import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
 import org.jetbrains.jps.incremental.messages.ProgressMessage;
 import org.metaborg.core.messages.IMessage;
+import org.metaborg.spoofax.intellij.StringFormatter;
+import org.slf4j.helpers.MessageFormatter;
+
+import java.text.MessageFormat;
 
 public final class BuilderUtils {
 
@@ -19,7 +23,7 @@ public final class BuilderUtils {
      */
     @NotNull
     public static ProgressMessage formatProgress(float done, @NotNull String message, Object... args) {
-        final String msgString = String.format(message, args);
+        final String msgString = StringFormatter.format(message, args);
         return new ProgressMessage(msgString, done);
     }
 
@@ -34,7 +38,7 @@ public final class BuilderUtils {
      */
     @NotNull
     public static CompilerMessage formatMessage(@NotNull String builderName, @NotNull BuildMessage.Kind kind, @NotNull String message, Object... args) {
-        final String msgString = String.format(message, args);
+        final String msgString = StringFormatter.format(message, args);
         return new CompilerMessage(builderName, kind, msgString);
     }
 
@@ -59,8 +63,10 @@ public final class BuilderUtils {
         }
 
         String msgString = message.message();
-        if (message.exception() != null) {
-            msgString += "\n" + message.exception().toString();
+        Throwable exception = message.exception();
+        while (exception != null) {
+            msgString += "\n" + exception.getMessage();
+            exception = exception.getCause();
         }
 
         String sourcePath = null;

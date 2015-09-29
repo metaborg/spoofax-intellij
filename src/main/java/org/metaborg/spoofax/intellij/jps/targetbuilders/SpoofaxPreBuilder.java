@@ -14,6 +14,7 @@ import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.ProgressMessage;
 import org.jetbrains.jps.model.module.JpsModule;
 import org.metaborg.core.MetaborgException;
+import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.build.BuildInput;
 import org.metaborg.core.build.BuildInputBuilder;
 import org.metaborg.core.build.IBuildOutput;
@@ -150,8 +151,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
                     .schedule()
                     .block();
 
-            if (!task.cancelled())
-            {
+            if (!task.cancelled()) {
                 final IBuildOutput<?, ?, ?> output = task.result();
                 if (output != null) {
                     for (IMessage msg : output.allMessages()) {
@@ -164,12 +164,10 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
                     if (!output.success()) {
                         throw new ProjectBuildException("Compilation finished but failed.");
                     }
-                }
-                else {
+                } else {
                     throw new ProjectBuildException("Compilation finished with no output.");
                 }
-            }
-            else {
+            } else {
                 throw new ProjectBuildException("Compilation cancelled.");
             }
         } catch (InterruptedException e) {
@@ -191,7 +189,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
                     .withSourcesFromDefaultSourceLocations(true)
                     .withSelector(new SpoofaxIgnoresSelector())
                     //.withMessagePrinter()
-                    .withThrowOnErrors(true)
+                    .withThrowOnErrors(false)
                     .withPardonedLanguageStrings(metaInput.settings.pardonedLanguages())
                     .addTransformGoal(new CompileGoal())
                     .build(dependencyService, languagePathService);

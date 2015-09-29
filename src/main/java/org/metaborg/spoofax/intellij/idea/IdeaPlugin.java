@@ -58,11 +58,11 @@ public final class IdeaPlugin implements ApplicationComponent {
     }
 
     public void initComponent() {
-        try {
-            loadLanguages();
-        } catch (MetaborgException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            loadLanguages();
+//        } catch (MetaborgException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
