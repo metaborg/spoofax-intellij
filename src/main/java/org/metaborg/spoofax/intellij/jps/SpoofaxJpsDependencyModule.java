@@ -16,6 +16,7 @@ import org.metaborg.spoofax.meta.core.ant.IAntRunnerService;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * The Guice dependency injection module for the Spoofax JPS plugin.
@@ -39,7 +40,6 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
 
         bind(SpoofaxPreTargetType.class).in(Singleton.class);
         bind(SpoofaxPostTargetType.class).in(Singleton.class);
-        bind(SpoofaxSourceGenBuilder.class).in(Singleton.class);
 
         bind(SpoofaxPreBuilder.class).in(Singleton.class);
         bind(SpoofaxPostBuilder.class).in(Singleton.class);
@@ -67,8 +67,8 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     @Singleton
     @Provides
     @Inject
-    public Collection<ModuleLevelBuilder> provideModuleLevelBuilders(SpoofaxSourceGenBuilder sourceGenBuilder) {
-        return Arrays.asList(sourceGenBuilder);
+    public Collection<ModuleLevelBuilder> provideModuleLevelBuilders() {
+        return Collections.emptyList();
     }
 
     @Override
