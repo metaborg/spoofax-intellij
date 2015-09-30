@@ -3,6 +3,7 @@ package org.metaborg.spoofax.intellij.jps.project;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.jps.model.JpsModel;
 import org.jetbrains.jps.model.JpsUrlList;
@@ -88,7 +89,9 @@ public final class JpsProjectService implements IJpsProjectService {
 
     private boolean hasDescendant(String ancestor, FileObject descendant) {
         FileObject contentRoot = this.resourceService.resolve(ancestor);
-        return contentRoot.getName().isDescendent(descendant.getName());
+        FileName lhs = contentRoot.getName();
+        FileName rhs = descendant.getName();
+        return lhs.equals(rhs) || lhs.isDescendent(rhs);
     }
 
 }

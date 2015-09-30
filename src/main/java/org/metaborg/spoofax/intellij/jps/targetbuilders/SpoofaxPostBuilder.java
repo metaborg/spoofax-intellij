@@ -20,6 +20,7 @@ import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 import org.metaborg.spoofax.meta.core.MetaBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
+import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +64,7 @@ public final class SpoofaxPostBuilder extends TargetBuilder<SpoofaxSourceRootDes
             final SpoofaxProjectSettings settings = settingsService.get(project);
             final MetaBuildInput input = new MetaBuildInput(project, settings);
 
-            compilePostJava(input, null, null, context);
+            compilePostJava(input, null, new AntSLF4JLogger(), context);
 
         } catch (FileSystemException e) {
             logger.error("An unexpected IO exception occurred.", e);

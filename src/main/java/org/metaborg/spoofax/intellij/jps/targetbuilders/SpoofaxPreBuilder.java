@@ -24,6 +24,7 @@ import org.metaborg.spoofax.core.processing.SpoofaxProcessorRunner;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.spoofax.core.resource.SpoofaxIgnoresSelector;
+import org.metaborg.spoofax.core.stratego.primitives.LanguageSourceLocationsPrimitive;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
 import org.metaborg.spoofax.intellij.jps.JpsPlugin;
@@ -31,6 +32,7 @@ import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 import org.metaborg.spoofax.meta.core.MetaBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
+import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spoofax.interpreter.terms.IStrategoTerm;
@@ -80,7 +82,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
             initialize(metaInput, context);
             generateSources(metaInput, context);
             regularBuild(metaInput, context);
-            compilePreJava(metaInput, null, null, context);
+            compilePreJava(metaInput, null, new AntSLF4JLogger(), context);
 
         } catch (ProjectException e) {
             logger.error("An unexpected project exception occurred.", e);

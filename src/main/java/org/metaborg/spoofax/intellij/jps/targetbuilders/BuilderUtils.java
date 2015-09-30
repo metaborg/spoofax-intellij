@@ -78,15 +78,14 @@ public final class BuilderUtils {
             exception = exception.getCause();
         }
 
-        String sourcePath = null;
+        String sourcePath = message.source().getName().getPath();
         long problemBeginOffset = -1L;
         long problemEndOffset = -1L;
         long problemLocationOffset = -1L;
         long locationLine = -1L;
         long locationColumn = -1L;
 
-        if (message.source() != null && message.region() != null && !(message.region().startOffset() == 0 && message.region().endOffset() == 0 && message.region().startRow() == 0 && message.region().endRow() == 0 && message.region().startColumn() == 0 && message.region().endColumn() == 0)) {
-            sourcePath = message.source().getName().getPath();
+        if (message.region() != null && !(message.region().startOffset() == 0 && message.region().endOffset() == 0 && message.region().startRow() == 0 && message.region().endRow() == 0 && message.region().startColumn() == 0 && message.region().endColumn() == 0)) {
             problemBeginOffset = message.region().startOffset();
             problemEndOffset = message.region().endOffset();
             problemLocationOffset = message.region().startOffset();
