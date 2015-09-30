@@ -8,6 +8,8 @@ import org.jetbrains.jps.incremental.messages.ProgressMessage;
 import org.metaborg.core.messages.IMessage;
 import org.metaborg.spoofax.intellij.StringFormatter;
 import org.slf4j.helpers.MessageFormatter;
+import org.spoofax.interpreter.terms.IStrategoList;
+import org.strategoxt.lang.StrategoErrorExit;
 
 import java.text.MessageFormat;
 
@@ -66,6 +68,13 @@ public final class BuilderUtils {
         Throwable exception = message.exception();
         while (exception != null) {
             msgString += "\n" + exception.getMessage();
+            if (exception instanceof StrategoErrorExit) {
+                StrategoErrorExit strategoException = (StrategoErrorExit)exception;
+                IStrategoList trace = strategoException.getTrace();
+                for (int i = 0; i < trace.size(); i++) {
+                    msgString += "\n\t" + trace.get(i);
+                }
+            }
             exception = exception.getCause();
         }
 

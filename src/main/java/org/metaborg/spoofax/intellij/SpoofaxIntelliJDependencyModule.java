@@ -6,6 +6,7 @@ import org.metaborg.core.project.settings.IProjectSettingsService;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.core.SpoofaxModule;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
+import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.intellij.project.settings.IProjectSettingsService2;
 import org.metaborg.spoofax.intellij.project.settings.IntelliJProjectSettingsService;
 import org.metaborg.spoofax.intellij.project.settings.YamlProjectSettingsService;

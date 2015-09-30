@@ -24,7 +24,7 @@
         <jdk.version>1.8</jdk.version>
         <idea.version>14.1.4</idea.version>
         <idea.foldername>idea-IC-141.1532.4</idea.foldername>
-        <spoofax.version>1.5.0-SNAPSHOT</spoofax.version>
+        <metaborg-version>1.5.0-SNAPSHOT</metaborg-version>
     </properties>
 
     <organization>
@@ -73,22 +73,22 @@
         <dependency>
             <groupId>org.metaborg</groupId>
             <artifactId>org.metaborg.core</artifactId>
-            <version>${spoofax.version}</version>
+            <version>${metaborg-version}</version>
         </dependency>
         <dependency>
             <groupId>org.metaborg</groupId>
             <artifactId>org.metaborg.spoofax.core</artifactId>
-            <version>${spoofax.version}</version>
+            <version>${metaborg-version}</version>
         </dependency>
         <dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.metaborg.spoofax.generator</artifactId>
-            <version>${spoofax.version}</version>
+            <version>${metaborg-version}</version>
 		</dependency>
         <dependency>
             <groupId>org.metaborg</groupId>
             <artifactId>org.metaborg.spoofax.meta.core</artifactId>
-            <version>${spoofax.version}</version>
+            <version>${metaborg-version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -119,6 +119,51 @@
 			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>-->
+		
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.meta.lib.analysis</artifactId>
+			<version>${metaborg-version}</version>
+			<type>spoofax-language</type>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.meta.lang.template</artifactId>
+			<version>${metaborg-version}</version>
+			<type>spoofax-language</type>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.meta.lang.nabl</artifactId>
+			<version>${metaborg-version}</version>
+			<type>spoofax-language</type>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.meta.lang.ts</artifactId>
+			<version>${metaborg-version}</version>
+			<type>spoofax-language</type>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.meta.lang.esv</artifactId>
+			<version>${metaborg-version}</version>
+			<type>spoofax-language</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.meta.lang.esv</artifactId>
+			<version>1.5.0-baseline-20150905-200051</version>
+			<type>spoofax-language</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.meta.lang.sdf</artifactId>
+			<version>1.5.0-baseline-20150905-200051</version>
+			<type>spoofax-language</type>
+		</dependency>
     </dependencies>
 
     <build>

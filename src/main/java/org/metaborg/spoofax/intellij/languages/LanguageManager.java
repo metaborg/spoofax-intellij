@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij;
+package org.metaborg.spoofax.intellij.languages;
 
 import com.google.common.base.Joiner;
 import com.google.inject.Inject;
@@ -37,13 +37,16 @@ public final class LanguageManager {
     }
 
     public void loadMetaLanguages() {
-        loadLanguage("org.metaborg.meta.lang.esv");
-        loadLanguage("org.metaborg.meta.lang.sdf");
-        loadLanguage("org.metaborg.meta.lang.stratego");
-        loadLanguage("org.metaborg.meta.lang.ts");
-        loadLanguage("org.metaborg.meta.lang.nabl");
-        loadLanguage("org.metaborg.meta.lang.template");
-        loadLanguage("org.metaborg.meta.lib.analysis");
+        loadLanguage("org.metaborg.meta.lang.esv-1.5.0-SNAPSHOT");
+        loadLanguage("org.metaborg.meta.lang.nabl-1.5.0-SNAPSHOT");
+        loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-SNAPSHOT");
+        loadLanguage("org.metaborg.meta.lang.stratego-1.5.0-baseline-20150917-172646");
+        loadLanguage("org.metaborg.meta.lang.template-1.5.0-SNAPSHOT");
+        loadLanguage("org.metaborg.meta.lang.ts-1.5.0-SNAPSHOT");
+        loadLanguage("org.metaborg.meta.lib.analysis-1.5.0-SNAPSHOT");
+
+        loadLanguage("org.metaborg.meta.lang.esv-1.5.0-baseline-20150905-200051");
+        loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-baseline-20150905-200051");
     }
 
     private void loadLanguage(String id) {
