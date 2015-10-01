@@ -8,6 +8,7 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -15,13 +16,13 @@ import java.util.ArrayList;
 /**
  * The type of a Spoofax module.
  */
-public class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
+public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
 
-    public static final String ID = "SPOOFAX_MODULE"; // This is also used in plugin.xml.
-    private static final String NAME = "Spoofax";
-    private static final String DESCRIPTION = "Spoofax Module";
+    @NotNull public static final String ID = "SPOOFAX_MODULE"; // This is also used in plugin.xml.
+    @NotNull private static final String NAME = "Spoofax";
+    @NotNull private static final String DESCRIPTION = "Spoofax Module";
 
-    public static ModuleType getModuleType() {
+    @NotNull public static ModuleType getModuleType() {
         return ModuleTypeManager.getInstance().findByID(ID);
     }
 
@@ -33,7 +34,7 @@ public class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
     @NotNull
     @Override
     public SpoofaxModuleBuilder createModuleBuilder() {
-        return new SpoofaxModuleBuilder();
+        return IdeaPlugin.injector().getInstance(SpoofaxModuleBuilder.class);
     }
 
     @NotNull
@@ -81,17 +82,4 @@ public class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
         final ModuleWizardStep[] wizardSteps = steps.toArray(new ModuleWizardStep[steps.size()]);
         return ArrayUtil.mergeArrays(wizardSteps, super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider));
     }
-
-    /*
-    @Nullable
-    @Override
-    public ModuleWizardStep modifySettingsStep(@NotNull SettingsStep settingsStep, @NotNull ModuleBuilder moduleBuilder) {
-        ModuleWizardStep step = ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, o -> true);
-        if (step != null) {
-            step.setSourcePath("src" + File.separator + "main" + File.separator + "spoofax");
-        }
-        return step;
-        return super.modifySettingsStep(settingsStep, moduleBuilder);
-    }
-    */
 }

@@ -5,28 +5,29 @@ import com.google.inject.name.Named;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileSystemManager;
+import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.resource.ResourceService;
 
 import javax.annotation.Nullable;
 import org.apache.commons.vfs2.FileObject;
 
-public class IntelliJResourceService extends ResourceService implements IIntelliJResourceService {
+public final class IntelliJResourceService extends ResourceService implements IIntelliJResourceService {
 
     @Inject
-    public IntelliJResourceService(FileSystemManager fileSystemManager,
-                                   @Named("ResourceClassLoader") ClassLoader classLoader) {
+    public IntelliJResourceService(@NotNull final FileSystemManager fileSystemManager,
+                                   @NotNull @Named("ResourceClassLoader") final ClassLoader classLoader) {
         super(fileSystemManager, classLoader);
     }
 
     @Override
-    public FileObject resolve(VirtualFile resource) {
+    public final FileObject resolve(@NotNull final VirtualFile resource) {
         return resolve("file://" + resource.getPath());
 //        return resolve("idea://" + resource.getPath());
     }
 
     @Nullable
     @Override
-    public VirtualFile unresolve(FileObject resource) {
+    public final VirtualFile unresolve(@NotNull final FileObject resource) {
         if (resource instanceof IntelliJFileObject) {
             final IntelliJFileObject intellijResource = (IntelliJFileObject)resource;
             final VirtualFile intellijFile = intellijResource.getIntelliJFile();

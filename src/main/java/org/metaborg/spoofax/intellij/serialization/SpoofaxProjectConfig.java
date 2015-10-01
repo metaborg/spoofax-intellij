@@ -5,24 +5,26 @@ import org.jetbrains.jps.model.JpsElementChildRole;
 import org.jetbrains.jps.model.ex.JpsElementBase;
 import org.jetbrains.jps.model.ex.JpsElementChildRoleBase;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by daniel on 9/8/15.
  */
-public class SpoofaxProjectConfig extends JpsElementBase<SpoofaxProjectConfig> {
-    public static final JpsElementChildRole<SpoofaxProjectConfig> ROLE = JpsElementChildRoleBase.create("Spoofax Project");
+public final class SpoofaxProjectConfig extends JpsElementBase<SpoofaxProjectConfig> {
+    @NotNull public static final JpsElementChildRole<SpoofaxProjectConfig> ROLE = JpsElementChildRoleBase.create("Spoofax Project");
 
-    private SpoofaxProjectState state = new SpoofaxProjectState();
-    public SpoofaxProjectState getState() { return this.state; }
-    public void loadState(SpoofaxProjectState value) { this.state = value; }
+    @Nullable private SpoofaxProjectState state = new SpoofaxProjectState();
+    @Nullable public final SpoofaxProjectState getState() { return this.state; }
+    public final void loadState(@Nullable final SpoofaxProjectState value) { this.state = value; }
 
     @NotNull
     @Override
-    public SpoofaxProjectConfig createCopy() {
+    public final SpoofaxProjectConfig createCopy() {
         return new SpoofaxProjectConfig();
     }
 
     @Override
-    public void applyChanges(@NotNull SpoofaxProjectConfig modified) {
+    public final void applyChanges(@NotNull final SpoofaxProjectConfig modified) {
         this.state = modified.state;
     }
 }

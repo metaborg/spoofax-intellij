@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.JpsModel;
 import org.jetbrains.jps.model.JpsUrlList;
 import org.jetbrains.jps.model.module.JpsModule;
@@ -26,28 +27,21 @@ import java.util.List;
 @Singleton
 public final class JpsProjectService implements IJpsProjectService {
 
+    @NotNull
     private final List<SpoofaxJpsProject> projects = new ArrayList<>();
-    private final IResourceService resourceService;
+    @NotNull private final IResourceService resourceService;
 
-    @Inject private JpsProjectService(IResourceService resourceService) {
+    @Inject private JpsProjectService(@NotNull final IResourceService resourceService) {
         this.resourceService = resourceService;
     }
-
-//    /**
-//     * {@inheritDoc}
-//     */
-//    public void add(SpoofaxJpsProject project) {
-//        Preconditions.checkNotNull(project);
-//
-//        this.projects.add(project);
-//    }
 
     /**
      * {@inheritDoc}
      */
-    public SpoofaxJpsProject create(JpsModule module) {
-        FileObject location = resourceService.resolve(module.getContentRootsList().getUrls().get(0));
-        SpoofaxJpsProject project = new SpoofaxJpsProject(module, location);
+    @NotNull
+    public SpoofaxJpsProject create(@NotNull final JpsModule module) {
+        final FileObject location = resourceService.resolve(module.getContentRootsList().getUrls().get(0));
+        final SpoofaxJpsProject project = new SpoofaxJpsProject(module, location);
         this.projects.add(project);
         return project;
     }
@@ -57,7 +51,7 @@ public final class JpsProjectService implements IJpsProjectService {
      */
     @Nullable
     @Override
-    public SpoofaxJpsProject get(FileObject resource) {
+    public SpoofaxJpsProject get(@NotNull final FileObject resource) {
         for (SpoofaxJpsProject project : this.projects) {
             JpsModule module = project.module();
             if (isInContentRoot(module, resource))
@@ -70,7 +64,7 @@ public final class JpsProjectService implements IJpsProjectService {
      * {@inheritDoc}
      */
     @Nullable
-    public SpoofaxJpsProject get(JpsModule module) {
+    public SpoofaxJpsProject get(@NotNull final JpsModule module) {
         for (SpoofaxJpsProject project : this.projects) {
             if (project.module().equals(module))
                 return project;
@@ -78,8 +72,8 @@ public final class JpsProjectService implements IJpsProjectService {
         return null;
     }
 
-    private boolean isInContentRoot(JpsModule module, FileObject resource) {
-        JpsUrlList contentRootsList = module.getContentRootsList();
+    private boolean isInContentRoot(@NotNull final JpsModule module, @NotNull final FileObject resource) {
+        final JpsUrlList contentRootsList = module.getContentRootsList();
         for (String url : contentRootsList.getUrls()) {
             if (hasDescendant(url, resource))
                 return true;
@@ -87,10 +81,10 @@ public final class JpsProjectService implements IJpsProjectService {
         return false;
     }
 
-    private boolean hasDescendant(String ancestor, FileObject descendant) {
-        FileObject contentRoot = this.resourceService.resolve(ancestor);
-        FileName lhs = contentRoot.getName();
-        FileName rhs = descendant.getName();
+    private boolean hasDescendant(@NotNull final String ancestor, @NotNull final FileObject descendant) {
+        final FileObject contentRoot = this.resourceService.resolve(ancestor);
+        final FileName lhs = contentRoot.getName();
+        final FileName rhs = descendant.getName();
         return lhs.equals(rhs) || lhs.isDescendent(rhs);
     }
 

@@ -2,30 +2,34 @@ package org.metaborg.spoofax.intellij.serialization;
 
 import com.intellij.util.xmlb.XmlSerializer;
 import org.jdom.Element;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.JpsGlobal;
 import org.jetbrains.jps.model.serialization.JpsGlobalExtensionSerializer;
 
-public class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
+import javax.annotation.Nullable;
 
+public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
+
+    @NotNull
     public static final String NAME = "SpoofaxGlobalService";
-    public static final String CONFIG_FILE = "Spoofax.xml";
+    @NotNull public static final String CONFIG_FILE = "Spoofax.xml";
 
     public SpoofaxGlobalSerializer() {
         super(CONFIG_FILE, NAME);
     }
 
     @Override
-    public void loadExtensionWithDefaultSettings(JpsGlobal global) {
+    public final void loadExtensionWithDefaultSettings(@NotNull final JpsGlobal global) {
         loadExtensionWithState(global, null);
     }
 
     @Override
-    public void loadExtension(JpsGlobal global, Element element) {
-        SpoofaxGlobalState state = XmlSerializer.deserialize(element, SpoofaxGlobalState.class);
+    public final void loadExtension(@NotNull final JpsGlobal global, @NotNull final Element element) {
+        final SpoofaxGlobalState state = XmlSerializer.deserialize(element, SpoofaxGlobalState.class);
         loadExtensionWithState(global, state);
     }
 
-    private void loadExtensionWithState(JpsGlobal global, SpoofaxGlobalState state)
+    private final void loadExtensionWithState(@NotNull final JpsGlobal global, @Nullable final SpoofaxGlobalState state)
     {
         final SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();
         if (state != null)
@@ -34,7 +38,7 @@ public class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
     }
 
     @Override
-    public void saveExtension(JpsGlobal jpsGlobal, Element element) {
+    public final void saveExtension(@NotNull final JpsGlobal jpsGlobal, @NotNull final Element element) {
         throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
     }
 }

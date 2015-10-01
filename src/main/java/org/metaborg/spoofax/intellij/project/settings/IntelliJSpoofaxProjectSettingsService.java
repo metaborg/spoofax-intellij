@@ -2,6 +2,7 @@ package org.metaborg.spoofax.intellij.project.settings;
 
 import com.google.inject.Inject;
 import groovy.lang.Singleton;
+import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.ProjectException;
 import org.metaborg.core.project.settings.IProjectSettings;
@@ -11,17 +12,17 @@ import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 @Singleton
 public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProjectSettingsService {
 
-    private final IProjectSettingsService2 projectSettingsService;
+    @NotNull private final IProjectSettingsService2 projectSettingsService;
 
     @Inject
-    private IntelliJSpoofaxProjectSettingsService(IProjectSettingsService2 projectSettingsService) {
+    private IntelliJSpoofaxProjectSettingsService(@NotNull final IProjectSettingsService2 projectSettingsService) {
         this.projectSettingsService = projectSettingsService;
     }
 
     @Override
-    public SpoofaxProjectSettings get(IProject project) throws ProjectException {
-        IProjectSettings settings = this.projectSettingsService.get(project);
-        SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, project.location());
+    public SpoofaxProjectSettings get(@NotNull final IProject project) throws ProjectException {
+        final IProjectSettings settings = this.projectSettingsService.get(project);
+        final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, project.location());
 
         // TODO: Read these special settings:
 //        Format format;

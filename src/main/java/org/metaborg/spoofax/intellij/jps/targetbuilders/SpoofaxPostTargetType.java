@@ -7,16 +7,16 @@ import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 
 public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTarget> {
 
-    private final SpoofaxPreTargetType preTargetType;
+    @NotNull private final SpoofaxPreTargetType preTargetType;
 
     @Inject
-    private SpoofaxPostTargetType(@NotNull IJpsProjectService projectService, @NotNull SpoofaxPreTargetType preTargetType) {
+    private SpoofaxPostTargetType(@NotNull final IJpsProjectService projectService, @NotNull final SpoofaxPreTargetType preTargetType) {
         super("spoofax-post-production", projectService);
         this.preTargetType = preTargetType;
     }
 
     @NotNull
-    public SpoofaxPostTarget createTarget(@NotNull SpoofaxJpsProject project) {
+    public final SpoofaxPostTarget createTarget(@NotNull final SpoofaxJpsProject project) {
         return new SpoofaxPostTarget(project, this, this.preTargetType);
     }
 

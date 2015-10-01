@@ -11,7 +11,9 @@ import org.apache.commons.vfs2.provider.AbstractFileName;
 import org.apache.commons.vfs2.provider.AbstractFileObject;
 import org.apache.commons.vfs2.provider.AbstractFileSystem;
 import org.apache.commons.vfs2.util.RandomAccessMode;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +24,7 @@ import java.util.Map;
 /**
  * A file object in the IntelliJ VFS.
  */
-public class IntelliJFileObject extends AbstractFileObject {
+public final class IntelliJFileObject extends AbstractFileObject {
 
     // NOTE: The Eclipse implementation can use the `isAttached()` method instead of tracking `attached` itself.
     // I believe it can even do without `isAttached()`, as `doAttach` is never called for an attached resource,
@@ -33,6 +35,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     /**
      * The IntelliJ VirtualFile object.
      */
+    @Nullable
     private VirtualFile file = null;
 
     /**
@@ -40,7 +43,7 @@ public class IntelliJFileObject extends AbstractFileObject {
      * @param name The name of the file.
      * @param fs The file system.
      */
-    public IntelliJFileObject(AbstractFileName name, AbstractFileSystem fs) {
+    public IntelliJFileObject(@NotNull AbstractFileName name, @NotNull AbstractFileSystem fs) {
         super(name, fs);
     }
 
@@ -48,12 +51,13 @@ public class IntelliJFileObject extends AbstractFileObject {
      * Returns the associated IntelliJ virtual file.
      * @return The associated VirtualFile; or <code>null</code> when the file object wasn't attached.
      */
-    public VirtualFile getIntelliJFile() {
+    @Nullable
+    public final VirtualFile getIntelliJFile() {
         return this.file;
     }
 
     @Override
-    protected void doAttach() throws Exception {
+    protected final void doAttach() throws Exception {
         assert(!isAttached());
         assert(this.file == null);
 
@@ -61,7 +65,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected void doDetach() throws Exception {
+    protected final void doDetach() throws Exception {
         assert(isAttached());
         assert(this.file != null);
 
@@ -69,7 +73,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected void onChange() throws Exception {
+    protected final void onChange() throws Exception {
         assert(isAttached());
 
         // Re-attach.
@@ -78,7 +82,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected FileType doGetType() throws Exception {
+    protected final FileType doGetType() throws Exception {
         assert(isAttached());
 
         if (!file.exists())
@@ -90,7 +94,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected boolean doIsHidden() throws Exception {
+    protected final boolean doIsHidden() throws Exception {
         if (this.file != null)
             return this.file.is(VFileProperty.HIDDEN);
         else
@@ -98,7 +102,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected boolean doIsReadable() throws Exception {
+    protected final boolean doIsReadable() throws Exception {
         if (this.file != null)
             // There is no property for this?
             return true;
@@ -107,14 +111,14 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected boolean doIsWriteable() throws Exception {
+    protected final boolean doIsWriteable() throws Exception {
         if (this.file != null)
             return this.file.isWritable();
         else
             return new File(this.getName().getPath()).canWrite();
     }
 
-    protected boolean doIsExecutable() throws Exception {
+    protected final boolean doIsExecutable() throws Exception {
         if (this.file != null)
             // There is no property for this?
             return false;
@@ -123,32 +127,34 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected long doGetLastModifiedTime() throws Exception {
+    protected final long doGetLastModifiedTime() throws Exception {
         return super.doGetLastModifiedTime();
     }
 
     @Override
-    protected boolean doSetLastModifiedTime(long modtime) throws Exception {
+    protected final boolean doSetLastModifiedTime(final long modtime) throws Exception {
         return super.doSetLastModifiedTime(modtime);
     }
 
     @Override
-    protected Map<String, Object> doGetAttributes() throws Exception {
+    @NotNull
+    protected final Map<String, Object> doGetAttributes() throws Exception {
         return super.doGetAttributes();
     }
 
     @Override
-    protected void doSetAttribute(String attrName, Object value) throws Exception {
+    protected final void doSetAttribute(@NotNull final String attrName, @Nullable final Object value) throws Exception {
         super.doSetAttribute(attrName, value);
     }
 
     @Override
-    protected void doRemoveAttribute(String attrName) throws Exception {
+    protected final void doRemoveAttribute(@NotNull final String attrName) throws Exception {
         super.doRemoveAttribute(attrName);
     }
 
     @Override
-    protected String[] doListChildren() throws Exception {
+    @NotNull
+    protected final String[] doListChildren() throws Exception {
         assert(isAttached());
 
         // This is essentially a complex way to write:
@@ -162,7 +168,8 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected FileObject[] doListChildrenResolved() throws Exception {
+    @NotNull
+    protected final FileObject[] doListChildrenResolved() throws Exception {
         assert(isAttached());
 
         // This is essentially a complex way to write:
@@ -176,21 +183,21 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected long doGetContentSize() throws Exception {
+    protected final long doGetContentSize() throws Exception {
         assert(isAttached());
 
         return file.getLength();
     }
 
     @Override
-    protected InputStream doGetInputStream() throws Exception {
+    protected final InputStream doGetInputStream() throws Exception {
         assert(isAttached());
 
         return file.getInputStream();
     }
 
     @Override
-    protected OutputStream doGetOutputStream(boolean append) throws Exception {
+    protected final OutputStream doGetOutputStream(final boolean append) throws Exception {
         assert(isAttached());
 
         // NOTE: Because the file system has the Capability.APPEND_CONTENT capability,
@@ -202,7 +209,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected RandomAccessContent doGetRandomAccessContent(RandomAccessMode mode) throws Exception {
+    protected final RandomAccessContent doGetRandomAccessContent(@NotNull final RandomAccessMode mode) throws Exception {
         assert(isAttached());
 
         // FIXME: Implement this.
@@ -210,7 +217,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected void doCreateFolder() throws Exception {
+    protected final void doCreateFolder() throws Exception {
         assert(isAttached());
 
         ApplicationManager.getApplication().runWriteAction(() -> {
@@ -223,7 +230,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected void doRename(FileObject newfile) throws Exception {
+    protected final void doRename(@NotNull final FileObject newfile) throws Exception {
         assert(isAttached());
 
         ApplicationManager.getApplication().runWriteAction(() -> {
@@ -236,7 +243,7 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected void doDelete() throws Exception {
+    protected final void doDelete() throws Exception {
         assert(isAttached());
 
         ApplicationManager.getApplication().runWriteAction(() -> {
@@ -249,7 +256,8 @@ public class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected Certificate[] doGetCertificates() throws Exception {
+    @NotNull
+    protected final Certificate[] doGetCertificates() throws Exception {
         return super.doGetCertificates();
     }
 }

@@ -1,6 +1,7 @@
 package org.metaborg.spoofax.intellij;
 
 import com.google.common.base.Preconditions;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildRootDescriptor;
 import org.jetbrains.jps.builders.BuildTarget;
 
@@ -9,37 +10,38 @@ import java.io.File;
 /**
  * Describes a source root for the Spoofax build target.
  */
-public class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
+public final class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
 
+    @NotNull
     private final File root;
-    private final BuildTarget<?> target;
+    @NotNull private final BuildTarget<?> target;
 
     /**
      * Initializes a new instance of the {@link SpoofaxSourceRootDescriptor} class.
      * @param root The directory of the source root.
      * @param target The build target to which the source root belongs.
      */
-    public SpoofaxSourceRootDescriptor(File root, BuildTarget<?> target)
+    public SpoofaxSourceRootDescriptor(@NotNull final File root, @NotNull final BuildTarget<?> target)
     {
-        Preconditions.checkNotNull(root);
-        Preconditions.checkNotNull(target);
-
         this.root = root;
         this.target = target;
     }
 
     @Override
-    public String getRootId() {
+    @NotNull
+    public final String getRootId() {
         return this.root.getAbsolutePath();
     }
 
     @Override
-    public File getRootFile() {
+    @NotNull
+    public final File getRootFile() {
         return this.root;
     }
 
     @Override
-    public BuildTarget<?> getTarget() {
+    @NotNull
+    public final BuildTarget<?> getTarget() {
         return this.target;
     }
 

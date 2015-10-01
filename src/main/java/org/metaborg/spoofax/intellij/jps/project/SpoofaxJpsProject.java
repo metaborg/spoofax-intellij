@@ -1,6 +1,7 @@
 package org.metaborg.spoofax.intellij.jps.project;
 
 import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.module.JpsModule;
 import org.metaborg.core.project.IProject;
 
@@ -9,21 +10,21 @@ import org.metaborg.core.project.IProject;
  */
 public final class SpoofaxJpsProject implements IProject {
 
-    private final FileObject location;
-    private final JpsModule module;
+    @NotNull private final FileObject location;
+    @NotNull private final JpsModule module;
 
     @Override
-    public FileObject location() {
+    @NotNull public FileObject location() {
         return this.location;
     }
 
-    public JpsModule module() { return this.module; }
+    @NotNull public JpsModule module() { return this.module; }
 
     /**
      * Initializes a new instance of the {@link SpoofaxJpsProject} class.
      * @param location The location of the project root.
      */
-    public SpoofaxJpsProject(JpsModule module, FileObject location) {
+    public SpoofaxJpsProject(@NotNull final JpsModule module, @NotNull final FileObject location) {
         this.module = module;
         // TODO: Get location from JpsModule?
         // NOTE: A module can have multiple content roots, or none at all.

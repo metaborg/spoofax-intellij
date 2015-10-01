@@ -24,18 +24,8 @@ public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
     protected void configure() {
         super.configure();
 
-        bindBuildTargets();
-
-        //bind(Project.class).toInstance(project);
-
         bind(LanguageManager.class).in(Singleton.class);
     }
-/*
-    @Override
-    protected void bindMavenProject() {
-        //bind(IMavenProjectService.class).to(IntelliJMavenProjectService.class).in(Singleton.class);
-    }
-*/
 
     @Override
     protected void bindProjectSettings() {
@@ -50,9 +40,5 @@ public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
         bind(IResourceService.class).to(IntelliJResourceService.class).in(Singleton.class);
         bind(IIntelliJResourceService.class).to(IntelliJResourceService.class).in(Singleton.class);
         bind(FileSystemManager.class).toProvider(IntelliJFileSystemManagerProvider.class).in(Singleton.class);
-    }
-
-    protected void bindBuildTargets() {
-
     }
 }

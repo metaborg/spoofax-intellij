@@ -7,7 +7,7 @@ import org.jetbrains.jps.model.JpsProject;
 import org.jetbrains.jps.service.JpsServiceManager;
 
 public abstract class SpoofaxExtensionService {
-    public static SpoofaxExtensionService getInstance() {
+    public final static SpoofaxExtensionService getInstance() {
         return JpsServiceManager.getInstance().getService(SpoofaxExtensionService.class);
     }
 

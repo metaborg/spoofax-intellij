@@ -3,6 +3,7 @@ package org.metaborg.spoofax.intellij.serialization;
 import com.google.common.base.Preconditions;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @State(
@@ -14,35 +15,35 @@ import org.jetbrains.annotations.Nullable;
 )
 public final class SpoofaxProjectService implements PersistentStateComponent<SpoofaxProjectState> {
 
-    private SpoofaxProjectState state;
+    @Nullable private SpoofaxProjectState state;
 
     public SpoofaxProjectService() {
         state = new SpoofaxProjectState();
     }
 
-    public static SpoofaxProjectService getInstance(Project project) {
-        Preconditions.checkNotNull(project);
-        SpoofaxProjectService service = ServiceManager.getService(project, SpoofaxProjectService.class);
+    @NotNull
+    public final static SpoofaxProjectService getInstance(@NotNull final Project project) {
+        final SpoofaxProjectService service = ServiceManager.getService(project, SpoofaxProjectService.class);
         assert service != null;
         return service;
     }
 
-    @Nullable @Override public SpoofaxProjectState getState() { return this.state; }
+    @Nullable @Override public final SpoofaxProjectState getState() { return this.state; }
 
     @Override
-    public void loadState(SpoofaxProjectState state) {
+    public final void loadState(@Nullable final SpoofaxProjectState state) {
         this.state = state;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if (!(obj instanceof SpoofaxProjectService))
             return false;
         return this.state.equals(((SpoofaxProjectService)obj).state);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return this.state.hashCode();
     }
 }

@@ -17,26 +17,26 @@ import java.util.List;
  */
 public final class SpoofaxPostTarget extends SpoofaxTarget {
 
-    private final SpoofaxPreTargetType preTargetType;
+    @NotNull private final SpoofaxPreTargetType preTargetType;
 
-    public SpoofaxPostTarget(@NotNull SpoofaxJpsProject project, @NotNull SpoofaxPostTargetType targetType, @NotNull SpoofaxPreTargetType preTargetType) {
+    public SpoofaxPostTarget(@NotNull final SpoofaxJpsProject project, @NotNull final SpoofaxPostTargetType targetType, @NotNull final SpoofaxPreTargetType preTargetType) {
         super(project, targetType);
         this.preTargetType = preTargetType;
     }
 
     @NotNull
     @Override
-    public String getPresentableName() {
+    public final String getPresentableName() {
         return "Spoofax POST target 2 '" + getId() + "'";
     }
 
     @Override
-    public boolean isCompiledBeforeModuleLevelBuilders() {
+    public final boolean isCompiledBeforeModuleLevelBuilders() {
         return false;
     }
 
     @Override
-    public Collection<BuildTarget<?>> computeDependencies(BuildTargetRegistry buildTargetRegistry, TargetOutputIndex targetOutputIndex) {
+    public final Collection<BuildTarget<?>> computeDependencies(@NotNull final BuildTargetRegistry buildTargetRegistry, @NotNull final TargetOutputIndex targetOutputIndex) {
         final List<BuildTarget<?>> dependencies = new ArrayList<>();
         dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
         dependencies.add(this.preTargetType.createTarget(super.myModule));

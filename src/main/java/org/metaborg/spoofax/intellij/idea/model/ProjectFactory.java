@@ -1,22 +1,18 @@
 package org.metaborg.spoofax.intellij.idea.model;
 
-import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.NotNull;
 
 public final class ProjectFactory {
-
-    //private final IIntelliJResourceService resourceService;
 
     /**
      * Creates a new instance of the @link{ProjectFactory} class.
      */
-    //@Inject
-    public ProjectFactory() //IIntelliJResourceService resourceService)
+    @Inject
+    private ProjectFactory()
     {
-        //Preconditions.checkNotNull(resourceService);
-
-        //this.resourceService = resourceService;
     }
 
     /**
@@ -25,10 +21,9 @@ public final class ProjectFactory {
      * @param intellijModule The IntelliJ module.
      * @param contentPath Where the module lives.
      */
-    public IntelliJProject create(Module intellijModule, FileObject contentPath)
+    @NotNull
+    public final IntelliJProject create(@NotNull final Module intellijModule, @NotNull final FileObject contentPath)
     {
-        Preconditions.checkNotNull(intellijModule);
-
         return new IntelliJProject(intellijModule, contentPath);
     }
 }

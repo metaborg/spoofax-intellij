@@ -2,6 +2,7 @@ package org.metaborg.spoofax.intellij.resources;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.resource.IResourceService;
 
 import javax.annotation.Nullable;
@@ -17,7 +18,8 @@ public interface IIntelliJResourceService extends IResourceService {
      * @param resource The IntelliJ resource to convert.
      * @return The corresponding VFS resource.
      */
-    FileObject resolve(VirtualFile resource);
+    @NotNull
+    FileObject resolve(@NotNull VirtualFile resource);
 
     /**
      * Converts a VFS resource into an IntelliJ resource, if possible.
@@ -27,6 +29,6 @@ public interface IIntelliJResourceService extends IResourceService {
      * or <code>null</code> if it could not be converted.
      */
     @Nullable
-    VirtualFile unresolve(FileObject resource);
+    VirtualFile unresolve(@NotNull FileObject resource);
 
 }

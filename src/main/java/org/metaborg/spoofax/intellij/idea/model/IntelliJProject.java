@@ -3,6 +3,7 @@ package org.metaborg.spoofax.intellij.idea.model;
 import com.google.common.base.Preconditions;
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProject;
 
 /**
@@ -11,19 +12,19 @@ import org.metaborg.core.project.IProject;
  * @author Daniël Pelsmaeker
  * @since 1.0
  */
-public class IntelliJProject implements IProject {
+public final class IntelliJProject implements IProject {
 
-    private final Module ideModule;
-    private final FileObject location;
+    @NotNull private final Module ideModule;
+    @NotNull private final FileObject location;
 
     /**
      * Gets the IDE-specific project object.
      * @return The IDE's project object.
      */
-    public Module getIdeModule() { return this.ideModule; }
+    @NotNull public final Module getIdeModule() { return this.ideModule; }
 
     @Override
-    public FileObject location() {
+    @NotNull public final FileObject location() {
         return this.location;
     }
 
@@ -35,11 +36,8 @@ public class IntelliJProject implements IProject {
      * @param ideModule The IDE-specific module object.
      * @param location The project root location.
      */
-    public IntelliJProject(Module ideModule, FileObject location)
+    public IntelliJProject(@NotNull final Module ideModule, @NotNull final FileObject location)
     {
-        Preconditions.checkNotNull(ideModule);
-        Preconditions.checkNotNull(location);
-
         this.ideModule = ideModule;
         this.location = location;
     }

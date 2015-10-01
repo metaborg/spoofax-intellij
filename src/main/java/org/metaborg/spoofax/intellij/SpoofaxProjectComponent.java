@@ -7,36 +7,36 @@ import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
 
 public final class SpoofaxProjectComponent implements ProjectComponent {
 
-    private final Project project;
+    @NotNull private final Project project;
 
-    public SpoofaxProjectComponent(Project project)
+    public SpoofaxProjectComponent(@NotNull Project project)
     {
      this.project = project;
     }
 
     @Override
-    public void projectOpened() {
+    public final void projectOpened() {
         SpoofaxProjectService.getInstance(this.project).getState().setMyName("Project name!");
     }
 
     @Override
-    public void projectClosed() {
+    public final void projectClosed() {
 
     }
 
     @Override
-    public void initComponent() {
+    public final void initComponent() {
 
     }
 
     @Override
-    public void disposeComponent() {
+    public final void disposeComponent() {
 
     }
 
     @NotNull
     @Override
-    public String getComponentName() {
+    public final String getComponentName() {
         return this.getClass().getName();
     }
 }

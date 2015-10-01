@@ -27,12 +27,12 @@ import java.util.List;
  */
 public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
 
-    private final SpoofaxJpsProject project;
+    @NotNull private final SpoofaxJpsProject project;
     /**
      * Gets the project that is being built.
      * @return The project.
      */
-    public SpoofaxJpsProject project() {
+    @NotNull public final SpoofaxJpsProject project() {
         return this.project;
     }
 
@@ -41,23 +41,25 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      * @param project The project being built.
      * @param targetType The target type.
      */
-    protected SpoofaxTarget(@NotNull SpoofaxJpsProject project, @NotNull ModuleBasedBuildTargetType<?> targetType) {
+    protected SpoofaxTarget(@NotNull final SpoofaxJpsProject project, @NotNull final ModuleBasedBuildTargetType<?> targetType) {
         super(targetType, project.module());
         this.project = project;
     }
 
     @Override
-    public boolean isTests() {
+    public final boolean isTests() {
         // Default implementation.
         return false;
     }
 
+    @NotNull
     private final SpoofaxTargetType<?> getSpoofaxTargetType() {
         // Default implementation.
         return (SpoofaxTargetType<?>)getTargetType();
     }
 
     @Override
+    @NotNull
     public final String getId() {
         // Default implementation.
         return super.myModule.getName();
@@ -65,7 +67,7 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
 
     @NotNull
     @Override
-    public final List<SpoofaxSourceRootDescriptor> computeRootDescriptors(JpsModel jpsModel, ModuleExcludeIndex moduleExcludeIndex, IgnoredFileIndex ignoredFileIndex, BuildDataPaths buildDataPaths) {
+    public final List<SpoofaxSourceRootDescriptor> computeRootDescriptors(@NotNull final JpsModel jpsModel, @NotNull final ModuleExcludeIndex moduleExcludeIndex, @NotNull final IgnoredFileIndex ignoredFileIndex, @NotNull final BuildDataPaths buildDataPaths) {
         // Default implementation.
         List<SpoofaxSourceRootDescriptor> result = new ArrayList<>();
         JavaSourceRootType type = isTests() ? JavaSourceRootType.TEST_SOURCE : JavaSourceRootType.SOURCE;
@@ -77,14 +79,14 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
 
     @Nullable
     @Override
-    public final SpoofaxSourceRootDescriptor findRootDescriptor(String rootId, BuildRootIndex rootIndex) {
+    public final SpoofaxSourceRootDescriptor findRootDescriptor(@NotNull final String rootId, @NotNull final BuildRootIndex rootIndex) {
         // Default implementation.
         return ContainerUtil.getFirstItem(rootIndex.getRootDescriptors(new File(rootId), Collections.singletonList(getSpoofaxTargetType()), null));
     }
 
     @NotNull
     @Override
-    public final Collection<File> getOutputRoots(CompileContext compileContext) {
+    public final Collection<File> getOutputRoots(@NotNull final CompileContext compileContext) {
         // Default implementation.
         return ContainerUtil.createMaybeSingletonList(JpsJavaExtensionService.getInstance().getOutputDirectory(super.myModule, isTests()));
     }

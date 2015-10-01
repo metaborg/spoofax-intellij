@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Singleton
-public class JpsSpoofaxModelSerializerExtension extends JpsModelSerializerExtension {
+public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializerExtension {
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -26,31 +26,19 @@ public class JpsSpoofaxModelSerializerExtension extends JpsModelSerializerExtens
 
     @NotNull
     @Override
-    public List<? extends JpsGlobalExtensionSerializer> getGlobalExtensionSerializers() {
+    public final List<? extends JpsGlobalExtensionSerializer> getGlobalExtensionSerializers() {
         return Collections.singletonList(new SpoofaxGlobalSerializer());
     }
 
     @NotNull
     @Override
-    public List<? extends JpsProjectExtensionSerializer> getProjectExtensionSerializers() {
-        //Arrays.asList(new SpoofaxProjectSerializer());
+    public final List<? extends JpsProjectExtensionSerializer> getProjectExtensionSerializers() {
         return Collections.singletonList(new SpoofaxProjectSerializer());
     }
 
     @NotNull
     @Override
-    public List<? extends JpsModulePropertiesSerializer<?>> getModulePropertiesSerializers() {
+    public final List<? extends JpsModulePropertiesSerializer<?>> getModulePropertiesSerializers() {
         return Collections.singletonList(new SpoofaxModuleSerializer());
-        /*
-        return Collections.singletonList(new JpsModulePropertiesSerializer<JpsDummyElement>(JpsSpoofaxModuleType.INSTANCE, "SPOOFAX_MODULE", null) {
-            @Override
-            public JpsDummyElement loadProperties(@Nullable Element componentElement) {
-                return JpsElementFactory.getInstance().createDummyElement();
-            }
-
-            @Override
-            public void saveProperties(@NotNull JpsDummyElement properties, @NotNull Element componentElement) {
-            }
-        });*/
     }
 }

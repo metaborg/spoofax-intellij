@@ -3,6 +3,7 @@ package org.metaborg.spoofax.intellij.project.settings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.YAMLProjectSettingsSerializer;
@@ -17,24 +18,26 @@ import java.io.IOException;
  */
 @Singleton
 public final class YamlProjectSettingsService implements IProjectSettingsService2 {
+    @NotNull
     private static final Logger logger = LoggerFactory.getLogger(IntelliJProjectSettingsService.class);
 
     /**
      * Path to the project settings file, relative to the project's root.
      */
-    private static final String SETTINGS_FILE = "spoofax-project.yaml";
+    @NotNull  private static final String SETTINGS_FILE = "spoofax-project.yaml";
 
-    private final IResourceService resourceService;
+    @NotNull private final IResourceService resourceService;
 
     @Inject
-    private YamlProjectSettingsService(IResourceService resourceService) {
+    private YamlProjectSettingsService(@NotNull final IResourceService resourceService) {
         this.resourceService = resourceService;
     }
 
     @Override
-    public IProjectSettings create() {
-        String url = this.getClass().getClassLoader().getResource("defaultsettings.yaml").toString();
-        FileObject defaultSettings = this.resourceService.resolve(url);
+    @NotNull
+    public final IProjectSettings create() {
+        final String url = this.getClass().getClassLoader().getResource("defaultsettings.yaml").toString();
+        final FileObject defaultSettings = this.resourceService.resolve(url);
 
         try {
             return YAMLProjectSettingsSerializer.read(defaultSettings);
@@ -45,8 +48,9 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
     }
 
     @Override
-    public IProjectSettings get(IProject project) {
-        FileObject location = project.location();
+    @NotNull
+    public IProjectSettings get(@NotNull final IProject project) {
+        final FileObject location = project.location();
         try {
             final FileObject settingsFile = location.resolveFile(SETTINGS_FILE);
             if(!settingsFile.exists()) {
@@ -61,8 +65,9 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
     }
 
     @Override
-    public void set(IProject project, IProjectSettings settings) {
-        FileObject location = project.location();
+    @NotNull
+    public void set(@NotNull final IProject project, @NotNull final IProjectSettings settings) {
+        final FileObject location = project.location();
         try {
             final FileObject settingsFile = location.resolveFile(SETTINGS_FILE);
             YAMLProjectSettingsSerializer.write(settingsFile, settings);

@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Controls the list of build targetbuilders when Make is invoked for a particular scope.
  */
-public class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
+public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
 
     private SpoofaxPostTargetType postTargetType;
 
@@ -36,7 +36,7 @@ public class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
 
     @NotNull
     @Override
-    public List<TargetTypeBuildScope> getBuildTargetScopes(CompileScope baseScope, CompilerFilter filter, Project project, boolean forceBuild) {
+    public List<TargetTypeBuildScope> getBuildTargetScopes(@NotNull final CompileScope baseScope, @NotNull final CompilerFilter filter, @NotNull final Project project, boolean forceBuild) {
         return Collections.singletonList(CmdlineProtoUtil.createAllTargetsScope(postTargetType, forceBuild));
     }
 }

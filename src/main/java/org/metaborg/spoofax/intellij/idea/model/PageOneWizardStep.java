@@ -1,11 +1,13 @@
 package org.metaborg.spoofax.intellij.idea.model;
 
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class PageOneWizardStep extends ModuleWizardStep {
+public final class PageOneWizardStep extends ModuleWizardStep {
 
+    @NotNull
     private final PageOne step;
 
     public PageOneWizardStep() {
@@ -13,12 +15,12 @@ public class PageOneWizardStep extends ModuleWizardStep {
     }
 
     @Override
-    public JComponent getComponent() {
+    @NotNull public final JComponent getComponent() {
         return step.getPanel();
     }
 
     @Override
-    public void updateDataModel() {
+    public final void updateDataModel() {
 
     }
 }

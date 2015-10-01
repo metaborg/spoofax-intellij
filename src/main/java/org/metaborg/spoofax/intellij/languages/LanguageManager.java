@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
+import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.core.language.ILanguageDiscoveryService;
@@ -23,20 +24,21 @@ import java.util.List;
  */
 @Singleton
 public final class LanguageManager {
+    @NotNull
     private final Logger logger = LoggerFactory.getLogger(LanguageManager.class);
 
-    private final ILanguageService languageService;
-    private final ILanguageDiscoveryService discoveryService;
-    private final IResourceService resourceService;
+    @NotNull private final ILanguageService languageService;
+    @NotNull private final ILanguageDiscoveryService discoveryService;
+    @NotNull private final IResourceService resourceService;
 
     @Inject
-    private LanguageManager(ILanguageService languageService, ILanguageDiscoveryService discoveryService, IResourceService resourceService) {
+    private LanguageManager(@NotNull final ILanguageService languageService, @NotNull final ILanguageDiscoveryService discoveryService, @NotNull final IResourceService resourceService) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
         this.resourceService = resourceService;
     }
 
-    public void loadMetaLanguages() {
+    public final void loadMetaLanguages() {
         loadLanguage("org.metaborg.meta.lang.esv-1.5.0-SNAPSHOT");
         loadLanguage("org.metaborg.meta.lang.nabl-1.5.0-SNAPSHOT");
         loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-SNAPSHOT");
@@ -49,15 +51,15 @@ public final class LanguageManager {
         loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-baseline-20150905-200051");
     }
 
-    private void loadLanguage(String id) {
-        URL url = this.getClass().getClassLoader().getResource("meta-languages/" + id + ".spoofax-language");
+    private final void loadLanguage(@NotNull final String id) {
+        final URL url = this.getClass().getClassLoader().getResource("meta-languages/" + id + ".spoofax-language");
         if (url == null)
         {
             logger.error("Meta language '" + id + "' could not be resolved to a class path.");
             return;
         }
-        String zipUri = "zip://" + url.getPath();
-        FileObject file = this.resourceService.resolve(zipUri);
+        final String zipUri = "zip://" + url.getPath();
+        final FileObject file = this.resourceService.resolve(zipUri);
         try {
             if (!file.exists())
             {
@@ -69,7 +71,7 @@ public final class LanguageManager {
         }
         try {
             final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(file);
-            List<ILanguageImpl> lis = new ArrayList<ILanguageImpl>();
+            final List<ILanguageImpl> lis = new ArrayList<ILanguageImpl>();
             for (ILanguageComponent c : discovery)
             {
                 for (ILanguageImpl li : c.contributesTo())

@@ -3,6 +3,7 @@ package org.metaborg.spoofax.intellij.jps;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.jetbrains.jps.incremental.TargetBuilder;
@@ -23,15 +24,10 @@ import java.util.Collections;
  */
 public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyModule {
 
-    //private final JpsModule module;
-
     /**
      * Initializes a new instance of the {@link SpoofaxJpsDependencyModule} class.
      */
-    public SpoofaxJpsDependencyModule() { //JpsModule module) {
-        //Preconditions.checkNotNull(module);
-
-        //this.module = module;
+    public SpoofaxJpsDependencyModule() {
     }
 
     @Override
@@ -53,26 +49,29 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     @Singleton
     @Provides
     @Inject
-    public Collection<BuildTargetType<?>> provideTargetTypes(SpoofaxPreTargetType preTargetType, SpoofaxPostTargetType postTargetType) {
+    @NotNull
+    public final Collection<BuildTargetType<?>> provideTargetTypes(SpoofaxPreTargetType preTargetType, SpoofaxPostTargetType postTargetType) {
         return Arrays.asList(preTargetType, postTargetType);
     }
 
     @Singleton
     @Provides
     @Inject
-    public Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxPreBuilder preBuilder, SpoofaxPostBuilder postBuilder) {
+    @NotNull
+    public final Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxPreBuilder preBuilder, SpoofaxPostBuilder postBuilder) {
         return Arrays.asList(preBuilder, postBuilder);
     }
 
     @Singleton
     @Provides
     @Inject
-    public Collection<ModuleLevelBuilder> provideModuleLevelBuilders() {
+    @NotNull
+    public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders() {
         return Collections.emptyList();
     }
 
     @Override
-    protected void bindProject() {
+    protected final void bindProject() {
         bind(IProjectService.class).to(JpsProjectService.class).in(Singleton.class);
     }
 }

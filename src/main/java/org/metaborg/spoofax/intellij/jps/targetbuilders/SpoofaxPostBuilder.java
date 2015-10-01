@@ -33,14 +33,14 @@ import java.util.List;
 @Singleton
 public final class SpoofaxPostBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxPostTarget> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpoofaxPreBuilder.class);
+    @NotNull private static final Logger logger = LoggerFactory.getLogger(SpoofaxPreBuilder.class);
 
-    private final ISpoofaxProjectSettingsService settingsService;
-    private final SpoofaxMetaBuilder builder;
-    private final JpsProjectService projectService;
+    @NotNull private final ISpoofaxProjectSettingsService settingsService;
+    @NotNull private final SpoofaxMetaBuilder builder;
+    @NotNull private final JpsProjectService projectService;
 
     @Inject
-    public SpoofaxPostBuilder(SpoofaxPostTargetType targetType, ISpoofaxProjectSettingsService settingsService, SpoofaxMetaBuilder builder, JpsProjectService projectService){
+    public SpoofaxPostBuilder(@NotNull final SpoofaxPostTargetType targetType, @NotNull final ISpoofaxProjectSettingsService settingsService, @NotNull final SpoofaxMetaBuilder builder, @NotNull final JpsProjectService projectService){
         super(Collections.singletonList(targetType));
         this.settingsService = settingsService;
         this.builder = builder;
@@ -54,10 +54,10 @@ public final class SpoofaxPostBuilder extends TargetBuilder<SpoofaxSourceRootDes
     }
 
     @Override
-    public void build(@NotNull SpoofaxPostTarget target,
-                      @NotNull DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPostTarget> holder,
-                      @NotNull BuildOutputConsumer consumer,
-                      @NotNull CompileContext context) throws ProjectBuildException, IOException {
+    public void build(@NotNull final SpoofaxPostTarget target,
+                      @NotNull final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPostTarget> holder,
+                      @NotNull final BuildOutputConsumer consumer,
+                      @NotNull final CompileContext context) throws ProjectBuildException, IOException {
 
         try {
             final SpoofaxJpsProject project = projectService.get(target.getModule());
@@ -79,7 +79,7 @@ public final class SpoofaxPostBuilder extends TargetBuilder<SpoofaxSourceRootDes
 
     }
 
-    private void compilePostJava(@NotNull MetaBuildInput input, @Nullable URL[] classpath, @Nullable BuildListener listener, @NotNull CompileContext context) throws Exception, ProjectBuildException {
+    private void compilePostJava(@NotNull final MetaBuildInput input, @Nullable final URL[] classpath, @Nullable final BuildListener listener, @NotNull final CompileContext context) throws Exception, ProjectBuildException {
         context.checkCanceled();
         context.processMessage(BuilderUtils.formatProgress(0f, "Packaging language project {}", input.project));
         this.builder.compilePostJava(input, classpath, listener);

@@ -14,23 +14,23 @@ import java.util.Collections;
  */
 public final class SpoofaxPreTarget extends SpoofaxTarget {
 
-    public SpoofaxPreTarget(@NotNull SpoofaxJpsProject project, @NotNull SpoofaxPreTargetType targetType) {
+    public SpoofaxPreTarget(@NotNull final SpoofaxJpsProject project, @NotNull final SpoofaxPreTargetType targetType) {
         super(project, targetType);
     }
 
     @NotNull
     @Override
-    public String getPresentableName() {
+    public final String getPresentableName() {
         return "Spoofax PRE target 2 '" + getId() + "'";
     }
 
     @Override
-    public boolean isCompiledBeforeModuleLevelBuilders() {
+    public final boolean isCompiledBeforeModuleLevelBuilders() {
         return true;
     }
 
     @Override
-    public Collection<BuildTarget<?>> computeDependencies(BuildTargetRegistry buildTargetRegistry, TargetOutputIndex targetOutputIndex) {
+    public final Collection<BuildTarget<?>> computeDependencies(@NotNull final BuildTargetRegistry buildTargetRegistry, @NotNull final TargetOutputIndex targetOutputIndex) {
         return Collections.emptyList();
     }
 

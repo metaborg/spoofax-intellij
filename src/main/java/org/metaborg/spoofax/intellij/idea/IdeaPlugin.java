@@ -26,15 +26,15 @@ import org.slf4j.LoggerFactory;
  */
 public final class IdeaPlugin implements ApplicationComponent {
 
-    final Logger logger = LoggerFactory.getLogger(IdeaPlugin.class);
+    @NotNull private final Logger logger = LoggerFactory.getLogger(IdeaPlugin.class);
 
-    protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
+    @NotNull protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
 
     /**
      * Gets the injector.
      * @return The current injector.
      */
-    public static Injector injector() {
+    @NotNull public static Injector injector() {
         return injector.get();
     }
 
@@ -51,7 +51,7 @@ public final class IdeaPlugin implements ApplicationComponent {
     }
 
     @Inject @SuppressWarnings("unused")
-    private void inject(ILanguageService languageService, ILanguageDiscoveryService languageDiscoveryService, IResourceService resourceService) {
+    private void inject(@NotNull ILanguageService languageService, @NotNull ILanguageDiscoveryService languageDiscoveryService, @NotNull IResourceService resourceService) {
         this.languageDiscoveryService = languageDiscoveryService;
         this.resourceService = resourceService;
         this.languageService = languageService;
@@ -82,14 +82,11 @@ public final class IdeaPlugin implements ApplicationComponent {
         }
         if (location == null)
             return;
-        Iterable<ILanguageComponent> languageComponents = languageDiscoveryService.discover(location);
+        final Iterable<ILanguageComponent> languageComponents = languageDiscoveryService.discover(location);
 
         System.out.println(this.languageService.getAllLanguages());
 
         SpoofaxGlobalService.getInstance().getState().setMyName("test name!");
-
-
-        //System.out.println(languageComponents.iterator().next().contributesTo());
     }
 
     public void disposeComponent() {

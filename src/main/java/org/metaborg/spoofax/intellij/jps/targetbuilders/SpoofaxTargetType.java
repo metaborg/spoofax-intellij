@@ -17,9 +17,9 @@ import java.util.List;
 
 public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleBasedBuildTargetType<T> {
 
-    private final IJpsProjectService projectService;
+    @NotNull private final IJpsProjectService projectService;
 
-    protected SpoofaxTargetType(@NotNull String typeId, @NotNull IJpsProjectService projectService) {
+    protected SpoofaxTargetType(@NotNull final String typeId, @NotNull final IJpsProjectService projectService) {
         super(typeId);
         this.projectService = projectService;
     }
@@ -28,7 +28,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
     public abstract T createTarget(@NotNull SpoofaxJpsProject project);
 
     @NotNull
-    public final T createTarget(@NotNull JpsModule module) {
+    public final T createTarget(@NotNull final JpsModule module) {
         SpoofaxJpsProject project = projectService.get(module);
         if (project == null)
             project = projectService.create(module);
@@ -37,9 +37,9 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
 
     @NotNull
     @Override
-    public final List<T> computeAllTargets(@NotNull JpsModel model) {
+    public final List<T> computeAllTargets(@NotNull final JpsModel model) {
         // Default implementation.
-        List<T> targets = new ArrayList<>();
+        final List<T> targets = new ArrayList<>();
         for (JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(JpsSpoofaxModuleType.INSTANCE)) {
             targets.add(createTarget(module));
         }
@@ -48,7 +48,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
 
     @NotNull
     @Override
-    public final BuildTargetLoader<T> createLoader(@NotNull JpsModel model) {
+    public final BuildTargetLoader<T> createLoader(@NotNull final JpsModel model) {
         // Default implementation.
         return new BuildTargetLoader<T>() {
             @Nullable

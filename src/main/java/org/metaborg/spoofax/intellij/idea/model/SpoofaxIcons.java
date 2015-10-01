@@ -1,13 +1,16 @@
 package org.metaborg.spoofax.intellij.idea.model;
 
 import com.intellij.openapi.util.IconLoader;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class SpoofaxIcons {
+public final class SpoofaxIcons {
+    @NotNull
     public static final SpoofaxIcons INSTANCE = new SpoofaxIcons();
 
-    public Icon Default;
+    @NotNull
+    public final Icon Default;
 
     private SpoofaxIcons() {
         this.Default = IconLoader.getIcon("/SpoofaxDefault.png");
