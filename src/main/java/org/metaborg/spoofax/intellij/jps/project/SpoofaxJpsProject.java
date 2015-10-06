@@ -10,18 +10,14 @@ import org.metaborg.core.project.IProject;
  */
 public final class SpoofaxJpsProject implements IProject {
 
-    @NotNull private final FileObject location;
-    @NotNull private final JpsModule module;
-
-    @Override
-    @NotNull public FileObject location() {
-        return this.location;
-    }
-
-    @NotNull public JpsModule module() { return this.module; }
+    @NotNull
+    private final FileObject location;
+    @NotNull
+    private final JpsModule module;
 
     /**
      * Initializes a new instance of the {@link SpoofaxJpsProject} class.
+     *
      * @param location The location of the project root.
      */
     public SpoofaxJpsProject(@NotNull final JpsModule module, @NotNull final FileObject location) {
@@ -37,6 +33,17 @@ public final class SpoofaxJpsProject implements IProject {
         //return new SpoofaxJpsProject(this.resourceService.resolve(projectRoot));
 
         this.location = location;
+    }
+
+    @Override
+    @NotNull
+    public FileObject location() {
+        return this.location;
+    }
+
+    @NotNull
+    public JpsModule module() {
+        return this.module;
     }
 
 }

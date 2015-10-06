@@ -2,7 +2,9 @@ package org.metaborg.spoofax.intellij.idea.model;
 
 
 import com.intellij.ide.util.projectWizard.*;
-import com.intellij.openapi.module.*;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.util.ArrayUtil;
@@ -18,17 +20,20 @@ import java.util.ArrayList;
  */
 public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
 
-    @NotNull public static final String ID = "SPOOFAX_MODULE"; // This is also used in plugin.xml.
-    @NotNull private static final String NAME = "Spoofax";
-    @NotNull private static final String DESCRIPTION = "Spoofax Module";
+    @NotNull
+    public static final String ID = "SPOOFAX_MODULE"; // This is also used in plugin.xml.
+    @NotNull
+    private static final String NAME = "Spoofax";
+    @NotNull
+    private static final String DESCRIPTION = "Spoofax Module";
 
-    @NotNull public static ModuleType getModuleType() {
-        return ModuleTypeManager.getInstance().findByID(ID);
+    public SpoofaxModuleType() {
+        super(ID);
     }
 
-    public SpoofaxModuleType()
-    {
-        super(ID);
+    @NotNull
+    public static ModuleType getModuleType() {
+        return ModuleTypeManager.getInstance().findByID(ID);
     }
 
     @NotNull

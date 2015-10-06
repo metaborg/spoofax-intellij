@@ -17,7 +17,8 @@ import java.util.List;
 
 public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleBasedBuildTargetType<T> {
 
-    @NotNull private final IJpsProjectService projectService;
+    @NotNull
+    private final IJpsProjectService projectService;
 
     protected SpoofaxTargetType(@NotNull final String typeId, @NotNull final IJpsProjectService projectService) {
         super(typeId);

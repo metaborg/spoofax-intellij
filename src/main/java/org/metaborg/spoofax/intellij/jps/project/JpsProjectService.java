@@ -1,18 +1,12 @@
 package org.metaborg.spoofax.intellij.jps.project;
 
-import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jps.model.JpsModel;
 import org.jetbrains.jps.model.JpsUrlList;
 import org.jetbrains.jps.model.module.JpsModule;
-import org.jetbrains.jps.model.serialization.JpsModelSerializationDataService;
-import org.jetbrains.jps.model.serialization.JpsModelSerializerExtension;
-import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.resource.IResourceService;
 
 import javax.annotation.Nullable;
@@ -21,7 +15,7 @@ import java.util.List;
 
 /**
  * A project service for JPS.
- *
+ * <p>
  * Due to how JPS works, we'll have one project service per JPS module.
  */
 @Singleton
@@ -29,9 +23,11 @@ public final class JpsProjectService implements IJpsProjectService {
 
     @NotNull
     private final List<SpoofaxJpsProject> projects = new ArrayList<>();
-    @NotNull private final IResourceService resourceService;
+    @NotNull
+    private final IResourceService resourceService;
 
-    @Inject private JpsProjectService(@NotNull final IResourceService resourceService) {
+    @Inject
+    private JpsProjectService(@NotNull final IResourceService resourceService) {
         this.resourceService = resourceService;
     }
 

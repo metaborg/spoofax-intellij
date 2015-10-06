@@ -7,20 +7,27 @@ import javax.annotation.Nullable;
 
 public final class SpoofaxProjectState {
 
-    @Nullable private String myName;
     @Nullable
-    public final String getMyName() { return this.myName; }
-    public final void setMyName(@Nullable String value) { this.myName = value; }
+    private String myName;
 
     public SpoofaxProjectState() {
         // Defaults
+    }
+
+    @Nullable
+    public final String getMyName() {
+        return this.myName;
+    }
+
+    public final void setMyName(@Nullable String value) {
+        this.myName = value;
     }
 
     @Override
     public final boolean equals(@Nullable Object obj) {
         if (!(obj instanceof SpoofaxProjectState))
             return false;
-        return equals((SpoofaxProjectState)obj);
+        return equals((SpoofaxProjectState) obj);
     }
 
     public final boolean equals(@Nullable SpoofaxProjectState other) {

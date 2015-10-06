@@ -1,26 +1,22 @@
 package org.metaborg.spoofax.intellij.jps.targetbuilders;
 
-import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
 import org.jetbrains.jps.incremental.messages.ProgressMessage;
 import org.metaborg.core.messages.IMessage;
 import org.metaborg.spoofax.intellij.StringFormatter;
-import org.slf4j.helpers.MessageFormatter;
 import org.spoofax.interpreter.terms.IStrategoList;
 import org.strategoxt.lang.StrategoErrorExit;
-
-import java.text.MessageFormat;
 
 public final class BuilderUtils {
 
     /**
      * Formats a progress message.
      *
-     * @param done The percentage progress.
+     * @param done    The percentage progress.
      * @param message The message string to format.
-     * @param args The message string arguments.
+     * @param args    The message string arguments.
      * @return The formatted progress message.
      */
     @NotNull
@@ -33,9 +29,9 @@ public final class BuilderUtils {
      * Formats a compiler message.
      *
      * @param builderName The name of the builder.
-     * @param kind The kind of message.
-     * @param message The message string to format.
-     * @param args The message string arguments.
+     * @param kind        The kind of message.
+     * @param message     The message string to format.
+     * @param args        The message string arguments.
      * @return The formatted message.
      */
     @NotNull
@@ -48,18 +44,22 @@ public final class BuilderUtils {
      * Formats a compiler message.
      *
      * @param builderName The name of the builder.
-     * @param message The message to format.
+     * @param message     The message to format.
      * @return The formatted message.
      */
     @NotNull
-    public final static CompilerMessage formatMessage(@NotNull final String builderName, @NotNull final IMessage message)
-    {
+    public final static CompilerMessage formatMessage(@NotNull final String builderName, @NotNull final IMessage message) {
         final BuildMessage.Kind kind;
-        switch (message.severity())
-        {
-            case NOTE: kind = BuildMessage.Kind.INFO; break;
-            case WARNING: kind = BuildMessage.Kind.WARNING; break;
-            case ERROR: kind = BuildMessage.Kind.ERROR; break;
+        switch (message.severity()) {
+            case NOTE:
+                kind = BuildMessage.Kind.INFO;
+                break;
+            case WARNING:
+                kind = BuildMessage.Kind.WARNING;
+                break;
+            case ERROR:
+                kind = BuildMessage.Kind.ERROR;
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
@@ -69,10 +69,11 @@ public final class BuilderUtils {
         while (exception != null) {
             msgString += "\n" + exception.getMessage();
             if (exception instanceof StrategoErrorExit) {
-                StrategoErrorExit strategoException = (StrategoErrorExit)exception;
+                StrategoErrorExit strategoException = (StrategoErrorExit) exception;
                 IStrategoList trace = strategoException.getTrace();
-                for (int i = 0; i < trace.size(); i++) {
-                    msgString += "\n\t" + trace.get(i);
+                while (!trace.isEmpty()) {
+                    msgString += "\n\t" + trace.head();
+                    trace = trace.tail();
                 }
             }
             exception = exception.getCause();

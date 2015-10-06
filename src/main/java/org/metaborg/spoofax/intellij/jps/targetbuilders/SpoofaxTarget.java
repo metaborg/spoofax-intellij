@@ -3,7 +3,9 @@ package org.metaborg.spoofax.intellij.jps.targetbuilders;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jps.builders.*;
+import org.jetbrains.jps.builders.BuildRootIndex;
+import org.jetbrains.jps.builders.ModuleBasedBuildTargetType;
+import org.jetbrains.jps.builders.ModuleBasedTarget;
 import org.jetbrains.jps.builders.storage.BuildDataPaths;
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.indices.IgnoredFileIndex;
@@ -27,23 +29,28 @@ import java.util.List;
  */
 public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
 
-    @NotNull private final SpoofaxJpsProject project;
-    /**
-     * Gets the project that is being built.
-     * @return The project.
-     */
-    @NotNull public final SpoofaxJpsProject project() {
-        return this.project;
-    }
+    @NotNull
+    private final SpoofaxJpsProject project;
 
     /**
      * Initializes a new instance of the {@link SpoofaxTarget} class.
-     * @param project The project being built.
+     *
+     * @param project    The project being built.
      * @param targetType The target type.
      */
     protected SpoofaxTarget(@NotNull final SpoofaxJpsProject project, @NotNull final ModuleBasedBuildTargetType<?> targetType) {
         super(targetType, project.module());
         this.project = project;
+    }
+
+    /**
+     * Gets the project that is being built.
+     *
+     * @return The project.
+     */
+    @NotNull
+    public final SpoofaxJpsProject project() {
+        return this.project;
     }
 
     @Override
@@ -55,7 +62,7 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
     @NotNull
     private final SpoofaxTargetType<?> getSpoofaxTargetType() {
         // Default implementation.
-        return (SpoofaxTargetType<?>)getTargetType();
+        return (SpoofaxTargetType<?>) getTargetType();
     }
 
     @Override

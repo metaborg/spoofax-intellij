@@ -1,6 +1,5 @@
 package org.metaborg.spoofax.intellij;
 
-import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildRootDescriptor;
 import org.jetbrains.jps.builders.BuildTarget;
@@ -14,15 +13,16 @@ public final class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
 
     @NotNull
     private final File root;
-    @NotNull private final BuildTarget<?> target;
+    @NotNull
+    private final BuildTarget<?> target;
 
     /**
      * Initializes a new instance of the {@link SpoofaxSourceRootDescriptor} class.
-     * @param root The directory of the source root.
+     *
+     * @param root   The directory of the source root.
      * @param target The build target to which the source root belongs.
      */
-    public SpoofaxSourceRootDescriptor(@NotNull final File root, @NotNull final BuildTarget<?> target)
-    {
+    public SpoofaxSourceRootDescriptor(@NotNull final File root, @NotNull final BuildTarget<?> target) {
         this.root = root;
         this.target = target;
     }

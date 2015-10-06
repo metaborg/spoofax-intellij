@@ -13,5 +13,7 @@ public final class PageOne {
     private JButton button2;
 
     @NotNull
-    public JPanel getPanel() { return this.panel; }
+    public JPanel getPanel() {
+        return this.panel;
+    }
 }

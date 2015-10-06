@@ -17,7 +17,8 @@ import java.util.List;
  */
 public final class SpoofaxPostTarget extends SpoofaxTarget {
 
-    @NotNull private final SpoofaxPreTargetType preTargetType;
+    @NotNull
+    private final SpoofaxPreTargetType preTargetType;
 
     public SpoofaxPostTarget(@NotNull final SpoofaxJpsProject project, @NotNull final SpoofaxPostTargetType targetType, @NotNull final SpoofaxPreTargetType preTargetType) {
         super(project, targetType);

@@ -24,9 +24,11 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
     /**
      * Path to the project settings file, relative to the project's root.
      */
-    @NotNull  private static final String SETTINGS_FILE = "spoofax-project.yaml";
+    @NotNull
+    private static final String SETTINGS_FILE = "spoofax-project.yaml";
 
-    @NotNull private final IResourceService resourceService;
+    @NotNull
+    private final IResourceService resourceService;
 
     @Inject
     private YamlProjectSettingsService(@NotNull final IResourceService resourceService) {
@@ -53,12 +55,12 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
         final FileObject location = project.location();
         try {
             final FileObject settingsFile = location.resolveFile(SETTINGS_FILE);
-            if(!settingsFile.exists()) {
+            if (!settingsFile.exists()) {
                 return create();
             }
             final IProjectSettings settings = YAMLProjectSettingsSerializer.read(settingsFile);
             return settings;
-        } catch(IOException e) {
+        } catch (IOException e) {
             logger.warn(String.format("Reading settings file failed unexpectedly: %s/%s", location, SETTINGS_FILE), e);
             return create();
         }
@@ -71,7 +73,7 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
         try {
             final FileObject settingsFile = location.resolveFile(SETTINGS_FILE);
             YAMLProjectSettingsSerializer.write(settingsFile, settings);
-        } catch(IOException e) {
+        } catch (IOException e) {
             logger.warn(String.format("Writing settings file failed unexpectedly: %s/%s", location, SETTINGS_FILE), e);
         }
     }

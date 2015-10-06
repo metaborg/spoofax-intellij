@@ -12,7 +12,8 @@ import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 @Singleton
 public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProjectSettingsService {
 
-    @NotNull private final IProjectSettingsService2 projectSettingsService;
+    @NotNull
+    private final IProjectSettingsService2 projectSettingsService;
 
     @Inject
     private IntelliJSpoofaxProjectSettingsService(@NotNull final IProjectSettingsService2 projectSettingsService) {

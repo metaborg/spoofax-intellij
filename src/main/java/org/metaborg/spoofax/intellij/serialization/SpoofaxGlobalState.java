@@ -6,19 +6,27 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import javax.annotation.Nullable;
 
 public final class SpoofaxGlobalState {
-    @Nullable private String myName;
-    @Nullable public final String getMyName() { return this.myName; }
-    public final void setMyName(@Nullable String value) { this.myName = value; }
+    @Nullable
+    private String myName;
 
     public SpoofaxGlobalState() {
         // Defaults
+    }
+
+    @Nullable
+    public final String getMyName() {
+        return this.myName;
+    }
+
+    public final void setMyName(@Nullable String value) {
+        this.myName = value;
     }
 
     @Override
     public final boolean equals(@Nullable Object obj) {
         if (!(obj instanceof SpoofaxGlobalState))
             return false;
-        return equals((SpoofaxGlobalState)obj);
+        return equals((SpoofaxGlobalState) obj);
     }
 
     public final boolean equals(@Nullable SpoofaxGlobalState other) {

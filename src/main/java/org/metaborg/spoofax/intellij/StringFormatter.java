@@ -7,10 +7,10 @@ import org.slf4j.helpers.MessageFormatter;
 
 /**
  * Formats strings.
- *
+ * <p>
  * A pattern string should contain the formatting anchor <code>{}</code> wherever
  * a parameter's value should be inserted.
- *
+ * <p>
  * You can use both <code>{</code> and <code>}</code> anywhere in the pattern string
  * as long as they don't form <code>{}</code>. If for whatever reason you need to use
  * <code>{}</code> in your string, escape it by preceding it with a backslash
@@ -22,7 +22,7 @@ public final class StringFormatter {
     /**
      * Formats a string.
      *
-     * @param pattern The pattern, with placeholders for the parameters.
+     * @param pattern   The pattern, with placeholders for the parameters.
      * @param arguments The arguments.
      * @return The formatted message.
      */
@@ -34,7 +34,7 @@ public final class StringFormatter {
     /**
      * Formats a string.
      *
-     * @param pattern The pattern, with placeholders for the parameters.
+     * @param pattern   The pattern, with placeholders for the parameters.
      * @param argument0 The first argument.
      * @return The formatted message.
      */
@@ -46,7 +46,7 @@ public final class StringFormatter {
     /**
      * Formats a string.
      *
-     * @param pattern The pattern, with placeholders for the parameters.
+     * @param pattern   The pattern, with placeholders for the parameters.
      * @param argument0 The first argument.
      * @param argument1 The second argument.
      * @return The formatted message.
@@ -60,7 +60,7 @@ public final class StringFormatter {
     /**
      * Formats a string.
      *
-     * @param pattern The pattern, with placeholders for the parameters.
+     * @param pattern   The pattern, with placeholders for the parameters.
      * @param argument0 The first argument.
      * @param argument1 The second argument.
      * @param argument2 The third argument.

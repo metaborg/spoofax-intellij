@@ -8,11 +8,14 @@ import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.jetbrains.jps.incremental.TargetBuilder;
 import org.metaborg.spoofax.intellij.jps.JpsPlugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The Spoofax builder service.
- *
+ * <p>
  * This service tells the JPS build system which build targetbuilders and target builders are available.
  */
 public final class SpoofaxBuilderService extends BuilderService {
@@ -38,6 +41,7 @@ public final class SpoofaxBuilderService extends BuilderService {
 
     /**
      * Gets the list of build target types contributed by this plugin.
+     *
      * @return A list of build target types.
      */
     @NotNull

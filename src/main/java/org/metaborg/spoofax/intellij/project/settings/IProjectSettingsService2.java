@@ -4,8 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.settings.IProjectSettings;
 
-import javax.annotation.Nullable;
-
 /**
  * Loads and stores the settings of a project.
  */
@@ -13,6 +11,7 @@ public interface IProjectSettingsService2 {
 
     /**
      * Creates new settings.
+     *
      * @return The settings.
      */
     @NotNull
@@ -20,6 +19,7 @@ public interface IProjectSettingsService2 {
 
     /**
      * Gets the settings for the specified project.
+     *
      * @param project The project.
      * @return The settings of the project.
      */
@@ -28,7 +28,8 @@ public interface IProjectSettingsService2 {
 
     /**
      * Sets the settings for the specified project.
-     * @param project The project.
+     *
+     * @param project  The project.
      * @param settings The settings of the project.
      */
     void set(@NotNull IProject project, @NotNull IProjectSettings settings);

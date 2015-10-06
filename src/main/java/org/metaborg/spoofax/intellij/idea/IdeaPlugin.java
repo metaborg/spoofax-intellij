@@ -6,7 +6,6 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.components.ServiceManager;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +16,6 @@ import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalService;
-import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,22 +24,13 @@ import org.slf4j.LoggerFactory;
  */
 public final class IdeaPlugin implements ApplicationComponent {
 
-    @NotNull private final Logger logger = LoggerFactory.getLogger(IdeaPlugin.class);
-
-    @NotNull protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
-
-    /**
-     * Gets the injector.
-     * @return The current injector.
-     */
-    @NotNull public static Injector injector() {
-        return injector.get();
-    }
-
+    @NotNull
+    protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
+    @NotNull
+    private final Logger logger = LoggerFactory.getLogger(IdeaPlugin.class);
     private ILanguageDiscoveryService languageDiscoveryService;
     private IResourceService resourceService;
     private ILanguageService languageService;
-
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
@@ -50,7 +39,18 @@ public final class IdeaPlugin implements ApplicationComponent {
         IdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject @SuppressWarnings("unused")
+    /**
+     * Gets the injector.
+     *
+     * @return The current injector.
+     */
+    @NotNull
+    public static Injector injector() {
+        return injector.get();
+    }
+
+    @Inject
+    @SuppressWarnings("unused")
     private void inject(@NotNull ILanguageService languageService, @NotNull ILanguageDiscoveryService languageDiscoveryService, @NotNull IResourceService resourceService) {
         this.languageDiscoveryService = languageDiscoveryService;
         this.resourceService = resourceService;

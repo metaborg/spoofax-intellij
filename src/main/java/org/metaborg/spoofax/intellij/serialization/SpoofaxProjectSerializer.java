@@ -3,9 +3,7 @@ package org.metaborg.spoofax.intellij.serialization;
 import com.intellij.util.xmlb.XmlSerializer;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jps.model.JpsGlobal;
 import org.jetbrains.jps.model.JpsProject;
-import org.jetbrains.jps.model.serialization.JpsGlobalExtensionSerializer;
 import org.jetbrains.jps.model.serialization.JpsProjectExtensionSerializer;
 
 import javax.annotation.Nullable;
@@ -14,7 +12,8 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
 
     @NotNull
     public static final String NAME = "SpoofaxProjectService";
-    @NotNull public static final String CONFIG_FILE = "SpoofaxProject.xml";
+    @NotNull
+    public static final String CONFIG_FILE = "SpoofaxProject.xml";
 
     public SpoofaxProjectSerializer() {
         super(CONFIG_FILE, NAME);
@@ -31,8 +30,7 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
         loadExtensionWithState(project, state);
     }
 
-    private final void loadExtensionWithState(@NotNull final JpsProject project, @Nullable final SpoofaxProjectState state)
-    {
+    private final void loadExtensionWithState(@NotNull final JpsProject project, @Nullable final SpoofaxProjectState state) {
         final SpoofaxProjectConfig config = new SpoofaxProjectConfig();
         if (state != null)
             config.loadState(state);

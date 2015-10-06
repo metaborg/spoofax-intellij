@@ -12,7 +12,8 @@ public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer 
 
     @NotNull
     public static final String NAME = "SpoofaxGlobalService";
-    @NotNull public static final String CONFIG_FILE = "Spoofax.xml";
+    @NotNull
+    public static final String CONFIG_FILE = "Spoofax.xml";
 
     public SpoofaxGlobalSerializer() {
         super(CONFIG_FILE, NAME);
@@ -29,8 +30,7 @@ public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer 
         loadExtensionWithState(global, state);
     }
 
-    private final void loadExtensionWithState(@NotNull final JpsGlobal global, @Nullable final SpoofaxGlobalState state)
-    {
+    private final void loadExtensionWithState(@NotNull final JpsGlobal global, @Nullable final SpoofaxGlobalState state) {
         final SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();
         if (state != null)
             config.loadState(state);

@@ -11,7 +11,10 @@ import org.metaborg.core.project.IProjectService;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
-import org.metaborg.spoofax.intellij.jps.targetbuilders.*;
+import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPostBuilder;
+import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPostTargetType;
+import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPreBuilder;
+import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPreTargetType;
 import org.metaborg.spoofax.meta.core.ant.AntRunnerService;
 import org.metaborg.spoofax.meta.core.ant.IAntRunnerService;
 

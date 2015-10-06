@@ -12,8 +12,6 @@ import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.StdModuleTypes;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.Disposer;
@@ -21,7 +19,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-//import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.language.LanguageVersion;
 import org.metaborg.core.project.IProject;
@@ -36,45 +33,47 @@ import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+//import org.jetbrains.idea.maven.project.MavenProjectsManager;
 
 @Singleton
 public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleBuilderListener {
 
+    @NotNull
+    private final IIntelliJResourceService resourceService;
     private Project myProject;
     private IntelliJProject myModule;
-    @NotNull private final IIntelliJResourceService resourceService;
 
     @Inject
-    private SpoofaxModuleBuilder(@NotNull final IIntelliJResourceService resourceService)
-    {
+    private SpoofaxModuleBuilder(@NotNull final IIntelliJResourceService resourceService) {
         this.resourceService = resourceService;
         addListener(this);
     }
 
-    @NotNull public final String getPresentableName() {
+    @NotNull
+    public final String getPresentableName() {
         return "Spoofax";
     }
 
-    @NotNull  public final String getDescription() {
+    @NotNull
+    public final String getDescription() {
         return "Spoofax Module - description";
     }
 
-    @NotNull public final Icon getBigIcon() {
+    @NotNull
+    public final Icon getBigIcon() {
         return SpoofaxIcons.INSTANCE.Default;
     }
 
-    @NotNull public final Icon getNodeIcon() {
+    @NotNull
+    public final Icon getNodeIcon() {
         return SpoofaxIcons.INSTANCE.Default;
     }
 
     public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
         // Add the content entry path as a content root.
         final ContentEntry contentEntry = doAddContentEntry(rootModel);
-        if (contentEntry == null)
-        {
+        if (contentEntry == null) {
             // LOG: No content entry path for the module.
             return;
         }
@@ -89,12 +88,11 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         generateModuleStructure(this.myModule, rootModel, contentEntry);
     }
 
-    private final void generateModuleStructure(@NotNull final IProject project, @NotNull final ModifiableRootModel rootModel, @NotNull final ContentEntry contentEntry)
-    {
+    private final void generateModuleStructure(@NotNull final IProject project, @NotNull final ModifiableRootModel rootModel, @NotNull final ContentEntry contentEntry) {
         final String name = "TestProject";
 
         try {
-            final LanguageIdentifier identifier = new LanguageIdentifier("org.metaborg.test", "lang-id", new LanguageVersion(1,0,0,""));
+            final LanguageIdentifier identifier = new LanguageIdentifier("org.metaborg.test", "lang-id", new LanguageVersion(1, 0, 0, ""));
             final FileObject location = project.location();
             final IProjectSettings settings = new ProjectSettings(identifier, name);
             final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, location);
@@ -117,13 +115,13 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         }
     }
 
-    @NotNull public final String getGroupName() {
+    @NotNull
+    public final String getGroupName() {
         return "Spoofax Group";
     }
 
 
-
-    public final void displayInitError(@NotNull final String error, @NotNull final Project project){
+    public final void displayInitError(@NotNull final String error, @NotNull final Project project) {
         SwingUtilities.invokeLater(() -> {
             String text = "<html><a href=\"openBrowser\" target=\"_top\">How do I fix this?</a></html>";
             Notifications.Bus.notify(new Notification("SourceFinder", error, text, NotificationType.ERROR, (notification, event) -> {
@@ -163,12 +161,14 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         }
     }
 
-    @NotNull public final ModuleType getModuleType() {
+    @NotNull
+    public final ModuleType getModuleType() {
         return SpoofaxModuleType.getModuleType();
     }
 
     @Override
-    @NotNull public final ModuleWizardStep modifyProjectTypeStep(@NotNull final SettingsStep settingsStep) {
+    @NotNull
+    public final ModuleWizardStep modifyProjectTypeStep(@NotNull final SettingsStep settingsStep) {
         return StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
         //return super.modifyProjectTypeStep(settingsStep);
     }

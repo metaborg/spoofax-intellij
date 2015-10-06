@@ -1,8 +1,5 @@
 package org.metaborg.spoofax.intellij.resources;
 
-import org.apache.commons.vfs2.FileSystemException;
-import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
-import org.apache.commons.vfs2.provider.FileProvider;
 import org.metaborg.core.resource.DefaultFileSystemManagerProvider;
 
 /**

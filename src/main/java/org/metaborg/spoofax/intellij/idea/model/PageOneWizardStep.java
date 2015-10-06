@@ -15,7 +15,8 @@ public final class PageOneWizardStep extends ModuleWizardStep {
     }
 
     @Override
-    @NotNull public final JComponent getComponent() {
+    @NotNull
+    public final JComponent getComponent() {
         return step.getPanel();
     }
 

@@ -40,8 +40,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
     /**
      * Creates a new instance of the IntelliJFileObject class.
+     *
      * @param name The name of the file.
-     * @param fs The file system.
+     * @param fs   The file system.
      */
     public IntelliJFileObject(@NotNull AbstractFileName name, @NotNull AbstractFileSystem fs) {
         super(name, fs);
@@ -49,6 +50,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
     /**
      * Returns the associated IntelliJ virtual file.
+     *
      * @return The associated VirtualFile; or <code>null</code> when the file object wasn't attached.
      */
     @Nullable
@@ -58,23 +60,23 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
     @Override
     protected final void doAttach() throws Exception {
-        assert(!isAttached());
-        assert(this.file == null);
+        assert (!isAttached());
+        assert (this.file == null);
 
         this.file = LocalFileSystem.getInstance().findFileByPath(this.getName().getPath());
     }
 
     @Override
     protected final void doDetach() throws Exception {
-        assert(isAttached());
-        assert(this.file != null);
+        assert (isAttached());
+        assert (this.file != null);
 
         this.file = null;
     }
 
     @Override
     protected final void onChange() throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         // Re-attach.
         doDetach();
@@ -83,7 +85,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
     @Override
     protected final FileType doGetType() throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         if (!file.exists())
             return FileType.IMAGINARY;
@@ -155,7 +157,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     @NotNull
     protected final String[] doListChildren() throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         // This is essentially a complex way to write:
         //     return doListChildrenResolved().map(c => c.getName().getBaseName());
@@ -170,7 +172,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     @NotNull
     protected final FileObject[] doListChildrenResolved() throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         // This is essentially a complex way to write:
         //     return this.file.getChildren().map(c => getFileSystem().resolveFile(c.getName()));
@@ -184,21 +186,21 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
     @Override
     protected final long doGetContentSize() throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         return file.getLength();
     }
 
     @Override
     protected final InputStream doGetInputStream() throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         return file.getInputStream();
     }
 
     @Override
     protected final OutputStream doGetOutputStream(final boolean append) throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         // NOTE: Because the file system has the Capability.APPEND_CONTENT capability,
         // we need to support `append == true`.
@@ -210,7 +212,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
     @Override
     protected final RandomAccessContent doGetRandomAccessContent(@NotNull final RandomAccessMode mode) throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         // FIXME: Implement this.
         return super.doGetRandomAccessContent(mode);
@@ -218,7 +220,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
     @Override
     protected final void doCreateFolder() throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
@@ -231,7 +233,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
     @Override
     protected final void doRename(@NotNull final FileObject newfile) throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
@@ -244,7 +246,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
     @Override
     protected final void doDelete() throws Exception {
-        assert(isAttached());
+        assert (isAttached());
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {

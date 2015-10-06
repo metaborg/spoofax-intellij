@@ -7,7 +7,8 @@ import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 
 public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTarget> {
 
-    @NotNull private final SpoofaxPreTargetType preTargetType;
+    @NotNull
+    private final SpoofaxPreTargetType preTargetType;
 
     @Inject
     private SpoofaxPostTargetType(@NotNull final IJpsProjectService projectService, @NotNull final SpoofaxPreTargetType preTargetType) {

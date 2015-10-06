@@ -24,12 +24,11 @@ import org.metaborg.spoofax.core.processing.SpoofaxProcessorRunner;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.spoofax.core.resource.SpoofaxIgnoresSelector;
-import org.metaborg.spoofax.core.stratego.primitives.LanguageSourceLocationsPrimitive;
-import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
 import org.metaborg.spoofax.intellij.jps.JpsPlugin;
 import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
+import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.meta.core.MetaBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
@@ -47,12 +46,15 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
 
     private static final Logger logger = LoggerFactory.getLogger(SpoofaxPreBuilder.class);
 
-    @NotNull private final ISpoofaxProjectSettingsService settingsService;
-    @NotNull private final SpoofaxMetaBuilder builder;
-    @NotNull private final JpsProjectService projectService;
+    @NotNull
+    private final ISpoofaxProjectSettingsService settingsService;
+    @NotNull
+    private final SpoofaxMetaBuilder builder;
+    @NotNull
+    private final JpsProjectService projectService;
 
     @Inject
-    public SpoofaxPreBuilder(@NotNull final SpoofaxPreTargetType targetType, @NotNull final ISpoofaxProjectSettingsService settingsService, @NotNull final SpoofaxMetaBuilder builder, @NotNull final JpsProjectService projectService){
+    public SpoofaxPreBuilder(@NotNull final SpoofaxPreTargetType targetType, @NotNull final ISpoofaxProjectSettingsService settingsService, @NotNull final SpoofaxMetaBuilder builder, @NotNull final JpsProjectService projectService) {
         super(Collections.singletonList(targetType));
         this.settingsService = settingsService;
         this.builder = builder;
@@ -67,9 +69,9 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
 
     @Override
     public final void build(@NotNull final SpoofaxPreTarget target,
-                      @NotNull final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-                      @NotNull final BuildOutputConsumer consumer,
-                      @NotNull final CompileContext context) throws ProjectBuildException, IOException {
+                            @NotNull final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
+                            @NotNull final BuildOutputConsumer consumer,
+                            @NotNull final CompileContext context) throws ProjectBuildException, IOException {
 
         try {
             final SpoofaxJpsProject project = projectService.get(target.getModule());
@@ -161,7 +163,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
     private final void compilePreJava(@NotNull final MetaBuildInput metaInput, @Nullable final URL[] classpath, @Nullable final BuildListener listener, @NotNull final CompileContext context) throws Exception, ProjectBuildException {
         context.checkCanceled();
         context.processMessage(BuilderUtils.formatProgress(0f, "Building language project {}", metaInput.project));
-        this.builder.compilePreJava(metaInput, classpath, listener);
+        this.builder.compilePreJava(metaInput, classpath, listener, null);
     }
 
     private final BuildInput getBuildInput(@NotNull final MetaBuildInput metaInput, @NotNull final IDependencyService dependencyService, @NotNull final ILanguagePathService languagePathService) throws ProjectBuildException {
@@ -171,7 +173,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
                     .withDefaultIncludePaths(true)
                     .withSourcesFromDefaultSourceLocations(true)
                     .withSelector(new SpoofaxIgnoresSelector())
-                    //.withMessagePrinter()
+                            //.withMessagePrinter()
                     .withThrowOnErrors(false)
                     .withPardonedLanguageStrings(metaInput.settings.pardonedLanguages())
                     .addTransformGoal(new CompileGoal())

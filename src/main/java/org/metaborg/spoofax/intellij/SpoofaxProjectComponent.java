@@ -7,11 +7,11 @@ import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
 
 public final class SpoofaxProjectComponent implements ProjectComponent {
 
-    @NotNull private final Project project;
+    @NotNull
+    private final Project project;
 
-    public SpoofaxProjectComponent(@NotNull Project project)
-    {
-     this.project = project;
+    public SpoofaxProjectComponent(@NotNull Project project) {
+        this.project = project;
     }
 
     @Override

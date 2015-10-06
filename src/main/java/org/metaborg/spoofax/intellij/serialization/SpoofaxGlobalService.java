@@ -1,8 +1,6 @@
 package org.metaborg.spoofax.intellij.serialization;
 
-import com.google.common.base.Preconditions;
 import com.intellij.openapi.components.*;
-import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +12,8 @@ import org.jetbrains.annotations.Nullable;
 )
 public final class SpoofaxGlobalService implements PersistentStateComponent<SpoofaxGlobalState> {
 
-    @Nullable private SpoofaxGlobalState state;
+    @Nullable
+    private SpoofaxGlobalState state;
 
     public SpoofaxGlobalService() {
         state = new SpoofaxGlobalState();
@@ -27,7 +26,11 @@ public final class SpoofaxGlobalService implements PersistentStateComponent<Spoo
         return service;
     }
 
-    @Nullable @Override public SpoofaxGlobalState getState() { return this.state; }
+    @Nullable
+    @Override
+    public SpoofaxGlobalState getState() {
+        return this.state;
+    }
 
     @Override
     public void loadState(@NotNull final SpoofaxGlobalState state) {
@@ -38,7 +41,7 @@ public final class SpoofaxGlobalService implements PersistentStateComponent<Spoo
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof SpoofaxGlobalService))
             return false;
-        return this.state.equals(((SpoofaxGlobalService)obj).state);
+        return this.state.equals(((SpoofaxGlobalService) obj).state);
     }
 
     @Override

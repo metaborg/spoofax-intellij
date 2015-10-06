@@ -27,9 +27,12 @@ public final class LanguageManager {
     @NotNull
     private final Logger logger = LoggerFactory.getLogger(LanguageManager.class);
 
-    @NotNull private final ILanguageService languageService;
-    @NotNull private final ILanguageDiscoveryService discoveryService;
-    @NotNull private final IResourceService resourceService;
+    @NotNull
+    private final ILanguageService languageService;
+    @NotNull
+    private final ILanguageDiscoveryService discoveryService;
+    @NotNull
+    private final IResourceService resourceService;
 
     @Inject
     private LanguageManager(@NotNull final ILanguageService languageService, @NotNull final ILanguageDiscoveryService discoveryService, @NotNull final IResourceService resourceService) {
@@ -53,16 +56,14 @@ public final class LanguageManager {
 
     private final void loadLanguage(@NotNull final String id) {
         final URL url = this.getClass().getClassLoader().getResource("meta-languages/" + id + ".spoofax-language");
-        if (url == null)
-        {
+        if (url == null) {
             logger.error("Meta language '" + id + "' could not be resolved to a class path.");
             return;
         }
         final String zipUri = "zip://" + url.getPath();
         final FileObject file = this.resourceService.resolve(zipUri);
         try {
-            if (!file.exists())
-            {
+            if (!file.exists()) {
                 logger.error("Meta language '" + id + "' does not exist in classpath at: " + file.toString());
                 return;
             }
@@ -72,10 +73,8 @@ public final class LanguageManager {
         try {
             final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(file);
             final List<ILanguageImpl> lis = new ArrayList<ILanguageImpl>();
-            for (ILanguageComponent c : discovery)
-            {
-                for (ILanguageImpl li : c.contributesTo())
-                {
+            for (ILanguageComponent c : discovery) {
+                for (ILanguageImpl li : c.contributesTo()) {
                     lis.add(li);
                 }
             }

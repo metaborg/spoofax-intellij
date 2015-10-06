@@ -4,12 +4,12 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.resource.ResourceService;
 
 import javax.annotation.Nullable;
-import org.apache.commons.vfs2.FileObject;
 
 public final class IntelliJResourceService extends ResourceService implements IIntelliJResourceService {
 
@@ -29,7 +29,7 @@ public final class IntelliJResourceService extends ResourceService implements II
     @Override
     public final VirtualFile unresolve(@NotNull final FileObject resource) {
         if (resource instanceof IntelliJFileObject) {
-            final IntelliJFileObject intellijResource = (IntelliJFileObject)resource;
+            final IntelliJFileObject intellijResource = (IntelliJFileObject) resource;
             final VirtualFile intellijFile = intellijResource.getIntelliJFile();
             if (intellijFile != null)
                 return intellijFile;

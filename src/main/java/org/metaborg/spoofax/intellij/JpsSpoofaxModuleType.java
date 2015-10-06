@@ -1,6 +1,5 @@
 package org.metaborg.spoofax.intellij;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.JpsDummyElement;
@@ -16,6 +15,7 @@ public final class JpsSpoofaxModuleType extends JpsElementTypeWithDummyPropertie
     @NotNull
     public static final JpsSpoofaxModuleType INSTANCE = new JpsSpoofaxModuleType();
 
-    private JpsSpoofaxModuleType() { }
+    private JpsSpoofaxModuleType() {
+    }
 
 }

@@ -4,10 +4,8 @@ import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.JpsDummyElement;
 import org.jetbrains.jps.model.JpsElementFactory;
-import org.jetbrains.jps.model.module.JpsModuleType;
 import org.jetbrains.jps.model.serialization.module.JpsModulePropertiesSerializer;
 import org.metaborg.spoofax.intellij.JpsSpoofaxModuleType;
-import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
 
 import javax.annotation.Nullable;
 
