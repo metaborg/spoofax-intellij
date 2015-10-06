@@ -30,7 +30,8 @@ public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer 
         loadExtensionWithState(global, state);
     }
 
-    private final void loadExtensionWithState(@NotNull final JpsGlobal global, @Nullable final SpoofaxGlobalState state) {
+    private final void loadExtensionWithState(@NotNull final JpsGlobal global,
+                                              @Nullable final SpoofaxGlobalState state) {
         final SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();
         if (state != null)
             config.loadState(state);

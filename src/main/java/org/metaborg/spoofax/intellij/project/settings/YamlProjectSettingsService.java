@@ -8,8 +8,8 @@ import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.YAMLProjectSettingsSerializer;
 import org.metaborg.core.resource.IResourceService;
+import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -18,8 +18,6 @@ import java.io.IOException;
  */
 @Singleton
 public final class YamlProjectSettingsService implements IProjectSettingsService2 {
-    @NotNull
-    private static final Logger logger = LoggerFactory.getLogger(IntelliJProjectSettingsService.class);
 
     /**
      * Path to the project settings file, relative to the project's root.
@@ -27,8 +25,12 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
     @NotNull
     private static final String SETTINGS_FILE = "spoofax-project.yaml";
 
+    //@NotNull
+    //private static final Logger logger = LoggerFactory.getLogger(IntelliJProjectSettingsService.class);
     @NotNull
     private final IResourceService resourceService;
+    @InjectLogger
+    private Logger logger;
 
     @Inject
     private YamlProjectSettingsService(@NotNull final IResourceService resourceService) {

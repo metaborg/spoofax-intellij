@@ -20,7 +20,9 @@ public final class BuilderUtils {
      * @return The formatted progress message.
      */
     @NotNull
-    public final static ProgressMessage formatProgress(final float done, @NotNull final String message, final Object... args) {
+    public final static ProgressMessage formatProgress(final float done,
+                                                       @NotNull final String message,
+                                                       final Object... args) {
         final String msgString = StringFormatter.format(message, args);
         return new ProgressMessage(msgString, done);
     }
@@ -35,7 +37,10 @@ public final class BuilderUtils {
      * @return The formatted message.
      */
     @NotNull
-    public final static CompilerMessage formatMessage(@NotNull final String builderName, @NotNull final BuildMessage.Kind kind, @NotNull final String message, final Object... args) {
+    public final static CompilerMessage formatMessage(@NotNull final String builderName,
+                                                      @NotNull final BuildMessage.Kind kind,
+                                                      @NotNull final String message,
+                                                      final Object... args) {
         final String msgString = StringFormatter.format(message, args);
         return new CompilerMessage(builderName, kind, msgString);
     }
@@ -48,7 +53,8 @@ public final class BuilderUtils {
      * @return The formatted message.
      */
     @NotNull
-    public final static CompilerMessage formatMessage(@NotNull final String builderName, @NotNull final IMessage message) {
+    public final static CompilerMessage formatMessage(@NotNull final String builderName,
+                                                      @NotNull final IMessage message) {
         final BuildMessage.Kind kind;
         switch (message.severity()) {
             case NOTE:
@@ -94,6 +100,14 @@ public final class BuilderUtils {
             locationColumn = message.region().startColumn() + 1;
         }
 
-        return new CompilerMessage(builderName, kind, msgString, sourcePath, problemBeginOffset, problemEndOffset, problemLocationOffset, locationLine, locationColumn);
+        return new CompilerMessage(builderName,
+                                   kind,
+                                   msgString,
+                                   sourcePath,
+                                   problemBeginOffset,
+                                   problemEndOffset,
+                                   problemLocationOffset,
+                                   locationLine,
+                                   locationColumn);
     }
 }

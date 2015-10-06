@@ -38,7 +38,8 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      * @param project    The project being built.
      * @param targetType The target type.
      */
-    protected SpoofaxTarget(@NotNull final SpoofaxJpsProject project, @NotNull final ModuleBasedBuildTargetType<?> targetType) {
+    protected SpoofaxTarget(@NotNull final SpoofaxJpsProject project,
+                            @NotNull final ModuleBasedBuildTargetType<?> targetType) {
         super(targetType, project.module());
         this.project = project;
     }
@@ -74,7 +75,10 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
 
     @NotNull
     @Override
-    public final List<SpoofaxSourceRootDescriptor> computeRootDescriptors(@NotNull final JpsModel jpsModel, @NotNull final ModuleExcludeIndex moduleExcludeIndex, @NotNull final IgnoredFileIndex ignoredFileIndex, @NotNull final BuildDataPaths buildDataPaths) {
+    public final List<SpoofaxSourceRootDescriptor> computeRootDescriptors(@NotNull final JpsModel jpsModel,
+                                                                          @NotNull final ModuleExcludeIndex moduleExcludeIndex,
+                                                                          @NotNull final IgnoredFileIndex ignoredFileIndex,
+                                                                          @NotNull final BuildDataPaths buildDataPaths) {
         // Default implementation.
         List<SpoofaxSourceRootDescriptor> result = new ArrayList<>();
         JavaSourceRootType type = isTests() ? JavaSourceRootType.TEST_SOURCE : JavaSourceRootType.SOURCE;
@@ -86,15 +90,19 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
 
     @Nullable
     @Override
-    public final SpoofaxSourceRootDescriptor findRootDescriptor(@NotNull final String rootId, @NotNull final BuildRootIndex rootIndex) {
+    public final SpoofaxSourceRootDescriptor findRootDescriptor(@NotNull final String rootId,
+                                                                @NotNull final BuildRootIndex rootIndex) {
         // Default implementation.
-        return ContainerUtil.getFirstItem(rootIndex.getRootDescriptors(new File(rootId), Collections.singletonList(getSpoofaxTargetType()), null));
+        return ContainerUtil.getFirstItem(rootIndex.getRootDescriptors(new File(rootId),
+                                                                       Collections.singletonList(getSpoofaxTargetType()),
+                                                                       null));
     }
 
     @NotNull
     @Override
     public final Collection<File> getOutputRoots(@NotNull final CompileContext compileContext) {
         // Default implementation.
-        return ContainerUtil.createMaybeSingletonList(JpsJavaExtensionService.getInstance().getOutputDirectory(super.myModule, isTests()));
+        return ContainerUtil.createMaybeSingletonList(JpsJavaExtensionService.getInstance().getOutputDirectory(super.myModule,
+                                                                                                               isTests()));
     }
 }

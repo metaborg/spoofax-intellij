@@ -53,7 +53,8 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     @Provides
     @Inject
     @NotNull
-    public final Collection<BuildTargetType<?>> provideTargetTypes(SpoofaxPreTargetType preTargetType, SpoofaxPostTargetType postTargetType) {
+    public final Collection<BuildTargetType<?>> provideTargetTypes(SpoofaxPreTargetType preTargetType,
+                                                                   SpoofaxPostTargetType postTargetType) {
         return Arrays.asList(preTargetType, postTargetType);
     }
 
@@ -61,7 +62,8 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     @Provides
     @Inject
     @NotNull
-    public final Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxPreBuilder preBuilder, SpoofaxPostBuilder postBuilder) {
+    public final Collection<TargetBuilder<?, ?>> provideTargetBuilders(SpoofaxPreBuilder preBuilder,
+                                                                       SpoofaxPostBuilder postBuilder) {
         return Arrays.asList(preBuilder, postBuilder);
     }
 

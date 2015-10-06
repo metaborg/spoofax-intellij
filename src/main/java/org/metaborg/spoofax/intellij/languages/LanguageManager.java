@@ -12,8 +12,8 @@ import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.resource.IResourceService;
+import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,17 +25,21 @@ import java.util.List;
 @Singleton
 public final class LanguageManager {
     @NotNull
-    private final Logger logger = LoggerFactory.getLogger(LanguageManager.class);
-
-    @NotNull
     private final ILanguageService languageService;
+
+    //@NotNull
+    //private final Logger logger = LoggerFactory.getLogger(LanguageManager.class);
     @NotNull
     private final ILanguageDiscoveryService discoveryService;
     @NotNull
     private final IResourceService resourceService;
+    @InjectLogger
+    private Logger logger;
 
     @Inject
-    private LanguageManager(@NotNull final ILanguageService languageService, @NotNull final ILanguageDiscoveryService discoveryService, @NotNull final IResourceService resourceService) {
+    private LanguageManager(@NotNull final ILanguageService languageService,
+                            @NotNull final ILanguageDiscoveryService discoveryService,
+                            @NotNull final IResourceService resourceService) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
         this.resourceService = resourceService;

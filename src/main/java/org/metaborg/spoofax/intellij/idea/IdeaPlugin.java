@@ -15,9 +15,9 @@ import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.resource.IResourceService;
+import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalService;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * IntelliJ IDEA plugin class.
@@ -26,11 +26,13 @@ public final class IdeaPlugin implements ApplicationComponent {
 
     @NotNull
     protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
-    @NotNull
-    private final Logger logger = LoggerFactory.getLogger(IdeaPlugin.class);
+    @InjectLogger
+    private Logger logger;
+
     private ILanguageDiscoveryService languageDiscoveryService;
     private IResourceService resourceService;
     private ILanguageService languageService;
+
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
@@ -51,7 +53,9 @@ public final class IdeaPlugin implements ApplicationComponent {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(@NotNull ILanguageService languageService, @NotNull ILanguageDiscoveryService languageDiscoveryService, @NotNull IResourceService resourceService) {
+    private void inject(@NotNull ILanguageService languageService,
+                        @NotNull ILanguageDiscoveryService languageDiscoveryService,
+                        @NotNull IResourceService resourceService) {
         this.languageDiscoveryService = languageDiscoveryService;
         this.resourceService = resourceService;
         this.languageService = languageService;
@@ -71,7 +75,8 @@ public final class IdeaPlugin implements ApplicationComponent {
     private void loadLanguages() throws MetaborgException {
         FileObject location = null;
         try {
-            location = resourceService.resolve("zip:///home/daniel/repos/metaborg-spoofax-intellij/meta/sdf.spoofax-language");
+            location = resourceService.resolve(
+                    "zip:///home/daniel/repos/metaborg-spoofax-intellij/meta/sdf.spoofax-language");
 
             if (location == null || !location.exists())
                 return;

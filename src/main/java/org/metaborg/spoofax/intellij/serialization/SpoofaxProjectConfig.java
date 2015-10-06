@@ -12,7 +12,8 @@ import javax.annotation.Nullable;
  */
 public final class SpoofaxProjectConfig extends JpsElementBase<SpoofaxProjectConfig> {
     @NotNull
-    public static final JpsElementChildRole<SpoofaxProjectConfig> ROLE = JpsElementChildRoleBase.create("Spoofax Project");
+    public static final JpsElementChildRole<SpoofaxProjectConfig> ROLE = JpsElementChildRoleBase.create(
+            "Spoofax Project");
 
     @Nullable
     private SpoofaxProjectState state = new SpoofaxProjectState();

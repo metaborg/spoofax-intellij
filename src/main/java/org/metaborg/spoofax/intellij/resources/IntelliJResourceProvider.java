@@ -41,7 +41,8 @@ public final class IntelliJResourceProvider extends AbstractOriginatingFileProvi
 
     @Override
     @NotNull
-    protected final FileSystem doCreateFileSystem(@NotNull final FileName rootName, @NotNull final FileSystemOptions fileSystemOptions)
+    protected final FileSystem doCreateFileSystem(@NotNull final FileName rootName,
+                                                  @NotNull final FileSystemOptions fileSystemOptions)
             throws FileSystemException {
         return new IntelliJFileSystem(rootName, null, fileSystemOptions);
     }

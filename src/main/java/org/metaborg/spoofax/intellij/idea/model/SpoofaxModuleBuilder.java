@@ -28,7 +28,6 @@ import org.metaborg.core.project.settings.ProjectSettings;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.spoofax.generator.NewProjectGenerator;
 import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
-import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 
 import javax.swing.*;
@@ -41,12 +40,16 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
 
     @NotNull
     private final IIntelliJResourceService resourceService;
+    @NotNull
+    private final ProjectFactory projectFactory;
     private Project myProject;
     private IntelliJProject myModule;
 
     @Inject
-    private SpoofaxModuleBuilder(@NotNull final IIntelliJResourceService resourceService) {
+    private SpoofaxModuleBuilder(@NotNull final IIntelliJResourceService resourceService,
+                                 @NotNull final ProjectFactory projectFactory) {
         this.resourceService = resourceService;
+        this.projectFactory = projectFactory;
         addListener(this);
     }
 
@@ -88,11 +91,15 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         generateModuleStructure(this.myModule, rootModel, contentEntry);
     }
 
-    private final void generateModuleStructure(@NotNull final IProject project, @NotNull final ModifiableRootModel rootModel, @NotNull final ContentEntry contentEntry) {
+    private final void generateModuleStructure(@NotNull final IProject project,
+                                               @NotNull final ModifiableRootModel rootModel,
+                                               @NotNull final ContentEntry contentEntry) {
         final String name = "TestProject";
 
         try {
-            final LanguageIdentifier identifier = new LanguageIdentifier("org.metaborg.test", "lang-id", new LanguageVersion(1, 0, 0, ""));
+            final LanguageIdentifier identifier = new LanguageIdentifier("org.metaborg.test",
+                                                                         "lang-id",
+                                                                         new LanguageVersion(1, 0, 0, ""));
             final FileObject location = project.location();
             final IProjectSettings settings = new ProjectSettings(identifier, name);
             final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, location);
@@ -124,18 +131,23 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
     public final void displayInitError(@NotNull final String error, @NotNull final Project project) {
         SwingUtilities.invokeLater(() -> {
             String text = "<html><a href=\"openBrowser\" target=\"_top\">How do I fix this?</a></html>";
-            Notifications.Bus.notify(new Notification("SourceFinder", error, text, NotificationType.ERROR, (notification, event) -> {
-                if (event.getDescription().equals("openBrowser")) {
-                    //launchBrowser("https://bitbucket.org/mtiigi/intellij-sourcefinder-plugin");
-                }
-            }), project);
+            Notifications.Bus.notify(new Notification("SourceFinder",
+                                                      error,
+                                                      text,
+                                                      NotificationType.ERROR,
+                                                      (notification, event) -> {
+                                                          if (event.getDescription().equals("openBrowser")) {
+                                                              //launchBrowser("https://bitbucket.org/mtiigi/intellij-sourcefinder-plugin");
+                                                          }
+                                                      }), project);
         });
 
 
     }
 
     @Nullable
-    public final ModuleWizardStep getCustomOptionsStep(@NotNull final WizardContext context, @NotNull final Disposable parentDisposable) {
+    public final ModuleWizardStep getCustomOptionsStep(@NotNull final WizardContext context,
+                                                       @NotNull final Disposable parentDisposable) {
         SpoofaxProjectWizardStep step = new SpoofaxProjectWizardStep(context);
         Disposer.register(parentDisposable, step);
         return step;
@@ -146,8 +158,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
     }
 
     public final void setMyModule(@NotNull final Module myModule, @NotNull final FileObject contentPath) {
-        ProjectFactory projectFactory = IdeaPlugin.injector().getInstance(ProjectFactory.class);
-        this.myModule = projectFactory.create(myModule, contentPath);
+        this.myModule = this.projectFactory.create(myModule, contentPath);
     }
 
 
@@ -176,7 +187,9 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
     @Nullable
     public final ModuleWizardStep modifySettingsStep(@NotNull final SettingsStep settingsStep) {
         if (settingsStep == null) {
-            throw new IllegalArgumentException(String.format("Argument for @NotNull parameter '%s' of %s.%s must not be null", new Object[]{"settingsStep", "com/intellij/perlplugin/extensions/module/builder", "modifySettingsStep"}));
+            throw new IllegalArgumentException(String.format(
+                    "Argument for @NotNull parameter '%s' of %s.%s must not be null",
+                    new Object[]{"settingsStep", "com/intellij/perlplugin/extensions/module/builder", "modifySettingsStep"}));
         }
         return SpoofaxModuleType.getModuleType().modifySettingsStep(settingsStep, this);
     }

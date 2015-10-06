@@ -15,7 +15,9 @@ import java.util.Collection;
  */
 public final class IntelliJFileSystem extends AbstractFileSystem {
 
-    public IntelliJFileSystem(@NotNull final FileName rootName, @NotNull final FileObject parentLayer, @NotNull final FileSystemOptions fileSystemOptions) {
+    public IntelliJFileSystem(@NotNull final FileName rootName,
+                              @NotNull final FileObject parentLayer,
+                              @NotNull final FileSystemOptions fileSystemOptions) {
         super(rootName, parentLayer, fileSystemOptions);
     }
 

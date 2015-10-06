@@ -211,7 +211,8 @@ public final class IntelliJFileObject extends AbstractFileObject {
     }
 
     @Override
-    protected final RandomAccessContent doGetRandomAccessContent(@NotNull final RandomAccessMode mode) throws Exception {
+    protected final RandomAccessContent doGetRandomAccessContent(@NotNull final RandomAccessMode mode) throws
+            Exception {
         assert (isAttached());
 
         // FIXME: Implement this.
