@@ -38,14 +38,14 @@ public final class SpoofaxGlobalService implements PersistentStateComponent<Spoo
     }
 
     @Override
+    public int hashCode() {
+        return this.state.hashCode();
+    }
+
+    @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof SpoofaxGlobalService))
             return false;
         return this.state.equals(((SpoofaxGlobalService) obj).state);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.state.hashCode();
     }
 }

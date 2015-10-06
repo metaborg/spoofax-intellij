@@ -58,6 +58,14 @@ public final class IntelliJFileObject extends AbstractFileObject {
         return this.file;
     }
 
+    protected final boolean doIsExecutable() throws Exception {
+        if (this.file != null)
+            // There is no property for this?
+            return false;
+        else
+            return new File(this.getName().getPath()).canExecute();
+    }
+
     @Override
     protected final void doAttach() throws Exception {
         assert (!isAttached());
@@ -120,13 +128,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
             return new File(this.getName().getPath()).canWrite();
     }
 
-    protected final boolean doIsExecutable() throws Exception {
-        if (this.file != null)
-            // There is no property for this?
-            return false;
-        else
-            return new File(this.getName().getPath()).canExecute();
-    }
 
     @Override
     protected final long doGetLastModifiedTime() throws Exception {

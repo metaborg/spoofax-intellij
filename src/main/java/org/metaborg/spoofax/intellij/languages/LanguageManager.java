@@ -26,9 +26,6 @@ import java.util.List;
 public final class LanguageManager {
     @NotNull
     private final ILanguageService languageService;
-
-    //@NotNull
-    //private final Logger logger = LoggerFactory.getLogger(LanguageManager.class);
     @NotNull
     private final ILanguageDiscoveryService discoveryService;
     @NotNull

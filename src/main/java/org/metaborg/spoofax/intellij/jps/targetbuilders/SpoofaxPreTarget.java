@@ -18,12 +18,6 @@ public final class SpoofaxPreTarget extends SpoofaxTarget {
         super(project, targetType);
     }
 
-    @NotNull
-    @Override
-    public final String getPresentableName() {
-        return "Spoofax PRE target 2 '" + getId() + "'";
-    }
-
     @Override
     public final boolean isCompiledBeforeModuleLevelBuilders() {
         return true;
@@ -33,6 +27,12 @@ public final class SpoofaxPreTarget extends SpoofaxTarget {
     public final Collection<BuildTarget<?>> computeDependencies(@NotNull final BuildTargetRegistry buildTargetRegistry,
                                                                 @NotNull final TargetOutputIndex targetOutputIndex) {
         return Collections.emptyList();
+    }
+
+    @NotNull
+    @Override
+    public final String getPresentableName() {
+        return "Spoofax PRE target 2 '" + getId() + "'";
     }
 
 }

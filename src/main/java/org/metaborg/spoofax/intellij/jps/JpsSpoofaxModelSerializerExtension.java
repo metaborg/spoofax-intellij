@@ -23,17 +23,16 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
     public JpsSpoofaxModelSerializerExtension() {
     }
 
+    @NotNull
+    @Override
+    public final List<? extends JpsProjectExtensionSerializer> getProjectExtensionSerializers() {
+        return Collections.singletonList(new SpoofaxProjectSerializer());
+    }
 
     @NotNull
     @Override
     public final List<? extends JpsGlobalExtensionSerializer> getGlobalExtensionSerializers() {
         return Collections.singletonList(new SpoofaxGlobalSerializer());
-    }
-
-    @NotNull
-    @Override
-    public final List<? extends JpsProjectExtensionSerializer> getProjectExtensionSerializers() {
-        return Collections.singletonList(new SpoofaxProjectSerializer());
     }
 
     @NotNull

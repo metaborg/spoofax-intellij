@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Controls the list of build targetbuilders when Make is invoked for a particular scope.
+ * Controls the list of build target builders when Make is invoked for a particular scope.
  */
 public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
 

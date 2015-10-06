@@ -23,6 +23,13 @@ public final class SpoofaxGlobalState {
     }
 
     @Override
+    public final int hashCode() {
+        return new HashCodeBuilder(19, 31)
+                .append(this.myName)
+                .toHashCode();
+    }
+
+    @Override
     public final boolean equals(@Nullable Object obj) {
         if (!(obj instanceof SpoofaxGlobalState))
             return false;
@@ -38,13 +45,6 @@ public final class SpoofaxGlobalState {
         return new EqualsBuilder()
                 .append(this.myName, other.myName)
                 .isEquals();
-    }
-
-    @Override
-    public final int hashCode() {
-        return new HashCodeBuilder(19, 31)
-                .append(this.myName)
-                .toHashCode();
     }
 
 }

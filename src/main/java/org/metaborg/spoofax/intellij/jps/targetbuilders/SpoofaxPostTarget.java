@@ -27,12 +27,6 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
         this.preTargetType = preTargetType;
     }
 
-    @NotNull
-    @Override
-    public final String getPresentableName() {
-        return "Spoofax POST target 2 '" + getId() + "'";
-    }
-
     @Override
     public final boolean isCompiledBeforeModuleLevelBuilders() {
         return false;
@@ -45,6 +39,12 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
         dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
         dependencies.add(this.preTargetType.createTarget(super.myModule));
         return dependencies;
+    }
+
+    @NotNull
+    @Override
+    public final String getPresentableName() {
+        return "Spoofax POST target 2 '" + getId() + "'";
     }
 
 }

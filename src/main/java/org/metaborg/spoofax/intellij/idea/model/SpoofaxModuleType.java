@@ -64,19 +64,6 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
         return SpoofaxIcons.INSTANCE.Default;
     }
 
-    @Override
-    public boolean isValidSdk(@NotNull Module module, Sdk projectSdk) {
-        return super.isValidSdk(module, projectSdk);
-    }
-
-    @Nullable
-    @Override
-    public ModuleWizardStep modifyProjectTypeStep(@NotNull SettingsStep settingsStep,
-                                                  @NotNull ModuleBuilder moduleBuilder) {
-        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, o -> true);
-    }
-
-
     @NotNull
     @Override
     public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext,
@@ -90,5 +77,17 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
         final ModuleWizardStep[] wizardSteps = steps.toArray(new ModuleWizardStep[steps.size()]);
         return ArrayUtil.mergeArrays(wizardSteps,
                                      super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider));
+    }
+
+    @Nullable
+    @Override
+    public ModuleWizardStep modifyProjectTypeStep(@NotNull SettingsStep settingsStep,
+                                                  @NotNull ModuleBuilder moduleBuilder) {
+        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, o -> true);
+    }
+
+    @Override
+    public boolean isValidSdk(@NotNull Module module, Sdk projectSdk) {
+        return super.isValidSdk(module, projectSdk);
     }
 }

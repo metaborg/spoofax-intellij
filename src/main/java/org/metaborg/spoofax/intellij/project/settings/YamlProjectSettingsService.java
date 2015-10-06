@@ -24,9 +24,6 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
      */
     @NotNull
     private static final String SETTINGS_FILE = "spoofax-project.yaml";
-
-    //@NotNull
-    //private static final Logger logger = LoggerFactory.getLogger(IntelliJProjectSettingsService.class);
     @NotNull
     private final IResourceService resourceService;
     @InjectLogger

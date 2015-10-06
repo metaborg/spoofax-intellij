@@ -40,14 +40,14 @@ public final class SpoofaxProjectService implements PersistentStateComponent<Spo
     }
 
     @Override
+    public final int hashCode() {
+        return this.state.hashCode();
+    }
+
+    @Override
     public final boolean equals(Object obj) {
         if (!(obj instanceof SpoofaxProjectService))
             return false;
         return this.state.equals(((SpoofaxProjectService) obj).state);
-    }
-
-    @Override
-    public final int hashCode() {
-        return this.state.hashCode();
     }
 }

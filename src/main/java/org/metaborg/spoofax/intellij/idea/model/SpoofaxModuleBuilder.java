@@ -53,24 +53,46 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         addListener(this);
     }
 
-    @NotNull
-    public final String getPresentableName() {
-        return "Spoofax";
+    public final void displayInitError(@NotNull final String error, @NotNull final Project project) {
+        SwingUtilities.invokeLater(() -> {
+            String text = "<html><a href=\"openBrowser\" target=\"_top\">How do I fix this?</a></html>";
+            Notifications.Bus.notify(new Notification("SourceFinder",
+                                                      error,
+                                                      text,
+                                                      NotificationType.ERROR,
+                                                      (notification, event) -> {
+                                                          if (event.getDescription().equals("openBrowser")) {
+                                                              //launchBrowser("https://bitbucket.org/mtiigi/intellij-sourcefinder-plugin");
+                                                          }
+                                                      }), project);
+        });
+
+
     }
 
-    @NotNull
-    public final String getDescription() {
-        return "Spoofax Module - description";
+    @Nullable
+    public final ModuleWizardStep getCustomOptionsStep(@NotNull final WizardContext context,
+                                                       @NotNull final Disposable parentDisposable) {
+        SpoofaxProjectWizardStep step = new SpoofaxProjectWizardStep(context);
+        Disposer.register(parentDisposable, step);
+        return step;
     }
 
-    @NotNull
-    public final Icon getBigIcon() {
-        return SpoofaxIcons.INSTANCE.Default;
+    @Nullable
+    public final ModuleWizardStep modifySettingsStep(@NotNull final SettingsStep settingsStep) {
+        if (settingsStep == null) {
+            throw new IllegalArgumentException(String.format(
+                    "Argument for @NotNull parameter '%s' of %s.%s must not be null",
+                    new Object[]{"settingsStep", "com/intellij/perlplugin/extensions/module/builder", "modifySettingsStep"}));
+        }
+        return SpoofaxModuleType.getModuleType().modifySettingsStep(settingsStep, this);
     }
 
+    @Override
     @NotNull
-    public final Icon getNodeIcon() {
-        return SpoofaxIcons.INSTANCE.Default;
+    public final ModuleWizardStep modifyProjectTypeStep(@NotNull final SettingsStep settingsStep) {
+        return StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
+        //return super.modifyProjectTypeStep(settingsStep);
     }
 
     public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
@@ -89,6 +111,24 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
 
         // Generate the module structure (files and directories).
         generateModuleStructure(this.myModule, rootModel, contentEntry);
+    }
+
+    private final void setSdk(@NotNull final ModifiableRootModel rootModel) {
+        if (this.myJdk != null) {
+            // An SDK was selected in the wizard.
+            rootModel.setSdk(this.myJdk);
+        } else {
+            // No SDK was selected in the wizard.
+            rootModel.inheritSdk();
+        }
+    }
+
+    public final void setMyProject(@NotNull final Project myProject, @NotNull final FileObject contentPath) {
+        this.myProject = myProject;
+    }
+
+    public final void setMyModule(@NotNull final Module myModule, @NotNull final FileObject contentPath) {
+        this.myModule = this.projectFactory.create(myModule, contentPath);
     }
 
     private final void generateModuleStructure(@NotNull final IProject project,
@@ -123,77 +163,34 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
     }
 
     @NotNull
-    public final String getGroupName() {
-        return "Spoofax Group";
-    }
-
-
-    public final void displayInitError(@NotNull final String error, @NotNull final Project project) {
-        SwingUtilities.invokeLater(() -> {
-            String text = "<html><a href=\"openBrowser\" target=\"_top\">How do I fix this?</a></html>";
-            Notifications.Bus.notify(new Notification("SourceFinder",
-                                                      error,
-                                                      text,
-                                                      NotificationType.ERROR,
-                                                      (notification, event) -> {
-                                                          if (event.getDescription().equals("openBrowser")) {
-                                                              //launchBrowser("https://bitbucket.org/mtiigi/intellij-sourcefinder-plugin");
-                                                          }
-                                                      }), project);
-        });
-
-
-    }
-
-    @Nullable
-    public final ModuleWizardStep getCustomOptionsStep(@NotNull final WizardContext context,
-                                                       @NotNull final Disposable parentDisposable) {
-        SpoofaxProjectWizardStep step = new SpoofaxProjectWizardStep(context);
-        Disposer.register(parentDisposable, step);
-        return step;
-    }
-
-    public final void setMyProject(@NotNull final Project myProject, @NotNull final FileObject contentPath) {
-        this.myProject = myProject;
-    }
-
-    public final void setMyModule(@NotNull final Module myModule, @NotNull final FileObject contentPath) {
-        this.myModule = this.projectFactory.create(myModule, contentPath);
-    }
-
-
-    private final void setSdk(@NotNull final ModifiableRootModel rootModel) {
-        if (this.myJdk != null) {
-            // An SDK was selected in the wizard.
-            rootModel.setSdk(this.myJdk);
-        } else {
-            // No SDK was selected in the wizard.
-            rootModel.inheritSdk();
-        }
-    }
-
-    @NotNull
     public final ModuleType getModuleType() {
         return SpoofaxModuleType.getModuleType();
     }
 
-    @Override
     @NotNull
-    public final ModuleWizardStep modifyProjectTypeStep(@NotNull final SettingsStep settingsStep) {
-        return StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
-        //return super.modifyProjectTypeStep(settingsStep);
+    public final Icon getBigIcon() {
+        return SpoofaxIcons.INSTANCE.Default;
     }
 
-    @Nullable
-    public final ModuleWizardStep modifySettingsStep(@NotNull final SettingsStep settingsStep) {
-        if (settingsStep == null) {
-            throw new IllegalArgumentException(String.format(
-                    "Argument for @NotNull parameter '%s' of %s.%s must not be null",
-                    new Object[]{"settingsStep", "com/intellij/perlplugin/extensions/module/builder", "modifySettingsStep"}));
-        }
-        return SpoofaxModuleType.getModuleType().modifySettingsStep(settingsStep, this);
+    @NotNull
+    public final Icon getNodeIcon() {
+        return SpoofaxIcons.INSTANCE.Default;
     }
 
+    @NotNull
+    public final String getDescription() {
+        return "Spoofax Module - description";
+    }
+
+    @NotNull
+    public final String getPresentableName() {
+        return "Spoofax";
+    }
+
+    @NotNull
+    public final String getGroupName() {
+        return "Spoofax Group";
+    }
 
     @Override
     public final void moduleCreated(@NotNull final Module module) {

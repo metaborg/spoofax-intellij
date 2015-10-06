@@ -54,13 +54,13 @@ public final class SpoofaxBuilderService extends BuilderService {
 
     @NotNull
     @Override
-    public List<? extends TargetBuilder<?, ?>> createBuilders() {
-        return this.builders;
+    public List<? extends ModuleLevelBuilder> createModuleLevelBuilders() {
+        return this.moduleLevelBuilders;
     }
 
     @NotNull
     @Override
-    public List<? extends ModuleLevelBuilder> createModuleLevelBuilders() {
-        return this.moduleLevelBuilders;
+    public List<? extends TargetBuilder<?, ?>> createBuilders() {
+        return this.builders;
     }
 }

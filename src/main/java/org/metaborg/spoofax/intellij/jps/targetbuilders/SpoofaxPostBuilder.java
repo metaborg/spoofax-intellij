@@ -32,9 +32,6 @@ public final class SpoofaxPostBuilder extends TargetBuilder<SpoofaxSourceRootDes
 
     @NotNull
     private final ISpoofaxProjectSettingsService settingsService;
-
-    //@NotNull
-    //private static final Logger logger = LoggerFactory.getLogger(SpoofaxPreBuilder.class);
     @NotNull
     private final SpoofaxMetaBuilder builder;
     @NotNull

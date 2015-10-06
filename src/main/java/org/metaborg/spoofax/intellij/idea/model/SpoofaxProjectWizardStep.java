@@ -25,9 +25,6 @@ public class SpoofaxProjectWizardStep extends ModuleWizardStep implements Dispos
         return this.myMainPanel;
     }
 
-    public void onWizardFinished() throws CommitStepException {
-    }
-
     public JComponent getComponent() {
         if (myMainPanel == null) {
             myMainPanel = new JPanel();
@@ -46,5 +43,8 @@ public class SpoofaxProjectWizardStep extends ModuleWizardStep implements Dispos
 
     public void updateDataModel() {
         //TODO:implement
+    }
+
+    public void onWizardFinished() throws CommitStepException {
     }
 }

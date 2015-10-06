@@ -46,11 +46,9 @@ public final class JpsProjectService implements IJpsProjectService {
      * {@inheritDoc}
      */
     @Nullable
-    @Override
-    public SpoofaxJpsProject get(@NotNull final FileObject resource) {
+    public SpoofaxJpsProject get(@NotNull final JpsModule module) {
         for (SpoofaxJpsProject project : this.projects) {
-            JpsModule module = project.module();
-            if (isInContentRoot(module, resource))
+            if (project.module().equals(module))
                 return project;
         }
         return null;
@@ -60,9 +58,11 @@ public final class JpsProjectService implements IJpsProjectService {
      * {@inheritDoc}
      */
     @Nullable
-    public SpoofaxJpsProject get(@NotNull final JpsModule module) {
+    @Override
+    public SpoofaxJpsProject get(@NotNull final FileObject resource) {
         for (SpoofaxJpsProject project : this.projects) {
-            if (project.module().equals(module))
+            JpsModule module = project.module();
+            if (isInContentRoot(module, resource))
                 return project;
         }
         return null;

@@ -20,14 +20,19 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
     }
 
     @Override
+    public final void loadExtension(@NotNull final JpsProject project, @NotNull final Element element) {
+        SpoofaxProjectState state = XmlSerializer.deserialize(element, SpoofaxProjectState.class);
+        loadExtensionWithState(project, state);
+    }
+
+    @Override
     public final void loadExtensionWithDefaultSettings(@NotNull final JpsProject project) {
         loadExtensionWithState(project, null);
     }
 
     @Override
-    public final void loadExtension(@NotNull final JpsProject project, @NotNull final Element element) {
-        SpoofaxProjectState state = XmlSerializer.deserialize(element, SpoofaxProjectState.class);
-        loadExtensionWithState(project, state);
+    public final void saveExtension(@NotNull final JpsProject project, @NotNull final Element element) {
+        throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
     }
 
     private final void loadExtensionWithState(@NotNull final JpsProject project,
@@ -36,11 +41,6 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
         if (state != null)
             config.loadState(state);
         SpoofaxExtensionService.getInstance().setConfiguration(project, config);
-    }
-
-    @Override
-    public final void saveExtension(@NotNull final JpsProject project, @NotNull final Element element) {
-        throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
     }
 
 }

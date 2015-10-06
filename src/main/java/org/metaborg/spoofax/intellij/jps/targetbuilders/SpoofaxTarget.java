@@ -55,18 +55,6 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
     }
 
     @Override
-    public final boolean isTests() {
-        // Default implementation.
-        return false;
-    }
-
-    @NotNull
-    private final SpoofaxTargetType<?> getSpoofaxTargetType() {
-        // Default implementation.
-        return (SpoofaxTargetType<?>) getTargetType();
-    }
-
-    @Override
     @NotNull
     public final String getId() {
         // Default implementation.
@@ -88,6 +76,12 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
         return result;
     }
 
+    @Override
+    public final boolean isTests() {
+        // Default implementation.
+        return false;
+    }
+
     @Nullable
     @Override
     public final SpoofaxSourceRootDescriptor findRootDescriptor(@NotNull final String rootId,
@@ -96,6 +90,12 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
         return ContainerUtil.getFirstItem(rootIndex.getRootDescriptors(new File(rootId),
                                                                        Collections.singletonList(getSpoofaxTargetType()),
                                                                        null));
+    }
+
+    @NotNull
+    private final SpoofaxTargetType<?> getSpoofaxTargetType() {
+        // Default implementation.
+        return (SpoofaxTargetType<?>) getTargetType();
     }
 
     @NotNull
