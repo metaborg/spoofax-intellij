@@ -46,4 +46,8 @@ public final class SpoofaxJpsProject implements IProject {
         return this.module;
     }
 
+    @Override
+    public String toString() {
+        return this.module.getName();
+    }
 }
