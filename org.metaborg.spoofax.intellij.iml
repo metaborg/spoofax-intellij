@@ -22,5 +22,6 @@
     <orderEntry type="library" name="org.metaborg:org.metaborg.spoofax.meta.core:1.5.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="org.apache.ant:ant:1.9.6" level="project" />
     <orderEntry type="library" name="org.metaborg:make-permissive:1.5.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="org.javassist:javassist:3.20.0-GA" level="project" />
   </component>
 </module>

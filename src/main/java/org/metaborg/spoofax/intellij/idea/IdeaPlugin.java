@@ -56,6 +56,10 @@ public final class IdeaPlugin implements ApplicationComponent {
     }
 
     public final void initComponent() {
+
+        System.out.println();
+        // IdeaLanguageManager
+
     }
 
     public final void disposeComponent() {
