@@ -65,4 +65,5 @@ public abstract class SpoofaxFileType extends LanguageFileType {
     public Icon getIcon() {
         return SpoofaxIcons.INSTANCE.Default;
     }
+
 }

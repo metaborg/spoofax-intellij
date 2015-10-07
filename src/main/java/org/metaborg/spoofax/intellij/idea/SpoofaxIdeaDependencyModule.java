@@ -1,9 +1,14 @@
 package org.metaborg.spoofax.intellij.idea;
 
 import com.google.inject.Singleton;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.intellij.lexer.Lexer;
+import org.metaborg.core.syntax.IParserConfiguration;
+import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
 import org.metaborg.spoofax.intellij.languages.IdeaLanguageManager;
+import org.metaborg.spoofax.intellij.languages.syntax.*;
 
 /**
  * The Guice dependency injection module for the Spoofax IDEA plugin.
@@ -16,6 +21,20 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
 
         bind(SpoofaxModuleBuilder.class).in(Singleton.class);
         bind(IdeaLanguageManager.class).in(Singleton.class);
+        bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
+            /* implode    */ true,
+            /* recovery   */ true,
+            /* completion */ false,
+            /* timeout    */ 30000));
+        //SpoofaxTokenTypeManager tokenTypesManager,
+        //@NotNull final IParserConfiguration
+        //bind(ISpoofaxParser.class).to(OldSpoofaxParser.class).in(Singleton.class);
+        //bind(Lexer.class).to(SpoofaxLexer.class).in(Singleton.class);
+
+        install(new FactoryModuleBuilder()
+                        .implement(Lexer.class, SpoofaxLexer.class)
+                        .build(ISpoofaxLexerAdapterFactory.class));
+
     }
 
 }
