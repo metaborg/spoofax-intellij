@@ -8,7 +8,6 @@ import com.intellij.lang.PsiParser;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.languages.IdeaLanguageManager;
 import org.metaborg.spoofax.intellij.languages.SpoofaxIdeaLanguage;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
@@ -17,10 +16,10 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public final class OldSpoofaxParser implements ISpoofaxParser {
 
-    @NotNull private final IdeaLanguageManager languageManager;
+    @NotNull private final OldSpoofaxTokenType dummyAstTokenType;
 
-    public OldSpoofaxParser(@NotNull final IdeaLanguageManager languageManager) {
-        this.languageManager = languageManager;
+    public OldSpoofaxParser(@NotNull final OldSpoofaxTokenType dummyAstTokenType) {
+        this.dummyAstTokenType = dummyAstTokenType;
     }
 
     @NotNull
@@ -34,7 +33,7 @@ public final class OldSpoofaxParser implements ISpoofaxParser {
             //this.logger.info("advance...");
         }
         SpoofaxIdeaLanguage language = (SpoofaxIdeaLanguage)root.getLanguage();
-        m.done(this.languageManager.getDummyAstTokenType(language.language()));
+        m.done(this.dummyAstTokenType);
         //this.logger.info("Done!");
         return builder.getTreeBuilt();
     }

@@ -27,7 +27,6 @@ import org.metaborg.core.style.IStylerService;
 import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.languages.IdeaLanguageManager;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.intellij.languages.SpoofaxFileType;
 import org.spoofax.interpreter.terms.IStrategoTerm;

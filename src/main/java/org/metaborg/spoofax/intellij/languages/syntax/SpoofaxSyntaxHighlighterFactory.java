@@ -9,7 +9,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.languages.IdeaLanguageManager;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
 //@Singleton
@@ -31,7 +30,7 @@ public class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
 //
 //    @Inject
 //    @SuppressWarnings("unused")
-//    private final void inject(@NotNull final IdeaLanguageManager ideaLanguageManager) {
+//    private final void inject(@NotNull final IIdeaLanguageManager ideaLanguageManager) {
 //        this.ideaLanguageManager = ideaLanguageManager;
 //    }
 

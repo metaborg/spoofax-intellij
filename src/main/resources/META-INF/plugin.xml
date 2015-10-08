@@ -58,6 +58,8 @@
             <add-to-group group-id="MainMenu" anchor="last"/>
             <action id="Spoofax.LoadLanguages" class="org.metaborg.spoofax.intellij.LoadLanguagesAction"
                     text="Load languages" description="Loads languages."/>
+            <action id="Spoofax.UnloadLanguages" class="org.metaborg.spoofax.intellij.UnloadLanguagesAction"
+                    text="Unload languages" description="Unloads languages."/>
         </group>
     </actions>
 

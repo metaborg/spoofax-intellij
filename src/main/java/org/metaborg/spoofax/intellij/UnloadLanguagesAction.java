@@ -15,8 +15,7 @@ import org.metaborg.spoofax.intellij.languages.LanguageManager;
 /**
  * Created by daniel on 10/8/15.
  */
-public class LoadLanguagesAction extends AnAction {
-
+public class UnloadLanguagesAction extends AnAction {
     @NotNull
     private final LanguageManager languageManager;
     @NotNull
@@ -24,7 +23,7 @@ public class LoadLanguagesAction extends AnAction {
     @NotNull
     private final IIdeaLanguageManager ideaLanguageManager;
 
-    public LoadLanguagesAction() {
+    public UnloadLanguagesAction() {
         this.languageManager = IdeaPlugin.injector().getInstance(LanguageManager.class);
         this.languageService = IdeaPlugin.injector().getInstance(ILanguageService.class);
         this.ideaLanguageManager = IdeaPlugin.injector().getInstance(IIdeaLanguageManager.class);
@@ -33,10 +32,9 @@ public class LoadLanguagesAction extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
-        //this.languageManager.loadMetaLanguages();
         WriteCommandAction.runWriteCommandAction(project, () -> {
             for (ILanguage language : this.languageService.getAllLanguages()) {
-                this.ideaLanguageManager.load(language);
+                this.ideaLanguageManager.unload(language);
             }
         });
 

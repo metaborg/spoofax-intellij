@@ -53,7 +53,7 @@ public final class LanguageManager {
         loadLanguage("org.metaborg.meta.lib.analysis-1.5.0-SNAPSHOT");
 
         loadLanguage("org.metaborg.meta.lang.esv-1.5.0-baseline-20150905-200051");
-        loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-baseline-20150905-200051");
+        loadLanguage("org.metaborg.meta.lang.sdf-t.5.0-baseline-20150905-200051");
     }
 
     private final void loadLanguage(@NotNull final String id) {
