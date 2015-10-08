@@ -1,6 +1,5 @@
-package org.metaborg.spoofax.intellij.languages.syntax;
+package org.metaborg.spoofax.intellij.idea.languages;
 
-import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lexer.LexerBase;

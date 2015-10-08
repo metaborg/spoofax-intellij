@@ -1,9 +1,6 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.languages.SpoofaxFileType;
-import org.metaborg.spoofax.intellij.languages.SpoofaxIdeaLanguage;
-import org.metaborg.spoofax.intellij.languages.syntax.*;
 
 /**
  * Stores the IntelliJ IDEA objects that are associated with a particular language.

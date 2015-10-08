@@ -4,35 +4,45 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 
+import java.util.Collection;
+import java.util.Set;
+
 /**
  * Manages the Spoofax languages loaded in IntelliJ IDEA.
  */
 public interface IIdeaLanguageManager {
 
     /**
-     * Loads a language.
+     * Loads a language implementation.
      *
-     * @param language The language to load.
+     * @param language The language implementation to load.
      */
-    void load(@NotNull ILanguage language);
+    void load(@NotNull ILanguageImpl language);
 
     /**
-     * Unloads a language.
+     * Unloads a language implementation.
      *
-     * @param language The language to unload.
+     * @param language The language implementation to unload.
      *
-     * @return <code>true</code> when the language was successfully unloaded;
+     * @return <code>true</code> when the language implementation was successfully unloaded;
      * otherwise, <code>false</code> when the language was not loaded.
      */
-    boolean unload(@NotNull ILanguage language);
+    boolean unload(@NotNull ILanguageImpl language);
 
     /**
-     * Returns whether the specified language is currently loaded.
+     * Returns whether the specified language implementation is currently loaded.
      *
-     * @param language The language to check.
+     * @param language The language implementation to check.
      * @return <code>true</code> when the language
      * is loaded; otherwise <code>false</code>.
      */
-    boolean isLoaded(@NotNull ILanguage language);
+    boolean isLoaded(@NotNull ILanguageImpl language);
+
+    /**
+     * Returns a collection of loaded language implementations.
+     * @return The loaded language implementations.
+     */
+    @NotNull
+    Set<ILanguageImpl> getLoaded();
 
 }

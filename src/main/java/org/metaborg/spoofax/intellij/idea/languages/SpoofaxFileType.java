@@ -1,20 +1,20 @@
-package org.metaborg.spoofax.intellij.languages;
+package org.metaborg.spoofax.intellij.idea.languages;
 
-import com.intellij.lang.Language;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
-import org.slf4j.Logger;
+import org.metaborg.spoofax.intellij.languages.LanguageUtils;
 
 import javax.swing.*;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Base class for all Spoofax file types.
+ * A Spoofax language file type.
+ *
+ * There are no implementations of this class because it's instantiated dynamically.
  */
 public abstract class SpoofaxFileType extends LanguageFileType {
 
@@ -28,18 +28,18 @@ public abstract class SpoofaxFileType extends LanguageFileType {
     }
 
     /**
-     * Gets the Spoofax language.
+     * Gets the Spoofax language implementation.
      *
-     * @return The Spoofax language.
+     * @return The Spoofax language implementation.
      */
-    public final ILanguage getSpoofaxLanguage() {
+    public final ILanguageImpl getSpoofaxLanguage() {
         return ((SpoofaxIdeaLanguage)super.getLanguage()).language();
     }
 
     @NotNull
     @Override
     public String getName() {
-        return this.getSpoofaxLanguage().name();
+        return this.getSpoofaxLanguage().belongsTo().name();
     }
 
     @NotNull
@@ -52,12 +52,12 @@ public abstract class SpoofaxFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getDefaultExtension() {
-        return LanguageUtils.getDefaultExtension(this.getSpoofaxLanguage().activeImpl());
+        return LanguageUtils.getDefaultExtension(this.getSpoofaxLanguage());
     }
 
     @NotNull
     public Set<String> getExtensions() {
-        return LanguageUtils.getExtensions(this.getSpoofaxLanguage().activeImpl());
+        return LanguageUtils.getExtensions(this.getSpoofaxLanguage());
     }
 
     @Nullable

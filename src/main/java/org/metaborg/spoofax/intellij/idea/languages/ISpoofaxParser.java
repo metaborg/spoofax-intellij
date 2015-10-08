@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.languages.syntax;
+package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiParser;

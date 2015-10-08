@@ -1,16 +1,17 @@
-package org.metaborg.spoofax.intellij.languages;
+package org.metaborg.spoofax.intellij.idea;
 
 import com.intellij.lang.Language;
+import com.intellij.lang.LanguageExtensionPoint;
 import com.intellij.util.KeyedLazyInstanceEP;
 import org.jetbrains.annotations.NotNull;
 
-public final class InstanceKeyedExtensionPoint<T> extends KeyedLazyInstanceEP<T> {
+public final class InstanceLanguageExtensionPoint<T> extends LanguageExtensionPoint<T> {
     @NotNull
     private final T instance;
 
-    public InstanceKeyedExtensionPoint(Language language, T instance) {
+    public InstanceLanguageExtensionPoint(Language language, T instance) {
         this.instance = instance;
-        this.key = language.getID();
+        this.language = language.getID();
         this.implementationClass = null;
     }
 

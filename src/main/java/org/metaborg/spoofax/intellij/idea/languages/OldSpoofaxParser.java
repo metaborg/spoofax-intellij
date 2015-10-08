@@ -1,17 +1,11 @@
-package org.metaborg.spoofax.intellij.languages.syntax;
+package org.metaborg.spoofax.intellij.idea.languages;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiParser;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.languages.SpoofaxIdeaLanguage;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 public final class OldSpoofaxParser implements ISpoofaxParser {

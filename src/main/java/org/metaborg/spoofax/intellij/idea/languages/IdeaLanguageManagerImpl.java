@@ -7,12 +7,14 @@ import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
-import org.metaborg.spoofax.intellij.languages.InstanceKeyedExtensionPoint;
-import org.metaborg.spoofax.intellij.languages.InstanceLanguageExtensionPoint;
-import org.metaborg.spoofax.intellij.languages.SpoofaxFileType;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.spoofax.intellij.idea.InstanceKeyedExtensionPoint;
+import org.metaborg.spoofax.intellij.idea.InstanceLanguageExtensionPoint;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Singleton
 public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
@@ -25,7 +27,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     @NotNull
     private final IdeaLanguageObjectManager objectManager;
     @NotNull
-    private final Map<ILanguage, RegisteredIdeaLanguageObject> loadedLanguages = new HashMap<>();
+    private final Map<ILanguageImpl, RegisteredIdeaLanguageObject> loadedLanguages = new HashMap<>();
 
     @Inject
     private IdeaLanguageManagerImpl(@NotNull final IdeaLanguageObjectManager objectManager) {
@@ -36,7 +38,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public void load(@NotNull final ILanguage language) {
+    public void load(@NotNull final ILanguageImpl language) {
         if (isLoaded(language))
             throw new IllegalArgumentException("Language '" + language + "' is already loaded.");
         RegisteredIdeaLanguageObject obj = new RegisteredIdeaLanguageObject(this.objectManager.get(language));
@@ -50,7 +52,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public boolean unload(@NotNull final ILanguage language) {
+    public boolean unload(@NotNull final ILanguageImpl language) {
         if (!isLoaded(language))
             return false;
         RegisteredIdeaLanguageObject obj = this.loadedLanguages.remove(language);
@@ -64,8 +66,17 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public boolean isLoaded(@NotNull final ILanguage language) {
+    public boolean isLoaded(@NotNull final ILanguageImpl language) {
         return this.loadedLanguages.containsKey(language);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NotNull
+    @Override
+    public Set<ILanguageImpl> getLoaded() {
+        return Collections.unmodifiableSet(this.loadedLanguages.keySet());
     }
 
     /**
@@ -77,12 +88,12 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
         obj.parserDefinitionExtension = new InstanceLanguageExtensionPoint(
                 obj.languageObject.ideaLanguage,
                 obj.languageObject.parserDefinition);
-        obj.syntaxHighlighterFactoryExtension = new InstanceKeyedExtensionPoint(obj.languageObject.ideaLanguage,
-                                                                                obj.languageObject.syntaxHighlighterFactory);
+        obj.syntaxHighlighterFactoryExtension = new InstanceKeyedExtensionPoint(
+                obj.languageObject.ideaLanguage,
+                obj.languageObject.syntaxHighlighterFactory);
 
         registerExtension(PARSER_DEFINITION_EXTENSION, obj.parserDefinitionExtension);
-        registerExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION,
-                          obj.syntaxHighlighterFactoryExtension);
+        registerExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION, obj.syntaxHighlighterFactoryExtension);
         registerFileType(obj.languageObject.fileType);
     }
 

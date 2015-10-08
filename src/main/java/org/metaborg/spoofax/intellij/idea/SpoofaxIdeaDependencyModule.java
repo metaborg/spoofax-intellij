@@ -5,12 +5,11 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.intellij.lexer.Lexer;
 import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
+import org.metaborg.spoofax.intellij.IProjectLanguageIdentifierService;
+import org.metaborg.spoofax.intellij.ProjectLanguageIdentifierService;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
-import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
-import org.metaborg.spoofax.intellij.idea.languages.IdeaLanguageManagerImpl;
-import org.metaborg.spoofax.intellij.idea.languages.IdeaLanguageObjectManager;
+import org.metaborg.spoofax.intellij.idea.languages.*;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
-import org.metaborg.spoofax.intellij.languages.syntax.*;
 
 /**
  * The Guice dependency injection module for the Spoofax IDEA plugin.
@@ -21,6 +20,7 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
     protected void configure() {
         super.configure();
 
+        bind(IProjectLanguageIdentifierService.class).to(ProjectLanguageIdentifierService.class).in(Singleton.class);
         bind(IdeaLanguageObjectManager.class).in(Singleton.class);
         bind(IIdeaLanguageManager.class).to(IdeaLanguageManagerImpl.class).in(Singleton.class);
         bind(SpoofaxModuleBuilder.class).in(Singleton.class);

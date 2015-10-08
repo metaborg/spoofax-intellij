@@ -1,11 +1,11 @@
-package org.metaborg.spoofax.intellij.languages.syntax;
+package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.spoofax.intellij.languages.SpoofaxFileType;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFileType;
 
 import javax.swing.*;
 

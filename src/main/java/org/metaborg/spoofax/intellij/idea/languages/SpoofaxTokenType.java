@@ -1,9 +1,8 @@
-package org.metaborg.spoofax.intellij.languages.syntax;
+package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.style.IStyle;
-import org.metaborg.spoofax.intellij.languages.SpoofaxIdeaLanguage;
 
 /**
  * The type of a Spoofax token.

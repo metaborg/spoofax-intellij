@@ -7,6 +7,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
@@ -31,9 +32,11 @@ public class UnloadLanguagesAction extends AnAction {
 
     public void actionPerformed(AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
+        final ILanguageImpl[] loadedImpls = this.ideaLanguageManager.getLoaded().toArray(new ILanguageImpl[0]);
 
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            for (ILanguage language : this.languageService.getAllLanguages()) {
+            for (ILanguageImpl language : loadedImpls) {
+            //for (ILanguage language : this.languageService.getAllLanguages()) {
                 this.ideaLanguageManager.unload(language);
             }
         });

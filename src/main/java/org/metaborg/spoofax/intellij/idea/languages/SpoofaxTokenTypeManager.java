@@ -1,10 +1,9 @@
-package org.metaborg.spoofax.intellij.languages.syntax;
+package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.style.IStyle;
 import org.metaborg.core.style.Style;
-import org.metaborg.spoofax.intellij.languages.SpoofaxIdeaLanguage;
 
 import javax.annotation.Nullable;
 import java.awt.*;

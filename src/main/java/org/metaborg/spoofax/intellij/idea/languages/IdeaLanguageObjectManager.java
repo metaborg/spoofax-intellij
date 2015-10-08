@@ -6,9 +6,6 @@ import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.languages.SpoofaxFileType;
-import org.metaborg.spoofax.intellij.languages.SpoofaxIdeaLanguage;
-import org.metaborg.spoofax.intellij.languages.syntax.*;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 
@@ -28,7 +25,7 @@ public final class IdeaLanguageObjectManager {
     @NotNull
     private final ISpoofaxLexerAdapterFactory lexerFactory;
     @NotNull
-    private final HashMap<ILanguage, IdeaLanguageObject> objects = new HashMap<>();
+    private final HashMap<ILanguageImpl, IdeaLanguageObject> objects = new HashMap<>();
 
     @Inject
     private IdeaLanguageObjectManager(@NotNull final ISpoofaxLexerAdapterFactory lexerFactory) {
@@ -39,15 +36,15 @@ public final class IdeaLanguageObjectManager {
     }
 
     /**
-     * Gets the {@link IdeaLanguageObject} for a particular language.
+     * Gets the {@link IdeaLanguageObject} for a particular language implementation.
      *
-     * If no {@link IdeaLanguageObject} exists yet for the language,
+     * If no {@link IdeaLanguageObject} exists yet for the language implementation,
      * a new  {@link IdeaLanguageObject} is created and cached.
      *
      * @param language The language.
      * @return The corresponding {@link IdeaLanguageObject}.
      */
-    public IdeaLanguageObject get(ILanguage language) {
+    public IdeaLanguageObject get(ILanguageImpl language) {
         IdeaLanguageObject obj = this.objects.get(language);
         if (obj == null) {
             obj = create(language);
@@ -62,16 +59,17 @@ public final class IdeaLanguageObjectManager {
 
     /**
      * Creates a new {@link IdeaLanguageObject}.
-     * @param language The language.
+     *
+     * @param language The language implementation.
      * @return The created {@link IdeaLanguageObject}.
      */
     @NotNull
-    private IdeaLanguageObject create(@NotNull final ILanguage language) {
+    private IdeaLanguageObject create(@NotNull final ILanguageImpl language) {
         final SpoofaxIdeaLanguage ideaLanguage = createIdeaLanguage(language);
         final SpoofaxFileType fileType = createFileType(ideaLanguage);
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
         final OldSpoofaxTokenType dummyAstTokenType = createDummyAstTokenType(ideaLanguage);
-        final SpoofaxLexer lexer = createLexer(language.activeImpl(), tokenTypeManager);
+        final SpoofaxLexer lexer = createLexer(language, tokenTypeManager);
         final OldSpoofaxParser parser = createParser(dummyAstTokenType);
         final SpoofaxParserDefinition parserDefinition = createParserDefinition(fileType, lexer, parser);
         final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory(parserDefinition);
@@ -82,14 +80,14 @@ public final class IdeaLanguageObjectManager {
     /**
      * Creates a new IDEA language for a Spoofax language.
      *
-     * @param language The language.
+     * @param language The language implementation.
      * @return The created IDEA language.
      */
     @NotNull
-    private final SpoofaxIdeaLanguage createIdeaLanguage(@NotNull final ILanguage language) {
+    private final SpoofaxIdeaLanguage createIdeaLanguage(@NotNull final ILanguageImpl language) {
         try {
             this.proxyFactory.setSuperclass(SpoofaxIdeaLanguage.class);
-            return (SpoofaxIdeaLanguage)this.proxyFactory.create(new Class<?>[]{ ILanguage.class }, new Object[]{ language });
+            return (SpoofaxIdeaLanguage)this.proxyFactory.create(new Class<?>[]{ ILanguageImpl.class }, new Object[]{ language });
         } catch (NoSuchMethodException | IllegalArgumentException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             this.logger.error("Unexpected unhandled exception.", e);
             throw new RuntimeException(e);
@@ -137,6 +135,7 @@ public final class IdeaLanguageObjectManager {
 
     /**
      * Creates a new parser definition.
+     *
      * @param fileType The language file type.
      * @return The created parser definition.
      */
@@ -147,6 +146,7 @@ public final class IdeaLanguageObjectManager {
 
     /**
      * Creates a new lexer.
+     *
      * @param language The language.
      * @return The lexer.
      */
@@ -157,6 +157,7 @@ public final class IdeaLanguageObjectManager {
 
     /**
      * Creates a new parser.
+     *
      * @param dummyAstTokenType The dummy AST token type.
      * @return The parser.
      */
@@ -167,6 +168,7 @@ public final class IdeaLanguageObjectManager {
 
     /**
      * Creates a new syntax highlighter factory.
+     *
      * @param parserDefinition The parser definition.
      * @return The syntax highlighter factory.
      */

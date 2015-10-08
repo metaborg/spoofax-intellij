@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.languages.syntax;
+package org.metaborg.spoofax.intellij.idea.languages;
 
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;
