@@ -5,6 +5,9 @@ import com.google.inject.Singleton;
 import com.intellij.lang.LanguageExtensionPoint;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.extensions.Extensions;
+import com.intellij.openapi.fileTypes.FileTypeFactory;
+import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
 import com.intellij.util.KeyedLazyInstanceEP;
 import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +41,10 @@ public final class IdeaLanguageManager {
     private final static String PARSER_DEFINITION_EXTENSION_POINT_NAME = "com.intellij.lang.parserDefinition";
     @NotNull
     private final static String SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION_POINT_NAME = "com.intellij.lang.syntaxHighlighterFactory";
+    @NotNull
+    private final static String FILE_TYPE_FACTORY_EXTENSION_POINT_NAME = "com.intellij.fileTypeFactory";
     //private final static ExtensionPointName<ParserDefinition> PARSER_DEFINITION_EXTENSION_POINT_NAME = new ExtensionPointName<>("com.intellij.lang.parserDefinition");
+
 
 
     /**
@@ -88,8 +94,9 @@ public final class IdeaLanguageManager {
         final OldSpoofaxParser parser = createParser(language.activeImpl());
         final SpoofaxParserDefinition parserDefinition = createParserDefinition(fileType, lexer, parser);
         final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory(parserDefinition);
+        final SpoofaxLanguageFileTypeFactory fileTypeFactory = createFileTypeFactory(fileType);
 
-        final IdeaObjects obj = new IdeaObjects(ideaLanguage, fileType, tokenTypeManager, dummyAstTokenType, parserDefinition, lexer, parser, syntaxHighlighterFactory);
+        final IdeaObjects obj = new IdeaObjects(ideaLanguage, fileType, tokenTypeManager, dummyAstTokenType, parserDefinition, lexer, parser, syntaxHighlighterFactory, fileTypeFactory);
         this.objects.put(language, obj);
 
 
@@ -106,6 +113,15 @@ public final class IdeaLanguageManager {
         Extensions.getRootArea().getExtensionPoint(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION_POINT_NAME).registerExtension(
                 new InstanceKeyedExtensionPoint(ideaLanguage, syntaxHighlighterFactory)
         );
+        //FileTypeManager.getInstance().registerFileType(fileType, fileType.getExtensions());
+        FileTypeManagerEx.getInstanceEx().registerFileType(fileType);
+        for (String ext : fileType.getExtensions()) {
+            FileTypeManager.getInstance().associateExtension(fileType, ext);
+        }
+//        Extensions.getRootArea().getExtensionPoint(FILE_TYPE_FACTORY_EXTENSION_POINT_NAME).registerExtension(
+//                fileTypeFactory
+//        );
+        //
         //LanguageExtensionPoint[] extensions = (LanguageExtensionPoint[])objs;
 //
 //        //Extensions.getRootArea().
@@ -318,6 +334,16 @@ public final class IdeaLanguageManager {
     }
 
     /**
+     * Creates a new file type factory.
+     * @param fileType The file type.
+     * @return The file type factory.
+     */
+    @NotNull
+    private final SpoofaxLanguageFileTypeFactory createFileTypeFactory(@NotNull final SpoofaxFileType fileType) {
+        return new SpoofaxLanguageFileTypeFactory(fileType);
+    }
+
+    /**
      * Stores the IntelliJ IDEA objects that are associated with a particular language.
      */
     private final class IdeaObjects {
@@ -329,8 +355,9 @@ public final class IdeaLanguageManager {
         @NotNull public final SpoofaxLexer lexer;
         @NotNull public final OldSpoofaxParser parser;
         @NotNull public final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory;
+        @NotNull public final FileTypeFactory fileTypeFactory;
 
-        public IdeaObjects(@NotNull final SpoofaxIdeaLanguage ideaLanguage, @NotNull final SpoofaxFileType fileType, @NotNull final SpoofaxTokenTypeManager tokenTypeManager, @NotNull final OldSpoofaxTokenType dummyAstTokenType, @NotNull final SpoofaxParserDefinition parserDefinition, @NotNull final SpoofaxLexer lexer, @NotNull final OldSpoofaxParser parser, @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory) {
+        public IdeaObjects(@NotNull final SpoofaxIdeaLanguage ideaLanguage, @NotNull final SpoofaxFileType fileType, @NotNull final SpoofaxTokenTypeManager tokenTypeManager, @NotNull final OldSpoofaxTokenType dummyAstTokenType, @NotNull final SpoofaxParserDefinition parserDefinition, @NotNull final SpoofaxLexer lexer, @NotNull final OldSpoofaxParser parser, @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory, @NotNull final FileTypeFactory fileTypeFactory) {
             this.ideaLanguage = ideaLanguage;
             this.fileType = fileType;
             this.tokenTypeManager = tokenTypeManager;
@@ -339,6 +366,7 @@ public final class IdeaLanguageManager {
             this.lexer = lexer;
             this.parser = parser;
             this.syntaxHighlighterFactory = syntaxHighlighterFactory;
+            this.fileTypeFactory = fileTypeFactory;
         }
     }
 
