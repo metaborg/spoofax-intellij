@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.resource.IResourceService;
+import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 
@@ -23,9 +24,7 @@ public final class IdeaPlugin implements ApplicationComponent {
     @InjectLogger
     private Logger logger;
 
-    private ILanguageDiscoveryService languageDiscoveryService;
-    private IResourceService resourceService;
-    private ILanguageService languageService;
+    private LanguageManager languageManager;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -47,15 +46,14 @@ public final class IdeaPlugin implements ApplicationComponent {
 
     @Inject
     @SuppressWarnings("unused")
-    private final void inject(@NotNull final ILanguageService languageService,
-                              @NotNull final ILanguageDiscoveryService languageDiscoveryService,
-                              @NotNull final IResourceService resourceService) {
-        this.languageDiscoveryService = languageDiscoveryService;
-        this.resourceService = resourceService;
-        this.languageService = languageService;
+    private final void inject(@NotNull final LanguageManager languageManager) {
+        this.languageManager = languageManager;
     }
 
     public final void initComponent() {
+
+        this.languageManager.loadMetaLanguages();
+
     }
 
     public final void disposeComponent() {

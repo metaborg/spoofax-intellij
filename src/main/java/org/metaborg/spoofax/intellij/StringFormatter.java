@@ -40,7 +40,7 @@ public final class StringFormatter {
      */
     @NotNull
     public static final String format(@NotNull final String pattern, @NotNull final Object argument0) {
-        return format(pattern, argument0);
+        return format(pattern, new Object[]{ argument0 });
     }
 
     /**
@@ -55,7 +55,7 @@ public final class StringFormatter {
     public static final String format(@NotNull final String pattern,
                                       @NotNull final Object argument0,
                                       @NotNull final Object argument1) {
-        return format(pattern, argument0, argument1);
+        return format(pattern, new Object[]{ argument0, argument1 });
     }
 
 
@@ -73,6 +73,6 @@ public final class StringFormatter {
                                       @NotNull final Object argument0,
                                       @NotNull final Object argument1,
                                       @NotNull final Object argument2) {
-        return format(pattern, argument0, argument1, argument2);
+        return format(pattern, new Object[]{ argument0, argument1, argument2 });
     }
 }
