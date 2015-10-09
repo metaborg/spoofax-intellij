@@ -18,31 +18,35 @@ import org.metaborg.spoofax.intellij.languages.LanguageManager;
  */
 public class LoadLanguagesAction extends AnAction {
 
-    @NotNull
-    private final LanguageManager languageManager;
+//    @NotNull
+//    private final LanguageManager languageManager;
     @NotNull
     private final ILanguageService languageService;
     @NotNull
     private final IIdeaLanguageManager ideaLanguageManager;
-    @NotNull
-    private final IProjectLanguageIdentifierService languageIdentifierService;
+//    @NotNull
+//    private final IProjectLanguageIdentifierService languageIdentifierService;
 
     public LoadLanguagesAction() {
-        this.languageManager = IdeaPlugin.injector().getInstance(LanguageManager.class);
+        // TODO: Cleanup
+//        this.languageManager = IdeaPlugin.injector().getInstance(LanguageManager.class);
         this.languageService = IdeaPlugin.injector().getInstance(ILanguageService.class);
         this.ideaLanguageManager = IdeaPlugin.injector().getInstance(IIdeaLanguageManager.class);
-        this.languageIdentifierService = IdeaPlugin.injector().getInstance(IProjectLanguageIdentifierService.class);
+//        this.languageIdentifierService = IdeaPlugin.injector().getInstance(IProjectLanguageIdentifierService.class);
     }
 
     public void actionPerformed(AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
-        // TODO: Get IProject for Project
 
         //this.languageManager.loadMetaLanguages();
         WriteCommandAction.runWriteCommandAction(project, () -> {
             for (ILanguage language : this.languageService.getAllLanguages()) {
-                ILanguageImpl implementation = this.languageIdentifierService.identify(language, null);
-                this.ideaLanguageManager.load(implementation);
+//                for (ILanguageImpl implementation : language.impls()) {
+//                    this.ideaLanguageManager.load(implementation);
+//                }
+//                ILanguageImpl implementation = this.languageIdentifierService.identify(language, null);
+                if (this.ideaLanguageManager.canLoad(language))
+                    this.ideaLanguageManager.load(language);
             }
         });
 

@@ -7,6 +7,6 @@ import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
 public interface ISpoofaxParser extends PsiParser {
-    @NotNull
-    public PsiElement createElement(@NotNull ASTNode node);
+//    @NotNull
+//    public PsiElement createElement(@NotNull ASTNode node);
 }

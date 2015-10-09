@@ -21,10 +21,12 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         super.configure();
 
         bind(IProjectLanguageIdentifierService.class).to(ProjectLanguageIdentifierService.class).in(Singleton.class);
-        bind(IdeaLanguageObjectManager.class).in(Singleton.class);
+        bind(IIdeaAttachmentManager.class).to(IdeaAttachmentManager.class).in(Singleton.class);
         bind(IIdeaLanguageManager.class).to(IdeaLanguageManagerImpl.class).in(Singleton.class);
         bind(SpoofaxModuleBuilder.class).in(Singleton.class);
+        bind(ILexerParserManager.class).to(LexerParserManager.class).in(Singleton.class);
         //bind(IdeaLanguageManager.class).in(Singleton.class);
+
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
             /* implode    */ true,
             /* recovery   */ true,
@@ -38,6 +40,9 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(Lexer.class, SpoofaxLexer.class)
                         .build(ISpoofaxLexerAdapterFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(SpoofaxParserDefinition.class, SpoofaxParserDefinition.class)
+                        .build(ISpoofaxParserDefinitionFactory.class));
 
     }
 

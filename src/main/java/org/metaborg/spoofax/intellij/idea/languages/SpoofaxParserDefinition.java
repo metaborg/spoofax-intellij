@@ -1,5 +1,7 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
@@ -8,40 +10,52 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.spoofax.intellij.IProjectLanguageIdentifierService;
 
 /**
  * A Spoofax parser definition.
  */
 public final class SpoofaxParserDefinition implements ParserDefinition {
 
-    @NotNull private Lexer lexer;
-    @NotNull private ISpoofaxParser parser;
-    @NotNull private SpoofaxFileType fileType;
-    @NotNull private IFileElementType fileElement;
-    @NotNull private ILexerParserManager lexerParserManager;
-    //@NotNull private IProjectLanguageIdentifierService languageIdentifierService;
+    @NotNull
+    private final SpoofaxFileType fileType;
+    @NotNull
+    private final IFileElementType fileElement;
+    @NotNull
+    private final ILexerParserManager lexerParserManager;
+    @NotNull
+    private final IProjectLanguageIdentifierService languageIdentifierService;
 
-    public SpoofaxParserDefinition(@NotNull final SpoofaxFileType fileType, @NotNull final Lexer lexer, @NotNull final ISpoofaxParser parser/*, @NotNull final ILexerParserManager lexerParserManager*/) {
+    @Inject
+    private SpoofaxParserDefinition(@Assisted @NotNull final SpoofaxFileType fileType,
+                                    @NotNull final ILexerParserManager lexerParserManager,
+                                    @NotNull final IProjectLanguageIdentifierService languageIdentifierService) {
         this.fileType = fileType;
-        this.lexer = lexer;
-        this.parser = parser;
         this.fileElement = new IFileElementType(fileType.getLanguage());
+        this.languageIdentifierService = languageIdentifierService;
         this.lexerParserManager = lexerParserManager;
     }
 
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        return this.lexer;
-        //return this.lexerParserManager.getLexer(fileType.getSpoofaxLanguage());
+        // TODO: Project!
+        final ILanguageImpl implementation = this.languageIdentifierService.identify(this.fileType.getSpoofaxLanguage(),
+                                                                                     null);
+        return this.lexerParserManager.getLexer(implementation);
     }
 
     @Override
     public PsiParser createParser(Project project) {
-        return this.parser;
+        // TODO: Project!
+        final ILanguageImpl implementation = this.languageIdentifierService.identify(this.fileType.getSpoofaxLanguage(),
+                                                                                     null);
+        return this.lexerParserManager.getParser(implementation);
     }
 
     @Override
@@ -70,7 +84,11 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public PsiElement createElement(ASTNode node) {
-        return this.parser.createElement(node);
+        IElementType type = node.getElementType();
+        if (type instanceof OldSpoofaxTokenType) {
+            return new SpoofaxPsiElement(node);
+        }
+        throw new AssertionError("Unknown element type: " + type);
     }
 
     @Override

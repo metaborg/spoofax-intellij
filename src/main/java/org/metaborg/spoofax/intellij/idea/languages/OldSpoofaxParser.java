@@ -32,12 +32,12 @@ public final class OldSpoofaxParser implements ISpoofaxParser {
         return builder.getTreeBuilt();
     }
 
-    @NotNull
-    public PsiElement createElement(@NotNull ASTNode node) {
-        IElementType type = node.getElementType();
-        if (type instanceof OldSpoofaxTokenType) {
-            return new SpoofaxPsiElement(node);
-        }
-        throw new AssertionError("Unknown element type: " + type);
-    }
+//    @NotNull
+//    public PsiElement createElement(@NotNull ASTNode node) {
+//        IElementType type = node.getElementType();
+//        if (type instanceof OldSpoofaxTokenType) {
+//            return new SpoofaxPsiElement(node);
+//        }
+//        throw new AssertionError("Unknown element type: " + type);
+//    }
 }

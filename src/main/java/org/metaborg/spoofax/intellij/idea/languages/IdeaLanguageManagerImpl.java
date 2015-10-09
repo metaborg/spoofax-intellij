@@ -10,6 +10,9 @@ import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.idea.InstanceKeyedExtensionPoint;
 import org.metaborg.spoofax.intellij.idea.InstanceLanguageExtensionPoint;
+import org.metaborg.spoofax.intellij.languages.LanguageUtils;
+import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.slf4j.Logger;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,18 +22,20 @@ import java.util.Set;
 @Singleton
 public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
 
+    @InjectLogger
+    private Logger logger;
     @NotNull
     private final static String PARSER_DEFINITION_EXTENSION = "com.intellij.lang.parserDefinition";
     @NotNull
     private final static String SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION = "com.intellij.lang.syntaxHighlighterFactory";
 
     @NotNull
-    private final IdeaLanguageObjectManager objectManager;
+    private final IIdeaAttachmentManager objectManager;
     @NotNull
-    private final Map<ILanguageImpl, RegisteredIdeaLanguageObject> loadedLanguages = new HashMap<>();
+    private final Map<ILanguage, RegisteredIdeaLanguageObject> loadedLanguages = new HashMap<>();
 
     @Inject
-    private IdeaLanguageManagerImpl(@NotNull final IdeaLanguageObjectManager objectManager) {
+    private IdeaLanguageManagerImpl(@NotNull final IIdeaAttachmentManager objectManager) {
         this.objectManager = objectManager;
     }
 
@@ -38,26 +43,33 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public void load(@NotNull final ILanguageImpl language) {
+    public void load(@NotNull final ILanguage language) {
         if (isLoaded(language))
             throw new IllegalArgumentException("Language '" + language + "' is already loaded.");
+        if (!canLoad(language))
+            throw new IllegalArgumentException("Language '" + language + "' is not loadable.");
+
         RegisteredIdeaLanguageObject obj = new RegisteredIdeaLanguageObject(this.objectManager.get(language));
 
         installLanguage(obj);
 
         loadedLanguages.put(language, obj);
+
+        logger.info("Loaded language {}", language);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean unload(@NotNull final ILanguageImpl language) {
+    public boolean unload(@NotNull final ILanguage language) {
         if (!isLoaded(language))
             return false;
         RegisteredIdeaLanguageObject obj = this.loadedLanguages.remove(language);
 
         uninstallLanguage(obj);
+
+        logger.info("Unloaded language {}", language);
 
         return obj != null;
     }
@@ -66,8 +78,16 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public boolean isLoaded(@NotNull final ILanguageImpl language) {
+    public boolean isLoaded(@NotNull final ILanguage language) {
         return this.loadedLanguages.containsKey(language);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canLoad(@NotNull ILanguage language) {
+        return LanguageUtils.isRealLanguage(language);
     }
 
     /**
@@ -75,7 +95,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      */
     @NotNull
     @Override
-    public Set<ILanguageImpl> getLoaded() {
+    public Set<ILanguage> getLoaded() {
         return Collections.unmodifiableSet(this.loadedLanguages.keySet());
     }
 
@@ -156,11 +176,11 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     private final class RegisteredIdeaLanguageObject {
 
         @NotNull
-        public final IdeaLanguageObject languageObject;
+        public final IdeaLanguageAttachment languageObject;
         public InstanceLanguageExtensionPoint<?> parserDefinitionExtension;
         public InstanceKeyedExtensionPoint<?> syntaxHighlighterFactoryExtension;
 
-        public RegisteredIdeaLanguageObject(@NotNull final IdeaLanguageObject languageObject) {
+        public RegisteredIdeaLanguageObject(@NotNull final IdeaLanguageAttachment languageObject) {
             this.languageObject = languageObject;
         }
 

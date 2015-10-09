@@ -17,19 +17,19 @@ public interface ILexerParserManager {
     /**
      * Returns the lexer for the specified language implementation.
      *
-     * @param language The language implementation.
+     * @param implementation The language implementation.
      * @return The lexer.
      */
     @NotNull
-    Lexer getLexer(@NotNull ILanguageImpl language);
+    Lexer getLexer(@NotNull ILanguageImpl implementation);
 
     /**
      * Returns the parser for the specified language implementation.
      *
-     * @param language The language implementation.
+     * @param implementation The language implementation.
      * @return The parser.
      */
     @NotNull
-    PsiParser getParser(@NotNull ILanguageImpl language);
+    PsiParser getParser(@NotNull ILanguageImpl implementation);
 
 }

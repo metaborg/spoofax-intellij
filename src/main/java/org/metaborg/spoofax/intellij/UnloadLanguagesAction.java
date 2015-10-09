@@ -32,10 +32,10 @@ public class UnloadLanguagesAction extends AnAction {
 
     public void actionPerformed(AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
-        final ILanguageImpl[] loadedImpls = this.ideaLanguageManager.getLoaded().toArray(new ILanguageImpl[0]);
+        final ILanguage[] loadedLanguages = this.ideaLanguageManager.getLoaded().toArray(new ILanguage[0]);
 
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            for (ILanguageImpl language : loadedImpls) {
+            for (ILanguage language : loadedLanguages) {
             //for (ILanguage language : this.languageService.getAllLanguages()) {
                 this.ideaLanguageManager.unload(language);
             }

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.spoofax.intellij.StringFormatter;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
 
@@ -28,25 +29,24 @@ public abstract class SpoofaxFileType extends LanguageFileType {
     }
 
     /**
-     * Gets the Spoofax language implementation.
+     * Gets the Spoofax language.
      *
-     * @return The Spoofax language implementation.
+     * @return The Spoofax language.
      */
-    public final ILanguageImpl getSpoofaxLanguage() {
+    public final ILanguage getSpoofaxLanguage() {
         return ((SpoofaxIdeaLanguage)super.getLanguage()).language();
     }
 
     @NotNull
     @Override
     public String getName() {
-        return this.getSpoofaxLanguage().belongsTo().name();
+        return this.getSpoofaxLanguage().name();
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        // TODO:
-        return "A spoofax language";
+        return StringFormatter.format("{} (Spoofax)", this.getSpoofaxLanguage().name());
     }
 
     @NotNull

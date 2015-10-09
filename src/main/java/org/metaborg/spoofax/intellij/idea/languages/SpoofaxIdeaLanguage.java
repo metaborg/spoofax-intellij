@@ -13,25 +13,25 @@ import org.metaborg.core.language.ILanguageImpl;
 public abstract class SpoofaxIdeaLanguage extends Language {
 
     @NotNull
-    private final ILanguageImpl language;
+    private final ILanguage language;
 
     /**
-     * Gets the associated language implementation.
+     * Gets the associated language.
      *
-     * @return The associated language implementation.
+     * @return The associated language.
      */
     @NotNull
-    public final ILanguageImpl language() {
+    public final ILanguage language() {
         return this.language;
     }
 
     /**
      * Initializes a new instance of the {@link SpoofaxIdeaLanguage} class.
      *
-     * @param language The language implementation.
+     * @param language The language.
      */
-    protected SpoofaxIdeaLanguage(@NotNull final ILanguageImpl language) {
-        super(language.id().toString());
+    protected SpoofaxIdeaLanguage(@NotNull final ILanguage language) {
+        super(language.name());
 
         this.language = language;
     }

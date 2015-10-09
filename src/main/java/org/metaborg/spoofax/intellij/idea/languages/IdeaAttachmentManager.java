@@ -13,10 +13,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 /**
- * Creates and caches {@link IdeaLanguageObject} objects.
+ * Creates and caches {@link IdeaLanguageAttachment} objects.
  */
 @Singleton
-public final class IdeaLanguageObjectManager {
+public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
 
     @InjectLogger
     private Logger logger;
@@ -25,69 +25,101 @@ public final class IdeaLanguageObjectManager {
     @NotNull
     private final ISpoofaxLexerAdapterFactory lexerFactory;
     @NotNull
-    private final HashMap<ILanguageImpl, IdeaLanguageObject> objects = new HashMap<>();
+    private final ISpoofaxParserDefinitionFactory parserDefinitionFactory;
+    @NotNull
+    private final HashMap<ILanguage, IdeaLanguageAttachment> languages = new HashMap<>();
+    @NotNull
+    private final HashMap<ILanguageImpl, IdeaLanguageImplAttachment> implementations = new HashMap<>();
 
     @Inject
-    private IdeaLanguageObjectManager(@NotNull final ISpoofaxLexerAdapterFactory lexerFactory) {
+    private IdeaAttachmentManager(@NotNull final ISpoofaxLexerAdapterFactory lexerFactory,
+                                  @NotNull final ISpoofaxParserDefinitionFactory parserDefinitionFactory) {
         this.lexerFactory = lexerFactory;
+        this.parserDefinitionFactory = parserDefinitionFactory;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
     }
 
     /**
-     * Gets the {@link IdeaLanguageObject} for a particular language implementation.
-     *
-     * If no {@link IdeaLanguageObject} exists yet for the language implementation,
-     * a new  {@link IdeaLanguageObject} is created and cached.
-     *
-     * @param language The language.
-     * @return The corresponding {@link IdeaLanguageObject}.
+     * {@inheritDoc}
      */
-    public IdeaLanguageObject get(ILanguageImpl language) {
-        IdeaLanguageObject obj = this.objects.get(language);
+    @Override
+    public IdeaLanguageAttachment get(ILanguage language) {
+        IdeaLanguageAttachment obj = this.languages.get(language);
         if (obj == null) {
-            obj = create(language);
-            this.objects.put(language, obj);
-            logger.info("Created a new IdeaLanguageObject for language.", language);
+            obj = createLanguageAttachment(language);
+            this.languages.put(language, obj);
+            logger.info("Created a new IdeaLanguageAttachment for language {}.", language);
         }
         else {
-            logger.info("Used cached IdeaLanguageObject for language.", language);
+            logger.info("Used cached IdeaLanguageAttachment for language {}.", language);
         }
         return obj;
     }
 
     /**
-     * Creates a new {@link IdeaLanguageObject}.
+     * {@inheritDoc}
+     */
+    @Override
+    public IdeaLanguageImplAttachment get(ILanguageImpl implementation) {
+        IdeaLanguageImplAttachment obj = this.implementations.get(implementation);
+        if (obj == null) {
+            obj = createLanguageImplAttachment(implementation);
+            this.implementations.put(implementation, obj);
+            logger.info("Created a new IdeaLanguageImplAttachment for language implementation {}.", implementation);
+        }
+        else {
+            logger.info("Used cached IdeaLanguageImplAttachment for language implementation {}.", implementation);
+        }
+        return obj;
+    }
+
+    /**
+     * Creates a new {@link IdeaLanguageAttachment}.
      *
-     * @param language The language implementation.
-     * @return The created {@link IdeaLanguageObject}.
+     * @param language The language.
+     * @return The created {@link IdeaLanguageAttachment}.
      */
     @NotNull
-    private IdeaLanguageObject create(@NotNull final ILanguageImpl language) {
+    private IdeaLanguageAttachment createLanguageAttachment(@NotNull final ILanguage language) {
         final SpoofaxIdeaLanguage ideaLanguage = createIdeaLanguage(language);
         final SpoofaxFileType fileType = createFileType(ideaLanguage);
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
         final OldSpoofaxTokenType dummyAstTokenType = createDummyAstTokenType(ideaLanguage);
-        final SpoofaxLexer lexer = createLexer(language, tokenTypeManager);
-        final OldSpoofaxParser parser = createParser(dummyAstTokenType);
-        final SpoofaxParserDefinition parserDefinition = createParserDefinition(fileType, lexer, parser);
+        final SpoofaxParserDefinition parserDefinition = createParserDefinition(fileType);
         final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory(parserDefinition);
 
-        return new IdeaLanguageObject(ideaLanguage, fileType, tokenTypeManager, dummyAstTokenType, parserDefinition, lexer, parser, syntaxHighlighterFactory);
+        return new IdeaLanguageAttachment(ideaLanguage, fileType, tokenTypeManager, dummyAstTokenType, parserDefinition, syntaxHighlighterFactory);
+    }
+
+    /**
+     * Creates a new {@link IdeaLanguageImplAttachment}.
+     *
+     * @param implementation The language implementation.
+     * @return The created {@link IdeaLanguageImplAttachment}.
+     */
+    @NotNull
+    private IdeaLanguageImplAttachment createLanguageImplAttachment(@NotNull final ILanguageImpl implementation) {
+        final IdeaLanguageAttachment langAtt = get(implementation.belongsTo());
+
+        final SpoofaxLexer lexer = createLexer(implementation, langAtt.tokenTypeManager);
+        final OldSpoofaxParser parser = createParser(langAtt.dummyAstTokenType);
+
+        return new IdeaLanguageImplAttachment(lexer, parser);
     }
 
     /**
      * Creates a new IDEA language for a Spoofax language.
      *
-     * @param language The language implementation.
+     * @param language The language.
      * @return The created IDEA language.
      */
     @NotNull
-    private final SpoofaxIdeaLanguage createIdeaLanguage(@NotNull final ILanguageImpl language) {
+    private final SpoofaxIdeaLanguage createIdeaLanguage(@NotNull final ILanguage language) {
         try {
             this.proxyFactory.setSuperclass(SpoofaxIdeaLanguage.class);
-            return (SpoofaxIdeaLanguage)this.proxyFactory.create(new Class<?>[]{ ILanguageImpl.class }, new Object[]{ language });
+            return (SpoofaxIdeaLanguage)this.proxyFactory.create(new Class<?>[]{ ILanguage.class }, new Object[]{ language });
         } catch (NoSuchMethodException | IllegalArgumentException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             this.logger.error("Unexpected unhandled exception.", e);
             throw new RuntimeException(e);
@@ -140,8 +172,8 @@ public final class IdeaLanguageObjectManager {
      * @return The created parser definition.
      */
     @NotNull
-    private final SpoofaxParserDefinition createParserDefinition(@NotNull final SpoofaxFileType fileType, @NotNull final SpoofaxLexer lexer, @NotNull final OldSpoofaxParser parser) {
-        return new SpoofaxParserDefinition(fileType, lexer, parser);
+    private final SpoofaxParserDefinition createParserDefinition(@NotNull final SpoofaxFileType fileType) {
+        return this.parserDefinitionFactory.create(fileType);
     }
 
     /**
