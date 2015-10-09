@@ -26,7 +26,7 @@ import org.metaborg.core.project.ProjectException;
 import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.ProjectSettings;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
-import org.metaborg.spoofax.generator.NewProjectGenerator;
+import org.metaborg.spoofax.generator.language.NewProjectGenerator;
 import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 

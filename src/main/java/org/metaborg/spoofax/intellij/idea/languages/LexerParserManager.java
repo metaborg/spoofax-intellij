@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 
 /**
@@ -26,7 +27,7 @@ public final class LexerParserManager implements ILexerParserManager {
      */
     @NotNull
     @Override
-    public Lexer getLexer(@NotNull final ILanguageImpl implementation) {
+    public Lexer getHighlightingLexer(@NotNull final ILanguageImpl implementation) {
         return this.attachmentManager.get(implementation).lexer;
     }
 
@@ -35,7 +36,16 @@ public final class LexerParserManager implements ILexerParserManager {
      */
     @NotNull
     @Override
-    public PsiParser getParser(@NotNull final ILanguageImpl implementation) {
-        return this.attachmentManager.get(implementation).parser;
+    public Lexer getCharacterLexer(@NotNull final ILanguage language) {
+        return this.attachmentManager.get(language).characterLexer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NotNull
+    @Override
+    public PsiParser getParser(@NotNull final ILanguage language) {
+        return this.attachmentManager.get(language).parser;
     }
 }

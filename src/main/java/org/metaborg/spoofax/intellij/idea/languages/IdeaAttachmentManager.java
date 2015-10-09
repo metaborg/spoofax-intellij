@@ -1,6 +1,7 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
@@ -23,19 +24,23 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final ProxyFactory proxyFactory;
     @NotNull
-    private final ISpoofaxLexerAdapterFactory lexerFactory;
+    private final ISpoofaxLexerFactory lexerFactory;
     @NotNull
     private final ISpoofaxParserDefinitionFactory parserDefinitionFactory;
+    @NotNull
+    private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
     @NotNull
     private final HashMap<ILanguage, IdeaLanguageAttachment> languages = new HashMap<>();
     @NotNull
     private final HashMap<ILanguageImpl, IdeaLanguageImplAttachment> implementations = new HashMap<>();
 
     @Inject
-    private IdeaAttachmentManager(@NotNull final ISpoofaxLexerAdapterFactory lexerFactory,
-                                  @NotNull final ISpoofaxParserDefinitionFactory parserDefinitionFactory) {
+    private IdeaAttachmentManager(@NotNull final ISpoofaxLexerFactory lexerFactory,
+                                  @NotNull final ISpoofaxParserDefinitionFactory parserDefinitionFactory,
+                                  @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
+        this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -89,8 +94,10 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         final OldSpoofaxTokenType dummyAstTokenType = createDummyAstTokenType(ideaLanguage);
         final SpoofaxParserDefinition parserDefinition = createParserDefinition(fileType);
         final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory(parserDefinition);
+        final CharacterLexer characterLexer = createCharacterLexer(tokenTypeManager);
+        final OldSpoofaxParser parser = createParser(dummyAstTokenType);
 
-        return new IdeaLanguageAttachment(ideaLanguage, fileType, tokenTypeManager, dummyAstTokenType, parserDefinition, syntaxHighlighterFactory);
+        return new IdeaLanguageAttachment(ideaLanguage, fileType, tokenTypeManager, dummyAstTokenType, parserDefinition, syntaxHighlighterFactory, characterLexer, parser);
     }
 
     /**
@@ -104,9 +111,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         final IdeaLanguageAttachment langAtt = get(implementation.belongsTo());
 
         final SpoofaxLexer lexer = createLexer(implementation, langAtt.tokenTypeManager);
-        final OldSpoofaxParser parser = createParser(langAtt.dummyAstTokenType);
 
-        return new IdeaLanguageImplAttachment(lexer, parser);
+        return new IdeaLanguageImplAttachment(lexer);
     }
 
     /**
@@ -179,7 +185,19 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     /**
      * Creates a new lexer.
      *
+     * @param tokenTypeManager The token type manager.
+     * @return The lexer.
+     */
+    @NotNull
+    private final CharacterLexer createCharacterLexer(@NotNull final SpoofaxTokenTypeManager tokenTypeManager) {
+        return new CharacterLexer(tokenTypeManager);
+    }
+
+    /**
+     * Creates a new lexer.
+     *
      * @param language The language.
+     * @param tokenTypeManager The token type manager.
      * @return The lexer.
      */
     @NotNull
@@ -206,6 +224,6 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      */
     @NotNull
     private final SpoofaxSyntaxHighlighterFactory createSyntaxHighlighterFactory(@NotNull final SpoofaxParserDefinition parserDefinition) {
-        return new SpoofaxSyntaxHighlighterFactory(parserDefinition);
+        return this.syntaxHighlighterFactoryProvider.get();
     }
 }

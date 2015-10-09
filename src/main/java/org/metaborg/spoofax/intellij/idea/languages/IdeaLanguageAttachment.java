@@ -18,10 +18,10 @@ public final class IdeaLanguageAttachment {
     public final OldSpoofaxTokenType dummyAstTokenType;
     @NotNull
     public final SpoofaxParserDefinition parserDefinition;
-//    @NotNull
-//    public final SpoofaxLexer lexer;
-//    @NotNull
-//    public final OldSpoofaxParser parser;
+    @NotNull
+    public final CharacterLexer characterLexer;
+    @NotNull
+    public final OldSpoofaxParser parser;
     @NotNull
     public final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory;
 
@@ -30,16 +30,16 @@ public final class IdeaLanguageAttachment {
                                   @NotNull final SpoofaxTokenTypeManager tokenTypeManager,
                                   @NotNull final OldSpoofaxTokenType dummyAstTokenType,
                                   @NotNull final SpoofaxParserDefinition parserDefinition,
-//                                  @NotNull final SpoofaxLexer lexer,
-//                                  @NotNull final OldSpoofaxParser parser,
-                                  @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory) {
+                                  @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory,
+                                  @NotNull final CharacterLexer characterLexer,
+                                  @NotNull final OldSpoofaxParser parser) {
         this.ideaLanguage = ideaLanguage;
         this.fileType = fileType;
         this.tokenTypeManager = tokenTypeManager;
         this.dummyAstTokenType = dummyAstTokenType;
         this.parserDefinition = parserDefinition;
-//        this.lexer = lexer;
-//        this.parser = parser;
         this.syntaxHighlighterFactory = syntaxHighlighterFactory;
+        this.characterLexer = characterLexer;
+        this.parser = parser;
     }
 }

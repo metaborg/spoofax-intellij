@@ -10,12 +10,8 @@ public final class IdeaLanguageImplAttachment {
 
     @NotNull
     public final SpoofaxLexer lexer;
-    @NotNull
-    public final OldSpoofaxParser parser;
 
-    public IdeaLanguageImplAttachment(@NotNull final SpoofaxLexer lexer,
-                                      @NotNull final OldSpoofaxParser parser) {
+    public IdeaLanguageImplAttachment(@NotNull final SpoofaxLexer lexer) {
         this.lexer = lexer;
-        this.parser = parser;
     }
 }

@@ -14,8 +14,6 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.IProjectLanguageIdentifierService;
 
 /**
  * A Spoofax parser definition.
@@ -28,34 +26,24 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
     private final IFileElementType fileElement;
     @NotNull
     private final ILexerParserManager lexerParserManager;
-    @NotNull
-    private final IProjectLanguageIdentifierService languageIdentifierService;
 
     @Inject
     private SpoofaxParserDefinition(@Assisted @NotNull final SpoofaxFileType fileType,
-                                    @NotNull final ILexerParserManager lexerParserManager,
-                                    @NotNull final IProjectLanguageIdentifierService languageIdentifierService) {
+                                    @NotNull final ILexerParserManager lexerParserManager) {
         this.fileType = fileType;
         this.fileElement = new IFileElementType(fileType.getLanguage());
-        this.languageIdentifierService = languageIdentifierService;
         this.lexerParserManager = lexerParserManager;
     }
 
     @NotNull
     @Override
     public Lexer createLexer(Project project) {
-        // TODO: Project!
-        final ILanguageImpl implementation = this.languageIdentifierService.identify(this.fileType.getSpoofaxLanguage(),
-                                                                                     null);
-        return this.lexerParserManager.getLexer(implementation);
+        return this.lexerParserManager.getCharacterLexer(this.fileType.getSpoofaxLanguage());
     }
 
     @Override
     public PsiParser createParser(Project project) {
-        // TODO: Project!
-        final ILanguageImpl implementation = this.languageIdentifierService.identify(this.fileType.getSpoofaxLanguage(),
-                                                                                     null);
-        return this.lexerParserManager.getParser(implementation);
+        return this.lexerParserManager.getParser(this.fileType.getSpoofaxLanguage());
     }
 
     @Override

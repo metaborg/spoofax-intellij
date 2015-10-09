@@ -32,7 +32,6 @@ public class LoadLanguagesAction extends AnAction {
 //        this.languageManager = IdeaPlugin.injector().getInstance(LanguageManager.class);
         this.languageService = IdeaPlugin.injector().getInstance(ILanguageService.class);
         this.ideaLanguageManager = IdeaPlugin.injector().getInstance(IIdeaLanguageManager.class);
-//        this.languageIdentifierService = IdeaPlugin.injector().getInstance(IProjectLanguageIdentifierService.class);
     }
 
     public void actionPerformed(AnActionEvent e) {

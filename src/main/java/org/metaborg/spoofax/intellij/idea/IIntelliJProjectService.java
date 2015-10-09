@@ -1,12 +1,29 @@
 package org.metaborg.spoofax.intellij.idea;
 
 import com.intellij.openapi.module.Module;
+import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.IProjectService;
+import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 
 import javax.annotation.Nullable;
 
 public interface IIntelliJProjectService extends IProjectService {
+
+    /**
+     * Indicates to the project service that a Spoofax project was opened.
+     *
+     * @param project The Spoofax project that was opened.
+     * @param module The IntelliJ module of the project.
+     */
+    void open(@NotNull IntelliJProject project, @NotNull Module module);
+
+    /**
+     * Indicates to the project service that a Spoofax project was closed.
+     *
+     * @param module The IntelliJ module of the project.
+     */
+    void close(@NotNull Module module);
 
     /**
      * Retrieves the Spoofax project of a given IntelliJ module.
@@ -16,6 +33,6 @@ public interface IIntelliJProjectService extends IProjectService {
      * or <code>null</code> if no project could be found.
      */
     @Nullable
-    IProject get(Module module);
+    IntelliJProject get(Module module);
 
 }

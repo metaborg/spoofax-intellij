@@ -8,6 +8,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.style.IStyle;
 
 import java.awt.*;
@@ -21,19 +22,25 @@ public class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
 
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
-    private final SpoofaxParserDefinition parserDefinition;
-    private final Project project;
+//    private final SpoofaxParserDefinition parserDefinition;
+    private final Lexer lexer;
 
-    public SpoofaxSyntaxHighlighter(SpoofaxParserDefinition parserDefinition, Project project)
+    public SpoofaxSyntaxHighlighter(Lexer lexer)
     {
-        this.parserDefinition = parserDefinition;
-        this.project = project;
+//        this.parserDefinition = parserDefinition;
+        this.lexer = lexer;
     }
 
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return parserDefinition.createLexer(this.project);
+//        // TODO: Project!
+//        final ILanguageImpl implementation = this.languageIdentifierService.identify(this.fileType.getSpoofaxLanguage(),
+//                                                                                     null);
+//        return this.lexerParserManager.getHighlightingLexer(implementation);
+//
+//        return parserDefinition.createLexer(this.project);
+        return this.lexer;
     }
 
     @NotNull

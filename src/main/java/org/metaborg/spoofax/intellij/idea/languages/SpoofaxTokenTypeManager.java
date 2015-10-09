@@ -17,13 +17,14 @@ import java.util.Map;
  * style. This class returns a token type that matches the style, if found; otherwise, creates a new token type and
  * stores it for re-use.
  */
-@Singleton
 public final class SpoofaxTokenTypeManager {
 
     @NotNull
     private final Map<IStyle, SpoofaxTokenType> map = new HashMap<>();
     @NotNull
     private final SpoofaxIdeaLanguage language;
+    @NotNull
+    private final CharacterTokenType characterTokenType;
 
     /**
      * Initializes a new instance of the {@link SpoofaxTokenTypeManager} class.
@@ -31,12 +32,22 @@ public final class SpoofaxTokenTypeManager {
      */
     public SpoofaxTokenTypeManager(@NotNull SpoofaxIdeaLanguage language) {
         this.language = language;
+        this.characterTokenType = new CharacterTokenType(language);
     }
 
     public IStyle getDefaultStyle()
     {
         // TODO: Get this from the IStylerService?
         return new Style(Color.black, Color.white, false, false, false);
+    }
+
+    /**
+     * Returns a special token type used to represent single character tokens.
+     *
+     * @return The token type.
+     */
+    public CharacterTokenType getCharacterTokenType() {
+        return this.characterTokenType;
     }
 
     /**
