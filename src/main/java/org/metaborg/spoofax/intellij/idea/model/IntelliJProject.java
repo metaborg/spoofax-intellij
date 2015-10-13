@@ -1,5 +1,7 @@
 package org.metaborg.spoofax.intellij.idea.model;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
@@ -14,33 +16,31 @@ import org.metaborg.core.project.IProject;
 public final class IntelliJProject implements IProject {
 
     @NotNull
-    private final Module ideModule;
+    private final Module module;
     @NotNull
     private final FileObject location;
 
-    /**
-     * Creates a new instance of the {@link IntelliJProject} class.
-     * <p>
-     * Don't call this constructor directly. Instead, use {@link ProjectFactory#create(Module)}.
-     *
-     * @param ideModule The IDE-specific module object.
-     * @param location  The project root location.
-     */
-    public IntelliJProject(@NotNull final Module ideModule, @NotNull final FileObject location) {
-        this.ideModule = ideModule;
+    @Inject
+    private IntelliJProject(@Assisted @NotNull final Module module, @Assisted @NotNull final FileObject location) {
+        this.module = module;
         this.location = location;
     }
 
     /**
-     * Gets the IDE-specific project object.
+     * Gets the IDE-specific module.
      *
-     * @return The IDE's project object.
+     * @return The module.
      */
     @NotNull
-    public final Module getIdeModule() {
-        return this.ideModule;
+    public final Module getModule() {
+        return this.module;
     }
 
+    /**
+     * Gets the location of the project.
+     *
+     * @return The project root location.
+     */
     @Override
     @NotNull
     public final FileObject location() {

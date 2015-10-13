@@ -4,35 +4,34 @@ import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFileType;
 
-import javax.swing.*;
-
+/**
+ * A Spoofax source file.
+ */
 public final class SpoofaxFile extends PsiFileBase {
 
-    @NotNull private final SpoofaxFileType fileType;
+    @NotNull
+    private final SpoofaxFileType fileType;
 
-    public SpoofaxFile(@NotNull FileViewProvider viewProvider, SpoofaxFileType fileType) {
+    /**
+     * Initializes a new instance of the {@link SpoofaxFile} class.
+     *
+     * @param viewProvider The file view provider.
+     * @param fileType     The file type.
+     */
+    public SpoofaxFile(@NotNull final FileViewProvider viewProvider, @NotNull final SpoofaxFileType fileType) {
         super(viewProvider, fileType.getLanguage());
         this.fileType = fileType;
     }
 
+    /**
+     * Gets the file type of the file.
+     *
+     * @return The file type.
+     */
     @NotNull
     public FileType getFileType() {
         return this.fileType;
     }
 
-    // TODO
-    @Override
-    public String toString() {
-        return "Test File!";
-    }
-
-    // TODO
-    @Nullable
-    @Override
-    public Icon getIcon(int flags) {
-        return super.getIcon(flags);
-    }
 }

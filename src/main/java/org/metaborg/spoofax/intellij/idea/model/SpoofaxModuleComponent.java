@@ -3,24 +3,36 @@ package org.metaborg.spoofax.intellij.idea.model;
 import com.google.inject.Inject;
 import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.jetbrains.jps.incremental.TargetBuilder;
+import org.metaborg.spoofax.intellij.factories.IProjectFactory;
 import org.metaborg.spoofax.intellij.idea.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 import org.metaborg.spoofax.intellij.jps.JpsPlugin;
+import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
+import org.slf4j.Logger;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public class SpoofaxModuleComponent implements ModuleComponent {
+/**
+ * Module component that handles module events.
+ */
+public final class SpoofaxModuleComponent implements ModuleComponent {
+
+    @InjectLogger
+    private Logger logger;
     @NotNull private final Module module;
     @NotNull private IIntelliJProjectService projectService;
-    @NotNull private ProjectFactory projectFactory;
+    @NotNull private IProjectFactory projectFactory;
     @NotNull private IIntelliJResourceService resourceService;
 
     /**
@@ -34,19 +46,11 @@ public class SpoofaxModuleComponent implements ModuleComponent {
 
     @Inject
     private void inject(@NotNull final IIntelliJProjectService projectService,
-                        @NotNull final ProjectFactory projectFactory,
+                        @NotNull final IProjectFactory projectFactory,
                         @NotNull final IIntelliJResourceService resourceService) {
         this.projectService = projectService;
         this.projectFactory = projectFactory;
         this.resourceService = resourceService;
-    }
-
-    public void initComponent() {
-        // TODO: insert component initialization logic here
-    }
-
-    public void disposeComponent() {
-        // TODO: insert component disposal logic here
     }
 
     @NotNull
@@ -54,19 +58,73 @@ public class SpoofaxModuleComponent implements ModuleComponent {
         return "SpoofaxModuleComponent";
     }
 
-    public void projectOpened() {
-        FileObject root = this.resourceService.resolve(module.getModuleFile().getParent());
-        IntelliJProject project = this.projectFactory.create(module, root);
-        this.projectService.open(project, this.module);
-
+    /**
+     * Occurs when the module is initialized.
+     */
+    public void initComponent() {
+        logger.info("Module {} init.", this.module);
     }
 
+    /**
+     * Occurs when the module has been completely loaded and added to the project.
+     *
+     * Called after {@link #initComponent()}. May be called twice for a module.
+     */
+    public void moduleAdded() {
+        logger.info("Module {} added.", this.module);
+    }
+
+    /**
+     * Occurs when the module is opened.
+     *
+     * Called after {@link #initComponent()} and {@link #moduleAdded()}.
+     *
+     * This method is not called when modules are created
+     * in a {@link com.intellij.ide.util.projectWizard.ModuleBuilder}.
+     */
+    public void projectOpened() {
+        logger.info("Module {} opened.", this.module);
+
+        FileObject root = getRootDirectory(this.module);
+        if (root == null)
+            return;
+        IntelliJProject project = this.projectFactory.create(this.module, root);
+        this.projectService.open(project);
+    }
+
+    /**
+     * Occurs when the module is closed.
+     */
     public void projectClosed() {
+        logger.info("Module {} closed.", this.module);
+
         this.projectService.close(this.module);
     }
 
-    public void moduleAdded() {
-        // Invoked when the module corresponding to this component instance has been completely
-        // loaded and added to the project.
+    /**
+     * Occurs when the module is disposed.
+     *
+     * Called after {@link #projectClosed()}.
+     */
+    public void disposeComponent() {
+        logger.info("Module {} dispose.", this.module);
+        // TODO: insert component disposal logic here
+    }
+
+    /**
+     * Gets the root directory of the module.
+     *
+     * @param module The module.
+     * @return The root directory; or <code>null</code>.
+     */
+    @Nullable
+    private FileObject getRootDirectory(@NotNull final Module module) {
+        try {
+            return this.resourceService.resolve(module.getModuleFilePath()).getParent();
+        } catch (FileSystemException e) {
+            logger.error("Unhandled exception.", e);
+        }
+        return null;
+//      FileObject root = this.resourceService.resolve(module.getModuleFile().getParent());
     }
 }

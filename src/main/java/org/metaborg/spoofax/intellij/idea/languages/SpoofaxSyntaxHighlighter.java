@@ -5,58 +5,75 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.EffectType;
 import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.style.IStyle;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
-public class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
+/**
+ * Highlighter for Spoofax languages.
+ */
+public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
 
-    private final Map<IStyle, TextAttributesKey[]> styleMap = new HashMap<>();
-
+    @NotNull
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
-//    private final SpoofaxParserDefinition parserDefinition;
+    @NotNull
+    private final Map<IStyle, TextAttributesKey[]> styleMap = new HashMap<>();
+    @NotNull
     private final Lexer lexer;
 
-    public SpoofaxSyntaxHighlighter(Lexer lexer)
-    {
-//        this.parserDefinition = parserDefinition;
+    /**
+     * Initializes a new instance of the {@link SpoofaxSyntaxHighlighter} class.
+     *
+     * @param lexer The lexer to use for highlighting.
+     */
+    public SpoofaxSyntaxHighlighter(@NotNull final Lexer lexer) {
         this.lexer = lexer;
     }
 
+    /**
+     * Gets the highlighting lexer.
+     *
+     * @return The highlighting lexer.
+     */
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-//        // TODO: Project!
-//        final ILanguageImpl implementation = this.languageIdentifierService.identify(this.fileType.getSpoofaxLanguage(),
-//                                                                                     null);
-//        return this.lexerParserManager.getHighlightingLexer(implementation);
-//
-//        return parserDefinition.createLexer(this.project);
         return this.lexer;
     }
 
+    /**
+     * Gets the highlights for the specified token type.
+     *
+     * @param tokenType The token type.
+     * @return The text attributes for the token type.
+     */
     @NotNull
     @Override
-    public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
+    public TextAttributesKey[] getTokenHighlights(@NotNull final IElementType tokenType) {
         if (!(tokenType instanceof SpoofaxTokenType))
             return EMPTY_KEYS;
 
-        return getTextAttributesKeyForStyle(((SpoofaxTokenType)tokenType).getStyle());
+        // TODO: Use fixed categorized styles, so we don't have to use createTextAttributesKey.
+        return getTextAttributesKeyForStyle(((SpoofaxTokenType) tokenType).getStyle());
     }
 
-    private TextAttributesKey[] getTextAttributesKeyForStyle(IStyle style)
-    {
+    /**
+     * Gets the text attributes for the specified style.
+     *
+     * @param style The style.
+     * @return The text attributes.
+     */
+    @NotNull
+    private TextAttributesKey[] getTextAttributesKeyForStyle(@NotNull final IStyle style) {
         TextAttributesKey[] attributes = this.styleMap.getOrDefault(style, null);
-        if (attributes == null)
-        {
+        if (attributes == null) {
             String name = "STYLE_" + style.hashCode();
             TextAttributesKey attribute = createTextAttributesKey(name, new TextAttributes(
                     style.color(),
@@ -65,7 +82,7 @@ public class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
                     (style.underscore() ? EffectType.LINE_UNDERSCORE : null),
                     (style.bold() ? Font.BOLD : Font.PLAIN)
                             + (style.italic() ? Font.ITALIC : Font.PLAIN)));
-            attributes = new TextAttributesKey[] { attribute };
+            attributes = new TextAttributesKey[]{attribute};
 
             this.styleMap.put(style, attributes);
         }

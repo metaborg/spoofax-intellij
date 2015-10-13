@@ -2,12 +2,18 @@ package org.metaborg.spoofax.intellij.idea;
 
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
+import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
+import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
+import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
+import org.metaborg.spoofax.intellij.factories.IProjectFactory;
 import org.metaborg.spoofax.intellij.idea.languages.*;
+import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
 
 /**
@@ -23,7 +29,6 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         bind(IIdeaLanguageManager.class).to(IdeaLanguageManagerImpl.class).in(Singleton.class);
         bind(SpoofaxModuleBuilder.class).in(Singleton.class);
         bind(ILexerParserManager.class).to(LexerParserManager.class).in(Singleton.class);
-        //bind(IdeaLanguageManager.class).in(Singleton.class);
 
         bind(SpoofaxSyntaxHighlighterFactory.class);
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
@@ -31,18 +36,19 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
             /* recovery   */ true,
             /* completion */ false,
             /* timeout    */ 30000));
-        //SpoofaxTokenTypeManager tokenTypesManager,
-        //@NotNull final IParserConfiguration
-        //bind(ISpoofaxParser.class).to(OldSpoofaxParser.class).in(Singleton.class);
-        //bind(Lexer.class).to(SpoofaxLexer.class).in(Singleton.class);
 
         install(new FactoryModuleBuilder()
                         .implement(Lexer.class, SpoofaxLexer.class)
-                        .build(ISpoofaxLexerFactory.class));
+                        .build(IHighlightingLexerFactory.class));
         install(new FactoryModuleBuilder()
-                        .implement(SpoofaxParserDefinition.class, SpoofaxParserDefinition.class)
-                        .build(ISpoofaxParserDefinitionFactory.class));
-
+                        .implement(Lexer.class, CharacterLexer.class)
+                        .build(ICharacterLexerFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(ParserDefinition.class, SpoofaxParserDefinition.class)
+                        .build(IParserDefinitionFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(IntelliJProject.class, IntelliJProject.class)
+                        .build(IProjectFactory.class));
     }
 
     @Override

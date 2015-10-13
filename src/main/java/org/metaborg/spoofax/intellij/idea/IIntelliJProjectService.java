@@ -14,9 +14,8 @@ public interface IIntelliJProjectService extends IProjectService {
      * Indicates to the project service that a Spoofax project was opened.
      *
      * @param project The Spoofax project that was opened.
-     * @param module The IntelliJ module of the project.
      */
-    void open(@NotNull IntelliJProject project, @NotNull Module module);
+    void open(@NotNull IntelliJProject project);
 
     /**
      * Indicates to the project service that a Spoofax project was closed.

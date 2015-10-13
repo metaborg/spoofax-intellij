@@ -1,6 +1,7 @@
 package org.metaborg.spoofax.intellij.idea.model;
 
 
+import com.google.inject.Inject;
 import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
@@ -10,7 +11,10 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.spoofax.intellij.factories.IProjectFactory;
+import org.metaborg.spoofax.intellij.idea.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
+import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -21,21 +25,39 @@ import java.util.ArrayList;
 public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
 
     @NotNull
-    public static final String ID = "SPOOFAX_MODULE"; // This is also used in plugin.xml.
+    private static final String ID = "SPOOFAX_MODULE"; // This is also used in plugin.xml.
     @NotNull
     private static final String NAME = "Spoofax";
     @NotNull
     private static final String DESCRIPTION = "Spoofax Module";
 
+    /**
+     * This instance is created by IntelliJ's plugin system.
+     * Do not call this method manually.
+     */
     public SpoofaxModuleType() {
         super(ID);
+        IdeaPlugin.injector().injectMembers(this);
     }
 
+    @Inject
+    private void inject() {
+    }
+
+    /**
+     * Gets the module type.
+     *
+     * @return The module type.
+     */
     @NotNull
     public static ModuleType getModuleType() {
         return ModuleTypeManager.getInstance().findByID(ID);
     }
 
+    /**
+     *
+     * @return
+     */
     @NotNull
     @Override
     public SpoofaxModuleBuilder createModuleBuilder() {

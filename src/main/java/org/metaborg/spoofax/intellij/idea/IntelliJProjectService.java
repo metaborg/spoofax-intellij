@@ -42,8 +42,8 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
         this.resourceService = resourceService;
     }
 
-    public void open(@NotNull final IntelliJProject project, @NotNull final Module module) {
-        this.modules.put(module, project);
+    public void open(@NotNull final IntelliJProject project) {
+        this.modules.put(project.getModule(), project);
     }
 
     public void close(@NotNull final Module module) {

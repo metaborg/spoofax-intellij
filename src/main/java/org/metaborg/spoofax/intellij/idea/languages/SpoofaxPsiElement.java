@@ -5,14 +5,28 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Spoofax PSI element.
+ */
 public class SpoofaxPsiElement extends ASTWrapperPsiElement implements ISpoofaxPsiElement {
 
-    public SpoofaxPsiElement(ASTNode node) {
+    /**
+     * Initializes a new instance of the {@link SpoofaxPsiElement} class.
+     *
+     * @param node The node to which the element is attached.
+     */
+    public SpoofaxPsiElement(@NotNull final ASTNode node) {
         super(node);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof SpoofaxPsiVisitor) ((SpoofaxPsiVisitor)visitor).visitProperty(this);
+    /**
+     * Accepts a PSI element visitor.
+     *
+     * @param visitor The visitor.
+     */
+    public void accept(@NotNull final PsiElementVisitor visitor) {
+        if (visitor instanceof SpoofaxPsiVisitor)
+            ((SpoofaxPsiVisitor) visitor).visitProperty(this);
         else super.accept(visitor);
     }
 

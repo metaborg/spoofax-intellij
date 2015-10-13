@@ -30,32 +30,42 @@ import java.util.List;
  */
 public final class SpoofaxLexer extends LexerBase {
 
+    @NotNull
+    private final ILanguageImpl languageImpl;
+    @NotNull
+    private final IParserConfiguration parserConfiguration;
+    @NotNull
+    private final ISyntaxService<IStrategoTerm> syntaxService;
+    @NotNull
+    private final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizer;
+    @NotNull
+    private final IStylerService<IStrategoTerm, IStrategoTerm> styler;
+    @NotNull
+    private final SpoofaxTokenTypeManager tokenTypesManager;
+    @NotNull
+    private final IResourceService resourceService;
     @InjectLogger
     private Logger logger;
-
-    @NotNull private final ILanguageImpl languageImpl;
-    @NotNull private final IParserConfiguration parserConfiguration;
-    @NotNull private final ISyntaxService<IStrategoTerm> syntaxService;
-    @NotNull private final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizer;
-    @NotNull private final IStylerService<IStrategoTerm, IStrategoTerm> styler;
-    @NotNull private final SpoofaxTokenTypeManager tokenTypesManager;
-    @NotNull private final IResourceService resourceService;
-
+    // The character buffer.
     private CharSequence buffer;
+    // The start in the character buffer.
     private int startOffset;
+    // The end in the character buffer.
     private int endOffset;
+    // A list of tokens gathered from the lexed characters.
     private List<SpoofaxToken> tokens = new ArrayList<SpoofaxToken>();
+    // The current index in {@link #tokens}.
     private int tokenIndex;
 
     @Inject
-    public SpoofaxLexer(
+    private SpoofaxLexer(
             @Assisted @NotNull final ILanguageImpl languageImpl,
             @Assisted @NotNull final SpoofaxTokenTypeManager tokenTypesManager,
             @NotNull final ISyntaxService<IStrategoTerm> syntaxService,
             @NotNull final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizer,
             @NotNull final IStylerService<IStrategoTerm, IStrategoTerm> styler,
             @NotNull final IParserConfiguration parserConfiguration,
-            @NotNull final IResourceService resourceService){
+            @NotNull final IResourceService resourceService) {
 
         this.syntaxService = syntaxService;
         this.categorizer = categorizer;
@@ -68,13 +78,17 @@ public final class SpoofaxLexer extends LexerBase {
 
     /**
      * Initiates a lexing session.
-     * @param buffer The character sequence to lex.
-     * @param startOffset The inclusive start offset.
-     * @param endOffset The exclusive end offset.
+     *
+     * @param buffer       The character sequence to lex.
+     * @param startOffset  The inclusive start offset.
+     * @param endOffset    The exclusive end offset.
      * @param initialState Not used. Must be zero.
      */
     @Override
-    public void start(CharSequence buffer, int startOffset, int endOffset, int initialState) {
+    public final void start(@NotNull final CharSequence buffer,
+                            final int startOffset,
+                            final int endOffset,
+                            final int initialState) {
         assert buffer != null;
         assert initialState == 0;
         assert 0 <= startOffset && startOffset <= buffer.length();
@@ -83,18 +97,22 @@ public final class SpoofaxLexer extends LexerBase {
         this.buffer = buffer;
         this.startOffset = startOffset;
         this.endOffset = endOffset;
-        this.tokens = parse_to_tokens(buffer, startOffset, endOffset);
+        this.tokens = parseToTokens(buffer, startOffset, endOffset);
         this.tokenIndex = 0;
     }
 
     /**
      * Returns a list of tokens between the specified offsets.
-     * @param buffer The character sequence to parse.
+     *
+     * @param buffer      The character sequence to parse.
      * @param startOffset The inclusive start offset.
-     * @param endOffset The exclusive end offset.
+     * @param endOffset   The exclusive end offset.
      * @return The resulting list of tokens.
      */
-    private List<SpoofaxToken> parse_to_tokens(CharSequence buffer, int startOffset, int endOffset) {
+    @NotNull
+    private final List<SpoofaxToken> parseToTokens(@NotNull final CharSequence buffer,
+                                                   final int startOffset,
+                                                   final int endOffset) {
         assert buffer != null;
         assert 0 <= startOffset && startOffset <= buffer.length();
         assert 0 <= endOffset && endOffset <= buffer.length();
@@ -103,23 +121,37 @@ public final class SpoofaxLexer extends LexerBase {
             return new ArrayList<>();
 
         // Dummy location. Bug in Metaborg Core prevents it being null.
-        FileObject location = this.resourceService.resolve("file:///home/daniel/eclipse/spoofax1507/workspace/TestProject/trans/test.spoofax");
+        // TODO: Fix JSGLRI to allow null location.
+        FileObject location = this.resourceService.resolve(
+                "file:///home/daniel/eclipse/spoofax1507/workspace/TestProject/trans/test.spoofax");
         ParseResult<IStrategoTerm> result = null;
         try {
             result = this.syntaxService.parse(buffer.toString(), location, this.languageImpl, this.parserConfiguration);
         } catch (ParseException e) {
             // TODO: Handle the exception.
-            e.printStackTrace();
+            logger.error("Unhandled exception", e);
+            throw new RuntimeException(e);
         }
 
-
-        List<SpoofaxToken> spoofaxTokens = TokenizeWithTokenizer(result, startOffset, endOffset, buffer.length());
+        List<SpoofaxToken> spoofaxTokens = tokenizeWithTokenizer(result, startOffset, endOffset, buffer.length());
         return spoofaxTokens;
     }
 
-    private List<SpoofaxToken> TokenizeWithTokenizer(ParseResult<IStrategoTerm> result, int rangeStart, int rangeEnd, int length)
-    {
-        if(result.result == null) {
+    /**
+     * Uses the Spoofax tokenizer to tokenize the parse result.
+     *
+     * @param result     The parse result to tokenize.
+     * @param rangeStart The start of the character range to tokenize.
+     * @param rangeEnd   The end of the character range to tokenize.
+     * @param length     The length of the whole buffer.
+     * @return A list of tokens.
+     */
+    @NotNull
+    private final List<SpoofaxToken> tokenizeWithTokenizer(@NotNull final ParseResult<IStrategoTerm> result,
+                                                           final int rangeStart,
+                                                           final int rangeEnd,
+                                                           final int length) {
+        if (result.result == null) {
             // A null parse result might occur when the input contains an error,
             // and recovery fails or is disabled.
             logger.error("Cannot categorize input of {}, parse result is empty", this.languageImpl);
@@ -135,15 +167,17 @@ public final class SpoofaxLexer extends LexerBase {
         final ITokenizer tokenizer = rootImploderAttachment.getLeftToken().getTokenizer();
         List<SpoofaxToken> spoofaxTokens = new ArrayList<SpoofaxToken>();
 
-        Iterable<IRegionCategory<IStrategoTerm>> categorizedTokens = this.categorizer.categorize(this.languageImpl, result);
-        Iterable<IRegionStyle<IStrategoTerm>> styledTokens = this.styler.styleParsed(this.languageImpl, categorizedTokens);
+        Iterable<IRegionCategory<IStrategoTerm>> categorizedTokens = this.categorizer.categorize(this.languageImpl,
+                                                                                                 result);
+        Iterable<IRegionStyle<IStrategoTerm>> styledTokens = this.styler.styleParsed(this.languageImpl,
+                                                                                     categorizedTokens);
         Iterator<IRegionStyle<IStrategoTerm>> styledTokenIterator = styledTokens.iterator();
 
         IRegionStyle<IStrategoTerm> currentRegionStyle = styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
 
         final int tokenCount = tokenizer.getTokenCount();
         int offset = 0;
-        for(int i = 0; i < tokenCount; ++i) {
+        for (int i = 0; i < tokenCount; ++i) {
             final IToken token = tokenizer.getTokenAt(i);
 
             if (token.getEndOffset() < token.getStartOffset())
@@ -184,35 +218,24 @@ public final class SpoofaxLexer extends LexerBase {
         assert offset == length;
 
 
-
         return spoofaxTokens;
     }
 
-
-//    private List<SpoofaxToken> TokenizeWithCategorizer(ParseResult<IStrategoTerm> result)
-//    {
-//        // This uses the categorizer to split the input into tokens.
-//        // However, when the input contains an error, the categorizer doesn't
-//        // include all tokens (with recovery) or no tokens at all (without recovery).
-//
-//        List<SpoofaxToken> spoofaxTokens = new ArrayList<SpoofaxToken>();
-//        Iterable<IRegionCategory<IStrategoTerm>> tokens = this.categorizer.categorize(this.languageImpl, result);
-//        for (IRegionCategory<IStrategoTerm> token : tokens)
-//        {
-//            // ASSUME: The list of regions is ordered by offset.
-//            // ASSUME: No region overlaps another region.
-//            // ASSUME: Every character in the input is covered by a region. (false!)
-//            if (startOffset <= token.region().endOffset() && token.region().startOffset() <= endOffset) {
-//                SpoofaxToken spoofaxToken = new SpoofaxToken(SpoofaxTypes.ID_TOKEN, token.region().startOffset(), token.region().endOffset() + 1);
-//                spoofaxTokens.add(spoofaxToken);
-//            }
-//        }
-//        return spoofaxTokens;
-//    }
+    /**
+     * Gets the current state of the lexer.
+     *
+     * @return An integer that indicates the current state.
+     */
+    @Override
+    public int getState() {
+        // Unused: always zero.
+        return 0;
+    }
 
     /**
-     * The current token type, or null.
-     * @return The current token type, or null when lexing is finished.
+     * The current token type, or <code>null</code>.
+     *
+     * @return The current token type, or <code>null</code> when lexing is finished.
      */
     @Nullable
     @Override
@@ -223,35 +246,52 @@ public final class SpoofaxLexer extends LexerBase {
             return null;
     }
 
+    /**
+     * Gets the start of the current token.
+     *
+     * @return The zero-based offset of the start of the current token in the character buffer.
+     */
     @Override
     public int getTokenStart() {
         assert 0 <= tokenIndex && tokenIndex < tokens.size();
         return tokens.get(tokenIndex).start;
     }
 
+    /**
+     * Gets the end of the current token.
+     *
+     * @return The zero-based offset of the end of the current token in the character buffer.
+     */
     @Override
     public int getTokenEnd() {
         assert 0 <= tokenIndex && tokenIndex < tokens.size();
         return tokens.get(tokenIndex).end;
     }
 
+    /**
+     * Advance the lexer to the next token.
+     */
     @Override
     public void advance() {
         tokenIndex++;
     }
 
-    @Override
-    public int getState() {
-        // Unused: always zero.
-        return 0;
-    }
-
+    /**
+     * Gets the character buffer.
+     *
+     * @return The character buffer.
+     */
     @NotNull
     @Override
     public CharSequence getBufferSequence() {
         return this.buffer;
     }
 
+    /**
+     * Gets the end of the relevant range of characters.
+     *
+     * @return The zero-based offset of the end of the relevant range of characters in the character buffer.
+     */
     @Override
     public int getBufferEnd() {
         return this.endOffset;
