@@ -9,25 +9,27 @@ import org.metaborg.core.style.IStyle;
  */
 public final class SpoofaxTokenType extends IElementType {
 
-    @NotNull private final IStyle style;
+    @NotNull
+    private final IStyle style;
+
+    /**
+     * Initializes a new instance of the {@link SpoofaxTokenType} class.
+     *
+     * @param language The associated IDEA language.
+     * @param style    The token style.
+     */
+    public SpoofaxTokenType(@NotNull final SpoofaxIdeaLanguage language, @NotNull final IStyle style) {
+        super(style.toString(), language);
+        this.style = style;
+    }
 
     /**
      * Gets the style associated with this token type.
      *
      * @return The token style.
      */
-    @NotNull public final IStyle getStyle() { return this.style; }
-
-    /**
-     * Initializes a new instance of the {@link SpoofaxTokenType} class.
-     *
-     * @param language The associated IDEA language.
-     * @param style The token style.
-     */
-    public SpoofaxTokenType(@NotNull SpoofaxIdeaLanguage language, @NotNull IStyle style) {
-        super(style.toString(), language);
-        this.style = style;
-    }
+    @NotNull
+    public final IStyle getStyle() { return this.style; }
 
     @Override
     public String toString() {

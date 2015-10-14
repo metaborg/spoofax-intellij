@@ -63,4 +63,9 @@
         </group>
     </actions>
 
+    <module-components>
+        <component>
+            <implementation-class>org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleComponent</implementation-class>
+        </component>
+    </module-components>
 </idea-plugin>

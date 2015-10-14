@@ -1,30 +1,30 @@
 package org.metaborg.spoofax.intellij.languages;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
-import org.metaborg.core.language.*;
+import org.metaborg.core.language.ILanguageComponent;
+import org.metaborg.core.language.ILanguageDiscoveryService;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 
-import javax.annotation.Nullable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
- * Created by daniel on 9/11/15.
+ * Manages languages.
  */
 @Singleton
 public final class LanguageManager {
+
     @NotNull
     private final ILanguageService languageService;
     @NotNull
@@ -43,6 +43,9 @@ public final class LanguageManager {
         this.resourceService = resourceService;
     }
 
+    /**
+     * Loads the meta languages.
+     */
     public final void loadMetaLanguages() {
         loadLanguage("org.metaborg.meta.lang.esv-1.5.0-SNAPSHOT");
         loadLanguage("org.metaborg.meta.lang.nabl-1.5.0-SNAPSHOT");
@@ -56,6 +59,11 @@ public final class LanguageManager {
         loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-baseline-20150905-200051");
     }
 
+    /**
+     * Loads the language with the specified ID.
+     *
+     * @param id The ID.
+     */
     private final void loadLanguage(@NotNull final String id) {
         final URL url = this.getClass().getClassLoader().getResource("meta-languages/" + id + ".spoofax-language");
         if (url == null) {

@@ -4,14 +4,27 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
 
-public class SpoofaxPsiVisitor extends PsiElementVisitor {
+/**
+ * Visitor for Spoofax PSI elements.
+ */
+public final class SpoofaxPsiVisitor extends PsiElementVisitor {
 
-    public void visitProperty(@NotNull ISpoofaxPsiElement o) {
-        visitPsiElement(o);
+    /**
+     * Visits a property.
+     *
+     * @param property The property.
+     */
+    public void visitProperty(@NotNull ISpoofaxPsiElement property) {
+        visitPsiElement(property);
     }
 
-    public void visitPsiElement(@NotNull PsiElement o) {
-        visitElement(o);
+    /**
+     * Visits a PSI element.
+     *
+     * @param element The element.
+     */
+    public void visitPsiElement(@NotNull PsiElement element) {
+        visitElement(element);
     }
 
 

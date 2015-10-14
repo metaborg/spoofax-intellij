@@ -23,6 +23,9 @@ public final class SpoofaxProjectState {
         this.myName = value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final int hashCode() {
         return new HashCodeBuilder(19, 31)
@@ -30,6 +33,9 @@ public final class SpoofaxProjectState {
                 .toHashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean equals(@Nullable Object obj) {
         if (!(obj instanceof SpoofaxProjectState))

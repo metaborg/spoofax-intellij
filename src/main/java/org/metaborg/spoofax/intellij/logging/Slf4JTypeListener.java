@@ -13,8 +13,12 @@ import java.lang.reflect.Field;
  */
 public final class Slf4JTypeListener implements TypeListener {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public <I> void hear(@NotNull TypeLiteral<I> typeLiteral, @NotNull TypeEncounter<I> typeEncounter) {
+    public final <I> void hear(@NotNull final TypeLiteral<I> typeLiteral,
+                               @NotNull final TypeEncounter<I> typeEncounter) {
         // Go through the class and its ancestors to find fields like this:
         //     @InjectLogger Logger logger;
 

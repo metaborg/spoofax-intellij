@@ -2,7 +2,10 @@ package org.metaborg.spoofax.intellij.idea.model;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.intellij.ide.util.projectWizard.*;
+import com.intellij.ide.util.projectWizard.ModuleBuilder;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.SettingsStep;
+import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -26,31 +29,41 @@ import org.metaborg.core.project.ProjectException;
 import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.ProjectSettings;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
-import org.metaborg.spoofax.generator.NewProjectGenerator;
+import org.metaborg.spoofax.generator.language.NewProjectGenerator;
 import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
+import org.metaborg.spoofax.intellij.factories.IProjectFactory;
+import org.metaborg.spoofax.intellij.idea.IIntelliJProjectService;
+import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
+import org.slf4j.Logger;
 
 import javax.swing.*;
 import java.io.IOException;
 
-//import org.jetbrains.idea.maven.project.MavenProjectsManager;
-
+/**
+ * Builds a new Spoofax module.
+ */
 @Singleton
-public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleBuilderListener {
+public final class SpoofaxModuleBuilder extends ModuleBuilder {
 
     @NotNull
     private final IIntelliJResourceService resourceService;
     @NotNull
-    private final ProjectFactory projectFactory;
-    private Project myProject;
-    private IntelliJProject myModule;
+    private final IProjectFactory projectFactory;
+    @NotNull
+    private final IIntelliJProjectService projectService;
+    @InjectLogger
+    private Logger logger;
+    // The project.
+    private IntelliJProject project;
 
     @Inject
     private SpoofaxModuleBuilder(@NotNull final IIntelliJResourceService resourceService,
-                                 @NotNull final ProjectFactory projectFactory) {
+                                 @NotNull final IProjectFactory projectFactory,
+                                 @NotNull final IIntelliJProjectService projectService) {
         this.resourceService = resourceService;
         this.projectFactory = projectFactory;
-        addListener(this);
+        this.projectService = projectService;
     }
 
     public final void displayInitError(@NotNull final String error, @NotNull final Project project) {
@@ -70,6 +83,14 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
 
     }
 
+    /**
+     * Gets the wizard step shown under the SDK selection.
+     *
+     * @param context          The wizard context.
+     * @param parentDisposable The parent disposable.
+     * @return The wizard step.
+     */
+    @Override
     @Nullable
     public final ModuleWizardStep getCustomOptionsStep(@NotNull final WizardContext context,
                                                        @NotNull final Disposable parentDisposable) {
@@ -78,13 +99,14 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         return step;
     }
 
+    @Override
     @Nullable
     public final ModuleWizardStep modifySettingsStep(@NotNull final SettingsStep settingsStep) {
-        if (settingsStep == null) {
-            throw new IllegalArgumentException(String.format(
-                    "Argument for @NotNull parameter '%s' of %s.%s must not be null",
-                    new Object[]{"settingsStep", "com/intellij/perlplugin/extensions/module/builder", "modifySettingsStep"}));
-        }
+//        if (settingsStep == null) {
+//            throw new IllegalArgumentException(String.format(
+//                    "Argument for @NotNull parameter '%s' of %s.%s must not be null",
+//                    new Object[]{"settingsStep", "com/intellij/perlplugin/extensions/module/builder", "modifySettingsStep"}));
+//        }
         return SpoofaxModuleType.getModuleType().modifySettingsStep(settingsStep, this);
     }
 
@@ -95,6 +117,13 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         //return super.modifyProjectTypeStep(settingsStep);
     }
 
+    /**
+     * Setups the root model.
+     *
+     * @param rootModel The root model.
+     * @throws ConfigurationException
+     */
+    @Override
     public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
         // Add the content entry path as a content root.
         final ContentEntry contentEntry = doAddContentEntry(rootModel);
@@ -105,14 +134,21 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
 
         setSdk(rootModel);
 
-        // Set the project and module.
-        setMyProject(rootModel.getProject(), resourceService.resolve(contentEntry.getFile()));
-        setMyModule(rootModel.getModule(), resourceService.resolve(contentEntry.getFile()));
+        // Set the module.
+        Module module = rootModel.getModule();
+        FileObject location = resourceService.resolve(contentEntry.getFile());
+        this.project = this.projectFactory.create(module, location);
+        this.projectService.open(this.project);
 
         // Generate the module structure (files and directories).
-        generateModuleStructure(this.myModule, rootModel, contentEntry);
+        generateModuleStructure(this.project, rootModel, contentEntry);
     }
 
+    /**
+     * Sets the SDK.
+     *
+     * @param rootModel The root model.
+     */
     private final void setSdk(@NotNull final ModifiableRootModel rootModel) {
         if (this.myJdk != null) {
             // An SDK was selected in the wizard.
@@ -123,28 +159,31 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
         }
     }
 
-    public final void setMyProject(@NotNull final Project myProject, @NotNull final FileObject contentPath) {
-        this.myProject = myProject;
-    }
-
-    public final void setMyModule(@NotNull final Module myModule, @NotNull final FileObject contentPath) {
-        this.myModule = this.projectFactory.create(myModule, contentPath);
-    }
-
+    /**
+     * Generates the module directory structure and files.
+     *
+     * @param project      The project.
+     * @param rootModel    The root model.
+     * @param contentEntry The content entry.
+     */
     private final void generateModuleStructure(@NotNull final IProject project,
                                                @NotNull final ModifiableRootModel rootModel,
                                                @NotNull final ContentEntry contentEntry) {
+        // TODO: Specify name in wizard
         final String name = "TestProject";
+        // TODO: Specify in wizard
+        final LanguageIdentifier identifier = new LanguageIdentifier("org.metaborg.test",
+                                                                     "lang-id",
+                                                                     new LanguageVersion(1, 0, 0, ""));
+        final IProjectSettings settings = new ProjectSettings(identifier, name);
 
         try {
-            final LanguageIdentifier identifier = new LanguageIdentifier("org.metaborg.test",
-                                                                         "lang-id",
-                                                                         new LanguageVersion(1, 0, 0, ""));
             final FileObject location = project.location();
-            final IProjectSettings settings = new ProjectSettings(identifier, name);
             final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, location);
             final GeneratorProjectSettings generatorSettings = new GeneratorProjectSettings(spoofaxSettings);
+            // TODO: Get from SDK.
             generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
+            // TODO: Specify extension in wizard.
             final NewProjectGenerator generator = new NewProjectGenerator(generatorSettings, new String[]{"spx"});
             generator.generateAll();
 
@@ -155,48 +194,86 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements ModuleB
 
         } catch (ProjectException e) {
             // Invalid project settings
-            e.printStackTrace();
+            logger.error("Unhandled exception.", e);
+            throw new RuntimeException(e);
         } catch (IOException e) {
             // Failed to generate project files
-            e.printStackTrace();
+            logger.error("Unhandled exception.", e);
+            throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Gets the module type.
+     *
+     * @return The module type.
+     */
+    @Override
     @NotNull
     public final ModuleType getModuleType() {
         return SpoofaxModuleType.getModuleType();
     }
 
+    /**
+     * Gets the module's big icon.
+     *
+     * @return The big icon.
+     */
+    // TODO: Use project's ILanguage facet defined icon.
+    @Override
     @NotNull
     public final Icon getBigIcon() {
         return SpoofaxIcons.INSTANCE.Default;
     }
 
+    /**
+     * Gets the module's normal icon.
+     *
+     * @return The normal icon.
+     */
+    // TODO: Use project's ILanguage facet defined icon.
+    @Override
     @NotNull
     public final Icon getNodeIcon() {
         return SpoofaxIcons.INSTANCE.Default;
     }
 
+    /**
+     * Gets the module builder's description.
+     *
+     * @return The module builder's description.
+     */
+    @Override
     @NotNull
     public final String getDescription() {
-        return "Spoofax Module - description";
+        return "Creates a new Spoofax module.";
     }
 
+    /**
+     * Gets the module builder's presentable name.
+     * <p>
+     * This name is shown in the <em>New Project</em> and <em>New Module</em> wizards.
+     *
+     * @return The module builder's presentable name.
+     */
+    @Override
     @NotNull
     public final String getPresentableName() {
         return "Spoofax";
     }
 
+    /**
+     * Gets the module builder's group name.
+     * <p>
+     * I suspect module builders with the same group name are grouped
+     * in the <em>New Project</em> and <em>New Module</em> wizards.
+     *
+     * @return The group name.
+     */
+    @Override
     @NotNull
     public final String getGroupName() {
-        return "Spoofax Group";
-    }
-
-    @Override
-    public final void moduleCreated(@NotNull final Module module) {
-        System.out.println("Creating Spoofax module...");
-
-        System.out.println("Spoofax module created!");
+        return "Spoofax";
     }
 
 }

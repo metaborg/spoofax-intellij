@@ -7,7 +7,6 @@ import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
-import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.idea.InstanceKeyedExtensionPoint;
 import org.metaborg.spoofax.intellij.idea.InstanceLanguageExtensionPoint;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
@@ -19,20 +18,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * {@inheritDoc}
+ */
 @Singleton
 public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
 
-    @InjectLogger
-    private Logger logger;
     @NotNull
     private final static String PARSER_DEFINITION_EXTENSION = "com.intellij.lang.parserDefinition";
     @NotNull
     private final static String SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION = "com.intellij.lang.syntaxHighlighterFactory";
-
     @NotNull
     private final IIdeaAttachmentManager objectManager;
     @NotNull
     private final Map<ILanguage, RegisteredIdeaLanguageObject> loadedLanguages = new HashMap<>();
+    @InjectLogger
+    private Logger logger;
 
     @Inject
     private IdeaLanguageManagerImpl(@NotNull final IIdeaAttachmentManager objectManager) {
@@ -100,24 +101,6 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     }
 
     /**
-     * Installs a language into IntelliJ.
-     *
-     * @param obj The language to install.
-     */
-    private void installLanguage(@NotNull final RegisteredIdeaLanguageObject obj) {
-        obj.parserDefinitionExtension = new InstanceLanguageExtensionPoint(
-                obj.languageObject.ideaLanguage,
-                obj.languageObject.parserDefinition);
-        obj.syntaxHighlighterFactoryExtension = new InstanceKeyedExtensionPoint(
-                obj.languageObject.ideaLanguage,
-                obj.languageObject.syntaxHighlighterFactory);
-
-        registerExtension(PARSER_DEFINITION_EXTENSION, obj.parserDefinitionExtension);
-        registerExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION, obj.syntaxHighlighterFactoryExtension);
-        registerFileType(obj.languageObject.fileType);
-    }
-
-    /**
      * Removes a language from IntelliJ.
      *
      * @param obj The language to remove.
@@ -129,13 +112,12 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     }
 
     /**
-     * Registers an extension.
+     * Unregisters a file type.
      *
-     * @param extensionPointName The extension point name.
-     * @param value              The extension to register.
+     * @param fileType The file type to unregister.
      */
-    private void registerExtension(@NotNull final String extensionPointName, @NotNull final Object value) {
-        Extensions.getRootArea().getExtensionPoint(extensionPointName).registerExtension(value);
+    private void unregisterFileType(@NotNull final SpoofaxFileType fileType) {
+        FileTypeManagerEx.getInstanceEx().unregisterFileType(fileType);
     }
 
     /**
@@ -149,6 +131,34 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     }
 
     /**
+     * Installs a language into IntelliJ.
+     *
+     * @param obj The language to install.
+     */
+    private void installLanguage(@NotNull final RegisteredIdeaLanguageObject obj) {
+        obj.parserDefinitionExtension = new InstanceLanguageExtensionPoint<>(
+                obj.languageObject.ideaLanguage,
+                obj.languageObject.parserDefinition);
+        obj.syntaxHighlighterFactoryExtension = new InstanceKeyedExtensionPoint<>(
+                obj.languageObject.ideaLanguage,
+                obj.languageObject.syntaxHighlighterFactory);
+
+        registerExtension(PARSER_DEFINITION_EXTENSION, obj.parserDefinitionExtension);
+        registerExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION, obj.syntaxHighlighterFactoryExtension);
+        registerFileType(obj.languageObject.fileType);
+    }
+
+    /**
+     * Registers an extension.
+     *
+     * @param extensionPointName The extension point name.
+     * @param value              The extension to register.
+     */
+    private void registerExtension(@NotNull final String extensionPointName, @NotNull final Object value) {
+        Extensions.getRootArea().getExtensionPoint(extensionPointName).registerExtension(value);
+    }
+
+    /**
      * Registers a file type.
      *
      * @param fileType The file type to register.
@@ -159,15 +169,6 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
         for (String ext : fileType.getExtensions()) {
             fileTypeManager.associateExtension(fileType, ext);
         }
-    }
-
-    /**
-     * Unregisters a file type.
-     *
-     * @param fileType The file type to unregister.
-     */
-    private void unregisterFileType(@NotNull final SpoofaxFileType fileType) {
-        FileTypeManagerEx.getInstanceEx().unregisterFileType(fileType);
     }
 
     /**

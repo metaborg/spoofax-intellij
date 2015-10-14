@@ -9,7 +9,6 @@ import org.jetbrains.jps.builders.BuildOutputConsumer;
 import org.jetbrains.jps.builders.DirtyFilesHolder;
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.ProjectBuildException;
-import org.jetbrains.jps.incremental.TargetBuilder;
 import org.metaborg.core.project.ProjectException;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
@@ -25,10 +24,12 @@ import org.slf4j.Logger;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 
+/**
+ * Builder executed after Java compilation.
+ */
 @Singleton
-public final class SpoofaxPostBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxPostTarget> {
+public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> {
 
     @NotNull
     private final ISpoofaxProjectSettingsService settingsService;
@@ -40,22 +41,28 @@ public final class SpoofaxPostBuilder extends TargetBuilder<SpoofaxSourceRootDes
     private Logger logger;
 
     @Inject
-    public SpoofaxPostBuilder(@NotNull final SpoofaxPostTargetType targetType,
-                              @NotNull final ISpoofaxProjectSettingsService settingsService,
-                              @NotNull final SpoofaxMetaBuilder builder,
-                              @NotNull final JpsProjectService projectService) {
-        super(Collections.singletonList(targetType));
+    private SpoofaxPostBuilder(@NotNull final SpoofaxPostTargetType targetType,
+                               @NotNull final ISpoofaxProjectSettingsService settingsService,
+                               @NotNull final SpoofaxMetaBuilder builder,
+                               @NotNull final JpsProjectService projectService) {
+        super(targetType);
         this.settingsService = settingsService;
         this.builder = builder;
         this.projectService = projectService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @NotNull
     @Override
     public String getPresentableName() {
         return "Spoofax post-Java builder";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void build(@NotNull final SpoofaxPostTarget target,
                       @NotNull final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPostTarget> holder,
@@ -82,13 +89,23 @@ public final class SpoofaxPostBuilder extends TargetBuilder<SpoofaxSourceRootDes
 
     }
 
-    private void compilePostJava(@NotNull final MetaBuildInput input,
+    /**
+     * Executes the post-Java compile meta-build step.
+     *
+     * @param metaInput The meta build input.
+     * @param classpath The classpaths.
+     * @param listener  The build listener.
+     * @param context   The compile context.
+     * @throws Exception
+     * @throws ProjectBuildException
+     */
+    private void compilePostJava(@NotNull final MetaBuildInput metaInput,
                                  @Nullable final URL[] classpath,
                                  @Nullable final BuildListener listener,
                                  @NotNull final CompileContext context) throws Exception, ProjectBuildException {
         context.checkCanceled();
-        context.processMessage(BuilderUtils.formatProgress(0f, "Packaging language project {}", input.project));
-        this.builder.compilePostJava(input, classpath, listener, null);
+        context.processMessage(BuilderUtils.formatProgress(0f, "Packaging language project {}", metaInput.project));
+        this.builder.compilePostJava(metaInput, classpath, listener, null);
     }
 
 

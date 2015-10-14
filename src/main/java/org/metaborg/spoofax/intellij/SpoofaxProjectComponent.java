@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
 
+// Remove this class.
 public final class SpoofaxProjectComponent implements ProjectComponent {
 
     @NotNull

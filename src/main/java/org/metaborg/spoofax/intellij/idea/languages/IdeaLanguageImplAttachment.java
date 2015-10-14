@@ -1,5 +1,6 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
+import com.intellij.lexer.Lexer;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;
 
@@ -9,13 +10,14 @@ import org.metaborg.core.language.ILanguageImpl;
 public final class IdeaLanguageImplAttachment {
 
     @NotNull
-    public final SpoofaxLexer lexer;
-    @NotNull
-    public final OldSpoofaxParser parser;
+    public final Lexer lexer;
 
-    public IdeaLanguageImplAttachment(@NotNull final SpoofaxLexer lexer,
-                                      @NotNull final OldSpoofaxParser parser) {
+    /**
+     * Creates a new instance of the {@link IdeaLanguageImplAttachment} class.
+     *
+     * @param lexer The lexer.
+     */
+    /* package private */ IdeaLanguageImplAttachment(@NotNull final Lexer lexer) {
         this.lexer = lexer;
-        this.parser = parser;
     }
 }

@@ -14,21 +14,31 @@ import java.util.Collections;
  */
 public final class SpoofaxPreTarget extends SpoofaxTarget {
 
+    // TODO: Inject!
     public SpoofaxPreTarget(@NotNull final SpoofaxJpsProject project, @NotNull final SpoofaxPreTargetType targetType) {
         super(project, targetType);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isCompiledBeforeModuleLevelBuilders() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Collection<BuildTarget<?>> computeDependencies(@NotNull final BuildTargetRegistry buildTargetRegistry,
                                                                 @NotNull final TargetOutputIndex targetOutputIndex) {
         return Collections.emptyList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @NotNull
     @Override
     public final String getPresentableName() {

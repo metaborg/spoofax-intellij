@@ -68,16 +68,32 @@ public final class JpsProjectService implements IJpsProjectService {
         return null;
     }
 
+    /**
+     * Determines whether the file is in a content root of the specified module.
+     *
+     * @param module   The module to look at.
+     * @param resource The file to find.
+     * @return <code>true</code> when the file is in a content root of the module;
+     * otherwise, <code>false</code>.
+     */
     private boolean isInContentRoot(@NotNull final JpsModule module, @NotNull final FileObject resource) {
         final JpsUrlList contentRootsList = module.getContentRootsList();
         for (String url : contentRootsList.getUrls()) {
-            if (hasDescendant(url, resource))
+            if (isEqualOrDescendant(url, resource))
                 return true;
         }
         return false;
     }
 
-    private boolean hasDescendant(@NotNull final String ancestor, @NotNull final FileObject descendant) {
+    /**
+     * Determines whether the specified file is equal to or a descendant of the specified path.
+     *
+     * @param ancestor   The path.
+     * @param descendant The descendant.
+     * @return <code>true</code> when the file is equal to or a descendant of the path;
+     * otherwise, <code>false</code>.
+     */
+    private boolean isEqualOrDescendant(@NotNull final String ancestor, @NotNull final FileObject descendant) {
         final FileObject contentRoot = this.resourceService.resolve(ancestor);
         final FileName lhs = contentRoot.getName();
         final FileName rhs = descendant.getName();

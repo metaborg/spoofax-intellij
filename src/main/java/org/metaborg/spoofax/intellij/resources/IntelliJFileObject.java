@@ -39,7 +39,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
     private VirtualFile file = null;
 
     /**
-     * Creates a new instance of the IntelliJFileObject class.
+     * Initializes a new instance of the {@link IntelliJFileObject} class.
      *
      * @param name The name of the file.
      * @param fs   The file system.
@@ -58,6 +58,13 @@ public final class IntelliJFileObject extends AbstractFileObject {
         return this.file;
     }
 
+    /**
+     * Gets whether the file is executable.
+     *
+     * @return <code>true</code> when the file is executable;
+     * otherwise, <code>false</code>.
+     * @throws Exception
+     */
     protected final boolean doIsExecutable() throws Exception {
         if (this.file != null)
             // There is no property for this?
@@ -66,6 +73,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
             return new File(this.getName().getPath()).canExecute();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void doAttach() throws Exception {
         assert (!isAttached());
@@ -74,6 +84,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         this.file = LocalFileSystem.getInstance().findFileByPath(this.getName().getPath());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void doDetach() throws Exception {
         assert (isAttached());
@@ -82,6 +95,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         this.file = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void onChange() throws Exception {
         assert (isAttached());
@@ -91,6 +107,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         doAttach();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final FileType doGetType() throws Exception {
         assert (isAttached());
@@ -103,6 +122,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
             return FileType.FILE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final boolean doIsHidden() throws Exception {
         if (this.file != null)
@@ -111,6 +133,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
             return new File(this.getName().getPath()).isHidden();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final boolean doIsReadable() throws Exception {
         if (this.file != null)
@@ -120,6 +145,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
             return new File(this.getName().getPath()).canRead();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final boolean doIsWriteable() throws Exception {
         if (this.file != null)
@@ -129,32 +157,50 @@ public final class IntelliJFileObject extends AbstractFileObject {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final long doGetLastModifiedTime() throws Exception {
         return super.doGetLastModifiedTime();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final boolean doSetLastModifiedTime(final long modtime) throws Exception {
         return super.doSetLastModifiedTime(modtime);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     protected final Map<String, Object> doGetAttributes() throws Exception {
         return super.doGetAttributes();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void doSetAttribute(@NotNull final String attrName, @Nullable final Object value) throws Exception {
         super.doSetAttribute(attrName, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void doRemoveAttribute(@NotNull final String attrName) throws Exception {
         super.doRemoveAttribute(attrName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     protected final String[] doListChildren() throws Exception {
@@ -170,6 +216,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     protected final FileObject[] doListChildrenResolved() throws Exception {
@@ -185,6 +234,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final long doGetContentSize() throws Exception {
         assert (isAttached());
@@ -192,6 +244,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         return file.getLength();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final InputStream doGetInputStream() throws Exception {
         assert (isAttached());
@@ -199,6 +254,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         return file.getInputStream();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final OutputStream doGetOutputStream(final boolean append) throws Exception {
         assert (isAttached());
@@ -211,6 +269,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         return file.getOutputStream(null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final RandomAccessContent doGetRandomAccessContent(@NotNull final RandomAccessMode mode) throws
             Exception {
@@ -220,6 +281,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         return super.doGetRandomAccessContent(mode);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void doCreateFolder() throws Exception {
         assert (isAttached());
@@ -233,6 +297,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void doRename(@NotNull final FileObject newfile) throws Exception {
         assert (isAttached());
@@ -246,6 +313,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected final void doDelete() throws Exception {
         assert (isAttached());
@@ -259,6 +329,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     protected final Certificate[] doGetCertificates() throws Exception {

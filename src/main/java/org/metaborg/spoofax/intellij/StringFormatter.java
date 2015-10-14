@@ -23,24 +23,24 @@ public final class StringFormatter {
      * Formats a string.
      *
      * @param pattern   The pattern, with placeholders for the parameters.
-     * @param arguments The arguments.
+     * @param argument0 The first argument.
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(@NotNull final String pattern, @NotNull final Object... arguments) {
-        return MessageFormatter.arrayFormat(pattern, arguments).getMessage();
+    public static final String format(@NotNull final String pattern, @NotNull final Object argument0) {
+        return format(pattern, new Object[]{argument0});
     }
 
     /**
      * Formats a string.
      *
      * @param pattern   The pattern, with placeholders for the parameters.
-     * @param argument0 The first argument.
+     * @param arguments The arguments.
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(@NotNull final String pattern, @NotNull final Object argument0) {
-        return format(pattern, new Object[]{ argument0 });
+    public static final String format(@NotNull final String pattern, @NotNull final Object... arguments) {
+        return MessageFormatter.arrayFormat(pattern, arguments).getMessage();
     }
 
     /**
@@ -55,7 +55,7 @@ public final class StringFormatter {
     public static final String format(@NotNull final String pattern,
                                       @NotNull final Object argument0,
                                       @NotNull final Object argument1) {
-        return format(pattern, new Object[]{ argument0, argument1 });
+        return format(pattern, new Object[]{argument0, argument1});
     }
 
 
@@ -73,6 +73,6 @@ public final class StringFormatter {
                                       @NotNull final Object argument0,
                                       @NotNull final Object argument1,
                                       @NotNull final Object argument2) {
-        return format(pattern, new Object[]{ argument0, argument1, argument2 });
+        return format(pattern, new Object[]{argument0, argument1, argument2});
     }
 }

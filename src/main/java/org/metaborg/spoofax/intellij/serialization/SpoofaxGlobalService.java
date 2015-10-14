@@ -26,22 +26,34 @@ public final class SpoofaxGlobalService implements PersistentStateComponent<Spoo
         return service;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public SpoofaxGlobalState getState() {
         return this.state;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void loadState(@NotNull final SpoofaxGlobalState state) {
         this.state = state;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return this.state.hashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(@Nullable Object obj) {
         if (!(obj instanceof SpoofaxGlobalService))

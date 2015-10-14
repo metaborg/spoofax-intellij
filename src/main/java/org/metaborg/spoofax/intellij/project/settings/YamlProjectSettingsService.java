@@ -34,6 +34,9 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
         this.resourceService = resourceService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     public final IProjectSettings create() {
@@ -48,6 +51,9 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     public IProjectSettings get(@NotNull final IProject project) {
@@ -65,6 +71,9 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     public void set(@NotNull final IProject project, @NotNull final IProjectSettings settings) {

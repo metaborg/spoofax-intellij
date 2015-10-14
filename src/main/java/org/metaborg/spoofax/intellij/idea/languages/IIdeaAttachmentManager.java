@@ -12,7 +12,7 @@ public interface IIdeaAttachmentManager {
 
     /**
      * Gets the {@link IdeaLanguageAttachment} for a particular language.
-     *
+     * <p>
      * If no {@link IdeaLanguageAttachment} exists yet for the language,
      * a new  {@link IdeaLanguageAttachment} is created and cached.
      *
@@ -24,7 +24,7 @@ public interface IIdeaAttachmentManager {
 
     /**
      * Gets the {@link IdeaLanguageImplAttachment} for a particular language implementation.
-     *
+     * <p>
      * If no {@link IdeaLanguageImplAttachment} exists yet for the language implementation,
      * a new  {@link IdeaLanguageImplAttachment} is created and cached.
      *

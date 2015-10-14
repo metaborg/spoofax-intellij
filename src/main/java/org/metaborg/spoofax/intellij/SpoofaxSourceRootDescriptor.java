@@ -27,18 +27,27 @@ public final class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
         this.target = target;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     public final String getRootId() {
         return this.root.getAbsolutePath();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     public final File getRootFile() {
         return this.root;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     public final BuildTarget<?> getTarget() {

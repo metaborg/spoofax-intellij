@@ -7,18 +7,14 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
-import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
-import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
-/**
- * Created by daniel on 10/8/15.
- */
+// Will be replaced in the future.
 public class LoadLanguagesAction extends AnAction {
 
-//    @NotNull
+    //    @NotNull
 //    private final LanguageManager languageManager;
     @NotNull
     private final ILanguageService languageService;
@@ -32,7 +28,6 @@ public class LoadLanguagesAction extends AnAction {
 //        this.languageManager = IdeaPlugin.injector().getInstance(LanguageManager.class);
         this.languageService = IdeaPlugin.injector().getInstance(ILanguageService.class);
         this.ideaLanguageManager = IdeaPlugin.injector().getInstance(IIdeaLanguageManager.class);
-//        this.languageIdentifierService = IdeaPlugin.injector().getInstance(IProjectLanguageIdentifierService.class);
     }
 
     public void actionPerformed(AnActionEvent e) {
