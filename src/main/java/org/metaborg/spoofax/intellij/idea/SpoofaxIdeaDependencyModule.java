@@ -4,17 +4,16 @@ import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
+import com.intellij.openapi.projectRoots.SdkType;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
-import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
-import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
-import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
-import org.metaborg.spoofax.intellij.factories.IProjectFactory;
+import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.languages.*;
 import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
+import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 
 /**
  * The Guice dependency injection module for the Spoofax IDEA plugin.
@@ -52,6 +51,7 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(IntelliJProject.class, IntelliJProject.class)
                         .build(IProjectFactory.class));
+        install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 
     /**
