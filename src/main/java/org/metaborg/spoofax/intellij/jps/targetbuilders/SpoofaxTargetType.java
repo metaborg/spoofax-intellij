@@ -15,6 +15,11 @@ import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The spoofax build target type, which is a module-based build target.
+ *
+ * @param <T> The associated type of build target.
+ */
 public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleBasedBuildTargetType<T> {
 
     @NotNull
@@ -25,9 +30,21 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
         this.projectService = projectService;
     }
 
+    /**
+     * Creates a build target for the specified project.
+     *
+     * @param project The project.
+     * @return The created build target.
+     */
     @NotNull
     public abstract T createTarget(@NotNull SpoofaxJpsProject project);
 
+    /**
+     * Creates a build target for the specified JPS module.
+     *
+     * @param module The JPS module.
+     * @return The created build target.
+     */
     @NotNull
     public final T createTarget(@NotNull final JpsModule module) {
         SpoofaxJpsProject project = projectService.get(module);
@@ -36,6 +53,12 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
         return createTarget(project);
     }
 
+    /**
+     * Computes all build targets for the specified JPS model.
+     *
+     * @param model The JPS model.
+     * @return A list of build targets.
+     */
     @NotNull
     @Override
     public final List<T> computeAllTargets(@NotNull final JpsModel model) {
@@ -47,6 +70,12 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
         return targets;
     }
 
+    /**
+     * Creates a build target loader, that creates a build target for a JPS module with a specified ID.
+     *
+     * @param model The JPS model.
+     * @return The build target loader.
+     */
     @NotNull
     @Override
     public final BuildTargetLoader<T> createLoader(@NotNull final JpsModel model) {

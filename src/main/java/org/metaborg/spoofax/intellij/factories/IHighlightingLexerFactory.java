@@ -1,6 +1,5 @@
 package org.metaborg.spoofax.intellij.factories;
 
-import com.google.inject.Singleton;
 import com.intellij.lexer.Lexer;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;

@@ -33,12 +33,18 @@ public final class IntelliJResourceProvider extends AbstractOriginatingFileProvi
     );
     // @formatter:on
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     public final Collection<Capability> getCapabilities() {
         return capabilities;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     protected final FileSystem doCreateFileSystem(@NotNull final FileName rootName,

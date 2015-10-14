@@ -1,39 +1,35 @@
 package org.metaborg.spoofax.intellij.idea.model;
 
 import com.google.inject.Inject;
-import com.intellij.openapi.module.ModuleComponent;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.module.ModuleComponent;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jps.builders.BuildTargetType;
-import org.jetbrains.jps.incremental.ModuleLevelBuilder;
-import org.jetbrains.jps.incremental.TargetBuilder;
 import org.metaborg.spoofax.intellij.factories.IProjectFactory;
 import org.metaborg.spoofax.intellij.idea.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.jps.JpsPlugin;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Module component that handles module events.
  */
 public final class SpoofaxModuleComponent implements ModuleComponent {
 
+    @NotNull
+    private final Module module;
     @InjectLogger
     private Logger logger;
-    @NotNull private final Module module;
-    @NotNull private IIntelliJProjectService projectService;
-    @NotNull private IProjectFactory projectFactory;
-    @NotNull private IIntelliJResourceService resourceService;
+    @NotNull
+    private IIntelliJProjectService projectService;
+    @NotNull
+    private IProjectFactory projectFactory;
+    @NotNull
+    private IIntelliJResourceService resourceService;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -66,19 +62,20 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
     }
 
     /**
-     * Occurs when the module has been completely loaded and added to the project.
-     *
-     * Called after {@link #initComponent()}. May be called twice for a module.
+     * Occurs when the module is disposed.
+     * <p>
+     * Called after {@link #projectClosed()}.
      */
-    public void moduleAdded() {
-        logger.info("Module {} added.", this.module);
+    public void disposeComponent() {
+        logger.info("Module {} dispose.", this.module);
+        // TODO: insert component disposal logic here
     }
 
     /**
      * Occurs when the module is opened.
-     *
+     * <p>
      * Called after {@link #initComponent()} and {@link #moduleAdded()}.
-     *
+     * <p>
      * This method is not called when modules are created
      * in a {@link com.intellij.ide.util.projectWizard.ModuleBuilder}.
      */
@@ -102,13 +99,12 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
     }
 
     /**
-     * Occurs when the module is disposed.
-     *
-     * Called after {@link #projectClosed()}.
+     * Occurs when the module has been completely loaded and added to the project.
+     * <p>
+     * Called after {@link #initComponent()}. May be called twice for a module.
      */
-    public void disposeComponent() {
-        logger.info("Module {} dispose.", this.module);
-        // TODO: insert component disposal logic here
+    public void moduleAdded() {
+        logger.info("Module {} added.", this.module);
     }
 
     /**

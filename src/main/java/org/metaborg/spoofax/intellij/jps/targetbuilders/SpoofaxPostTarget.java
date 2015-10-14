@@ -20,6 +20,7 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
     @NotNull
     private final SpoofaxPreTargetType preTargetType;
 
+    // TODO: Inject!
     public SpoofaxPostTarget(@NotNull final SpoofaxJpsProject project,
                              @NotNull final SpoofaxPostTargetType targetType,
                              @NotNull final SpoofaxPreTargetType preTargetType) {
@@ -27,11 +28,17 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
         this.preTargetType = preTargetType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isCompiledBeforeModuleLevelBuilders() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final Collection<BuildTarget<?>> computeDependencies(@NotNull final BuildTargetRegistry buildTargetRegistry,
                                                                 @NotNull final TargetOutputIndex targetOutputIndex) {
@@ -41,6 +48,9 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
         return dependencies;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @NotNull
     @Override
     public final String getPresentableName() {

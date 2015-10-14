@@ -21,6 +21,9 @@ import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
  */
 public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependencyModule {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void configure() {
         super.configure();
@@ -51,6 +54,9 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
                         .build(IProjectFactory.class));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void bindProject() {
         bind(IntelliJProjectService.class).in(Singleton.class);

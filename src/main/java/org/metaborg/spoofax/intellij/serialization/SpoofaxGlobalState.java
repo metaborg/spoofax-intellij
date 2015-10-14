@@ -22,6 +22,9 @@ public final class SpoofaxGlobalState {
         this.myName = value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final int hashCode() {
         return new HashCodeBuilder(19, 31)
@@ -29,6 +32,9 @@ public final class SpoofaxGlobalState {
                 .toHashCode();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean equals(@Nullable Object obj) {
         if (!(obj instanceof SpoofaxGlobalState))

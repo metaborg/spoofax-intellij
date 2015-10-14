@@ -24,8 +24,6 @@ import java.util.HashMap;
 @Singleton
 public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
 
-    @InjectLogger
-    private Logger logger;
     @NotNull
     private final ProxyFactory proxyFactory;
     @NotNull
@@ -40,6 +38,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private final HashMap<ILanguage, IdeaLanguageAttachment> languages = new HashMap<>();
     @NotNull
     private final HashMap<ILanguageImpl, IdeaLanguageImplAttachment> implementations = new HashMap<>();
+    @InjectLogger
+    private Logger logger;
 
     @Inject
     private IdeaAttachmentManager(@NotNull final IHighlightingLexerFactory lexerFactory,

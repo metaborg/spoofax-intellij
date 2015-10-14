@@ -2,7 +2,10 @@ package org.metaborg.spoofax.intellij.idea.model;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.intellij.ide.util.projectWizard.*;
+import com.intellij.ide.util.projectWizard.ModuleBuilder;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.SettingsStep;
+import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -22,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.language.LanguageVersion;
 import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.project.ProjectException;
 import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.ProjectSettings;
@@ -44,15 +46,14 @@ import java.io.IOException;
 @Singleton
 public final class SpoofaxModuleBuilder extends ModuleBuilder {
 
-    @InjectLogger
-    private Logger logger;
     @NotNull
     private final IIntelliJResourceService resourceService;
     @NotNull
     private final IProjectFactory projectFactory;
     @NotNull
     private final IIntelliJProjectService projectService;
-
+    @InjectLogger
+    private Logger logger;
     // The project.
     private IntelliJProject project;
 
@@ -82,6 +83,14 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
 
     }
 
+    /**
+     * Gets the wizard step shown under the SDK selection.
+     *
+     * @param context          The wizard context.
+     * @param parentDisposable The parent disposable.
+     * @return The wizard step.
+     */
+    @Override
     @Nullable
     public final ModuleWizardStep getCustomOptionsStep(@NotNull final WizardContext context,
                                                        @NotNull final Disposable parentDisposable) {
@@ -90,13 +99,14 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
         return step;
     }
 
+    @Override
     @Nullable
     public final ModuleWizardStep modifySettingsStep(@NotNull final SettingsStep settingsStep) {
-        if (settingsStep == null) {
-            throw new IllegalArgumentException(String.format(
-                    "Argument for @NotNull parameter '%s' of %s.%s must not be null",
-                    new Object[]{"settingsStep", "com/intellij/perlplugin/extensions/module/builder", "modifySettingsStep"}));
-        }
+//        if (settingsStep == null) {
+//            throw new IllegalArgumentException(String.format(
+//                    "Argument for @NotNull parameter '%s' of %s.%s must not be null",
+//                    new Object[]{"settingsStep", "com/intellij/perlplugin/extensions/module/builder", "modifySettingsStep"}));
+//        }
         return SpoofaxModuleType.getModuleType().modifySettingsStep(settingsStep, this);
     }
 
@@ -113,6 +123,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
      * @param rootModel The root model.
      * @throws ConfigurationException
      */
+    @Override
     public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
         // Add the content entry path as a content root.
         final ContentEntry contentEntry = doAddContentEntry(rootModel);
@@ -151,8 +162,8 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
     /**
      * Generates the module directory structure and files.
      *
-     * @param project The project.
-     * @param rootModel The root model.
+     * @param project      The project.
+     * @param rootModel    The root model.
      * @param contentEntry The content entry.
      */
     private final void generateModuleStructure(@NotNull final IProject project,
@@ -197,6 +208,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
      *
      * @return The module type.
      */
+    @Override
     @NotNull
     public final ModuleType getModuleType() {
         return SpoofaxModuleType.getModuleType();
@@ -208,6 +220,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
      * @return The big icon.
      */
     // TODO: Use project's ILanguage facet defined icon.
+    @Override
     @NotNull
     public final Icon getBigIcon() {
         return SpoofaxIcons.INSTANCE.Default;
@@ -219,34 +232,10 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
      * @return The normal icon.
      */
     // TODO: Use project's ILanguage facet defined icon.
+    @Override
     @NotNull
     public final Icon getNodeIcon() {
         return SpoofaxIcons.INSTANCE.Default;
-    }
-
-    /**
-     * Gets the module builder's presentable name.
-     *
-     * This name is shown in the <em>New Project</em> and <em>New Module</em> wizards.
-     *
-     * @return The module builder's presentable name.
-     */
-    @NotNull
-    public final String getPresentableName() {
-        return "Spoofax";
-    }
-
-    /**
-     * Gets the module builder's group name.
-     *
-     * I suspect module builders with the same group name are grouped
-     * in the <em>New Project</em> and <em>New Module</em> wizards.
-     *
-     * @return The group name.
-     */
-    @NotNull
-    public final String getGroupName() {
-        return "Spoofax";
     }
 
     /**
@@ -254,9 +243,37 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
      *
      * @return The module builder's description.
      */
+    @Override
     @NotNull
     public final String getDescription() {
         return "Creates a new Spoofax module.";
+    }
+
+    /**
+     * Gets the module builder's presentable name.
+     * <p>
+     * This name is shown in the <em>New Project</em> and <em>New Module</em> wizards.
+     *
+     * @return The module builder's presentable name.
+     */
+    @Override
+    @NotNull
+    public final String getPresentableName() {
+        return "Spoofax";
+    }
+
+    /**
+     * Gets the module builder's group name.
+     * <p>
+     * I suspect module builders with the same group name are grouped
+     * in the <em>New Project</em> and <em>New Module</em> wizards.
+     *
+     * @return The group name.
+     */
+    @Override
+    @NotNull
+    public final String getGroupName() {
+        return "Spoofax";
     }
 
 }

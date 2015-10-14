@@ -41,10 +41,15 @@ public final class Slf4JMembersInjector<T> implements MembersInjector<T> {
         return LoggerFactory.getLogger(clazz);
     }
 
+    /**
+     * Injects the logger in the specified object.
+     *
+     * @param obj The object.
+     */
     @Override
-    public void injectMembers(@NotNull T t) {
+    public void injectMembers(@NotNull T obj) {
         try {
-            this.field.set(t, logger);
+            this.field.set(obj, logger);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }

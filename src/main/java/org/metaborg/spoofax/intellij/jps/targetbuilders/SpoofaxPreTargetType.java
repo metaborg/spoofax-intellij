@@ -12,6 +12,9 @@ public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarg
         super("spoofax-pre-production", projectService);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @NotNull
     public final SpoofaxPreTarget createTarget(@NotNull final SpoofaxJpsProject project) {
         return new SpoofaxPreTarget(project, this);

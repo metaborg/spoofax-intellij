@@ -3,9 +3,7 @@ package org.metaborg.spoofax.intellij.jps.targetbuilders;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jps.builders.BuildRootIndex;
-import org.jetbrains.jps.builders.ModuleBasedBuildTargetType;
-import org.jetbrains.jps.builders.ModuleBasedTarget;
+import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.builders.storage.BuildDataPaths;
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.indices.IgnoredFileIndex;
@@ -45,6 +43,27 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
     }
 
     /**
+     * Whether this target is compiled before the Java build target.
+     *
+     * @return <code>true</code> to compile this build target before the Java build target;
+     * otherwise, <code>false</code> to compile this build target after the Java build target.
+     */
+    @Override
+    public abstract boolean isCompiledBeforeModuleLevelBuilders();
+
+    /**
+     * Gets whether this build target is a testing target.
+     *
+     * @return <code>true</code> when it is a testing target;
+     * otherwise, <code>false</code>.
+     */
+    @Override
+    public final boolean isTests() {
+        // Default implementation.
+        return false;
+    }
+
+    /**
      * Gets the project that is being built.
      *
      * @return The project.
@@ -54,6 +73,11 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
         return this.project;
     }
 
+    /**
+     * Gets the ID of the build target.
+     *
+     * @return The ID.
+     */
     @Override
     @NotNull
     public final String getId() {
@@ -61,6 +85,26 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
         return super.myModule.getName();
     }
 
+    /**
+     * Computes the list of build targets on which this build target depends.
+     *
+     * @param buildTargetRegistry The build target registry.
+     * @param targetOutputIndex   The target output index.
+     * @return A collection of build targets.
+     */
+    @Override
+    public abstract Collection<BuildTarget<?>> computeDependencies(final BuildTargetRegistry buildTargetRegistry,
+                                                                   final TargetOutputIndex targetOutputIndex);
+
+    /**
+     * Computes the root descriptors for the build target.
+     *
+     * @param jpsModel           The JPS model.
+     * @param moduleExcludeIndex The module exclude index.
+     * @param ignoredFileIndex   The ignored file index.
+     * @param buildDataPaths     The build data paths.
+     * @return A list of source root descriptors.
+     */
     @NotNull
     @Override
     public final List<SpoofaxSourceRootDescriptor> computeRootDescriptors(@NotNull final JpsModel jpsModel,
@@ -76,12 +120,9 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
         return result;
     }
 
-    @Override
-    public final boolean isTests() {
-        // Default implementation.
-        return false;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public final SpoofaxSourceRootDescriptor findRootDescriptor(@NotNull final String rootId,
@@ -92,17 +133,32 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
                                                                        null));
     }
 
+    /**
+     * Gets a presentable name for this build target.
+     *
+     * @return The presentable name.
+     */
     @NotNull
-    private final SpoofaxTargetType<?> getSpoofaxTargetType() {
-        // Default implementation.
-        return (SpoofaxTargetType<?>) getTargetType();
-    }
+    @Override
+    public abstract String getPresentableName();
 
+    /**
+     * {@inheritDoc}
+     */
     @NotNull
     @Override
     public final Collection<File> getOutputRoots(@NotNull final CompileContext compileContext) {
         // Default implementation.
         return ContainerUtil.createMaybeSingletonList(JpsJavaExtensionService.getInstance().getOutputDirectory(super.myModule,
                                                                                                                isTests()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NotNull
+    private final SpoofaxTargetType<?> getSpoofaxTargetType() {
+        // Default implementation.
+        return (SpoofaxTargetType<?>) getTargetType();
     }
 }

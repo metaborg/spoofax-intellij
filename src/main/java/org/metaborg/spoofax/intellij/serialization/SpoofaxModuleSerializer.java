@@ -15,6 +15,9 @@ public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer
         super(JpsSpoofaxModuleType.INSTANCE, "SPOOFAX_MODULE", null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @NotNull
     public final JpsDummyElement loadProperties(@Nullable final Element element) {
@@ -23,6 +26,9 @@ public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void saveProperties(@NotNull final JpsDummyElement jpsDummyElement, @NotNull final Element element) {
         throw new UnsupportedOperationException("The `saveProperties()` method is not supported.");

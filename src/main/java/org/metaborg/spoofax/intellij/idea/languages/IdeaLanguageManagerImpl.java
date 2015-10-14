@@ -2,7 +2,6 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;

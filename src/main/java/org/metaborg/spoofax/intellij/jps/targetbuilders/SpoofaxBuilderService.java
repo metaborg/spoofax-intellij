@@ -1,6 +1,7 @@
 package org.metaborg.spoofax.intellij.jps.targetbuilders;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.BuilderService;
@@ -18,6 +19,7 @@ import java.util.List;
  * <p>
  * This service tells the JPS build system which build targetbuilders and target builders are available.
  */
+@Singleton
 public final class SpoofaxBuilderService extends BuilderService {
 
     private List<BuildTargetType<?>> targets;
@@ -52,12 +54,26 @@ public final class SpoofaxBuilderService extends BuilderService {
         return this.targets;
     }
 
+    /**
+     * Gets the list of module level builders contributed by this plugin.
+     * <p>
+     * A module level builder is a phase in the compilation of the Java build target.
+     *
+     * @return A list of module level builders.
+     */
     @NotNull
     @Override
     public List<? extends ModuleLevelBuilder> createModuleLevelBuilders() {
         return this.moduleLevelBuilders;
     }
 
+    /**
+     * Gets the list of target builders contributed by this plugin.
+     * <p>
+     * A target builder compiles any build target.
+     *
+     * @return A list of target builders.
+     */
     @NotNull
     @Override
     public List<? extends TargetBuilder<?, ?>> createBuilders() {

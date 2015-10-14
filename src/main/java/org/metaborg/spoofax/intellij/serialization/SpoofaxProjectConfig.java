@@ -2,39 +2,32 @@ package org.metaborg.spoofax.intellij.serialization;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.JpsElementChildRole;
-import org.jetbrains.jps.model.ex.JpsElementBase;
 import org.jetbrains.jps.model.ex.JpsElementChildRoleBase;
 
-import javax.annotation.Nullable;
-
 /**
- * Created by daniel on 9/8/15.
+ * Project JPS configuration.
  */
-public final class SpoofaxProjectConfig extends JpsElementBase<SpoofaxProjectConfig> {
+public final class SpoofaxProjectConfig extends SpoofaxConfig<SpoofaxProjectState, SpoofaxProjectConfig> {
     @NotNull
     public static final JpsElementChildRole<SpoofaxProjectConfig> ROLE = JpsElementChildRoleBase.create(
             "Spoofax Project");
 
-    @Nullable
-    private SpoofaxProjectState state = new SpoofaxProjectState();
-
-    @Nullable
-    public final SpoofaxProjectState getState() {
-        return this.state;
+    /**
+     * Initializes a new instance of the {@link SpoofaxGlobalConfig} class.
+     */
+    public SpoofaxProjectConfig() {
+        super(new SpoofaxProjectState());
     }
 
-    public final void loadState(@Nullable final SpoofaxProjectState value) {
-        this.state = value;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @NotNull
     @Override
     public final SpoofaxProjectConfig createCopy() {
-        return new SpoofaxProjectConfig();
+        SpoofaxProjectConfig config = new SpoofaxProjectConfig();
+        config.applyChanges(this);
+        return config;
     }
 
-    @Override
-    public final void applyChanges(@NotNull final SpoofaxProjectConfig modified) {
-        this.state = modified.state;
-    }
 }

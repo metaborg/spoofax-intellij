@@ -7,9 +7,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.intellij.openapi.components.ApplicationComponent;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguageDiscoveryService;
-import org.metaborg.core.language.ILanguageService;
-import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
@@ -23,7 +20,7 @@ public final class IdeaPlugin implements ApplicationComponent {
     protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
     @InjectLogger
     private Logger logger;
-
+    @NotNull
     private LanguageManager languageManager;
 
     /**
@@ -50,16 +47,27 @@ public final class IdeaPlugin implements ApplicationComponent {
         this.languageManager = languageManager;
     }
 
+    /**
+     * Initializes the plugin.
+     */
     public final void initComponent() {
 
         this.languageManager.loadMetaLanguages();
 
     }
 
+    /**
+     * Disposes the plugin.
+     */
     public final void disposeComponent() {
 
     }
 
+    /**
+     * Gets the name of the application component.
+     *
+     * @return The name of the component.
+     */
     @NotNull
     public String getComponentName() {
         return IdeaPlugin.class.getName();

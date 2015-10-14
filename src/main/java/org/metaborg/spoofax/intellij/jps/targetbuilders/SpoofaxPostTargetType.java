@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 
+
 public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTarget> {
 
     @NotNull
@@ -17,6 +18,10 @@ public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTa
         this.preTargetType = preTargetType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @NotNull
     public final SpoofaxPostTarget createTarget(@NotNull final SpoofaxJpsProject project) {
         return new SpoofaxPostTarget(project, this, this.preTargetType);

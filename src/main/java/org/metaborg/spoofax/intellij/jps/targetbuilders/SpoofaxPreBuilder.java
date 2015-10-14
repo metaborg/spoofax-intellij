@@ -9,7 +9,6 @@ import org.jetbrains.jps.builders.BuildOutputConsumer;
 import org.jetbrains.jps.builders.DirtyFilesHolder;
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.ProjectBuildException;
-import org.jetbrains.jps.incremental.TargetBuilder;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.build.BuildInput;
 import org.metaborg.core.build.BuildInputBuilder;
@@ -38,10 +37,12 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 
+/**
+ * Builder executed before Java compilation.
+ */
 @Singleton
-public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> {
+public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
 
     @NotNull
     private final ISpoofaxProjectSettingsService settingsService;
@@ -69,7 +70,7 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
                              @NotNull ILanguagePathService languagePathService,
                              @NotNull IDependencyService dependencyService,
                              @NotNull SpoofaxProcessorRunner processorRunner) {
-        super(Collections.singletonList(targetType));
+        super(targetType);
         this.settingsService = settingsService;
         this.builder = builder;
         this.projectService = projectService;
@@ -79,12 +80,18 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         this.processorRunner = processorRunner;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @NotNull
     @Override
     public final String getPresentableName() {
         return "Spoofax pre-Java builder";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void build(@NotNull final SpoofaxPreTarget target,
                             @NotNull final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
@@ -113,6 +120,14 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
 
     }
 
+    /**
+     * Executes the initialize meta-build step.
+     *
+     * @param metaInput The meta build input.
+     * @param context   The compile context.
+     * @throws Exception
+     * @throws ProjectBuildException
+     */
     private final void initialize(@NotNull final MetaBuildInput metaInput, @NotNull final CompileContext context) throws
             ProjectBuildException {
         try {
@@ -125,6 +140,14 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         }
     }
 
+    /**
+     * Executes the generate-sources meta-build step.
+     *
+     * @param metaInput The meta build input.
+     * @param context   The compile context.
+     * @throws Exception
+     * @throws ProjectBuildException
+     */
     private final void generateSources(@NotNull final MetaBuildInput metaInput,
                                        @NotNull final CompileContext context) throws Exception, ProjectBuildException {
         try {
@@ -139,6 +162,14 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         }
     }
 
+    /**
+     * Executes the regular build meta-build step.
+     *
+     * @param metaInput The meta build input.
+     * @param context   The compile context.
+     * @throws Exception
+     * @throws ProjectBuildException
+     */
     private final void regularBuild(@NotNull final MetaBuildInput metaInput,
                                     @NotNull final CompileContext context) throws ProjectBuildException {
 
@@ -177,6 +208,14 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         }
     }
 
+    /**
+     * Executes the pre-Java compile meta-build step.
+     *
+     * @param metaInput The meta build input.
+     * @param context   The compile context.
+     * @throws Exception
+     * @throws ProjectBuildException
+     */
     private final void compilePreJava(@NotNull final MetaBuildInput metaInput,
                                       @Nullable final URL[] classpath,
                                       @Nullable final BuildListener listener,
@@ -186,17 +225,26 @@ public final class SpoofaxPreBuilder extends TargetBuilder<SpoofaxSourceRootDesc
         this.builder.compilePreJava(metaInput, classpath, listener, null);
     }
 
+    /**
+     * Creates the {@link BuildInput} for the project.
+     *
+     * @param metaInput           The meta input.
+     * @param dependencyService   The dependency service.
+     * @param languagePathService The language path service.
+     * @return The created {@link BuildInput}.
+     * @throws ProjectBuildException
+     */
     private final BuildInput getBuildInput(@NotNull final MetaBuildInput metaInput,
                                            @NotNull final IDependencyService dependencyService,
                                            @NotNull final ILanguagePathService languagePathService) throws
             ProjectBuildException {
-        BuildInput input = null;
+        BuildInput input;
         try {
             input = new BuildInputBuilder(metaInput.project)
                     .withDefaultIncludePaths(true)
                     .withSourcesFromDefaultSourceLocations(true)
                     .withSelector(new SpoofaxIgnoresSelector())
-                            //.withMessagePrinter()
+//                    .withMessagePrinter()
                     .withThrowOnErrors(false)
                     .withPardonedLanguageStrings(metaInput.settings.pardonedLanguages())
                     .addTransformGoal(new CompileGoal())

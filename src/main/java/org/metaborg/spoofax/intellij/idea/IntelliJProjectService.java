@@ -1,8 +1,6 @@
 package org.metaborg.spoofax.intellij.idea;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
@@ -10,12 +8,9 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.project.IProject;
 import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
-import org.metaborg.spoofax.intellij.resources.IntelliJResourceService;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -29,12 +24,12 @@ import java.util.Set;
  */
 public final class IntelliJProjectService implements IIntelliJProjectService {
 
-    @InjectLogger
-    private Logger logger;
     @NotNull
     private final IIntelliJResourceService resourceService;
     @NotNull
     private final Map<Module, IntelliJProject> modules = new HashMap<>();
+    @InjectLogger
+    private Logger logger;
 
     @Inject
     private IntelliJProjectService(
@@ -42,20 +37,34 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
         this.resourceService = resourceService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void open(@NotNull final IntelliJProject project) {
         this.modules.put(project.getModule(), project);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void close(@NotNull final Module module) {
         this.modules.remove(module);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public IntelliJProject get(@NotNull final Module module) {
         return this.modules.get(module);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public IntelliJProject get(@NotNull final FileObject resource) {
@@ -84,7 +93,9 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
                 candidates.add(module);
         }
         if (candidates.size() > 1) {
-            logger.error("File {} found in multiple modules. Picking a random one. These modules: {}", file, candidates);
+            logger.error("File {} found in multiple modules. Picking a random one. These modules: {}",
+                         file,
+                         candidates);
         }
         if (candidates.size() != 0) {
             return candidates.iterator().next();

@@ -9,6 +9,9 @@ import org.metaborg.spoofax.intellij.StringFormatter;
 import org.spoofax.interpreter.terms.IStrategoList;
 import org.strategoxt.lang.StrategoErrorExit;
 
+/**
+ * Builder utility functions.
+ */
 public final class BuilderUtils {
 
     /**

@@ -19,17 +19,26 @@ public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer 
         super(CONFIG_FILE, NAME);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void loadExtension(@NotNull final JpsGlobal global, @NotNull final Element element) {
         final SpoofaxGlobalState state = XmlSerializer.deserialize(element, SpoofaxGlobalState.class);
         loadExtensionWithState(global, state);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void loadExtensionWithDefaultSettings(@NotNull final JpsGlobal global) {
         loadExtensionWithState(global, null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void saveExtension(@NotNull final JpsGlobal jpsGlobal, @NotNull final Element element) {
         throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");

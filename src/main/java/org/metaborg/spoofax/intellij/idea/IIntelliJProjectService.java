@@ -2,12 +2,14 @@ package org.metaborg.spoofax.intellij.idea;
 
 import com.intellij.openapi.module.Module;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 
 import javax.annotation.Nullable;
 
+/**
+ * Project service for IntelliJ.
+ */
 public interface IIntelliJProjectService extends IProjectService {
 
     /**

@@ -1,12 +1,8 @@
 package org.metaborg.spoofax.intellij.factories;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 
 /**

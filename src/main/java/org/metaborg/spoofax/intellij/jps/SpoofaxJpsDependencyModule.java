@@ -33,6 +33,9 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     public SpoofaxJpsDependencyModule() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void configure() {
         super.configure();
@@ -47,6 +50,14 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
 
 
         bind(IAntRunnerService.class).to(AntRunnerService.class).in(Singleton.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final void bindProject() {
+        bind(IProjectService.class).to(JpsProjectService.class).in(Singleton.class);
     }
 
     @Singleton
@@ -73,11 +84,6 @@ public final class SpoofaxJpsDependencyModule extends SpoofaxIntelliJDependencyM
     @NotNull
     public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders() {
         return Collections.emptyList();
-    }
-
-    @Override
-    protected final void bindProject() {
-        bind(IProjectService.class).to(JpsProjectService.class).in(Singleton.class);
     }
 }
 

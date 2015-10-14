@@ -22,6 +22,9 @@ import org.metaborg.spoofax.intellij.resources.IntelliJResourceService;
  */
 public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void configure() {
         super.configure();
@@ -31,6 +34,9 @@ public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
         bindListener(Matchers.any(), new Slf4JTypeListener());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void bindProjectSettings() {
         bind(IProjectSettingsService2.class).to(YamlProjectSettingsService.class).in(Singleton.class);
@@ -38,6 +44,9 @@ public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
         bind(ISpoofaxProjectSettingsService.class).to(IntelliJSpoofaxProjectSettingsService.class).in(Singleton.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void bindResource() {
         bind(IntelliJResourceService.class).in(Singleton.class);

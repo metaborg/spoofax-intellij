@@ -9,6 +9,9 @@ import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 
+/**
+ * Spoofax project settings service for IntelliJ.
+ */
 @Singleton
 public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProjectSettingsService {
 
@@ -20,6 +23,9 @@ public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProj
         this.projectSettingsService = projectSettingsService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpoofaxProjectSettings get(@NotNull final IProject project) throws ProjectException {
         final IProjectSettings settings = this.projectSettingsService.get(project);
