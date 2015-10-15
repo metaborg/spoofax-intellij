@@ -13,7 +13,6 @@ import javax.swing.*;
  */
 public final class SpoofaxModuleConfigurationEditor implements ModuleConfigurationEditor {
 
-    private JButton button1;
     private JPanel mainPanel;
 
     /**
@@ -80,4 +79,7 @@ public final class SpoofaxModuleConfigurationEditor implements ModuleConfigurati
         // Nothing to do.
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }

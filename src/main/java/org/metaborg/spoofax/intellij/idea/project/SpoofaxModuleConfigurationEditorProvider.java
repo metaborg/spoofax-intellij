@@ -11,6 +11,7 @@ import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationEditorProv
 import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.java.JavaSourceRootType;
+import org.metaborg.spoofax.intellij.factories.ILanguageImplEditorFactory;
 import org.metaborg.spoofax.intellij.factories.IProjectFactory;
 import org.metaborg.spoofax.intellij.idea.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
@@ -25,6 +26,8 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
 
     @NotNull
     private SpoofaxModuleType spoofaxModuleType;
+    @NotNull
+    private ILanguageImplEditorFactory languageImplEditorFactory;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -35,8 +38,9 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
     }
 
     @Inject
-    private void inject(@NotNull final SpoofaxModuleType spoofaxModuleType) {
+    private void inject(@NotNull final SpoofaxModuleType spoofaxModuleType, @NotNull final ILanguageImplEditorFactory languageImplEditorFactory) {
         this.spoofaxModuleType = spoofaxModuleType;
+        this.languageImplEditorFactory = languageImplEditorFactory;
     }
 
     /**
@@ -53,7 +57,7 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
         return new ModuleConfigurationEditor[] {
             new CommonContentEntriesEditor(module.getName(), state, JavaSourceRootType.SOURCE, JavaSourceRootType.TEST_SOURCE),
             new ClasspathEditor(state),
-            new SpoofaxModuleConfigurationEditor(state),
+            this.languageImplEditorFactory.create(state),
         };
     }
 }
