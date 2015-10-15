@@ -30,7 +30,7 @@
                     implementationClass="org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType"/>
         <!--<compiler.buildTargetScopeProvider
                 implementation="org.metaborg.spoofax.intellij.idea.SpoofaxBuildTargetScopeProvider"/>-->
-
+        <moduleConfigurationEditorProvider implementation="org.metaborg.spoofax.intellij.idea.project.SpoofaxModuleConfigurationEditorProvider" />
         <projectStructureDetector implementation="org.metaborg.spoofax.intellij.idea.project.SpoofaxProjectDetector" />
         <sdkType implementation="org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType"/>
         <compileServer.plugin
