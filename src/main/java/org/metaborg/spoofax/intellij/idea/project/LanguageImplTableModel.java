@@ -22,8 +22,9 @@ import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.util.ArrayList;
+import java.util.List;
 
-public final class LanguageImplTableModel extends ListTableModel<ILanguageImpl> implements ItemRemovable {
+public final class LanguageImplTableModel extends ListTableModel<LanguageImplItem> implements ItemRemovable {
 
     @NotNull final ModuleConfigurationState state;
     @NotNull final ILanguageService languageService;
@@ -36,10 +37,11 @@ public final class LanguageImplTableModel extends ListTableModel<ILanguageImpl> 
         this.state = state;
         this.languageService = languageService;
 
-        ArrayList<ILanguageImpl> languages = new ArrayList<>();
+        ArrayList<LanguageImplItem> languages = new ArrayList<>();
         for (ILanguage language : this.languageService.getAllLanguages()) {
             // TODO: Get project active implementation!
-            languages.add(language.activeImpl());
+            LanguageImplItem item = new LanguageImplItem(language);
+            languages.add(item);
         }
         setItems(languages);
     }
@@ -49,58 +51,80 @@ public final class LanguageImplTableModel extends ListTableModel<ILanguageImpl> 
      */
 
     private static final String LANGUAGE_COLUMN_NAME = "Language";
-    private static final ColumnInfo<ILanguageImpl, ILanguage> LANGUAGE_COLUMN_INFO = new ColumnInfo<ILanguageImpl, ILanguage>(LANGUAGE_COLUMN_NAME) {
+    private static final ColumnInfo<LanguageImplItem, ILanguage> LANGUAGE_COLUMN_INFO = new ColumnInfo<LanguageImplItem, ILanguage>(LANGUAGE_COLUMN_NAME) {
         @Nullable
         @Override
-        public ILanguage valueOf(final ILanguageImpl item) {
-            return item.belongsTo();
+        public ILanguage valueOf(final LanguageImplItem item) {
+            return item.language();
         }
 
         @Override
-        public boolean isCellEditable(final ILanguageImpl item) {
+        public boolean isCellEditable(final LanguageImplItem item) {
             return false;
         }
+//
+//        @Override
+//        public Class<?> getColumnClass() {
+//            return ILanguage.class;
+//        }
 
+
+        @Nullable
         @Override
-        public Class<?> getColumnClass() {
-            return ILanguage.class;
+        public TableCellRenderer getRenderer(final LanguageImplItem item) {
+            return new LanguageItemRenderer();
         }
+
     };
 
     private static final String IMPLEMENTATION_COLUMN_NAME = "Implementation";
-    private static final ColumnInfo<ILanguageImpl, ILanguageImpl> IMPLEMENTATION_COLUMN_INFO = new ColumnInfo<ILanguageImpl, ILanguageImpl>(IMPLEMENTATION_COLUMN_NAME) {
+    private static final ColumnInfo<LanguageImplItem, ILanguageImpl> IMPLEMENTATION_COLUMN_INFO = new ColumnInfo<LanguageImplItem, ILanguageImpl>(IMPLEMENTATION_COLUMN_NAME) {
         @Nullable
         @Override
-        public ILanguageImpl valueOf(final ILanguageImpl item) {
-            return item;
+        public ILanguageImpl valueOf(final LanguageImplItem item) {
+            return item.currentImplementation();
         }
 
         @Override
-        public boolean isCellEditable(final ILanguageImpl item) {
-            return false;
+        public boolean isCellEditable(final LanguageImplItem item) {
+            return true;
         }
 
         @Override
-        public Class<?> getColumnClass() {
-            return ILanguageImpl.class;
+        public void setValue(final LanguageImplItem item, final ILanguageImpl value) {
+            item.setCurrentImplementation(value);
+        }
+
+        @Override
+        public TableCellRenderer getCustomizedRenderer(final LanguageImplItem o, final TableCellRenderer renderer) {
+            return super.getCustomizedRenderer(o, renderer);
         }
 
         @Nullable
         @Override
-        public TableCellRenderer getRenderer(final ILanguageImpl item) {
-            return new ComboBoxTableRenderer<ILanguageImpl>(CollectionUtils.toArray(item.belongsTo().impls(),
-                                                                                      ILanguageImpl.class)) {
+        public TableCellRenderer getRenderer(final LanguageImplItem item) {
+            return new ComboBoxTableRenderer<ILanguageImpl>(item.getImplementations().toArray(new ILanguageImpl[0])) {
+
+                /**
+                 * Gets the text to display for the value.
+                 *
+                 * Note that this method is not called for <code>null</code> values,
+                 * which simply display an empty string.
+                 *
+                 * @param value The value, which is never <code>null</code>.
+                 * @return The text.
+                 */
                 @Override
                 protected String getTextFor(@NotNull final ILanguageImpl value) {
-                    return value.id().toString();
+                    return value.id().version.toString();
                 }
             };
         }
 
         @Nullable
         @Override
-        public TableCellEditor getEditor(final ILanguageImpl item) {
-            final ComboBox comboBox = new ComboBox(new CollectionComboBoxModel(CollectionUtils.toList(item.belongsTo().impls()), item));
+        public TableCellEditor getEditor(final LanguageImplItem item) {
+            final ComboBox comboBox = new ComboBox(new CollectionComboBoxModel(item.getImplementations(), item));
             comboBox.setRenderer(new ListCellRendererWrapper<ILanguageImpl>() {
 
                 @Override
@@ -109,7 +133,10 @@ public final class LanguageImplTableModel extends ListTableModel<ILanguageImpl> 
                                       final int index,
                                       final boolean selected,
                                       final boolean hasFocus) {
-                    setText(value.id().toString());
+                    if (value != null)
+                        setText(value.id().version.toString());
+                    else
+                        setText("(none)");
                 }
             });
             return new DefaultCellEditor(comboBox);
