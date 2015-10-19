@@ -3,6 +3,8 @@ package org.metaborg.spoofax.intellij.idea.languages;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.intellij.openapi.extensions.Extensions;
+import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
+import com.intellij.openapi.fileTypes.FileNameMatcher;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
 import org.jetbrains.annotations.NotNull;
@@ -167,7 +169,8 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
         FileTypeManagerEx.getInstanceEx().registerFileType(fileType);
         FileTypeManager fileTypeManager = FileTypeManager.getInstance();
         for (String ext : fileType.getExtensions()) {
-            fileTypeManager.associateExtension(fileType, ext);
+            FileNameMatcher matcher = new ExtensionFileNameMatcher(ext);
+            fileTypeManager.associate(fileType, matcher);
         }
     }
 
