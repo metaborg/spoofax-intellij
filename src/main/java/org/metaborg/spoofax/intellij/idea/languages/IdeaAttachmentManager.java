@@ -11,10 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.TestAction;
-import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
-import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
-import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
-import org.metaborg.spoofax.intellij.factories.ISpoofaxFileEditorManagerListenerFactory;
+import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.gui.BuilderMenu;
 import org.metaborg.spoofax.intellij.idea.gui.IDynamicAction;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
@@ -38,6 +35,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final ICharacterLexerFactory characterLexerFactory;
     @NotNull
+    private final IBuilderMenuFactory builderMenuFactory;
+    @NotNull
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
     @NotNull
     private final HashMap<ILanguage, IdeaLanguageAttachment> languages = new HashMap<>();
@@ -50,11 +49,13 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private IdeaAttachmentManager(@NotNull final IHighlightingLexerFactory lexerFactory,
                                   @NotNull final IParserDefinitionFactory parserDefinitionFactory,
                                   @NotNull final ICharacterLexerFactory characterLexerFactory,
+                                  @NotNull final IBuilderMenuFactory builderMenuFactory,
                                   @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
+        this.builderMenuFactory = builderMenuFactory;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -251,6 +252,6 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
 
     @NotNull
     private final IDynamicAction createAction(@NotNull final ILanguageImpl implementation) {
-        return new BuilderMenu(implementation);
+        return this.builderMenuFactory.create(implementation);
     }
 }

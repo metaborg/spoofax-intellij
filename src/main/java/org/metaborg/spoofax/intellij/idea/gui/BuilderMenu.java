@@ -1,17 +1,25 @@
 package org.metaborg.spoofax.intellij.idea.gui;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.menu.IAction;
+import org.metaborg.core.menu.IMenu;
+import org.metaborg.core.menu.IMenuItem;
+import org.metaborg.core.menu.IMenuService;
 import org.metaborg.spoofax.intellij.IdentifierUtils;
 import org.metaborg.spoofax.intellij.idea.languages.IdeaLanguageImplAttachment;
 
 /**
  * A builder menu.
  */
-public class BuilderMenu implements IDynamicAction {
+public final class BuilderMenu implements IDynamicAction {
 
+    @NotNull
+    private final IMenuService menuService;
     @NotNull
     private final ILanguageImpl implementation;
     @NotNull
@@ -20,8 +28,16 @@ public class BuilderMenu implements IDynamicAction {
     @NotNull
     private final AnAction menuFirst;
 
-    public BuilderMenu(ILanguageImpl implementation) {
+    @Inject
+    private BuilderMenu(@Assisted @NotNull final ILanguageImpl implementation,
+                        @NotNull final IMenuService menuService) {
         this.implementation = implementation;
+        this.menuService = menuService;
+
+        Iterable<IMenuItem> menuItems = this.menuService.menuItems(this.implementation);
+        for (IMenuItem item : menuItems) {
+            // TODO: createMenuItem(item)
+        }
 
         this.MENU_FIRST = IdentifierUtils.create("SPOOFAX_FIRST_" + this.implementation.belongsTo().name() + "_");
 
@@ -47,5 +63,11 @@ public class BuilderMenu implements IDynamicAction {
         DefaultActionGroup mainMenu = (DefaultActionGroup) manager.getAction("MainMenu");
         mainMenu.remove(this.menuGroup);
         manager.unregisterAction(this.MENU_FIRST);
+    }
+
+    @NotNull
+    private AnAction createMenuItem(@NotNull final IMenuItem item) {
+        // TODO
+        throw new RuntimeException();
     }
 }
