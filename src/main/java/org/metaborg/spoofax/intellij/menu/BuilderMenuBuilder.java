@@ -9,8 +9,10 @@ import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.menu.*;
 import org.metaborg.core.menu.Separator;
+import org.metaborg.spoofax.core.menu.TransformAction;
 import org.metaborg.spoofax.intellij.IdentifierUtils;
 import org.metaborg.spoofax.intellij.factories.IBuilderActionGroupFactory;
+import org.metaborg.spoofax.intellij.factories.ITransformIdeaActionFactory;
 
 /**
  * Creates the builder menu for a language.
@@ -22,11 +24,14 @@ public final class BuilderMenuBuilder {
     private final IMenuService menuService;
     @NotNull
     private final IBuilderActionGroupFactory builderActionGroupFactory;
+    @NotNull
+    private final ITransformIdeaActionFactory transformationActionFactory;
 
     @Inject
-    private BuilderMenuBuilder(@NotNull final IMenuService menuService, @NotNull final IBuilderActionGroupFactory builderActionGroupFactory) {
+    private BuilderMenuBuilder(@NotNull final IMenuService menuService, @NotNull final IBuilderActionGroupFactory builderActionGroupFactory, @NotNull final ITransformIdeaActionFactory transformationActionFactory) {
         this.menuService = menuService;
         this.builderActionGroupFactory = builderActionGroupFactory;
+        this.transformationActionFactory = transformationActionFactory;
     }
 
     /**
@@ -39,7 +44,7 @@ public final class BuilderMenuBuilder {
         Iterable<IMenuItem> items = this.menuService.menuItems(implementation);
 
         DefaultActionGroup group = builderActionGroupFactory.create(implementation);
-        BuilderMenuBuilderState state = new BuilderMenuBuilderState(group, implementation);
+        BuilderMenuBuilderState state = new BuilderMenuBuilderState(group, implementation, this.transformationActionFactory);
         for (IMenuItem item : items) {
             item.accept(state);
         }
@@ -47,16 +52,19 @@ public final class BuilderMenuBuilder {
         return group;
     }
 
-    private final class BuilderMenuBuilderState implements IMenuItemVisitor {
+    private static final class BuilderMenuBuilderState implements IMenuItemVisitor {
 
         @NotNull
         private final DefaultActionGroup group;
         @NotNull
         private final ILanguageImpl implementation;
+        @NotNull
+        private final ITransformIdeaActionFactory transformationActionFactory;
 
-        public BuilderMenuBuilderState(@NotNull final DefaultActionGroup group, @NotNull final ILanguageImpl implementation) {
+        public BuilderMenuBuilderState(@NotNull final DefaultActionGroup group, @NotNull final ILanguageImpl implementation, @NotNull final ITransformIdeaActionFactory transformationActionFactory) {
             this.group = group;
             this.implementation = implementation;
+            this.transformationActionFactory = transformationActionFactory;
         }
 
         @Override
@@ -81,7 +89,20 @@ public final class BuilderMenuBuilder {
 
         @NotNull
         private AnAction createAction(@NotNull final IAction action) {
-            return new TransformAction(IdentifierUtils.create("SPOOFAX_MENU_"), this.implementation, action.name());
+            String id = IdentifierUtils.create("SPOOFAX_MENU_");
+            if (action instanceof TransformAction) {
+                return this.transformationActionFactory.create(id,
+                                                               this.implementation,
+                                                               (TransformAction)action);
+            } else {
+                return new AnActionWithId(id, action.name()) {
+
+                    @Override
+                    public void actionPerformed(final AnActionEvent anActionEvent) {
+                        // TODO: Show an error bubble: this kind of action is not supported.
+                    }
+                };
+            }
         }
 
         @NotNull
@@ -98,7 +119,7 @@ public final class BuilderMenuBuilder {
         @NotNull
         private DefaultActionGroup createMenu(@NotNull final IMenu menu) {
             DefaultActionGroup subGroup = new DefaultActionGroup(menu.name(), true);
-            BuilderMenuBuilderState state = new BuilderMenuBuilderState(subGroup, this.implementation);
+            BuilderMenuBuilderState state = new BuilderMenuBuilderState(subGroup, this.implementation, this.transformationActionFactory);
             for (IMenuItem item : menu.items()) {
                 item.accept(state);
             }

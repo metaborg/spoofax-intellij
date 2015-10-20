@@ -19,12 +19,12 @@ import org.slf4j.Logger;
 // Remove this class.
 public final class SpoofaxProjectComponent implements ProjectComponent {
 
+    @InjectLogger
+    private Logger logger;
 //    @NotNull
 //    private ISpoofaxFileEditorManagerListenerFactory fileEditorManagerListenerFactory;
     @NotNull
     private final Project project;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * This instance is created by IntelliJ's plugin system.

@@ -22,9 +22,7 @@ public final class BuilderActionGroup extends DefaultActionGroup {
     @NotNull
     private final ILanguageImpl implementation;
     @NotNull
-    private final IIntelliJResourceService resourceService;
-    @NotNull
-    private final ILanguageIdentifierService identifierService;
+    private final ActionHelper actionHelper;
 
     /**
      * Initializes a new instance of the {@link BuilderActionGroup} class.
@@ -32,32 +30,17 @@ public final class BuilderActionGroup extends DefaultActionGroup {
      * @param implementation The implementation to respond to.
      */
     @Inject
-    private BuilderActionGroup(@Assisted @NotNull final ILanguageImpl implementation, @NotNull final IIntelliJResourceService resourceService, @NotNull final ILanguageIdentifierService identifierService) {
+    private BuilderActionGroup(@Assisted @NotNull final ILanguageImpl implementation, @NotNull final ActionHelper actionHelper) {
         super(implementation.belongsTo().name(), true);
         this.implementation = implementation;
-        this.resourceService = resourceService;
-        this.identifierService = identifierService;
+        this.actionHelper = actionHelper;
     }
 
     @Override
     public void update(@NotNull final AnActionEvent e) {
-        ILanguageImpl implementation = getActiveFileLanguage(e);
-        e.getPresentation().setVisible(implementation == this.implementation);
+        boolean visible = this.actionHelper.isActiveFileLanguage(e, this.implementation);
+        e.getPresentation().setVisible(visible);
         super.update(e);
     }
 
-    /**
-     * Determines the language implementation of the active file.
-     *
-     * @param e The event arguments.
-     * @return The language implementation for the active file; or <code>null</code>.
-     */
-    @Nullable
-    private ILanguageImpl getActiveFileLanguage(@NotNull final AnActionEvent e) {
-        VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
-        if (files == null || files.length != 1 || files[0].isDirectory())
-            return null;
-        FileObject file = this.resourceService.resolve(files[0]);
-        return identifierService.identify(file);
-    }
 }

@@ -2,6 +2,7 @@ package org.metaborg.spoofax.intellij.idea;
 
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
@@ -10,6 +11,7 @@ import com.intellij.openapi.projectRoots.SdkType;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
+import org.metaborg.spoofax.core.transform.StrategoTransformer;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.languages.*;
@@ -19,9 +21,9 @@ import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplPanel;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplTableModel;
-import org.metaborg.spoofax.intellij.menu.BuilderActionGroup;
-import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
+import org.metaborg.spoofax.intellij.menu.*;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
+import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**
  * The Guice dependency injection module for the Spoofax IDEA plugin.
@@ -40,6 +42,12 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         bind(SpoofaxModuleBuilder.class).in(Singleton.class);
         bind(ILexerParserManager.class).to(LexerParserManager.class).in(Singleton.class);
         bind(BuilderMenuBuilder.class).in(Singleton.class);
+        bind(ActionHelper.class).in(Singleton.class);
+        bind(StrategoResourceTransformer.class).in(Singleton.class);
+        bind(IResourceTransformer.class).to(StrategoResourceTransformer.class);
+        bind(new TypeLiteral<ResourceTransformer<?, ?, ?>>() {}).to(StrategoResourceTransformer.class);
+        bind(new TypeLiteral<ResourceTransformer<IStrategoTerm, IStrategoTerm, IStrategoTerm>>() {}).to(
+                StrategoResourceTransformer.class);
 
         bind(SpoofaxSyntaxHighlighterFactory.class);
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
@@ -69,9 +77,9 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(LanguageImplEditor.class, LanguageImplEditor.class)
                         .build(ILanguageImplEditorFactory.class));
-//        install(new FactoryModuleBuilder()
-//                        .implement(SpoofaxFileEditorManagerListener.class, SpoofaxFileEditorManagerListener.class)
-//                        .build(ISpoofaxFileEditorManagerListenerFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(TransformIdeaAction.class, TransformIdeaAction.class)
+                        .build(ITransformIdeaActionFactory.class));
         install(new FactoryModuleBuilder()
                         .implement(BuilderActionGroup.class, BuilderActionGroup.class)
                         .build(IBuilderActionGroupFactory.class));

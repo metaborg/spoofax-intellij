@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.factories.*;
-import org.metaborg.spoofax.intellij.menu.IDynamicAction;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.slf4j.Logger;

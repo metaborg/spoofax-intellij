@@ -115,28 +115,6 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
         return Collections.unmodifiableSet(this.loadedLanguages.keySet());
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public void enableUI(@Nullable final ILanguageImpl implementation) {
-//        if (this.currentUI == implementation)
-//            return;
-//        if (this.currentUI != null) {
-//            // Disable current UI.
-//
-//            IdeaLanguageImplAttachment attachment = this.objectManager.get(this.currentUI);
-//            attachment.action.disable(ActionManager.getInstance());
-//        }
-//        this.currentUI = implementation;
-//        if (this.currentUI != null) {
-//            // Enable new UI.
-//
-//            IdeaLanguageImplAttachment attachment = this.objectManager.get(this.currentUI);
-//            attachment.action.enable(ActionManager.getInstance());
-//        }
-//    }
-
     /**
      * Installs a language into IntelliJ.
      *
