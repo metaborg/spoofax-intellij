@@ -10,6 +10,7 @@ import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.menu.*;
 import org.metaborg.core.menu.Separator;
 import org.metaborg.spoofax.intellij.IdentifierUtils;
+import org.metaborg.spoofax.intellij.factories.IBuilderActionGroupFactory;
 
 /**
  * Creates the builder menu for a language.
@@ -19,10 +20,13 @@ public final class BuilderMenuBuilder {
 
     @NotNull
     private final IMenuService menuService;
+    @NotNull
+    private final IBuilderActionGroupFactory builderActionGroupFactory;
 
     @Inject
-    private BuilderMenuBuilder(@NotNull final IMenuService menuService) {
+    private BuilderMenuBuilder(@NotNull final IMenuService menuService, @NotNull final IBuilderActionGroupFactory builderActionGroupFactory) {
         this.menuService = menuService;
+        this.builderActionGroupFactory = builderActionGroupFactory;
     }
 
     /**
@@ -31,25 +35,28 @@ public final class BuilderMenuBuilder {
      * @param implementation The language implementation.
      * @return The built builder menu.
      */
-    public IDynamicAction build(@NotNull final ILanguageImpl implementation) {
+    public DefaultActionGroup build(@NotNull final ILanguageImpl implementation) {
         Iterable<IMenuItem> items = this.menuService.menuItems(implementation);
 
-        DefaultActionGroup group = new DefaultActionGroup(implementation.belongsTo().name(), true);
-        BuilderMenuBuilderState state = new BuilderMenuBuilderState(group);
+        DefaultActionGroup group = builderActionGroupFactory.create(implementation);
+        BuilderMenuBuilderState state = new BuilderMenuBuilderState(group, implementation);
         for (IMenuItem item : items) {
             item.accept(state);
         }
 
-        return new DynamicActionGroup(group, IdeActions.GROUP_MAIN_MENU);
+        return group;
     }
 
     private final class BuilderMenuBuilderState implements IMenuItemVisitor {
 
         @NotNull
         private final DefaultActionGroup group;
+        @NotNull
+        private final ILanguageImpl implementation;
 
-        public BuilderMenuBuilderState(@NotNull final DefaultActionGroup group) {
+        public BuilderMenuBuilderState(@NotNull final DefaultActionGroup group, @NotNull final ILanguageImpl implementation) {
             this.group = group;
+            this.implementation = implementation;
         }
 
         @Override
@@ -74,12 +81,7 @@ public final class BuilderMenuBuilder {
 
         @NotNull
         private AnAction createAction(@NotNull final IAction action) {
-            return new AnActionWithId(IdentifierUtils.create("SPOOFAX_MENU_"), action.name()) {
-                @Override
-                public void actionPerformed(@NotNull final AnActionEvent anActionEvent) {
-                    System.out.println("Invoked action!");
-                }
-            };
+            return new TransformAction(IdentifierUtils.create("SPOOFAX_MENU_"), this.implementation, action.name());
         }
 
         @NotNull
@@ -96,7 +98,7 @@ public final class BuilderMenuBuilder {
         @NotNull
         private DefaultActionGroup createMenu(@NotNull final IMenu menu) {
             DefaultActionGroup subGroup = new DefaultActionGroup(menu.name(), true);
-            BuilderMenuBuilderState state = new BuilderMenuBuilderState(subGroup);
+            BuilderMenuBuilderState state = new BuilderMenuBuilderState(subGroup, this.implementation);
             for (IMenuItem item : menu.items()) {
                 item.accept(state);
             }

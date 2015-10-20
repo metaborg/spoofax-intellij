@@ -19,7 +19,7 @@ import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplPanel;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplTableModel;
-import org.metaborg.spoofax.intellij.idea.project.SpoofaxFileEditorManagerListener;
+import org.metaborg.spoofax.intellij.menu.BuilderActionGroup;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 
@@ -69,9 +69,12 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(LanguageImplEditor.class, LanguageImplEditor.class)
                         .build(ILanguageImplEditorFactory.class));
+//        install(new FactoryModuleBuilder()
+//                        .implement(SpoofaxFileEditorManagerListener.class, SpoofaxFileEditorManagerListener.class)
+//                        .build(ISpoofaxFileEditorManagerListenerFactory.class));
         install(new FactoryModuleBuilder()
-                        .implement(SpoofaxFileEditorManagerListener.class, SpoofaxFileEditorManagerListener.class)
-                        .build(ISpoofaxFileEditorManagerListenerFactory.class));
+                        .implement(BuilderActionGroup.class, BuilderActionGroup.class)
+                        .build(IBuilderActionGroupFactory.class));
         install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 

@@ -14,6 +14,7 @@ public final class DynamicActionGroup implements IDynamicAction {
     private final String parentID;
     @NotNull
     private final DefaultActionGroup actionGroup;
+    private boolean enabled;
 
     public DynamicActionGroup(@NotNull final DefaultActionGroup actionGroup, @NotNull final String parentID) {
         this.actionGroup = actionGroup;
@@ -22,13 +23,18 @@ public final class DynamicActionGroup implements IDynamicAction {
 
     @Override
     public void enable(@NotNull final ActionManager manager) {
+        if (enabled)
+            return;
         DefaultActionGroup mainMenu = (DefaultActionGroup) manager.getAction(this.parentID);
         mainMenu.add(this.actionGroup);
         registerActions(manager, this.actionGroup);
+        enabled = true;
     }
 
     @Override
     public void disable(@NotNull final ActionManager manager) {
+        if (enabled)
+            return;
         DefaultActionGroup mainMenu = (DefaultActionGroup) manager.getAction(this.parentID);
         mainMenu.remove(this.actionGroup);
         unregisterActions(manager, this.actionGroup);

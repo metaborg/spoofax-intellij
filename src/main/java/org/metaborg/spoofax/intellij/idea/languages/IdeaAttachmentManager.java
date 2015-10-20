@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
@@ -129,9 +130,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         final IdeaLanguageAttachment langAtt = get(implementation.belongsTo());
 
         final Lexer lexer = createLexer(implementation, langAtt.tokenTypeManager);
-        final IDynamicAction action = createAction(implementation);
+        final DefaultActionGroup buildActionGroup = createAction(implementation);
 
-        return new IdeaLanguageImplAttachment(lexer, action);
+        return new IdeaLanguageImplAttachment(lexer, buildActionGroup);
     }
 
     /**
@@ -249,7 +250,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     }
 
     @NotNull
-    private final IDynamicAction createAction(@NotNull final ILanguageImpl implementation) {
+    private final DefaultActionGroup createAction(@NotNull final ILanguageImpl implementation) {
         return this.builderMenuBuilder.build(implementation);
     }
 }

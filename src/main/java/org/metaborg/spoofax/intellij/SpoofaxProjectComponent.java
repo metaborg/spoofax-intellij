@@ -10,9 +10,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.messages.Topic;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.factories.ISpoofaxFileEditorManagerListenerFactory;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.idea.project.SpoofaxFileEditorManagerListener;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
@@ -21,8 +19,8 @@ import org.slf4j.Logger;
 // Remove this class.
 public final class SpoofaxProjectComponent implements ProjectComponent {
 
-    @NotNull
-    private ISpoofaxFileEditorManagerListenerFactory fileEditorManagerListenerFactory;
+//    @NotNull
+//    private ISpoofaxFileEditorManagerListenerFactory fileEditorManagerListenerFactory;
     @NotNull
     private final Project project;
     @InjectLogger
@@ -39,9 +37,15 @@ public final class SpoofaxProjectComponent implements ProjectComponent {
 
     @Inject
     @SuppressWarnings("unused")
-    private final void inject(@NotNull final ISpoofaxFileEditorManagerListenerFactory fileEditorManagerListenerFactory) {
-        this.fileEditorManagerListenerFactory = fileEditorManagerListenerFactory;
+    private final void inject() {
+
     }
+
+//    @Inject
+//    @SuppressWarnings("unused")
+//    private final void inject(@NotNull final ISpoofaxFileEditorManagerListenerFactory fileEditorManagerListenerFactory) {
+//        this.fileEditorManagerListenerFactory = fileEditorManagerListenerFactory;
+//    }
 
     @Override
     public final void projectOpened() {
@@ -55,9 +59,9 @@ public final class SpoofaxProjectComponent implements ProjectComponent {
 
     @Override
     public final void initComponent() {
-
-        project.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER,
-                                                    this.fileEditorManagerListenerFactory.create());
+//
+//        project.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER,
+//                                                    this.fileEditorManagerListenerFactory.create());
 
     }
 

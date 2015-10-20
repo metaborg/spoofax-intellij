@@ -55,11 +55,11 @@ public interface IIdeaLanguageManager {
      */
     @NotNull
     Set<ILanguage> getLoaded();
-
-    /**
-     * Enables the menu's, buttons, and other UI elements of the specified language implementation.
-     *
-     * @param implementation The language implementation; or <code>null</code>.
-     */
-    void enableUI(@Nullable ILanguageImpl implementation);
+//
+//    /**
+//     * Enables the menu's, buttons, and other UI elements of the specified language implementation.
+//     *
+//     * @param implementation The language implementation; or <code>null</code>.
+//     */
+//    void enableUI(@Nullable ILanguageImpl implementation);
 }
