@@ -5,13 +5,18 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
+import com.intellij.openapi.actionSystem.*;
 import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.spoofax.intellij.TestAction;
 import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
+import org.metaborg.spoofax.intellij.factories.ISpoofaxFileEditorManagerListenerFactory;
+import org.metaborg.spoofax.intellij.idea.gui.BuilderMenu;
+import org.metaborg.spoofax.intellij.idea.gui.IDynamicAction;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 
@@ -125,8 +130,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         final IdeaLanguageAttachment langAtt = get(implementation.belongsTo());
 
         final Lexer lexer = createLexer(implementation, langAtt.tokenTypeManager);
+        final IDynamicAction action = createAction(implementation);
 
-        return new IdeaLanguageImplAttachment(lexer);
+        return new IdeaLanguageImplAttachment(lexer, action);
     }
 
     /**
@@ -241,5 +247,10 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final SpoofaxSyntaxHighlighterFactory createSyntaxHighlighterFactory() {
         return this.syntaxHighlighterFactoryProvider.get();
+    }
+
+    @NotNull
+    private final IDynamicAction createAction(@NotNull final ILanguageImpl implementation) {
+        return new BuilderMenu(implementation);
     }
 }

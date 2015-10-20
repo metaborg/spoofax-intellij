@@ -2,6 +2,10 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.Anchor;
+import com.intellij.openapi.actionSystem.Constraints;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileNameMatcher;
@@ -9,12 +13,14 @@ import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.idea.InstanceKeyedExtensionPoint;
 import org.metaborg.spoofax.intellij.idea.InstanceLanguageExtensionPoint;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +40,9 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     private final IIdeaAttachmentManager objectManager;
     @NotNull
     private final Map<ILanguage, RegisteredIdeaLanguageObject> loadedLanguages = new HashMap<>();
+    // The language implementation whose UI elements are shown.
+    @Nullable
+    private ILanguageImpl currentUI;
     @InjectLogger
     private Logger logger;
 
@@ -103,33 +112,25 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     }
 
     /**
-     * Removes a language from IntelliJ.
-     *
-     * @param obj The language to remove.
+     * {@inheritDoc}
      */
-    private void uninstallLanguage(@NotNull final RegisteredIdeaLanguageObject obj) {
-        unregisterFileType(obj.languageObject.fileType);
-        unregisterExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION, obj.syntaxHighlighterFactoryExtension);
-        unregisterExtension(PARSER_DEFINITION_EXTENSION, obj.parserDefinitionExtension);
-    }
+    @Override
+    public void enableUI(@Nullable final ILanguageImpl implementation) {
+        if (this.currentUI == implementation)
+            return;
+        if (this.currentUI != null) {
+            // Disable current UI.
 
-    /**
-     * Unregisters a file type.
-     *
-     * @param fileType The file type to unregister.
-     */
-    private void unregisterFileType(@NotNull final SpoofaxFileType fileType) {
-        FileTypeManagerEx.getInstanceEx().unregisterFileType(fileType);
-    }
+            IdeaLanguageImplAttachment attachment = this.objectManager.get(this.currentUI);
+            attachment.action.disable(ActionManager.getInstance());
+        }
+        this.currentUI = implementation;
+        if (this.currentUI != null) {
+            // Enable new UI.
 
-    /**
-     * Unregisters an extension.
-     *
-     * @param extensionPointName The extension point name.
-     * @param value              The extension to unregister.
-     */
-    private void unregisterExtension(@NotNull final String extensionPointName, @NotNull final Object value) {
-        Extensions.getRootArea().getExtensionPoint(extensionPointName).unregisterExtension(value);
+            IdeaLanguageImplAttachment attachment = this.objectManager.get(this.currentUI);
+            attachment.action.enable(ActionManager.getInstance());
+        }
     }
 
     /**
@@ -172,6 +173,36 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
             FileNameMatcher matcher = new ExtensionFileNameMatcher(ext);
             fileTypeManager.associate(fileType, matcher);
         }
+    }
+
+    /**
+     * Removes a language from IntelliJ.
+     *
+     * @param obj The language to remove.
+     */
+    private void uninstallLanguage(@NotNull final RegisteredIdeaLanguageObject obj) {
+        unregisterFileType(obj.languageObject.fileType);
+        unregisterExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION, obj.syntaxHighlighterFactoryExtension);
+        unregisterExtension(PARSER_DEFINITION_EXTENSION, obj.parserDefinitionExtension);
+    }
+
+    /**
+     * Unregisters a file type.
+     *
+     * @param fileType The file type to unregister.
+     */
+    private void unregisterFileType(@NotNull final SpoofaxFileType fileType) {
+        FileTypeManagerEx.getInstanceEx().unregisterFileType(fileType);
+    }
+
+    /**
+     * Unregisters an extension.
+     *
+     * @param extensionPointName The extension point name.
+     * @param value              The extension to unregister.
+     */
+    private void unregisterExtension(@NotNull final String extensionPointName, @NotNull final Object value) {
+        Extensions.getRootArea().getExtensionPoint(extensionPointName).unregisterExtension(value);
     }
 
     /**

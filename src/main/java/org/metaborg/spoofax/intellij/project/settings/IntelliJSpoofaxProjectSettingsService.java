@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.ProjectException;
 import org.metaborg.core.project.settings.IProjectSettings;
+import org.metaborg.spoofax.core.project.settings.Format;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 
@@ -32,7 +33,7 @@ public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProj
         final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, project.location());
 
         // TODO: Read these special settings:
-//        Format format;
+        Format format = Format.jar;
 //        List<String> pardonedLanguages;
 //        List<String> sdfArgs;
 //        List<String> strategoArgs;
@@ -41,7 +42,7 @@ public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProj
 //        String externalJarFlags;
 
         // TODO: And add them to the settings.
-//        spoofaxSettings.setFormat(format);
+        spoofaxSettings.setFormat(format);
 //        spoofaxSettings.setPardonedLanguages(pardonedLanguages);
 //        spoofaxSettings.setSdfArgs(sdfArgs);
 //        spoofaxSettings.setStrategoArgs(strategoArgs);
