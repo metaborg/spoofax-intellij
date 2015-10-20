@@ -12,7 +12,6 @@ import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.factories.*;
-import org.metaborg.spoofax.intellij.idea.gui.BuilderMenu;
 import org.metaborg.spoofax.intellij.idea.languages.*;
 import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
@@ -21,6 +20,7 @@ import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplPanel;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplTableModel;
 import org.metaborg.spoofax.intellij.idea.project.SpoofaxFileEditorManagerListener;
+import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 
 /**
@@ -39,6 +39,7 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         bind(IIdeaLanguageManager.class).to(IdeaLanguageManagerImpl.class).in(Singleton.class);
         bind(SpoofaxModuleBuilder.class).in(Singleton.class);
         bind(ILexerParserManager.class).to(LexerParserManager.class).in(Singleton.class);
+        bind(BuilderMenuBuilder.class).in(Singleton.class);
 
         bind(SpoofaxSyntaxHighlighterFactory.class);
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
@@ -71,9 +72,6 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(SpoofaxFileEditorManagerListener.class, SpoofaxFileEditorManagerListener.class)
                         .build(ISpoofaxFileEditorManagerListenerFactory.class));
-        install(new FactoryModuleBuilder()
-                        .implement(BuilderMenu.class, BuilderMenu.class)
-                        .build(IBuilderMenuFactory.class));
         install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 

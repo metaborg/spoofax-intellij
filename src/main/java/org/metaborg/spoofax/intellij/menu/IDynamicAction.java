@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.idea.gui;
+package org.metaborg.spoofax.intellij.menu;
 
 import com.intellij.openapi.actionSystem.ActionManager;
 import org.jetbrains.annotations.NotNull;

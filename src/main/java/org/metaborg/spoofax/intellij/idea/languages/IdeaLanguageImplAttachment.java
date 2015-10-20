@@ -1,12 +1,9 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.actionSystem.ActionGroup;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.idea.gui.IDynamicAction;
+import org.metaborg.spoofax.intellij.menu.IDynamicAction;
 
 /**
  * Stores the IntelliJ IDEA objects that are associated with a particular {@link ILanguageImpl}.

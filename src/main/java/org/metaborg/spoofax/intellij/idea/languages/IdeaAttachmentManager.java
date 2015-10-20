@@ -5,16 +5,14 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.actionSystem.*;
 import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.TestAction;
 import org.metaborg.spoofax.intellij.factories.*;
-import org.metaborg.spoofax.intellij.idea.gui.BuilderMenu;
-import org.metaborg.spoofax.intellij.idea.gui.IDynamicAction;
+import org.metaborg.spoofax.intellij.menu.IDynamicAction;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +33,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final ICharacterLexerFactory characterLexerFactory;
     @NotNull
-    private final IBuilderMenuFactory builderMenuFactory;
+    private final BuilderMenuBuilder builderMenuBuilder;
     @NotNull
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
     @NotNull
@@ -49,13 +47,13 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private IdeaAttachmentManager(@NotNull final IHighlightingLexerFactory lexerFactory,
                                   @NotNull final IParserDefinitionFactory parserDefinitionFactory,
                                   @NotNull final ICharacterLexerFactory characterLexerFactory,
-                                  @NotNull final IBuilderMenuFactory builderMenuFactory,
+                                  @NotNull final BuilderMenuBuilder builderMenuBuilder,
                                   @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
-        this.builderMenuFactory = builderMenuFactory;
+        this.builderMenuBuilder = builderMenuBuilder;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -252,6 +250,6 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
 
     @NotNull
     private final IDynamicAction createAction(@NotNull final ILanguageImpl implementation) {
-        return this.builderMenuFactory.create(implementation);
+        return this.builderMenuBuilder.build(implementation);
     }
 }
