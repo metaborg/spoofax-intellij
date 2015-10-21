@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -o errexit
+set -o pipefail
+set -o nounset
+#set -o xtrace
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__root="$(cd "$(dirname "${__dir}")" && pwd)"
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
+__base="$(basename ${__file} .sh)"
+
+arg1="${1:-}"
+
+########################################################################
+
+gen="generated"
+
+mkdir -p "${gen}/"
+
+echo "Generating PNGs for '${arg1}'"
+for size in 16 32 48 64 128 256; do
+	if [ ! -f ${arg1}_${size}.svg ]; then
+		inkscape -z -e ${gen}/${arg1}_${size}.png -w ${size} -h ${size} ${arg1}_256.svg >/dev/null 2>/dev/null
+	else
+		inkscape -z -e ${gen}/${arg1}_${size}.png -w ${size} -h ${size} ${arg1}_${size}.svg >/dev/null 2>/dev/null
+	fi
+done
+
+echo "Generating ICO for '${arg1}'"
+convert ${gen}/${arg1}_16.png ${gen}/${arg1}_32.png ${gen}/${arg1}_48.png ${gen}/${arg1}_64.png ${gen}/${arg1}_128.png ${gen}/${arg1}_256.png ${gen}/${arg1}.ico
+echo "Generating ICNS for '${arg1}'"
+png2icns ${gen}/${arg1}.icns ${gen}/${arg1}_16.png ${gen}/${arg1}_32.png ${gen}/${arg1}_48.png ${gen}/${arg1}_128.png ${gen}/${arg1}_256.png
+echo "Done ${arg1}!"
