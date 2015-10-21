@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
@@ -13,6 +14,7 @@ import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -33,6 +35,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final ICharacterLexerFactory characterLexerFactory;
     @NotNull
+    private final BuilderMenuBuilder builderMenuBuilder;
+    @NotNull
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
     @NotNull
     private final HashMap<ILanguage, IdeaLanguageAttachment> languages = new HashMap<>();
@@ -45,11 +49,13 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private IdeaAttachmentManager(@NotNull final IHighlightingLexerFactory lexerFactory,
                                   @NotNull final IParserDefinitionFactory parserDefinitionFactory,
                                   @NotNull final ICharacterLexerFactory characterLexerFactory,
+                                  @NotNull final BuilderMenuBuilder builderMenuBuilder,
                                   @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
+        this.builderMenuBuilder = builderMenuBuilder;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -125,8 +131,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         final IdeaLanguageAttachment langAtt = get(implementation.belongsTo());
 
         final Lexer lexer = createLexer(implementation, langAtt.tokenTypeManager);
+        final DefaultActionGroup buildActionGroup = createAction(implementation);
 
-        return new IdeaLanguageImplAttachment(lexer);
+        return new IdeaLanguageImplAttachment(lexer, buildActionGroup);
     }
 
     /**
@@ -241,5 +248,16 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final SpoofaxSyntaxHighlighterFactory createSyntaxHighlighterFactory() {
         return this.syntaxHighlighterFactoryProvider.get();
+    }
+
+    /**
+     * Creates the builder menu action group.
+     *
+     * @param implementation The language implementation.
+     * @return The action group.
+     */
+    @NotNull
+    private final DefaultActionGroup createAction(@NotNull final ILanguageImpl implementation) {
+        return this.builderMenuBuilder.build(implementation);
     }
 }

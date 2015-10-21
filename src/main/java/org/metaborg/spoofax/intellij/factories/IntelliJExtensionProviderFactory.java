@@ -7,9 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory for IntelliJ extension providers.
- *
+ * <p>
  * Usage:
- * <pre>{@code
+ * <pre>
  * class MyModule extends AbstractModule {
  *
  *     @Override
@@ -20,18 +20,22 @@ import org.jetbrains.annotations.NotNull;
  *     }
  *
  * }
- * }</pre>
+ * </pre>
  */
 public final class IntelliJExtensionProviderFactory {
 
     /**
-     * {@inheritDoc}
+     * Creates a provider for an extension point implementation.
+     *
+     * @param extensionClass The extension class.
+     * @param extensionPointName The extension point name.
+     * @return A {@link Module} that binds the provider.
      */
     public <T> Module provide(@NotNull final Class<T> extensionClass, @NotNull final String extensionPointName) {
         return new AbstractModule() {
             @Override
             protected void configure() {
-                Provider<T> provider = new IntelliJExtensionProvider<T>(extensionClass, extensionPointName);
+                Provider<T> provider = new IntelliJExtensionProvider<>(extensionClass, extensionPointName);
                 bind(extensionClass).toProvider(provider);
             }
         };

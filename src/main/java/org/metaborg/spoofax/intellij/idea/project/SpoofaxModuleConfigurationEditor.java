@@ -65,17 +65,17 @@ public final class SpoofaxModuleConfigurationEditor implements ModuleConfigurati
     }
 
     @Override
+    public void disposeUIResources() {
+        // Nothing to do.
+    }
+
+    @Override
     public void saveData() {
         // Nothing to do.
     }
 
     @Override
     public void moduleStateChanged() {
-        // Nothing to do.
-    }
-
-    @Override
-    public void disposeUIResources() {
         // Nothing to do.
     }
 

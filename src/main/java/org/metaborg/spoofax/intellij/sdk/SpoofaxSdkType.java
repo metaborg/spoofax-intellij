@@ -21,6 +21,59 @@ public final class SpoofaxSdkType extends SdkType {
     }
 
     /**
+     * Gets a default home path, if any.
+     *
+     * @return A default SDK home path; or <code>null</code>.
+     */
+    @Nullable
+    @Override
+    public String suggestHomePath() {
+        // Default implementation.
+        return null;
+    }
+
+    /**
+     * Determines whether the specified path is valid as the SDK home.
+     * <p>
+     * This method could check, for example, the precense of certain files and directories.
+     *
+     * @param path The path to check.
+     * @return <code>true</code> when the specified path is a valid SDK home;
+     * otherwise, <code>false</code>.
+     */
+    @Override
+    public boolean isValidSdkHome(final String path) {
+        // Default implementation
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public String getVersionString(final String sdkHome) {
+        return "1.1.5";
+    }
+
+    /**
+     * Gets a suggested name for the SDK instance.
+     *
+     * @param currentSdkName The current SDK name.
+     * @param sdkHome        The SDK home.
+     * @return The suggested SDK name.
+     */
+    @Override
+    public String suggestSdkName(final String currentSdkName, final String sdkHome) {
+        return getVersionString(sdkHome) + " (suggested)";
+    }
+
+    @Nullable
+    @Override
+    public AdditionalDataConfigurable createAdditionalDataConfigurable(final SdkModel sdkModel,
+                                                                       final SdkModificator sdkModificator) {
+        // Default implementation.
+        return null;
+    }
+
+    /**
      * Gets the presentable name of the SDK type.
      *
      * @return The presentable name.
@@ -28,12 +81,6 @@ public final class SpoofaxSdkType extends SdkType {
     @Override
     public String getPresentableName() {
         return "Spoofax SDK Type (presentable)";
-    }
-
-    @Nullable
-    @Override
-    public String getVersionString(final String sdkHome) {
-        return "1.1.5";
     }
 
     /**
@@ -49,53 +96,6 @@ public final class SpoofaxSdkType extends SdkType {
     @Override
     public Icon getIconForAddAction() {
         return getIcon();
-    }
-
-    /**
-     * Gets a default home path, if any.
-     *
-     * @return A default SDK home path; or <code>null</code>.
-     */
-    @Nullable
-    @Override
-    public String suggestHomePath() {
-        // Default implementation.
-        return null;
-    }
-
-    /**
-     * Determines whether the specified path is valid as the SDK home.
-     *
-     * This method could check, for example, the precense of certain files and directories.
-     *
-     * @param path The path to check.
-     * @return <code>true</code> when the specified path is a valid SDK home;
-     * otherwise, <code>false</code>.
-     */
-    @Override
-    public boolean isValidSdkHome(final String path) {
-        // Default implementation
-        return true;
-    }
-
-    /**
-     * Gets a suggested name for the SDK instance.
-     *
-     * @param currentSdkName The current SDK name.
-     * @param sdkHome The SDK home.
-     * @return The suggested SDK name.
-     */
-    @Override
-    public String suggestSdkName(final String currentSdkName, final String sdkHome) {
-        return getVersionString(sdkHome) + " (suggested)";
-    }
-
-    @Nullable
-    @Override
-    public AdditionalDataConfigurable createAdditionalDataConfigurable(final SdkModel sdkModel,
-                                                                       final SdkModificator sdkModificator) {
-        // Default implementation.
-        return null;
     }
 
     @Override

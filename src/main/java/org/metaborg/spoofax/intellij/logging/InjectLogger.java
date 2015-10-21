@@ -9,10 +9,9 @@ import java.lang.annotation.Target;
  * Annotation for a field that wants a logger to be injected.
  * <p>
  * For example:
- * <pre>{@code
- *
+ * <pre>
  * @InjectLogger private Logger logger;
- * }</pre>
+ * </pre>
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

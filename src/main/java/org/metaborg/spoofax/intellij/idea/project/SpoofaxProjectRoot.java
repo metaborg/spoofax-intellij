@@ -12,6 +12,7 @@ public final class SpoofaxProjectRoot extends DetectedProjectRoot {
 
     /**
      * Initializes a new instance of the {@link SpoofaxProjectRoot} class.
+     *
      * @param directory The root directory.
      */
     public SpoofaxProjectRoot(@NotNull final File directory) {

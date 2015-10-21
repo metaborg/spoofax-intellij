@@ -7,9 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory for service loader providers.
- *
+ * <p>
  * Usage:
- * <pre>{@code
+ * <pre>
  * class MyModule extends AbstractModule {
  *
  *     @Override
@@ -20,19 +20,22 @@ import org.jetbrains.annotations.NotNull;
  *     }
  *
  * }
- * }</pre>
+ * </pre>
  */
 public final class JavaServiceProviderFactory {
 
     /**
-     * {@inheritDoc}
+     * Creates a provider for a Java service.
+     *
+     * @param serviceClass The service class.
+     * @return A {@link Module} that binds the provider.
      */
-    public <T> Module provide(@NotNull final Class<T> service) {
+    public <T> Module provide(@NotNull final Class<T> serviceClass) {
         return new AbstractModule() {
             @Override
             protected void configure() {
-                Provider<T> provider = new JavaServiceProvider<T>(service);
-                bind(service).toProvider(provider);
+                Provider<T> provider = new JavaServiceProvider<>(serviceClass);
+                bind(serviceClass).toProvider(provider);
             }
         };
     }

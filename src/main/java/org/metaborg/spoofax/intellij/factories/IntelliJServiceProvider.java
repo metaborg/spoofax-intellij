@@ -1,13 +1,8 @@
 package org.metaborg.spoofax.intellij.factories;
 
 import com.google.inject.Provider;
-import com.google.inject.ProvisionException;
 import com.intellij.openapi.components.ServiceManager;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.StringFormatter;
-
-import java.util.Iterator;
-import java.util.ServiceLoader;
 
 /**
  * Provides an instance from the IntelliJ {@link com.intellij.openapi.components.ServiceManager}.

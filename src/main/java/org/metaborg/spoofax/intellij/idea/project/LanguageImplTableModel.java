@@ -10,48 +10,22 @@ import com.intellij.ui.ListCellRendererWrapper;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.ItemRemovable;
 import com.intellij.util.ui.ListTableModel;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
-import org.metaborg.spoofax.intellij.CollectionUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.util.ArrayList;
-import java.util.List;
 
 public final class LanguageImplTableModel extends ListTableModel<LanguageImplItem> implements ItemRemovable {
 
-    @NotNull final ModuleConfigurationState state;
-    @NotNull final ILanguageService languageService;
-
-    @Inject
-    private LanguageImplTableModel(
-            @Assisted @NotNull final ModuleConfigurationState state,
-            @NotNull final ILanguageService languageService) {
-        super(LANGUAGE_COLUMN_INFO, IMPLEMENTATION_COLUMN_INFO);
-        this.state = state;
-        this.languageService = languageService;
-
-        ArrayList<LanguageImplItem> languages = new ArrayList<>();
-        for (ILanguage language : this.languageService.getAllLanguages()) {
-            // TODO: Get project active implementation!
-            LanguageImplItem item = new LanguageImplItem(language);
-            languages.add(item);
-        }
-        setItems(languages);
-    }
-
-    /*
-     * The columns.
-     */
-
     private static final String LANGUAGE_COLUMN_NAME = "Language";
-    private static final ColumnInfo<LanguageImplItem, ILanguage> LANGUAGE_COLUMN_INFO = new ColumnInfo<LanguageImplItem, ILanguage>(LANGUAGE_COLUMN_NAME) {
+    private static final ColumnInfo<LanguageImplItem, ILanguage> LANGUAGE_COLUMN_INFO = new ColumnInfo<LanguageImplItem, ILanguage>(
+            LANGUAGE_COLUMN_NAME) {
         @Nullable
         @Override
         public ILanguage valueOf(final LanguageImplItem item) {
@@ -76,9 +50,13 @@ public final class LanguageImplTableModel extends ListTableModel<LanguageImplIte
         }
 
     };
-
     private static final String IMPLEMENTATION_COLUMN_NAME = "Implementation";
-    private static final ColumnInfo<LanguageImplItem, ILanguageImpl> IMPLEMENTATION_COLUMN_INFO = new ColumnInfo<LanguageImplItem, ILanguageImpl>(IMPLEMENTATION_COLUMN_NAME) {
+
+    /*
+     * The columns.
+     */
+    private static final ColumnInfo<LanguageImplItem, ILanguageImpl> IMPLEMENTATION_COLUMN_INFO = new ColumnInfo<LanguageImplItem, ILanguageImpl>(
+            IMPLEMENTATION_COLUMN_NAME) {
         @Nullable
         @Override
         public ILanguageImpl valueOf(final LanguageImplItem item) {
@@ -142,4 +120,24 @@ public final class LanguageImplTableModel extends ListTableModel<LanguageImplIte
             return new DefaultCellEditor(comboBox);
         }
     };
+    @NotNull
+    final ModuleConfigurationState state;
+    @NotNull
+    final ILanguageService languageService;
+    @Inject
+    private LanguageImplTableModel(
+            @Assisted @NotNull final ModuleConfigurationState state,
+            @NotNull final ILanguageService languageService) {
+        super(LANGUAGE_COLUMN_INFO, IMPLEMENTATION_COLUMN_INFO);
+        this.state = state;
+        this.languageService = languageService;
+
+        ArrayList<LanguageImplItem> languages = new ArrayList<>();
+        for (ILanguage language : this.languageService.getAllLanguages()) {
+            // TODO: Get project active implementation!
+            LanguageImplItem item = new LanguageImplItem(language);
+            languages.add(item);
+        }
+        setItems(languages);
+    }
 }

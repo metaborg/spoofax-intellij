@@ -53,7 +53,6 @@ public final class IdeaPlugin implements ApplicationComponent {
     public final void initComponent() {
 
         this.languageManager.loadMetaLanguages();
-
     }
 
     /**

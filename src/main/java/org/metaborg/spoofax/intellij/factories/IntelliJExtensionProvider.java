@@ -2,12 +2,9 @@ package org.metaborg.spoofax.intellij.factories;
 
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.extensions.Extensions;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.StringFormatter;
-
-import java.util.function.Predicate;
 
 /**
  * Provides an instance from the IntelliJ extensions.
@@ -22,10 +19,11 @@ import java.util.function.Predicate;
     /**
      * Initializes a new instance of the {@link IntelliJExtensionProvider} class.
      *
-     * @param extensionClass The class of the extension to load.
+     * @param extensionClass     The class of the extension to load.
      * @param extensionPointName The extension point name.
      */
-    /* package private */ IntelliJExtensionProvider(@NotNull final Class<T> extensionClass, @NotNull final String extensionPointName) {
+    /* package private */ IntelliJExtensionProvider(@NotNull final Class<T> extensionClass,
+                                                    @NotNull final String extensionPointName) {
         this.extensionClass = extensionClass;
         this.extensionPointName = extensionPointName;
     }
@@ -37,10 +35,12 @@ import java.util.function.Predicate;
 
         for (Object candidate : candidates) {
             if (candidate.getClass().equals(this.extensionClass)) {
-                return (T)candidate;
+                return (T) candidate;
             }
         }
-        throw new ProvisionException(StringFormatter.format("No extensions are registered for the class {} in extension point {}.",
-                                                            this.extensionClass, this.extensionPointName));
+        throw new ProvisionException(StringFormatter.format(
+                "No extensions are registered for the class {} in extension point {}.",
+                this.extensionClass,
+                this.extensionPointName));
     }
 }

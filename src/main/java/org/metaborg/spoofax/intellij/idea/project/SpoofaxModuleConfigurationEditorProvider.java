@@ -12,11 +12,8 @@ import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.java.JavaSourceRootType;
 import org.metaborg.spoofax.intellij.factories.ILanguageImplEditorFactory;
-import org.metaborg.spoofax.intellij.factories.IProjectFactory;
-import org.metaborg.spoofax.intellij.idea.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
-import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 
 /**
  * Provides editors for the module's settings in the <em>Project Structure</em> dialog.
@@ -38,7 +35,8 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
     }
 
     @Inject
-    private void inject(@NotNull final SpoofaxModuleType spoofaxModuleType, @NotNull final ILanguageImplEditorFactory languageImplEditorFactory) {
+    private void inject(@NotNull final SpoofaxModuleType spoofaxModuleType,
+                        @NotNull final ILanguageImplEditorFactory languageImplEditorFactory) {
         this.spoofaxModuleType = spoofaxModuleType;
         this.languageImplEditorFactory = languageImplEditorFactory;
     }
@@ -54,10 +52,13 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
         if (moduleType != this.spoofaxModuleType) {
             return ModuleConfigurationEditor.EMPTY;
         }
-        return new ModuleConfigurationEditor[] {
-            new CommonContentEntriesEditor(module.getName(), state, JavaSourceRootType.SOURCE, JavaSourceRootType.TEST_SOURCE),
-            new ClasspathEditor(state),
-            this.languageImplEditorFactory.create(state),
+        return new ModuleConfigurationEditor[]{
+                new CommonContentEntriesEditor(module.getName(),
+                                               state,
+                                               JavaSourceRootType.SOURCE,
+                                               JavaSourceRootType.TEST_SOURCE),
+                new ClasspathEditor(state),
+                this.languageImplEditorFactory.create(state),
         };
     }
 }
