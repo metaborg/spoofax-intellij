@@ -2,13 +2,13 @@
 
 This folder contains Spoofax icons.
 
-![spoofax](spoofax_256.svg "spoofax")
-![spoofax_eclipse](spoofax_eclipse_256.svg "spoofax_eclipse")
-![spoofax_eclipse_blue](spoofax_eclipse_blue_256.svg "spoofax_eclipse_blue")
-![spoofax_eclipse_cyan](spoofax_eclipse_cyan_256.svg "spoofax_eclipse_cyan")
-![spoofax_eclipse_green](spoofax_eclipse_green_256.svg "spoofax_eclipse_green")
-![spoofax_eclipse_orange](spoofax_eclipse_orange_256.svg "spoofax_eclipse_orange")
-![spoofax_eclipse_red](spoofax_eclipse_red_256.svg "spoofax_eclipse_red")
+![spoofax](generated/spoofax_128.png "spoofax")
+![spoofax_eclipse](eclipse/generated/spoofax_eclipse_128.png "spoofax_eclipse")
+![spoofax_eclipse_blue](eclipse/generated/spoofax_eclipse_blue_128.png "spoofax_eclipse_blue")
+![spoofax_eclipse_cyan](eclipse/generated/spoofax_eclipse_cyan_128.png "spoofax_eclipse_cyan")
+![spoofax_eclipse_green](eclipse/generated/spoofax_eclipse_green_128.png "spoofax_eclipse_green")
+![spoofax_eclipse_orange](eclipse/generated/spoofax_eclipse_orange_128.png "spoofax_eclipse_orange")
+![spoofax_eclipse_red](eclipse/generated/spoofax_eclipse_red_128.png "spoofax_eclipse_red")
 
 
 ## Creating an icon
