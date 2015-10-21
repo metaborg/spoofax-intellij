@@ -7,6 +7,8 @@ import com.intellij.openapi.extensions.Extensions;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.StringFormatter;
 
+import java.util.function.Predicate;
+
 /**
  * Provides an instance from the IntelliJ extensions.
  */

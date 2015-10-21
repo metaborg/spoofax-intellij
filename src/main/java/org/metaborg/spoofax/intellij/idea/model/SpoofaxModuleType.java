@@ -23,7 +23,7 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
 
     // The module ID. This is displayed to the user when the ModuleType cannot be found.
     @NotNull
-    private static final String ID = "SPOOFAX_MODULE"; // This is also used in plugin.xml.
+    public static final String ID = "SPOOFAX_MODULE"; // This is also used in plugin.xml.
     @NotNull
     private static final String NAME = "Spoofax";
     @NotNull
@@ -38,6 +38,7 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
         IdeaPlugin.injector().injectMembers(this);
     }
 
+    // TODO: Remove
     /**
      * Gets the module type.
      *

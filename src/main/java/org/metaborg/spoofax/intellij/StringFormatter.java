@@ -1,5 +1,6 @@
 package org.metaborg.spoofax.intellij;
 
+import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -17,7 +18,11 @@ import org.slf4j.helpers.MessageFormatter;
  * (thus <code>\{}</code>). Note that in Java source code you might have to escape
  * the backslash itself with a backslash.
  */
+@Singleton
 public final class StringFormatter {
+
+    // To prevent instantiation.
+    private StringFormatter() {}
 
     /**
      * Formats a string.

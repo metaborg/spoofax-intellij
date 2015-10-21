@@ -1,9 +1,11 @@
 package org.metaborg.spoofax.intellij.idea;
 
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
+import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.projectRoots.SdkType;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
@@ -13,6 +15,10 @@ import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.languages.*;
 import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
+import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
+import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
+import org.metaborg.spoofax.intellij.idea.project.LanguageImplPanel;
+import org.metaborg.spoofax.intellij.idea.project.LanguageImplTableModel;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 
 /**
@@ -51,6 +57,15 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(IntelliJProject.class, IntelliJProject.class)
                         .build(IProjectFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(LanguageImplTableModel.class, LanguageImplTableModel.class)
+                        .build(ILanguageImplTableModelFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(LanguageImplPanel.class, LanguageImplPanel.class)
+                        .build(ILanguageImplPanelFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(LanguageImplEditor.class, LanguageImplEditor.class)
+                        .build(ILanguageImplEditorFactory.class));
         install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 
@@ -62,5 +77,11 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         bind(IntelliJProjectService.class).in(Singleton.class);
         bind(IProjectService.class).to(IntelliJProjectService.class).in(Singleton.class);
         bind(IIntelliJProjectService.class).to(IntelliJProjectService.class).in(Singleton.class);
+    }
+
+    @Provides
+    @Singleton
+    private SpoofaxModuleType provideModuleType() {
+        return (SpoofaxModuleType)ModuleTypeManager.getInstance().findByID(SpoofaxModuleType.ID);
     }
 }
