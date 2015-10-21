@@ -1,10 +1,7 @@
 package org.metaborg.spoofax.intellij.factories;
 
-import com.intellij.lexer.Lexer;
 import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplTableModel;
 
 /**
@@ -15,7 +12,7 @@ public interface ILanguageImplTableModelFactory {
     /**
      * Creates a language implementation table model.
      *
-     * @param state          The module configuration state.
+     * @param state The module configuration state.
      * @return The table model.
      */
     @NotNull

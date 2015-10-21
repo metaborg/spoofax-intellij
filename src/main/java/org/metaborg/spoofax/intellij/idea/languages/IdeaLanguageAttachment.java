@@ -2,7 +2,6 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.actionSystem.AnAction;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 

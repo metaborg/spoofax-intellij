@@ -6,8 +6,6 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.fileEditor.FileEditorManagerListener;
-import com.intellij.util.messages.Topic;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;

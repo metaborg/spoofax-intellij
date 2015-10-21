@@ -27,5 +27,4 @@ public final class SpoofaxPsiVisitor extends PsiElementVisitor {
         visitElement(element);
     }
 
-
 }

@@ -102,11 +102,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
     @Override
     @Nullable
     public final ModuleWizardStep modifySettingsStep(@NotNull final SettingsStep settingsStep) {
-//        if (settingsStep == null) {
-//            throw new IllegalArgumentException(String.format(
-//                    "Argument for @NotNull parameter '%s' of %s.%s must not be null",
-//                    new Object[]{"settingsStep", "com/intellij/perlplugin/extensions/module/builder", "modifySettingsStep"}));
-//        }
         return SpoofaxModuleType.getModuleType().modifySettingsStep(settingsStep, this);
     }
 

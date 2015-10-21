@@ -11,7 +11,6 @@ import com.intellij.openapi.projectRoots.SdkType;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
-import org.metaborg.spoofax.core.transform.StrategoTransformer;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.languages.*;
@@ -78,7 +77,7 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
                         .implement(LanguageImplEditor.class, LanguageImplEditor.class)
                         .build(ILanguageImplEditorFactory.class));
         install(new FactoryModuleBuilder()
-                        .implement(TransformIdeaAction.class, TransformIdeaAction.class)
+                        .implement(TransformationAction.class, TransformationAction.class)
                         .build(ITransformIdeaActionFactory.class));
         install(new FactoryModuleBuilder()
                         .implement(BuilderActionGroup.class, BuilderActionGroup.class)
@@ -99,6 +98,6 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
     @Provides
     @Singleton
     private SpoofaxModuleType provideModuleType() {
-        return (SpoofaxModuleType)ModuleTypeManager.getInstance().findByID(SpoofaxModuleType.ID);
+        return (SpoofaxModuleType) ModuleTypeManager.getInstance().findByID(SpoofaxModuleType.ID);
     }
 }

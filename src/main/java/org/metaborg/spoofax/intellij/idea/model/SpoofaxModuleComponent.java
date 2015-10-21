@@ -121,6 +121,5 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
             logger.error("Unhandled exception.", e);
         }
         return null;
-//      FileObject root = this.resourceService.resolve(module.getModuleFile().getParent());
     }
 }

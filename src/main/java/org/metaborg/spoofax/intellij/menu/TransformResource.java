@@ -17,7 +17,7 @@ public final class TransformResource {
      * Initializes a new instance of the {@link TransformResource} class.
      *
      * @param resource The resource to transform.
-     * @param text The text to transform.
+     * @param text     The text to transform.
      */
     public TransformResource(@NotNull final FileObject resource, @NotNull final String text) {
         this.resource = resource;

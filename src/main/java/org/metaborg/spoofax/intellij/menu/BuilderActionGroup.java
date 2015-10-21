@@ -4,15 +4,8 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.vfs.VirtualFile;
-import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
-
-import javax.annotation.Nullable;
 
 /**
  * Action group for a language builder.
@@ -30,7 +23,8 @@ public final class BuilderActionGroup extends DefaultActionGroup {
      * @param implementation The implementation to respond to.
      */
     @Inject
-    private BuilderActionGroup(@Assisted @NotNull final ILanguageImpl implementation, @NotNull final ActionHelper actionHelper) {
+    private BuilderActionGroup(@Assisted @NotNull final ILanguageImpl implementation,
+                               @NotNull final ActionHelper actionHelper) {
         super(implementation.belongsTo().name(), true);
         this.implementation = implementation;
         this.actionHelper = actionHelper;

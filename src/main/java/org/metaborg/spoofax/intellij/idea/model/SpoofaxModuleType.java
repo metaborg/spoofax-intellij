@@ -39,6 +39,7 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
     }
 
     // TODO: Remove
+
     /**
      * Gets the module type.
      *

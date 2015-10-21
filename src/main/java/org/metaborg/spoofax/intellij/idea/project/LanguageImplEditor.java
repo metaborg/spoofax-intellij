@@ -2,7 +2,6 @@ package org.metaborg.spoofax.intellij.idea.project;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.intellij.openapi.module.ModuleConfigurationEditor;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 import com.intellij.openapi.roots.ui.configuration.ModuleElementsEditor;
@@ -21,12 +20,14 @@ public final class LanguageImplEditor extends ModuleElementsEditor {
 
     private static final String NAME = "Languages";
 
-    @NotNull private final ILanguageImplPanelFactory languageImplPanelFactory;
-    @Nullable private LanguageImplPanel panel;
+    @NotNull
+    private final ILanguageImplPanelFactory languageImplPanelFactory;
+    @Nullable
+    private LanguageImplPanel panel;
 
     @Inject
     private LanguageImplEditor(@Assisted @NotNull final ModuleConfigurationState state,
-                              @NotNull final ILanguageImplPanelFactory languageImplPanelFactory) {
+                               @NotNull final ILanguageImplPanelFactory languageImplPanelFactory) {
         super(state);
         this.languageImplPanelFactory = languageImplPanelFactory;
     }
@@ -36,21 +37,9 @@ public final class LanguageImplEditor extends ModuleElementsEditor {
         return super.isModified();
     }
 
-    @Nullable
     @Override
-    public String getHelpTopic() {
-        return null;
-    }
+    public void canApply() throws ConfigurationException {
 
-    @Nls
-    @Override
-    public String getDisplayName() {
-        return NAME;
-    }
-
-    @Override
-    public void saveData() {
-        //this.panel.stopEditing();
     }
 
     @Override
@@ -59,8 +48,10 @@ public final class LanguageImplEditor extends ModuleElementsEditor {
     }
 
     @Override
-    public void canApply() throws ConfigurationException {
-
+    public void moduleStateChanged() {
+        if (this.panel == null)
+            return;
+        //this.panel.initFromModel();
     }
 
     @Override
@@ -72,10 +63,20 @@ public final class LanguageImplEditor extends ModuleElementsEditor {
         return mainPanel;
     }
 
+    @Nls
     @Override
-    public void moduleStateChanged() {
-        if (this.panel == null)
-            return;
-        //this.panel.initFromModel();
+    public String getDisplayName() {
+        return NAME;
+    }
+
+    @Nullable
+    @Override
+    public String getHelpTopic() {
+        return null;
+    }
+
+    @Override
+    public void saveData() {
+        //this.panel.stopEditing();
     }
 }

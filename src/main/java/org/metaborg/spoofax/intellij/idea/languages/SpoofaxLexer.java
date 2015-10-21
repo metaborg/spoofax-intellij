@@ -165,7 +165,7 @@ public final class SpoofaxLexer extends LexerBase {
 
         final ImploderAttachment rootImploderAttachment = ImploderAttachment.get(result.result);
         final ITokenizer tokenizer = rootImploderAttachment.getLeftToken().getTokenizer();
-        List<SpoofaxToken> spoofaxTokens = new ArrayList<SpoofaxToken>();
+        List<SpoofaxToken> spoofaxTokens = new ArrayList<>();
 
         Iterable<IRegionCategory<IStrategoTerm>> categorizedTokens = this.categorizer.categorize(this.languageImpl,
                                                                                                  result);

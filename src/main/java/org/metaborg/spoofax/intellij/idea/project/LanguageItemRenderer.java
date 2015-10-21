@@ -20,7 +20,7 @@ public final class LanguageItemRenderer extends ColoredTableCellRenderer {
         setFocusBorderAroundIcon(true);
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         if (value instanceof ILanguage) {
-            final ILanguage item = (ILanguage)value;
+            final ILanguage item = (ILanguage) value;
             getCellAppearance(item).customize(this);
             setToolTipText("Spoofax tooltip!");
         }

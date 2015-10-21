@@ -11,10 +11,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class IdentifierUtils {
 
+    private static final AtomicInteger counter = new AtomicInteger();
+
     // To prevent instantiation.
     private IdentifierUtils() {}
-
-    private static final AtomicInteger counter = new AtomicInteger();
 
     /**
      * Returns a unique identifier.
@@ -29,7 +29,6 @@ public final class IdentifierUtils {
      * Returns a unique identifier.
      *
      * @param prefix The identifier prefix.
-     *
      * @return The created identifier.
      */
     public static String create(@NotNull String prefix) {

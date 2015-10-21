@@ -10,7 +10,9 @@ import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.factories.*;
+import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
+import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
+import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.slf4j.Logger;
@@ -248,6 +250,12 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         return this.syntaxHighlighterFactoryProvider.get();
     }
 
+    /**
+     * Creates the builder menu action group.
+     *
+     * @param implementation The language implementation.
+     * @return The action group.
+     */
     @NotNull
     private final DefaultActionGroup createAction(@NotNull final ILanguageImpl implementation) {
         return this.builderMenuBuilder.build(implementation);

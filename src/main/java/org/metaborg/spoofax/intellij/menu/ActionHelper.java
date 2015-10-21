@@ -11,7 +11,6 @@ import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +20,35 @@ import java.util.List;
 @Singleton
 public final class ActionHelper {
 
-    @NotNull private final IIntelliJResourceService resourceService;
-    @NotNull private final ILanguageIdentifierService identifierService;
+    @NotNull
+    private final IIntelliJResourceService resourceService;
+    @NotNull
+    private final ILanguageIdentifierService identifierService;
 
     @Inject
     private ActionHelper(@NotNull final IIntelliJResourceService resourceService,
                          @NotNull final ILanguageIdentifierService identifierService) {
         this.resourceService = resourceService;
         this.identifierService = identifierService;
+    }
+
+    /**
+     * Determines whether all active files are of the specified language.
+     *
+     * @param e        The event arguments.
+     * @param language The language implementation to check.
+     * @return <code>true</code> when all active files are of the specified language;
+     * otherwise, <code>false</code>.
+     */
+    public boolean isActiveFileLanguage(@NotNull final AnActionEvent e, ILanguageImpl language) {
+        List<FileObject> files = getActiveFiles(e);
+        if (files.size() == 0)
+            return false;
+        for (FileObject file : files) {
+            if (!this.identifierService.identify(file, language))
+                return false;
+        }
+        return true;
     }
 
     /**
@@ -48,40 +68,6 @@ public final class ActionHelper {
             }
         }
         return result;
-    }
-
-//    /**
-//     * Determines the language implementation of the active file.
-//     *
-//     * @param e The event arguments.
-//     * @return The language implementation for the active file;
-//     * or <code>null</code> when there are zero or multiple active files.
-//     */
-//    @Nullable
-//    public ILanguageImpl getActiveFileLanguage(@NotNull final AnActionEvent e) {
-//        List<FileObject> files = getActiveFiles(e);
-//        if (files.size() != 1)
-//            return null;
-//        return this.identifierService.identify(files.get(0));
-//    }
-
-    /**
-     * Determines whether all active files are of the specified language.
-     *
-     * @param e The event arguments.
-     * @param language The language implementation to check.
-     * @return <code>true</code> when all active files are of the specified language;
-     * otherwise, <code>false</code>.
-     */
-    public boolean isActiveFileLanguage(@NotNull final AnActionEvent e, ILanguageImpl language) {
-        List<FileObject> files = getActiveFiles(e);
-        if (files.size() == 0)
-            return false;
-        for (FileObject file : files) {
-            if (!this.identifierService.identify(file, language))
-                return false;
-        }
-        return true;
     }
 
 }

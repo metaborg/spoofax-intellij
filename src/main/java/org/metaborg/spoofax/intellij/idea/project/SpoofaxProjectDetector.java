@@ -6,7 +6,9 @@ import com.intellij.ide.util.importProject.ModuleDescriptor;
 import com.intellij.ide.util.importProject.ProjectDescriptor;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
-import com.intellij.ide.util.projectWizard.importSources.*;
+import com.intellij.ide.util.projectWizard.importSources.DetectedProjectRoot;
+import com.intellij.ide.util.projectWizard.importSources.ProjectFromSourcesBuilder;
+import com.intellij.ide.util.projectWizard.importSources.ProjectStructureDetector;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
@@ -17,8 +19,10 @@ import org.slf4j.Logger;
 
 import javax.swing.*;
 import java.io.File;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Detects whether a project is a Spoofax project when imported through the <em>Create from existing sources</em>
@@ -50,7 +54,7 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * We determine that a directory is the root of a Spoofax project when it
      * has a file `editor/*.main.esv`.
      */
@@ -62,7 +66,7 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
                                                  @NotNull final List<DetectedProjectRoot> result) {
 
         this.logger.info("Detecting Spoofax project in {}", dir);
-        if(dir.getName().equals("editor")) {
+        if (dir.getName().equals("editor")) {
             for (File child : children) {
 //                if (child.getName().equals("java") && child.isDirectory()) {
 //                    result.add(new JavaModuleSourceRoot(child, "", "Java"));
@@ -88,6 +92,21 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
         return DirectoryProcessingResult.PROCESS_CHILDREN;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ModuleWizardStep> createWizardSteps(final ProjectFromSourcesBuilder builder,
+                                                    final ProjectDescriptor projectDescriptor,
+                                                    final Icon stepIcon) {
+        return Collections.singletonList(new ProjectJdkForModuleStep(builder.getContext(), this.sdkType));
+//        return Collections.singletonList(ProjectWizardStepFactory.getInstance().createProjectJdkStep(builder.getContext()));
+//        SpoofaxModuleInsight moduleInsight = insightFactory.create(new DelegatingProgressIndicator(), builder.getExistingModuleNames(), builder.getExistingProjectLibraryNames());
+//        final List<ModuleWizardStep> steps = new ArrayList<>();
+//        steps.add(new ModulesDetectionStep(this, builder, projectDescriptor, moduleInsight, stepIcon, "reference.dialogs.new.project.fromCode.page1"));
+//        return steps;
+    }
+
     @Override
     public void setupProjectStructure(@NotNull final Collection<DetectedProjectRoot> roots,
                                       @NotNull final ProjectDescriptor projectDescriptor,
@@ -104,27 +123,12 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
             // TODO: Fix source roots
             File rootDir = root.getDirectory();
             ModuleDescriptor descriptor = new ModuleDescriptor(rootDir,
-                                                                     this.moduleType,
-                                                                     ContainerUtil.emptyList());
+                                                               this.moduleType,
+                                                               ContainerUtil.emptyList());
 //            File javaDir = root.getDirectory().toPath().resolve("target/java").toFile();
 //            descriptor.addSourceRoot(root.getDirectory(), new JavaModuleSourceRoot(javaDir, "", "Java"));
             modules.add(descriptor);
         }
         projectDescriptor.setModules(modules);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ModuleWizardStep> createWizardSteps(final ProjectFromSourcesBuilder builder,
-                                                    final ProjectDescriptor projectDescriptor,
-                                                    final Icon stepIcon) {
-        return Collections.singletonList(new ProjectJdkForModuleStep(builder.getContext(), this.sdkType));
-//        return Collections.singletonList(ProjectWizardStepFactory.getInstance().createProjectJdkStep(builder.getContext()));
-//        SpoofaxModuleInsight moduleInsight = insightFactory.create(new DelegatingProgressIndicator(), builder.getExistingModuleNames(), builder.getExistingProjectLibraryNames());
-//        final List<ModuleWizardStep> steps = new ArrayList<>();
-//        steps.add(new ModulesDetectionStep(this, builder, projectDescriptor, moduleInsight, stepIcon, "reference.dialogs.new.project.fromCode.page1"));
-//        return steps;
     }
 }

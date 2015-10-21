@@ -18,10 +18,11 @@ public final class IdeaLanguageImplAttachment {
     /**
      * Creates a new instance of the {@link IdeaLanguageImplAttachment} class.
      *
-     * @param lexer The lexer.
+     * @param lexer            The lexer.
      * @param buildActionGroup The build action group.
      */
-    /* package private */ IdeaLanguageImplAttachment(@NotNull final Lexer lexer, @NotNull final DefaultActionGroup buildActionGroup) {
+    /* package private */ IdeaLanguageImplAttachment(@NotNull final Lexer lexer,
+                                                     @NotNull final DefaultActionGroup buildActionGroup) {
         this.lexer = lexer;
         this.buildActionGroup = buildActionGroup;
     }

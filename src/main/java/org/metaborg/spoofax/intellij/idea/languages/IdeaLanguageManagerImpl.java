@@ -2,7 +2,10 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileNameMatcher;
@@ -38,9 +41,6 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     private final IIdeaAttachmentManager objectManager;
     @NotNull
     private final Map<ILanguage, RegisteredIdeaLanguageObject> loadedLanguages = new HashMap<>();
-    // The language implementation whose UI elements are shown.
-    @Nullable
-    private ILanguageImpl currentUI;
     @InjectLogger
     private Logger logger;
 
@@ -169,7 +169,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     /**
      * Adds an action(group) to a parent and registers all its children.
      *
-     * @param action The action to add.
+     * @param action   The action to add.
      * @param parentID The parent ID.
      */
     private void addAndRegisterActionGroup(@NotNull final AnAction action, @NotNull String parentID) {
@@ -186,10 +186,10 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      */
     private void registerActions(@NotNull final ActionManager manager, @NotNull final AnAction action) {
         if (action instanceof AnActionWithId) {
-            manager.registerAction(((AnActionWithId)action).id(), action);
+            manager.registerAction(((AnActionWithId) action).id(), action);
         }
         if (action instanceof DefaultActionGroup) {
-            registerActions(manager, (DefaultActionGroup)action);
+            registerActions(manager, (DefaultActionGroup) action);
         }
     }
 
@@ -247,7 +247,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     /**
      * Removes an action(group) from a parent and unregisters all its children.
      *
-     * @param action The action to remove.
+     * @param action   The action to remove.
      * @param parentID The parent ID.
      */
     private void removeAndUnregisterActionGroup(@NotNull final AnAction action, @NotNull String parentID) {
@@ -264,10 +264,10 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      */
     private void unregisterActions(@NotNull final ActionManager manager, @NotNull final AnAction action) {
         if (action instanceof AnActionWithId) {
-            manager.unregisterAction(((AnActionWithId)action).id());
+            manager.unregisterAction(((AnActionWithId) action).id());
         }
         if (action instanceof DefaultActionGroup) {
-            unregisterActions(manager, (DefaultActionGroup)action);
+            unregisterActions(manager, (DefaultActionGroup) action);
         }
     }
 
@@ -276,7 +276,8 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      *
      * @param actionGroup The action group.
      */
-    private void unregisterActions(@NotNull final ActionManager manager, @NotNull final DefaultActionGroup actionGroup) {
+    private void unregisterActions(@NotNull final ActionManager manager,
+                                   @NotNull final DefaultActionGroup actionGroup) {
         for (AnAction action : actionGroup.getChildActionsOrStubs()) {
             unregisterActions(manager, action);
         }
