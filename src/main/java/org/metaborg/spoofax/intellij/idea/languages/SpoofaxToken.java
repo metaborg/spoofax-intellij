@@ -1,7 +1,7 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
-import org.apache.commons.lang3.Range;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.spoofax.intellij.IntRange;
 
 /**
  * Represents a Spoofax token. This class contains enough information
@@ -11,10 +11,8 @@ public final class SpoofaxToken {
 
     @NotNull
     public final SpoofaxTokenType type;
-//    public final int start;
-//    public final int end;
     @NotNull
-    public final Range<Integer> range;
+    public final IntRange range;
 
     /**
      * Initializes a new instance of the {@link SpoofaxToken} class.
@@ -22,16 +20,14 @@ public final class SpoofaxToken {
      * @param type  The token type.
      * @param range The range of the token.
      */
-    public SpoofaxToken(@NotNull final SpoofaxTokenType type, @NotNull final Range<Integer> range) {//final int start, final int end) {
+    public SpoofaxToken(@NotNull final SpoofaxTokenType type, @NotNull final IntRange range) {
         this.type = type;
         this.range = range;
-//        this.start = start;
-//        this.end = end;
     }
 
     @Override
     public String toString() {
-        return type.toString() + " [" + range.getMinimum() + ", " + (range.getMaximum() + 1) + ")";
+        return type.toString() + " [" + range.start + ", " + range.end + ")";
     }
 
 }

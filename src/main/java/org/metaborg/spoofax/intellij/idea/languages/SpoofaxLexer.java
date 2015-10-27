@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lexer.LexerBase;
 import com.intellij.psi.tree.IElementType;
-import org.apache.commons.lang3.Range;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +15,7 @@ import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
 import org.metaborg.core.syntax.ParseResult;
+import org.metaborg.spoofax.intellij.IntRange;
 import org.metaborg.spoofax.intellij.StringFormatter;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
@@ -53,7 +53,7 @@ public final class SpoofaxLexer extends LexerBase {
     // The character buffer.
     private CharSequence buffer;
     // The range of characters in the buffer to lex.
-    private Range<Integer> bufferRange;
+    private IntRange bufferRange;
     // A list of tokens gathered from the lexed characters.
     private List<SpoofaxToken> tokens = new ArrayList<SpoofaxToken>();
     // The current index in {@link #tokens}.
@@ -97,7 +97,7 @@ public final class SpoofaxLexer extends LexerBase {
         assert 0 <= endOffset && endOffset <= buffer.length();
 
         this.buffer = buffer;
-        this.bufferRange = toRange(startOffset, endOffset);
+        this.bufferRange = IntRange.between(startOffset, endOffset);
         this.tokenIndex = 0;
         this.tokens.clear();
 
@@ -199,29 +199,30 @@ public final class SpoofaxLexer extends LexerBase {
             // ASSUME: Every character in the input is covered by a region.
             int tokenStart = token.getStartOffset();
             int tokenEnd = token.getEndOffset() + 1;
-            Range<Integer> tokenRange = Range.between(tokenStart, tokenEnd);
+            IntRange tokenRange = IntRange.between(tokenStart, tokenEnd);
 
-            if (isRangeEmpty(tokenRange))
+            if (tokenRange.isEmpty())
                 continue;
 
-            if (tokenRange.contains(offset))
-                // FIXME: The current offset should never be within a token.
-                // The tokenizer sometimes returned the same token with the same start and end _twice_?
-                continue;
+//            assert tokenRange.start == offset;
+//            if (tokenRange.contains(offset))
+//                // FIXME: The current offset should never be within a token.
+//                // The tokenizer sometimes returned the same token with the same start and end _twice_?
+//                continue;
 
-            assert offset == tokenStart : StringFormatter.format("The current token (starting @ {}) must start where the previous token left off (@ {}).", tokenStart, offset);
-            if (this.bufferRange.isOverlappedBy(tokenRange)) {
+            assert offset == tokenRange.start : StringFormatter.format("The current token (starting @ {}) must start where the previous token left off (@ {}).", tokenStart, offset);
+            if (tokenRange.overlapsRange(this.bufferRange)) {
 //            if (rangeStart <= tokenStart && tokenEnd <= rangeEnd) {
 
                 // ASSUME: The styled tokens are ordered by offset.
                 // ASSUME: No styled region overlaps another styled region.
 
                 // Iterate until we find a style that ends after the token start.
-                while (currentRegionStyle != null && currentRegionStyle.region().endOffset() + 1 <= getRangeStart(tokenRange))
+                while (currentRegionStyle != null && currentRegionStyle.region().endOffset() + 1 <= tokenRange.start)
                     currentRegionStyle = styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
 
                 // Get the style of the token
-                IStyle tokenStyle = currentRegionStyle != null && currentRegionStyle.region().startOffset() <= getRangeStart(tokenRange) ? currentRegionStyle.style() : null;
+                IStyle tokenStyle = currentRegionStyle != null && currentRegionStyle.region().startOffset() <= tokenRange.start ? currentRegionStyle.style() : null;
                 SpoofaxTokenType styledTokenType = this.tokenTypesManager.getTokenType(tokenStyle);
 
                 SpoofaxToken spoofaxToken = new SpoofaxToken(styledTokenType, tokenRange); //tokenStart, tokenEnd);
@@ -229,7 +230,7 @@ public final class SpoofaxLexer extends LexerBase {
 //                assert getRangeStart(this.bufferRange) <= tokenStart;
 //                assert tokenEnd <= getRangeEnd(this.bufferRange);
             }
-            offset = getRangeEnd(tokenRange);
+            offset = tokenRange.end;
         }
 
         assert offset == this.buffer.length() : StringFormatter.format("The last token ended @ {}, which is before the end of the buffer @ {}.", offset, this.buffer.length());
@@ -273,7 +274,7 @@ public final class SpoofaxLexer extends LexerBase {
     @Override
     public int getTokenStart() {
         assert 0 <= tokenIndex && tokenIndex < tokens.size();
-        return getRangeStart(tokens.get(tokenIndex).range);
+        return tokens.get(tokenIndex).range.start;
     }
 
     /**
@@ -284,7 +285,7 @@ public final class SpoofaxLexer extends LexerBase {
     @Override
     public int getTokenEnd() {
         assert 0 <= tokenIndex && tokenIndex < tokens.size();
-        return getRangeEnd(tokens.get(tokenIndex).range);
+        return tokens.get(tokenIndex).range.end;
     }
 
     /**
@@ -313,50 +314,7 @@ public final class SpoofaxLexer extends LexerBase {
      */
     @Override
     public int getBufferEnd() {
-        return getRangeEnd(this.bufferRange);
+        return this.bufferRange.end;
     }
 
-    /**
-     * Creates an integer range.
-     *
-     * @param start The inclusive start.
-     * @param end The exclusive end.
-     * @return The range.
-     */
-    @NotNull
-    private Range<Integer> toRange(int start, int end) {
-        return Range.between(start, end - 1);
-    }
-
-    /**
-     * Gets the inclusive start of the range.
-     *
-     * @param range The range.
-     * @return The inclusive start.
-     */
-    private int getRangeStart(@NotNull Range<Integer> range) {
-        return range.getMinimum();
-    }
-
-    /**
-     * Gets the exclusive end of the range.
-     *
-     * @param range The range.
-     * @return The exclusive end.
-     */
-    private int getRangeEnd(@NotNull Range<Integer> range) {
-        assert range.getMaximum() < Integer.MAX_VALUE;
-        return range.getMaximum() + 1;
-    }
-
-    /**
-     * Gets whether the range is empty.
-     *
-     * @param range The range.
-     * @return <code>true</code> when the range is empty;
-     * otherwise, <code>false</code>.
-     */
-    private boolean isRangeEmpty(@NotNull Range<Integer> range) {
-        return Objects.equals(range.getMinimum(), range.getMaximum());
-    }
 }

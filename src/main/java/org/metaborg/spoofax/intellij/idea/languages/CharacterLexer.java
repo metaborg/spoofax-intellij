@@ -6,6 +6,7 @@ import com.intellij.lexer.LexerBase;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.spoofax.intellij.StringFormatter;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 
@@ -88,7 +89,7 @@ public final class CharacterLexer extends LexerBase {
      */
     @Override
     public int getTokenStart() {
-        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd;
+        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : StringFormatter.format("Offset {} must be between [{}, {}).", this.offst, this.bufferStart, this.bufferEnd);
         return this.offst;
     }
 
@@ -99,7 +100,7 @@ public final class CharacterLexer extends LexerBase {
      */
     @Override
     public int getTokenEnd() {
-        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd;
+        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : StringFormatter.format("Offset {} must be between [{}, {}).", this.offst, this.bufferStart, this.bufferEnd);
         return this.offst + 1;
     }
 
