@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.idea.model;
+package org.metaborg.spoofax.intellij.project;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;

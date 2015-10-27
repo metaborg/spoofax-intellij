@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij.idea;
+package org.metaborg.spoofax.intellij.project;
 
 import com.google.inject.Inject;
 import com.intellij.openapi.module.Module;
@@ -8,7 +8,6 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;

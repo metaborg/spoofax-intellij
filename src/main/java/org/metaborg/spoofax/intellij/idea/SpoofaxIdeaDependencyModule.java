@@ -4,6 +4,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.multibindings.Multibinder;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.module.ModuleTypeManager;
@@ -14,7 +15,7 @@ import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.languages.*;
-import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
+import org.metaborg.spoofax.intellij.project.*;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
@@ -91,8 +92,15 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
     @Override
     protected void bindProject() {
         bind(IntelliJProjectService.class).in(Singleton.class);
-        bind(IProjectService.class).to(IntelliJProjectService.class).in(Singleton.class);
+        bind(IProjectService.class).to(CompoundProjectService.class).in(Singleton.class);
+//        bind(IProjectService.class).to(IntelliJProjectService.class).in(Singleton.class);
         bind(IIntelliJProjectService.class).to(IntelliJProjectService.class).in(Singleton.class);
+        bind(ArtifactProjectService.class).in(Singleton.class);
+        bind(CompoundProjectService.class).in(Singleton.class);
+
+        Multibinder<IProjectService> uriBinder = Multibinder.newSetBinder(binder(), IProjectService.class, Compound.class);
+        uriBinder.addBinding().to(IntelliJProjectService.class);
+        uriBinder.addBinding().to(ArtifactProjectService.class);
     }
 
     @Provides

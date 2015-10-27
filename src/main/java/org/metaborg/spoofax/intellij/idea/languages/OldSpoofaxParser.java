@@ -27,14 +27,21 @@ public final class OldSpoofaxParser implements PsiParser {
         PsiFile file = builder.getUserDataUnprotected(FileContextUtil.CONTAINING_FILE_KEY);
         VirtualFile vf = file.getVirtualFile();
         // TODO: Use the VirtualFile to determine the ILanguageImpl to use to parse.
+        SpoofaxIdeaLanguage language = (SpoofaxIdeaLanguage) root.getLanguage();
 
+        PsiBuilder.Marker m = builder.mark();
+        parseFile(builder);
+        //m.done(this.dummyAstTokenType);
+        m.done(root);
+        return builder.getTreeBuilt();
+    }
+
+    private void parseFile(PsiBuilder builder) {
         PsiBuilder.Marker m = builder.mark();
         while (!builder.eof()) {
             builder.advanceLexer();
         }
-        SpoofaxIdeaLanguage language = (SpoofaxIdeaLanguage) root.getLanguage();
         m.done(this.dummyAstTokenType);
-        return builder.getTreeBuilt();
     }
 
 }

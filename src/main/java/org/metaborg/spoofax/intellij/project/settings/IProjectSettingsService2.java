@@ -10,12 +10,12 @@ import org.metaborg.core.project.settings.IProjectSettings;
 public interface IProjectSettingsService2 {
 
     /**
-     * Creates new settings.
+     * Gets the default settings.
      *
-     * @return The settings.
+     * @return The default settings.
      */
     @NotNull
-    IProjectSettings create();
+    IProjectSettings getDefault();
 
     /**
      * Gets the settings for the specified project.

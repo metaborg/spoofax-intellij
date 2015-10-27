@@ -13,6 +13,7 @@ import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.slf4j.Logger;

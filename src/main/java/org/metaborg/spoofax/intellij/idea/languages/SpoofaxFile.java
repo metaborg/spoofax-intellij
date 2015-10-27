@@ -4,6 +4,7 @@ import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 
 /**
  * A Spoofax source file.

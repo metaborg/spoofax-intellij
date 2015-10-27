@@ -3,7 +3,7 @@ package org.metaborg.spoofax.intellij.factories;
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
+import org.metaborg.spoofax.intellij.project.IntelliJProject;
 
 /**
  * Factory for projects.

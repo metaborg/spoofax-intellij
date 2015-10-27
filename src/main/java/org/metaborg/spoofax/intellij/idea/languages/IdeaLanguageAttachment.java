@@ -4,6 +4,7 @@ import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 
 /**
  * Stores the IntelliJ IDEA objects that are associated with a particular {@link ILanguage}.
