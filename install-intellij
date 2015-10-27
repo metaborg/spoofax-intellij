@@ -40,7 +40,9 @@ mvn install:install-file \
 #----------------------------------------------------------------------#
 echo "Downloading IntelliJ IDEA source..."
 
-#wget -O idea-src.tar.bz2 ${IDEA_SRC_URL}
+if [ ! -f idea-src.tar.bz2 ]; then
+	wget -O idea-src.tar.bz2 ${IDEA_SRC_URL}
+fi
 
 #rm idea-src.tar.bz2
 

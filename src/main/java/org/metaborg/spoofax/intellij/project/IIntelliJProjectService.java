@@ -1,9 +1,8 @@
-package org.metaborg.spoofax.intellij.idea;
+package org.metaborg.spoofax.intellij.project;
 
 import com.intellij.openapi.module.Module;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProjectService;
-import org.metaborg.spoofax.intellij.idea.model.IntelliJProject;
 
 import javax.annotation.Nullable;
 

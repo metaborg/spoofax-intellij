@@ -3,15 +3,20 @@ package org.metaborg.spoofax.intellij.project.settings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.YAMLProjectSettingsSerializer;
 import org.metaborg.core.resource.IResourceService;
+import org.metaborg.spoofax.intellij.StringFormatter;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * A project settings service that stores the settings in a YAML file.
@@ -24,6 +29,13 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
      */
     @NotNull
     private static final String SETTINGS_FILE = "spoofax-project.yaml";
+    @NotNull
+    private static final String ALT_SETTINGS_FILE = "src-gen/metaborg.generated.yaml";
+    /**
+     * Path to the default settings file, relative to the resources root.
+     */
+    @NotNull
+    private static final String DEFAULT_SETTINGS_FILE = "defaultsettings.yaml";
     @NotNull
     private final IResourceService resourceService;
     @InjectLogger
@@ -39,15 +51,18 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
      */
     @Override
     @NotNull
-    public final IProjectSettings create() {
-        final String url = this.getClass().getClassLoader().getResource("defaultsettings.yaml").toString();
+    public final IProjectSettings getDefault() {
+        URL resource = this.getClass().getClassLoader().getResource(DEFAULT_SETTINGS_FILE);
+        assert resource != null;
+        final String url = resource.toString();
         final FileObject defaultSettings = this.resourceService.resolve(url);
 
         try {
             return YAMLProjectSettingsSerializer.read(defaultSettings);
         } catch (IOException e) {
-            logger.warn(String.format("Reading default settings file failed unexpectedly: %s", defaultSettings), e);
-            return create();
+            throw new MetaborgRuntimeException(StringFormatter.format(
+                    "Reading default settings file failed unexpectedly: {}",
+                    defaultSettings), e);
         }
     }
 
@@ -59,16 +74,25 @@ public final class YamlProjectSettingsService implements IProjectSettingsService
     public IProjectSettings get(@NotNull final IProject project) {
         final FileObject location = project.location();
         try {
-            final FileObject settingsFile = location.resolveFile(SETTINGS_FILE);
-            if (!settingsFile.exists()) {
-                return create();
+            final FileObject settingsFile = getSettingsFile(location);
+            if (settingsFile == null) {
+                return getDefault();
             }
-            final IProjectSettings settings = YAMLProjectSettingsSerializer.read(settingsFile);
-            return settings;
+            return YAMLProjectSettingsSerializer.read(settingsFile);
         } catch (IOException e) {
             logger.warn(String.format("Reading settings file failed unexpectedly: %s/%s", location, SETTINGS_FILE), e);
-            return create();
+            return getDefault();
         }
+    }
+
+    @Nullable
+    private FileObject getSettingsFile(@NotNull FileObject projectLocation) throws FileSystemException {
+        FileObject settingsFile;
+        settingsFile = projectLocation.resolveFile(SETTINGS_FILE);
+        if (settingsFile.exists()) return settingsFile;
+        settingsFile = projectLocation.resolveFile(ALT_SETTINGS_FILE);
+        if (settingsFile.exists()) return settingsFile;
+        return null;
     }
 
     /**
