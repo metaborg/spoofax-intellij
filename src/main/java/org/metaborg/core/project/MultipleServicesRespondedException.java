@@ -32,19 +32,19 @@ public final class MultipleServicesRespondedException extends RuntimeException {
      * Initializes a new instance of the {@link MultipleServicesRespondedException} class.
      *
      * @param message The message; or <code>null</code>.
-     * @param cause The cause; or <code>null</code>.
      */
-    public MultipleServicesRespondedException(@Nullable final String message, @Nullable final Throwable cause) {
-        super(message != null ? message : DEFAULT_MESSAGE);
+    public MultipleServicesRespondedException(@Nullable final String message) {
+        this(message, null);
     }
 
     /**
      * Initializes a new instance of the {@link MultipleServicesRespondedException} class.
      *
      * @param message The message; or <code>null</code>.
+     * @param cause   The cause; or <code>null</code>.
      */
-    public MultipleServicesRespondedException(@Nullable final String message) {
-        this(message, null);
+    public MultipleServicesRespondedException(@Nullable final String message, @Nullable final Throwable cause) {
+        super(message != null ? message : DEFAULT_MESSAGE);
     }
 
     /**
