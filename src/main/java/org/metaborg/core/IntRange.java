@@ -1,3 +1,22 @@
+/*
+ * Copyright © 2015-2015
+ *
+ * This file is part of Spoofax for IntelliJ.
+ *
+ * Spoofax for IntelliJ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoofax for IntelliJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.metaborg.core;
 
 // TODO: Move this to Metaborg Core?
@@ -62,28 +81,13 @@ public final class IntRange {
     }
 
     /**
-     * Creates a range with a single element.
+     * Gets whether this range is empty.
      *
-     * @param element The element.
-     * @return The created range.
+     * @return <code>true</code> when the range is empty;
+     * otherwise, <code>false</code>.
      */
-    @NotNull
-    public static IntRange is(int element) {
-        if (element == Integer.MAX_VALUE)
-            throw new IllegalArgumentException("The value is out of bounds.");
-        return new IntRange(element, element + 1);
-    }
-
-    /**
-     * Creates a range.
-     *
-     * @param startInclusive The inclusive start.
-     * @param endExclusive   The exclusive end.
-     * @return The created range.
-     */
-    @NotNull
-    public static IntRange between(int startInclusive, int endExclusive) {
-        return new IntRange(startInclusive, endExclusive);
+    public boolean isEmpty() {
+        return length() == 0;
     }
 
     /**
@@ -93,16 +97,6 @@ public final class IntRange {
      */
     public int length() {
         return this.end - this.start;
-    }
-
-    /**
-     * Gets whether this range is empty.
-     *
-     * @return <code>true</code> when the range is empty;
-     * otherwise, <code>false</code>.
-     */
-    public boolean isEmpty() {
-        return length() == 0;
     }
 
     /**
@@ -133,6 +127,19 @@ public final class IntRange {
     }
 
     /**
+     * Creates a range with a single element.
+     *
+     * @param element The element.
+     * @return The created range.
+     */
+    @NotNull
+    public static IntRange is(int element) {
+        if (element == Integer.MAX_VALUE)
+            throw new IllegalArgumentException("The value is out of bounds.");
+        return new IntRange(element, element + 1);
+    }
+
+    /**
      * Determines whether this range overlaps the specified range.
      * <p>
      * This range overlaps a specified empty range when the empty range is strictly
@@ -147,14 +154,14 @@ public final class IntRange {
     }
 
     /**
-     * Determines whether this range starts after the specified element.
+     * Determines whether this range ends before the specified range starts.
      *
-     * @param element The element.
-     * @return <code>true</code> when this range starts after the specified element;
+     * @param other The other range.
+     * @return <code>true</code> when this range ends before the specified range starts;
      * otherwise, <code>false</code>.
      */
-    public boolean isAfter(int element) {
-        return isAfterRange(IntRange.is(element));
+    public boolean isBeforeRange(IntRange other) {
+        return other.start >= this.end;
     }
 
     /**
@@ -169,6 +176,17 @@ public final class IntRange {
     }
 
     /**
+     * Determines whether this range starts after the specified element.
+     *
+     * @param element The element.
+     * @return <code>true</code> when this range starts after the specified element;
+     * otherwise, <code>false</code>.
+     */
+    public boolean isAfter(int element) {
+        return isAfterRange(IntRange.is(element));
+    }
+
+    /**
      * Determines whether this range ends before the specified element.
      *
      * @param element The element.
@@ -178,18 +196,6 @@ public final class IntRange {
     public boolean isBefore(int element) {
         return isBeforeRange(IntRange.is(element));
     }
-
-    /**
-     * Determines whether this range ends before the specified range starts.
-     *
-     * @param other The other range.
-     * @return <code>true</code> when this range ends before the specified range starts;
-     * otherwise, <code>false</code>.
-     */
-    public boolean isBeforeRange(IntRange other) {
-        return other.start >= this.end;
-    }
-
 
     /**
      * Determines whether this range starts directly after the specified element.
@@ -236,17 +242,6 @@ public final class IntRange {
     }
 
     /**
-     * Determines whether this range is started by, ended by, or overlapping the specified range.
-     *
-     * @param other The other range.
-     * @return <code>true</code> when this range touches the specified range;
-     * otherwise, <code>false</code>.
-     */
-    public boolean isTouchedByRange(IntRange other) {
-        return isStartedByRange(other) || overlapsRange(other) || isEndedByRange(other);
-    }
-
-    /**
      * Determines the intersection between this range and the specified range.
      *
      * @param other The other range.
@@ -262,6 +257,29 @@ public final class IntRange {
         int end = Math.min(this.end, other.end);
 
         return between(start, end);
+    }
+
+    /**
+     * Determines whether this range is started by, ended by, or overlapping the specified range.
+     *
+     * @param other The other range.
+     * @return <code>true</code> when this range touches the specified range;
+     * otherwise, <code>false</code>.
+     */
+    public boolean isTouchedByRange(IntRange other) {
+        return isStartedByRange(other) || overlapsRange(other) || isEndedByRange(other);
+    }
+
+    /**
+     * Creates a range.
+     *
+     * @param startInclusive The inclusive start.
+     * @param endExclusive   The exclusive end.
+     * @return The created range.
+     */
+    @NotNull
+    public static IntRange between(int startInclusive, int endExclusive) {
+        return new IntRange(startInclusive, endExclusive);
     }
 
     /**
@@ -285,6 +303,17 @@ public final class IntRange {
      * {@inheritDoc}
      */
     @Override
+    public int hashCode() {
+        int hash = 13;
+        hash = (hash * 7) + this.start;
+        hash = (hash * 7) + this.end;
+        return hash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean equals(final Object obj) {
         if (!(obj instanceof IntRange))
             return false;
@@ -301,17 +330,6 @@ public final class IntRange {
     public boolean equals(final IntRange other) {
         return this.start == other.start
                 && this.end == other.end;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int hash = 13;
-        hash = (hash * 7) + this.start;
-        hash = (hash * 7) + this.end;
-        return hash;
     }
 
     /**

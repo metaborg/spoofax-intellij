@@ -1,32 +1,24 @@
+/*
+ * Copyright © 2015-2015
+ *
+ * This file is part of Spoofax for IntelliJ.
+ *
+ * Spoofax for IntelliJ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoofax for IntelliJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.metaborg.spoofax.intellij.idea.languages;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.intellij.lexer.LexerBase;
-import com.intellij.psi.tree.IElementType;
-import org.apache.commons.lang.math.IntRange;
-import org.apache.commons.lang3.Range;
-import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.core.resource.IResourceService;
-import org.metaborg.core.style.*;
-import org.metaborg.core.syntax.IParserConfiguration;
-import org.metaborg.core.syntax.ISyntaxService;
-import org.metaborg.core.syntax.ParseException;
-import org.metaborg.core.syntax.ParseResult;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
-import org.slf4j.Logger;
-import org.spoofax.interpreter.terms.IStrategoTerm;
-import org.spoofax.jsglr.client.imploder.IToken;
-import org.spoofax.jsglr.client.imploder.ITokenizer;
-import org.spoofax.jsglr.client.imploder.ImploderAttachment;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 //
 ///**
 // * Adapts the Spoofax SGLR parser to allow it to be used as an IntelliJ lexer.

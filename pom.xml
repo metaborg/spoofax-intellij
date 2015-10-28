@@ -43,8 +43,9 @@
 
     <licenses>
         <license>
-            <name>LGPL 2.1 license</name>
-            <url>http://www.opensource.org/licenses/lgpl-2.1</url>
+            <name>LGPL 3 license</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 

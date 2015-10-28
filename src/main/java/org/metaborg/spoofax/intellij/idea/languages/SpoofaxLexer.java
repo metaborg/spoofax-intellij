@@ -1,3 +1,22 @@
+/*
+ * Copyright © 2015-2015
+ *
+ * This file is part of Spoofax for IntelliJ.
+ *
+ * Spoofax for IntelliJ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoofax for IntelliJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.google.inject.Inject;
@@ -7,6 +26,7 @@ import com.intellij.psi.tree.IElementType;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.IntRange;
 import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.resource.IResourceService;
@@ -15,7 +35,6 @@ import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
 import org.metaborg.core.syntax.ParseResult;
-import org.metaborg.core.IntRange;
 import org.metaborg.spoofax.intellij.StringFormatter;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
@@ -156,7 +175,7 @@ public final class SpoofaxLexer extends LexerBase {
      * Uses the Spoofax tokenizer to tokenize the parse result,
      * and adds the tokens to the list of tokens.
      *
-     * @param result     The parse result to tokenize.
+     * @param result The parse result to tokenize.
      */
     private void tokenizeAll(@NotNull final ParseResult<IStrategoTerm> result) {
         if (result.result == null) {
@@ -209,7 +228,10 @@ public final class SpoofaxLexer extends LexerBase {
 //                // The tokenizer sometimes returned the same token with the same start and end _twice_?
 //                continue;
 
-            assert offset == tokenRange.start : StringFormatter.format("The current token (starting @ {}) must start where the previous token left off (@ {}).", tokenStart, offset);
+            assert offset == tokenRange.start : StringFormatter.format(
+                    "The current token (starting @ {}) must start where the previous token left off (@ {}).",
+                    tokenStart,
+                    offset);
             if (tokenRange.overlapsRange(this.bufferRange)) {
 //            if (rangeStart <= tokenStart && tokenEnd <= rangeEnd) {
 
@@ -232,12 +254,14 @@ public final class SpoofaxLexer extends LexerBase {
             offset = tokenRange.end;
         }
 
-        assert offset == this.buffer.length() : StringFormatter.format("The last token ended @ {}, which is before the end of the buffer @ {}.", offset, this.buffer.length());
+        assert offset == this.buffer.length() : StringFormatter.format(
+                "The last token ended @ {}, which is before the end of the buffer @ {}.",
+                offset,
+                this.buffer.length());
 
 
 //        return spoofaxTokens;
     }
-
 
 
     /**

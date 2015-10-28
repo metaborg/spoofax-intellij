@@ -1,3 +1,22 @@
+/*
+ * Copyright © 2015-2015
+ *
+ * This file is part of Spoofax for IntelliJ.
+ *
+ * Spoofax for IntelliJ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoofax for IntelliJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.metaborg.spoofax.intellij.idea;
 
 import com.google.inject.Provides;
@@ -15,13 +34,13 @@ import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.languages.*;
-import org.metaborg.spoofax.intellij.project.*;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplPanel;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplTableModel;
 import org.metaborg.spoofax.intellij.menu.*;
+import org.metaborg.spoofax.intellij.project.*;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -98,7 +117,9 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         bind(ArtifactProjectService.class).in(Singleton.class);
         bind(CompoundProjectService.class).in(Singleton.class);
 
-        Multibinder<IProjectService> uriBinder = Multibinder.newSetBinder(binder(), IProjectService.class, Compound.class);
+        Multibinder<IProjectService> uriBinder = Multibinder.newSetBinder(binder(),
+                                                                          IProjectService.class,
+                                                                          Compound.class);
         uriBinder.addBinding().to(IntelliJProjectService.class);
         uriBinder.addBinding().to(ArtifactProjectService.class);
     }

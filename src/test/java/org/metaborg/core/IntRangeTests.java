@@ -1,3 +1,22 @@
+/*
+ * Copyright © 2015-2015
+ *
+ * This file is part of Spoofax for IntelliJ.
+ *
+ * Spoofax for IntelliJ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoofax for IntelliJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.metaborg.core;
 
 import org.junit.Test;
@@ -6,10 +25,9 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.metaborg.core.IntRange;
 
 import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.Assume.assumeTrue;
 
 @RunWith(Enclosed.class)
 public final class IntRangeTests {
@@ -59,69 +77,6 @@ public final class IntRangeTests {
     }
 
     public static class ContainsTests {
-
-        @RunWith(Theories.class)
-        public static class ContainsTheory {
-            @DataPoints
-            public static IntRange[] data() {
-                return new IntRange[] {
-                        IntRange.at(2),
-                        IntRange.at(3),
-                        IntRange.at(4),
-                        IntRange.at(5),
-                        IntRange.at(6),
-                        IntRange.at(7),
-                        IntRange.at(8),
-                        IntRange.at(9),
-                        IntRange.at(10),
-                        
-                        IntRange.is(2),
-                        IntRange.is(3),
-                        IntRange.is(4),
-                        IntRange.is(5),
-                        IntRange.is(6),
-                        IntRange.is(7),
-                        IntRange.is(8),
-                        IntRange.is(9),
-                        IntRange.is(10),
-
-                        IntRange.between(2, 4),
-                        IntRange.between(3, 5),
-                        IntRange.between(4, 6),
-                        IntRange.between(5, 7),
-                        IntRange.between(6, 8),
-                        IntRange.between(7, 9),
-                        IntRange.between(8, 10),
-                        IntRange.between(9, 11),
-                        IntRange.between(10, 12),
-                };
-            }
-
-            @Theory
-            public void iffContainsInSingletonRangeThenOverlaps(IntRange value) {
-                IntRange sut = IntRange.is(5);
-                assertEquals(1, sut.length());
-
-                assumeTrue(sut.containsRange(value));
-                assertTrue(sut.overlapsRange(value));
-            }
-
-            @Theory
-            public void iffContainsInRangeThenOverlaps(IntRange value) {
-                IntRange sut = IntRange.between(5, 7);
-                assertEquals(2, sut.length());
-
-                assumeTrue(sut.containsRange(value));
-                assertTrue(sut.overlapsRange(value));
-            }
-
-            @Theory
-            public void containsValueAndContainsSingleton(IntRange sut) {
-                int value = 6;
-
-                assertEquals(sut.contains(value), sut.containsRange(IntRange.is(value)));
-            }
-        }
 
         @Test
         public void containsInEmptyRange() {
@@ -253,15 +208,11 @@ public final class IntRangeTests {
             assertFalse(sut.containsRange(IntRange.between(8, 10)));
         }
 
-    }
-
-    public static class OverlapsTests {
-
         @RunWith(Theories.class)
-        public static class OverlapsTheory {
+        public static class ContainsTheory {
             @DataPoints
             public static IntRange[] data() {
-                return new IntRange[] {
+                return new IntRange[]{
                         IntRange.at(2),
                         IntRange.at(3),
                         IntRange.at(4),
@@ -295,27 +246,34 @@ public final class IntRangeTests {
             }
 
             @Theory
-            public void iffOverlapsThenInverseOverlaps(IntRange value) {
-                IntRange sut = IntRange.at(5);
-                assertEquals(0, sut.length());
+            public void iffContainsInSingletonRangeThenOverlaps(IntRange value) {
+                IntRange sut = IntRange.is(5);
+                assertEquals(1, sut.length());
 
-                assumeTrue(sut.overlapsRange(value));
-                assertTrue(value.overlapsRange(sut));
+                assumeTrue(sut.containsRange(value));
+                assertTrue(sut.overlapsRange(value));
             }
 
             @Theory
-            public void iffOverlapsThenNotBeforeNotAfter(IntRange value) {
-                IntRange sut = IntRange.at(5);
-                assertEquals(0, sut.length());
+            public void iffContainsInRangeThenOverlaps(IntRange value) {
+                IntRange sut = IntRange.between(5, 7);
+                assertEquals(2, sut.length());
 
-                assumeTrue(sut.overlapsRange(value));
-                assertFalse(value.isBeforeRange(sut));
-                assertFalse(value.isAfterRange(sut));
-                assertFalse(value.isStartedByRange(sut));
-                assertFalse(value.isEndedByRange(sut));
+                assumeTrue(sut.containsRange(value));
+                assertTrue(sut.overlapsRange(value));
             }
 
+            @Theory
+            public void containsValueAndContainsSingleton(IntRange sut) {
+                int value = 6;
+
+                assertEquals(sut.contains(value), sut.containsRange(IntRange.is(value)));
+            }
         }
+
+    }
+
+    public static class OverlapsTests {
 
         @Test
         public void overlapsEmptyRangeInEmptyRange() {
@@ -422,15 +380,11 @@ public final class IntRangeTests {
             assertFalse(sut.overlapsRange(IntRange.between(8, 10)));
         }
 
-    }
-
-    public static class BeforeTests {
-
         @RunWith(Theories.class)
-        public static class BeforeTheory {
+        public static class OverlapsTheory {
             @DataPoints
             public static IntRange[] data() {
-                return new IntRange[] {
+                return new IntRange[]{
                         IntRange.at(2),
                         IntRange.at(3),
                         IntRange.at(4),
@@ -464,39 +418,31 @@ public final class IntRangeTests {
             }
 
             @Theory
-            public void beforeEmptyRange(IntRange value) {
+            public void iffOverlapsThenInverseOverlaps(IntRange value) {
                 IntRange sut = IntRange.at(5);
                 assertEquals(0, sut.length());
 
-                assumeTrue(value.isBeforeRange(sut));
-                assertEquals(value.isBeforeRange(sut), sut.isAfterRange(value));
-                assertEquals(sut.isBeforeRange(value), value.isAfterRange(sut));
+                assumeTrue(sut.overlapsRange(value));
+                assertTrue(value.overlapsRange(sut));
             }
 
             @Theory
-            public void beforeSingletonRange(IntRange value) {
-                IntRange sut = IntRange.is(5);
-                assertEquals(1, sut.length());
+            public void iffOverlapsThenNotBeforeNotAfter(IntRange value) {
+                IntRange sut = IntRange.at(5);
+                assertEquals(0, sut.length());
 
-                assumeTrue(value.isBeforeRange(sut));
-                assertEquals(value.isBeforeRange(sut), !value.isAfterRange(sut));
-                assertEquals(value.isBeforeRange(sut), sut.isAfterRange(value));
-                assertEquals(sut.isBeforeRange(value), value.isAfterRange(sut));
-            }
-
-
-            @Theory
-            public void beforeRange(IntRange value) {
-                IntRange sut = IntRange.between(5, 7);
-                assertEquals(2, sut.length());
-
-                assumeTrue(value.isBeforeRange(sut));
-                assertEquals(value.isBeforeRange(sut), !value.isAfterRange(sut));
-                assertEquals(value.isBeforeRange(sut), sut.isAfterRange(value));
-                assertEquals(sut.isBeforeRange(value), value.isAfterRange(sut));
+                assumeTrue(sut.overlapsRange(value));
+                assertFalse(value.isBeforeRange(sut));
+                assertFalse(value.isAfterRange(sut));
+                assertFalse(value.isStartedByRange(sut));
+                assertFalse(value.isEndedByRange(sut));
             }
 
         }
+
+    }
+
+    public static class BeforeTests {
 
         @Test
         public void isBeforeEmptyRange() {
@@ -629,6 +575,78 @@ public final class IntRangeTests {
             assertFalse(sut.isBeforeRange(IntRange.between(6, 8)));
             assertTrue(sut.isBeforeRange(IntRange.between(7, 9)));
             assertTrue(sut.isBeforeRange(IntRange.between(8, 10)));
+        }
+
+        @RunWith(Theories.class)
+        public static class BeforeTheory {
+            @DataPoints
+            public static IntRange[] data() {
+                return new IntRange[]{
+                        IntRange.at(2),
+                        IntRange.at(3),
+                        IntRange.at(4),
+                        IntRange.at(5),
+                        IntRange.at(6),
+                        IntRange.at(7),
+                        IntRange.at(8),
+                        IntRange.at(9),
+                        IntRange.at(10),
+
+                        IntRange.is(2),
+                        IntRange.is(3),
+                        IntRange.is(4),
+                        IntRange.is(5),
+                        IntRange.is(6),
+                        IntRange.is(7),
+                        IntRange.is(8),
+                        IntRange.is(9),
+                        IntRange.is(10),
+
+                        IntRange.between(2, 4),
+                        IntRange.between(3, 5),
+                        IntRange.between(4, 6),
+                        IntRange.between(5, 7),
+                        IntRange.between(6, 8),
+                        IntRange.between(7, 9),
+                        IntRange.between(8, 10),
+                        IntRange.between(9, 11),
+                        IntRange.between(10, 12),
+                };
+            }
+
+            @Theory
+            public void beforeEmptyRange(IntRange value) {
+                IntRange sut = IntRange.at(5);
+                assertEquals(0, sut.length());
+
+                assumeTrue(value.isBeforeRange(sut));
+                assertEquals(value.isBeforeRange(sut), sut.isAfterRange(value));
+                assertEquals(sut.isBeforeRange(value), value.isAfterRange(sut));
+            }
+
+            @Theory
+            public void beforeSingletonRange(IntRange value) {
+                IntRange sut = IntRange.is(5);
+                assertEquals(1, sut.length());
+
+                assumeTrue(value.isBeforeRange(sut));
+                assertEquals(value.isBeforeRange(sut), !value.isAfterRange(sut));
+                assertEquals(value.isBeforeRange(sut), sut.isAfterRange(value));
+                assertEquals(sut.isBeforeRange(value), value.isAfterRange(sut));
+            }
+
+
+            @Theory
+            public void beforeRange(IntRange value) {
+                IntRange sut = IntRange.between(5, 7);
+                assertEquals(2, sut.length());
+
+                assumeTrue(value.isBeforeRange(sut));
+                assertEquals(value.isBeforeRange(sut), !value.isAfterRange(sut));
+                assertEquals(value.isBeforeRange(sut), sut.isAfterRange(value));
+                assertEquals(sut.isBeforeRange(value), value.isAfterRange(sut));
+            }
+
         }
 
     }
