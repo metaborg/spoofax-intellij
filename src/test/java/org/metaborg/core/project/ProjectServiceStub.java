@@ -23,30 +23,32 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 
-// TODO: Move this to Spoofax core?
+import javax.annotation.Nullable;
 
 /**
- * A language project represented by a Spoofax artifact (*.spoofax-language).
+ * A stub project service that always returns the same project.
  */
-public final class ArtifactProject implements IProject {
+public final class ProjectServiceStub implements IProjectService {
 
-    @NotNull
-    private final FileObject location;
+    @Nullable private final IProject project;
 
     /**
-     * Initializes a new instance of the {@link ArtifactProject} class.
+     * Initializes a new instance of the {@link ProjectServiceStub} class.
      *
-     * @param location The location of the artifact's archive.
+     * @param project The project to always return.
      */
-    public ArtifactProject(@NotNull final FileObject location) {
-        Preconditions.checkNotNull(location);
-
-        this.location = location;
+    public ProjectServiceStub(@Nullable final IProject project) {
+        this.project = project;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
     @Override
-    @NotNull
-    public FileObject location() {
-        return this.location;
+    public IProject get(@NotNull final FileObject resource) {
+        Preconditions.checkNotNull(resource);
+
+        return this.project;
     }
 }

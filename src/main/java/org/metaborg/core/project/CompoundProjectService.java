@@ -42,7 +42,7 @@ public final class CompoundProjectService implements IProjectService {
     private final Set<IProjectService> services;
 
     @Inject
-    private CompoundProjectService(@NotNull @Compound final Set<IProjectService> services) {
+    /* package private */ CompoundProjectService(@NotNull @Compound final Set<IProjectService> services) {
         this.services = services;
     }
 
@@ -65,7 +65,7 @@ public final class CompoundProjectService implements IProjectService {
         }
 
         if (projects.size() > 1) {
-            throw new MetaborgRuntimeException(StringFormatter.format(
+            throw new MultipleServicesRespondedException(StringFormatter.format(
                     "Multiple project services provided a project for the resource {}.",
                     resource));
         } else if (projects.size() == 1) {

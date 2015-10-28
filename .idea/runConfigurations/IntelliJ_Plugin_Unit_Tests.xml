@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="IntelliJ Plugin" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="IntelliJ Plugin Unit Tests" type="JUnit" factoryName="JUnit">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <module name="org.metaborg.spoofax.intellij" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
