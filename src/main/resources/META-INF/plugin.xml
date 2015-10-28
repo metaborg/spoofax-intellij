@@ -25,7 +25,7 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileTypeFactory implementation="org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileTypeFactory" />
+        <fileTypeFactory implementation="org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileTypeFactory"/>
         <!--<fileTypeFactory implementation="org.metaborg.spoofax.intellij.languages.SpoofaxFileTypeFactory"/>-->
         <moduleType id="SPOOFAX_MODULE"
                     implementationClass="org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType"/>

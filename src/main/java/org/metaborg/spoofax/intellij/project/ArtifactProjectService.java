@@ -1,14 +1,29 @@
+/*
+ * Copyright © 2015-2015
+ *
+ * This file is part of Spoofax for IntelliJ.
+ *
+ * Spoofax for IntelliJ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoofax for IntelliJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.metaborg.spoofax.intellij.project;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
-import org.apache.commons.vfs2.provider.LayeredFileName;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.IProjectService;
@@ -17,8 +32,6 @@ import org.metaborg.spoofax.intellij.vfs.FileNameUtils;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,22 +95,6 @@ public final class ArtifactProjectService implements IProjectService {
     }
 
     /**
-     * Gets the parent root of the specified file.
-     *
-     * @param file The file.
-     * @return The parent root; or <code>null</code>.
-     */
-    @Nullable
-    private FileObject getParentRoot(@NotNull FileObject file) {
-        try {
-            return getRoot(file.getFileSystem().getParentLayer());
-        } catch (FileSystemException e) {
-            this.logger.error("Ignored exception.", e);
-            return null;
-        }
-    }
-
-    /**
      * Gets the root file of the specified layer.
      *
      * @param layer The layer; or <code>null</code>.
@@ -115,6 +112,37 @@ public final class ArtifactProjectService implements IProjectService {
         }
     }
 
+    /**
+     * Determines whether the specified file name points to a language artifact root.
+     * <p>
+     * For example, <code>zip:file:///dir/archive.spoofax-language!/</code> is a language artifact root.
+     *
+     * @param fileName The file name to check.
+     * @return <code>true</code> when the file is a language artifact root;
+     * otherwise, <code>false</code>.
+     */
+    private boolean isArtifactRoot(@NotNull final FileName fileName) {
+        FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
+        if (outerFileName == null)
+            return false;
+        return "spoofax-language".equals(outerFileName.getExtension());
+    }
+
+    /**
+     * Gets the parent root of the specified file.
+     *
+     * @param file The file.
+     * @return The parent root; or <code>null</code>.
+     */
+    @Nullable
+    private FileObject getParentRoot(@NotNull FileObject file) {
+        try {
+            return getRoot(file.getFileSystem().getParentLayer());
+        } catch (FileSystemException e) {
+            this.logger.error("Ignored exception.", e);
+            return null;
+        }
+    }
 
     /**
      * Determines the language artifact file of the specified file.
@@ -137,6 +165,19 @@ public final class ArtifactProjectService implements IProjectService {
     }
 
     /**
+     * Determines whether the specified file name points to a language artifact.
+     * <p>
+     * For example, <code>file:///dir/archive.spoofax-language</code> is a language artifact.
+     *
+     * @param fileName The file name to check.
+     * @return <code>true</code> when the file is a language artifact;
+     * otherwise, <code>false</code>.
+     */
+    private boolean isArtifact(@NotNull final FileName fileName) {
+        return fileName.getExtension().equals("spoofax-language");
+    }
+
+    /**
      * Determines the language artifact file name of the specified file name.
      *
      * @param fileName The file name.
@@ -149,35 +190,6 @@ public final class ArtifactProjectService implements IProjectService {
             current = FileNameUtils.getOuterFileName(current);
         }
         return current;
-    }
-
-    /**
-     * Determines whether the specified file name points to a language artifact.
-     *
-     * For example, <code>file:///dir/archive.spoofax-language</code> is a language artifact.
-     *
-     * @param fileName The file name to check.
-     * @return <code>true</code> when the file is a language artifact;
-     * otherwise, <code>false</code>.
-     */
-    private boolean isArtifact(@NotNull final FileName fileName) {
-        return fileName.getExtension().equals("spoofax-language");
-    }
-
-    /**
-     * Determines whether the specified file name points to a language artifact root.
-     *
-     * For example, <code>zip:file:///dir/archive.spoofax-language!/</code> is a language artifact root.
-     *
-     * @param fileName The file name to check.
-     * @return <code>true</code> when the file is a language artifact root;
-     * otherwise, <code>false</code>.
-     */
-    private boolean isArtifactRoot(@NotNull final FileName fileName) {
-        FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
-        if (outerFileName == null)
-            return false;
-        return "spoofax-language".equals(outerFileName.getExtension());
     }
 
 //    private FileObject getRoot(@NotNull final FileObject resource) {
