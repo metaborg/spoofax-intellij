@@ -12,6 +12,7 @@ import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,13 +60,13 @@ public final class ActionHelper {
      */
     public List<FileObject> getActiveFiles(@NotNull final AnActionEvent e) {
         VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
+        if (files == null || files.length == 0)
+            return Collections.emptyList();
         ArrayList<FileObject> result = new ArrayList<>(files.length);
-        if (files != null) {
-            for (VirtualFile file : files) {
-                if (file.isDirectory())
-                    continue;
-                result.add(this.resourceService.resolve(file));
-            }
+        for (VirtualFile file : files) {
+            if (file.isDirectory())
+                continue;
+            result.add(this.resourceService.resolve(file));
         }
         return result;
     }

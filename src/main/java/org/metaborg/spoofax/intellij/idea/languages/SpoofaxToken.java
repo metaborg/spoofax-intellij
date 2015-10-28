@@ -1,6 +1,7 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.IntRange;
 
 /**
  * Represents a Spoofax token. This class contains enough information
@@ -10,25 +11,23 @@ public final class SpoofaxToken {
 
     @NotNull
     public final SpoofaxTokenType type;
-    public final int start;
-    public final int end;
+    @NotNull
+    public final IntRange range;
 
     /**
      * Initializes a new instance of the {@link SpoofaxToken} class.
      *
      * @param type  The token type.
-     * @param start The inclusive start offset of the token.
-     * @param end   The exclusive end offset of the token.
+     * @param range The range of the token.
      */
-    public SpoofaxToken(@NotNull final SpoofaxTokenType type, final int start, final int end) {
+    public SpoofaxToken(@NotNull final SpoofaxTokenType type, @NotNull final IntRange range) {
         this.type = type;
-        this.start = start;
-        this.end = end;
+        this.range = range;
     }
 
     @Override
     public String toString() {
-        return type.toString() + " [" + start + ", " + end + ")";
+        return type.toString() + " [" + range.start + ", " + range.end + ")";
     }
 
 }

@@ -7,6 +7,7 @@ import com.intellij.psi.tree.IElementType;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.core.style.*;
@@ -14,6 +15,8 @@ import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
 import org.metaborg.core.syntax.ParseResult;
+import org.metaborg.core.IntRange;
+import org.metaborg.spoofax.intellij.StringFormatter;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
@@ -48,10 +51,8 @@ public final class SpoofaxLexer extends LexerBase {
     private Logger logger;
     // The character buffer.
     private CharSequence buffer;
-    // The start in the character buffer.
-    private int startOffset;
-    // The end in the character buffer.
-    private int endOffset;
+    // The range of characters in the buffer to lex.
+    private IntRange bufferRange;
     // A list of tokens gathered from the lexed characters.
     private List<SpoofaxToken> tokens = new ArrayList<SpoofaxToken>();
     // The current index in {@link #tokens}.
@@ -95,67 +96,74 @@ public final class SpoofaxLexer extends LexerBase {
         assert 0 <= endOffset && endOffset <= buffer.length();
 
         this.buffer = buffer;
-        this.startOffset = startOffset;
-        this.endOffset = endOffset;
-        this.tokens = parseToTokens(buffer, startOffset, endOffset);
+        this.bufferRange = IntRange.between(startOffset, endOffset);
         this.tokenIndex = 0;
-    }
-
-    /**
-     * Returns a list of tokens between the specified offsets.
-     *
-     * @param buffer      The character sequence to parse.
-     * @param startOffset The inclusive start offset.
-     * @param endOffset   The exclusive end offset.
-     * @return The resulting list of tokens.
-     */
-    @NotNull
-    private final List<SpoofaxToken> parseToTokens(@NotNull final CharSequence buffer,
-                                                   final int startOffset,
-                                                   final int endOffset) {
-        assert buffer != null;
-        assert 0 <= startOffset && startOffset <= buffer.length();
-        assert 0 <= endOffset && endOffset <= buffer.length();
+        this.tokens.clear();
 
         if (buffer.length() == 0)
-            return new ArrayList<>();
+            return;
 
+        ParseResult<IStrategoTerm> result = parseAll();
+        tokenizeAll(result);
+    }
+
+//    /**
+//     * Returns a list of tokens between the specified offsets.
+//     *
+//     * @param buffer      The character sequence to parse.
+//     * @param startOffset The inclusive start offset.
+//     * @param endOffset   The exclusive end offset.
+//     * @return The resulting list of tokens.
+//     */
+//    @NotNull
+//    private final List<SpoofaxToken> parseToTokens(@NotNull final CharSequence buffer,
+//                                                   @NotNull final Range<Integer> range,
+//                                                   final int startOffset,
+//                                                   final int endOffset) {
+//        assert buffer != null;
+//        assert 0 <= startOffset && startOffset <= buffer.length();
+//        assert 0 <= endOffset && endOffset <= buffer.length();
+//
+//        if (buffer.length() == 0)
+//            return new ArrayList<>();
+//
+//        ParseResult<IStrategoTerm> result = parseAll();
+//
+//        List<SpoofaxToken> spoofaxTokens = tokenizeWithTokenizer(result, range, startOffset, endOffset, buffer.length());
+//        return spoofaxTokens;
+//    }
+
+    /**
+     * Parses the whole buffer.
+     *
+     * @return The parse result.
+     */
+    private final ParseResult<IStrategoTerm> parseAll() {
         // Dummy location. Bug in Metaborg Core prevents it being null.
         // TODO: Fix JSGLRI to allow null location.
         FileObject location = this.resourceService.resolve(
                 "file:///home/daniel/eclipse/spoofax1507/workspace/TestProject/trans/test.spoofax");
-        ParseResult<IStrategoTerm> result = null;
+        ParseResult<IStrategoTerm> result;
         try {
             result = this.syntaxService.parse(buffer.toString(), location, this.languageImpl, this.parserConfiguration);
         } catch (ParseException e) {
-            // TODO: Handle the exception.
-            logger.error("Unhandled exception", e);
-            throw new RuntimeException(e);
+            throw new MetaborgRuntimeException("Unhandled exception", e);
         }
-
-        List<SpoofaxToken> spoofaxTokens = tokenizeWithTokenizer(result, startOffset, endOffset, buffer.length());
-        return spoofaxTokens;
+        return result;
     }
 
     /**
-     * Uses the Spoofax tokenizer to tokenize the parse result.
+     * Uses the Spoofax tokenizer to tokenize the parse result,
+     * and adds the tokens to the list of tokens.
      *
      * @param result     The parse result to tokenize.
-     * @param rangeStart The start of the character range to tokenize.
-     * @param rangeEnd   The end of the character range to tokenize.
-     * @param length     The length of the whole buffer.
-     * @return A list of tokens.
      */
-    @NotNull
-    private final List<SpoofaxToken> tokenizeWithTokenizer(@NotNull final ParseResult<IStrategoTerm> result,
-                                                           final int rangeStart,
-                                                           final int rangeEnd,
-                                                           final int length) {
+    private void tokenizeAll(@NotNull final ParseResult<IStrategoTerm> result) {
         if (result.result == null) {
             // A null parse result might occur when the input contains an error,
             // and recovery fails or is disabled.
             logger.error("Cannot categorize input of {}, parse result is empty", this.languageImpl);
-            return new ArrayList<SpoofaxToken>();
+            return;
         }
 
         // This uses the stratego term tokenizer.
@@ -165,7 +173,7 @@ public final class SpoofaxLexer extends LexerBase {
 
         final ImploderAttachment rootImploderAttachment = ImploderAttachment.get(result.result);
         final ITokenizer tokenizer = rootImploderAttachment.getLeftToken().getTokenizer();
-        List<SpoofaxToken> spoofaxTokens = new ArrayList<>();
+//        List<SpoofaxToken> spoofaxTokens = new ArrayList<>();
 
         Iterable<IRegionCategory<IStrategoTerm>> categorizedTokens = this.categorizer.categorize(this.languageImpl,
                                                                                                  result);
@@ -180,46 +188,57 @@ public final class SpoofaxLexer extends LexerBase {
         for (int i = 0; i < tokenCount; ++i) {
             final IToken token = tokenizer.getTokenAt(i);
 
-            if (token.getEndOffset() < token.getStartOffset())
-                // This happens when the token is empty.
-                continue;
 
-            if (token.getStartOffset() < offset)
-                // FIXME: The tokenizer sometimes returned the same token with the same start and end _twice_?
-                continue;
+//            if (token.getStartOffset() < offset)
+//                // FIXME: The tokenizer sometimes returned the same token with the same start and end _twice_?
+//                continue;
 
             // ASSUME: The list of regions is ordered by offset.
             // ASSUME: No region overlaps another region.
             // ASSUME: Every character in the input is covered by a region.
             int tokenStart = token.getStartOffset();
             int tokenEnd = token.getEndOffset() + 1;
-            if (rangeStart <= tokenStart && tokenEnd <= rangeEnd) {
+            IntRange tokenRange = IntRange.between(tokenStart, tokenEnd);
+
+            if (tokenRange.isEmpty())
+                continue;
+
+//            assert tokenRange.start == offset;
+//            if (tokenRange.contains(offset))
+//                // FIXME: The current offset should never be within a token.
+//                // The tokenizer sometimes returned the same token with the same start and end _twice_?
+//                continue;
+
+            assert offset == tokenRange.start : StringFormatter.format("The current token (starting @ {}) must start where the previous token left off (@ {}).", tokenStart, offset);
+            if (tokenRange.overlapsRange(this.bufferRange)) {
+//            if (rangeStart <= tokenStart && tokenEnd <= rangeEnd) {
 
                 // ASSUME: The styled tokens are ordered by offset.
                 // ASSUME: No styled region overlaps another styled region.
 
                 // Iterate until we find a style that ends after the token start.
-                while (currentRegionStyle != null && currentRegionStyle.region().endOffset() + 1 <= tokenStart)
+                while (currentRegionStyle != null && currentRegionStyle.region().endOffset() + 1 <= tokenRange.start)
                     currentRegionStyle = styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
 
                 // Get the style of the token
-                IStyle tokenStyle = currentRegionStyle != null && currentRegionStyle.region().startOffset() <= tokenStart ? currentRegionStyle.style() : null;
+                IStyle tokenStyle = currentRegionStyle != null && currentRegionStyle.region().startOffset() <= tokenRange.start ? currentRegionStyle.style() : null;
                 SpoofaxTokenType styledTokenType = this.tokenTypesManager.getTokenType(tokenStyle);
 
-                SpoofaxToken spoofaxToken = new SpoofaxToken(styledTokenType, tokenStart, tokenEnd);
-                spoofaxTokens.add(spoofaxToken);
-                assert rangeStart <= tokenStart;
-                assert tokenEnd <= rangeEnd;
+                SpoofaxToken spoofaxToken = new SpoofaxToken(styledTokenType, tokenRange); //tokenStart, tokenEnd);
+                this.tokens.add(spoofaxToken);
+//                assert getRangeStart(this.bufferRange) <= tokenStart;
+//                assert tokenEnd <= getRangeEnd(this.bufferRange);
             }
-            assert offset == tokenStart;
-            offset = tokenEnd;
+            offset = tokenRange.end;
         }
 
-        assert offset == length;
+        assert offset == this.buffer.length() : StringFormatter.format("The last token ended @ {}, which is before the end of the buffer @ {}.", offset, this.buffer.length());
 
 
-        return spoofaxTokens;
+//        return spoofaxTokens;
     }
+
+
 
     /**
      * Gets the current state of the lexer.
@@ -254,7 +273,7 @@ public final class SpoofaxLexer extends LexerBase {
     @Override
     public int getTokenStart() {
         assert 0 <= tokenIndex && tokenIndex < tokens.size();
-        return tokens.get(tokenIndex).start;
+        return tokens.get(tokenIndex).range.start;
     }
 
     /**
@@ -265,7 +284,7 @@ public final class SpoofaxLexer extends LexerBase {
     @Override
     public int getTokenEnd() {
         assert 0 <= tokenIndex && tokenIndex < tokens.size();
-        return tokens.get(tokenIndex).end;
+        return tokens.get(tokenIndex).range.end;
     }
 
     /**
@@ -294,6 +313,7 @@ public final class SpoofaxLexer extends LexerBase {
      */
     @Override
     public int getBufferEnd() {
-        return this.endOffset;
+        return this.bufferRange.end;
     }
+
 }
