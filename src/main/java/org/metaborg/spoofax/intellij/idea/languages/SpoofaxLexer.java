@@ -36,7 +36,7 @@ import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
 import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.core.StringFormatter;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.logging.InjectLogger;
 import org.slf4j.Logger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.IToken;

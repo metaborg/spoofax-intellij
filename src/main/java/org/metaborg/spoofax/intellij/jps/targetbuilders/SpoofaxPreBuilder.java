@@ -46,7 +46,7 @@ import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
 import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
 import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.meta.core.MetaBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;

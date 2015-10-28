@@ -24,7 +24,7 @@ import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
 import org.slf4j.Logger;
 

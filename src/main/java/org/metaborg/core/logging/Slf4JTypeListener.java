@@ -17,8 +17,9 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.logging;
+package org.metaborg.core.logging;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
@@ -38,6 +39,9 @@ public final class Slf4JTypeListener implements TypeListener {
     @Override
     public final <I> void hear(@NotNull final TypeLiteral<I> typeLiteral,
                                @NotNull final TypeEncounter<I> typeEncounter) {
+        Preconditions.checkNotNull(typeLiteral);
+        Preconditions.checkNotNull(typeEncounter);
+
         // Go through the class and its ancestors to find fields like this:
         //     @InjectLogger Logger logger;
 
@@ -53,3 +57,4 @@ public final class Slf4JTypeListener implements TypeListener {
         }
     }
 }
+

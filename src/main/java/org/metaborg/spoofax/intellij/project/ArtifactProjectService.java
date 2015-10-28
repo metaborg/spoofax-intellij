@@ -27,8 +27,8 @@ import org.apache.commons.vfs2.FileSystemManager;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.IProjectService;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
-import org.metaborg.spoofax.intellij.vfs.FileNameUtils;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.core.vfs.FileNameUtils;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;

@@ -32,7 +32,7 @@ import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.slf4j.Logger;
 

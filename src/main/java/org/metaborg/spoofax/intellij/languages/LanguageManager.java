@@ -31,7 +31,7 @@ import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.resource.IResourceService;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.logging.InjectLogger;
 import org.slf4j.Logger;
 
 import java.net.URL;

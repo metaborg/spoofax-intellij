@@ -30,7 +30,7 @@ import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.YAMLProjectSettingsSerializer;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.core.StringFormatter;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.logging.InjectLogger;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;

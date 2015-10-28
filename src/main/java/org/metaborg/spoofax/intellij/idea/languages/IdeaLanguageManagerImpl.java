@@ -37,7 +37,7 @@ import org.metaborg.spoofax.intellij.idea.InstanceKeyedExtensionPoint;
 import org.metaborg.spoofax.intellij.idea.InstanceLanguageExtensionPoint;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.menu.AnActionWithId;
 import org.slf4j.Logger;
 

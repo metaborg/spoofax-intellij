@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.core.menu.TransformAction;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.logging.InjectLogger;
 import org.slf4j.Logger;
 
 import javax.swing.*;

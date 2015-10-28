@@ -27,7 +27,7 @@ import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.factories.IProjectFactory;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.project.IntelliJProject;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
