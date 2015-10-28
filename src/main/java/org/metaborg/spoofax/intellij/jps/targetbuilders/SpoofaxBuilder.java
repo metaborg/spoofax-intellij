@@ -65,9 +65,10 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
      * @throws IOException
      */
     @Override
-    public abstract void build(@NotNull final T target,
-                               @NotNull final DirtyFilesHolder<SpoofaxSourceRootDescriptor, T> holder,
-                               @NotNull final BuildOutputConsumer consumer,
-                               @NotNull final CompileContext context) throws ProjectBuildException, IOException;
+    public abstract void build(
+            @NotNull final T target,
+            @NotNull final DirtyFilesHolder<SpoofaxSourceRootDescriptor, T> holder,
+            @NotNull final BuildOutputConsumer consumer,
+            @NotNull final CompileContext context) throws ProjectBuildException, IOException;
 
 }

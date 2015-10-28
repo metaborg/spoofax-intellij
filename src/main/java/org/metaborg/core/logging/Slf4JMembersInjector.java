@@ -17,8 +17,9 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.logging;
+package org.metaborg.core.logging;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.MembersInjector;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -44,6 +45,8 @@ public final class Slf4JMembersInjector<T> implements MembersInjector<T> {
      * @param field The field to inject.
      */
     public Slf4JMembersInjector(@NotNull Field field) {
+        Preconditions.checkNotNull(field);
+
         this.field = field;
         this.logger = createLogger(field.getDeclaringClass());
         this.field.setAccessible(true);
@@ -67,10 +70,12 @@ public final class Slf4JMembersInjector<T> implements MembersInjector<T> {
      */
     @Override
     public void injectMembers(@NotNull T obj) {
+        Preconditions.checkNotNull(obj);
+
         try {
             this.field.set(obj, logger);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Unexpected exception: " + e);
         }
     }
 }

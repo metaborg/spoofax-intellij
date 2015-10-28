@@ -17,17 +17,16 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.project;
+package org.metaborg.core.project;
 
 // TODO: Move this to metaborg core?
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.IProjectService;
-import org.metaborg.spoofax.intellij.StringFormatter;
+import org.metaborg.core.StringFormatter;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public final class CompoundProjectService implements IProjectService {
     private final Set<IProjectService> services;
 
     @Inject
-    private CompoundProjectService(@NotNull @Compound final Set<IProjectService> services) {
+    /* package private */ CompoundProjectService(@NotNull @Compound final Set<IProjectService> services) {
         this.services = services;
     }
 
@@ -55,7 +54,9 @@ public final class CompoundProjectService implements IProjectService {
      */
     @Nullable
     @Override
-    public IProject get(final FileObject resource) {
+    public IProject get(@NotNull final FileObject resource) {
+        Preconditions.checkNotNull(resource);
+
         List<IProject> projects = new ArrayList<>(1);
         for (IProjectService service : this.services) {
             IProject project = service.get(resource);
@@ -64,7 +65,7 @@ public final class CompoundProjectService implements IProjectService {
         }
 
         if (projects.size() > 1) {
-            throw new MetaborgRuntimeException(StringFormatter.format(
+            throw new MultipleServicesRespondedException(StringFormatter.format(
                     "Multiple project services provided a project for the resource {}.",
                     resource));
         } else if (projects.size() == 1) {

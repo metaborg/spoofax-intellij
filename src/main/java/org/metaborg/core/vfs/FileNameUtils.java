@@ -17,16 +17,20 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.vfs;
+package org.metaborg.core.vfs;
 
+import com.google.common.base.Preconditions;
+import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.provider.LayeredFileName;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
 /**
  * Utility functions for working with Apache {@link FileName} objects.
  */
+@Singleton
 public final class FileNameUtils {
     // To prevent instantiation.
     private FileNameUtils() {}
@@ -41,7 +45,9 @@ public final class FileNameUtils {
      * @return The outer file name; or <code>null</code> when there is none.
      */
     @Nullable
-    public static FileName getOuterFileName(FileName fileName) {
+    public static FileName getOuterFileName(@NotNull final FileName fileName) {
+        Preconditions.checkNotNull(fileName);
+
         if (fileName instanceof LayeredFileName) {
             return ((LayeredFileName) fileName).getOuterName();
         } else {

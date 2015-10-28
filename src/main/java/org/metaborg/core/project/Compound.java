@@ -17,22 +17,20 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.logging;
+package org.metaborg.core.project;
 
-import java.lang.annotation.ElementType;
+import com.google.inject.BindingAnnotation;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
- * Annotation for a field that wants a logger to be injected.
- * <p>
- * For example:
- * <pre>
- *
- * @InjectLogger private Logger logger;
- * </pre>
+ * Binding annotation for bindings to use in a compounding class.
  */
-@Target({ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface InjectLogger {}
+@BindingAnnotation
+@Target({FIELD, PARAMETER, METHOD})
+@Retention(RUNTIME)
+public @interface Compound {}

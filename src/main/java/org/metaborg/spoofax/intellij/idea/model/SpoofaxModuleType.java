@@ -137,9 +137,10 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
      */
     @NotNull
     @Override
-    public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext,
-                                                @NotNull SpoofaxModuleBuilder moduleBuilder,
-                                                @NotNull ModulesProvider modulesProvider) {
+    public ModuleWizardStep[] createWizardSteps(
+            @NotNull WizardContext wizardContext,
+            @NotNull SpoofaxModuleBuilder moduleBuilder,
+            @NotNull ModulesProvider modulesProvider) {
         ArrayList<ModuleWizardStep> steps = new ArrayList<>();
 
         steps.add(new PageOneWizardStep());
@@ -151,8 +152,9 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
 
     @Nullable
     @Override
-    public ModuleWizardStep modifyProjectTypeStep(@NotNull SettingsStep settingsStep,
-                                                  @NotNull ModuleBuilder moduleBuilder) {
+    public ModuleWizardStep modifyProjectTypeStep(
+            @NotNull SettingsStep settingsStep,
+            @NotNull ModuleBuilder moduleBuilder) {
         return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep,
                                                                              moduleBuilder,
                                                                              sdk -> moduleBuilder.isSuitableSdkType(sdk));

@@ -37,7 +37,7 @@ public final class LexerParserManager implements ILexerParserManager {
     private final IIdeaAttachmentManager attachmentManager;
 
     @Inject
-    private LexerParserManager(@NotNull final IIdeaAttachmentManager attachmentManager) {
+    /* package private */ LexerParserManager(@NotNull final IIdeaAttachmentManager attachmentManager) {
         this.attachmentManager = attachmentManager;
     }
 

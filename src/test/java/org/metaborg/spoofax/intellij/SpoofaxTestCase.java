@@ -17,34 +17,22 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.project;
+package org.metaborg.spoofax.intellij;
 
-import org.apache.commons.vfs2.FileObject;
+import com.intellij.testFramework.LightProjectDescriptor;
+import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.project.IProject;
-
-// TODO: Move this to Spoofax core?
 
 /**
- * A language project represented by a Spoofax artifact (*.spoofax-language).
+ * Base class for light non-Java IntelliJ tests.
  */
-public final class ArtifactProject implements IProject {
+public abstract class SpoofaxTestCase extends LightPlatformCodeInsightFixtureTestCase {
 
-    @NotNull
-    private final FileObject location;
-
-    /**
-     * Initializes a new instance of the {@link ArtifactProject} class.
-     *
-     * @param location The location of the artifact's archive.
-     */
-    public ArtifactProject(@NotNull final FileObject location) {
-        this.location = location;
-    }
+    private static SpoofaxTestProjectDescriptor projectDescriptor = new SpoofaxTestProjectDescriptor();
 
     @Override
     @NotNull
-    public FileObject location() {
-        return this.location;
+    protected LightProjectDescriptor getProjectDescriptor() {
+        return this.projectDescriptor;
     }
 }

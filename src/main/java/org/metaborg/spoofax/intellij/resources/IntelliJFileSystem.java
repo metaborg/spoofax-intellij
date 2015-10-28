@@ -41,9 +41,10 @@ public final class IntelliJFileSystem extends AbstractFileSystem {
      * @param parentLayer       The parent layer.
      * @param fileSystemOptions The file system options.
      */
-    public IntelliJFileSystem(@NotNull final FileName rootName,
-                              @NotNull final FileObject parentLayer,
-                              @NotNull final FileSystemOptions fileSystemOptions) {
+    public IntelliJFileSystem(
+            @NotNull final FileName rootName,
+            @NotNull final FileObject parentLayer,
+            @NotNull final FileSystemOptions fileSystemOptions) {
         super(rootName, parentLayer, fileSystemOptions);
     }
 

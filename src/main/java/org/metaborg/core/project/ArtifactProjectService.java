@@ -17,18 +17,17 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.project;
+package org.metaborg.core.project;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.IProjectService;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
-import org.metaborg.spoofax.intellij.vfs.FileNameUtils;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.core.vfs.FileNameUtils;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -50,7 +49,7 @@ public final class ArtifactProjectService implements IProjectService {
     private Logger logger;
 
     @Inject
-    private ArtifactProjectService(@NotNull final FileSystemManager fileSystemManager) {
+    /* package private */ ArtifactProjectService(@NotNull final FileSystemManager fileSystemManager) {
         this.fileSystemManager = fileSystemManager;
     }
 
@@ -60,16 +59,13 @@ public final class ArtifactProjectService implements IProjectService {
     @Nullable
     @Override
     public IProject get(@NotNull final FileObject resource) {
+        Preconditions.checkNotNull(resource);
 
-//        FileObject artifact = getArtifactFile(resource);
         FileObject artifactRoot = getArtifactRoot(resource);
         if (artifactRoot == null)
             return null;
 
         FileName artifactName = artifactRoot.getName();
-//        FileName artifactName = getArtifactFileName(resource.getName());
-//        if (artifactName == null)
-//            return null;
 
         ArtifactProject project = this.projects.get(artifactName);
         if (project == null) {
@@ -144,60 +140,4 @@ public final class ArtifactProjectService implements IProjectService {
         }
     }
 
-    /**
-     * Determines the language artifact file of the specified file.
-     *
-     * @param file The file.
-     * @return The file of the language artifact root; or <code>null</code> when there is none.
-     */
-    @Nullable
-    private FileObject getArtifactFile(@NotNull final FileObject file) {
-        FileObject current = file;
-        while (current != null && !isArtifact(current.getName())) {
-            try {
-                current = current.getFileSystem().getParentLayer();
-            } catch (FileSystemException e) {
-                this.logger.error("Ignored exception.", e);
-                current = null;
-            }
-        }
-        return current;
-    }
-
-    /**
-     * Determines whether the specified file name points to a language artifact.
-     * <p>
-     * For example, <code>file:///dir/archive.spoofax-language</code> is a language artifact.
-     *
-     * @param fileName The file name to check.
-     * @return <code>true</code> when the file is a language artifact;
-     * otherwise, <code>false</code>.
-     */
-    private boolean isArtifact(@NotNull final FileName fileName) {
-        return fileName.getExtension().equals("spoofax-language");
-    }
-
-    /**
-     * Determines the language artifact file name of the specified file name.
-     *
-     * @param fileName The file name.
-     * @return The file name of the language artifact root; or <code>null</code> when there is none.
-     */
-    @Nullable
-    private FileName getArtifactFileName(@NotNull final FileName fileName) {
-        FileName current = fileName;
-        while (current != null && !isArtifact(current)) {
-            current = FileNameUtils.getOuterFileName(current);
-        }
-        return current;
-    }
-
-//    private FileObject getRoot(@NotNull final FileObject resource) {
-//        if (resource.getName() instanceof LayeredFileName) {
-//            //return resource.resolveFile()
-//            return isArtifact(((LayeredFileName)resource.getName()).getOuterName());
-//        }
-//
-//        return fileName.getExtension().equals("spoofax-language");
-//    }
 }

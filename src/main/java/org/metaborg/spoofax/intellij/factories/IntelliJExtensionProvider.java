@@ -23,7 +23,7 @@ import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.intellij.openapi.extensions.Extensions;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.StringFormatter;
+import org.metaborg.core.StringFormatter;
 
 /**
  * Provides an instance from the IntelliJ extensions.
@@ -41,8 +41,9 @@ import org.metaborg.spoofax.intellij.StringFormatter;
      * @param extensionClass     The class of the extension to load.
      * @param extensionPointName The extension point name.
      */
-    /* package private */ IntelliJExtensionProvider(@NotNull final Class<T> extensionClass,
-                                                    @NotNull final String extensionPointName) {
+    /* package private */ IntelliJExtensionProvider(
+            @NotNull final Class<T> extensionClass,
+            @NotNull final String extensionPointName) {
         this.extensionClass = extensionClass;
         this.extensionPointName = extensionPointName;
     }

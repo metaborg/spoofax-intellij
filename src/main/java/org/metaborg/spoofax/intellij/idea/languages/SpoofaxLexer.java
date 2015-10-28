@@ -28,15 +28,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.IntRange;
 import org.metaborg.core.MetaborgRuntimeException;
+import org.metaborg.core.StringFormatter;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.core.style.*;
 import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
 import org.metaborg.core.syntax.ParseResult;
-import org.metaborg.spoofax.intellij.StringFormatter;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.IToken;
@@ -105,10 +105,11 @@ public final class SpoofaxLexer extends LexerBase {
      * @param initialState Not used. Must be zero.
      */
     @Override
-    public final void start(@NotNull final CharSequence buffer,
-                            final int startOffset,
-                            final int endOffset,
-                            final int initialState) {
+    public final void start(
+            @NotNull final CharSequence buffer,
+            final int startOffset,
+            final int endOffset,
+            final int initialState) {
         assert buffer != null;
         assert initialState == 0;
         assert 0 <= startOffset && startOffset <= buffer.length();

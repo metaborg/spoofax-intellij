@@ -39,7 +39,7 @@ public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProj
     private final IProjectSettingsService2 projectSettingsService;
 
     @Inject
-    private IntelliJSpoofaxProjectSettingsService(@NotNull final IProjectSettingsService2 projectSettingsService) {
+    /* package private */ IntelliJSpoofaxProjectSettingsService(@NotNull final IProjectSettingsService2 projectSettingsService) {
         this.projectSettingsService = projectSettingsService;
     }
 

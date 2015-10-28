@@ -50,8 +50,9 @@ public final class SpoofaxPreTarget extends SpoofaxTarget {
      * {@inheritDoc}
      */
     @Override
-    public final Collection<BuildTarget<?>> computeDependencies(@NotNull final BuildTargetRegistry buildTargetRegistry,
-                                                                @NotNull final TargetOutputIndex targetOutputIndex) {
+    public final Collection<BuildTarget<?>> computeDependencies(
+            @NotNull final BuildTargetRegistry buildTargetRegistry,
+            @NotNull final TargetOutputIndex targetOutputIndex) {
         return Collections.emptyList();
     }
 

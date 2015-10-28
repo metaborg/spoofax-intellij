@@ -42,8 +42,9 @@ public final class BuilderActionGroup extends DefaultActionGroup {
      * @param implementation The implementation to respond to.
      */
     @Inject
-    private BuilderActionGroup(@Assisted @NotNull final ILanguageImpl implementation,
-                               @NotNull final ActionHelper actionHelper) {
+    /* package private */ BuilderActionGroup(
+            @Assisted @NotNull final ILanguageImpl implementation,
+            @NotNull final ActionHelper actionHelper) {
         super(implementation.belongsTo().name(), true);
         this.implementation = implementation;
         this.actionHelper = actionHelper;

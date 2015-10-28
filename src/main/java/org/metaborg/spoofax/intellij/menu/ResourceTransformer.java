@@ -28,6 +28,7 @@ import org.metaborg.core.context.IContext;
 import org.metaborg.core.context.IContextService;
 import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.processing.parse.IParseResultRequester;
 import org.metaborg.core.source.ISourceTextService;
@@ -36,7 +37,6 @@ import org.metaborg.core.transform.ITransformer;
 import org.metaborg.core.transform.ITransformerGoal;
 import org.metaborg.core.transform.TransformerException;
 import org.metaborg.spoofax.core.menu.TransformAction;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.util.concurrent.IClosableLock;
 import org.slf4j.Logger;
 
@@ -94,9 +94,10 @@ public class ResourceTransformer<P, A, T> implements IResourceTransformer {
      * @param activeFiles The active files.
      */
     @Override
-    public boolean execute(@NotNull final TransformAction action,
-                           @NotNull final ILanguageImpl language,
-                           @NotNull final List<FileObject> activeFiles) throws
+    public boolean execute(
+            @NotNull final TransformAction action,
+            @NotNull final ILanguageImpl language,
+            @NotNull final List<FileObject> activeFiles) throws
             MetaborgException {
 
         List<TransformResource> resources = new ArrayList<>();
@@ -134,10 +135,11 @@ public class ResourceTransformer<P, A, T> implements IResourceTransformer {
      * @throws ContextException
      * @throws TransformerException
      */
-    private void transform(@NotNull final TransformResource resource,
-                           @NotNull final ITransformerGoal goal,
-                           @NotNull final ILanguageImpl language,
-                           boolean parsed) throws ContextException,
+    private void transform(
+            @NotNull final TransformResource resource,
+            @NotNull final ITransformerGoal goal,
+            @NotNull final ILanguageImpl language,
+            boolean parsed) throws ContextException,
             TransformerException {
         final IContext context = this.contextService.get(resource.resource(), language);
         if (parsed) {

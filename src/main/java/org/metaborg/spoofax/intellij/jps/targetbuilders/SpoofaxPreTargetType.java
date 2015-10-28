@@ -27,7 +27,7 @@ import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
 public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarget> {
 
     @Inject
-    private SpoofaxPreTargetType(@NotNull final IJpsProjectService projectService) {
+    /* package private */ SpoofaxPreTargetType(@NotNull final IJpsProjectService projectService) {
         super("spoofax-pre-production", projectService);
     }
 

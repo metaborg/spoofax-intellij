@@ -63,8 +63,9 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
         throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
     }
 
-    private final void loadExtensionWithState(@NotNull final JpsProject project,
-                                              @Nullable final SpoofaxProjectState state) {
+    private final void loadExtensionWithState(
+            @NotNull final JpsProject project,
+            @Nullable final SpoofaxProjectState state) {
         final SpoofaxProjectConfig config = new SpoofaxProjectConfig();
         if (state != null)
             config.loadState(state);

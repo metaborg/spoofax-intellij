@@ -17,42 +17,36 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij;
+package org.metaborg.core.project;
 
+import com.google.common.base.Preconditions;
+import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-// TODO: Add to Metaborg Core?
+// TODO: Move this to Spoofax core?
 
 /**
- * Utility class for identifiers.
+ * A language project represented by a Spoofax artifact (*.spoofax-language).
  */
-public final class IdentifierUtils {
+public final class ArtifactProject implements IProject {
 
-    private static final AtomicInteger counter = new AtomicInteger();
-
-    // To prevent instantiation.
-    private IdentifierUtils() {}
+    @NotNull
+    private final FileObject location;
 
     /**
-     * Returns a unique identifier.
+     * Initializes a new instance of the {@link ArtifactProject} class.
      *
-     * @return The created identifier.
+     * @param location The location of the artifact's archive.
      */
-    public static String create() {
-        return create("");
+    public ArtifactProject(@NotNull final FileObject location) {
+        Preconditions.checkNotNull(location);
+
+        this.location = location;
     }
 
-    /**
-     * Returns a unique identifier.
-     *
-     * @param prefix The identifier prefix.
-     * @return The created identifier.
-     */
-    public static String create(@NotNull String prefix) {
-        int value = counter.getAndIncrement();
-        return prefix + value;
+    @Override
+    @NotNull
+    public FileObject location() {
+        return this.location;
     }
-
 }

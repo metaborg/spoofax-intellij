@@ -33,11 +33,11 @@ import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.InstanceKeyedExtensionPoint;
 import org.metaborg.spoofax.intellij.idea.InstanceLanguageExtensionPoint;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.menu.AnActionWithId;
 import org.slf4j.Logger;
 
@@ -295,8 +295,9 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      *
      * @param actionGroup The action group.
      */
-    private void unregisterActions(@NotNull final ActionManager manager,
-                                   @NotNull final DefaultActionGroup actionGroup) {
+    private void unregisterActions(
+            @NotNull final ActionManager manager,
+            @NotNull final DefaultActionGroup actionGroup) {
         for (AnAction action : actionGroup.getChildActionsOrStubs()) {
             unregisterActions(manager, action);
         }

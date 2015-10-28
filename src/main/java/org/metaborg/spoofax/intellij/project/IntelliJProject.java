@@ -40,7 +40,9 @@ public final class IntelliJProject implements IProject {
     private final FileObject location;
 
     @Inject
-    private IntelliJProject(@Assisted @NotNull final Module module, @Assisted @NotNull final FileObject location) {
+    /* package private */ IntelliJProject(
+            @Assisted @NotNull final Module module,
+            @Assisted @NotNull final FileObject location) {
         this.module = module;
         this.location = location;
     }

@@ -125,11 +125,12 @@ public final class LanguageImplTableModel extends ListTableModel<LanguageImplIte
             comboBox.setRenderer(new ListCellRendererWrapper<ILanguageImpl>() {
 
                 @Override
-                public void customize(final JList list,
-                                      final ILanguageImpl value,
-                                      final int index,
-                                      final boolean selected,
-                                      final boolean hasFocus) {
+                public void customize(
+                        final JList list,
+                        final ILanguageImpl value,
+                        final int index,
+                        final boolean selected,
+                        final boolean hasFocus) {
                     if (value != null)
                         setText(value.id().version.toString());
                     else
@@ -145,7 +146,7 @@ public final class LanguageImplTableModel extends ListTableModel<LanguageImplIte
     final ILanguageService languageService;
 
     @Inject
-    private LanguageImplTableModel(
+    /* package private */ LanguageImplTableModel(
             @Assisted @NotNull final ModuleConfigurationState state,
             @NotNull final ILanguageService languageService) {
         super(LANGUAGE_COLUMN_INFO, IMPLEMENTATION_COLUMN_INFO);

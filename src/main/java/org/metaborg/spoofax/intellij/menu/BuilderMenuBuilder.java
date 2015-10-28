@@ -26,11 +26,11 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.IdentifierUtils;
 import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.menu.*;
 import org.metaborg.spoofax.core.menu.TransformAction;
-import org.metaborg.spoofax.intellij.IdentifierUtils;
 import org.metaborg.spoofax.intellij.factories.IBuilderActionGroupFactory;
 import org.metaborg.spoofax.intellij.factories.ITransformIdeaActionFactory;
 
@@ -48,9 +48,10 @@ public final class BuilderMenuBuilder {
     private final ITransformIdeaActionFactory transformationActionFactory;
 
     @Inject
-    private BuilderMenuBuilder(@NotNull final IMenuService menuService,
-                               @NotNull final IBuilderActionGroupFactory builderActionGroupFactory,
-                               @NotNull final ITransformIdeaActionFactory transformationActionFactory) {
+    /* package private */ BuilderMenuBuilder(
+            @NotNull final IMenuService menuService,
+            @NotNull final IBuilderActionGroupFactory builderActionGroupFactory,
+            @NotNull final ITransformIdeaActionFactory transformationActionFactory) {
         this.menuService = menuService;
         this.builderActionGroupFactory = builderActionGroupFactory;
         this.transformationActionFactory = transformationActionFactory;
@@ -85,9 +86,10 @@ public final class BuilderMenuBuilder {
         @NotNull
         private final ITransformIdeaActionFactory transformationActionFactory;
 
-        public BuilderMenuBuilderState(@NotNull final DefaultActionGroup group,
-                                       @NotNull final ILanguageImpl implementation,
-                                       @NotNull final ITransformIdeaActionFactory transformationActionFactory) {
+        public BuilderMenuBuilderState(
+                @NotNull final DefaultActionGroup group,
+                @NotNull final ILanguageImpl implementation,
+                @NotNull final ITransformIdeaActionFactory transformationActionFactory) {
             this.group = group;
             this.implementation = implementation;
             this.transformationActionFactory = transformationActionFactory;

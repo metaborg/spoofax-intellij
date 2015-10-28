@@ -29,11 +29,11 @@ import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.slf4j.Logger;
 
@@ -66,11 +66,12 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private Logger logger;
 
     @Inject
-    private IdeaAttachmentManager(@NotNull final IHighlightingLexerFactory lexerFactory,
-                                  @NotNull final IParserDefinitionFactory parserDefinitionFactory,
-                                  @NotNull final ICharacterLexerFactory characterLexerFactory,
-                                  @NotNull final BuilderMenuBuilder builderMenuBuilder,
-                                  @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
+    private IdeaAttachmentManager(
+            @NotNull final IHighlightingLexerFactory lexerFactory,
+            @NotNull final IParserDefinitionFactory parserDefinitionFactory,
+            @NotNull final ICharacterLexerFactory characterLexerFactory,
+            @NotNull final BuilderMenuBuilder builderMenuBuilder,
+            @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
@@ -244,8 +245,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @return The lexer.
      */
     @NotNull
-    private final Lexer createLexer(@NotNull final ILanguageImpl language,
-                                    @NotNull final SpoofaxTokenTypeManager tokenTypeManager) {
+    private final Lexer createLexer(
+            @NotNull final ILanguageImpl language,
+            @NotNull final SpoofaxTokenTypeManager tokenTypeManager) {
         return this.lexerFactory.create(language, tokenTypeManager);
     }
 

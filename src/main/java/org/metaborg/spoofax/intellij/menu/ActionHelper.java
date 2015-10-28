@@ -46,8 +46,9 @@ public final class ActionHelper {
     private final ILanguageIdentifierService identifierService;
 
     @Inject
-    private ActionHelper(@NotNull final IIntelliJResourceService resourceService,
-                         @NotNull final ILanguageIdentifierService identifierService) {
+    /* package private */ ActionHelper(
+            @NotNull final IIntelliJResourceService resourceService,
+            @NotNull final ILanguageIdentifierService identifierService) {
         this.resourceService = resourceService;
         this.identifierService = identifierService;
     }

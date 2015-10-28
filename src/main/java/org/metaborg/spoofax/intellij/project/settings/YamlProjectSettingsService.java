@@ -25,12 +25,12 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgRuntimeException;
+import org.metaborg.core.StringFormatter;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.YAMLProjectSettingsSerializer;
 import org.metaborg.core.resource.IResourceService;
-import org.metaborg.spoofax.intellij.StringFormatter;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;

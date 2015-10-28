@@ -31,8 +31,9 @@ public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTa
     private final SpoofaxPreTargetType preTargetType;
 
     @Inject
-    private SpoofaxPostTargetType(@NotNull final IJpsProjectService projectService,
-                                  @NotNull final SpoofaxPreTargetType preTargetType) {
+    /* package private */ SpoofaxPostTargetType(
+            @NotNull final IJpsProjectService projectService,
+            @NotNull final SpoofaxPreTargetType preTargetType) {
         super("spoofax-post-production", projectService);
         this.preTargetType = preTargetType;
     }

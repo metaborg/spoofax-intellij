@@ -46,7 +46,7 @@ public final class JpsProjectService implements IJpsProjectService {
     private final IResourceService resourceService;
 
     @Inject
-    private JpsProjectService(@NotNull final IResourceService resourceService) {
+    /* package private */ JpsProjectService(@NotNull final IResourceService resourceService) {
         this.resourceService = resourceService;
     }
 

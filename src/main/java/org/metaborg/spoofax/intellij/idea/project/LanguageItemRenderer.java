@@ -29,12 +29,13 @@ import javax.swing.*;
 
 public final class LanguageItemRenderer extends ColoredTableCellRenderer {
     @Override
-    protected void customizeCellRenderer(final JTable table,
-                                         final Object value,
-                                         final boolean selected,
-                                         final boolean hasFocus,
-                                         final int row,
-                                         final int column) {
+    protected void customizeCellRenderer(
+            final JTable table,
+            final Object value,
+            final boolean selected,
+            final boolean hasFocus,
+            final int row,
+            final int column) {
         setPaintFocusBorder(false);
         setFocusBorderAroundIcon(true);
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));

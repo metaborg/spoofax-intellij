@@ -44,7 +44,7 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
     private final ILexerParserManager lexerParserManager;
 
     @Inject
-    private SpoofaxSyntaxHighlighterFactory(
+    /* package private */ SpoofaxSyntaxHighlighterFactory(
             @NotNull final IIntelliJResourceService resourceService,
             @NotNull final ILanguageIdentifierService identifierService,
             @NotNull final ILexerParserManager lexerParserManager) {
@@ -62,8 +62,9 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
      */
     @NotNull
     @Override
-    public SyntaxHighlighter getSyntaxHighlighter(@NotNull final Project project,
-                                                  @NotNull final VirtualFile virtualFile) {
+    public SyntaxHighlighter getSyntaxHighlighter(
+            @NotNull final Project project,
+            @NotNull final VirtualFile virtualFile) {
         FileObject file = this.resourceService.resolve(virtualFile);
         ILanguageImpl implementation = this.identifierService.identify(file);
         Lexer lexer = this.lexerParserManager.getHighlightingLexer(implementation);

@@ -30,9 +30,9 @@ import com.intellij.ide.util.projectWizard.importSources.ProjectFromSourcesBuild
 import com.intellij.ide.util.projectWizard.importSources.ProjectStructureDetector;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.slf4j.Logger;
 
@@ -79,10 +79,11 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
      */
     @NotNull
     @Override
-    public DirectoryProcessingResult detectRoots(@NotNull final File dir,
-                                                 @NotNull final File[] children,
-                                                 @NotNull final File base,
-                                                 @NotNull final List<DetectedProjectRoot> result) {
+    public DirectoryProcessingResult detectRoots(
+            @NotNull final File dir,
+            @NotNull final File[] children,
+            @NotNull final File base,
+            @NotNull final List<DetectedProjectRoot> result) {
 
         this.logger.info("Detecting Spoofax project in {}", dir);
         if (dir.getName().equals("editor")) {
@@ -115,9 +116,10 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
      * {@inheritDoc}
      */
     @Override
-    public List<ModuleWizardStep> createWizardSteps(final ProjectFromSourcesBuilder builder,
-                                                    final ProjectDescriptor projectDescriptor,
-                                                    final Icon stepIcon) {
+    public List<ModuleWizardStep> createWizardSteps(
+            final ProjectFromSourcesBuilder builder,
+            final ProjectDescriptor projectDescriptor,
+            final Icon stepIcon) {
         return Collections.singletonList(new ProjectJdkForModuleStep(builder.getContext(), this.sdkType));
 //        return Collections.singletonList(ProjectWizardStepFactory.getInstance().createProjectJdkStep(builder.getContext()));
 //        SpoofaxModuleInsight moduleInsight = insightFactory.create(new DelegatingProgressIndicator(), builder.getExistingModuleNames(), builder.getExistingProjectLibraryNames());
@@ -127,9 +129,10 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
     }
 
     @Override
-    public void setupProjectStructure(@NotNull final Collection<DetectedProjectRoot> roots,
-                                      @NotNull final ProjectDescriptor projectDescriptor,
-                                      @NotNull final ProjectFromSourcesBuilder builder) {
+    public void setupProjectStructure(
+            @NotNull final Collection<DetectedProjectRoot> roots,
+            @NotNull final ProjectDescriptor projectDescriptor,
+            @NotNull final ProjectFromSourcesBuilder builder) {
         if (roots.isEmpty() || builder.hasRootsFromOtherDetectors(this))
             return;
 

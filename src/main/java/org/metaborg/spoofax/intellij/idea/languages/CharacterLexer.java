@@ -25,8 +25,8 @@ import com.intellij.lexer.LexerBase;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.spoofax.intellij.StringFormatter;
-import org.metaborg.spoofax.intellij.logging.InjectLogger;
+import org.metaborg.core.StringFormatter;
+import org.metaborg.core.logging.InjectLogger;
 import org.slf4j.Logger;
 
 /**
@@ -61,10 +61,11 @@ public final class CharacterLexer extends LexerBase {
      * @param initialState Not used. Must be zero.
      */
     @Override
-    public void start(@NotNull final CharSequence buffer,
-                      final int bufferStart,
-                      final int bufferEnd,
-                      final int initialState) {
+    public void start(
+            @NotNull final CharSequence buffer,
+            final int bufferStart,
+            final int bufferEnd,
+            final int initialState) {
         assert buffer != null;
         assert initialState == 0;
         assert 0 <= bufferStart && bufferStart <= buffer.length();
