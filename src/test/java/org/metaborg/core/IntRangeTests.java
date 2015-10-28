@@ -1,4 +1,4 @@
-package org.metaborg.spoofax.intellij;
+package org.metaborg.core;
 
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -6,6 +6,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import org.metaborg.core.IntRange;
 
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;

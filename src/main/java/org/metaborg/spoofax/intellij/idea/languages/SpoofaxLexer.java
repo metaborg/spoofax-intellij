@@ -15,7 +15,7 @@ import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
 import org.metaborg.core.syntax.ParseResult;
-import org.metaborg.spoofax.intellij.IntRange;
+import org.metaborg.core.IntRange;
 import org.metaborg.spoofax.intellij.StringFormatter;
 import org.metaborg.spoofax.intellij.logging.InjectLogger;
 import org.slf4j.Logger;
@@ -27,7 +27,6 @@ import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Adapts the Spoofax SGLR parser to allow it to be used as an IntelliJ lexer.

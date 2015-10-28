@@ -1,7 +1,7 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.IntRange;
+import org.metaborg.core.IntRange;
 
 /**
  * Represents a Spoofax token. This class contains enough information
