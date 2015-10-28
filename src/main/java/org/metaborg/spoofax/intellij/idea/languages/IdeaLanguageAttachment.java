@@ -59,14 +59,15 @@ public final class IdeaLanguageAttachment {
      * @param characterLexer           The character lexer.
      * @param parser                   The parser.
      */
-    /* package private */ IdeaLanguageAttachment(@NotNull final SpoofaxIdeaLanguage ideaLanguage,
-                                                 @NotNull final SpoofaxFileType fileType,
-                                                 @NotNull final SpoofaxTokenTypeManager tokenTypeManager,
-                                                 @NotNull final OldSpoofaxTokenType dummyAstTokenType,
-                                                 @NotNull final ParserDefinition parserDefinition,
-                                                 @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory,
-                                                 @NotNull final Lexer characterLexer,
-                                                 @NotNull final OldSpoofaxParser parser) {
+    /* package private */ IdeaLanguageAttachment(
+            @NotNull final SpoofaxIdeaLanguage ideaLanguage,
+            @NotNull final SpoofaxFileType fileType,
+            @NotNull final SpoofaxTokenTypeManager tokenTypeManager,
+            @NotNull final OldSpoofaxTokenType dummyAstTokenType,
+            @NotNull final ParserDefinition parserDefinition,
+            @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory,
+            @NotNull final Lexer characterLexer,
+            @NotNull final OldSpoofaxParser parser) {
         this.ideaLanguage = ideaLanguage;
         this.fileType = fileType;
         this.tokenTypeManager = tokenTypeManager;

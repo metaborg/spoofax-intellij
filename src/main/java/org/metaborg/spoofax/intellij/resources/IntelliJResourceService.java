@@ -39,8 +39,9 @@ import java.net.URISyntaxException;
 public final class IntelliJResourceService extends ResourceService implements IIntelliJResourceService {
 
     @Inject
-    private IntelliJResourceService(@NotNull final FileSystemManager fileSystemManager,
-                                    @NotNull @Named("ResourceClassLoader") final ClassLoader classLoader) {
+    /* package private */ IntelliJResourceService(
+            @NotNull final FileSystemManager fileSystemManager,
+            @NotNull @Named("ResourceClassLoader") final ClassLoader classLoader) {
         super(fileSystemManager, classLoader);
     }
 

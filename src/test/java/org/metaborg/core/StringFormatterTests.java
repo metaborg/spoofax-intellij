@@ -20,8 +20,8 @@
 package org.metaborg.core;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+
+import static org.junit.Assert.assertEquals;
 
 public final class StringFormatterTests {
 
@@ -67,7 +67,7 @@ public final class StringFormatterTests {
 
     public void formatsStringWithValueArray() {
         String input = "String {} {} {} {} placeholders.";
-        String result = StringFormatter.format(input, new String[]{ "with", "an", "array", "of" });
+        String result = StringFormatter.format(input, new String[]{"with", "an", "array", "of"});
 
         assertEquals("String with an array of placeholders.", result);
     }

@@ -40,8 +40,9 @@ public final class IdeaLanguageImplAttachment {
      * @param lexer            The lexer.
      * @param buildActionGroup The build action group.
      */
-    /* package private */ IdeaLanguageImplAttachment(@NotNull final Lexer lexer,
-                                                     @NotNull final DefaultActionGroup buildActionGroup) {
+    /* package private */ IdeaLanguageImplAttachment(
+            @NotNull final Lexer lexer,
+            @NotNull final DefaultActionGroup buildActionGroup) {
         this.lexer = lexer;
         this.buildActionGroup = buildActionGroup;
     }

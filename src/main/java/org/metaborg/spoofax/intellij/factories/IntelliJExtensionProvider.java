@@ -41,8 +41,9 @@ import org.metaborg.core.StringFormatter;
      * @param extensionClass     The class of the extension to load.
      * @param extensionPointName The extension point name.
      */
-    /* package private */ IntelliJExtensionProvider(@NotNull final Class<T> extensionClass,
-                                                    @NotNull final String extensionPointName) {
+    /* package private */ IntelliJExtensionProvider(
+            @NotNull final Class<T> extensionClass,
+            @NotNull final String extensionPointName) {
         this.extensionClass = extensionClass;
         this.extensionPointName = extensionPointName;
     }

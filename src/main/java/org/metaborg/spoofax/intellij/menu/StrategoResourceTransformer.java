@@ -37,18 +37,19 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 public final class StrategoResourceTransformer extends ResourceTransformer<IStrategoTerm, IStrategoTerm, IStrategoTerm> {
 
     @Inject
-    private StrategoResourceTransformer(@NotNull
-                                        final IContextService contextService,
-                                        @NotNull
-                                        final ISourceTextService sourceTextService,
-                                        @NotNull
-                                        final ILanguageIdentifierService identifierService,
-                                        @NotNull
-                                        final IParseResultRequester<IStrategoTerm> parseResultRequester,
-                                        @NotNull
-                                        final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester,
-                                        @NotNull
-                                        final ITransformer<IStrategoTerm, IStrategoTerm, IStrategoTerm> transformer) {
+    /* package private */ StrategoResourceTransformer(
+            @NotNull
+            final IContextService contextService,
+            @NotNull
+            final ISourceTextService sourceTextService,
+            @NotNull
+            final ILanguageIdentifierService identifierService,
+            @NotNull
+            final IParseResultRequester<IStrategoTerm> parseResultRequester,
+            @NotNull
+            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester,
+            @NotNull
+            final ITransformer<IStrategoTerm, IStrategoTerm, IStrategoTerm> transformer) {
         super(contextService,
               sourceTextService,
               identifierService,

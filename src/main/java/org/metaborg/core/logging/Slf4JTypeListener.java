@@ -37,13 +37,14 @@ public final class Slf4JTypeListener implements TypeListener {
      * {@inheritDoc}
      */
     @Override
-    public final <I> void hear(@NotNull final TypeLiteral<I> typeLiteral,
-                               @NotNull final TypeEncounter<I> typeEncounter) {
+    public final <I> void hear(
+            @NotNull final TypeLiteral<I> typeLiteral,
+            @NotNull final TypeEncounter<I> typeEncounter) {
         Preconditions.checkNotNull(typeLiteral);
         Preconditions.checkNotNull(typeEncounter);
 
         // Go through the class and its ancestors to find fields like this:
-        //     @InjectLogger Logger logger;
+        //     @InjectLogger private Logger logger;
 
         Class<?> clazz = typeLiteral.getRawType();
         while (clazz != null) {

@@ -43,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.language.LanguageVersion;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.ProjectException;
 import org.metaborg.core.project.settings.IProjectSettings;
@@ -51,7 +52,6 @@ import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.spoofax.generator.language.NewProjectGenerator;
 import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
 import org.metaborg.spoofax.intellij.factories.IProjectFactory;
-import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.project.IntelliJProject;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
@@ -78,9 +78,10 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
     private IntelliJProject project;
 
     @Inject
-    private SpoofaxModuleBuilder(@NotNull final IIntelliJResourceService resourceService,
-                                 @NotNull final IProjectFactory projectFactory,
-                                 @NotNull final IIntelliJProjectService projectService) {
+    private SpoofaxModuleBuilder(
+            @NotNull final IIntelliJResourceService resourceService,
+            @NotNull final IProjectFactory projectFactory,
+            @NotNull final IIntelliJProjectService projectService) {
         this.resourceService = resourceService;
         this.projectFactory = projectFactory;
         this.projectService = projectService;
@@ -112,8 +113,9 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
      */
     @Override
     @Nullable
-    public final ModuleWizardStep getCustomOptionsStep(@NotNull final WizardContext context,
-                                                       @NotNull final Disposable parentDisposable) {
+    public final ModuleWizardStep getCustomOptionsStep(
+            @NotNull final WizardContext context,
+            @NotNull final Disposable parentDisposable) {
         SpoofaxProjectWizardStep step = new SpoofaxProjectWizardStep(context);
         Disposer.register(parentDisposable, step);
         return step;
@@ -181,9 +183,10 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
      * @param rootModel    The root model.
      * @param contentEntry The content entry.
      */
-    private final void generateModuleStructure(@NotNull final IProject project,
-                                               @NotNull final ModifiableRootModel rootModel,
-                                               @NotNull final ContentEntry contentEntry) {
+    private final void generateModuleStructure(
+            @NotNull final IProject project,
+            @NotNull final ModifiableRootModel rootModel,
+            @NotNull final ContentEntry contentEntry) {
         // TODO: Specify name in wizard
         final String name = "TestProject";
         // TODO: Specify in wizard

@@ -17,22 +17,17 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.logging;
+package org.metaborg.core.project;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.VFS;
+import org.junit.Test;
 
-/**
- * Annotation for a field that wants a logger to be injected.
- * <p>
- * For example:
- * <pre>
- *
- * @InjectLogger private Logger logger;
- * </pre>
- */
-@Target({ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface InjectLogger {}
+public final class ArtifactProjectServiceTests {
+
+    @Test
+    public void getsProjectForArtifact() throws FileSystemException {
+        ArtifactProjectService sut = new ArtifactProjectService(VFS.getManager());
+    }
+
+}

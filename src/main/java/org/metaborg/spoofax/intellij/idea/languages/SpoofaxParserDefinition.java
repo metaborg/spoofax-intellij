@@ -48,8 +48,9 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
     private final ILexerParserManager lexerParserManager;
 
     @Inject
-    private SpoofaxParserDefinition(@Assisted @NotNull final SpoofaxFileType fileType,
-                                    @NotNull final ILexerParserManager lexerParserManager) {
+    /* package private */ SpoofaxParserDefinition(
+            @Assisted @NotNull final SpoofaxFileType fileType,
+            @NotNull final ILexerParserManager lexerParserManager) {
         this.fileType = fileType;
         this.fileElement = new IFileElementType(fileType.getLanguage());
         this.lexerParserManager = lexerParserManager;
@@ -158,8 +159,9 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
      */
     @Override
     @NotNull
-    public SpaceRequirements spaceExistanceTypeBetweenTokens(@NotNull final ASTNode left,
-                                                             @NotNull final ASTNode right) {
+    public SpaceRequirements spaceExistanceTypeBetweenTokens(
+            @NotNull final ASTNode left,
+            @NotNull final ASTNode right) {
         return SpaceRequirements.MAY;
     }
 }

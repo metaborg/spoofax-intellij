@@ -51,10 +51,11 @@ public abstract class AnActionWithId extends AnAction {
      * @param description The description of the action; or <code>null</code>.
      * @param icon        The icon of the action; or <code>null</code>.
      */
-    public AnActionWithId(@NotNull String id,
-                          @Nullable String text,
-                          @Nullable String description,
-                          @Nullable Icon icon) {
+    public AnActionWithId(
+            @NotNull String id,
+            @Nullable String text,
+            @Nullable String description,
+            @Nullable Icon icon) {
         super(text, description, icon);
         this.id = id;
     }

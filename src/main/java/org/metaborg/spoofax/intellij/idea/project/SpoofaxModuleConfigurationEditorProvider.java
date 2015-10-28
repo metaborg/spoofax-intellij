@@ -54,8 +54,9 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
     }
 
     @Inject
-    private void inject(@NotNull final SpoofaxModuleType spoofaxModuleType,
-                        @NotNull final ILanguageImplEditorFactory languageImplEditorFactory) {
+    private void inject(
+            @NotNull final SpoofaxModuleType spoofaxModuleType,
+            @NotNull final ILanguageImplEditorFactory languageImplEditorFactory) {
         this.spoofaxModuleType = spoofaxModuleType;
         this.languageImplEditorFactory = languageImplEditorFactory;
     }

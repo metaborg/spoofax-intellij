@@ -83,9 +83,10 @@ public final class StringFormatter {
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(@NotNull final String pattern,
-                                      @Nullable final Object argument0,
-                                      @Nullable final Object argument1) {
+    public static final String format(
+            @NotNull final String pattern,
+            @Nullable final Object argument0,
+            @Nullable final Object argument1) {
         Preconditions.checkNotNull(pattern);
 
         return format(pattern, new Object[]{argument0, argument1});
@@ -102,10 +103,11 @@ public final class StringFormatter {
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(@NotNull final String pattern,
-                                      @Nullable final Object argument0,
-                                      @Nullable final Object argument1,
-                                      @Nullable final Object argument2) {
+    public static final String format(
+            @NotNull final String pattern,
+            @Nullable final Object argument0,
+            @Nullable final Object argument1,
+            @Nullable final Object argument2) {
         Preconditions.checkNotNull(pattern);
 
         return format(pattern, new Object[]{argument0, argument1, argument2});

@@ -17,16 +17,15 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.project;
+package org.metaborg.core.project;
 
 // TODO: Move this to metaborg core?
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.StringFormatter;
 
 import javax.annotation.Nullable;
@@ -55,7 +54,9 @@ public final class CompoundProjectService implements IProjectService {
      */
     @Nullable
     @Override
-    public IProject get(final FileObject resource) {
+    public IProject get(@NotNull final FileObject resource) {
+        Preconditions.checkNotNull(resource);
+
         List<IProject> projects = new ArrayList<>(1);
         for (IProjectService service : this.services) {
             IProject project = service.get(resource);

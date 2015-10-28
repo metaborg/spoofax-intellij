@@ -21,10 +21,13 @@ package org.metaborg.core;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 public final class CollectionUtilsTests {
 
@@ -48,7 +51,7 @@ public final class CollectionUtilsTests {
         assertNotSame(iterable, result);
     }
 
-    @Test(expected=UnsupportedOperationException.class)
+    @Test(expected = UnsupportedOperationException.class)
     public void toListIsUnmodifiable() {
         List<String> result = CollectionUtils.toList(Arrays.asList("a", "b", "c"));
         result.add("x");

@@ -46,7 +46,7 @@ For dependency injection, prefer constructor injection.
 The constructor used for dependency injection:
 
 * Must only contain parameter types that are injectable.
-* Must be `private`.
+* Must be `/* package private */`.
 * Must have the `@Inject` annotation.
 
 

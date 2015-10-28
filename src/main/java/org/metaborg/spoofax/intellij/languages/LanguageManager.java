@@ -30,8 +30,8 @@ import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
-import org.metaborg.core.resource.IResourceService;
 import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.core.resource.IResourceService;
 import org.slf4j.Logger;
 
 import java.net.URL;
@@ -54,9 +54,10 @@ public final class LanguageManager {
     private Logger logger;
 
     @Inject
-    private LanguageManager(@NotNull final ILanguageService languageService,
-                            @NotNull final ILanguageDiscoveryService discoveryService,
-                            @NotNull final IResourceService resourceService) {
+    private LanguageManager(
+            @NotNull final ILanguageService languageService,
+            @NotNull final ILanguageDiscoveryService discoveryService,
+            @NotNull final IResourceService resourceService) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
         this.resourceService = resourceService;

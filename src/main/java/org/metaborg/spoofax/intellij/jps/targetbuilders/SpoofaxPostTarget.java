@@ -40,9 +40,10 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
     private final SpoofaxPreTargetType preTargetType;
 
     // TODO: Inject!
-    public SpoofaxPostTarget(@NotNull final SpoofaxJpsProject project,
-                             @NotNull final SpoofaxPostTargetType targetType,
-                             @NotNull final SpoofaxPreTargetType preTargetType) {
+    public SpoofaxPostTarget(
+            @NotNull final SpoofaxJpsProject project,
+            @NotNull final SpoofaxPostTargetType targetType,
+            @NotNull final SpoofaxPreTargetType preTargetType) {
         super(project, targetType);
         this.preTargetType = preTargetType;
     }
@@ -59,8 +60,9 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
      * {@inheritDoc}
      */
     @Override
-    public final Collection<BuildTarget<?>> computeDependencies(@NotNull final BuildTargetRegistry buildTargetRegistry,
-                                                                @NotNull final TargetOutputIndex targetOutputIndex) {
+    public final Collection<BuildTarget<?>> computeDependencies(
+            @NotNull final BuildTargetRegistry buildTargetRegistry,
+            @NotNull final TargetOutputIndex targetOutputIndex) {
         final List<BuildTarget<?>> dependencies = new ArrayList<>();
         dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
         dependencies.add(this.preTargetType.createTarget(super.myModule));

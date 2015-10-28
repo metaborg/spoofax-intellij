@@ -43,7 +43,7 @@ public final class LanguageImplPanel extends JPanel {
     private final ILanguageImplTableModelFactory languageImplTableModelFactory;
 
     @Inject
-    private LanguageImplPanel(
+    /* package private */ LanguageImplPanel(
             @Assisted @NotNull final ModuleConfigurationState state,
             @NotNull final ILanguageImplTableModelFactory languageImplTableModelFactory) {
         super(new BorderLayout());

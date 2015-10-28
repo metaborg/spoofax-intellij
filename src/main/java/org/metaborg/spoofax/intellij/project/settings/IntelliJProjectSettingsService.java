@@ -42,8 +42,9 @@ public final class IntelliJProjectSettingsService implements IProjectSettingsSer
     private final IProjectSettingsService2 projectSettingsService;
 
     @Inject
-    public IntelliJProjectSettingsService(@NotNull IProjectService projectService,
-                                          @NotNull IProjectSettingsService2 projectSettingsService) {
+    /* package private */ IntelliJProjectSettingsService(
+            @NotNull IProjectService projectService,
+            @NotNull IProjectSettingsService2 projectSettingsService) {
         this.projectService = projectService;
         this.projectSettingsService = projectSettingsService;
     }

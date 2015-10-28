@@ -25,9 +25,9 @@ import com.intellij.openapi.module.ModuleComponent;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.factories.IProjectFactory;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.project.IntelliJProject;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
@@ -61,9 +61,10 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
     }
 
     @Inject
-    private void inject(@NotNull final IIntelliJProjectService projectService,
-                        @NotNull final IProjectFactory projectFactory,
-                        @NotNull final IIntelliJResourceService resourceService) {
+    private void inject(
+            @NotNull final IIntelliJProjectService projectService,
+            @NotNull final IProjectFactory projectFactory,
+            @NotNull final IIntelliJResourceService resourceService) {
         this.projectService = projectService;
         this.projectFactory = projectFactory;
         this.resourceService = resourceService;

@@ -61,10 +61,11 @@ public final class CharacterLexer extends LexerBase {
      * @param initialState Not used. Must be zero.
      */
     @Override
-    public void start(@NotNull final CharSequence buffer,
-                      final int bufferStart,
-                      final int bufferEnd,
-                      final int initialState) {
+    public void start(
+            @NotNull final CharSequence buffer,
+            final int bufferStart,
+            final int bufferEnd,
+            final int initialState) {
         assert buffer != null;
         assert initialState == 0;
         assert 0 <= bufferStart && bufferStart <= buffer.length();

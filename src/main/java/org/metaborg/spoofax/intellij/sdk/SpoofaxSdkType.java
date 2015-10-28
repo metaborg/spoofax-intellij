@@ -86,8 +86,9 @@ public final class SpoofaxSdkType extends SdkType {
 
     @Nullable
     @Override
-    public AdditionalDataConfigurable createAdditionalDataConfigurable(final SdkModel sdkModel,
-                                                                       final SdkModificator sdkModificator) {
+    public AdditionalDataConfigurable createAdditionalDataConfigurable(
+            final SdkModel sdkModel,
+            final SdkModificator sdkModificator) {
         // Default implementation.
         return null;
     }
