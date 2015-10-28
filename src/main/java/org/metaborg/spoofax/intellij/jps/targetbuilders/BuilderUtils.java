@@ -24,7 +24,7 @@ import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
 import org.jetbrains.jps.incremental.messages.ProgressMessage;
 import org.metaborg.core.messages.IMessage;
-import org.metaborg.spoofax.intellij.StringFormatter;
+import org.metaborg.core.StringFormatter;
 import org.spoofax.interpreter.terms.IStrategoList;
 import org.strategoxt.lang.StrategoErrorExit;
 

@@ -17,8 +17,9 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij;
+package org.metaborg.core;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,7 +47,10 @@ public final class CollectionUtils {
      * @param <T>      The type of elements.
      * @return An immutable list.
      */
+    @NotNull
     public static <T> List<T> toList(@NotNull final Iterable<? extends T> iterable) {
+        Preconditions.checkNotNull(iterable);
+
         return Collections.unmodifiableList(toMutableList(iterable));
     }
 
@@ -57,7 +61,10 @@ public final class CollectionUtils {
      * @param <T>      The type of elements.
      * @return A mutable list.
      */
+    @NotNull
     public static <T> List<T> toMutableList(@NotNull final Iterable<? extends T> iterable) {
+        Preconditions.checkNotNull(iterable);
+
         ArrayList<T> list = new ArrayList<>();
         for (T item : iterable) {
             list.add(item);
@@ -72,7 +79,11 @@ public final class CollectionUtils {
      * @param <T>      The type of elements.
      * @return An array.
      */
-    public static <T> T[] toArray(@NotNull final Iterable<? extends T> iterable, Class<T> clazz) {
+    @NotNull
+    public static <T> T[] toArray(@NotNull final Iterable<? extends T> iterable, @NotNull final Class<T> clazz) {
+        Preconditions.checkNotNull(iterable);
+        Preconditions.checkNotNull(clazz);
+
         return toArray(toMutableList(iterable), clazz);
     }
 
@@ -84,12 +95,17 @@ public final class CollectionUtils {
      * @param <T>        The type of elements.
      * @return An array.
      */
-    public static <T> T[] toArray(@NotNull final Collection<? extends T> collection, Class<T> clazz) {
+    @NotNull
+    public static <T> T[] toArray(@NotNull final Collection<? extends T> collection, @NotNull final Class<T> clazz) {
+        Preconditions.checkNotNull(collection);
+        Preconditions.checkNotNull(clazz);
+
         @SuppressWarnings("unchecked")
         T[] result = (T[]) Array.newInstance(clazz, collection.size());
         int index = 0;
         for (T item : collection) {
             result[index] = item;
+            index++;
         }
         return result;
     }

@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.IProjectService;
-import org.metaborg.spoofax.intellij.StringFormatter;
+import org.metaborg.core.StringFormatter;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

@@ -30,7 +30,7 @@ import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.menu.*;
 import org.metaborg.spoofax.core.menu.TransformAction;
-import org.metaborg.spoofax.intellij.IdentifierUtils;
+import org.metaborg.core.IdentifierUtils;
 import org.metaborg.spoofax.intellij.factories.IBuilderActionGroupFactory;
 import org.metaborg.spoofax.intellij.factories.ITransformIdeaActionFactory;
 

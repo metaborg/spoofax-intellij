@@ -22,7 +22,7 @@ package org.metaborg.spoofax.intellij.factories;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.StringFormatter;
+import org.metaborg.core.StringFormatter;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;

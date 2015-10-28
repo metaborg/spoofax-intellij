@@ -17,11 +17,14 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij;
+package org.metaborg.core;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.helpers.MessageFormatter;
+
+import javax.annotation.Nullable;
 
 // TODO: Move this class to Metaborg Core?
 
@@ -47,11 +50,13 @@ public final class StringFormatter {
      * Formats a string.
      *
      * @param pattern   The pattern, with placeholders for the parameters.
-     * @param argument0 The first argument.
+     * @param argument0 The first argument, which may be <code>null</code>.
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(@NotNull final String pattern, @NotNull final Object argument0) {
+    public static final String format(@NotNull final String pattern, @Nullable final Object argument0) {
+        Preconditions.checkNotNull(pattern);
+
         return format(pattern, new Object[]{argument0});
     }
 
@@ -63,7 +68,9 @@ public final class StringFormatter {
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(@NotNull final String pattern, @NotNull final Object... arguments) {
+    public static final String format(@NotNull final String pattern, @Nullable final Object... arguments) {
+        Preconditions.checkNotNull(pattern);
+
         return MessageFormatter.arrayFormat(pattern, arguments).getMessage();
     }
 
@@ -71,14 +78,16 @@ public final class StringFormatter {
      * Formats a string.
      *
      * @param pattern   The pattern, with placeholders for the parameters.
-     * @param argument0 The first argument.
-     * @param argument1 The second argument.
+     * @param argument0 The first argument, which may be <code>null</code>.
+     * @param argument1 The second argument, which may be <code>null</code>.
      * @return The formatted message.
      */
     @NotNull
     public static final String format(@NotNull final String pattern,
-                                      @NotNull final Object argument0,
-                                      @NotNull final Object argument1) {
+                                      @Nullable final Object argument0,
+                                      @Nullable final Object argument1) {
+        Preconditions.checkNotNull(pattern);
+
         return format(pattern, new Object[]{argument0, argument1});
     }
 
@@ -87,16 +96,18 @@ public final class StringFormatter {
      * Formats a string.
      *
      * @param pattern   The pattern, with placeholders for the parameters.
-     * @param argument0 The first argument.
-     * @param argument1 The second argument.
-     * @param argument2 The third argument.
+     * @param argument0 The first argument, which may be <code>null</code>.
+     * @param argument1 The second argument, which may be <code>null</code>.
+     * @param argument2 The third argument, which may be <code>null</code>.
      * @return The formatted message.
      */
     @NotNull
     public static final String format(@NotNull final String pattern,
-                                      @NotNull final Object argument0,
-                                      @NotNull final Object argument1,
-                                      @NotNull final Object argument2) {
+                                      @Nullable final Object argument0,
+                                      @Nullable final Object argument1,
+                                      @Nullable final Object argument2) {
+        Preconditions.checkNotNull(pattern);
+
         return format(pattern, new Object[]{argument0, argument1, argument2});
     }
 }

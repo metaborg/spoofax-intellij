@@ -17,10 +17,12 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij;
+package org.metaborg.core;
 
+import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 // TODO: Add to Metaborg Core?
@@ -28,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Utility class for identifiers.
  */
+@Singleton
 public final class IdentifierUtils {
 
     private static final AtomicInteger counter = new AtomicInteger();
@@ -40,6 +43,7 @@ public final class IdentifierUtils {
      *
      * @return The created identifier.
      */
+    @NotNull
     public static String create() {
         return create("");
     }
@@ -50,9 +54,10 @@ public final class IdentifierUtils {
      * @param prefix The identifier prefix.
      * @return The created identifier.
      */
-    public static String create(@NotNull String prefix) {
-        int value = counter.getAndIncrement();
-        return prefix + value;
+    @NotNull
+    public static String create(@Nullable final String prefix) {
+        final int value = counter.getAndIncrement();
+        return ((prefix != null) ? prefix : "") + value;
     }
 
 }

@@ -22,7 +22,6 @@ package org.metaborg.core;
 // TODO: Move this to Metaborg Core?
 
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.StringFormatter;
 
 /**
  * An integer range.
