@@ -19,8 +19,11 @@
 
 package org.metaborg.core.project.settings;
 
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.StringFormatter;
+
+import javax.annotation.Nullable;
 
 /**
  * A setting key.
@@ -42,6 +45,9 @@ public final class SettingKey<T> {
      * @param type The type of the setting.
      */
     public SettingKey(@NotNull final String name, @NotNull final Class<T> type) {
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(type);
+
         this.name = name;
         this.type = type;
     }
@@ -89,6 +95,6 @@ public final class SettingKey<T> {
      */
     @Override
     public String toString() {
-        return StringFormatter.format("{}<{}>", this.name, this.type.getName());
+        return StringFormatter.format("{}<{}>", this.name, this.type.getSimpleName());
     }
 }

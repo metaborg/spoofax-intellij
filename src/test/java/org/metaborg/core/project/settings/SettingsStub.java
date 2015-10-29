@@ -19,33 +19,30 @@
 
 package org.metaborg.core.project.settings;
 
-import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
+import org.metaborg.core.language.LanguageIdentifier;
 
 import javax.annotation.Nullable;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * Factory for {@link Settings} objects.
+ * Settings stub.
  */
-public interface ISettingsFactory {
+public final class SettingsStub extends Settings {
 
-    /**
-     * Gets the setting descriptors for the settings.
-     * @return The setting descriptors.
-     */
-    @NotNull
-    Set<SettingDescriptor> settingDescriptors();
+    /* package private */ static final SettingKey<String> NAME_KEY = new SettingKey<>("name", String.class);
+    /* package private */ static final SettingKey<LanguageIdentifier> ID_KEY = new SettingKey<>("id", LanguageIdentifier.class);
 
-    /**
-     * Creates a settings object.
-     *
-     * @param settings A map with the settings.
-     * @param parent The parent settings; or <code>null</code>.
-     * @return The created settings object.
-     */
-    @NotNull
-    Settings create(@NotNull Map<SettingKey<?>, Object> settings, @Nullable Settings parent);
+    public SettingsStub(
+            @NotNull final Map<SettingKey<?>, Object> settings, @Nullable final Settings parent) {
+        super(settings, parent);
+    }
+
+    public String name() {
+        return getSetting(NAME_KEY);
+    }
+
+    public LanguageIdentifier id() { return getSetting(ID_KEY); }
+
 }
+

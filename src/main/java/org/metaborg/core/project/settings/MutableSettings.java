@@ -34,7 +34,7 @@ import java.util.Set;
 /**
  * Setting in a settings hierarchy.
  *
- * This is intended for mutable settings.
+ * Derive from this class for mutable settings.
  */
 public class MutableSettings extends Settings {
 
@@ -46,8 +46,8 @@ public class MutableSettings extends Settings {
      *
      * @param parent The parent settings; or <code>null</code>.
      */
-    public MutableSettings(@Nullable final ISettings parent) {
-        super(parent, new HashMap<>(), true);
+    public MutableSettings(@Nullable final Settings parent) {
+        super(new HashMap<>(), parent, true);
     }
 
     /**

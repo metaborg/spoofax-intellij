@@ -44,7 +44,7 @@ public class DefaultSettings extends Settings {
      * @param settings A map with the default settings.
      */
     public DefaultSettings(@NotNull final Map<SettingKey<?>, Object> settings) {
-        super(null, settings);
+        super(settings, null);
         Preconditions.checkNotNull(settings);
     }
 
@@ -53,7 +53,7 @@ public class DefaultSettings extends Settings {
      */
     @Nullable
     @Override
-    public ISettings parent() {
+    public Settings parent() {
         return null;
     }
 

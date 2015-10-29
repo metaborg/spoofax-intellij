@@ -23,25 +23,44 @@ import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Created by daniel on 10/28/15.
+ * Describes a setting.
  */
-/* package private */ final class SettingsUtils {
+public final class SettingDescriptor {
+
+    @NotNull
+    private final SettingKey<?> key;
+    @NotNull
+    private final boolean required;
 
     /**
-     * Asserts that there are no cycles in the dependency chain.
+     * Initializes a new instance of the {@link SettingDescriptor} class.
      *
-     * @param settings The settings to test.
+     * @param key The setting key.
+     * @param required Whether the setting is required.
      */
-    public static void assertNoCycles(@NotNull final Settings settings) {
-        Preconditions.checkNotNull(settings);
+    public SettingDescriptor(@NotNull final SettingKey<?> key, final boolean required) {
+        Preconditions.checkNotNull(key);
 
-        Settings current = settings.parent();
-        while (current != null && current != settings) {
-            current = current.parent();
-        }
-        if (current == settings)
-            throw new RuntimeException("There is a cycle in the settings dependency chain.");
-        assert current == null;
+        this.key = key;
+        this.required = required;
     }
 
+    /**
+     * Gets the key.
+     *
+     * @return The key.
+     */
+    public SettingKey<?> key() {
+        return this.key;
+    }
+
+    /**
+     * Whether the setting is required.
+     *
+     * @return <code>true</code> when the setting is required;
+     * otherwise, <code>false</code>.
+     */
+    public boolean required() {
+        return this.required;
+    }
 }

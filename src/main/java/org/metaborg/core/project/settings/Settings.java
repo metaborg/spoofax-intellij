@@ -27,44 +27,41 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.StringFormatter;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Setting in a settings hierarchy.
  *
- * This is intended for unmodifiable settings.
+ * Derive from this class for immutable settings.
  */
-public class Settings implements ISettings {
+public class Settings {
 
     @NotNull
     /* package private */ final Map<SettingKey<?>, Object> settings;
     @Nullable
-    private final ISettings parent;
+    private final Settings parent;
 
     /**
      * Initializes a new instance of the {@link Settings} class.
      *
-     * @param parent The parent settings; or <code>null</code>.
      * @param settings The settings map to use.
+     * @param parent The parent settings; or <code>null</code>.
      * @param internal Unused.
      */
-    /* package private */ Settings(@Nullable final ISettings parent, @NotNull final Map<SettingKey<?>, Object> settings, final boolean internal) {
-        this.parent = parent;
+    /* package private */ Settings(@NotNull final Map<SettingKey<?>, Object> settings, @Nullable final Settings parent, final boolean internal) {
         this.settings = settings;
+        this.parent = parent;
         SettingsUtils.assertNoCycles(this);
     }
 
     /**
      * Initializes a new instance of the {@link Settings} class.
      *
-     * @param parent The parent settings; or <code>null</code>.
      * @param settings The default settings to use.
+     * @param parent The parent settings; or <code>null</code>.
      */
-    public Settings(@Nullable final ISettings parent, @NotNull final Map<SettingKey<?>, Object> settings) {
-        this(parent, ImmutableMap.copyOf(settings), true);
+    public Settings(@NotNull final Map<SettingKey<?>, Object> settings, @Nullable final Settings parent) {
+        this(ImmutableMap.copyOf(settings), parent, true);
     }
 
     /**
@@ -72,8 +69,8 @@ public class Settings implements ISettings {
      *
      * @param parent The parent settings; or <code>null</code>.
      */
-    public Settings(@Nullable final ISettings parent) {
-        this(parent, new HashMap<>());
+    public Settings(@Nullable final Settings parent) {
+        this(new LinkedHashMap<>(), parent);
     }
 
     /**
@@ -84,15 +81,23 @@ public class Settings implements ISettings {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the parent settings.
+     *
+     * @return The parent settings;
+     * or <code>null</code> when there is no parent
      */
     @Nullable
-    public ISettings parent() {
+    public Settings parent() {
         return this.parent;
     }
 
     /**
-     * {@inheritDoc}
+     * Gets whether a local setting with the specified key is defined.
+     *
+     * @param key The key to look for.
+     * @param <T> The type of value.
+     * @return <code>true</code> when a local setting is defined;
+     * otherwise, <code>false</code>.
      */
     public <T> boolean hasLocalSetting(@NotNull final SettingKey<T> key) {
         Preconditions.checkNotNull(key);
@@ -101,7 +106,12 @@ public class Settings implements ISettings {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the local setting with the specified key.
+     *
+     * @param key The key to look for.
+     * @param <T> The type of value.
+     * @return The value of the local setting, which may be <code>null</code>.
+     * @throws SettingNotFoundException No local setting with the specified key is defined.
      */
     @Nullable
     public <T> T getLocalSetting(@NotNull final SettingKey<T> key) {
@@ -114,7 +124,14 @@ public class Settings implements ISettings {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the local setting with the specified key;
+     * otherwise returns a default value.
+     *
+     * @param key The key to look for.
+     * @param defaultValue The default value.
+     * @param <T> The type of value.
+     * @return The local value of the setting, which may be <code>null</code>;
+     * or the default value when no local setting with the specified key is defined.
      */
     @Nullable
     public <T> T getLocalSettingOrDefault(@NotNull final SettingKey<T> key, @Nullable final T defaultValue) {
@@ -127,43 +144,68 @@ public class Settings implements ISettings {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets whether a setting with the specified key is defined.
+     *
+     * This method traverses up the dependency chain until a definition is found.
+     *
+     * @param key The key to look for.
+     * @param <T> The type of value.
+     * @return <code>true</code> when a setting is defined;
+     * otherwise, <code>false</code>.
      */
     public <T> boolean hasSetting(@NotNull final SettingKey<T> key) {
         Preconditions.checkNotNull(key);
 
-        ISettings settings = getSettingsWithDefinitionForKey(key);
+        Settings settings = getSettingsWithDefinitionForKey(key);
         return settings != null;
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the setting with the specified key.
+     *
+     * This method traverses up the dependency chain until a definition is found.
+     *
+     * @param key The key to look for.
+     * @param <T> The type of value.
+     * @return The value of the setting, which may be <code>null</code>.
+     * @throws SettingNotFoundException No setting with the specified key is defined.
      */
     @Nullable
     public <T> T getSetting(@NotNull final SettingKey<T> key) {
         Preconditions.checkNotNull(key);
 
-        ISettings settings = getSettingsWithDefinitionForKey(key);
+        Settings settings = getSettingsWithDefinitionForKey(key);
         if (settings == null)
             throw new SettingNotFoundException(StringFormatter.format("The setting with key {} was not found.", key));
         return settings.getLocalSetting(key);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the setting with the specified key;
+     * otherwise returns a default value.
+     *
+     * This method traverses up the dependency chain until a definition is found.
+     *
+     * @param key The key to look for.
+     * @param defaultValue The default value.
+     * @param <T> The type of value.
+     * @return The value of the setting, which may be <code>null</code>;
+     * or the default value when no setting with the specified key is defined.
      */
     @Nullable
     public <T> T getSettingOrDefault(@NotNull final SettingKey<T> key, @Nullable final T defaultValue) {
         Preconditions.checkNotNull(key);
 
-        ISettings settings = getSettingsWithDefinitionForKey(key);
+        Settings settings = getSettingsWithDefinitionForKey(key);
         if (settings == null)
             return defaultValue;
         return settings.getLocalSetting(key);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets all locally defined setting keys.
+     *
+     * @return A set of keys.
      */
     @NotNull
     public Set<SettingKey<?>> getAllLocalSettings() {
@@ -171,12 +213,14 @@ public class Settings implements ISettings {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets all defined setting keys in this settings and any ancestors.
+     *
+     * @return A set of keys.
      */
     @NotNull
     public Set<SettingKey<?>> getAllSettings() {
         HashSet<SettingKey<?>> keys = Sets.newHashSet(this.settings.keySet());
-        ISettings current = this.parent();
+        Settings current = this.parent();
         while (current != null) {
             keys.addAll(current.getAllLocalSettings());
         }
@@ -191,8 +235,8 @@ public class Settings implements ISettings {
      * @return The {@link Settings} with a definition for the key; or <code>null</code> when not found.
      */
     @Nullable
-    private ISettings getSettingsWithDefinitionForKey(@NotNull final SettingKey<?> key) {
-        ISettings current = this;
+    private Settings getSettingsWithDefinitionForKey(@NotNull final SettingKey<?> key) {
+        Settings current = this;
         while (current != null && !current.hasLocalSetting(key)) {
             current = current.parent();
         }

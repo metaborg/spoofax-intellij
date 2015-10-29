@@ -17,41 +17,31 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.project.settings;
+package org.metaborg.core.project.settings.serialization;
 
-import org.apache.commons.vfs2.FileObject;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.metaborg.core.project.settings.ISettingsFactory;
 
 /**
- * Settings serializer using YAML.
+ * Settings serializer/deserializer using YAML.
+ *
+ * Types can use custom (de)serializers through an annotation. For example:
+ * <pre>
+ *     @JsonSerialize(using = VersionSerializer.class)
+ *     @JsonDeserialize(using = VersionDeserializer.class)
+ *     public class Version {
+ *         // ...
+ *     }
+ * </pre>
  */
-public final class YamlSettingsSerializer extends SettingsSerializer {
+public final class YamlSettingsFormat extends JacksonSettingsFormat {
 
-    @NotNull private final ISettingsFactory settingsFactory;
+    /* package private */ YamlSettingsFormat(@NotNull final ISettingsFactory settingsFactory) {
+        super(settingsFactory, new YAMLFactory());
 
-    /* package private */ YamlSettingsSerializer(@NotNull final ISettingsFactory settingsFactory) {
-        this.settingsFactory = settingsFactory;
+        Preconditions.checkNotNull(settingsFactory);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ISettings readFrom(@NotNull final InputStream input) {
-        // TODO
-        return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeTo(
-            @NotNull final OutputStream output, @NotNull final ISettings settings) {
-        // TODO
-    }
 }

@@ -65,9 +65,10 @@ public final class StringFormatterTests {
         assertEquals("String with an array of placeholders.", result);
     }
 
+    @Test
     public void formatsStringWithValueArray() {
         String input = "String {} {} {} {} placeholders.";
-        String result = StringFormatter.format(input, new String[]{"with", "an", "array", "of"});
+        String result = StringFormatter.format(input, new Object[]{"with", "an", "array", "of"});
 
         assertEquals("String with an array of placeholders.", result);
     }

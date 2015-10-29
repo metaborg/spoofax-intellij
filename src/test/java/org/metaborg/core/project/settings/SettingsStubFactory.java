@@ -19,33 +19,28 @@
 
 package org.metaborg.core.project.settings;
 
-import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
+import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Factory for {@link Settings} objects.
- */
-public interface ISettingsFactory {
+public final class SettingsStubFactory implements ISettingsFactory {
 
-    /**
-     * Gets the setting descriptors for the settings.
-     * @return The setting descriptors.
-     */
     @NotNull
-    Set<SettingDescriptor> settingDescriptors();
+    @Override
+    public Set<SettingDescriptor> settingDescriptors() {
+        return Sets.newHashSet(
+                new SettingDescriptor(SettingsStub.NAME_KEY, false),
+                new SettingDescriptor(SettingsStub.ID_KEY, false)
+        );
+    }
 
-    /**
-     * Creates a settings object.
-     *
-     * @param settings A map with the settings.
-     * @param parent The parent settings; or <code>null</code>.
-     * @return The created settings object.
-     */
     @NotNull
-    Settings create(@NotNull Map<SettingKey<?>, Object> settings, @Nullable Settings parent);
+    @Override
+    public Settings create(
+            @NotNull final Map<SettingKey<?>, Object> settings, @Nullable final Settings parent) {
+        return new SettingsStub(settings, parent);
+    }
 }
