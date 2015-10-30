@@ -37,7 +37,7 @@ import java.util.*;
 public class Settings {
 
     @NotNull
-    /* package private */ final Map<SettingKey<?>, Object> settings;
+    /* package private */ final Map<SettingKey, Object> settings;
     @Nullable
     private final Settings parent;
 
@@ -48,7 +48,7 @@ public class Settings {
      * @param parent The parent settings; or <code>null</code>.
      * @param internal Unused.
      */
-    /* package private */ Settings(@NotNull final Map<SettingKey<?>, Object> settings, @Nullable final Settings parent, final boolean internal) {
+    /* package private */ Settings(@NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent, final boolean internal) {
         this.settings = settings;
         this.parent = parent;
         SettingsUtils.assertNoCycles(this);
@@ -57,27 +57,11 @@ public class Settings {
     /**
      * Initializes a new instance of the {@link Settings} class.
      *
-     * @param settings The default settings to use.
+     * @param settings The map of settings to use.
      * @param parent The parent settings; or <code>null</code>.
      */
-    public Settings(@NotNull final Map<SettingKey<?>, Object> settings, @Nullable final Settings parent) {
+    public Settings(@NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
         this(ImmutableMap.copyOf(settings), parent, true);
-    }
-
-    /**
-     * Initializes a new instance of the {@link Settings} class.
-     *
-     * @param parent The parent settings; or <code>null</code>.
-     */
-    public Settings(@Nullable final Settings parent) {
-        this(new LinkedHashMap<>(), parent);
-    }
-
-    /**
-     * Initializes a new instance of the {@link Settings} class.
-     */
-    public Settings() {
-        this(null);
     }
 
     /**
@@ -99,7 +83,7 @@ public class Settings {
      * @return <code>true</code> when a local setting is defined;
      * otherwise, <code>false</code>.
      */
-    public <T> boolean hasLocalSetting(@NotNull final SettingKey<T> key) {
+    public <T> boolean hasLocalSetting(@NotNull final SettingKey key) {
         Preconditions.checkNotNull(key);
 
         return this.settings.containsKey(key);
@@ -114,7 +98,7 @@ public class Settings {
      * @throws SettingNotFoundException No local setting with the specified key is defined.
      */
     @Nullable
-    public <T> T getLocalSetting(@NotNull final SettingKey<T> key) {
+    public <T> T getLocalSetting(@NotNull final SettingKey key) {
         Preconditions.checkNotNull(key);
 
         if (!hasLocalSetting(key))
@@ -134,7 +118,7 @@ public class Settings {
      * or the default value when no local setting with the specified key is defined.
      */
     @Nullable
-    public <T> T getLocalSettingOrDefault(@NotNull final SettingKey<T> key, @Nullable final T defaultValue) {
+    public <T> T getLocalSettingOrDefault(@NotNull final SettingKey key, @Nullable final T defaultValue) {
         Preconditions.checkNotNull(key);
 
         if (!hasLocalSetting(key))
@@ -153,7 +137,7 @@ public class Settings {
      * @return <code>true</code> when a setting is defined;
      * otherwise, <code>false</code>.
      */
-    public <T> boolean hasSetting(@NotNull final SettingKey<T> key) {
+    public <T> boolean hasSetting(@NotNull final SettingKey key) {
         Preconditions.checkNotNull(key);
 
         Settings settings = getSettingsWithDefinitionForKey(key);
@@ -171,7 +155,7 @@ public class Settings {
      * @throws SettingNotFoundException No setting with the specified key is defined.
      */
     @Nullable
-    public <T> T getSetting(@NotNull final SettingKey<T> key) {
+    public <T> T getSetting(@NotNull final SettingKey key) {
         Preconditions.checkNotNull(key);
 
         Settings settings = getSettingsWithDefinitionForKey(key);
@@ -193,7 +177,7 @@ public class Settings {
      * or the default value when no setting with the specified key is defined.
      */
     @Nullable
-    public <T> T getSettingOrDefault(@NotNull final SettingKey<T> key, @Nullable final T defaultValue) {
+    public <T> T getSettingOrDefault(@NotNull final SettingKey key, @Nullable final T defaultValue) {
         Preconditions.checkNotNull(key);
 
         Settings settings = getSettingsWithDefinitionForKey(key);
@@ -208,7 +192,7 @@ public class Settings {
      * @return A set of keys.
      */
     @NotNull
-    public Set<SettingKey<?>> getAllLocalSettings() {
+    public Set<SettingKey> getAllLocalSettings() {
         return ImmutableSet.copyOf(this.settings.keySet());
     }
 
@@ -218,8 +202,8 @@ public class Settings {
      * @return A set of keys.
      */
     @NotNull
-    public Set<SettingKey<?>> getAllSettings() {
-        HashSet<SettingKey<?>> keys = Sets.newHashSet(this.settings.keySet());
+    public Set<SettingKey> getAllSettings() {
+        HashSet<SettingKey> keys = Sets.newHashSet(this.settings.keySet());
         Settings current = this.parent();
         while (current != null) {
             keys.addAll(current.getAllLocalSettings());
@@ -235,7 +219,7 @@ public class Settings {
      * @return The {@link Settings} with a definition for the key; or <code>null</code> when not found.
      */
     @Nullable
-    private Settings getSettingsWithDefinitionForKey(@NotNull final SettingKey<?> key) {
+    private Settings getSettingsWithDefinitionForKey(@NotNull final SettingKey key) {
         Settings current = this;
         while (current != null && !current.hasLocalSetting(key)) {
             current = current.parent();

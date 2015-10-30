@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public final class SettingDescriptor {
 
     @NotNull
-    private final SettingKey<?> key;
+    private final SettingKey key;
     @NotNull
     private final boolean required;
 
@@ -38,7 +38,7 @@ public final class SettingDescriptor {
      * @param key The setting key.
      * @param required Whether the setting is required.
      */
-    public SettingDescriptor(@NotNull final SettingKey<?> key, final boolean required) {
+    public SettingDescriptor(@NotNull final SettingKey key, final boolean required) {
         Preconditions.checkNotNull(key);
 
         this.key = key;
@@ -50,7 +50,7 @@ public final class SettingDescriptor {
      *
      * @return The key.
      */
-    public SettingKey<?> key() {
+    public SettingKey key() {
         return this.key;
     }
 

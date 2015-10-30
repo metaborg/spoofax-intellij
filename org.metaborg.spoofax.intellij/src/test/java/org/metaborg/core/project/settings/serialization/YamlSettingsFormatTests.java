@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
@@ -43,11 +44,18 @@ public final class YamlSettingsFormatTests {
 
         String input = "---\n"
                 + "name: \"testName\"\n"
-                + "id: \"org.test:testclass:1.5.0\"\n";
+                + "id: \"org.test:testclass:1.5.0\"\n"
+                + "listOfIds:\n"
+                + "- \"org.test:dep1:1.0.0\"\n"
+                + "- \"org.test:dep2:0.1.0\"\n";
         SettingsStub settings = (SettingsStub) sut.readFromString(input);
 
         assertEquals("testName", settings.name());
         assertEquals(LanguageIdentifier.parse("org.test:testclass:1.5.0"), settings.id());
+        assertEquals(Arrays.asList(
+                LanguageIdentifier.parse("org.test:dep1:1.0.0"),
+                LanguageIdentifier.parse("org.test:dep2:0.1.0")
+        ), settings.listOfIds());
 
         String output = sut.writeToString(settings);
 

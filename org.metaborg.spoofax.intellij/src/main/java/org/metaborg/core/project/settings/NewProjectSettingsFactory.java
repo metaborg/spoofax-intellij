@@ -19,33 +19,42 @@
 
 package org.metaborg.core.project.settings;
 
-import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
+import com.google.common.collect.Sets;
+import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Factory for {@link Settings} objects.
+ * Factory for the {@link NewProjectSettings} class.
  */
-public interface ISettingsFactory {
+@Singleton
+public final class NewProjectSettingsFactory implements ISettingsFactory {
 
     /**
-     * Gets the setting descriptors for the settings.
-     * @return The setting descriptors.
+     * {@inheritDoc}
      */
     @NotNull
-    Set<SettingDescriptor> settingDescriptors();
+    @Override
+    public Set<SettingDescriptor> settingDescriptors() {
+        return Sets.newHashSet(
+                new SettingDescriptor(NewProjectSettings.IDENTIFIER_KEY, false),
+                new SettingDescriptor(NewProjectSettings.NAME_KEY, false),
+                new SettingDescriptor(NewProjectSettings.COMPILE_DEPENDENCIES_KEY, false),
+                new SettingDescriptor(NewProjectSettings.RUNTIME_DEPENDENCIES_KEY, false),
+                new SettingDescriptor(NewProjectSettings.LANGUAGE_CONTRIBUTIONS_KEY, false)
+        );
+    }
 
     /**
-     * Creates a settings object.
-     *
-     * @param settings A map with the settings.
-     * @param parent The parent settings; or <code>null</code>.
-     * @return The created settings object.
+     * {@inheritDoc}
      */
     @NotNull
-    Settings create(@NotNull Map<SettingKey, Object> settings, @Nullable Settings parent);
+    @Override
+    public Settings create(
+            @NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
+        return new NewProjectSettings(settings, parent);
+    }
 }

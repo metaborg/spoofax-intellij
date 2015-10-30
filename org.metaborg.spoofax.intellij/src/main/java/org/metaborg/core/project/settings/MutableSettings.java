@@ -39,7 +39,7 @@ import java.util.Set;
 public class MutableSettings extends Settings {
 
     @NotNull
-    private final Map<SettingKey<?>, Object> settings = new HashMap<>();
+    private final Map<SettingKey, Object> settings = new HashMap<>();
 
     /**
      * Initializes a new instance of the {@link MutableSettings} class.
@@ -64,7 +64,7 @@ public class MutableSettings extends Settings {
      * @param value The value to set the key to, which may be <code>null</code>.
      * @param <T> The type of value.
      */
-    public <T> void setLocalSetting(@NotNull final SettingKey<T> key, @Nullable final T value) {
+    public <T> void setLocalSetting(@NotNull final SettingKey key, @Nullable final T value) {
         Preconditions.checkNotNull(key);
 
         this.settings.put(key, value);
@@ -78,7 +78,7 @@ public class MutableSettings extends Settings {
      * @param key The key to clear.
      * @param <T> The type of value.
      */
-    public <T> void clearLocalSetting(@NotNull final SettingKey<T> key) {
+    public <T> void clearLocalSetting(@NotNull final SettingKey key) {
         Preconditions.checkNotNull(key);
 
         this.settings.remove(key);

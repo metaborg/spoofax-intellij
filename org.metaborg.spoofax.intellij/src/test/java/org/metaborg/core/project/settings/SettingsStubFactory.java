@@ -33,14 +33,15 @@ public final class SettingsStubFactory implements ISettingsFactory {
     public Set<SettingDescriptor> settingDescriptors() {
         return Sets.newHashSet(
                 new SettingDescriptor(SettingsStub.NAME_KEY, false),
-                new SettingDescriptor(SettingsStub.ID_KEY, false)
+                new SettingDescriptor(SettingsStub.ID_KEY, false),
+                new SettingDescriptor(SettingsStub.LIST_OF_ID_KEY, false)
         );
     }
 
     @NotNull
     @Override
     public Settings create(
-            @NotNull final Map<SettingKey<?>, Object> settings, @Nullable final Settings parent) {
+            @NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
         return new SettingsStub(settings, parent);
     }
 }

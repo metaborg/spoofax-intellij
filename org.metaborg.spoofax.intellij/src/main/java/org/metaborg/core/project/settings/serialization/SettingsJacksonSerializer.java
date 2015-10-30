@@ -75,7 +75,7 @@ import java.util.HashMap;
         Preconditions.checkNotNull(provider);
 
         generator.writeStartObject();
-        for (SettingKey<?> key : settings.getAllLocalSettings()) {
+        for (SettingKey key : settings.getAllLocalSettings()) {
             generator.writeFieldName(key.name());
             generator.writeObject(settings.getLocalSetting(key));
         }

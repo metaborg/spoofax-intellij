@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.LanguageIdentifier;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,11 +31,15 @@ import java.util.Map;
  */
 public final class SettingsStub extends Settings {
 
-    /* package private */ static final SettingKey<String> NAME_KEY = new SettingKey<>("name", String.class);
-    /* package private */ static final SettingKey<LanguageIdentifier> ID_KEY = new SettingKey<>("id", LanguageIdentifier.class);
+    /* package private */ static final SettingKey NAME_KEY
+            = new SettingKey("name", String.class);
+    /* package private */ static final SettingKey ID_KEY
+            = new SettingKey("id", LanguageIdentifier.class);
+    /* package private */ static final SettingKey LIST_OF_ID_KEY
+            = new SettingKey("listOfIds", new TypeReference<List<LanguageIdentifier>>(){});
 
     public SettingsStub(
-            @NotNull final Map<SettingKey<?>, Object> settings, @Nullable final Settings parent) {
+            @NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
         super(settings, parent);
     }
 
@@ -43,6 +48,8 @@ public final class SettingsStub extends Settings {
     }
 
     public LanguageIdentifier id() { return getSetting(ID_KEY); }
+
+    public List<LanguageIdentifier> listOfIds() { return getSetting(LIST_OF_ID_KEY); }
 
 }
 

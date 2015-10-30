@@ -43,7 +43,7 @@ public class DefaultSettings extends Settings {
      * Initializes a new instance of the {@link DefaultSettings} class.
      * @param settings A map with the default settings.
      */
-    public DefaultSettings(@NotNull final Map<SettingKey<?>, Object> settings) {
+    public DefaultSettings(@NotNull final Map<SettingKey, Object> settings) {
         super(settings, null);
         Preconditions.checkNotNull(settings);
     }
@@ -61,7 +61,7 @@ public class DefaultSettings extends Settings {
      * {@inheritDoc}
      */
     @Override
-    public <T> boolean hasSetting(@NotNull final SettingKey<T> key) {
+    public boolean hasSetting(@NotNull final SettingKey key) {
         Preconditions.checkNotNull(key);
 
         return hasLocalSetting(key);
@@ -72,7 +72,7 @@ public class DefaultSettings extends Settings {
      */
     @Override
     @Nullable
-    public <T> T getSetting(@NotNull final SettingKey<T> key) {
+    public <T> T getSetting(@NotNull final SettingKey key) {
         Preconditions.checkNotNull(key);
 
         return getLocalSetting(key);
@@ -83,7 +83,7 @@ public class DefaultSettings extends Settings {
      */
     @Override
     @Nullable
-    public <T> T getSettingOrDefault(@NotNull final SettingKey<T> key, @Nullable final T defaultValue) {
+    public <T> T getSettingOrDefault(@NotNull final SettingKey key, @Nullable final T defaultValue) {
         Preconditions.checkNotNull(key);
 
         return getLocalSettingOrDefault(key, defaultValue);
@@ -94,7 +94,7 @@ public class DefaultSettings extends Settings {
      */
     @Override
     @NotNull
-    public Set<SettingKey<?>> getAllSettings() {
+    public Set<SettingKey> getAllSettings() {
         return getAllLocalSettings();
     }
 }

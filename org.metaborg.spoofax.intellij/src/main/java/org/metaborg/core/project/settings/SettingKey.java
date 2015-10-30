@@ -24,19 +24,26 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.StringFormatter;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Type;
 
 /**
  * A setting key.
  *
  * Be sure to store and reuse the <em>exact same key object</em>,
  * as different instances are not equal (even if they have the same name and type).
+ *
+ * Examples:
+ * <pre>
+ * static final SettingKey NAME_KEY = new SettingKey("name", String.class);
+ * static final SettingKey ID_LIST_KEY = new SettingKey("ids", new TypeReference<List<LanguageIdentifier>>() {});
+ * </pre>
  */
-public final class SettingKey<T> {
+public final class SettingKey {
 
     @NotNull
     private final String name;
     @NotNull
-    private final Class<T> type;
+    private final Type type;
 
     /**
      * Initializes a new instance of the {@link SettingKey} class.
@@ -44,12 +51,32 @@ public final class SettingKey<T> {
      * @param name The name of the setting.
      * @param type The type of the setting.
      */
-    public SettingKey(@NotNull final String name, @NotNull final Class<T> type) {
+    private SettingKey(@NotNull final String name, @NotNull final Type type) {
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(type);
 
         this.name = name;
         this.type = type;
+    }
+
+    /**
+     * Initializes a new instance of the {@link SettingKey} class.
+     *
+     * @param name The name of the setting.
+     * @param type The type of the setting.
+     */
+    public SettingKey(@NotNull final String name, @NotNull final Class<?> type) {
+        this(name, (Type)type);
+    }
+
+    /**
+     * Initializes a new instance of the {@link SettingKey} class.
+     *
+     * @param name The name of the setting.
+     * @param type The type of the setting.
+     */
+    public SettingKey(@NotNull final String name, @NotNull final TypeReference<?> type) {
+        this(name, type.type());
     }
 
     /**
@@ -68,7 +95,7 @@ public final class SettingKey<T> {
      * @return The type of the setting.
      */
     @NotNull
-    public Class<T> type() {
+    public Type type() {
         return this.type;
     }
 
@@ -95,6 +122,6 @@ public final class SettingKey<T> {
      */
     @Override
     public String toString() {
-        return StringFormatter.format("{}<{}>", this.name, this.type.getSimpleName());
+        return StringFormatter.format("{}<{}>", this.name, this.type.getTypeName());
     }
 }

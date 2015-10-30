@@ -25,6 +25,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
@@ -71,28 +72,40 @@ import java.util.*;
         final ObjectMapper mapper = (ObjectMapper)parser.getCodec();
         final Settings parent = (Settings)context.findInjectableValue("parent", null, null);
         final JsonNode root = mapper.readTree(parser);
-        final Map<SettingKey<?>, Object> settings = new LinkedHashMap<>();
+        final Map<SettingKey, Object> settings = new LinkedHashMap<>();
+        final TypeFactory typeFactory = mapper.getTypeFactory();
 
         Set<SettingDescriptor> descriptors = this.factory.settingDescriptors();
         Iterator<String> fieldNames = root.fieldNames();
         while (fieldNames.hasNext()) {
-            String field = fieldNames.next();
-            JsonNode node = root.get(field);
+            String fieldName = fieldNames.next();
+            JsonNode node = root.get(fieldName);
             assert node != null;
-            SettingDescriptor descriptor = findDescriptor(field, descriptors);
-            if (descriptor != null) {
-                // Known field.
-                SettingKey<?> key = descriptor.key();
-                Object value = mapper.readValue(node.traverse(mapper), key.type());
-                settings.put(key, value);
-            } else {
-                // Unknown field, conserve.
-                Object value = mapper.readValue(node.traverse(mapper), Object.class);
-                settings.put(new SettingKey<>(field, Object.class), value);
-            }
+            SettingKey key = getKeyOrDefault(fieldName, descriptors);
+            Object value = mapper.readValue(node.traverse(mapper), typeFactory.constructType(key.type()));
+            settings.put(key, value);
         }
 
         return this.factory.create(settings, parent);
+    }
+
+    /**
+     * Gets the setting key for the specified field.
+     *
+     * @param fieldName The field name.
+     * @param descriptors The set of descriptors.
+     * @return The setting key.
+     */
+    @NotNull
+    private SettingKey getKeyOrDefault(@NotNull final String fieldName, @NotNull final Set<SettingDescriptor> descriptors) {
+        SettingDescriptor descriptor = findDescriptor(fieldName, descriptors);
+        if (descriptor != null) {
+            // Known field.
+            return descriptor.key();
+        } else {
+            // Unknown field, conserve.
+            return new SettingKey(fieldName, Object.class);
+        }
     }
 
     /**
