@@ -29,6 +29,7 @@
       <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.6.0/jackson-dataformat-yaml-2.6.0.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.15/snakeyaml-1.15.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/metaborg/org.metaborg.spoofax.core/1.5.0-SNAPSHOT/org.metaborg.spoofax.core-1.5.0-SNAPSHOT.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/metaborg/org.spoofax.terms/1.5.0-SNAPSHOT/org.spoofax.terms-1.5.0-SNAPSHOT.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/metaborg/org.spoofax.interpreter.core/1.5.0-SNAPSHOT/org.spoofax.interpreter.core-1.5.0-SNAPSHOT.jar!/" />
@@ -66,12 +67,12 @@
       <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/aether/aether-impl/1.0.0.v20140518/aether-impl-1.0.0.v20140518.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/sonatype/sisu/sisu-guice/3.2.3/sisu-guice-3.2.3-no_aop.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/metaborg/org.metaborg.spoofax.nativebundle/1.5.0-SNAPSHOT/org.metaborg.spoofax.nativebundle-1.5.0-SNAPSHOT.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/metaborg/org.metaborg.spoofax.generator/1.5.0-SNAPSHOT/org.metaborg.spoofax.generator-1.5.0-SNAPSHOT.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/com/github/spullara/mustache/java/compiler/0.8.17/compiler-0.8.17.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant/1.9.2/ant-1.9.2.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant-launcher/1.9.2/ant-launcher-1.9.2.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/ant/ant/1.5/ant-1.5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
