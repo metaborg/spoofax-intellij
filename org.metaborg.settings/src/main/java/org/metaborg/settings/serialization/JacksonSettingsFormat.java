@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.project.settings.serialization;
+package org.metaborg.settings.serialization;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.InjectableValues;
@@ -26,8 +26,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.LanguageIdentifier;
-import org.metaborg.core.project.settings.Settings;
-import org.metaborg.core.project.settings.ISettingsFactory;
+import org.metaborg.settings.*;
 
 import javax.annotation.Nullable;
 import java.io.IOException;

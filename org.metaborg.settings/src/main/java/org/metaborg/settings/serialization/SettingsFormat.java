@@ -17,13 +17,13 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.project.settings.serialization;
+package org.metaborg.settings.serialization;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.project.settings.Settings;
+import org.metaborg.settings.Settings;
 
 import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;

@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.project.settings;
+package org.metaborg.settings;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -36,7 +36,6 @@ import java.util.*;
  */
 public class Settings {
 
-    @NotNull
     /* package private */ final Map<SettingKey, Object> settings;
     @Nullable
     private final Settings parent;

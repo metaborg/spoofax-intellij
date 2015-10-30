@@ -17,31 +17,30 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.project.settings.serialization;
+package org.metaborg.settings;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.project.settings.ISettingsFactory;
 
 /**
- * Settings serializer/deserializer using YAML.
- *
- * Types can use custom (de)serializers through an annotation. For example:
- * <pre>
- *     @JsonSerialize(using = VersionSerializer.class)
- *     @JsonDeserialize(using = VersionDeserializer.class)
- *     public class Version {
- *         // ...
- *     }
- * </pre>
+ * Created by daniel on 10/28/15.
  */
-public final class YamlSettingsFormat extends JacksonSettingsFormat {
+/* package private */ final class SettingsUtils {
 
-    /* package private */ YamlSettingsFormat(@NotNull final ISettingsFactory settingsFactory) {
-        super(settingsFactory, new YAMLFactory());
+    /**
+     * Asserts that there are no cycles in the dependency chain.
+     *
+     * @param settings The settings to test.
+     */
+    public static void assertNoCycles(final Settings settings) {
+        Preconditions.checkNotNull(settings);
 
-        Preconditions.checkNotNull(settingsFactory);
+        Settings current = settings.parent();
+        while (current != null && current != settings) {
+            current = current.parent();
+        }
+        if (current == settings)
+            throw new RuntimeException("There is a cycle in the settings dependency chain.");
+        assert current == null;
     }
 
 }

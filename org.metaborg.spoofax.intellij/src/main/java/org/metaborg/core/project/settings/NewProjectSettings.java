@@ -20,6 +20,9 @@
 package org.metaborg.core.project.settings;
 
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.settings.SettingKey;
+import org.metaborg.settings.Settings;
+import org.metaborg.settings.TypeReference;
 import org.metaborg.core.language.LanguageContributionIdentifier;
 import org.metaborg.core.language.LanguageIdentifier;
 

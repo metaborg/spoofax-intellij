@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/org.metaborg.settings/org.metaborg.settings.iml" filepath="$PROJECT_DIR$/org.metaborg.settings/org.metaborg.settings.iml" />
       <module fileurl="file://$PROJECT_DIR$/org.metaborg.spoofax.intellij/org.metaborg.spoofax.intellij.iml" filepath="$PROJECT_DIR$/org.metaborg.spoofax.intellij/org.metaborg.spoofax.intellij.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.metaborg.spoofax.intellij/org.metaborg.spoofax.intellij-org.metaborg.spoofax.intellij.iml" filepath="$PROJECT_DIR$/org.metaborg.spoofax.intellij/org.metaborg.spoofax.intellij-org.metaborg.spoofax.intellij.iml" />
     </modules>
   </component>
 </project>

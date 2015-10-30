@@ -17,31 +17,39 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.project.settings;
+package org.metaborg.settings;
 
-import com.google.common.collect.Sets;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.language.LanguageIdentifier;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-public final class SettingsStubFactory implements ISettingsFactory {
+/**
+ * Settings stub.
+ */
+public final class SettingsStub extends Settings {
 
-    @NotNull
-    @Override
-    public Set<SettingDescriptor> settingDescriptors() {
-        return Sets.newHashSet(
-                new SettingDescriptor(SettingsStub.NAME_KEY, false),
-                new SettingDescriptor(SettingsStub.ID_KEY, false),
-                new SettingDescriptor(SettingsStub.LIST_OF_ID_KEY, false)
-        );
-    }
+    /* package private */ static final SettingKey NAME_KEY
+            = new SettingKey("name", String.class);
+    /* package private */ static final SettingKey ID_KEY
+            = new SettingKey("id", LanguageIdentifier.class);
+    /* package private */ static final SettingKey LIST_OF_ID_KEY
+            = new SettingKey("listOfIds", new TypeReference<List<LanguageIdentifier>>(){});
 
-    @NotNull
-    @Override
-    public Settings create(
+    public SettingsStub(
             @NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
-        return new SettingsStub(settings, parent);
+        super(settings, parent);
     }
+
+    public String name() {
+        return getSetting(NAME_KEY);
+    }
+
+    public LanguageIdentifier id() { return getSetting(ID_KEY); }
+
+    public List<LanguageIdentifier> listOfIds() { return getSetting(LIST_OF_ID_KEY); }
+
 }
+

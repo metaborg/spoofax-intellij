@@ -21,8 +21,9 @@ package org.metaborg.core.project.settings;
 
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.LanguageContributionIdentifier;
-import org.metaborg.core.language.LanguageIdentifier;
+import org.metaborg.settings.SettingKey;
+import org.metaborg.settings.Settings;
+import org.metaborg.settings.TypeReference;
 import org.metaborg.spoofax.core.project.settings.Format;
 
 import javax.annotation.Nullable;

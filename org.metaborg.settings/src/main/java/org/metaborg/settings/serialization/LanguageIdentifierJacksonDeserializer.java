@@ -17,10 +17,9 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.project.settings.serialization;
+package org.metaborg.settings.serialization;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.LanguageIdentifier;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * Deserializer for the {@link LanguageIdentifier} class.

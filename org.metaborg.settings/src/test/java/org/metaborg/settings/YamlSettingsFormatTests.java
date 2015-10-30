@@ -17,20 +17,16 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.project.settings.serialization;
+package org.metaborg.settings;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.metaborg.core.language.LanguageIdentifier;
-import org.metaborg.core.project.settings.DefaultSettings;
-import org.metaborg.core.project.settings.Settings;
+import org.metaborg.settings.DefaultSettings;
+import org.metaborg.settings.Settings;
 import org.metaborg.core.project.settings.SettingsStub;
 import org.metaborg.core.project.settings.SettingsStubFactory;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 
