@@ -20,7 +20,6 @@
 package org.metaborg.settings;
 
 import com.google.common.collect.Sets;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -28,20 +27,17 @@ import java.util.Set;
 
 public final class SettingsStubFactory implements ISettingsFactory {
 
-    @NotNull
     @Override
     public Set<SettingDescriptor> settingDescriptors() {
         return Sets.newHashSet(
                 new SettingDescriptor(SettingsStub.NAME_KEY, false),
-                new SettingDescriptor(SettingsStub.ID_KEY, false),
-                new SettingDescriptor(SettingsStub.LIST_OF_ID_KEY, false)
+                new SettingDescriptor(SettingsStub.OBJ_KEY, false),
+                new SettingDescriptor(SettingsStub.LIST_OF_OBJS_KEY, false)
         );
     }
 
-    @NotNull
     @Override
-    public Settings create(
-            @NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
+    public Settings create(final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
         return new SettingsStub(settings, parent);
     }
 }

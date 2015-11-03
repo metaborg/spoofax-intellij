@@ -20,21 +20,34 @@
 package org.metaborg.settings;
 
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
+import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Setting in a settings hierarchy.
  *
- * Derive from this class for mutable settings.
+ * You can derive from this class to provide getters and setters.
  */
 public class MutableSettings extends Settings {
 
-    @NotNull
-    private final Map<SettingKey, Object> settings = new HashMap<>();
+    private final Map<SettingKey, Object> settings;
+
+    /**
+     * Initializes a new instance of the {@link MutableSettings} class.
+     *
+     * @param settings The map of settings to use.
+     * @param parent The parent settings; or <code>null</code>.
+     */
+    public MutableSettings(final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
+        super(settings, parent, true);
+
+        Preconditions.checkNotNull(settings);
+        this.settings = settings;
+    }
 
     /**
      * Initializes a new instance of the {@link MutableSettings} class.
@@ -42,7 +55,7 @@ public class MutableSettings extends Settings {
      * @param parent The parent settings; or <code>null</code>.
      */
     public MutableSettings(@Nullable final Settings parent) {
-        super(new HashMap<>(), parent, true);
+        this(new LinkedHashMap<>(), parent);
     }
 
     /**
@@ -59,7 +72,7 @@ public class MutableSettings extends Settings {
      * @param value The value to set the key to, which may be <code>null</code>.
      * @param <T> The type of value.
      */
-    public <T> void setLocalSetting(@NotNull final SettingKey key, @Nullable final T value) {
+    public <T> void setLocalSetting(final SettingKey key, @Nullable final T value) {
         Preconditions.checkNotNull(key);
 
         this.settings.put(key, value);
@@ -73,7 +86,7 @@ public class MutableSettings extends Settings {
      * @param key The key to clear.
      * @param <T> The type of value.
      */
-    public <T> void clearLocalSetting(@NotNull final SettingKey key) {
+    public <T> void clearLocalSetting(final SettingKey key) {
         Preconditions.checkNotNull(key);
 
         this.settings.remove(key);

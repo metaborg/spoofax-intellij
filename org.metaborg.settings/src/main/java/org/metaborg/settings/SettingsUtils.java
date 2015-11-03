@@ -22,7 +22,7 @@ package org.metaborg.settings;
 import com.google.common.base.Preconditions;
 
 /**
- * Created by daniel on 10/28/15.
+ * Utility functions.
  */
 /* package private */ final class SettingsUtils {
 

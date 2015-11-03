@@ -17,11 +17,10 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.settings.serialization;
+package org.metaborg.settings.jackson;
 
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.settings.ISettingsFactory;
 
 /**
@@ -38,7 +37,7 @@ import org.metaborg.settings.ISettingsFactory;
  */
 public final class YamlSettingsFormat extends JacksonSettingsFormat {
 
-    /* package private */ YamlSettingsFormat(@NotNull final ISettingsFactory settingsFactory) {
+    public YamlSettingsFormat(final ISettingsFactory settingsFactory) {
         super(settingsFactory, new YAMLFactory());
 
         Preconditions.checkNotNull(settingsFactory);

@@ -17,20 +17,17 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.settings.serialization;
+package org.metaborg.settings.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.settings.Settings;
 import org.metaborg.settings.ISettingsFactory;
 import org.metaborg.settings.SettingDescriptor;
 import org.metaborg.settings.SettingKey;
-import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -41,17 +38,14 @@ import java.util.*;
  */
 /* package private */ final class SettingsJacksonDeserializer extends StdDeserializer<Settings> {
 
-    @NotNull
     private final ISettingsFactory factory;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Initializes a new instance of the {@link SettingsJacksonDeserializer} class.
      *
      * @param factory The settings factory.
      */
-    public SettingsJacksonDeserializer(@NotNull final ISettingsFactory factory) {
+    public SettingsJacksonDeserializer(final ISettingsFactory factory) {
         super(Settings.class);
         Preconditions.checkNotNull(factory);
 
@@ -62,7 +56,7 @@ import java.util.*;
      * {@inheritDoc}
      */
     @Override
-    public Settings deserialize(@NotNull final JsonParser parser, @NotNull final DeserializationContext context) throws IOException {
+    public Settings deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
         Preconditions.checkNotNull(parser);
         Preconditions.checkNotNull(context);
 
@@ -93,8 +87,7 @@ import java.util.*;
      * @param descriptors The set of descriptors.
      * @return The setting key.
      */
-    @NotNull
-    private SettingKey getKeyOrDefault(@NotNull final String fieldName, @NotNull final Set<SettingDescriptor> descriptors) {
+    private SettingKey getKeyOrDefault(final String fieldName, final Set<SettingDescriptor> descriptors) {
         SettingDescriptor descriptor = findDescriptor(fieldName, descriptors);
         if (descriptor != null) {
             // Known field.
@@ -113,7 +106,7 @@ import java.util.*;
      * @return The descriptor with the specified name; or <code>null</code>.
      */
     @Nullable
-    private SettingDescriptor findDescriptor(@Nullable String name, @NotNull Set<SettingDescriptor> descriptors) {
+    private SettingDescriptor findDescriptor(@Nullable String name, Set<SettingDescriptor> descriptors) {
         if (name == null)
             return null;
 

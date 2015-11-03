@@ -20,26 +20,34 @@
 package org.metaborg.settings;
 
 import javax.annotation.Nullable;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
- * Factory for {@link Settings} objects.
+ * A settings storage format.
+ *
+ * Use the methods of the {@link SettingsFormatUtils} instead of calling the members
+ * of this interface directly.
  */
-public interface ISettingsFactory {
+public interface ISettingsFormat {
 
     /**
-     * Gets the setting descriptors for the settings.
-     * @return The setting descriptors.
-     */
-    Set<SettingDescriptor> settingDescriptors();
-
-    /**
-     * Creates a settings object.
+     * Reads settings from an input stream.
      *
-     * @param settings A map with the settings.
+     * @param input The input stream.
      * @param parent The parent settings; or <code>null</code>.
-     * @return The created settings object.
+     * @return The read settings.
      */
-    Settings create(Map<SettingKey, Object> settings, @Nullable Settings parent);
+    Settings read(InputStream input, @Nullable Settings parent) throws IOException;
+
+    /**
+     * Writes settings to an output stream.
+     *
+     * @param output The output stream.
+     * @param settings The settings to write.
+     */
+    void write(
+            final OutputStream output, final Settings settings) throws IOException;
+
 }

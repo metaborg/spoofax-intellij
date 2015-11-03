@@ -20,16 +20,13 @@
 package org.metaborg.settings;
 
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Describes a setting.
  */
 public final class SettingDescriptor {
 
-    @NotNull
     private final SettingKey key;
-    @NotNull
     private final boolean required;
 
     /**
@@ -38,7 +35,7 @@ public final class SettingDescriptor {
      * @param key The setting key.
      * @param required Whether the setting is required.
      */
-    public SettingDescriptor(@NotNull final SettingKey key, final boolean required) {
+    public SettingDescriptor(final SettingKey key, final boolean required) {
         Preconditions.checkNotNull(key);
 
         this.key = key;

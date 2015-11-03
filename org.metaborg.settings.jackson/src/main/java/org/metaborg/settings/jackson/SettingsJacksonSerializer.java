@@ -17,18 +17,15 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.settings.serialization;
+package org.metaborg.settings.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.settings.ISettingsFactory;
 import org.metaborg.settings.SettingKey;
 import org.metaborg.settings.Settings;
-import org.slf4j.Logger;
 
 import java.io.IOException;
 
@@ -37,17 +34,14 @@ import java.io.IOException;
  */
 /* package private */ final class SettingsJacksonSerializer extends StdSerializer<Settings> {
 
-    @NotNull
     private final ISettingsFactory factory;
-    @InjectLogger
-    private Logger logger;
 
     /**
      * Initializes a new instance of the {@link SettingsJacksonSerializer} class.
      *
      * @param factory The settings factory.
      */
-    public SettingsJacksonSerializer(@NotNull final ISettingsFactory factory) {
+    public SettingsJacksonSerializer(final ISettingsFactory factory) {
         super(Settings.class);
         Preconditions.checkNotNull(factory);
 
@@ -59,9 +53,9 @@ import java.io.IOException;
      */
     @Override
     public void serialize(
-            @NotNull final Settings settings,
-            @NotNull final JsonGenerator generator,
-            @NotNull final SerializerProvider provider) throws
+            final Settings settings,
+            final JsonGenerator generator,
+            final SerializerProvider provider) throws
             IOException {
         Preconditions.checkNotNull(settings);
         Preconditions.checkNotNull(generator);

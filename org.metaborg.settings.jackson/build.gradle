@@ -14,9 +14,13 @@ repositories {
 }
 
 dependencies {
+    compile project(':org.metaborg.settings')
     compile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.google.guava:guava:18.0'
-    compile 'org.apache.commons:commons-vfs2:2.0'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.6.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.0'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.6.0'
 
     runtime 'org.slf4j:slf4j-api:1.7.12'
 

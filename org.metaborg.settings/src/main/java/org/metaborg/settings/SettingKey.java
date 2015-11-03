@@ -20,8 +20,7 @@
 package org.metaborg.settings;
 
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.StringFormatter;
+import org.slf4j.helpers.MessageFormatter;
 
 import java.lang.reflect.Type;
 
@@ -39,9 +38,7 @@ import java.lang.reflect.Type;
  */
 public final class SettingKey {
 
-    @NotNull
     private final String name;
-    @NotNull
     private final Type type;
 
     /**
@@ -50,7 +47,7 @@ public final class SettingKey {
      * @param name The name of the setting.
      * @param type The type of the setting.
      */
-    private SettingKey(@NotNull final String name, @NotNull final Type type) {
+    private SettingKey(final String name, final Type type) {
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(type);
 
@@ -64,7 +61,7 @@ public final class SettingKey {
      * @param name The name of the setting.
      * @param type The type of the setting.
      */
-    public SettingKey(@NotNull final String name, @NotNull final Class<?> type) {
+    public SettingKey(final String name, final Class<?> type) {
         this(name, (Type)type);
     }
 
@@ -74,7 +71,7 @@ public final class SettingKey {
      * @param name The name of the setting.
      * @param type The type of the setting.
      */
-    public SettingKey(@NotNull final String name, @NotNull final TypeReference<?> type) {
+    public SettingKey(final String name, final TypeReference<?> type) {
         this(name, type.type());
     }
 
@@ -83,7 +80,6 @@ public final class SettingKey {
      *
      * @return The name of the setting.
      */
-    @NotNull
     public String name() {
         return this.name;
     }
@@ -93,7 +89,6 @@ public final class SettingKey {
      *
      * @return The type of the setting.
      */
-    @NotNull
     public Type type() {
         return this.type;
     }
@@ -121,6 +116,6 @@ public final class SettingKey {
      */
     @Override
     public String toString() {
-        return StringFormatter.format("{}<{}>", this.name, this.type.getTypeName());
+        return MessageFormatter.format("{}<{}>", this.name, this.type.getTypeName()).getMessage();
     }
 }

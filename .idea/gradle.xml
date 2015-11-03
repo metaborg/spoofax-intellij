@@ -11,6 +11,21 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/org.metaborg.settings" />
+            <option value="$PROJECT_DIR$/org.metaborg.settings.jackson" />
+            <option value="$PROJECT_DIR$/org.metaborg.spoofax.intellij" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="createEmptyContentRootDirectories" value="true" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/org.metaborg.settings.jackson" />
+        <option name="gradleJvm" value="1.8" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/org.metaborg.settings" />
+            <option value="$PROJECT_DIR$/org.metaborg.settings.jackson" />
             <option value="$PROJECT_DIR$/org.metaborg.spoofax.intellij" />
           </set>
         </option>
