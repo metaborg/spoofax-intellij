@@ -41,5 +41,5 @@ public interface ISettingsFactory {
      * @param parent The parent settings; or <code>null</code>.
      * @return The created settings object.
      */
-    Settings create(Map<SettingKey, Object> settings, @Nullable Settings parent);
+    Settings create(Map<ISettingKey<?>, Object> settings, @Nullable Settings parent);
 }

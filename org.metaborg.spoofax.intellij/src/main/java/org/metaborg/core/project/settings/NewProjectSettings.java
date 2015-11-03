@@ -20,9 +20,7 @@
 package org.metaborg.core.project.settings;
 
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.settings.SettingKey;
-import org.metaborg.settings.Settings;
-import org.metaborg.settings.TypeReference;
+import org.metaborg.settings.*;
 import org.metaborg.core.language.LanguageContributionIdentifier;
 import org.metaborg.core.language.LanguageIdentifier;
 
@@ -36,16 +34,17 @@ import java.util.Map;
  */
 public class NewProjectSettings extends Settings implements IProjectSettings {
 
-    /* package private */ static final SettingKey IDENTIFIER_KEY
-            = new SettingKey("id", LanguageIdentifier.class);
-    /* package private */ static final SettingKey NAME_KEY
-            = new SettingKey("name", String.class);
-    /* package private */ static final SettingKey COMPILE_DEPENDENCIES_KEY
-            = new SettingKey("compileDependencies", new TypeReference<List<LanguageIdentifier>>() {});
-    /* package private */ static final SettingKey RUNTIME_DEPENDENCIES_KEY
-            = new SettingKey("runtimeDependencies", new TypeReference<List<LanguageIdentifier>>() {});
-    /* package private */ static final SettingKey LANGUAGE_CONTRIBUTIONS_KEY
-            = new SettingKey("languageContributions", new TypeReference<List<LanguageContributionIdentifier>>() {});
+    /* package private */ static final SettingKey<LanguageIdentifier> IDENTIFIER_KEY
+            = new SettingKey<>("id", LanguageIdentifier.class);
+    /* package private */ static final SettingKey<String> NAME_KEY
+            = new SettingKey<>("name", String.class);
+    /* package private */ static final SettingKey<List<LanguageIdentifier>> COMPILE_DEPENDENCIES_KEY
+            = new SettingKey<>("compileDependencies", new TypeReference<List<LanguageIdentifier>>() {},
+                               SettingStrategies.appendList());
+    /* package private */ static final SettingKey<List<LanguageIdentifier>> RUNTIME_DEPENDENCIES_KEY
+            = new SettingKey<>("runtimeDependencies", new TypeReference<List<LanguageIdentifier>>() {}, SettingStrategies.appendList());
+    /* package private */ static final SettingKey<List<LanguageContributionIdentifier>> LANGUAGE_CONTRIBUTIONS_KEY
+            = new SettingKey<>("languageContributions", new TypeReference<List<LanguageContributionIdentifier>>() {}, SettingStrategies.appendList());
 
     /**
      * Initializes a new instance of the {@link NewProjectSettings} class.
@@ -53,7 +52,7 @@ public class NewProjectSettings extends Settings implements IProjectSettings {
      * @param settings The map of settings to use.
      * @param parent The parent settings; or <code>null</code>.
      */
-    /* package private */ NewProjectSettings(@NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
+    /* package private */ NewProjectSettings(@NotNull final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
         super(settings, parent);
     }
 

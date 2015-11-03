@@ -28,14 +28,14 @@ import java.util.Map;
  */
 public final class SettingsStub extends Settings {
 
-    /* package private */ static final SettingKey NAME_KEY
-            = new SettingKey("name", String.class);
-    /* package private */ static final SettingKey OBJ_KEY
-            = new SettingKey("obj", ComplexObject.class);
-    /* package private */ static final SettingKey LIST_OF_OBJS_KEY
-            = new SettingKey("listOfObjs", new TypeReference<List<ComplexObject>>(){});
+    /* package private */ static final SettingKey<String> NAME_KEY
+            = new SettingKey<>("name", String.class);
+    /* package private */ static final SettingKey<ComplexObject> OBJ_KEY
+            = new SettingKey<>("obj", ComplexObject.class);
+    /* package private */ static final SettingKey<List<ComplexObject>> LIST_OF_OBJS_KEY
+            = new SettingKey<>("listOfObjs", new TypeReference<List<ComplexObject>>(){}, SettingStrategies.appendList());
 
-    public SettingsStub(final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
+    public SettingsStub(final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
         super(settings, parent);
     }
 

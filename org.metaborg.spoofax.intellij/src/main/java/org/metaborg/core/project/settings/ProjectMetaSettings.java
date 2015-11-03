@@ -21,6 +21,7 @@ package org.metaborg.core.project.settings;
 
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.settings.ISettingKey;
 import org.metaborg.settings.SettingKey;
 import org.metaborg.settings.Settings;
 import org.metaborg.settings.TypeReference;
@@ -36,30 +37,30 @@ import java.util.Map;
  */
 public final class ProjectMetaSettings extends NewProjectSettings implements IProjectMetaSettings {
 
-    /* package private */ static final SettingKey LOCATION_KEY
-            = new SettingKey("location", FileObject.class);
-    /* package private */ static final SettingKey PARDONED_LANGUAGES_KEY
-            = new SettingKey("pardonedLanguages", new TypeReference<List<String>>(){});
-    /* package private */ static final SettingKey FORMAT_KEY
-            = new SettingKey("format", Format.class);
-    /* package private */ static final SettingKey SDF_ARGS_KEY
-            = new SettingKey("sdfArgs", Format.class);
-    /* package private */ static final SettingKey STRATEGO_ARGS_KEY
-            = new SettingKey("strategoArgs", Format.class);
-    /* package private */ static final SettingKey EXTERNAL_DEF_KEY
-            = new SettingKey("externalDef", Format.class);
-    /* package private */ static final SettingKey EXTERNAL_JAR_KEY
-            = new SettingKey("externalJar", Format.class);
-    /* package private */ static final SettingKey EXTERNAL_JAR_FLAGS_KEY
-            = new SettingKey("externalJarFlags", Format.class);
-    /* package private */ static final SettingKey STRATEGO_KEY
-            = new SettingKey("strategoName", Format.class);
-    /* package private */ static final SettingKey JAVA_NAME_KEY
-            = new SettingKey("javaName", Format.class);
-    /* package private */ static final SettingKey PACKAGE_NAME_KEY
-            = new SettingKey("packageName", Format.class);
-    /* package private */ static final SettingKey PACKAGE_PATH_KEY
-            = new SettingKey("packagePath", Format.class);
+    /* package private */ static final SettingKey<FileObject> LOCATION_KEY
+            = new SettingKey<>("location", FileObject.class);
+    /* package private */ static final SettingKey<List<String>> PARDONED_LANGUAGES_KEY
+            = new SettingKey<>("pardonedLanguages", new TypeReference<List<String>>(){});
+    /* package private */ static final SettingKey<Format> FORMAT_KEY
+            = new SettingKey<>("format", Format.class);
+    /* package private */ static final SettingKey<List<String>> SDF_ARGS_KEY
+            = new SettingKey<>("sdfArgs", new TypeReference<List<String>>(){});
+    /* package private */ static final SettingKey<List<String>> STRATEGO_ARGS_KEY
+            = new SettingKey<>("strategoArgs", new TypeReference<List<String>>(){});
+    /* package private */ static final SettingKey<String> EXTERNAL_DEF_KEY
+            = new SettingKey<>("externalDef", String.class);
+    /* package private */ static final SettingKey<String> EXTERNAL_JAR_KEY
+            = new SettingKey<>("externalJar", String.class);
+    /* package private */ static final SettingKey<String> EXTERNAL_JAR_FLAGS_KEY
+            = new SettingKey<>("externalJarFlags", String.class);
+    /* package private */ static final SettingKey<String> STRATEGO_KEY
+            = new SettingKey<>("strategoName", String.class);
+    /* package private */ static final SettingKey<String> JAVA_NAME_KEY
+            = new SettingKey<>("javaName", String.class);
+    /* package private */ static final SettingKey<String> PACKAGE_NAME_KEY
+            = new SettingKey<>("packageName", String.class);
+    /* package private */ static final SettingKey<String> PACKAGE_PATH_KEY
+            = new SettingKey<>("packagePath", String.class);
 
     /**
      * Initializes a new instance of the {@link Settings} class.
@@ -67,7 +68,7 @@ public final class ProjectMetaSettings extends NewProjectSettings implements IPr
      * @param settings The map of settings to use.
      * @param parent The parent settings; or <code>null</code>.
      */
-    /* package private */ ProjectMetaSettings(@NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
+    /* package private */ ProjectMetaSettings(@NotNull final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
         super(settings, parent);
     }
 

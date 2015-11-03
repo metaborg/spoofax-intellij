@@ -25,6 +25,7 @@ import org.apache.commons.vfs2.FileObject;
 import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
 
 /**
  * Utility functions for working with {@link ISettingsFormat}.
@@ -220,5 +221,46 @@ public final class SettingsFormatUtils {
             format.write(output, settings);
             return output.toString();
         }
+    }
+
+    // TODO: Move these somewhere else:
+
+    /**
+     * Gets the setting key for the specified field.
+     *
+     * @param fieldName The field name.
+     * @param descriptors The set of descriptors.
+     * @return The setting key.
+     */
+    public static ISettingKey<?> getKeyOrDefault(final String fieldName, final Set<SettingDescriptor> descriptors) {
+        SettingDescriptor descriptor = findDescriptor(fieldName, descriptors);
+        if (descriptor != null) {
+            // Known field.
+            return descriptor.key();
+        } else {
+            // Unknown field, conserve.
+            return new SettingKey<>(fieldName, Object.class);
+        }
+    }
+
+    // TODO: Move these somewhere else:
+
+    /**
+     * Gets a descriptor with the specified name.
+     *
+     * @param name The name of the descriptor; or <code>null</code>.
+     * @param descriptors The descriptors.
+     * @return The descriptor with the specified name; or <code>null</code>.
+     */
+    @Nullable
+    public static SettingDescriptor findDescriptor(@Nullable String name, Set<SettingDescriptor> descriptors) {
+        if (name == null)
+            return null;
+
+        for (SettingDescriptor descriptor : descriptors) {
+            if (descriptor.key().name().equals(name))
+                return descriptor;
+        }
+        return null;
     }
 }

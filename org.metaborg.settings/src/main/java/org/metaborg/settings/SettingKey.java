@@ -22,37 +22,70 @@ package org.metaborg.settings;
 import com.google.common.base.Preconditions;
 import org.slf4j.helpers.MessageFormatter;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 
 /**
  * A setting key.
+ *
+ * This describes the name, type and other attributes of a setting.
  *
  * Be sure to store and reuse the <em>exact same key object</em>,
  * as different instances are not equal (even if they have the same name and type).
  *
  * Examples:
  * <pre>
- * static final SettingKey NAME_KEY = new SettingKey("name", String.class);
- * static final SettingKey ID_LIST_KEY = new SettingKey("ids", new TypeReference<List<LanguageIdentifier>>() {});
+ * static final SettingKey NAME_KEY = SettingKey.create("name", String.class);
+ * static final SettingKey ID_LIST_KEY = SettingKey.create("ids", new TypeReference<List<LanguageIdentifier>>() {}, SettingStrategies.Union);
  * </pre>
+ *
+ * @param <T>    The type of value.
  */
-public final class SettingKey {
+public final class SettingKey<T> implements ISettingKey<T> {
 
     private final String name;
     private final Type type;
+    private final ISettingInheritanceStrategy<T> inheritanceStrategy;
 
     /**
      * Initializes a new instance of the {@link SettingKey} class.
      *
      * @param name The name of the setting.
      * @param type The type of the setting.
+     * @param inheritanceStrategy The inheritance strategy of the setting.
      */
-    private SettingKey(final String name, final Type type) {
+    private SettingKey(final String name, final Type type, @Nullable final ISettingInheritanceStrategy<T> inheritanceStrategy) {
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(type);
 
         this.name = name;
         this.type = type;
+        // TODO: Optimize this with singleton:
+        this.inheritanceStrategy = inheritanceStrategy != null ? inheritanceStrategy : new SettingOverrideStrategy<>();
+    }
+
+    /**
+     * Initializes a new instance of the {@link SettingKey} class.
+     *
+     * @param name The name of the setting.
+     * @param type The type of the setting.
+     * @param inheritanceStrategy The inheritance strategy of the setting;
+     *                            or <code>null</code> to use the default: override.
+     */
+    public SettingKey(final String name, final Class<T> type, @Nullable final ISettingInheritanceStrategy<T> inheritanceStrategy) {
+        this(name, (Type)type, inheritanceStrategy);
+    }
+
+    /**
+     * Initializes a new instance of the {@link SettingKey} class.
+     *
+     * @param name The name of the setting.
+     * @param type The type of the setting.
+     * @param inheritanceStrategy The inheritance strategy of the setting;
+     *                            or <code>null</code> to use the default: override.
+     */
+    public SettingKey(final String name, final TypeReference<T> type, @Nullable final ISettingInheritanceStrategy<T> inheritanceStrategy) {
+        this(name, type.type(), inheritanceStrategy);
     }
 
     /**
@@ -61,8 +94,8 @@ public final class SettingKey {
      * @param name The name of the setting.
      * @param type The type of the setting.
      */
-    public SettingKey(final String name, final Class<?> type) {
-        this(name, (Type)type);
+    public SettingKey(final String name, final Class<T> type) {
+        this(name, type, null);
     }
 
     /**
@@ -71,27 +104,28 @@ public final class SettingKey {
      * @param name The name of the setting.
      * @param type The type of the setting.
      */
-    public SettingKey(final String name, final TypeReference<?> type) {
-        this(name, type.type());
+    public SettingKey(final String name, final TypeReference<T> type) {
+        this(name, type, null);
     }
 
     /**
-     * Gets the name of the setting.
-     *
-     * @return The name of the setting.
+     * {@inheritDoc}
      */
     public String name() {
         return this.name;
     }
 
     /**
-     * Gets the type of the setting.
-     *
-     * @return The type of the setting.
+     * {@inheritDoc}
      */
     public Type type() {
         return this.type;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ISettingInheritanceStrategy<T> inheritanceStrategy() { return this.inheritanceStrategy;}
 
     /**
      * {@inheritDoc}

@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class MutableSettings extends Settings {
 
-    private final Map<SettingKey, Object> settings;
+    private final Map<ISettingKey<?>, Object> settings;
 
     /**
      * Initializes a new instance of the {@link MutableSettings} class.
@@ -42,7 +42,7 @@ public class MutableSettings extends Settings {
      * @param settings The map of settings to use.
      * @param parent The parent settings; or <code>null</code>.
      */
-    public MutableSettings(final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
+    public MutableSettings(final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
         super(settings, parent, true);
 
         Preconditions.checkNotNull(settings);
@@ -72,7 +72,7 @@ public class MutableSettings extends Settings {
      * @param value The value to set the key to, which may be <code>null</code>.
      * @param <T> The type of value.
      */
-    public <T> void setLocalSetting(final SettingKey key, @Nullable final T value) {
+    public <T> void setLocalSetting(final ISettingKey<T> key, @Nullable final T value) {
         Preconditions.checkNotNull(key);
 
         this.settings.put(key, value);
@@ -86,7 +86,7 @@ public class MutableSettings extends Settings {
      * @param key The key to clear.
      * @param <T> The type of value.
      */
-    public <T> void clearLocalSetting(final SettingKey key) {
+    public <T> void clearLocalSetting(final ISettingKey<T> key) {
         Preconditions.checkNotNull(key);
 
         this.settings.remove(key);

@@ -22,10 +22,7 @@ package org.metaborg.core.project.settings;
 import com.google.common.collect.Sets;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.settings.ISettingsFactory;
-import org.metaborg.settings.SettingDescriptor;
-import org.metaborg.settings.SettingKey;
-import org.metaborg.settings.Settings;
+import org.metaborg.settings.*;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -58,7 +55,7 @@ public final class NewProjectSettingsFactory implements ISettingsFactory {
     @NotNull
     @Override
     public Settings create(
-            @NotNull final Map<SettingKey, Object> settings, @Nullable final Settings parent) {
+            @NotNull final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
         return new NewProjectSettings(settings, parent);
     }
 }

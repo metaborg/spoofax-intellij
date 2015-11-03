@@ -35,8 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-// TODO: Move to Metaborg Core
-
 /**
  * Settings serializer/deserializer using FasterXML's Jackson library.
  */

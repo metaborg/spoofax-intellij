@@ -23,7 +23,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
- * A type reference, used to represent a complex generic type.
+ * A type reference, used to represent a complex generic type.SettingKey
  *
  * Example:
  * <pre>

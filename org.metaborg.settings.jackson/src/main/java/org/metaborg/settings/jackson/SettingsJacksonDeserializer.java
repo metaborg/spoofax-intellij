@@ -24,10 +24,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.google.common.base.Preconditions;
-import org.metaborg.settings.Settings;
-import org.metaborg.settings.ISettingsFactory;
-import org.metaborg.settings.SettingDescriptor;
-import org.metaborg.settings.SettingKey;
+import org.metaborg.settings.*;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -63,7 +60,7 @@ import java.util.*;
         final ObjectMapper mapper = (ObjectMapper)parser.getCodec();
         final Settings parent = (Settings)context.findInjectableValue("parent", null, null);
         final JsonNode root = mapper.readTree(parser);
-        final Map<SettingKey, Object> settings = new LinkedHashMap<>();
+        final Map<ISettingKey<?>, Object> settings = new LinkedHashMap<>();
         final TypeFactory typeFactory = mapper.getTypeFactory();
 
         Set<SettingDescriptor> descriptors = this.factory.settingDescriptors();
@@ -72,7 +69,7 @@ import java.util.*;
             String fieldName = fieldNames.next();
             JsonNode node = root.get(fieldName);
             assert node != null;
-            SettingKey key = getKeyOrDefault(fieldName, descriptors);
+            ISettingKey<?> key = getKeyOrDefault(fieldName, descriptors);
             Object value = mapper.readValue(node.traverse(mapper), typeFactory.constructType(key.type()));
             settings.put(key, value);
         }
@@ -87,14 +84,14 @@ import java.util.*;
      * @param descriptors The set of descriptors.
      * @return The setting key.
      */
-    private SettingKey getKeyOrDefault(final String fieldName, final Set<SettingDescriptor> descriptors) {
+    private ISettingKey<?> getKeyOrDefault(final String fieldName, final Set<SettingDescriptor> descriptors) {
         SettingDescriptor descriptor = findDescriptor(fieldName, descriptors);
         if (descriptor != null) {
             // Known field.
             return descriptor.key();
         } else {
             // Unknown field, conserve.
-            return new SettingKey(fieldName, Object.class);
+            return new SettingKey<>(fieldName, Object.class);
         }
     }
 

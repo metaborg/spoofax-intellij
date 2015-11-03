@@ -21,6 +21,9 @@ package org.metaborg.settings;
 
 import com.google.common.base.Preconditions;
 
+
+// TODO: Remove this descriptor in favor of just ISettingKey<?>
+
 /**
  * Describes a setting.
  */

@@ -112,4 +112,53 @@ public final class YamlSettingsFormatTests {
         assertEquals(input, output);
     }
 
+    @Test
+    public void childOverridesParent() throws IOException {
+        YamlSettingsFormat sut = new YamlSettingsFormat(new SettingsStubFactory());
+        String parentInput = "---\n"
+                + "name: \"parent\"\n";
+        SettingsStub parent = (SettingsStub)SettingsFormatUtils.readFromString(sut, parentInput);
+        String childInput = "---\n"
+                + "name: \"child\"\n";
+        SettingsStub child = (SettingsStub)SettingsFormatUtils.readFromString(sut, childInput, parent);
+
+        assertEquals("child", child.name());
+        assertEquals("child", child.getLocalSetting(SettingsStub.NAME_KEY));
+    }
+
+    @Test
+    public void childDoesNotOverrideParent() throws IOException {
+        YamlSettingsFormat sut = new YamlSettingsFormat(new SettingsStubFactory());
+        String parentInput = "---\n"
+                + "name: \"parent\"\n";
+        SettingsStub parent = (SettingsStub)SettingsFormatUtils.readFromString(sut, parentInput);
+        String childInput = "---\n"
+                + "id: \"unrelated\"\n";
+        SettingsStub child = (SettingsStub)SettingsFormatUtils.readFromString(sut, childInput, parent);
+
+        assertEquals("parent", child.name());
+        assertEquals(null, child.getLocalSettingOrDefault(SettingsStub.NAME_KEY, null));
+    }
+
+    @Test
+    public void childAppendsParent() throws IOException {
+        YamlSettingsFormat sut = new YamlSettingsFormat(new SettingsStubFactory());
+        sut.addSerializerDeserializer(new ComplexObjectSerializer(), new ComplexObjectDeserializer());
+        String parentInput = "---\n"
+                + "listOfObjs:\n"
+                + "- name: \"testname\"\n"
+                + "  value: 4\n";
+        SettingsStub parent = (SettingsStub)SettingsFormatUtils.readFromString(sut, parentInput);
+        String childInput = "---\n"
+                + "listOfObjs:\n"
+                + "- name: \"other\"\n"
+                + "  value: 20\n";
+        SettingsStub child = (SettingsStub)SettingsFormatUtils.readFromString(sut, childInput, parent);
+
+        assertEquals(Arrays.asList(
+                new ComplexObject("testname", 4),
+                new ComplexObject("other", 20)
+        ), child.listOfObjs());
+    }
+
 }

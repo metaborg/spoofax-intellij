@@ -19,25 +19,40 @@
 
 package org.metaborg.settings;
 
-import com.google.common.collect.Sets;
+import com.google.common.base.Preconditions;
+import org.slf4j.helpers.MessageFormatter;
 
 import javax.annotation.Nullable;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Type;
 
-public final class SettingsStubFactory implements ISettingsFactory {
+/**
+ * A setting key.
+ *
+ * This describes the name, type and other attributes of a setting.
+ *
+ * @param <T>    The type of value.
+ */
+public interface ISettingKey<T> {
 
-    @Override
-    public Set<SettingDescriptor> settingDescriptors() {
-        return Sets.newHashSet(
-                new SettingDescriptor(SettingsStub.NAME_KEY, false),
-                new SettingDescriptor(SettingsStub.OBJ_KEY, false),
-                new SettingDescriptor(SettingsStub.LIST_OF_OBJS_KEY, false)
-        );
-    }
+    /**
+     * Gets the name of the setting.
+     *
+     * @return The name of the setting.
+     */
+    String name();
 
-    @Override
-    public Settings create(final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
-        return new SettingsStub(settings, parent);
-    }
+    /**
+     * Gets the type of the setting.
+     *
+     * @return The type of the setting.
+     */
+    Type type();
+
+    /**
+     * Gets the inheritance strategy of the setting.
+     *
+     * @return The inheritance strategy.
+     */
+    ISettingInheritanceStrategy<T> inheritanceStrategy();
+
 }

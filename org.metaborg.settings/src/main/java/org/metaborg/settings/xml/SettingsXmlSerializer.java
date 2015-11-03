@@ -17,33 +17,29 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.settings.jackson;
+package org.metaborg.settings.xml;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.google.common.base.Preconditions;
 import org.metaborg.settings.ISettingKey;
 import org.metaborg.settings.ISettingsFactory;
-import org.metaborg.settings.SettingKey;
 import org.metaborg.settings.Settings;
-
-import java.io.IOException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Serializes {@link Settings} objects.
  */
-/* package private */ final class SettingsJacksonSerializer extends StdSerializer<Settings> {
+/* package private */ final class SettingsXmlSerializer implements IXmlSerializer {
 
     private final ISettingsFactory factory;
 
     /**
-     * Initializes a new instance of the {@link SettingsJacksonSerializer} class.
+     * Initializes a new instance of the {@link SettingsXmlSerializer} class.
      *
      * @param factory The settings factory.
      */
-    public SettingsJacksonSerializer(final ISettingsFactory factory) {
-        super(Settings.class);
+    public SettingsXmlSerializer(final ISettingsFactory factory) {
         Preconditions.checkNotNull(factory);
 
         this.factory = factory;
@@ -53,20 +49,18 @@ import java.io.IOException;
      * {@inheritDoc}
      */
     @Override
-    public void serialize(
-            final Settings settings,
-            final JsonGenerator generator,
-            final SerializerProvider provider) throws
-            IOException {
-        Preconditions.checkNotNull(settings);
-        Preconditions.checkNotNull(generator);
-        Preconditions.checkNotNull(provider);
+    public Node serialize(final Object value, final Document doc, final XmlSettingsFormat format) {
+        Element element = doc.createElement("settings");
 
-        generator.writeStartObject();
+        Settings settings = (Settings)value;
         for (ISettingKey<?> key : settings.getAllLocalSettings()) {
-            generator.writeFieldName(key.name());
-            generator.writeObject(settings.getLocalSetting(key));
+
+            Element child = doc.createElement(key.name());
+
+            child.appendChild(format.serialize(settings.getLocalSetting(key), doc, key.type()));
+            element.appendChild(child);
         }
-        generator.writeEndObject();
+
+        return element;
     }
 }
