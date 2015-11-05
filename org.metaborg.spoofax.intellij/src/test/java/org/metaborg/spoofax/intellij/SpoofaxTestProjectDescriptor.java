@@ -29,7 +29,7 @@ import com.intellij.testFramework.LightProjectDescriptor;
 /**
  * Spoofax project descriptor for tests.
  */
-public final class SpoofaxTestProjectDescriptor implements LightProjectDescriptor {
+public final class SpoofaxTestProjectDescriptor extends LightProjectDescriptor {
 
     @Override
     public ModuleType getModuleType() {

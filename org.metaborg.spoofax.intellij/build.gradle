@@ -1,12 +1,12 @@
 plugins {
-    id "org.jetbrains.intellij" version "0.0.27"
+    id "org.jetbrains.intellij" version "0.0.28"
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
-apply plugin: 'checkstyle'
+//apply plugin: 'checkstyle'
 apply plugin: 'org.jetbrains.intellij'
 
 group 'org.metaborg'
@@ -19,33 +19,46 @@ repositories {
     mavenCentral()
 }
 
+// FIX: Circular dependency due to adding test class dependencies
+// https://issues.gradle.org/browse/GRADLE-2470
+subprojects {
+    apply plugin: 'java'
+}
+
 configurations {
     provided
-    //runtime.exclude group: "org.slf4j", module: "slf4j-api"
-    //runtime.exclude group: "org.slf4j", module: "slf4j-simple"
-    //provided.extendsFrom(compile)
-    //compile.extendsFrom(provided)
+}
+
+sourceSets.main.compileClasspath += configurations.provided
+
+idea {
+    module {
+        inheritOutputDirs = true
+        scopes.PROVIDED.plus += configurations.provided
+    }
+}
+
+eclipse {
+    classpath {
+        plusConfigurations += configurations.provided
+    }
 }
 
 intellij {
-    version 'IC-14.1.5'
+    version 'IC-15.0'
     //plugins 'maven'
 }
 
-/*
-task("debugIdea", type: org.jetbrains.intellij.RunIdeaTask) {
-    //name = "debugIdea"
-    jvmArgs = ["-Dcompiler.process.debug.port=5005"]
-}*/
-
-/*
+// Task to allow a debugger to be attached to port 5005 for debugging the JPS plugin.
+// https://github.com/JetBrains/gradle-intellij-plugin/issues/23
 afterEvaluate {
-    tasks.getByName('runIdea') {
-        jvmArgs += "-Dcompiler.process.debug.port=5005"
+    task("debugIdea", type: org.jetbrains.intellij.RunIdeaTask, group: 'intellij', dependsOn: 'prepareSandbox', description: 'Runs Intellij IDEA with installed plugin and debugger support for JPS on port 5005.') {
+        jvmArgs += ["-Dcompiler.process.debug.port=5005"]
     }
-}*/
+}
 
 dependencies {
+    // Main dependencies
     compile project(':org.metaborg.settings')
     compile project(':org.metaborg.settings.jackson')
 
@@ -70,26 +83,13 @@ dependencies {
     compile 'com.google.inject:guice:3.0'
     compile 'com.google.inject.extensions:guice-assistedinject:3.0'
     compile 'org.javassist:javassist:3.20.0-GA'
-
     compile 'org.slf4j:slf4j-api:1.7.10'
     compile 'org.slf4j:slf4j-simple:1.7.10'
 
+    // Test dependencies
+    testCompile project(':org.metaborg.settings').sourceSets.test.output
+    testCompile project(':org.metaborg.settings.jackson').sourceSets.test.output
     testCompile group: 'junit', name: 'junit', version: '4.11'
-}
-
-sourceSets.main.compileClasspath += [configurations.provided]
-
-idea {
-    module {
-        inheritOutputDirs = true
-        scopes.PROVIDED.plus += [configurations.provided]
-    }
-}
-
-eclipse {
-    classpath {
-        plusConfigurations += [configurations.provided]
-    }
 }
 
 uploadArchives {

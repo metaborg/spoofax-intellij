@@ -25,10 +25,12 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
+import com.intellij.openapi.extensions.ExtensionPoint;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileNameMatcher;
 import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.fileTypes.SyntaxHighlighterFactoryEP;
 import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
@@ -36,6 +38,7 @@ import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.InstanceKeyedExtensionPoint;
 import org.metaborg.spoofax.intellij.idea.InstanceLanguageExtensionPoint;
+import org.metaborg.spoofax.intellij.idea.InstanceSyntaxHighlighterFactoryExtensionPoint;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
 import org.metaborg.spoofax.intellij.menu.AnActionWithId;
@@ -143,7 +146,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
         obj.parserDefinitionExtension = new InstanceLanguageExtensionPoint<>(
                 obj.languageObject.ideaLanguage,
                 obj.languageObject.parserDefinition);
-        obj.syntaxHighlighterFactoryExtension = new InstanceKeyedExtensionPoint<>(
+        obj.syntaxHighlighterFactoryExtension = new InstanceSyntaxHighlighterFactoryExtensionPoint(
                 obj.languageObject.ideaLanguage,
                 obj.languageObject.syntaxHighlighterFactory);
 
@@ -168,7 +171,8 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param value              The extension to register.
      */
     private void registerExtension(@NotNull final String extensionPointName, @NotNull final Object value) {
-        Extensions.getRootArea().getExtensionPoint(extensionPointName).registerExtension(value);
+        ExtensionPoint<Object> extensionPoint = Extensions.getRootArea().getExtensionPoint(extensionPointName);
+        extensionPoint.registerExtension(value);
     }
 
     /**
@@ -311,7 +315,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
         @NotNull
         public final IdeaLanguageAttachment languageObject;
         public InstanceLanguageExtensionPoint<?> parserDefinitionExtension;
-        public InstanceKeyedExtensionPoint<?> syntaxHighlighterFactoryExtension;
+        public InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension;
 
         public RegisteredIdeaLanguageObject(@NotNull final IdeaLanguageAttachment languageObject) {
             this.languageObject = languageObject;
