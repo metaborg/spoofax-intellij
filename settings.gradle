@@ -1,3 +1,0 @@
-include ":org.metaborg.spoofax.intellij", ":org.metaborg.settings", ":org.metaborg.settings.jackson"
-rootProject.name = 'org.metaborg.spoofax.intellij'
-

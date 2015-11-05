@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':org.metaborg.settings')
+    compile 'org.metaborg:org.metaborg.settings:1.5.0-SNAPSHOT'
     compile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.google.guava:guava:18.0'
     compile 'com.fasterxml.jackson.core:jackson-core:2.6.0'

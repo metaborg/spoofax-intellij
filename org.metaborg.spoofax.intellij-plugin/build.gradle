@@ -24,8 +24,8 @@ repositories {
 }
 
 dependencies {
-    compile project(':org.metaborg.settings')
-    compile project(':org.metaborg.settings.jackson')
+	compile 'org.metaborg:org.metaborg.settings:1.5.0-SNAPSHOT'
+    compile 'org.metaborg:org.metaborg.settings.jackson:1.5.0-SNAPSHOT'
     compile 'org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT'
     compile 'org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT'
     compile 'org.metaborg:org.metaborg.spoofax.generator:1.5.0-SNAPSHOT'
