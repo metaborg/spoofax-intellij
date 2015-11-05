@@ -30,7 +30,8 @@ import javax.annotation.Nullable;
  */
 public final class ProjectServiceStub implements IProjectService {
 
-    @Nullable private final IProject project;
+    @Nullable
+    private final IProject project;
 
     /**
      * Initializes a new instance of the {@link ProjectServiceStub} class.

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>org.metaborg.spoofax.intellij.idea</id>
     <name>Spoofax</name>
-    <version>0.1.0-alpha</version>
+    <version>0.2.0-alpha</version>
     <vendor email="info@metaborg.org" url="http://www.metaborg.org/">Metaborg</vendor>
 
     <description><![CDATA[
@@ -16,7 +16,7 @@
     <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
     <idea-version since-build="131"/>
 
-    <depends>org.jetbrains.idea.maven</depends>
+    <!--<depends>org.jetbrains.idea.maven</depends>-->
 
     <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->

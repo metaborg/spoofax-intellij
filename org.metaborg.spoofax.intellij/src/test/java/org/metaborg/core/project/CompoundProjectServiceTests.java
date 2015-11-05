@@ -26,11 +26,8 @@ import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 import org.junit.Test;
 
-import java.util.HashSet;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 
 public final class CompoundProjectServiceTests {
 
@@ -41,7 +38,7 @@ public final class CompoundProjectServiceTests {
                 new ProjectServiceStub(null),
                 new ArtifactProjectService(manager),
                 new ProjectServiceStub(null)
-                ));
+        ));
 
         FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
 
@@ -65,7 +62,7 @@ public final class CompoundProjectServiceTests {
         assertNull(project);
     }
 
-    @Test(expected=MultipleServicesRespondedException.class)
+    @Test(expected = MultipleServicesRespondedException.class)
     public void throwsExceptionWhenMultipleProjectServicesReturnAProject() throws FileSystemException {
         FileSystemManager manager = VFS.getManager();
         CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/org.metaborg.settings/org.metaborg.settings.iml" filepath="$PROJECT_DIR$/org.metaborg.settings/org.metaborg.settings.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.metaborg.settings.jackson/org.metaborg.settings.jackson.iml" filepath="$PROJECT_DIR$/org.metaborg.settings.jackson/org.metaborg.settings.jackson.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.metaborg.settings.maven/org.metaborg.settings.maven.iml" filepath="$PROJECT_DIR$/org.metaborg.settings.maven/org.metaborg.settings.maven.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.metaborg.spoofax.intellij/org.metaborg.spoofax.intellij.iml" filepath="$PROJECT_DIR$/org.metaborg.spoofax.intellij/org.metaborg.spoofax.intellij.iml" />
+    </modules>
+  </component>
+</project>

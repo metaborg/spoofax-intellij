@@ -26,10 +26,17 @@ buildNumber.properties
 
 
 ### Intellij ###
-workspace.xml
-tasks.xml
-out/
+.idea/gradle.xml
+.idea/libraries
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
 .idea_modules/
+out/
 atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties

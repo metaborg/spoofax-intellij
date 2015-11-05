@@ -1,0 +1,101 @@
+plugins {
+    id "org.jetbrains.intellij" version "0.0.27"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'checkstyle'
+apply plugin: 'org.jetbrains.intellij'
+
+group 'org.metaborg'
+version '1.5.0-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+configurations {
+    provided
+    //runtime.exclude group: "org.slf4j", module: "slf4j-api"
+    //runtime.exclude group: "org.slf4j", module: "slf4j-simple"
+    //provided.extendsFrom(compile)
+    //compile.extendsFrom(provided)
+}
+
+intellij {
+    version 'IC-14.1.5'
+    //plugins 'maven'
+}
+
+/*
+task("debugIdea", type: org.jetbrains.intellij.RunIdeaTask) {
+    //name = "debugIdea"
+    jvmArgs = ["-Dcompiler.process.debug.port=5005"]
+}*/
+
+/*
+afterEvaluate {
+    tasks.getByName('runIdea') {
+        jvmArgs += "-Dcompiler.process.debug.port=5005"
+    }
+}*/
+
+dependencies {
+    compile project(':org.metaborg.settings')
+    compile project(':org.metaborg.settings.jackson')
+
+    compile('org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT') {
+        exclude group: 'org.slf4j'
+    }
+    compile('org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT') {
+        exclude group: 'org.slf4j'
+    }
+    compile('org.metaborg:org.metaborg.spoofax.generator:1.5.0-SNAPSHOT') {
+        exclude group: 'org.slf4j'
+    }
+    compile('org.metaborg:org.metaborg.spoofax.meta.core:1.5.0-SNAPSHOT') {
+        exclude group: 'org.slf4j'
+    }
+
+    compile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile 'com.google.guava:guava:18.0'
+    compile 'org.metaborg:make-permissive:1.5.0-SNAPSHOT'
+    compile 'org.apache.ant:ant:1.9.6'
+    compile 'org.apache.commons:commons-vfs2:2.0'
+    compile 'com.google.inject:guice:3.0'
+    compile 'com.google.inject.extensions:guice-assistedinject:3.0'
+    compile 'org.javassist:javassist:3.20.0-GA'
+
+    compile 'org.slf4j:slf4j-api:1.7.10'
+    compile 'org.slf4j:slf4j-simple:1.7.10'
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+sourceSets.main.compileClasspath += [configurations.provided]
+
+idea {
+    module {
+        inheritOutputDirs = true
+        scopes.PROVIDED.plus += [configurations.provided]
+    }
+}
+
+eclipse {
+    classpath {
+        plusConfigurations += [configurations.provided]
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            mavenLocal()
+        }
+    }
+}

@@ -1,0 +1,65 @@
+/*
+ * Copyright © 2015-2015
+ *
+ * This file is part of Spoofax for IntelliJ.
+ *
+ * Spoofax for IntelliJ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoofax for IntelliJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package org.metaborg.spoofax.intellij.idea.project;
+
+import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.language.ILanguageImpl;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Item in the settings dialog.
+ * <p>
+ * Note that this item is mutable.
+ */
+public final class LanguageImplItem {
+
+    @NotNull
+    private final ILanguage language;
+    @Nullable
+    private ILanguageImpl currentImplementation;
+
+    public LanguageImplItem(@NotNull ILanguage language) {
+        this.language = language;
+    }
+
+    @NotNull
+    public final ILanguage language() { return this.language; }
+
+    @Nullable
+    public final ILanguageImpl currentImplementation() { return this.currentImplementation; }
+
+    @NotNull
+    public final List<ILanguageImpl> getImplementations() {
+        ArrayList<ILanguageImpl> implementations = new ArrayList<ILanguageImpl>();
+        implementations.add(null);
+        for (ILanguageImpl impl : this.language.impls()) {
+            implementations.add(impl);
+        }
+        return implementations;
+    }
+
+    public final void setCurrentImplementation(@Nullable final ILanguageImpl currentImplementation) {
+        this.currentImplementation = currentImplementation;
+    }
+}
