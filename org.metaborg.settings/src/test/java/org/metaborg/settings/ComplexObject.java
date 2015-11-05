@@ -10,9 +10,14 @@ public final class ComplexObject {
     }
 
     @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    @Override
     public boolean equals(final Object obj) {
         if (obj instanceof ComplexObject)
-            return equals((ComplexObject)obj);
+            return equals((ComplexObject) obj);
         return false;
     }
 
@@ -21,10 +26,5 @@ public final class ComplexObject {
             return false;
         return this.name.equals(other.name)
                 && this.value == other.value;
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
     }
 }

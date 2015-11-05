@@ -27,8 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.base.Preconditions;
 import org.metaborg.settings.ISettingsFactory;
-import org.metaborg.settings.Settings;
 import org.metaborg.settings.ISettingsFormat;
+import org.metaborg.settings.Settings;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -48,10 +48,11 @@ public class JacksonSettingsFormat implements ISettingsFormat {
      * Initializes a new instance of the {@link JacksonSettingsFormat} class.
      *
      * @param settingsFactory The settings factory.
-     * @param jsonFactory The JSON factory.
+     * @param jsonFactory     The JSON factory.
      */
-    public JacksonSettingsFormat(final ISettingsFactory settingsFactory, final
-                                                JsonFactory jsonFactory) {
+    public JacksonSettingsFormat(
+            final ISettingsFactory settingsFactory, final
+    JsonFactory jsonFactory) {
         Preconditions.checkNotNull(settingsFactory);
         Preconditions.checkNotNull(jsonFactory);
 
@@ -90,27 +91,33 @@ public class JacksonSettingsFormat implements ISettingsFormat {
     /**
      * Adds a serializer/deserializer pair for a type.
      *
-     * @param serializer The serializer; or <code>null</code>.
+     * @param serializer   The serializer; or <code>null</code>.
      * @param deserializer The deserializer; or <code>null</code>.
-     * @param <T> The type.
+     * @param <T>          The type.
      */
-    public final <T> void addSerializerDeserializer(@Nullable final JsonSerializer<T> serializer, @Nullable final JsonDeserializer<? extends T> deserializer) {
+    public final <T> void addSerializerDeserializer(
+            @Nullable final JsonSerializer<T> serializer,
+            @Nullable final JsonDeserializer<? extends T> deserializer) {
         addSerializerDeserializer(serializer, deserializer, null);
     }
 
     /**
      * Adds a serializer/deserializer pair for a specific type.
      *
-     * @param serializer The serializer; or <code>null</code>.
+     * @param serializer   The serializer; or <code>null</code>.
      * @param deserializer The deserializer; or <code>null</code>.
-     * @param type The type; or <code>null</code>.
-     * @param <T> The type.
+     * @param type         The type; or <code>null</code>.
+     * @param <T>          The type.
      */
-    public final <T> void addSerializerDeserializer(@Nullable final JsonSerializer<T> serializer, @Nullable final JsonDeserializer<? extends T> deserializer, @Nullable Class<T> type) {
+    public final <T> void addSerializerDeserializer(
+            @Nullable final JsonSerializer<T> serializer,
+            @Nullable final JsonDeserializer<? extends T> deserializer,
+            @Nullable Class<T> type) {
         if (type == null)
             type = serializer.handledType();
         if (type == null || type == Object.class)
-            throw new IllegalArgumentException("No (valid) type has been specified by either the caller or the serializer.");
+            throw new IllegalArgumentException(
+                    "No (valid) type has been specified by either the caller or the serializer.");
         if (serializer != null)
             this.module.addSerializer(type, serializer);
         if (deserializer != null)

@@ -40,13 +40,13 @@ public final class ProjectMetaSettings extends NewProjectSettings implements IPr
     /* package private */ static final SettingKey<FileObject> LOCATION_KEY
             = new SettingKey<>("location", FileObject.class);
     /* package private */ static final SettingKey<List<String>> PARDONED_LANGUAGES_KEY
-            = new SettingKey<>("pardonedLanguages", new TypeReference<List<String>>(){});
+            = new SettingKey<>("pardonedLanguages", new TypeReference<List<String>>() {});
     /* package private */ static final SettingKey<Format> FORMAT_KEY
             = new SettingKey<>("format", Format.class);
     /* package private */ static final SettingKey<List<String>> SDF_ARGS_KEY
-            = new SettingKey<>("sdfArgs", new TypeReference<List<String>>(){});
+            = new SettingKey<>("sdfArgs", new TypeReference<List<String>>() {});
     /* package private */ static final SettingKey<List<String>> STRATEGO_ARGS_KEY
-            = new SettingKey<>("strategoArgs", new TypeReference<List<String>>(){});
+            = new SettingKey<>("strategoArgs", new TypeReference<List<String>>() {});
     /* package private */ static final SettingKey<String> EXTERNAL_DEF_KEY
             = new SettingKey<>("externalDef", String.class);
     /* package private */ static final SettingKey<String> EXTERNAL_JAR_KEY
@@ -66,9 +66,11 @@ public final class ProjectMetaSettings extends NewProjectSettings implements IPr
      * Initializes a new instance of the {@link Settings} class.
      *
      * @param settings The map of settings to use.
-     * @param parent The parent settings; or <code>null</code>.
+     * @param parent   The parent settings; or <code>null</code>.
      */
-    /* package private */ ProjectMetaSettings(@NotNull final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
+    /* package private */ ProjectMetaSettings(
+            @NotNull final Map<ISettingKey<?>, Object> settings,
+            @Nullable final Settings parent) {
         super(settings, parent);
     }
 

@@ -22,7 +22,10 @@ package org.metaborg.core.project.settings;
 import com.google.common.collect.Sets;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.settings.*;
+import org.metaborg.settings.ISettingKey;
+import org.metaborg.settings.ISettingsFactory;
+import org.metaborg.settings.SettingDescriptor;
+import org.metaborg.settings.Settings;
 
 import javax.annotation.Nullable;
 import java.util.Map;

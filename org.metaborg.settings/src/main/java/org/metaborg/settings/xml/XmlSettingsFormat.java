@@ -20,7 +20,9 @@
 package org.metaborg.settings.xml;
 
 import com.google.common.base.Preconditions;
-import org.metaborg.settings.*;
+import org.metaborg.settings.ISettingsFactory;
+import org.metaborg.settings.ISettingsFormat;
+import org.metaborg.settings.Settings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -71,7 +73,7 @@ public class XmlSettingsFormat implements ISettingsFormat {
             Element root = doc.getDocumentElement();
             root.normalize();
 
-            return (Settings)deserialize(root, Settings.class);
+            return (Settings) deserialize(root, Settings.class);
 
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);
@@ -105,51 +107,14 @@ public class XmlSettingsFormat implements ISettingsFormat {
      * Serializes an object.
      *
      * @param value The value.
-     * @param doc The document.
-     * @param type The type.
+     * @param doc   The document.
+     * @param type  The type.
      * @return The object.
      */
     public <T> Node serialize(final T value, final Document doc, Type type) {
         IXmlSerializer serializer = getSerializer(type);
         assert serializer != null;
         return serializer.serialize(value, doc, this);
-    }
-
-    /**
-     * Deserializes an object.
-     *
-     * @param node The node.
-     * @param type The type.
-     * @return The object.
-     */
-    public <T> T deserialize(final Node node, Type type) {
-        IXmlDeserializer deserializer = getDeserializer(type);
-        assert deserializer != null;
-        return (T)deserializer.deserialize(node, this);
-    }
-
-    /**
-     * Adds a serializer/deserializer pair for a type.
-     *
-     * @param serializer The serializer; or <code>null</code>.
-     * @param deserializer The deserializer; or <code>null</code>.
-     * @param <T> The type.
-     */
-    public final <T> void addSerializerDeserializer(@Nullable final IXmlSerializer serializer, @Nullable final IXmlDeserializer deserializer) {
-        addSerializerDeserializer(serializer, deserializer, null);
-    }
-
-    /**
-     * Adds a serializer/deserializer pair for a specific type.
-     *
-     * @param serializer The serializer; or <code>null</code>.
-     * @param deserializer The deserializer; or <code>null</code>.
-     * @param type The type.
-     * @param <T> The type.
-     */
-    public final <T> void addSerializerDeserializer(@Nullable final IXmlSerializer serializer, @Nullable final IXmlDeserializer deserializer, Class<T> type) {
-        Preconditions.checkNotNull(type);
-        this.serializers.put(type, new SerializerPair(serializer, deserializer));
     }
 
     /**
@@ -167,6 +132,19 @@ public class XmlSettingsFormat implements ISettingsFormat {
     }
 
     /**
+     * Deserializes an object.
+     *
+     * @param node The node.
+     * @param type The type.
+     * @return The object.
+     */
+    public <T> T deserialize(final Node node, Type type) {
+        IXmlDeserializer deserializer = getDeserializer(type);
+        assert deserializer != null;
+        return (T) deserializer.deserialize(node, this);
+    }
+
+    /**
      * Gets the deserializer for the type.
      *
      * @param type The type.
@@ -178,6 +156,35 @@ public class XmlSettingsFormat implements ISettingsFormat {
         if (pair == null)
             return null;
         return pair.deserializer;
+    }
+
+    /**
+     * Adds a serializer/deserializer pair for a type.
+     *
+     * @param serializer   The serializer; or <code>null</code>.
+     * @param deserializer The deserializer; or <code>null</code>.
+     * @param <T>          The type.
+     */
+    public final <T> void addSerializerDeserializer(
+            @Nullable final IXmlSerializer serializer,
+            @Nullable final IXmlDeserializer deserializer) {
+        addSerializerDeserializer(serializer, deserializer, null);
+    }
+
+    /**
+     * Adds a serializer/deserializer pair for a specific type.
+     *
+     * @param serializer   The serializer; or <code>null</code>.
+     * @param deserializer The deserializer; or <code>null</code>.
+     * @param type         The type.
+     * @param <T>          The type.
+     */
+    public final <T> void addSerializerDeserializer(
+            @Nullable final IXmlSerializer serializer,
+            @Nullable final IXmlDeserializer deserializer,
+            Class<T> type) {
+        Preconditions.checkNotNull(type);
+        this.serializers.put(type, new SerializerPair(serializer, deserializer));
     }
 
     /**
@@ -197,10 +204,13 @@ public class XmlSettingsFormat implements ISettingsFormat {
 
         /**
          * Initializes a new instance of the {@link org.metaborg.settings.xml.XmlSettingsFormat.SerializerPair} class.
-         * @param serializer The serializer; or <code>null</code>.
+         *
+         * @param serializer   The serializer; or <code>null</code>.
          * @param deserializer The deserializer; or <code>null</code>.
          */
-        public SerializerPair(@Nullable final IXmlSerializer serializer, @Nullable final IXmlDeserializer deserializer) {
+        public SerializerPair(
+                @Nullable final IXmlSerializer serializer,
+                @Nullable final IXmlDeserializer deserializer) {
             this.serializer = serializer;
             this.deserializer = deserializer;
         }

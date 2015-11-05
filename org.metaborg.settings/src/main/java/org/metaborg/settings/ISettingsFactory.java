@@ -30,6 +30,7 @@ public interface ISettingsFactory {
 
     /**
      * Gets the setting descriptors for the settings.
+     *
      * @return The setting descriptors.
      */
     Set<SettingDescriptor> settingDescriptors();
@@ -38,7 +39,7 @@ public interface ISettingsFactory {
      * Creates a settings object.
      *
      * @param settings A map with the settings.
-     * @param parent The parent settings; or <code>null</code>.
+     * @param parent   The parent settings; or <code>null</code>.
      * @return The created settings object.
      */
     Settings create(Map<ISettingKey<?>, Object> settings, @Nullable Settings parent);

@@ -20,7 +20,9 @@
 package org.metaborg.settings.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.google.common.base.Preconditions;
@@ -28,7 +30,10 @@ import org.metaborg.settings.*;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Deserializes {@link Settings} objects.
@@ -57,8 +62,8 @@ import java.util.*;
         Preconditions.checkNotNull(parser);
         Preconditions.checkNotNull(context);
 
-        final ObjectMapper mapper = (ObjectMapper)parser.getCodec();
-        final Settings parent = (Settings)context.findInjectableValue("parent", null, null);
+        final ObjectMapper mapper = (ObjectMapper) parser.getCodec();
+        final Settings parent = (Settings) context.findInjectableValue("parent", null, null);
         final JsonNode root = mapper.readTree(parser);
         final Map<ISettingKey<?>, Object> settings = new LinkedHashMap<>();
         final TypeFactory typeFactory = mapper.getTypeFactory();
@@ -80,7 +85,7 @@ import java.util.*;
     /**
      * Gets the setting key for the specified field.
      *
-     * @param fieldName The field name.
+     * @param fieldName   The field name.
      * @param descriptors The set of descriptors.
      * @return The setting key.
      */
@@ -98,7 +103,7 @@ import java.util.*;
     /**
      * Gets a descriptor with the specified name.
      *
-     * @param name The name of the descriptor; or <code>null</code>.
+     * @param name        The name of the descriptor; or <code>null</code>.
      * @param descriptors The descriptors.
      * @return The descriptor with the specified name; or <code>null</code>.
      */

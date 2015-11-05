@@ -61,7 +61,7 @@ import java.util.Set;
             Node childNode = node.getChildNodes().item(i);
             if (childNode.getNodeType() != Node.ELEMENT_NODE)
                 continue;
-            Element child = (Element)childNode;
+            Element child = (Element) childNode;
             String fieldName = child.getTagName();
             ISettingKey<?> key = SettingsFormatUtils.getKeyOrDefault(fieldName, descriptors);
             Object value = format.deserialize(child, key.type());

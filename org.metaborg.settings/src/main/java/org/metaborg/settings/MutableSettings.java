@@ -20,16 +20,14 @@
 package org.metaborg.settings;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Setting in a settings hierarchy.
- *
+ * <p>
  * You can derive from this class to provide getters and setters.
  */
 public class MutableSettings extends Settings {
@@ -38,15 +36,9 @@ public class MutableSettings extends Settings {
 
     /**
      * Initializes a new instance of the {@link MutableSettings} class.
-     *
-     * @param settings The map of settings to use.
-     * @param parent The parent settings; or <code>null</code>.
      */
-    public MutableSettings(final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
-        super(settings, parent, true);
-
-        Preconditions.checkNotNull(settings);
-        this.settings = settings;
+    public MutableSettings() {
+        this(null);
     }
 
     /**
@@ -60,17 +52,23 @@ public class MutableSettings extends Settings {
 
     /**
      * Initializes a new instance of the {@link MutableSettings} class.
+     *
+     * @param settings The map of settings to use.
+     * @param parent   The parent settings; or <code>null</code>.
      */
-    public MutableSettings() {
-        this(null);
+    public MutableSettings(final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
+        super(settings, parent, true);
+
+        Preconditions.checkNotNull(settings);
+        this.settings = settings;
     }
 
     /**
      * Sets the local setting with the specified key to the specified value.
      *
-     * @param key The key to set.
+     * @param key   The key to set.
      * @param value The value to set the key to, which may be <code>null</code>.
-     * @param <T> The type of value.
+     * @param <T>   The type of value.
      */
     public <T> void setLocalSetting(final ISettingKey<T> key, @Nullable final T value) {
         Preconditions.checkNotNull(key);
@@ -80,7 +78,7 @@ public class MutableSettings extends Settings {
 
     /**
      * Clears the local setting with the specified key.
-     *
+     * <p>
      * It is not an error to clear an undefined setting.
      *
      * @param key The key to clear.

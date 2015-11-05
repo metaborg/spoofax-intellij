@@ -39,7 +39,7 @@ public final class SettingsFormatUtils {
      * Reads settings from an input stream.
      *
      * @param format The settings format.
-     * @param input The input stream.
+     * @param input  The input stream.
      * @return The read settings.
      */
     public static Settings readFromStream(final ISettingsFormat format, final InputStream input) throws IOException {
@@ -53,11 +53,14 @@ public final class SettingsFormatUtils {
      * Reads settings from an input stream.
      *
      * @param format The settings format.
-     * @param input The input stream.
+     * @param input  The input stream.
      * @param parent The parent settings; or <code>null</code>.
      * @return The read settings.
      */
-    public static Settings readFromStream(final ISettingsFormat format, final InputStream input, @Nullable final Settings parent) throws IOException {
+    public static Settings readFromStream(
+            final ISettingsFormat format,
+            final InputStream input,
+            @Nullable final Settings parent) throws IOException {
         Preconditions.checkNotNull(format);
         Preconditions.checkNotNull(input);
 
@@ -67,11 +70,14 @@ public final class SettingsFormatUtils {
     /**
      * Writes settings to an output stream.
      *
-     * @param format The settings format.
-     * @param output The output stream.
+     * @param format   The settings format.
+     * @param output   The output stream.
      * @param settings The settings to write.
      */
-    public static void writeToStream(final ISettingsFormat format, final OutputStream output, final Settings settings) throws IOException {
+    public static void writeToStream(
+            final ISettingsFormat format,
+            final OutputStream output,
+            final Settings settings) throws IOException {
         Preconditions.checkNotNull(format);
         Preconditions.checkNotNull(output);
         Preconditions.checkNotNull(settings);
@@ -83,7 +89,7 @@ public final class SettingsFormatUtils {
      * Reads settings from a file.
      *
      * @param format The settings format.
-     * @param file The input file.
+     * @param file   The input file.
      * @return The read settings.
      */
     public static Settings readFromFile(final ISettingsFormat format, final File file) throws IOException {
@@ -97,11 +103,14 @@ public final class SettingsFormatUtils {
      * Reads settings from a file.
      *
      * @param format The settings format.
-     * @param file The input file.
+     * @param file   The input file.
      * @param parent The parent settings; or <code>null</code>.
      * @return The read settings.
      */
-    public static Settings readFromFile(final ISettingsFormat format, final File file, @Nullable final Settings parent) throws IOException {
+    public static Settings readFromFile(
+            final ISettingsFormat format,
+            final File file,
+            @Nullable final Settings parent) throws IOException {
         Preconditions.checkNotNull(format);
         Preconditions.checkNotNull(file);
 
@@ -113,11 +122,12 @@ public final class SettingsFormatUtils {
     /**
      * Writes settings to a file.
      *
-     * @param format The settings format.
-     * @param file The output file.
+     * @param format   The settings format.
+     * @param file     The output file.
      * @param settings The settings to write.
      */
-    public static void writeToFile(final ISettingsFormat format, final File file, final Settings settings) throws IOException {
+    public static void writeToFile(final ISettingsFormat format, final File file, final Settings settings) throws
+            IOException {
         Preconditions.checkNotNull(format);
         Preconditions.checkNotNull(file);
         Preconditions.checkNotNull(settings);
@@ -131,7 +141,7 @@ public final class SettingsFormatUtils {
      * Reads settings from a file.
      *
      * @param format The settings format.
-     * @param file The input file.
+     * @param file   The input file.
      * @return The read settings.
      */
     public static Settings readFromFile(final ISettingsFormat format, final FileObject file) throws IOException {
@@ -145,11 +155,14 @@ public final class SettingsFormatUtils {
      * Reads settings from a file.
      *
      * @param format The settings format.
-     * @param file The input file.
+     * @param file   The input file.
      * @param parent The parent settings; or <code>null</code>.
      * @return The read settings.
      */
-    public static Settings readFromFile(final ISettingsFormat format, final FileObject file, @Nullable final Settings parent) throws IOException {
+    public static Settings readFromFile(
+            final ISettingsFormat format,
+            final FileObject file,
+            @Nullable final Settings parent) throws IOException {
         Preconditions.checkNotNull(format);
         Preconditions.checkNotNull(file);
 
@@ -161,11 +174,12 @@ public final class SettingsFormatUtils {
     /**
      * Writes settings to a file.
      *
-     * @param format The settings format.
-     * @param file The output file.
+     * @param format   The settings format.
+     * @param file     The output file.
      * @param settings The settings to write.
      */
-    public static void writeToFile(final ISettingsFormat format, final FileObject file, final Settings settings) throws IOException {
+    public static void writeToFile(final ISettingsFormat format, final FileObject file, final Settings settings) throws
+            IOException {
         Preconditions.checkNotNull(format);
         Preconditions.checkNotNull(file);
         Preconditions.checkNotNull(settings);
@@ -179,7 +193,7 @@ public final class SettingsFormatUtils {
      * Reads settings from a string.
      *
      * @param format The settings format.
-     * @param str The input string.
+     * @param str    The input string.
      * @return The read settings.
      */
     public static Settings readFromString(final ISettingsFormat format, final String str) throws IOException {
@@ -193,11 +207,14 @@ public final class SettingsFormatUtils {
      * Reads settings from a string.
      *
      * @param format The settings format.
-     * @param str The input string.
+     * @param str    The input string.
      * @param parent The parent settings; or <code>null</code>.
      * @return The read settings.
      */
-    public static Settings readFromString(final ISettingsFormat format, final String str, @Nullable final Settings parent) throws IOException {
+    public static Settings readFromString(
+            final ISettingsFormat format,
+            final String str,
+            @Nullable final Settings parent) throws IOException {
         Preconditions.checkNotNull(format);
         Preconditions.checkNotNull(str);
 
@@ -209,7 +226,7 @@ public final class SettingsFormatUtils {
     /**
      * Writes settings to a string.
      *
-     * @param format The settings format.
+     * @param format   The settings format.
      * @param settings The setting to write.
      * @return The resulting string.
      */
@@ -217,7 +234,7 @@ public final class SettingsFormatUtils {
         Preconditions.checkNotNull(format);
         Preconditions.checkNotNull(settings);
 
-        try(OutputStream output = new ByteArrayOutputStream()) {
+        try (OutputStream output = new ByteArrayOutputStream()) {
             format.write(output, settings);
             return output.toString();
         }
@@ -228,7 +245,7 @@ public final class SettingsFormatUtils {
     /**
      * Gets the setting key for the specified field.
      *
-     * @param fieldName The field name.
+     * @param fieldName   The field name.
      * @param descriptors The set of descriptors.
      * @return The setting key.
      */
@@ -248,7 +265,7 @@ public final class SettingsFormatUtils {
     /**
      * Gets a descriptor with the specified name.
      *
-     * @param name The name of the descriptor; or <code>null</code>.
+     * @param name        The name of the descriptor; or <code>null</code>.
      * @param descriptors The descriptors.
      * @return The descriptor with the specified name; or <code>null</code>.
      */

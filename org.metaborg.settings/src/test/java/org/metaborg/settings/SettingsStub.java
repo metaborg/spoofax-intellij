@@ -33,7 +33,9 @@ public final class SettingsStub extends Settings {
     /* package private */ static final SettingKey<ComplexObject> OBJ_KEY
             = new SettingKey<>("obj", ComplexObject.class);
     /* package private */ static final SettingKey<List<ComplexObject>> LIST_OF_OBJS_KEY
-            = new SettingKey<>("listOfObjs", new TypeReference<List<ComplexObject>>(){}, SettingStrategies.appendList());
+            = new SettingKey<>("listOfObjs",
+                               new TypeReference<List<ComplexObject>>() {},
+                               SettingStrategies.appendList());
 
     public SettingsStub(final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
         super(settings, parent);

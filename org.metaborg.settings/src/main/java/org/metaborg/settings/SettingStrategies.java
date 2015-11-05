@@ -1,18 +1,15 @@
 package org.metaborg.settings;
 
-import java.util.Collection;
-
 /**
  * The pre-defined setting inheritance strategies.
  */
 public final class SettingStrategies {
 
-    // Prevent instantiation.
-    private SettingStrategies() {}
-
     private static final SettingOverrideStrategy<?> _override = new SettingOverrideStrategy<>();
     private static final SettingCollectionUnionStrategy<?> _unionCollection = new SettingCollectionUnionStrategy<>();
     private static final SettingListUnionStrategy<?> _appendList = new SettingListUnionStrategy<>();
+    // Prevent instantiation.
+    private SettingStrategies() {}
 
     /**
      * Override an existing value.
@@ -22,7 +19,7 @@ public final class SettingStrategies {
      */
     public static <T> SettingOverrideStrategy<T> override() {
         //noinspection unchecked
-        return (SettingOverrideStrategy<T>)_override;
+        return (SettingOverrideStrategy<T>) _override;
     }
 
     /**
@@ -33,7 +30,7 @@ public final class SettingStrategies {
      */
     public static <E> SettingCollectionUnionStrategy<E> unionCollection() {
         //noinspection unchecked
-        return (SettingCollectionUnionStrategy<E>)_unionCollection;
+        return (SettingCollectionUnionStrategy<E>) _unionCollection;
     }
 
     /**
@@ -44,6 +41,6 @@ public final class SettingStrategies {
      */
     public static <E> SettingListUnionStrategy<E> appendList() {
         //noinspection unchecked
-        return (SettingListUnionStrategy<E>)_appendList;
+        return (SettingListUnionStrategy<E>) _appendList;
     }
 }

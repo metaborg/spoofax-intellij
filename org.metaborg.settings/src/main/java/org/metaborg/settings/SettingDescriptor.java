@@ -35,7 +35,7 @@ public final class SettingDescriptor {
     /**
      * Initializes a new instance of the {@link SettingDescriptor} class.
      *
-     * @param key The setting key.
+     * @param key      The setting key.
      * @param required Whether the setting is required.
      */
     public SettingDescriptor(final SettingKey key, final boolean required) {

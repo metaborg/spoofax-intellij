@@ -20,9 +20,9 @@
 package org.metaborg.core.project.settings;
 
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.settings.*;
 import org.metaborg.core.language.LanguageContributionIdentifier;
 import org.metaborg.core.language.LanguageIdentifier;
+import org.metaborg.settings.*;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -42,17 +42,23 @@ public class NewProjectSettings extends Settings implements IProjectSettings {
             = new SettingKey<>("compileDependencies", new TypeReference<List<LanguageIdentifier>>() {},
                                SettingStrategies.appendList());
     /* package private */ static final SettingKey<List<LanguageIdentifier>> RUNTIME_DEPENDENCIES_KEY
-            = new SettingKey<>("runtimeDependencies", new TypeReference<List<LanguageIdentifier>>() {}, SettingStrategies.appendList());
+            = new SettingKey<>("runtimeDependencies",
+                               new TypeReference<List<LanguageIdentifier>>() {},
+                               SettingStrategies.appendList());
     /* package private */ static final SettingKey<List<LanguageContributionIdentifier>> LANGUAGE_CONTRIBUTIONS_KEY
-            = new SettingKey<>("languageContributions", new TypeReference<List<LanguageContributionIdentifier>>() {}, SettingStrategies.appendList());
+            = new SettingKey<>("languageContributions",
+                               new TypeReference<List<LanguageContributionIdentifier>>() {},
+                               SettingStrategies.appendList());
 
     /**
      * Initializes a new instance of the {@link NewProjectSettings} class.
      *
      * @param settings The map of settings to use.
-     * @param parent The parent settings; or <code>null</code>.
+     * @param parent   The parent settings; or <code>null</code>.
      */
-    /* package private */ NewProjectSettings(@NotNull final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
+    /* package private */ NewProjectSettings(
+            @NotNull final Map<ISettingKey<?>, Object> settings,
+            @Nullable final Settings parent) {
         super(settings, parent);
     }
 

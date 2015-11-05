@@ -24,12 +24,12 @@ import java.lang.reflect.Type;
 
 /**
  * A type reference, used to represent a complex generic type.SettingKey
- *
+ * <p>
  * Example:
  * <pre>
  * TypeReference myRef = new TypeReference&lt;List&lt;String&gt;&gt;() {};
  * </pre>
- *
+ * <p>
  * {@see http://gafter.blogspot.nl/2006/12/super-type-tokens.html}
  */
 public abstract class TypeReference<T> implements Comparable<TypeReference<T>> {
@@ -42,7 +42,7 @@ public abstract class TypeReference<T> implements Comparable<TypeReference<T>> {
     protected TypeReference() {
         Type type = getClass().getGenericSuperclass();
         assert !(type instanceof Class<?>);
-        this.type = ((ParameterizedType)type).getActualTypeArguments()[0];
+        this.type = ((ParameterizedType) type).getActualTypeArguments()[0];
     }
 
     /**

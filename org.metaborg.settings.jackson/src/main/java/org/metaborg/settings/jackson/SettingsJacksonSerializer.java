@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.google.common.base.Preconditions;
 import org.metaborg.settings.ISettingKey;
 import org.metaborg.settings.ISettingsFactory;
-import org.metaborg.settings.SettingKey;
 import org.metaborg.settings.Settings;
 
 import java.io.IOException;

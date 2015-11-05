@@ -24,11 +24,11 @@ import org.junit.Test;
 import org.metaborg.settings.jackson.YamlSettingsFormat;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public final class YamlSettingsFormatTests {
 
@@ -47,7 +47,7 @@ public final class YamlSettingsFormatTests {
                 + "  value: 4\n"
                 + "- name: \"other\"\n"
                 + "  value: 20\n";
-        SettingsStub settings = (SettingsStub)SettingsFormatUtils.readFromString(sut, input);
+        SettingsStub settings = (SettingsStub) SettingsFormatUtils.readFromString(sut, input);
 
         assertEquals("testName", settings.name());
         assertEquals(new ComplexObject("test", 1), settings.obj());
@@ -95,7 +95,7 @@ public final class YamlSettingsFormatTests {
         Settings parent = new Settings(new HashMap<>(), null);
         String input = "---\n"
                 + "name: \"testName\"\n";
-        SettingsStub settings = (SettingsStub)SettingsFormatUtils.readFromString(sut, input, parent);
+        SettingsStub settings = (SettingsStub) SettingsFormatUtils.readFromString(sut, input, parent);
 
         assertSame(parent, settings.parent());
     }
@@ -117,10 +117,10 @@ public final class YamlSettingsFormatTests {
         YamlSettingsFormat sut = new YamlSettingsFormat(new SettingsStubFactory());
         String parentInput = "---\n"
                 + "name: \"parent\"\n";
-        SettingsStub parent = (SettingsStub)SettingsFormatUtils.readFromString(sut, parentInput);
+        SettingsStub parent = (SettingsStub) SettingsFormatUtils.readFromString(sut, parentInput);
         String childInput = "---\n"
                 + "name: \"child\"\n";
-        SettingsStub child = (SettingsStub)SettingsFormatUtils.readFromString(sut, childInput, parent);
+        SettingsStub child = (SettingsStub) SettingsFormatUtils.readFromString(sut, childInput, parent);
 
         assertEquals("child", child.name());
         assertEquals("child", child.getLocalSetting(SettingsStub.NAME_KEY));
@@ -131,10 +131,10 @@ public final class YamlSettingsFormatTests {
         YamlSettingsFormat sut = new YamlSettingsFormat(new SettingsStubFactory());
         String parentInput = "---\n"
                 + "name: \"parent\"\n";
-        SettingsStub parent = (SettingsStub)SettingsFormatUtils.readFromString(sut, parentInput);
+        SettingsStub parent = (SettingsStub) SettingsFormatUtils.readFromString(sut, parentInput);
         String childInput = "---\n"
                 + "id: \"unrelated\"\n";
-        SettingsStub child = (SettingsStub)SettingsFormatUtils.readFromString(sut, childInput, parent);
+        SettingsStub child = (SettingsStub) SettingsFormatUtils.readFromString(sut, childInput, parent);
 
         assertEquals("parent", child.name());
         assertEquals(null, child.getLocalSettingOrDefault(SettingsStub.NAME_KEY, null));
@@ -148,12 +148,12 @@ public final class YamlSettingsFormatTests {
                 + "listOfObjs:\n"
                 + "- name: \"testname\"\n"
                 + "  value: 4\n";
-        SettingsStub parent = (SettingsStub)SettingsFormatUtils.readFromString(sut, parentInput);
+        SettingsStub parent = (SettingsStub) SettingsFormatUtils.readFromString(sut, parentInput);
         String childInput = "---\n"
                 + "listOfObjs:\n"
                 + "- name: \"other\"\n"
                 + "  value: 20\n";
-        SettingsStub child = (SettingsStub)SettingsFormatUtils.readFromString(sut, childInput, parent);
+        SettingsStub child = (SettingsStub) SettingsFormatUtils.readFromString(sut, childInput, parent);
 
         assertEquals(Arrays.asList(
                 new ComplexObject("testname", 4),

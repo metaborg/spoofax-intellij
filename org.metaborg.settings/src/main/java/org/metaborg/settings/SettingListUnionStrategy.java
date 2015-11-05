@@ -2,7 +2,6 @@ package org.metaborg.settings;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,7 +14,10 @@ import java.util.List;
      */
     @Override
     @Nullable
-    public List<E> apply(final ISettingKey<List<E>> key, @Nullable final List<E> localValue, @Nullable final List<E> parentValue) {
+    public List<E> apply(
+            final ISettingKey<List<E>> key,
+            @Nullable final List<E> localValue,
+            @Nullable final List<E> parentValue) {
         if (parentValue == null)
             return localValue;
         if (localValue == null)

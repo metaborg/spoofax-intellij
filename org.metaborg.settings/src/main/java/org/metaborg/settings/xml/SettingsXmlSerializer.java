@@ -52,7 +52,7 @@ import org.w3c.dom.Node;
     public Node serialize(final Object value, final Document doc, final XmlSettingsFormat format) {
         Element element = doc.createElement("settings");
 
-        Settings settings = (Settings)value;
+        Settings settings = (Settings) value;
         for (ISettingKey<?> key : settings.getAllLocalSettings()) {
 
             Element child = doc.createElement(key.name());

@@ -15,7 +15,10 @@ import java.util.List;
      */
     @Override
     @Nullable
-    public Collection<E> apply(final ISettingKey<Collection<E>> key, @Nullable final Collection<E> localValue, @Nullable final Collection<E> parentValue) {
+    public Collection<E> apply(
+            final ISettingKey<Collection<E>> key,
+            @Nullable final Collection<E> localValue,
+            @Nullable final Collection<E> parentValue) {
         if (parentValue == null)
             return localValue;
         if (localValue == null)

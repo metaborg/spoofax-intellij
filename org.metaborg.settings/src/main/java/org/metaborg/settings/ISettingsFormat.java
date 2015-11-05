@@ -26,7 +26,7 @@ import java.io.OutputStream;
 
 /**
  * A settings storage format.
- *
+ * <p>
  * Use the methods of the {@link SettingsFormatUtils} instead of calling the members
  * of this interface directly.
  */
@@ -35,7 +35,7 @@ public interface ISettingsFormat {
     /**
      * Reads settings from an input stream.
      *
-     * @param input The input stream.
+     * @param input  The input stream.
      * @param parent The parent settings; or <code>null</code>.
      * @return The read settings.
      */
@@ -44,7 +44,7 @@ public interface ISettingsFormat {
     /**
      * Writes settings to an output stream.
      *
-     * @param output The output stream.
+     * @param output   The output stream.
      * @param settings The settings to write.
      */
     void write(

@@ -43,6 +43,7 @@ public interface IProjectMetaSettings extends IProjectSettings {
 
     /**
      * Gets the project artifact format.
+     *
      * @return A member of the {@link Format} enumeration.
      */
     Format format();

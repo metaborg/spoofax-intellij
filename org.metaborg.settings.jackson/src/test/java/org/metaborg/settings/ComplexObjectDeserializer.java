@@ -17,7 +17,7 @@ public final class ComplexObjectDeserializer extends StdDeserializer<ComplexObje
     @Override
     public ComplexObject deserialize(
             final JsonParser parser, final DeserializationContext context) throws IOException {
-        final ObjectMapper mapper = (ObjectMapper)parser.getCodec();
+        final ObjectMapper mapper = (ObjectMapper) parser.getCodec();
         final JsonNode root = mapper.readTree(parser);
 
         String name = root.get("name").asText();

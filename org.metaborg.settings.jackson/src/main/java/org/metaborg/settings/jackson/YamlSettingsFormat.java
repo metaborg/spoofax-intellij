@@ -25,7 +25,7 @@ import org.metaborg.settings.ISettingsFactory;
 
 /**
  * Settings serializer/deserializer using YAML.
- *
+ * <p>
  * Types can use custom (de)serializers through an annotation. For example:
  * <pre>
  *     @JsonSerialize(using = VersionSerializer.class)

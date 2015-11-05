@@ -19,18 +19,14 @@
 
 package org.metaborg.settings;
 
-import com.google.common.base.Preconditions;
-import org.slf4j.helpers.MessageFormatter;
-
-import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 
 /**
  * A setting key.
- *
+ * <p>
  * This describes the name, type and other attributes of a setting.
  *
- * @param <T>    The type of value.
+ * @param <T> The type of value.
  */
 public interface ISettingKey<T> {
 

@@ -26,13 +26,14 @@ import com.google.common.collect.Sets;
 import org.slf4j.helpers.MessageFormatter;
 
 import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.Function;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
  * Setting in a settings hierarchy.
- *
+ * <p>
  * You can derive from this class to provide getters.
  */
 public class Settings {
@@ -44,23 +45,8 @@ public class Settings {
     /**
      * Initializes a new instance of the {@link Settings} class.
      *
-     * @param settings The settings map to use.
-     * @param parent The parent settings; or <code>null</code>.
-     * @param internal Unused.
-     */
-    /* package private */ Settings(final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent, final boolean internal) {
-        Preconditions.checkNotNull(settings);
-
-        this.settings = settings;
-        this.parent = parent;
-        SettingsUtils.assertNoCycles(this);
-    }
-
-    /**
-     * Initializes a new instance of the {@link Settings} class.
-     *
      * @param settings The map of settings to use.
-     * @param parent The parent settings; or <code>null</code>.
+     * @param parent   The parent settings; or <code>null</code>.
      */
     public Settings(final Map<ISettingKey<?>, Object> settings, @Nullable final Settings parent) {
         // NOTE: ImmutableMap preserved insertion order.
@@ -70,28 +56,21 @@ public class Settings {
     }
 
     /**
-     * Gets the parent settings.
+     * Initializes a new instance of the {@link Settings} class.
      *
-     * @return The parent settings;
-     * or <code>null</code> when there is no parent
+     * @param settings The settings map to use.
+     * @param parent   The parent settings; or <code>null</code>.
+     * @param internal Unused.
      */
-    @Nullable
-    public Settings parent() {
-        return this.parent;
-    }
+    /* package private */ Settings(
+            final Map<ISettingKey<?>, Object> settings,
+            @Nullable final Settings parent,
+            final boolean internal) {
+        Preconditions.checkNotNull(settings);
 
-    /**
-     * Gets whether a local setting with the specified key is defined.
-     *
-     * @param key The key to look for.
-     * @param <T> The type of value.
-     * @return <code>true</code> when a local setting is defined;
-     * otherwise, <code>false</code>.
-     */
-    public <T> boolean hasLocalSetting(final ISettingKey<T> key) {
-        Preconditions.checkNotNull(key);
-
-        return this.settings.containsKey(key);
+        this.settings = settings;
+        this.parent = parent;
+        SettingsUtils.assertNoCycles(this);
     }
 
     /**
@@ -114,11 +93,45 @@ public class Settings {
 
     /**
      * Gets the local setting with the specified key;
-     * otherwise returns a default value.
+     * otherwise returns the result of a fallback function.
+     *
+     * @param key      The key to look for.
+     * @param fallback A function that provides a fallback value.
+     * @param <T>      The type of value.
+     * @return The local value of the setting, which may be <code>null</code>;
+     * or the fallback value when no local setting with the specified key is defined.
+     */
+    @Nullable
+    public <T> T getLocalSettingOr(final ISettingKey<T> key, @Nullable final Supplier<T> fallback) {
+        Preconditions.checkNotNull(key);
+
+        if (!hasLocalSetting(key))
+            return fallback.get();
+        //noinspection unchecked
+        return (T) this.settings.get(key);
+    }
+
+    /**
+     * Gets whether a local setting with the specified key is defined.
      *
      * @param key The key to look for.
-     * @param defaultValue The default value.
      * @param <T> The type of value.
+     * @return <code>true</code> when a local setting is defined;
+     * otherwise, <code>false</code>.
+     */
+    public <T> boolean hasLocalSetting(final ISettingKey<T> key) {
+        Preconditions.checkNotNull(key);
+
+        return this.settings.containsKey(key);
+    }
+
+    /**
+     * Gets the local setting with the specified key;
+     * otherwise returns a default value.
+     *
+     * @param key          The key to look for.
+     * @param defaultValue The default value.
+     * @param <T>          The type of value.
      * @return The local value of the setting, which may be <code>null</code>;
      * or the default value when no local setting with the specified key is defined.
      */
@@ -130,28 +143,8 @@ public class Settings {
     }
 
     /**
-     * Gets the local setting with the specified key;
-     * otherwise returns the result of a fallback function.
-     *
-     * @param key The key to look for.
-     * @param fallback A function that provides a fallback value.
-     * @param <T> The type of value.
-     * @return The local value of the setting, which may be <code>null</code>;
-     * or the fallback value when no local setting with the specified key is defined.
-     */
-    @Nullable
-    public <T> T getLocalSettingOr(final ISettingKey<T> key, @Nullable final Supplier<T> fallback) {
-        Preconditions.checkNotNull(key);
-
-        if (!hasLocalSetting(key))
-            return fallback.get();
-        //noinspection unchecked
-        return (T)this.settings.get(key);
-    }
-
-    /**
      * Gets whether a setting with the specified key is defined.
-     *
+     * <p>
      * This method traverses up the dependency chain until a definition is found.
      *
      * @param key The key to look for.
@@ -167,7 +160,7 @@ public class Settings {
 
     /**
      * Gets the setting with the specified key.
-     *
+     * <p>
      * This method traverses up the dependency chain until a definition is found.
      *
      * @param key The key to look for.
@@ -180,19 +173,20 @@ public class Settings {
         Preconditions.checkNotNull(key);
 
         return getSettingOr(key, () -> {
-            throw new SettingNotFoundException(MessageFormatter.format("The setting with key {} was not found.", key).getMessage());
+            throw new SettingNotFoundException(MessageFormatter.format("The setting with key {} was not found.",
+                                                                       key).getMessage());
         });
     }
 
     /**
      * Gets the setting with the specified key;
      * otherwise returns a default value.
-     *
+     * <p>
      * This method traverses up the dependency chain until a definition is found.
      *
-     * @param key The key to look for.
+     * @param key          The key to look for.
      * @param defaultValue The default value.
-     * @param <T> The type of value.
+     * @param <T>          The type of value.
      * @return The value of the setting, which may be <code>null</code>;
      * or the default value when no setting with the specified key is defined.
      */
@@ -206,12 +200,12 @@ public class Settings {
     /**
      * Gets the setting with the specified key;
      * otherwise returns the result of a fallback function.
-     *
+     * <p>
      * This method traverses up the dependency chain until a definition is found.
      *
-     * @param key The key to look for.
+     * @param key      The key to look for.
      * @param fallback A function that provides a fallback value.
-     * @param <T> The type of value.
+     * @param <T>      The type of value.
      * @return The value of the setting, which may be <code>null</code>;
      * or the fallback value when no setting with the specified key is defined.
      */
@@ -242,15 +236,6 @@ public class Settings {
     }
 
     /**
-     * Gets all locally defined setting keys.
-     *
-     * @return A set of keys.
-     */
-    public Set<ISettingKey<?>> getAllLocalSettings() {
-        return ImmutableSet.copyOf(this.settings.keySet());
-    }
-
-    /**
      * Gets all defined setting keys in this settings and any ancestors.
      *
      * @return A set of keys.
@@ -262,5 +247,25 @@ public class Settings {
             keys.addAll(current.getAllLocalSettings());
         }
         return keys;
+    }
+
+    /**
+     * Gets the parent settings.
+     *
+     * @return The parent settings;
+     * or <code>null</code> when there is no parent
+     */
+    @Nullable
+    public Settings parent() {
+        return this.parent;
+    }
+
+    /**
+     * Gets all locally defined setting keys.
+     *
+     * @return A set of keys.
+     */
+    public Set<ISettingKey<?>> getAllLocalSettings() {
+        return ImmutableSet.copyOf(this.settings.keySet());
     }
 }
