@@ -242,13 +242,26 @@ public final class SpoofaxParser implements PsiParser {
             buildTermEnd(term, marker);
         }
 
-        private PsiBuilder.Marker buildTermStart(IStrategoTerm term) {
+        /**
+         * Builds the start of a term.
+         *
+         * @param term The term.
+         * @return The resulting marker.
+         */
+        @NotNull
+        private PsiBuilder.Marker buildTermStart(@NotNull final IStrategoTerm term) {
             moveToStart(term);
             PsiBuilder.Marker marker = builder.mark();
             return marker;
         }
 
-        private void buildTermEnd(IStrategoTerm term, PsiBuilder.Marker marker) {
+        /**
+         * Builds the end of a term.
+         *
+         * @param term The term.
+         * @param marker The marker.
+         */
+        private void buildTermEnd(@NotNull final IStrategoTerm term, @NotNull final PsiBuilder.Marker marker) {
             // TODO: Pick an element type!
             IElementType elementType = this.tokenTypesManager.getDummySpoofaxTokenType();
 
@@ -256,13 +269,23 @@ public final class SpoofaxParser implements PsiParser {
             marker.done(elementType);
         }
 
-        private void moveToStart(IStrategoTerm term) {
+        /**
+         * Moves to the start of a term.
+         *
+         * @param term The term.
+         */
+        private void moveToStart(@NotNull final IStrategoTerm term) {
             final ImploderAttachment imploderAttachment = ImploderAttachment.get(term);
             int start = imploderAttachment.getLeftToken().getStartOffset();
             moveTo(start);
         }
 
-        private void moveToEnd(IStrategoTerm term) {
+        /**
+         * Moves to the end of a term.
+         *
+         * @param term The term.
+         */
+        private void moveToEnd(@NotNull final IStrategoTerm term) {
             final ImploderAttachment imploderAttachment = ImploderAttachment.get(term);
             int end = imploderAttachment.getRightToken().getEndOffset() + 1;
             moveTo(end);
