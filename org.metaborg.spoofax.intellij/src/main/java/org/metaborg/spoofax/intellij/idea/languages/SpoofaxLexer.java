@@ -183,6 +183,12 @@ public final class SpoofaxLexer extends LexerBase {
             // A null parse result might occur when the input contains an error,
             // and recovery fails or is disabled.
             logger.error("Cannot categorize input of {}, parse result is empty", this.languageImpl);
+
+            // Return a single token covering all input.
+            IntRange tokenRange = IntRange.between(0, this.buffer.length());
+            SpoofaxTokenType styledTokenType = this.tokenTypesManager.getTokenType(this.tokenTypesManager.getDefaultStyle());
+            SpoofaxToken spoofaxToken = new SpoofaxToken(styledTokenType, tokenRange);
+            this.tokens.add(spoofaxToken);
             return;
         }
 

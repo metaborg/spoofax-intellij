@@ -33,6 +33,7 @@ import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
+import org.metaborg.spoofax.intellij.factories.IParserFactory;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.slf4j.Logger;
@@ -55,6 +56,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final ICharacterLexerFactory characterLexerFactory;
     @NotNull
+    private final IParserFactory parserFactory;
+    @NotNull
     private final BuilderMenuBuilder builderMenuBuilder;
     @NotNull
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
@@ -70,11 +73,13 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
             @NotNull final IHighlightingLexerFactory lexerFactory,
             @NotNull final IParserDefinitionFactory parserDefinitionFactory,
             @NotNull final ICharacterLexerFactory characterLexerFactory,
+            @NotNull final IParserFactory parserFactory,
             @NotNull final BuilderMenuBuilder builderMenuBuilder,
             @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
+        this.parserFactory = parserFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
         this.builderMenuBuilder = builderMenuBuilder;
 
@@ -125,20 +130,20 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         final SpoofaxIdeaLanguage ideaLanguage = createIdeaLanguage(language);
         final SpoofaxFileType fileType = createFileType(ideaLanguage);
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
-        final OldSpoofaxTokenType dummyAstTokenType = createDummyAstTokenType(ideaLanguage);
+//        final OldSpoofaxTokenType dummyAstTokenType = createDummyAstTokenType(ideaLanguage);
         final ParserDefinition parserDefinition = createParserDefinition(fileType);
         final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory();
-        final Lexer characterLexer = createCharacterLexer(tokenTypeManager);
-        final OldSpoofaxParser parser = createParser(dummyAstTokenType);
+//        final Lexer characterLexer = createCharacterLexer(tokenTypeManager);
+//        final OldSpoofaxParser parser = createParser(dummyAstTokenType);
 
         return new IdeaLanguageAttachment(ideaLanguage,
                                           fileType,
                                           tokenTypeManager,
-                                          dummyAstTokenType,
+//                                          dummyAstTokenType,
                                           parserDefinition,
                                           syntaxHighlighterFactory,
-                                          characterLexer,
-                                          parser);
+                                          characterLexerFactory,
+                                          parserFactory);
     }
 
     /**
@@ -204,16 +209,16 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         return new SpoofaxTokenTypeManager(language);
     }
 
-    /**
-     * Creates a new dummy AST token type.
-     *
-     * @param language The IDEA language.
-     * @return The created dummy token type.
-     */
-    @NotNull
-    private final OldSpoofaxTokenType createDummyAstTokenType(@NotNull final SpoofaxIdeaLanguage language) {
-        return new OldSpoofaxTokenType("DUMMY", language);
-    }
+//    /**
+//     * Creates a new dummy AST token type.
+//     *
+//     * @param language The IDEA language.
+//     * @return The created dummy token type.
+//     */
+//    @NotNull
+//    private final OldSpoofaxTokenType createDummyAstTokenType(@NotNull final SpoofaxIdeaLanguage language) {
+//        return new OldSpoofaxTokenType("DUMMY", language);
+//    }
 
     /**
      * Creates a new parser definition.
@@ -226,16 +231,16 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         return this.parserDefinitionFactory.create(fileType);
     }
 
-    /**
-     * Creates a new lexer.
-     *
-     * @param tokenTypeManager The token type manager.
-     * @return The lexer.
-     */
-    @NotNull
-    private final Lexer createCharacterLexer(@NotNull final SpoofaxTokenTypeManager tokenTypeManager) {
-        return this.characterLexerFactory.create(tokenTypeManager);
-    }
+//    /**
+//     * Creates a new lexer.
+//     *
+//     * @param tokenTypeManager The token type manager.
+//     * @return The lexer.
+//     */
+//    @NotNull
+//    private final Lexer createCharacterLexer(@NotNull final SpoofaxTokenTypeManager tokenTypeManager) {
+//        return this.characterLexerFactory.create(tokenTypeManager);
+//    }
 
     /**
      * Creates a new lexer.
@@ -251,16 +256,16 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         return this.lexerFactory.create(language, tokenTypeManager);
     }
 
-    /**
-     * Creates a new parser.
-     *
-     * @param dummyAstTokenType The dummy AST token type.
-     * @return The parser.
-     */
-    @NotNull
-    private final OldSpoofaxParser createParser(@NotNull final OldSpoofaxTokenType dummyAstTokenType) {
-        return new OldSpoofaxParser(dummyAstTokenType);
-    }
+//    /**
+//     * Creates a new parser.
+//     *
+//     * @param dummyAstTokenType The dummy AST token type.
+//     * @return The parser.
+//     */
+//    @NotNull
+//    private final OldSpoofaxParser createParser(@NotNull final OldSpoofaxTokenType dummyAstTokenType) {
+//        return new OldSpoofaxParser(dummyAstTokenType);
+//    }
 
     /**
      * Creates a new syntax highlighter factory.

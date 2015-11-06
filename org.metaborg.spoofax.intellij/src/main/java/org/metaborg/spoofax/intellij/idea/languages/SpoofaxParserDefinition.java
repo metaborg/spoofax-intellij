@@ -65,7 +65,7 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public Lexer createLexer(@NotNull final Project project) {
-        return this.lexerParserManager.getCharacterLexer(this.fileType.getSpoofaxLanguage());
+        return this.lexerParserManager.createCharacterLexer(this.fileType.getSpoofaxLanguage());
     }
 
     /**
@@ -76,7 +76,7 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
      */
     @Override
     public PsiParser createParser(@NotNull final Project project) {
-        return this.lexerParserManager.getParser(this.fileType.getSpoofaxLanguage());
+        return this.lexerParserManager.createParser(this.fileType.getSpoofaxLanguage());
     }
 
     /**

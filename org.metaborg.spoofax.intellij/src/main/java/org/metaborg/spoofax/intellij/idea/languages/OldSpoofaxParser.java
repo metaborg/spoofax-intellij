@@ -19,7 +19,9 @@
 
 package org.metaborg.spoofax.intellij.idea.languages;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.assistedinject.Assisted;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
@@ -28,16 +30,23 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.resolve.FileContextUtil;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.language.ILanguageImpl;
 
 // NOTE: This class will eventually be replaced.
 @Singleton
 public final class OldSpoofaxParser implements PsiParser {
 
     @NotNull
-    private final OldSpoofaxTokenType dummyAstTokenType;
+    private final ILanguage language;
+    @NotNull
+    private final SpoofaxTokenTypeManager tokenTypesManager;
 
-    public OldSpoofaxParser(@NotNull final OldSpoofaxTokenType dummyAstTokenType) {
-        this.dummyAstTokenType = dummyAstTokenType;
+    @Inject
+    public OldSpoofaxParser(@Assisted @NotNull final ILanguage language,
+                            @Assisted @NotNull final SpoofaxTokenTypeManager tokenTypesManager) {
+        this.language = language;
+        this.tokenTypesManager = tokenTypesManager;
     }
 
     @NotNull
@@ -60,7 +69,7 @@ public final class OldSpoofaxParser implements PsiParser {
         while (!builder.eof()) {
             builder.advanceLexer();
         }
-        m.done(this.dummyAstTokenType);
+        m.done(this.tokenTypesManager.getDummySpoofaxTokenType());
     }
 
 }
