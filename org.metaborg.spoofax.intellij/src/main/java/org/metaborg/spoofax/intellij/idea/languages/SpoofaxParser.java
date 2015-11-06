@@ -180,8 +180,8 @@ public final class SpoofaxParser implements PsiParser {
         @NotNull
         public ASTNode build() {
             PsiBuilder.Marker m = builder.mark();
-            if (this.result != null) {
-                buildTerm(this.result.result);
+            if (this.result != null && this.result.result != null) {
+                buildTermIterative(this.result.result);
             } else {
                 // We have no parse result. Therefore,
                 // parse a single element for all tokens.
@@ -197,28 +197,75 @@ public final class SpoofaxParser implements PsiParser {
         }
 
         /**
+         * Builds the AST for the specified term, iteratively.
+         *
+         * @param root The root term.
+         */
+        private void buildTermIterative(@NotNull final IStrategoTerm root) {
+            Stack<TermTask> tasks = new Stack<>();
+            tasks.push(new TermTask(root));
+
+            while (!tasks.empty()) {
+                TermTask task = tasks.pop();
+                IStrategoTerm term = task.term;
+                PsiBuilder.Marker marker = task.marker;
+                if (marker == null) {
+                    // Start
+                    marker = buildTermStart(term);
+                    tasks.push(new TermTask(term, marker));
+
+                    IStrategoTerm[] subterms = term.getAllSubterms();
+                    for (int i = subterms.length - 1; i >= 0; i--) {
+                        tasks.push(new TermTask(subterms[i]));
+                    }
+                } else {
+                    // End
+                    buildTermEnd(term, marker);
+                }
+            }
+        }
+
+        /**
          * Builds the AST for the specified term, recursively.
          *
          * @param term The term.
          */
-        private void buildTerm(@NotNull final IStrategoTerm term) {
-            final ImploderAttachment imploderAttachment = ImploderAttachment.get(term);
-            int start = imploderAttachment.getLeftToken().getStartOffset();
-            int end = imploderAttachment.getRightToken().getEndOffset() + 1;
-            // TODO: Pick an element type!
-            IElementType elementType = this.tokenTypesManager.getDummySpoofaxTokenType();
-
-            moveTo(start);
-            PsiBuilder.Marker m = builder.mark();
+        private void buildTermRecursive(@NotNull final IStrategoTerm term) {
+            PsiBuilder.Marker marker = buildTermStart(term);
 
             IStrategoTerm[] subterms = term.getAllSubterms();
             for (int i = 0; i < subterms.length; i++) {
-                // TODO: Rewrite without recursion?
-                buildTerm(subterms[i]);
+                // Recurse
+                buildTermRecursive(subterms[i]);
             }
 
+            buildTermEnd(term, marker);
+        }
+
+        private PsiBuilder.Marker buildTermStart(IStrategoTerm term) {
+            moveToStart(term);
+            PsiBuilder.Marker marker = builder.mark();
+            return marker;
+        }
+
+        private void buildTermEnd(IStrategoTerm term, PsiBuilder.Marker marker) {
+            // TODO: Pick an element type!
+            IElementType elementType = this.tokenTypesManager.getDummySpoofaxTokenType();
+
+            moveToEnd(term);
+            marker.done(elementType);
+        }
+
+        private void moveToStart(IStrategoTerm term) {
+            final ImploderAttachment imploderAttachment = ImploderAttachment.get(term);
+            int start = imploderAttachment.getLeftToken().getStartOffset();
+            moveTo(start);
+        }
+
+        private void moveToEnd(IStrategoTerm term) {
+            final ImploderAttachment imploderAttachment = ImploderAttachment.get(term);
+            int end = imploderAttachment.getRightToken().getEndOffset() + 1;
             moveTo(end);
-            m.done(elementType);
         }
 
         /**
@@ -234,6 +281,20 @@ public final class SpoofaxParser implements PsiParser {
             // We assume the lexer to have a 1 character step increments,
             // so we can't overshoot our target.
             assert this.builder.getCurrentOffset() == offset;
+        }
+
+        private static class TermTask {
+            public final IStrategoTerm term;
+            @Nullable
+            public final PsiBuilder.Marker marker;
+
+            public TermTask(IStrategoTerm term, PsiBuilder.Marker marker) {
+                this.term = term;
+                this.marker = marker;
+            }
+            public TermTask(IStrategoTerm term) {
+                this(term, null);
+            }
         }
     }
 }
