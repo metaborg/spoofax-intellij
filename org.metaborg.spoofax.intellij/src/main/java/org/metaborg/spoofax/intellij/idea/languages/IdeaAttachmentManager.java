@@ -96,9 +96,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         if (obj == null) {
             obj = createLanguageAttachment(language);
             this.languages.put(language, obj);
-            logger.info("Created a new IdeaLanguageAttachment for language {}.", language);
+            logger.debug("Created a new IdeaLanguageAttachment for language {}.", language);
         } else {
-            logger.info("Used cached IdeaLanguageAttachment for language {}.", language);
+            logger.debug("Used cached IdeaLanguageAttachment for language {}.", language);
         }
         return obj;
     }
@@ -112,9 +112,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         if (obj == null) {
             obj = createLanguageImplAttachment(implementation);
             this.implementations.put(implementation, obj);
-            logger.info("Created a new IdeaLanguageImplAttachment for language implementation {}.", implementation);
+            logger.debug("Created a new IdeaLanguageImplAttachment for language implementation {}.", implementation);
         } else {
-            logger.info("Used cached IdeaLanguageImplAttachment for language implementation {}.", implementation);
+            logger.debug("Used cached IdeaLanguageImplAttachment for language implementation {}.", implementation);
         }
         return obj;
     }
