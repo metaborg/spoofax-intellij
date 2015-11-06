@@ -25,5 +25,14 @@
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="module" module-name="org.metaborg.settings" />
+    <orderEntry type="module-library" scope="TEST">
+      <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_maven_build_classes_test:maven/build/classes/test">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/build/classes/test" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

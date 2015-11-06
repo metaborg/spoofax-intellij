@@ -199,16 +199,7 @@
     <orderEntry type="library" name="Gradle: com.jetbrains:kotlin-reflect:15.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.jetbrains:tools:15.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: _home_daniel_repos_metaborg_spoofax_intellij_org_metaborg_settings_jackson_build_classes_test:jackson/build/classes/test">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../org.metaborg.settings.jackson/build/classes/test" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: _home_daniel_repos_metaborg_spoofax_intellij_org_metaborg_settings_build_classes_test:settings/build/classes/test">
+      <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_build_classes_test:settings/build/classes/test">
         <CLASSES>
           <root url="file://$MODULE_DIR$/../org.metaborg.settings/build/classes/test" />
         </CLASSES>
@@ -217,7 +208,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: _home_daniel_repos_metaborg_spoofax_intellij_org_metaborg_settings_build_resources_test:settings/build/resources/test">
+      <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_build_resources_test:settings/build/resources/test">
         <CLASSES>
           <root url="file://$MODULE_DIR$/../org.metaborg.settings/build/resources/test" />
         </CLASSES>
@@ -226,7 +217,16 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: _home_daniel_repos_metaborg_spoofax_intellij_org_metaborg_settings_jackson_build_resources_test:jackson/build/resources/test">
+      <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_jackson_build_classes_test:jackson/build/classes/test">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../org.metaborg.settings.jackson/build/classes/test" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_jackson_build_resources_test:jackson/build/resources/test">
         <CLASSES>
           <root url="file://$MODULE_DIR$/../org.metaborg.settings.jackson/build/resources/test" />
         </CLASSES>
