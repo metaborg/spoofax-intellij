@@ -88,7 +88,7 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
                         .implement(Lexer.class, CharacterLexer.class)
                         .build(ICharacterLexerFactory.class));
         install(new FactoryModuleBuilder()
-                        .implement(PsiParser.class, OldSpoofaxParser.class)
+                        .implement(PsiParser.class, SpoofaxParser.class)
                         .build(IParserFactory.class));
         install(new FactoryModuleBuilder()
                         .implement(ParserDefinition.class, SpoofaxParserDefinition.class)

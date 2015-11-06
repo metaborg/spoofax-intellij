@@ -34,7 +34,7 @@ import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 
 // NOTE: This class will eventually be replaced.
-@Singleton
+
 public final class OldSpoofaxParser implements PsiParser {
 
     @NotNull
@@ -52,24 +52,13 @@ public final class OldSpoofaxParser implements PsiParser {
     @NotNull
     @Override
     public ASTNode parse(IElementType root, PsiBuilder builder) {
-        PsiFile file = builder.getUserDataUnprotected(FileContextUtil.CONTAINING_FILE_KEY);
-        VirtualFile vf = file.getVirtualFile();
-        // TODO: Use the VirtualFile to determine the ILanguageImpl to use to parse.
-        SpoofaxIdeaLanguage language = (SpoofaxIdeaLanguage) root.getLanguage();
-
         PsiBuilder.Marker m = builder.mark();
-        parseFile(builder);
-        //m.done(this.dummyAstTokenType);
-        m.done(root);
-        return builder.getTreeBuilt();
-    }
-
-    private void parseFile(PsiBuilder builder) {
-        PsiBuilder.Marker m = builder.mark();
+        PsiBuilder.Marker m2 = builder.mark();
         while (!builder.eof()) {
             builder.advanceLexer();
         }
-        m.done(this.tokenTypesManager.getDummySpoofaxTokenType());
+        m2.done(this.tokenTypesManager.getDummySpoofaxTokenType());
+        m.done(root);
+        return builder.getTreeBuilt();
     }
-
 }
