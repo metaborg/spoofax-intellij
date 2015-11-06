@@ -55,8 +55,9 @@ public final class LexerParserManager implements ILexerParserManager {
      */
     @NotNull
     @Override
-    public Lexer getCharacterLexer(@NotNull final ILanguage language) {
-        return this.attachmentManager.get(language).characterLexer;
+    public Lexer createCharacterLexer(@NotNull final ILanguage language) {
+        IdeaLanguageAttachment attachment = this.attachmentManager.get(language);
+        return attachment.characterLexerFactory.create(attachment.tokenTypeManager);
     }
 
     /**
@@ -64,7 +65,8 @@ public final class LexerParserManager implements ILexerParserManager {
      */
     @NotNull
     @Override
-    public PsiParser getParser(@NotNull final ILanguage language) {
-        return this.attachmentManager.get(language).parser;
+    public PsiParser createParser(@NotNull final ILanguage language) {
+        IdeaLanguageAttachment attachment = this.attachmentManager.get(language);
+        return this.attachmentManager.get(language).parserFactory.create(language, attachment.tokenTypeManager);
     }
 }

@@ -43,6 +43,8 @@ public final class SpoofaxTokenTypeManager {
     private final SpoofaxIdeaLanguage language;
     @NotNull
     private final CharacterTokenType characterTokenType;
+    @NotNull
+    private final OldSpoofaxTokenType dummySpoofaxTokenType;
 
     /**
      * Initializes a new instance of the {@link SpoofaxTokenTypeManager} class.
@@ -52,6 +54,7 @@ public final class SpoofaxTokenTypeManager {
     public SpoofaxTokenTypeManager(@NotNull SpoofaxIdeaLanguage language) {
         this.language = language;
         this.characterTokenType = new CharacterTokenType(language);
+        this.dummySpoofaxTokenType = new OldSpoofaxTokenType("DUMMY", language);
     }
 
     /**
@@ -63,6 +66,14 @@ public final class SpoofaxTokenTypeManager {
     public CharacterTokenType getCharacterTokenType() {
         return this.characterTokenType;
     }
+
+    /**
+     * Returns a special dummy token type used for the parser.
+     *
+     * @return The parser.
+     */
+    @NotNull
+    public OldSpoofaxTokenType getDummySpoofaxTokenType() { return this.dummySpoofaxTokenType; }
 
     /**
      * Returns the token type corresponding to the specified style.

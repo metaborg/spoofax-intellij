@@ -17,44 +17,28 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.spoofax.intellij.factories;
 
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.spoofax.intellij.idea.languages.OldSpoofaxTokenType;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
 
 /**
- * Manager for lexers and parsers.
+ * Factory for parsers.
  */
-public interface ILexerParserManager {
+public interface IParserFactory {
 
     /**
-     * Returns the highlighting lexer for the specified language implementation.
+     * Creates a new parser.
      *
-     * @param implementation The language implementation.
-     * @return The lexer.
-     */
-    @NotNull
-    Lexer getHighlightingLexer(@NotNull ILanguageImpl implementation);
-
-    /**
-     * Creates and returns the lexer for the specified language.
-     *
-     * @param language The language.
-     * @return The created lexer.
-     */
-    @NotNull
-    Lexer createCharacterLexer(@NotNull ILanguage language);
-
-    /**
-     * Creates and returns the parser for the specified language.
-     *
-     * @param language The language.
+     * @param language          The language.
+     * @param tokenTypesManager The token type manager.
      * @return The created parser.
      */
     @NotNull
-    PsiParser createParser(@NotNull ILanguage language);
-
+    PsiParser create(@NotNull ILanguage language, @NotNull SpoofaxTokenTypeManager tokenTypesManager);
 }

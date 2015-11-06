@@ -25,6 +25,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
 import com.intellij.lang.ParserDefinition;
+import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.projectRoots.SdkType;
@@ -86,6 +87,9 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(Lexer.class, CharacterLexer.class)
                         .build(ICharacterLexerFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(PsiParser.class, OldSpoofaxParser.class)
+                        .build(IParserFactory.class));
         install(new FactoryModuleBuilder()
                         .implement(ParserDefinition.class, SpoofaxParserDefinition.class)
                         .build(IParserDefinitionFactory.class));

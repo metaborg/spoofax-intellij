@@ -23,6 +23,8 @@ import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
+import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
+import org.metaborg.spoofax.intellij.factories.IParserFactory;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 
 /**
@@ -36,14 +38,14 @@ public final class IdeaLanguageAttachment {
     public final SpoofaxFileType fileType;
     @NotNull
     public final SpoofaxTokenTypeManager tokenTypeManager;
-    @NotNull
-    public final OldSpoofaxTokenType dummyAstTokenType;
+//    @NotNull
+//    public final OldSpoofaxTokenType dummyAstTokenType;
     @NotNull
     public final ParserDefinition parserDefinition;
     @NotNull
-    public final Lexer characterLexer;
+    public final ICharacterLexerFactory characterLexerFactory;
     @NotNull
-    public final OldSpoofaxParser parser;
+    public final IParserFactory parserFactory;
     @NotNull
     public final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory;
 
@@ -53,28 +55,28 @@ public final class IdeaLanguageAttachment {
      * @param ideaLanguage             The IDEA language.
      * @param fileType                 The file type.
      * @param tokenTypeManager         The token type manager.
-     * @param dummyAstTokenType        The dummy AST token to use.
+//     * @param dummyAstTokenType        The dummy AST token to use.
      * @param parserDefinition         The parser definition.
      * @param syntaxHighlighterFactory The syntax highlighter factory.
-     * @param characterLexer           The character lexer.
-     * @param parser                   The parser.
+     * @param characterLexerFactory    The character lexer factory.
+     * @param parserFactory            The parser factory.
      */
     /* package private */ IdeaLanguageAttachment(
             @NotNull final SpoofaxIdeaLanguage ideaLanguage,
             @NotNull final SpoofaxFileType fileType,
             @NotNull final SpoofaxTokenTypeManager tokenTypeManager,
-            @NotNull final OldSpoofaxTokenType dummyAstTokenType,
+//            @NotNull final OldSpoofaxTokenType dummyAstTokenType,
             @NotNull final ParserDefinition parserDefinition,
             @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory,
-            @NotNull final Lexer characterLexer,
-            @NotNull final OldSpoofaxParser parser) {
+            @NotNull final ICharacterLexerFactory characterLexerFactory,
+            @NotNull final IParserFactory parserFactory) {
         this.ideaLanguage = ideaLanguage;
         this.fileType = fileType;
         this.tokenTypeManager = tokenTypeManager;
-        this.dummyAstTokenType = dummyAstTokenType;
+//        this.dummyAstTokenType = dummyAstTokenType;
         this.parserDefinition = parserDefinition;
         this.syntaxHighlighterFactory = syntaxHighlighterFactory;
-        this.characterLexer = characterLexer;
-        this.parser = parser;
+        this.characterLexerFactory = characterLexerFactory;
+        this.parserFactory = parserFactory;
     }
 }
