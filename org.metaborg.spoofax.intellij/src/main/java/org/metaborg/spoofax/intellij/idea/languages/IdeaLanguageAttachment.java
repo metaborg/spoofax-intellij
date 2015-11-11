@@ -26,6 +26,7 @@ import org.metaborg.core.language.ILanguage;
 import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IParserFactory;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.intellij.psi.SpoofaxAnnotator;
 
 /**
  * Stores the IntelliJ IDEA objects that are associated with a particular {@link ILanguage}.
@@ -48,6 +49,8 @@ public final class IdeaLanguageAttachment {
     public final IParserFactory parserFactory;
     @NotNull
     public final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory;
+    @NotNull
+    public final SpoofaxAnnotator spoofaxAnnotator;
 
     /**
      * Initializes a new instance of the {@link IdeaLanguageAttachment} class.
@@ -69,7 +72,8 @@ public final class IdeaLanguageAttachment {
             @NotNull final ParserDefinition parserDefinition,
             @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory,
             @NotNull final ICharacterLexerFactory characterLexerFactory,
-            @NotNull final IParserFactory parserFactory) {
+            @NotNull final IParserFactory parserFactory,
+            @NotNull final SpoofaxAnnotator spoofaxAnnotator) {
         this.ideaLanguage = ideaLanguage;
         this.fileType = fileType;
         this.tokenTypeManager = tokenTypeManager;
@@ -78,5 +82,6 @@ public final class IdeaLanguageAttachment {
         this.syntaxHighlighterFactory = syntaxHighlighterFactory;
         this.characterLexerFactory = characterLexerFactory;
         this.parserFactory = parserFactory;
+        this.spoofaxAnnotator = spoofaxAnnotator;
     }
 }

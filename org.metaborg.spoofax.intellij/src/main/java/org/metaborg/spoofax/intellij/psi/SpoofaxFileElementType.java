@@ -25,6 +25,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilderFactory;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -42,9 +43,9 @@ import org.metaborg.core.analysis.IAnalysisService;
 import org.metaborg.core.context.ContextException;
 import org.metaborg.core.context.IContext;
 import org.metaborg.core.context.IContextService;
-import org.metaborg.core.language.ILanguageIdentifierService;
-import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.language.*;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
+import org.metaborg.core.project.IProject;
 import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
@@ -53,6 +54,7 @@ import org.metaborg.spoofax.intellij.idea.languages.ILexerParserManager;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFile;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
+import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.iterators.Iterables2;
 import org.spoofax.interpreter.terms.IStrategoTerm;
@@ -64,6 +66,8 @@ import java.util.Stack;
 public class SpoofaxFileElementType extends IFileElementType { //IStubFileElementType {
 
     private final ILexerParserManager lexerParserManager;
+    private final IIntelliJProjectService projectService;
+    private final ILanguageProjectService languageProjectService;
     private final SpoofaxTokenTypeManager tokenTypesManager;
     private final ILanguageIdentifierService identifierService;
     private final IIntelliJResourceService resourceService;
@@ -77,6 +81,7 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
     public SpoofaxFileElementType(
             @Assisted final Language language,
             @Assisted final SpoofaxTokenTypeManager tokenTypesManager,
+            final ILanguageProjectService languageProjectService,
             final ILexerParserManager lexerParserManager,
             final ILanguageIdentifierService identifierService,
             final IIntelliJResourceService resourceService,
@@ -84,10 +89,12 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
             final IAnalysisService<IStrategoTerm, IStrategoTerm> analysisService,
             final IParserConfiguration parserConfiguration,
             final IContextService contextService,
-            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
+            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester,
+            final IIntelliJProjectService projectService) {
 
         super(language);
         assert language instanceof SpoofaxIdeaLanguage;
+        this.languageProjectService = languageProjectService;
         this.lexerParserManager = lexerParserManager;
         this.tokenTypesManager = tokenTypesManager;
         this.identifierService = identifierService;
@@ -97,6 +104,7 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
         this.parserConfiguration = parserConfiguration;
         this.contextService = contextService;
         this.analysisResultRequester = analysisResultRequester;
+        this.projectService = projectService;
     }
 
     public SpoofaxIdeaLanguage getSpoofaxLanguage() {
@@ -117,22 +125,24 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
                 chameleon.getChars()
         );
 
-        FileObject resource = getResource(builder);
-        ILanguageImpl languageImpl = getLanguageImpl(resource, this);
+
+        FileObject resource = getResource(psi, builder);
+        ILanguageImpl languageImpl = getLanguageImpl(resource, psi, this);
         String input = builder.getOriginalText().toString();
         ParseResult<IStrategoTerm> parseResult = parseAll(resource, languageImpl, input);
-        AnalysisResult<IStrategoTerm, IStrategoTerm> analysisResult = analyzeAll(
-                parseResult,
-                resource,
-                languageImpl
-        );
-        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = null;
-        for (AnalysisFileResult<IStrategoTerm, IStrategoTerm> fileResult : analysisResult.fileResults) {
-            if (fileResult.source.equals(resource)) {
-                analysisFileResult = fileResult;
-                break;
-            }
-        }
+//        psi.getContainingFile().
+//        AnalysisResult<IStrategoTerm, IStrategoTerm> analysisResult = analyzeAll(
+//                parseResult,
+//                resource,
+//                languageImpl
+//        );
+//        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = null;
+//        for (AnalysisFileResult<IStrategoTerm, IStrategoTerm> fileResult : analysisResult.fileResults) {
+//            if (fileResult.source.equals(resource)) {
+//                analysisFileResult = fileResult;
+//                break;
+//            }
+//        }
 //        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = this.analysisResultRequester.get(
 //                resource);
 
@@ -144,7 +154,7 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
 
         SpoofaxFile file = (SpoofaxFile) psi;
         file.putUserData(SpoofaxFile.PARSE_RESULT_KEY, parseResult);
-        file.putUserData(SpoofaxFile.ANALYSIS_FILE_RESULT_KEY, analysisFileResult);
+//        file.putUserData(SpoofaxFile.ANALYSIS_FILE_RESULT_KEY, analysisFileResult);
         return rootNode;
     }
 
@@ -152,11 +162,13 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
      * Determines the resource being parsed.
      *
      * @param builder The PSI builder.
-     * @return The {@FileObject} of the parsed resource; or <code>null</code>.
+     * @return The {@FileObject} of the parsed resource;
+     * or <code>null</code> when the file exists only in memory.
      */
     @Nullable
-    private FileObject getResource(@NotNull final PsiBuilder builder) {
-        PsiFile file = builder.getUserDataUnprotected(FileContextUtil.CONTAINING_FILE_KEY);
+    private FileObject getResource(final PsiElement element, @NotNull final PsiBuilder builder) {
+        PsiFile file = element.getContainingFile();
+//        PsiFile file = builder.getUserDataUnprotected(FileContextUtil.CONTAINING_FILE_KEY);
         FileObject fileObject = null;
         if (file != null) {
             VirtualFile virtualFile = file.getVirtualFile();
@@ -175,16 +187,23 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
      * @return The language implementation to use.
      */
     @NotNull
-    private ILanguageImpl getLanguageImpl(@Nullable final FileObject resource, @NotNull final IElementType root) {
-        ILanguageImpl languageImpl = null;
-        if (resource != null) {
-            languageImpl = this.identifierService.identify(resource);
-        }
-        if (languageImpl == null) {
-            SpoofaxIdeaLanguage language = (SpoofaxIdeaLanguage) root.getLanguage();
-            // TODO: Pick a language implementation when the file/implementation is not known?
-            throw new UnsupportedOperationException();
-        }
+    private ILanguageImpl getLanguageImpl(@Nullable final FileObject resource, final PsiElement psi, @NotNull final IElementType root) {
+        ILanguage language = ((SpoofaxIdeaLanguage) root.getLanguage()).language();
+        IProject project = this.projectService.get(psi);
+        LanguageDialect dialect = this.languageProjectService.getImpl(project, language, resource);
+        assert dialect != null;
+        ILanguageImpl languageImpl = dialect.dialectOrBaseLanguage();
+//        if (resource != null) {
+//            this.languageProjectService.getImpl(project, language, resource);
+//            languageImpl = identifierService.identify(resource);
+//        }
+//        if (languageImpl == null) {
+//            SpoofaxIdeaLanguage language = (SpoofaxIdeaLanguage) root.getLanguage();
+//
+//            // TODO: Pick a language implementation when the file/implementation is not known?
+//            throw new UnsupportedOperationException();
+//        }
+        assert languageImpl != null;
         return languageImpl;
     }
 
@@ -206,17 +225,17 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
         return result;
     }
 
-    private AnalysisResult<IStrategoTerm, IStrategoTerm> analyzeAll(
-            ParseResult<IStrategoTerm> parseResult,
-            FileObject resource,
-            ILanguageImpl languageImpl) {
-        try {
-            IContext context = this.contextService.get(resource, languageImpl);
-            return this.analysisService.analyze(Iterables2.singleton(parseResult), context);
-        } catch (ContextException | AnalysisException e) {
-            throw new RuntimeException("Unhandled exception: ", e);
-        }
-    }
+//    private AnalysisResult<IStrategoTerm, IStrategoTerm> analyzeAll(
+//            ParseResult<IStrategoTerm> parseResult,
+//            FileObject resource,
+//            ILanguageImpl languageImpl) {
+//        try {
+//            IContext context = this.contextService.get(resource, languageImpl);
+//            return this.analysisService.analyze(Iterables2.singleton(parseResult), context);
+//        } catch (ContextException | AnalysisException e) {
+//            throw new RuntimeException("Unhandled exception: ", e);
+//        }
+//    }
 
     /**
      * Builds a PSI AST.

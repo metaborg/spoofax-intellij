@@ -19,6 +19,8 @@
 
 package org.metaborg.spoofax.intellij.idea.languages;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -30,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.analysis.AnalysisFileResult;
 import org.metaborg.core.analysis.AnalysisResult;
+import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.source.ISourceLocation;
 import org.metaborg.core.source.ISourceRegion;
 import org.metaborg.core.syntax.ParseResult;
@@ -51,16 +54,19 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements ISpoofaxP
 //    private final ParseResult<IStrategoTerm> parseResult;
     private final IResolverService<IStrategoTerm, IStrategoTerm> resolverService;
     private final IIntelliJResourceService resourceService;
+    private final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester;
 
     /**
      * Initializes a new instance of the {@link SpoofaxPsiElement} class.
      *
      * @param node The node to which the element is attached.
      */
-    public SpoofaxPsiElement(final ASTNode node, final IResolverService<IStrategoTerm, IStrategoTerm> resolverService, final IIntelliJResourceService resourceService) {
+    @Inject
+    public SpoofaxPsiElement(@Assisted final ASTNode node, final IResolverService<IStrategoTerm, IStrategoTerm> resolverService, final IIntelliJResourceService resourceService, final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
         super(node);
         this.resolverService = resolverService;
         this.resourceService = resourceService;
+        this.analysisResultRequester = analysisResultRequester;
     }
 
     /**
@@ -84,22 +90,27 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements ISpoofaxP
     @Override
     public PsiReference[] getReferences() {
         PsiFile containingFile = this.getContainingFile();
-        ParseResult<IStrategoTerm> parseResult = containingFile.getUserData(SpoofaxFile.PARSE_RESULT_KEY);
-        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = containingFile.getUserData(SpoofaxFile.ANALYSIS_FILE_RESULT_KEY);
-//        VirtualFile virtualFile = containingFile.getVirtualFile();
-//        analysisResult.
+        if (containingFile == null)
+            return new PsiReference[0];
+        VirtualFile virtualFile = containingFile.getVirtualFile();
+        if (virtualFile == null)
+            return new PsiReference[0];
+        FileObject resource = this.resourceService.resolve(virtualFile);
+        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = this.analysisResultRequester.get(
+                resource);
+        if (analysisFileResult == null)
+            return new PsiReference[0];
 
-//        return new PsiReference[0];
         List<SpoofaxReference> references = new ArrayList<>();
         try {
             Resolution resolution = resolverService.resolve(this.getTextOffset(), analysisFileResult);
             if (resolution != null) {
                 for (ISourceLocation location : resolution.targets) {
-                    FileObject resource = location.resource();
-                    if (resource == null)
+                    FileObject targetResource = location.resource();
+                    if (targetResource == null)
                         continue;
-                    VirtualFile virtualFile = this.resourceService.unresolve(resource);
-                    SpoofaxReference reference = new SpoofaxReference(this, virtualFile, location.region());
+                    VirtualFile targetVirtualFile = this.resourceService.unresolve(targetResource);
+                    SpoofaxReference reference = new SpoofaxReference(this, targetVirtualFile, location.region());
                     references.add(reference);
                 }
             }
@@ -107,6 +118,6 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements ISpoofaxP
             throw new RuntimeException(e);
         }
 
-        return references.toArray(new SpoofaxReference[0]);
+        return references.toArray(new SpoofaxReference[references.size()]);
     }
 }

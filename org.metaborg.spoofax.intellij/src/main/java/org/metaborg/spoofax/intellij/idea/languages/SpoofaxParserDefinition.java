@@ -35,6 +35,7 @@ import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.core.tracing.IResolverService;
+import org.metaborg.spoofax.intellij.factories.ISpoofaxPsiElementFactory;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
@@ -53,6 +54,7 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
     private final ILexerParserManager lexerParserManager;
     private final IIntelliJResourceService resourceService;
     private final IResolverService<IStrategoTerm, IStrategoTerm> resolverService;
+    private final ISpoofaxPsiElementFactory psiElementFactory;
 
     @Inject
     /* package private */ SpoofaxParserDefinition(
@@ -60,13 +62,15 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
             @Assisted @NotNull final IFileElementType fileElementType,
             @NotNull final ILexerParserManager lexerParserManager,
             @NotNull final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
-            @NotNull final IIntelliJResourceService resourceService) {
+            @NotNull final IIntelliJResourceService resourceService,
+            final ISpoofaxPsiElementFactory psiElementFactory) {
         this.fileType = fileType;
         this.fileElement = fileElementType;
 //        this.fileElement = new SpoofaxFileElementType((SpoofaxIdeaLanguage)fileType.getLanguage(), lexerParserManager);
         this.lexerParserManager = lexerParserManager;
         this.resolverService = resolverService;
         this.resourceService = resourceService;
+        this.psiElementFactory = psiElementFactory;
     }
 
     /**
@@ -147,7 +151,7 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
     public PsiElement createElement(@NotNull final ASTNode node) {
         IElementType type = node.getElementType();
         if (type instanceof OldSpoofaxTokenType) {
-            return new SpoofaxPsiElement(node, this.resolverService, this.resourceService);
+            return this.psiElementFactory.create(node);
         }
         throw new AssertionError("Unknown element type: " + type);
     }

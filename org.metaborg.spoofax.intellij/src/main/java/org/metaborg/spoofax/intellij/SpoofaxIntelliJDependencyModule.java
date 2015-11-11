@@ -22,6 +22,8 @@ package org.metaborg.spoofax.intellij;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import org.apache.commons.vfs2.FileSystemManager;
+import org.metaborg.core.language.ILanguageProjectService;
+import org.metaborg.core.language.LanguageProjectService;
 import org.metaborg.core.logging.Slf4JTypeListener;
 import org.metaborg.core.project.settings.IProjectSettingsService;
 import org.metaborg.core.resource.IResourceService;
@@ -51,6 +53,8 @@ public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
         bind(LanguageManager.class).in(Singleton.class);
 
         bindListener(Matchers.any(), new Slf4JTypeListener());
+
+        bind(ILanguageProjectService.class).to(LanguageProjectService.class).in(Singleton.class);
     }
 
     /**

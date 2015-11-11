@@ -35,6 +35,7 @@ import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
+import org.metaborg.spoofax.intellij.psi.SpoofaxAnnotator;
 import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
 import org.slf4j.Logger;
 
@@ -67,6 +68,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private final HashMap<ILanguage, IdeaLanguageAttachment> languages = new HashMap<>();
     @NotNull
     private final HashMap<ILanguageImpl, IdeaLanguageImplAttachment> implementations = new HashMap<>();
+    @NotNull
+    private final SpoofaxAnnotator spoofaxAnnotator;
     @InjectLogger
     private Logger logger;
 
@@ -78,7 +81,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
             @NotNull final IFileElementTypeFactory fileElementTypeFactory,
             @NotNull final IParserFactory parserFactory,
             @NotNull final BuilderMenuBuilder builderMenuBuilder,
-            @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
+            @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
+            @NotNull final SpoofaxAnnotator spoofaxAnnotator) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
@@ -86,6 +90,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         this.parserFactory = parserFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
         this.builderMenuBuilder = builderMenuBuilder;
+        this.spoofaxAnnotator = spoofaxAnnotator;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -147,8 +152,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
 //                                          dummyAstTokenType,
                                           parserDefinition,
                                           syntaxHighlighterFactory,
-                                          characterLexerFactory,
-                                          parserFactory);
+                                          this.characterLexerFactory,
+                                          this.parserFactory,
+                                          this.spoofaxAnnotator);
     }
 
     /**

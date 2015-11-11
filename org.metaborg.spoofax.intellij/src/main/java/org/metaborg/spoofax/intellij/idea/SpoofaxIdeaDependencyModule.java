@@ -48,6 +48,7 @@ import org.metaborg.spoofax.intellij.menu.*;
 import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.project.IntelliJProject;
 import org.metaborg.spoofax.intellij.project.IntelliJProjectService;
+import org.metaborg.spoofax.intellij.psi.SpoofaxAnnotator;
 import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.spoofax.interpreter.terms.IStrategoTerm;
@@ -75,6 +76,7 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         bind(new TypeLiteral<ResourceTransformer<?, ?, ?>>() {}).to(StrategoResourceTransformer.class);
         bind(new TypeLiteral<ResourceTransformer<IStrategoTerm, IStrategoTerm, IStrategoTerm>>() {}).to(
                 StrategoResourceTransformer.class);
+        bind(SpoofaxAnnotator.class).in(Singleton.class);
 
         bind(SpoofaxSyntaxHighlighterFactory.class);
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
@@ -116,6 +118,9 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(BuilderActionGroup.class, BuilderActionGroup.class)
                         .build(IBuilderActionGroupFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(SpoofaxPsiElement.class, SpoofaxPsiElement.class)
+                        .build(ISpoofaxPsiElementFactory.class));
         install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 

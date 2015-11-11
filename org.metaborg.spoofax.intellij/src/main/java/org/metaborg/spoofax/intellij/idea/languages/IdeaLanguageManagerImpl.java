@@ -60,6 +60,8 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     @NotNull
     private final static String SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION = "com.intellij.lang.syntaxHighlighterFactory";
     @NotNull
+    private final static String EXTERNAL_ANNOTATOR_EXTENSION = "com.intellij.externalAnnotator";
+    @NotNull
     private final IIdeaAttachmentManager objectManager;
     @NotNull
     private final Map<ILanguage, RegisteredIdeaLanguageObject> loadedLanguages = new HashMap<>();
@@ -146,11 +148,15 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
         obj.parserDefinitionExtension = new InstanceLanguageExtensionPoint<>(
                 obj.languageObject.ideaLanguage,
                 obj.languageObject.parserDefinition);
+        obj.externalAnnotatorExtension = new InstanceLanguageExtensionPoint<>(
+                obj.languageObject.ideaLanguage,
+                obj.languageObject.spoofaxAnnotator);
         obj.syntaxHighlighterFactoryExtension = new InstanceSyntaxHighlighterFactoryExtensionPoint(
                 obj.languageObject.ideaLanguage,
                 obj.languageObject.syntaxHighlighterFactory);
 
         registerExtension(PARSER_DEFINITION_EXTENSION, obj.parserDefinitionExtension);
+        registerExtension(EXTERNAL_ANNOTATOR_EXTENSION, obj.externalAnnotatorExtension);
         registerExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION, obj.syntaxHighlighterFactoryExtension);
         registerFileType(obj.languageObject.fileType);
     }
@@ -236,6 +242,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     private void uninstallLanguage(@NotNull final RegisteredIdeaLanguageObject obj) {
         unregisterFileType(obj.languageObject.fileType);
         unregisterExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION, obj.syntaxHighlighterFactoryExtension);
+        unregisterExtension(EXTERNAL_ANNOTATOR_EXTENSION, obj.externalAnnotatorExtension);
         unregisterExtension(PARSER_DEFINITION_EXTENSION, obj.parserDefinitionExtension);
     }
 
@@ -315,6 +322,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
         @NotNull
         public final IdeaLanguageAttachment languageObject;
         public InstanceLanguageExtensionPoint<?> parserDefinitionExtension;
+        public InstanceLanguageExtensionPoint<?> externalAnnotatorExtension;
         public InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension;
 
         public RegisteredIdeaLanguageObject(@NotNull final IdeaLanguageAttachment languageObject) {
