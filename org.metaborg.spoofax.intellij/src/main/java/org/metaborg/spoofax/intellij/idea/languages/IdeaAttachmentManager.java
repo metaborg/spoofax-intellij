@@ -22,20 +22,20 @@ package org.metaborg.spoofax.intellij.idea.languages;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.psi.tree.IFileElementType;
 import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
-import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
-import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
-import org.metaborg.spoofax.intellij.factories.IParserFactory;
+import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
+import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
 import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -56,6 +56,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final ICharacterLexerFactory characterLexerFactory;
     @NotNull
+    private final IFileElementTypeFactory fileElementTypeFactory;
+    @NotNull
     private final IParserFactory parserFactory;
     @NotNull
     private final BuilderMenuBuilder builderMenuBuilder;
@@ -73,12 +75,14 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
             @NotNull final IHighlightingLexerFactory lexerFactory,
             @NotNull final IParserDefinitionFactory parserDefinitionFactory,
             @NotNull final ICharacterLexerFactory characterLexerFactory,
+            @NotNull final IFileElementTypeFactory fileElementTypeFactory,
             @NotNull final IParserFactory parserFactory,
             @NotNull final BuilderMenuBuilder builderMenuBuilder,
             @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
+        this.fileElementTypeFactory = fileElementTypeFactory;
         this.parserFactory = parserFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
         this.builderMenuBuilder = builderMenuBuilder;
@@ -131,7 +135,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         final SpoofaxFileType fileType = createFileType(ideaLanguage);
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
 //        final OldSpoofaxTokenType dummyAstTokenType = createDummyAstTokenType(ideaLanguage);
-        final ParserDefinition parserDefinition = createParserDefinition(fileType);
+        final IFileElementType fileElementType = createFileElementType(ideaLanguage, tokenTypeManager);
+        final ParserDefinition parserDefinition = createParserDefinition(fileType, fileElementType);
         final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory();
 //        final Lexer characterLexer = createCharacterLexer(tokenTypeManager);
 //        final OldSpoofaxParser parser = createParser(dummyAstTokenType);
@@ -198,6 +203,11 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         }
     }
 
+    @NotNull
+    private final IFileElementType createFileElementType(@NotNull final Language language, @NotNull final SpoofaxTokenTypeManager tokenTypesManager) {
+        return this.fileElementTypeFactory.create(language, tokenTypesManager);
+    }
+
     /**
      * Creates a new spoofax token type manager for an IDEA language.
      *
@@ -227,8 +237,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @return The created parser definition.
      */
     @NotNull
-    private final ParserDefinition createParserDefinition(@NotNull final SpoofaxFileType fileType) {
-        return this.parserDefinitionFactory.create(fileType);
+    private final ParserDefinition createParserDefinition(@NotNull final SpoofaxFileType fileType, @NotNull final IFileElementType fileElementType) {
+        return this.parserDefinitionFactory.create(fileType, fileElementType);
     }
 
 //    /**

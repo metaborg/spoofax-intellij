@@ -17,27 +17,10 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
-
-import com.intellij.lang.ParserDefinition;
-import com.intellij.psi.tree.IFileElementType;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
-import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
+package org.metaborg.core.tracing;
 
 /**
- * Factory for parser definitions.
+ * The resolution of resolving a reference.
  */
-public interface IParserDefinitionFactory {
-
-    /**
-     * Creates a new parser definition for the specified file type.
-     *
-     * @param fileType The file type.
-     * @param fileElementType The file element type.
-     * @return The created parser definition.
-     */
-    @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
-
+public interface IResolution<T> {
 }

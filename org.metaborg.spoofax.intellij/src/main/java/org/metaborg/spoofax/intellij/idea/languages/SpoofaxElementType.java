@@ -17,27 +17,31 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
+package org.metaborg.spoofax.intellij.idea.languages;
 
-import com.intellij.lang.ParserDefinition;
-import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
-import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
+import org.metaborg.core.style.IStyle;
+import org.metaborg.core.syntax.ParseResult;
+import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**
- * Factory for parser definitions.
+ * The type of a Spoofax element.
  */
-public interface IParserDefinitionFactory {
+public final class SpoofaxElementType extends IElementType {
 
     /**
-     * Creates a new parser definition for the specified file type.
+     * Initializes a new instance of the {@link SpoofaxElementType} class.
      *
-     * @param fileType The file type.
-     * @param fileElementType The file element type.
-     * @return The created parser definition.
+     * @param language The associated IDEA language.
      */
-    @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
+    public SpoofaxElementType(@NotNull final SpoofaxIdeaLanguage language) {
+        super("SPOOFAX_ELEMENT_TYPE", language);
+    }
+
+    @Override
+    public String toString() {
+        return SpoofaxElementType.class.getName() + "." + super.toString();
+    }
 
 }

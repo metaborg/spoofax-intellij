@@ -17,95 +17,135 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.spoofax.intellij.psi;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.Language;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiParser;
+import com.intellij.lang.PsiBuilderFactory;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.resolve.FileContextUtil;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.IFileElementType;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.analysis.AnalysisException;
+import org.metaborg.core.analysis.AnalysisFileResult;
+import org.metaborg.core.analysis.AnalysisResult;
+import org.metaborg.core.analysis.IAnalysisService;
+import org.metaborg.core.context.ContextException;
+import org.metaborg.core.context.IContext;
+import org.metaborg.core.context.IContextService;
 import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
 import org.metaborg.core.syntax.ParseResult;
+import org.metaborg.spoofax.intellij.idea.languages.ILexerParserManager;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFile;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
+import org.metaborg.util.iterators.Iterables2;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 
 import javax.annotation.Nullable;
 import java.util.Stack;
 
-// TODO: Remove
-/**
- * Parser for Spoofax languages.
- */
-@Singleton
-public final class SpoofaxParser implements PsiParser {
+public class SpoofaxFileElementType extends IFileElementType { //IStubFileElementType {
 
-    @NotNull
-    private final ILanguage language;
-    @NotNull
+    private final ILexerParserManager lexerParserManager;
     private final SpoofaxTokenTypeManager tokenTypesManager;
-    @NotNull
     private final ILanguageIdentifierService identifierService;
-    @NotNull
     private final IIntelliJResourceService resourceService;
-    @NotNull
     private final ISyntaxService<IStrategoTerm> syntaxService;
-    @NotNull
+    private final IAnalysisService<IStrategoTerm, IStrategoTerm> analysisService;
     private final IParserConfiguration parserConfiguration;
+    private final IContextService contextService;
+    private final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester;
 
     @Inject
-    public SpoofaxParser(@Assisted @NotNull final ILanguage language,
-                         @Assisted @NotNull final SpoofaxTokenTypeManager tokenTypesManager,
-                         @NotNull final ILanguageIdentifierService identifierService,
-                         @NotNull final IIntelliJResourceService resourceService,
-                         @NotNull final ISyntaxService<IStrategoTerm> syntaxService,
-                         @NotNull final IParserConfiguration parserConfiguration) {
-        this.language = language;
+    public SpoofaxFileElementType(
+            @Assisted final Language language,
+            @Assisted final SpoofaxTokenTypeManager tokenTypesManager,
+            final ILexerParserManager lexerParserManager,
+            final ILanguageIdentifierService identifierService,
+            final IIntelliJResourceService resourceService,
+            final ISyntaxService<IStrategoTerm> syntaxService,
+            final IAnalysisService<IStrategoTerm, IStrategoTerm> analysisService,
+            final IParserConfiguration parserConfiguration,
+            final IContextService contextService,
+            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
+
+        super(language);
+        assert language instanceof SpoofaxIdeaLanguage;
+        this.lexerParserManager = lexerParserManager;
         this.tokenTypesManager = tokenTypesManager;
         this.identifierService = identifierService;
         this.resourceService = resourceService;
         this.syntaxService = syntaxService;
+        this.analysisService = analysisService;
         this.parserConfiguration = parserConfiguration;
+        this.contextService = contextService;
+        this.analysisResultRequester = analysisResultRequester;
     }
 
-    @NotNull
+    public SpoofaxIdeaLanguage getSpoofaxLanguage() {
+        return (SpoofaxIdeaLanguage) getLanguage();
+    }
+
     @Override
-    public ASTNode parse(@NotNull final IElementType root, @NotNull final PsiBuilder builder) {
+    protected ASTNode doParseContents(
+            @NotNull final ASTNode chameleon, @NotNull final PsiElement psi) {
+        Project project = psi.getProject();
+
+        SpoofaxIdeaLanguage language = getSpoofaxLanguage();
+        PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(
+                project,
+                chameleon,
+                null,
+                language,
+                chameleon.getChars()
+        );
+
         FileObject resource = getResource(builder);
-        ILanguageImpl languageImpl = getLanguageImpl(resource, root);
+        ILanguageImpl languageImpl = getLanguageImpl(resource, this);
         String input = builder.getOriginalText().toString();
-        ParseResult<IStrategoTerm> result = parseAll(resource, languageImpl, input);
-
-        SpoofaxAstBuilder astBuilder = new SpoofaxAstBuilder(result, root, builder, this.tokenTypesManager);
-        return astBuilder.build();
-    }
-
-    /**
-     * Parses the whole buffer.
-     *
-     * @return The parse result.
-     */
-    private ParseResult<IStrategoTerm> parseAll(final FileObject resource, final ILanguageImpl languageImpl, final String input) {
-        ParseResult<IStrategoTerm> result;
-        try {
-            result = this.syntaxService.parse(input, resource, languageImpl, this.parserConfiguration);
-        } catch (ParseException e) {
-            throw new MetaborgRuntimeException("Unhandled exception", e);
+        ParseResult<IStrategoTerm> parseResult = parseAll(resource, languageImpl, input);
+        AnalysisResult<IStrategoTerm, IStrategoTerm> analysisResult = analyzeAll(
+                parseResult,
+                resource,
+                languageImpl
+        );
+        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = null;
+        for (AnalysisFileResult<IStrategoTerm, IStrategoTerm> fileResult : analysisResult.fileResults) {
+            if (fileResult.source.equals(resource)) {
+                analysisFileResult = fileResult;
+                break;
+            }
         }
-        return result;
+//        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = this.analysisResultRequester.get(
+//                resource);
+
+
+        SpoofaxAstBuilder astBuilder = new SpoofaxAstBuilder(parseResult, this, builder, this.tokenTypesManager);
+        ASTNode tree = astBuilder.build();
+
+        ASTNode rootNode = tree.getFirstChildNode();
+
+        SpoofaxFile file = (SpoofaxFile) psi;
+        file.putUserData(SpoofaxFile.PARSE_RESULT_KEY, parseResult);
+        file.putUserData(SpoofaxFile.ANALYSIS_FILE_RESULT_KEY, analysisFileResult);
+        return rootNode;
     }
 
     /**
@@ -131,7 +171,7 @@ public final class SpoofaxParser implements PsiParser {
      * Determines the language implementation to use to parse this file.
      *
      * @param resource The file object of the file being parsed.
-     * @param root The root element.
+     * @param root     The root element.
      * @return The language implementation to use.
      */
     @NotNull
@@ -149,24 +189,62 @@ public final class SpoofaxParser implements PsiParser {
     }
 
     /**
+     * Parses the whole buffer.
+     *
+     * @return The parse result.
+     */
+    private ParseResult<IStrategoTerm> parseAll(
+            final FileObject resource,
+            final ILanguageImpl languageImpl,
+            final String input) {
+        ParseResult<IStrategoTerm> result;
+        try {
+            result = this.syntaxService.parse(input, resource, languageImpl, this.parserConfiguration);
+        } catch (ParseException e) {
+            throw new MetaborgRuntimeException("Unhandled exception", e);
+        }
+        return result;
+    }
+
+    private AnalysisResult<IStrategoTerm, IStrategoTerm> analyzeAll(
+            ParseResult<IStrategoTerm> parseResult,
+            FileObject resource,
+            ILanguageImpl languageImpl) {
+        try {
+            IContext context = this.contextService.get(resource, languageImpl);
+            return this.analysisService.analyze(Iterables2.singleton(parseResult), context);
+        } catch (ContextException | AnalysisException e) {
+            throw new RuntimeException("Unhandled exception: ", e);
+        }
+    }
+
+    /**
      * Builds a PSI AST.
      */
     private static class SpoofaxAstBuilder {
 
-        @NotNull private final SpoofaxTokenTypeManager tokenTypesManager;
-        @Nullable private final ParseResult<IStrategoTerm> result;
-        @NotNull private final PsiBuilder builder;
-        @NotNull private final IElementType root;
+        @NotNull
+        private final SpoofaxTokenTypeManager tokenTypesManager;
+        @Nullable
+        private final ParseResult<IStrategoTerm> result;
+        @NotNull
+        private final PsiBuilder builder;
+        @NotNull
+        private final IElementType root;
 
         /**
          * Initializes a new instance of the {@link SpoofaxAstBuilder} class.
          *
-         * @param result The parse result.
-         * @param root The root element type.
-         * @param builder The PSI builder.
+         * @param result            The parse result.
+         * @param root              The root element type.
+         * @param builder           The PSI builder.
          * @param tokenTypesManager The token types manager.
          */
-        public SpoofaxAstBuilder(@Nullable final ParseResult<IStrategoTerm> result, @NotNull final IElementType root, @NotNull final PsiBuilder builder, @NotNull final SpoofaxTokenTypeManager tokenTypesManager) {
+        public SpoofaxAstBuilder(
+                @Nullable final ParseResult<IStrategoTerm> result,
+                @NotNull final IElementType root,
+                @NotNull final PsiBuilder builder,
+                @NotNull final SpoofaxTokenTypeManager tokenTypesManager) {
             this.result = result;
             this.root = root;
             this.builder = builder;
@@ -262,7 +340,7 @@ public final class SpoofaxParser implements PsiParser {
         /**
          * Builds the end of a term.
          *
-         * @param term The term.
+         * @param term   The term.
          * @param marker The marker.
          */
         private void buildTermEnd(@NotNull final IStrategoTerm term, @NotNull final PsiBuilder.Marker marker) {
@@ -319,6 +397,7 @@ public final class SpoofaxParser implements PsiParser {
                 this.term = term;
                 this.marker = marker;
             }
+
             public TermTask(IStrategoTerm term) {
                 this(term, null);
             }

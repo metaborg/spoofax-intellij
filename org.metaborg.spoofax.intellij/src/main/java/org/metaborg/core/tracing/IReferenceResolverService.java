@@ -17,27 +17,24 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
+package org.metaborg.core.tracing;
 
-import com.intellij.lang.ParserDefinition;
-import com.intellij.psi.tree.IFileElementType;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
-import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
+import org.metaborg.core.language.ILanguageImpl;
+
+import javax.annotation.Nullable;
 
 /**
- * Factory for parser definitions.
+ * Manages the reference resolvers.
  */
-public interface IParserDefinitionFactory {
+public interface IReferenceResolverService {
 
     /**
-     * Creates a new parser definition for the specified file type.
+     * Gets the resolver for the specified language.
      *
-     * @param fileType The file type.
-     * @param fileElementType The file element type.
-     * @return The created parser definition.
+     * @param language The language implementation.
+     * @return The resolver; or <code>null</code> if there is none.
      */
-    @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
+    @Nullable
+    IReferenceResolver<?> getResolver(ILanguageImpl language);
 
 }

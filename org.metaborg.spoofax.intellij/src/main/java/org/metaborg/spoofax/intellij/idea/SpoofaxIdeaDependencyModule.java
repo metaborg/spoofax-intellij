@@ -29,6 +29,7 @@ import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.projectRoots.SdkType;
+import com.intellij.psi.tree.IFileElementType;
 import org.metaborg.core.project.ArtifactProjectService;
 import org.metaborg.core.project.Compound;
 import org.metaborg.core.project.CompoundProjectService;
@@ -47,6 +48,7 @@ import org.metaborg.spoofax.intellij.menu.*;
 import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.project.IntelliJProject;
 import org.metaborg.spoofax.intellij.project.IntelliJProjectService;
+import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -93,6 +95,9 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(ParserDefinition.class, SpoofaxParserDefinition.class)
                         .build(IParserDefinitionFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(IFileElementType.class, SpoofaxFileElementType.class)
+                        .build(IFileElementTypeFactory.class));
         install(new FactoryModuleBuilder()
                         .implement(IntelliJProject.class, IntelliJProject.class)
                         .build(IProjectFactory.class));
