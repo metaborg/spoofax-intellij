@@ -23,4 +23,4 @@
  * The PSI tree is the AST format used by IntelliJ. It's used to represent not just syntax,
  * but also the files themselves.
  */
-package org.metaborg.spoofax.intellij.psi;
+package org.metaborg.spoofax.intellij.idea.psi;

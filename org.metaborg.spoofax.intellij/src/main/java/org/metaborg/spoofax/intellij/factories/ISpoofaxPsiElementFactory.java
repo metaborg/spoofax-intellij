@@ -21,7 +21,7 @@ package org.metaborg.spoofax.intellij.factories;
 
 import com.intellij.lang.ASTNode;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.psi.SpoofaxPsiElement;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxPsiElement;
 
 /**
  * Factory for PSI elements.

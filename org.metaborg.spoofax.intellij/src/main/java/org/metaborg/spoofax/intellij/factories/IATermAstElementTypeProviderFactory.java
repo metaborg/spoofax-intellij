@@ -19,13 +19,10 @@
 
 package org.metaborg.spoofax.intellij.factories;
 
-import com.google.inject.assistedinject.Assisted;
-import com.intellij.lexer.Lexer;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
-import org.metaborg.spoofax.intellij.psi.ATermAstElementTypeProvider;
+import org.metaborg.spoofax.intellij.idea.psi.ATermAstElementTypeProvider;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**

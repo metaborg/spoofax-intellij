@@ -23,7 +23,7 @@ import com.intellij.lang.ParserDefinition;
 import com.intellij.psi.tree.IFileElementType;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
-import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxFileElementType;
 
 /**
  * Factory for parser definitions.

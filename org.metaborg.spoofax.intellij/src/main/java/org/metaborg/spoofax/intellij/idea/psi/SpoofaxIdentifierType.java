@@ -17,16 +17,23 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.psi;
+package org.metaborg.spoofax.intellij.idea.psi;
 
-import com.intellij.psi.tree.IElementType;
-import org.spoofax.interpreter.terms.IStrategoTerm;
+import org.jetbrains.annotations.NotNull;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
 
 /**
- * Retrieves the element type for an AST node.
+ * A Spoofax identifier element type.
  */
-public interface IAstElementTypeProvider<TParse> {
+public class SpoofaxIdentifierType extends SpoofaxElementType {
 
-    IElementType getElementType(TParse term);
+    /**
+     * Initializes a new instance of the {@link SpoofaxIdentifierType} class.
+     *
+     * @param language The language.
+     */
+    public SpoofaxIdentifierType(@NotNull SpoofaxIdeaLanguage language) {
+        super(language, "SPOOFAX_IDENTIFIER_TYPE");
+    }
 
 }

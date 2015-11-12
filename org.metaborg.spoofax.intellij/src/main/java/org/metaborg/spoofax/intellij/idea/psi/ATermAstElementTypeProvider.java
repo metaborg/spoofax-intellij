@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.psi;
+package org.metaborg.spoofax.intellij.idea.psi;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -33,7 +33,6 @@ import org.metaborg.spoofax.core.syntax.JSGLRSourceRegionFactory;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.IToken;
-import org.spoofax.jsglr.client.imploder.ITokenizer;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 
 import javax.annotation.Nullable;

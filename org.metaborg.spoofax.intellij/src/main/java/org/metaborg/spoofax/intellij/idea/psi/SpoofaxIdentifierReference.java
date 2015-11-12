@@ -17,42 +17,41 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.psi;
+package org.metaborg.spoofax.intellij.idea.psi;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiReferenceBase;
+import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Visitor for Spoofax PSI elements.
+ * A reference to a Spoofax identifier element.
  */
-public final class SpoofaxPsiVisitor extends PsiElementVisitor {
+public final class SpoofaxIdentifierReference extends PsiReferenceBase<PsiElement> {
 
-    /**
-     * Visits a property.
-     *
-     * @param property The property.
-     */
-    public void visitProperty(@NotNull SpoofaxPsiElement property) {
-        visitPsiElement(property);
+    public SpoofaxIdentifierReference(@NotNull final PsiElement element) {
+        super(element);
     }
 
     /**
-     * Visits a property.
+     * {@inheritDoc}
      *
-     * @param property The property.
+     * This method is called upon <em>Go To declaration</em>.
      */
-    public void visitProperty(@NotNull SpoofaxIdentifier property) {
-        visitPsiElement(property);
+    @Nullable
+    @Override
+    public PsiElement resolve() {
+        return null;
     }
 
     /**
-     * Visits a PSI element.
-     *
-     * @param element The element.
+     * {@inheritDoc}
      */
-    public void visitPsiElement(@NotNull PsiElement element) {
-        visitElement(element);
+    @NotNull
+    @Override
+    public Object[] getVariants() {
+        // TODO: For code completion?
+        return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
-
 }

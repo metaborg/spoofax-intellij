@@ -17,41 +17,42 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.psi;
+package org.metaborg.spoofax.intellij.idea.psi;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReferenceBase;
-import com.intellij.util.ArrayUtil;
+import com.intellij.psi.PsiElementVisitor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * A reference to a Spoofax identifier element.
+ * Visitor for Spoofax PSI elements.
  */
-public final class SpoofaxIdentifierReference extends PsiReferenceBase<PsiElement> {
-
-    public SpoofaxIdentifierReference(@NotNull final PsiElement element) {
-        super(element);
-    }
+public final class SpoofaxPsiVisitor extends PsiElementVisitor {
 
     /**
-     * {@inheritDoc}
+     * Visits a property.
      *
-     * This method is called upon <em>Go To declaration</em>.
+     * @param property The property.
      */
-    @Nullable
-    @Override
-    public PsiElement resolve() {
-        return null;
+    public void visitProperty(@NotNull SpoofaxPsiElement property) {
+        visitPsiElement(property);
     }
 
     /**
-     * {@inheritDoc}
+     * Visits a property.
+     *
+     * @param property The property.
      */
-    @NotNull
-    @Override
-    public Object[] getVariants() {
-        // TODO: For code completion?
-        return ArrayUtil.EMPTY_OBJECT_ARRAY;
+    public void visitProperty(@NotNull SpoofaxIdentifier property) {
+        visitPsiElement(property);
     }
+
+    /**
+     * Visits a PSI element.
+     *
+     * @param element The element.
+     */
+    public void visitPsiElement(@NotNull PsiElement element) {
+        visitElement(element);
+    }
+
 }

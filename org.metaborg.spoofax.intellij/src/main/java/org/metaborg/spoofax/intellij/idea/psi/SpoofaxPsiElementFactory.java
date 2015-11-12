@@ -17,17 +17,15 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.psi;
+package org.metaborg.spoofax.intellij.idea.psi;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.tracing.IResolverService;
 import org.metaborg.spoofax.intellij.factories.ISpoofaxPsiElementFactory;
-import org.metaborg.spoofax.intellij.idea.languages.*;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 

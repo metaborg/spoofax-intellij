@@ -17,22 +17,13 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.psi;
+package org.metaborg.spoofax.intellij.idea.psi;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
-import com.intellij.psi.search.searches.ReferencesSearch;
-import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.core.source.ISourceLocation;
 import org.metaborg.core.source.ISourceRegion;
-import org.metaborg.core.tracing.IResolverService;
-import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
-import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**
  * A reference to a definition.

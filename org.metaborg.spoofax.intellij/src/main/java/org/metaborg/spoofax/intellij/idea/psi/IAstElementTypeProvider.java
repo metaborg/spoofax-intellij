@@ -17,26 +17,15 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.psi;
+package org.metaborg.spoofax.intellij.idea.psi;
 
-import org.apache.commons.vfs2.FileObject;
-import org.metaborg.core.context.IContext;
-import org.metaborg.core.syntax.ParseResult;
-import org.spoofax.interpreter.terms.IStrategoTerm;
+import com.intellij.psi.tree.IElementType;
 
-public final class SpoofaxAnnotationInfo {
+/**
+ * Retrieves the element type for an AST node.
+ */
+public interface IAstElementTypeProvider<TParse> {
 
-    private final FileObject resource;
-    private final String text;
-    private final IContext context;
+    IElementType getElementType(TParse term);
 
-    public SpoofaxAnnotationInfo(final FileObject resource, final String text, final IContext context) {
-        this.resource = resource;
-        this.text = text;
-        this.context = context;
-    }
-
-    public FileObject resource() { return this.resource; }
-    public String text() { return this.text; }
-    public IContext context() { return this.context; }
 }

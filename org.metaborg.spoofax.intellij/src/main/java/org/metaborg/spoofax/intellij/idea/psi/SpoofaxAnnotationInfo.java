@@ -17,24 +17,24 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.psi;
+package org.metaborg.spoofax.intellij.idea.psi;
 
-import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.context.IContext;
 
-/**
- * A Spoofax identifier element type.
- */
-public class SpoofaxIdentifierType extends SpoofaxElementType {
+public final class SpoofaxAnnotationInfo {
 
-    /**
-     * Initializes a new instance of the {@link SpoofaxIdentifierType} class.
-     *
-     * @param language The language.
-     */
-    public SpoofaxIdentifierType(@NotNull SpoofaxIdeaLanguage language) {
-        super(language, "SPOOFAX_IDENTIFIER_TYPE");
+    private final FileObject resource;
+    private final String text;
+    private final IContext context;
+
+    public SpoofaxAnnotationInfo(final FileObject resource, final String text, final IContext context) {
+        this.resource = resource;
+        this.text = text;
+        this.context = context;
     }
 
+    public FileObject resource() { return this.resource; }
+    public String text() { return this.text; }
+    public IContext context() { return this.context; }
 }

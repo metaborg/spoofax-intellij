@@ -22,7 +22,7 @@ package org.metaborg.spoofax.intellij.idea.languages;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.style.IStyle;
 import org.metaborg.core.style.Style;
-import org.metaborg.spoofax.intellij.psi.*;
+import org.metaborg.spoofax.intellij.idea.psi.*;
 
 import javax.annotation.Nullable;
 import java.awt.*;
