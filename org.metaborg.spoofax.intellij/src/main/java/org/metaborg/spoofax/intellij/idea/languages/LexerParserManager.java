@@ -66,7 +66,8 @@ public final class LexerParserManager implements ILexerParserManager {
     @NotNull
     @Override
     public PsiParser createParser(@NotNull final ILanguage language) {
-        IdeaLanguageAttachment attachment = this.attachmentManager.get(language);
-        return this.attachmentManager.get(language).parserFactory.create(language, attachment.tokenTypeManager);
+        throw new UnsupportedOperationException("Deprecated");
+//        IdeaLanguageAttachment attachment = this.attachmentManager.get(language);
+//        return this.attachmentManager.get(language).parserFactory.create(language, attachment.tokenTypeManager);
     }
 }

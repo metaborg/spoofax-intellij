@@ -59,8 +59,6 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final IFileElementTypeFactory fileElementTypeFactory;
     @NotNull
-    private final IParserFactory parserFactory;
-    @NotNull
     private final BuilderMenuBuilder builderMenuBuilder;
     @NotNull
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
@@ -79,7 +77,6 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
             @NotNull final IParserDefinitionFactory parserDefinitionFactory,
             @NotNull final ICharacterLexerFactory characterLexerFactory,
             @NotNull final IFileElementTypeFactory fileElementTypeFactory,
-            @NotNull final IParserFactory parserFactory,
             @NotNull final BuilderMenuBuilder builderMenuBuilder,
             @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
             @NotNull final SpoofaxAnnotator spoofaxAnnotator) {
@@ -87,7 +84,6 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
         this.fileElementTypeFactory = fileElementTypeFactory;
-        this.parserFactory = parserFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
         this.builderMenuBuilder = builderMenuBuilder;
         this.spoofaxAnnotator = spoofaxAnnotator;
@@ -153,7 +149,6 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
                                           parserDefinition,
                                           syntaxHighlighterFactory,
                                           this.characterLexerFactory,
-                                          this.parserFactory,
                                           this.spoofaxAnnotator);
     }
 

@@ -17,33 +17,16 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.spoofax.intellij.psi;
 
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.psi.tree.IElementType;
+import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**
- * Visitor for Spoofax PSI elements.
+ * Retrieves the element type for an AST node.
  */
-public final class SpoofaxPsiVisitor extends PsiElementVisitor {
+public interface IAstElementTypeProvider<TParse> {
 
-    /**
-     * Visits a property.
-     *
-     * @param property The property.
-     */
-    public void visitProperty(@NotNull ISpoofaxPsiElement property) {
-        visitPsiElement(property);
-    }
-
-    /**
-     * Visits a PSI element.
-     *
-     * @param element The element.
-     */
-    public void visitPsiElement(@NotNull PsiElement element) {
-        visitElement(element);
-    }
+    IElementType getElementType(TParse term);
 
 }

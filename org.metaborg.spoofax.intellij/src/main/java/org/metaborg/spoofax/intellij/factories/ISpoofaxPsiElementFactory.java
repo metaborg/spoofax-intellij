@@ -20,11 +20,8 @@
 package org.metaborg.spoofax.intellij.factories;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.psi.tree.IFileElementType;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.languages.SpoofaxPsiElement;
-import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
+import org.metaborg.spoofax.intellij.psi.SpoofaxPsiElement;
 
 /**
  * Factory for PSI elements.

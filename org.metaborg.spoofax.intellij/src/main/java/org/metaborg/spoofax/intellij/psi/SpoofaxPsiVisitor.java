@@ -17,12 +17,42 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.spoofax.intellij.psi;
 
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Spoofax PSI element.
+ * Visitor for Spoofax PSI elements.
  */
-public interface ISpoofaxPsiElement extends PsiElement {
+public final class SpoofaxPsiVisitor extends PsiElementVisitor {
+
+    /**
+     * Visits a property.
+     *
+     * @param property The property.
+     */
+    public void visitProperty(@NotNull SpoofaxPsiElement property) {
+        visitPsiElement(property);
+    }
+
+    /**
+     * Visits a property.
+     *
+     * @param property The property.
+     */
+    public void visitProperty(@NotNull SpoofaxIdentifier property) {
+        visitPsiElement(property);
+    }
+
+    /**
+     * Visits a PSI element.
+     *
+     * @param element The element.
+     */
+    public void visitPsiElement(@NotNull PsiElement element) {
+        visitElement(element);
+    }
+
 }

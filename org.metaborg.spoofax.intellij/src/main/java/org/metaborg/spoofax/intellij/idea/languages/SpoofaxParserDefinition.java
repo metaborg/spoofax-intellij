@@ -37,7 +37,9 @@ import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.core.tracing.IResolverService;
 import org.metaborg.spoofax.intellij.factories.ISpoofaxPsiElementFactory;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.intellij.psi.SpoofaxElementType;
 import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
+import org.metaborg.spoofax.intellij.psi.SpoofaxIdentifierType;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -149,11 +151,7 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public PsiElement createElement(@NotNull final ASTNode node) {
-        IElementType type = node.getElementType();
-        if (type instanceof OldSpoofaxTokenType) {
-            return this.psiElementFactory.create(node);
-        }
-        throw new AssertionError("Unknown element type: " + type);
+        return this.psiElementFactory.create(node);
     }
 
     /**

@@ -48,8 +48,7 @@ import org.metaborg.spoofax.intellij.menu.*;
 import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.project.IntelliJProject;
 import org.metaborg.spoofax.intellij.project.IntelliJProjectService;
-import org.metaborg.spoofax.intellij.psi.SpoofaxAnnotator;
-import org.metaborg.spoofax.intellij.psi.SpoofaxFileElementType;
+import org.metaborg.spoofax.intellij.psi.*;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -77,6 +76,7 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         bind(new TypeLiteral<ResourceTransformer<IStrategoTerm, IStrategoTerm, IStrategoTerm>>() {}).to(
                 StrategoResourceTransformer.class);
         bind(SpoofaxAnnotator.class).in(Singleton.class);
+        bind(ISpoofaxPsiElementFactory.class).to(SpoofaxPsiElementFactory.class).in(Singleton.class);
 
         bind(SpoofaxSyntaxHighlighterFactory.class);
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
@@ -91,9 +91,6 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(Lexer.class, CharacterLexer.class)
                         .build(ICharacterLexerFactory.class));
-        install(new FactoryModuleBuilder()
-                        .implement(PsiParser.class, SpoofaxParser.class)
-                        .build(IParserFactory.class));
         install(new FactoryModuleBuilder()
                         .implement(ParserDefinition.class, SpoofaxParserDefinition.class)
                         .build(IParserDefinitionFactory.class));
@@ -119,8 +116,8 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
                         .implement(BuilderActionGroup.class, BuilderActionGroup.class)
                         .build(IBuilderActionGroupFactory.class));
         install(new FactoryModuleBuilder()
-                        .implement(SpoofaxPsiElement.class, SpoofaxPsiElement.class)
-                        .build(ISpoofaxPsiElementFactory.class));
+                        .implement(ATermAstElementTypeProvider.class, ATermAstElementTypeProvider.class)
+                        .build(IATermAstElementTypeProviderFactory.class));
         install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 

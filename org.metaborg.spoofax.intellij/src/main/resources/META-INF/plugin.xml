@@ -40,6 +40,8 @@
         <!--<lang.syntaxHighlighterFactory key="Spoofax" implementationClass="org.metaborg.spoofax.intellij.idea.languages.SpoofaxSyntaxHighlighterFactory"/>-->
         <applicationService serviceImplementation="org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalService"/>
         <projectService serviceImplementation="org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService"/>
+        <lang.elementManipulator forClass="org.metaborg.spoofax.intellij.psi.SpoofaxIdentifier"
+                                 implementationClass="org.metaborg.spoofax.intellij.psi.SpoofaxIdentifierManipulator"/>
     </extensions>
 
     <application-components>

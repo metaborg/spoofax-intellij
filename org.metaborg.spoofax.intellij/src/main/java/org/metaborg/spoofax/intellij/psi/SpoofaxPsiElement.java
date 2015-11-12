@@ -17,13 +17,14 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.spoofax.intellij.psi;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
@@ -31,14 +32,10 @@ import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.analysis.AnalysisFileResult;
-import org.metaborg.core.analysis.AnalysisResult;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.source.ISourceLocation;
-import org.metaborg.core.source.ISourceRegion;
-import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.core.tracing.IResolverService;
 import org.metaborg.core.tracing.Resolution;
-import org.metaborg.spoofax.intellij.psi.SpoofaxReference;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -46,12 +43,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Spoofax PSI element.
+ * A Spoofax PSI element.
+ *
+ * The Program Structure Interface (PSI) is a hierarchy of PSI elements
+ * that represent the files and their structure (e.g. AST).
  */
-public class SpoofaxPsiElement extends ASTWrapperPsiElement implements ISpoofaxPsiElement {
+public class SpoofaxPsiElement extends ASTWrapperPsiElement implements PsiElement {
 
-//    private final IStrategoTerm term;
-//    private final ParseResult<IStrategoTerm> parseResult;
     private final IResolverService<IStrategoTerm, IStrategoTerm> resolverService;
     private final IIntelliJResourceService resourceService;
     private final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester;
@@ -59,7 +57,7 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements ISpoofaxP
     /**
      * Initializes a new instance of the {@link SpoofaxPsiElement} class.
      *
-     * @param node The node to which the element is attached.
+     * @param node The AST node to wrap.
      */
     @Inject
     public SpoofaxPsiElement(@Assisted final ASTNode node, final IResolverService<IStrategoTerm, IStrategoTerm> resolverService, final IIntelliJResourceService resourceService, final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
@@ -120,4 +118,5 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements ISpoofaxP
 
         return references.toArray(new SpoofaxReference[references.size()]);
     }
+
 }

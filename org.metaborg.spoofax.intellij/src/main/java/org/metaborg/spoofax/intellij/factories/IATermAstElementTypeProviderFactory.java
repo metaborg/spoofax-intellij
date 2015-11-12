@@ -17,31 +17,32 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.spoofax.intellij.factories;
 
-import com.intellij.psi.tree.IElementType;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.lexer.Lexer;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.style.IStyle;
+import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.syntax.ParseResult;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
+import org.metaborg.spoofax.intellij.psi.ATermAstElementTypeProvider;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**
- * The type of a Spoofax element.
+ * Factory for ATerm AST element type providers.
  */
-public final class SpoofaxElementType extends IElementType {
+public interface IATermAstElementTypeProviderFactory {
 
     /**
-     * Initializes a new instance of the {@link SpoofaxElementType} class.
+     * Creates a new ATerm AST element type provider.
      *
-     * @param language The associated IDEA language.
+     * @param language The language implementation.
+     * @param parseResult The parse result.
+     * @param tokenTypeManager The token type manager.
+     * @return The created ATerm AST element type providers.
      */
-    public SpoofaxElementType(@NotNull final SpoofaxIdeaLanguage language) {
-        super("SPOOFAX_ELEMENT_TYPE", language);
-    }
-
-    @Override
-    public String toString() {
-        return SpoofaxElementType.class.getName() + "." + super.toString();
-    }
+    ATermAstElementTypeProvider create(ILanguageImpl language,
+                                       ParseResult<IStrategoTerm> parseResult,
+                                       SpoofaxTokenTypeManager tokenTypeManager);
 
 }

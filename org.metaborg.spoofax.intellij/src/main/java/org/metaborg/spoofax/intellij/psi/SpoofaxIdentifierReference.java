@@ -17,28 +17,41 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
+package org.metaborg.spoofax.intellij.psi;
 
-import com.intellij.lang.PsiParser;
-import com.intellij.lexer.Lexer;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReferenceBase;
+import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguage;
-import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.idea.languages.OldSpoofaxTokenType;
-import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Factory for parsers.
+ * A reference to a Spoofax identifier element.
  */
-public interface IParserFactory {
+public final class SpoofaxIdentifierReference extends PsiReferenceBase<PsiElement> {
+
+    public SpoofaxIdentifierReference(@NotNull final PsiElement element) {
+        super(element);
+    }
 
     /**
-     * Creates a new parser.
+     * {@inheritDoc}
      *
-     * @param language          The language.
-     * @param tokenTypesManager The token type manager.
-     * @return The created parser.
+     * This method is called upon <em>Go To declaration</em>.
+     */
+    @Nullable
+    @Override
+    public PsiElement resolve() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @NotNull
-    PsiParser create(@NotNull ILanguage language, @NotNull SpoofaxTokenTypeManager tokenTypesManager);
+    @Override
+    public Object[] getVariants() {
+        // TODO: For code completion?
+        return ArrayUtil.EMPTY_OBJECT_ARRAY;
+    }
 }

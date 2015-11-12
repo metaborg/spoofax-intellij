@@ -17,21 +17,24 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.spoofax.intellij.psi;
 
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
 
-// NOTE: This class will eventually be replaced.
-public class OldSpoofaxTokenType extends IElementType {
+/**
+ * A Spoofax identifier element type.
+ */
+public class SpoofaxIdentifierType extends SpoofaxElementType {
 
-    public OldSpoofaxTokenType(@NotNull String debugName, @NotNull SpoofaxIdeaLanguage language) {
-        super(debugName, language);
-    }
-
-    @Override
-    public String toString() {
-        return "OldSpoofaxTokenType." + super.toString();
+    /**
+     * Initializes a new instance of the {@link SpoofaxIdentifierType} class.
+     *
+     * @param language The language.
+     */
+    public SpoofaxIdentifierType(@NotNull SpoofaxIdeaLanguage language) {
+        super(language, "SPOOFAX_IDENTIFIER_TYPE");
     }
 
 }
