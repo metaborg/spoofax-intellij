@@ -33,10 +33,13 @@ public final class SpoofaxIdentifierManipulator extends AbstractElementManipulat
             IncorrectOperationException {
 
         String oldText = element.getText();
-        String newText = oldText.substring(0, range.getStartOffset()) + newContent + oldText.substring(range.getEndOffset());
+        String newText = oldText.substring(
+                0,
+                range.getStartOffset()
+        ) + newContent + oldText.substring(range.getEndOffset());
         PsiElement child = element.getFirstChild();
         if (child instanceof LeafPsiElement) {
-            ((LeafPsiElement)child).replaceWithText(newText);
+            ((LeafPsiElement) child).replaceWithText(newText);
             return element;
         }
         throw new IncorrectOperationException("Bad PSI.");

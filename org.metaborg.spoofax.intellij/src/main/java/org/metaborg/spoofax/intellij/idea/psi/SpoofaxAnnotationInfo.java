@@ -35,6 +35,8 @@ public final class SpoofaxAnnotationInfo {
     }
 
     public FileObject resource() { return this.resource; }
+
     public String text() { return this.text; }
+
     public IContext context() { return this.context; }
 }

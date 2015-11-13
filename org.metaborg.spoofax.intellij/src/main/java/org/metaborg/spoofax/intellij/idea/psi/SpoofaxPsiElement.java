@@ -44,7 +44,7 @@ import java.util.List;
 
 /**
  * A Spoofax PSI element.
- *
+ * <p>
  * The Program Structure Interface (PSI) is a hierarchy of PSI elements
  * that represent the files and their structure (e.g. AST).
  */
@@ -60,22 +60,15 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements PsiElemen
      * @param node The AST node to wrap.
      */
     @Inject
-    public SpoofaxPsiElement(@Assisted final ASTNode node, final IResolverService<IStrategoTerm, IStrategoTerm> resolverService, final IIntelliJResourceService resourceService, final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
+    public SpoofaxPsiElement(
+            @Assisted final ASTNode node,
+            final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
+            final IIntelliJResourceService resourceService,
+            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
         super(node);
         this.resolverService = resolverService;
         this.resourceService = resourceService;
         this.analysisResultRequester = analysisResultRequester;
-    }
-
-    /**
-     * Accepts a PSI element visitor.
-     *
-     * @param visitor The visitor.
-     */
-    public void accept(@NotNull final PsiElementVisitor visitor) {
-        if (visitor instanceof SpoofaxPsiVisitor)
-            ((SpoofaxPsiVisitor) visitor).visitProperty(this);
-        else super.accept(visitor);
     }
 
     @Override
@@ -117,6 +110,17 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements PsiElemen
         }
 
         return references.toArray(new SpoofaxReference[references.size()]);
+    }
+
+    /**
+     * Accepts a PSI element visitor.
+     *
+     * @param visitor The visitor.
+     */
+    public void accept(@NotNull final PsiElementVisitor visitor) {
+        if (visitor instanceof SpoofaxPsiVisitor)
+            ((SpoofaxPsiVisitor) visitor).visitProperty(this);
+        else super.accept(visitor);
     }
 
 }

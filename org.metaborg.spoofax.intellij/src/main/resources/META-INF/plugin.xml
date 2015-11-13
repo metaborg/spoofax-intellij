@@ -42,6 +42,7 @@
         <projectService serviceImplementation="org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService"/>
         <lang.elementManipulator forClass="org.metaborg.spoofax.intellij.idea.psi.SpoofaxIdentifier"
                                  implementationClass="org.metaborg.spoofax.intellij.idea.psi.SpoofaxIdentifierManipulator"/>
+        <psi.referenceContributor implementation="org.metaborg.idea.psi.MetaborgReferenceContributor"/>
     </extensions>
 
     <application-components>

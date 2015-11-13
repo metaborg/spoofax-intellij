@@ -17,30 +17,18 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.settings.jackson;
+package org.metaborg.idea.psi;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.base.Preconditions;
-import org.metaborg.settings.ISettingsFactory;
+import com.intellij.codeInsight.completion.CompletionContributor;
 
 /**
- * Settings serializer/deserializer using YAML.
- * <p>
- * Types can use custom (de)serializers through an annotation. For example:
- * <pre>
- *     &#064;JsonSerialize(using = VersionSerializer.class)
- *     &#064;JsonDeserialize(using = VersionDeserializer.class)
- *     public class Version {
- *         // ...
- *     }
- * </pre>
+ * Contributes completion providers for a language.
+ *
+ * This completion provider must be registered for each language.
  */
-public final class YamlSettingsFormat extends JacksonSettingsFormat {
-
-    public YamlSettingsFormat(final ISettingsFactory settingsFactory) {
-        super(settingsFactory, new YAMLFactory());
-
-        Preconditions.checkNotNull(settingsFactory);
+public class MetaborgCompletionContributor extends CompletionContributor {
+    public MetaborgCompletionContributor() {
+        // TODO
+        // See: https://github.com/pantsbuild/intellij-pants-plugin/blob/9e72634923841169c9df5cd683e54335d1af5835/src/com/twitter/intellij/pants/completion/PantsCompletionContributor.java
     }
-
 }

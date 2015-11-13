@@ -17,40 +17,30 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.idea.psi;
 
-import com.intellij.lang.Language;
+import com.intellij.patterns.PlatformPatterns;
+import com.intellij.psi.PsiReferenceContributor;
+import com.intellij.psi.PsiReferenceRegistrar;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguage;
 
 /**
- * A Spoofax language used in IntelliJ IDEA.
- * <p>
- * There are no implementations of this class because it's instantiated dynamically.
+ * Contributes reference providers for PSI elements that match a certain pattern.
+ *
+ * This contributor is run once per project.
  */
-public abstract class SpoofaxIdeaLanguage extends Language {
-
-    @NotNull
-    private final ILanguage language;
+public final class MetaborgReferenceContributor extends PsiReferenceContributor {
 
     /**
-     * Initializes a new instance of the {@link SpoofaxIdeaLanguage} class.
-     *
-     * @param language The language.
+     * {@inheritDoc}
      */
-    protected SpoofaxIdeaLanguage(@NotNull final ILanguage language) {
-        super(language.name());
-
-        this.language = language;
-    }
-
-    /**
-     * Gets the associated language.
-     *
-     * @return The associated language.
-     */
-    @NotNull
-    public final ILanguage language() {
-        return this.language;
+    @Override
+    public void registerReferenceProviders(@NotNull final PsiReferenceRegistrar registrar) {
+        registrar.registerReferenceProvider(
+//                StandardPatterns.instanceOf(MetaborgReferenceElement.class),
+                PlatformPatterns.psiElement(MetaborgReferenceElement.class),
+                // TODO: Make this a factory
+                new MetaborgReferenceProvider()
+        );
     }
 }

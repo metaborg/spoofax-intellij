@@ -43,7 +43,7 @@ public class SpoofaxElementType extends IElementType {
     /**
      * Initializes a new instance of the {@link SpoofaxElementType} class.
      *
-     * @param language The language.
+     * @param language  The language.
      * @param debugName The debug name.
      */
     protected SpoofaxElementType(
@@ -58,6 +58,6 @@ public class SpoofaxElementType extends IElementType {
      * @return The {@link SpoofaxIdeaLanguage}.
      */
     @Nullable
-    public SpoofaxIdeaLanguage getSpoofaxIdeaLanguage() { return (SpoofaxIdeaLanguage)getLanguage(); }
+    public SpoofaxIdeaLanguage getSpoofaxIdeaLanguage() { return (SpoofaxIdeaLanguage) getLanguage(); }
 
 }

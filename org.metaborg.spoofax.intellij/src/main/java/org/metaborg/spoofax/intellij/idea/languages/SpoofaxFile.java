@@ -59,7 +59,7 @@ public final class SpoofaxFile extends PsiFileBase {
      * @return The file type.
      */
     @NotNull
-    public FileType getFileType() {
+    public SpoofaxFileType getFileType() {
         return this.fileType;
     }
 

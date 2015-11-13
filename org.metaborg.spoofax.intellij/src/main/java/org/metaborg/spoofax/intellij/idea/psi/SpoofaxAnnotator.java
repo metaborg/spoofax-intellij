@@ -112,10 +112,18 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
             TextRange range = SourceRegionUtil.toTextRange(message.region());
             HighlightSeverity severity;
             switch (message.severity()) {
-                case ERROR: severity = HighlightSeverity.ERROR; break;
-                case WARNING: severity = HighlightSeverity.WARNING; break;
-                case NOTE: severity = HighlightSeverity.INFORMATION; break;
-                default: severity = HighlightSeverity.INFORMATION; break;
+                case ERROR:
+                    severity = HighlightSeverity.ERROR;
+                    break;
+                case WARNING:
+                    severity = HighlightSeverity.WARNING;
+                    break;
+                case NOTE:
+                    severity = HighlightSeverity.INFORMATION;
+                    break;
+                default:
+                    severity = HighlightSeverity.INFORMATION;
+                    break;
             }
             // NOTE: We can add a HTML tooltip if we want.
             holder.createAnnotation(severity, range, message.message());

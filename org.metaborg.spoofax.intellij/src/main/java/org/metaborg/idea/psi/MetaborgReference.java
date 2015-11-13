@@ -17,40 +17,41 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.idea.psi;
 
-import com.intellij.lang.Language;
+import com.intellij.psi.PsiReferenceBase;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguage;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * A Spoofax language used in IntelliJ IDEA.
- * <p>
- * There are no implementations of this class because it's instantiated dynamically.
+ * A reference to a definition.
  */
-public abstract class SpoofaxIdeaLanguage extends Language {
-
-    @NotNull
-    private final ILanguage language;
+public abstract class MetaborgReference extends PsiReferenceBase<MetaborgReferenceElement> {
 
     /**
-     * Initializes a new instance of the {@link SpoofaxIdeaLanguage} class.
+     * Initializes a new instance of the {@link MetaborgReference} class.
      *
-     * @param language The language.
+     * @param reference The reference.
+     * @param isSoft Whether the reference is a soft reference.
      */
-    protected SpoofaxIdeaLanguage(@NotNull final ILanguage language) {
-        super(language.name());
-
-        this.language = language;
+    public MetaborgReference(final MetaborgReferenceElement reference, boolean isSoft) {
+        super(reference, isSoft);
     }
 
     /**
-     * Gets the associated language.
-     *
-     * @return The associated language.
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public abstract MetaborgDeclarationElement resolve();
+
+    /**
+     * {@inheritDoc}
      */
     @NotNull
-    public final ILanguage language() {
-        return this.language;
+    @Override
+    public final Object[] getVariants() {
+        return new Object[0];
     }
+
 }

@@ -43,7 +43,11 @@ public class SpoofaxIdentifier extends SpoofaxPsiElement implements PsiNamedElem
      * @param node The AST node to wrap.
      */
     @Inject
-    public SpoofaxIdentifier(@Assisted final ASTNode node, final IResolverService<IStrategoTerm, IStrategoTerm> resolverService, final IIntelliJResourceService resourceService, final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
+    public SpoofaxIdentifier(
+            @Assisted final ASTNode node,
+            final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
+            final IIntelliJResourceService resourceService,
+            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
         super(node, resolverService, resourceService, analysisResultRequester);
     }
 

@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * An integer range.
  * <p>
- * The range has an inclusive start and exclusive end (i.e. <code>start <= x < end</code>,
+ * The range has an inclusive start and exclusive end (i.e. <code>start &lt;= x &lt; end</code>,
  * or alternatively <code>[start, end)</code>).
  * An empty range has a start and end that are equal.
  * <p>

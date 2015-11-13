@@ -17,29 +17,30 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.idea;
 
+import com.google.common.base.Preconditions;
 import com.intellij.lang.Language;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 
 /**
- * A Spoofax language used in IntelliJ IDEA.
+ * A Metaborg language's representation in IntelliJ IDEA.
  * <p>
  * There are no implementations of this class because it's instantiated dynamically.
  */
-public abstract class SpoofaxIdeaLanguage extends Language {
+public abstract class MetaborgLanguage extends Language {
 
-    @NotNull
     private final ILanguage language;
 
     /**
-     * Initializes a new instance of the {@link SpoofaxIdeaLanguage} class.
+     * Initializes a new instance of the {@link MetaborgLanguage} class.
      *
      * @param language The language.
      */
-    protected SpoofaxIdeaLanguage(@NotNull final ILanguage language) {
+    protected MetaborgLanguage(final ILanguage language) {
         super(language.name());
+        Preconditions.checkNotNull(language);
 
         this.language = language;
     }
@@ -49,8 +50,8 @@ public abstract class SpoofaxIdeaLanguage extends Language {
      *
      * @return The associated language.
      */
-    @NotNull
     public final ILanguage language() {
         return this.language;
     }
+
 }

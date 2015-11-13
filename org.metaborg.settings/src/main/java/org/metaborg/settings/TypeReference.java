@@ -30,7 +30,7 @@ import java.lang.reflect.Type;
  * TypeReference myRef = new TypeReference&lt;List&lt;String&gt;&gt;() {};
  * </pre>
  * <p>
- * {@see http://gafter.blogspot.nl/2006/12/super-type-tokens.html}
+ * @see <a href="http://gafter.blogspot.nl/2006/12/super-type-tokens.html">Super Type Tokens - Neal Gafter</a>
  */
 public abstract class TypeReference<T> implements Comparable<TypeReference<T>> {
 

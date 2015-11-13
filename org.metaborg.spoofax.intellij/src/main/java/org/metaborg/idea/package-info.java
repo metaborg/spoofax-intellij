@@ -17,30 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.settings.jackson;
-
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.base.Preconditions;
-import org.metaborg.settings.ISettingsFactory;
-
 /**
- * Settings serializer/deserializer using YAML.
- * <p>
- * Types can use custom (de)serializers through an annotation. For example:
- * <pre>
- *     &#064;JsonSerialize(using = VersionSerializer.class)
- *     &#064;JsonDeserialize(using = VersionDeserializer.class)
- *     public class Version {
- *         // ...
- *     }
- * </pre>
+ * Functionality for working with Metaborg Core-languages in IntelliJ IDEA.
  */
-public final class YamlSettingsFormat extends JacksonSettingsFormat {
-
-    public YamlSettingsFormat(final ISettingsFactory settingsFactory) {
-        super(settingsFactory, new YAMLFactory());
-
-        Preconditions.checkNotNull(settingsFactory);
-    }
-
-}
+package org.metaborg.idea;

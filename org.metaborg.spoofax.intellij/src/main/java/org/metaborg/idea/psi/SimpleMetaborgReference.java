@@ -17,40 +17,38 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.idea.psi;
 
-import com.intellij.lang.Language;
+import com.intellij.psi.PsiReferenceBase;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguage;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * A Spoofax language used in IntelliJ IDEA.
- * <p>
- * There are no implementations of this class because it's instantiated dynamically.
+ * A reference to a definition.
  */
-public abstract class SpoofaxIdeaLanguage extends Language {
+public final class SimpleMetaborgReference extends MetaborgReference {
 
-    @NotNull
-    private final ILanguage language;
+    @Nullable
+    private final MetaborgDeclarationElement declaration;
 
     /**
-     * Initializes a new instance of the {@link SpoofaxIdeaLanguage} class.
+     * Initializes a new instance of the {@link SimpleMetaborgReference} class.
      *
-     * @param language The language.
+     * @param reference The reference.
+     * @param declaration The declaration; or <code>null</code>.
      */
-    protected SpoofaxIdeaLanguage(@NotNull final ILanguage language) {
-        super(language.name());
-
-        this.language = language;
+    public SimpleMetaborgReference(final MetaborgReferenceElement reference, @Nullable final MetaborgDeclarationElement declaration) {
+        super(reference, false);
+        this.declaration = declaration;
     }
 
     /**
-     * Gets the associated language.
-     *
-     * @return The associated language.
+     * {@inheritDoc}
      */
-    @NotNull
-    public final ILanguage language() {
-        return this.language;
+    @Nullable
+    @Override
+    public MetaborgDeclarationElement resolve() {
+        return this.declaration;
     }
+
 }

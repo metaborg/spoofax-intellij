@@ -39,7 +39,10 @@ public final class SpoofaxPsiElementFactory implements ISpoofaxPsiElementFactory
      * Initializes a new instance of the {@link SpoofaxPsiElementFactory} class.
      */
     @Inject
-    public SpoofaxPsiElementFactory(final IResolverService<IStrategoTerm, IStrategoTerm> resolverService, final IIntelliJResourceService resourceService, final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
+    public SpoofaxPsiElementFactory(
+            final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
+            final IIntelliJResourceService resourceService,
+            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
         this.resolverService = resolverService;
         this.resourceService = resourceService;
         this.analysisResultRequester = analysisResultRequester;
@@ -50,9 +53,19 @@ public final class SpoofaxPsiElementFactory implements ISpoofaxPsiElementFactory
     public SpoofaxPsiElement create(@NotNull final ASTNode node) {
         IElementType type = node.getElementType();
         if (type instanceof SpoofaxIdentifierType) {
-            return new SpoofaxIdentifier(node, this.resolverService, this.resourceService, this.analysisResultRequester);
+            return new SpoofaxIdentifier(
+                    node,
+                    this.resolverService,
+                    this.resourceService,
+                    this.analysisResultRequester
+            );
         } else if (type instanceof SpoofaxElementType) {
-            return new SpoofaxPsiElement(node, this.resolverService, this.resourceService, this.analysisResultRequester);
+            return new SpoofaxPsiElement(
+                    node,
+                    this.resolverService,
+                    this.resourceService,
+                    this.analysisResultRequester
+            );
         } else {
             throw new AssertionError("Unknown element type: " + type);
         }

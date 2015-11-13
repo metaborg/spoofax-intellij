@@ -101,10 +101,6 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
         this.elementTypeProviderFactory = elementTypeProviderFactory;
     }
 
-    public SpoofaxIdeaLanguage getSpoofaxLanguage() {
-        return (SpoofaxIdeaLanguage) getLanguage();
-    }
-
     @Override
     protected ASTNode doParseContents(
             @NotNull final ASTNode chameleon, @NotNull final PsiElement psi) {
@@ -152,6 +148,10 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
         return rootNode;
     }
 
+    public SpoofaxIdeaLanguage getSpoofaxLanguage() {
+        return (SpoofaxIdeaLanguage) getLanguage();
+    }
+
     /**
      * Determines the resource being parsed.
      *
@@ -181,7 +181,10 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
      * @return The language implementation to use.
      */
     @NotNull
-    private ILanguageImpl getLanguageImpl(@Nullable final FileObject resource, final PsiElement psi, @NotNull final IElementType root) {
+    private ILanguageImpl getLanguageImpl(
+            @Nullable final FileObject resource,
+            final PsiElement psi,
+            @NotNull final IElementType root) {
         ILanguage language = ((SpoofaxIdeaLanguage) root.getLanguage()).language();
         IProject project = this.projectService.get(psi);
 

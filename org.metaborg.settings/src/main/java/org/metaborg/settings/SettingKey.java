@@ -36,7 +36,7 @@ import java.lang.reflect.Type;
  * Examples:
  * <pre>
  * static final SettingKey NAME_KEY = SettingKey.create("name", String.class);
- * static final SettingKey ID_LIST_KEY = SettingKey.create("ids", new TypeReference<List<LanguageIdentifier>>() {}, SettingStrategies.Union);
+ * static final SettingKey ID_LIST_KEY = SettingKey.create("ids", new TypeReference&lt;List&lt;LanguageIdentifier&gt;&gt;() {}, SettingStrategies.Union);
  * </pre>
  *
  * @param <T> The type of value.

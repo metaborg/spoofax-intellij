@@ -17,30 +17,17 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.settings.jackson;
-
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.base.Preconditions;
-import org.metaborg.settings.ISettingsFactory;
-
 /**
- * Settings serializer/deserializer using YAML.
- * <p>
- * Types can use custom (de)serializers through an annotation. For example:
- * <pre>
- *     &#064;JsonSerialize(using = VersionSerializer.class)
- *     &#064;JsonDeserialize(using = VersionDeserializer.class)
- *     public class Version {
- *         // ...
- *     }
- * </pre>
+ * Functionality for PSI trees in IntelliJ IDEA.
+ *
+ * The PSI tree is the AST format used by IntelliJ. It's used to represent not just syntax,
+ * but also the files themselves.
+ *
+ * <h3>PSI elements</h3>
+ * The common base interface of all PSI elements is {@link com.intellij.psi.PsiElement}.
+ * See <a href="http://www.jetbrains.org/intellij/sdk/docs/basics/architectural_overview.html">IntelliJ
+ * IDEA Architectural Overview</a> for a high-level overview.
+ *
+ *
  */
-public final class YamlSettingsFormat extends JacksonSettingsFormat {
-
-    public YamlSettingsFormat(final ISettingsFactory settingsFactory) {
-        super(settingsFactory, new YAMLFactory());
-
-        Preconditions.checkNotNull(settingsFactory);
-    }
-
-}
+package org.metaborg.idea.psi;

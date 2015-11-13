@@ -19,7 +19,7 @@
 
 /**
  * Package with all the PSI classes, interfaces, implementations and functionality.
- *
+ * <p>
  * The PSI tree is the AST format used by IntelliJ. It's used to represent not just syntax,
  * but also the files themselves.
  */

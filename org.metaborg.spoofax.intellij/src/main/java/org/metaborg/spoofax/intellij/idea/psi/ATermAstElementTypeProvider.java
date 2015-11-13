@@ -46,8 +46,11 @@ public final class ATermAstElementTypeProvider implements IAstElementTypeProvide
     private final Iterable<IRegionCategory<IStrategoTerm>> categories;
 
     @Inject
-    public ATermAstElementTypeProvider(@Assisted final ILanguageImpl language, @Assisted final ParseResult<IStrategoTerm> parseResult,
-                                       @Assisted final SpoofaxTokenTypeManager tokenTypesManager, final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizerService) {
+    public ATermAstElementTypeProvider(
+            @Assisted final ILanguageImpl language,
+            @Assisted final ParseResult<IStrategoTerm> parseResult,
+            @Assisted final SpoofaxTokenTypeManager tokenTypesManager,
+            final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizerService) {
         this.language = language;
         this.parseResult = parseResult;
         this.tokenTypesManager = tokenTypesManager;

@@ -36,7 +36,7 @@ public final class SpoofaxIdentifierReference extends PsiReferenceBase<PsiElemen
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * This method is called upon <em>Go To declaration</em>.
      */
     @Nullable

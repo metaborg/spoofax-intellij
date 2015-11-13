@@ -38,21 +38,21 @@ public final class SpoofaxPsiVisitor extends PsiElementVisitor {
     }
 
     /**
-     * Visits a property.
-     *
-     * @param property The property.
-     */
-    public void visitProperty(@NotNull SpoofaxIdentifier property) {
-        visitPsiElement(property);
-    }
-
-    /**
      * Visits a PSI element.
      *
      * @param element The element.
      */
     public void visitPsiElement(@NotNull PsiElement element) {
         visitElement(element);
+    }
+
+    /**
+     * Visits a property.
+     *
+     * @param property The property.
+     */
+    public void visitProperty(@NotNull SpoofaxIdentifier property) {
+        visitPsiElement(property);
     }
 
 }
