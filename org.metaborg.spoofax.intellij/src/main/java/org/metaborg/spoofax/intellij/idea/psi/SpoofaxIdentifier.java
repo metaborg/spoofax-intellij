@@ -29,13 +29,16 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.tracing.IResolverService;
+import org.metaborg.idea.psi.MetaborgDeclarationElement;
+import org.metaborg.idea.psi.MetaborgIdentifierElement;
+import org.metaborg.idea.psi.MetaborgReferenceElement;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**
  * An identifier in a Spoofax language.
  */
-public class SpoofaxIdentifier extends SpoofaxPsiElement implements PsiNamedElement {
+public class SpoofaxIdentifier extends SpoofaxPsiElement implements PsiNamedElement, MetaborgReferenceElement, MetaborgDeclarationElement, MetaborgIdentifierElement {
 
     /**
      * Initializes a new instance of the {@link SpoofaxIdentifier} class.

@@ -26,11 +26,14 @@ import com.intellij.psi.PsiReferenceBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.source.ISourceRegion;
+import org.metaborg.idea.psi.MetaborgDeclarationElement;
+import org.metaborg.idea.psi.MetaborgReference;
+import org.metaborg.idea.psi.MetaborgReferenceElement;
 
 /**
  * A reference to a definition.
  */
-public final class SpoofaxReference extends PsiReferenceBase<PsiElement> {
+public final class SpoofaxReference extends MetaborgReference {
 
     private final ISourceRegion region;
     private final VirtualFile virtualFile;
@@ -38,10 +41,10 @@ public final class SpoofaxReference extends PsiReferenceBase<PsiElement> {
     /**
      * Initializes a new instance of the {@link SpoofaxReference} class.
      *
-     * @param element Some element.
+     * @param reference The reference.
      */
-    public SpoofaxReference(final PsiElement element, final VirtualFile virtualFile, final ISourceRegion region) {
-        super(element, false);
+    public SpoofaxReference(final MetaborgReferenceElement reference, final VirtualFile virtualFile, final ISourceRegion region) {
+        super(reference, false);
         // new TextRange(0, element.getTextLength())
         this.region = region;
         this.virtualFile = virtualFile;
@@ -56,10 +59,5 @@ public final class SpoofaxReference extends PsiReferenceBase<PsiElement> {
         return file.findElementAt(this.region.startOffset());
     }
 
-    @NotNull
-    @Override
-    public Object[] getVariants() {
-        return new Object[0];
-    }
 
 }

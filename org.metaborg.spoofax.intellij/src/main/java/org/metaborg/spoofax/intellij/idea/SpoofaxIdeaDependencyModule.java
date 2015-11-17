@@ -34,6 +34,9 @@ import org.metaborg.core.project.Compound;
 import org.metaborg.core.project.CompoundProjectService;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
+import org.metaborg.idea.psi.IMetaborgReferenceProviderFactory;
+import org.metaborg.idea.psi.MetaborgReferenceProvider;
+import org.metaborg.idea.spoofax.psi.SpoofaxReferenceProvider;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.factories.*;
@@ -120,6 +123,9 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(ATermAstElementTypeProvider.class, ATermAstElementTypeProvider.class)
                         .build(IATermAstElementTypeProviderFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(MetaborgReferenceProvider.class, SpoofaxReferenceProvider.class)
+                        .build(IMetaborgReferenceProviderFactory.class));
         install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 

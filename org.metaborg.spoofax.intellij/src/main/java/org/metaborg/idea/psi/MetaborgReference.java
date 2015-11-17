@@ -19,6 +19,7 @@
 
 package org.metaborg.idea.psi;
 
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReferenceBase;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,7 +44,7 @@ public abstract class MetaborgReference extends PsiReferenceBase<MetaborgReferen
      */
     @Nullable
     @Override
-    public abstract MetaborgDeclarationElement resolve();
+    public abstract PsiElement resolve();
 
     /**
      * {@inheritDoc}

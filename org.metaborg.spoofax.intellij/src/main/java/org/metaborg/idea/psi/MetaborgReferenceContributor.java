@@ -19,10 +19,16 @@
 
 package org.metaborg.idea.psi;
 
+import com.google.inject.Inject;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiReferenceContributor;
 import com.intellij.psi.PsiReferenceRegistrar;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
+import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
+import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
+import org.slf4j.Logger;
 
 /**
  * Contributes reference providers for PSI elements that match a certain pattern.
@@ -30,6 +36,22 @@ import org.jetbrains.annotations.NotNull;
  * This contributor is run once per project.
  */
 public final class MetaborgReferenceContributor extends PsiReferenceContributor {
+
+    private IMetaborgReferenceProviderFactory referenceProviderFactory;
+
+    /**
+     * This instance is created by IntelliJ's plugin system.
+     * Do not call this method manually.
+     */
+    public MetaborgReferenceContributor() {
+        IdeaPlugin.injector().injectMembers(this);
+    }
+
+    @Inject
+    private void inject(final IMetaborgReferenceProviderFactory referenceProviderFactory) {
+        this.referenceProviderFactory = referenceProviderFactory;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -39,8 +61,7 @@ public final class MetaborgReferenceContributor extends PsiReferenceContributor 
         registrar.registerReferenceProvider(
 //                StandardPatterns.instanceOf(MetaborgReferenceElement.class),
                 PlatformPatterns.psiElement(MetaborgReferenceElement.class),
-                // TODO: Make this a factory
-                new MetaborgReferenceProvider()
+                this.referenceProviderFactory.create()
         );
     }
 }

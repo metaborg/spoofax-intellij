@@ -28,6 +28,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
@@ -71,46 +72,53 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements PsiElemen
         this.analysisResultRequester = analysisResultRequester;
     }
 
+    @NotNull
+    @Override
+    public PsiReference[] getReferences() {
+        return ReferenceProvidersRegistry.getReferencesFromProviders(this);
+    }
+
+
     @Override
     public PsiReference getReference() {
         PsiReference[] references = getReferences();
         return references.length == 0 ? null : references[0];
     }
-
-    @NotNull
-    @Override
-    public PsiReference[] getReferences() {
-        PsiFile containingFile = this.getContainingFile();
-        if (containingFile == null)
-            return new PsiReference[0];
-        VirtualFile virtualFile = containingFile.getVirtualFile();
-        if (virtualFile == null)
-            return new PsiReference[0];
-        FileObject resource = this.resourceService.resolve(virtualFile);
-        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = this.analysisResultRequester.get(
-                resource);
-        if (analysisFileResult == null)
-            return new PsiReference[0];
-
-        List<SpoofaxReference> references = new ArrayList<>();
-        try {
-            Resolution resolution = resolverService.resolve(this.getTextOffset(), analysisFileResult);
-            if (resolution != null) {
-                for (ISourceLocation location : resolution.targets) {
-                    FileObject targetResource = location.resource();
-                    if (targetResource == null)
-                        continue;
-                    VirtualFile targetVirtualFile = this.resourceService.unresolve(targetResource);
-                    SpoofaxReference reference = new SpoofaxReference(this, targetVirtualFile, location.region());
-                    references.add(reference);
-                }
-            }
-        } catch (MetaborgException e) {
-            throw new RuntimeException(e);
-        }
-
-        return references.toArray(new SpoofaxReference[references.size()]);
-    }
+//
+//    @NotNull
+//    @Override
+//    public PsiReference[] getReferences() {
+//        PsiFile containingFile = this.getContainingFile();
+//        if (containingFile == null)
+//            return new PsiReference[0];
+//        VirtualFile virtualFile = containingFile.getVirtualFile();
+//        if (virtualFile == null)
+//            return new PsiReference[0];
+//        FileObject resource = this.resourceService.resolve(virtualFile);
+//        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = this.analysisResultRequester.get(
+//                resource);
+//        if (analysisFileResult == null)
+//            return new PsiReference[0];
+//
+//        List<SpoofaxReference> references = new ArrayList<>();
+//        try {
+//            Resolution resolution = resolverService.resolve(this.getTextOffset(), analysisFileResult);
+//            if (resolution != null) {
+//                for (ISourceLocation location : resolution.targets) {
+//                    FileObject targetResource = location.resource();
+//                    if (targetResource == null)
+//                        continue;
+//                    VirtualFile targetVirtualFile = this.resourceService.unresolve(targetResource);
+//                    SpoofaxReference reference = new SpoofaxReference(this, targetVirtualFile, location.region());
+//                    references.add(reference);
+//                }
+//            }
+//        } catch (MetaborgException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return references.toArray(new SpoofaxReference[references.size()]);
+//    }
 
     /**
      * Accepts a PSI element visitor.
