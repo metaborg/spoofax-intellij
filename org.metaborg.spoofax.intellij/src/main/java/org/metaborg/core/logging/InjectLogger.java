@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * For example:
  * <pre>
  *
- * @InjectLogger private Logger logger;
+ * &#064;InjectLogger private Logger logger;
  * </pre>
  */
 @Target({ElementType.FIELD})

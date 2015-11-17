@@ -25,6 +25,7 @@ import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
@@ -78,6 +79,18 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
     @Override
     public IntelliJProject get(@NotNull final Module module) {
         return this.modules.get(module);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public IntelliJProject get(final PsiElement element) {
+        Module module = ModuleUtil.findModuleForPsiElement(element);
+        if (module == null)
+            return null;
+        return get(module);
     }
 
     /**

@@ -21,14 +21,23 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.util.Key;
 import com.intellij.psi.FileViewProvider;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.analysis.AnalysisFileResult;
+import org.metaborg.core.analysis.AnalysisResult;
+import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
+import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**
  * A Spoofax source file.
  */
 public final class SpoofaxFile extends PsiFileBase {
+
+    public static final Key<ParseResult<IStrategoTerm>> PARSE_RESULT_KEY = new Key<>("PARSE_RESULT_KEY");
+    public static final Key<AnalysisFileResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_FILE_RESULT_KEY = new Key<>("ANALYSIS_FILE_RESULT_KEY");
+    public static final Key<AnalysisResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_RESULT_KEY = new Key<>("ANALYSIS_RESULT_KEY");
 
     @NotNull
     private final SpoofaxFileType fileType;
@@ -50,7 +59,7 @@ public final class SpoofaxFile extends PsiFileBase {
      * @return The file type.
      */
     @NotNull
-    public FileType getFileType() {
+    public SpoofaxFileType getFileType() {
         return this.fileType;
     }
 

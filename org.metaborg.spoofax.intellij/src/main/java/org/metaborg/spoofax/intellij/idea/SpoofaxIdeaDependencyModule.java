@@ -25,15 +25,18 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
 import com.intellij.lang.ParserDefinition;
-import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.projectRoots.SdkType;
+import com.intellij.psi.tree.IFileElementType;
 import org.metaborg.core.project.ArtifactProjectService;
 import org.metaborg.core.project.Compound;
 import org.metaborg.core.project.CompoundProjectService;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
+import org.metaborg.idea.psi.IMetaborgReferenceProviderFactory;
+import org.metaborg.idea.psi.MetaborgReferenceProvider;
+import org.metaborg.idea.spoofax.psi.SpoofaxReferenceProvider;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.factories.*;
@@ -43,6 +46,10 @@ import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplPanel;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplTableModel;
+import org.metaborg.spoofax.intellij.idea.psi.ATermAstElementTypeProvider;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxFileElementType;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxPsiElementFactory;
 import org.metaborg.spoofax.intellij.menu.*;
 import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
 import org.metaborg.spoofax.intellij.project.IntelliJProject;
@@ -73,6 +80,8 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         bind(new TypeLiteral<ResourceTransformer<?, ?, ?>>() {}).to(StrategoResourceTransformer.class);
         bind(new TypeLiteral<ResourceTransformer<IStrategoTerm, IStrategoTerm, IStrategoTerm>>() {}).to(
                 StrategoResourceTransformer.class);
+        bind(SpoofaxAnnotator.class).in(Singleton.class);
+        bind(ISpoofaxPsiElementFactory.class).to(SpoofaxPsiElementFactory.class).in(Singleton.class);
 
         bind(SpoofaxSyntaxHighlighterFactory.class);
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
@@ -88,11 +97,11 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
                         .implement(Lexer.class, CharacterLexer.class)
                         .build(ICharacterLexerFactory.class));
         install(new FactoryModuleBuilder()
-                        .implement(PsiParser.class, OldSpoofaxParser.class)
-                        .build(IParserFactory.class));
-        install(new FactoryModuleBuilder()
                         .implement(ParserDefinition.class, SpoofaxParserDefinition.class)
                         .build(IParserDefinitionFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(IFileElementType.class, SpoofaxFileElementType.class)
+                        .build(IFileElementTypeFactory.class));
         install(new FactoryModuleBuilder()
                         .implement(IntelliJProject.class, IntelliJProject.class)
                         .build(IProjectFactory.class));
@@ -111,6 +120,12 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(BuilderActionGroup.class, BuilderActionGroup.class)
                         .build(IBuilderActionGroupFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(ATermAstElementTypeProvider.class, ATermAstElementTypeProvider.class)
+                        .build(IATermAstElementTypeProviderFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(MetaborgReferenceProvider.class, SpoofaxReferenceProvider.class)
+                        .build(IMetaborgReferenceProviderFactory.class));
         install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 

@@ -28,8 +28,8 @@ import org.metaborg.settings.ISettingsFactory;
  * <p>
  * Types can use custom (de)serializers through an annotation. For example:
  * <pre>
- *     @JsonSerialize(using = VersionSerializer.class)
- *     @JsonDeserialize(using = VersionDeserializer.class)
+ *     &#064;JsonSerialize(using = VersionSerializer.class)
+ *     &#064;JsonDeserialize(using = VersionDeserializer.class)
  *     public class Version {
  *         // ...
  *     }

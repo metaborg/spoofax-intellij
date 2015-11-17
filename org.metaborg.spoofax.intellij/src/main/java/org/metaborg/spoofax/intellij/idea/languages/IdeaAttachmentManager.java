@@ -22,20 +22,21 @@ package org.metaborg.spoofax.intellij.idea.languages;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.psi.tree.IFileElementType;
 import javassist.util.proxy.ProxyFactory;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
-import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
-import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
-import org.metaborg.spoofax.intellij.factories.IParserFactory;
+import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxFileElementType;
 import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -56,7 +57,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final ICharacterLexerFactory characterLexerFactory;
     @NotNull
-    private final IParserFactory parserFactory;
+    private final IFileElementTypeFactory fileElementTypeFactory;
     @NotNull
     private final BuilderMenuBuilder builderMenuBuilder;
     @NotNull
@@ -65,6 +66,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private final HashMap<ILanguage, IdeaLanguageAttachment> languages = new HashMap<>();
     @NotNull
     private final HashMap<ILanguageImpl, IdeaLanguageImplAttachment> implementations = new HashMap<>();
+    @NotNull
+    private final SpoofaxAnnotator spoofaxAnnotator;
     @InjectLogger
     private Logger logger;
 
@@ -73,15 +76,17 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
             @NotNull final IHighlightingLexerFactory lexerFactory,
             @NotNull final IParserDefinitionFactory parserDefinitionFactory,
             @NotNull final ICharacterLexerFactory characterLexerFactory,
-            @NotNull final IParserFactory parserFactory,
+            @NotNull final IFileElementTypeFactory fileElementTypeFactory,
             @NotNull final BuilderMenuBuilder builderMenuBuilder,
-            @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
+            @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
+            @NotNull final SpoofaxAnnotator spoofaxAnnotator) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
-        this.parserFactory = parserFactory;
+        this.fileElementTypeFactory = fileElementTypeFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
         this.builderMenuBuilder = builderMenuBuilder;
+        this.spoofaxAnnotator = spoofaxAnnotator;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -96,9 +101,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         if (obj == null) {
             obj = createLanguageAttachment(language);
             this.languages.put(language, obj);
-            logger.info("Created a new IdeaLanguageAttachment for language {}.", language);
+            logger.debug("Created a new IdeaLanguageAttachment for language {}.", language);
         } else {
-            logger.info("Used cached IdeaLanguageAttachment for language {}.", language);
+            logger.debug("Used cached IdeaLanguageAttachment for language {}.", language);
         }
         return obj;
     }
@@ -112,9 +117,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         if (obj == null) {
             obj = createLanguageImplAttachment(implementation);
             this.implementations.put(implementation, obj);
-            logger.info("Created a new IdeaLanguageImplAttachment for language implementation {}.", implementation);
+            logger.debug("Created a new IdeaLanguageImplAttachment for language implementation {}.", implementation);
         } else {
-            logger.info("Used cached IdeaLanguageImplAttachment for language implementation {}.", implementation);
+            logger.debug("Used cached IdeaLanguageImplAttachment for language implementation {}.", implementation);
         }
         return obj;
     }
@@ -131,7 +136,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         final SpoofaxFileType fileType = createFileType(ideaLanguage);
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
 //        final OldSpoofaxTokenType dummyAstTokenType = createDummyAstTokenType(ideaLanguage);
-        final ParserDefinition parserDefinition = createParserDefinition(fileType);
+        final IFileElementType fileElementType = createFileElementType(ideaLanguage, tokenTypeManager);
+        final ParserDefinition parserDefinition = createParserDefinition(fileType, fileElementType);
         final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory();
 //        final Lexer characterLexer = createCharacterLexer(tokenTypeManager);
 //        final OldSpoofaxParser parser = createParser(dummyAstTokenType);
@@ -142,8 +148,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
 //                                          dummyAstTokenType,
                                           parserDefinition,
                                           syntaxHighlighterFactory,
-                                          characterLexerFactory,
-                                          parserFactory);
+                                          this.characterLexerFactory,
+                                          this.spoofaxAnnotator);
     }
 
     /**
@@ -198,6 +204,11 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         }
     }
 
+    @NotNull
+    private final IFileElementType createFileElementType(@NotNull final Language language, @NotNull final SpoofaxTokenTypeManager tokenTypesManager) {
+        return this.fileElementTypeFactory.create(language, tokenTypesManager);
+    }
+
     /**
      * Creates a new spoofax token type manager for an IDEA language.
      *
@@ -227,8 +238,8 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @return The created parser definition.
      */
     @NotNull
-    private final ParserDefinition createParserDefinition(@NotNull final SpoofaxFileType fileType) {
-        return this.parserDefinitionFactory.create(fileType);
+    private final ParserDefinition createParserDefinition(@NotNull final SpoofaxFileType fileType, @NotNull final IFileElementType fileElementType) {
+        return this.parserDefinitionFactory.create(fileType, fileElementType);
     }
 
 //    /**

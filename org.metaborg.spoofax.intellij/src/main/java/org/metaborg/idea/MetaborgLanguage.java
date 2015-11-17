@@ -17,36 +17,41 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.idea;
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElementVisitor;
+import com.google.common.base.Preconditions;
+import com.intellij.lang.Language;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.language.ILanguage;
 
 /**
- * Spoofax PSI element.
+ * A Metaborg language's representation in IntelliJ IDEA.
+ * <p>
+ * There are no implementations of this class because it's instantiated dynamically.
  */
-public class SpoofaxPsiElement extends ASTWrapperPsiElement implements ISpoofaxPsiElement {
+public abstract class MetaborgLanguage extends Language {
+
+    private final ILanguage language;
 
     /**
-     * Initializes a new instance of the {@link SpoofaxPsiElement} class.
+     * Initializes a new instance of the {@link MetaborgLanguage} class.
      *
-     * @param node The node to which the element is attached.
+     * @param language The language.
      */
-    public SpoofaxPsiElement(@NotNull final ASTNode node) {
-        super(node);
+    protected MetaborgLanguage(final ILanguage language) {
+        super(language.name());
+        Preconditions.checkNotNull(language);
+
+        this.language = language;
     }
 
     /**
-     * Accepts a PSI element visitor.
+     * Gets the associated language.
      *
-     * @param visitor The visitor.
+     * @return The associated language.
      */
-    public void accept(@NotNull final PsiElementVisitor visitor) {
-        if (visitor instanceof SpoofaxPsiVisitor)
-            ((SpoofaxPsiVisitor) visitor).visitProperty(this);
-        else super.accept(visitor);
+    public final ILanguage language() {
+        return this.language;
     }
 
 }

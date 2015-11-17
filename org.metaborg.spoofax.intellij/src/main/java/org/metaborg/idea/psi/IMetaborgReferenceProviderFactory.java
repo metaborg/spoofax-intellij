@@ -17,28 +17,18 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
-
-import com.intellij.lang.PsiParser;
-import com.intellij.lexer.Lexer;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.language.ILanguage;
-import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.idea.languages.OldSpoofaxTokenType;
-import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
+package org.metaborg.idea.psi;
 
 /**
- * Factory for parsers.
+ * Factory for {@link MetaborgReferenceProvider} objects.
  */
-public interface IParserFactory {
+public interface IMetaborgReferenceProviderFactory {
 
     /**
-     * Creates a new parser.
+     * Creates a new instance of the object.
      *
-     * @param language          The language.
-     * @param tokenTypesManager The token type manager.
-     * @return The created parser.
+     * @return The created object.
      */
-    @NotNull
-    PsiParser create(@NotNull ILanguage language, @NotNull SpoofaxTokenTypeManager tokenTypesManager);
+    MetaborgReferenceProvider create();
+
 }

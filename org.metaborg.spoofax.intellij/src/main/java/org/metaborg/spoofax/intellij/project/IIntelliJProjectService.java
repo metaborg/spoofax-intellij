@@ -20,6 +20,7 @@
 package org.metaborg.spoofax.intellij.project;
 
 import com.intellij.openapi.module.Module;
+import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProjectService;
 
@@ -53,5 +54,15 @@ public interface IIntelliJProjectService extends IProjectService {
      */
     @Nullable
     IntelliJProject get(Module module);
+
+    /**
+     * Retrieves the Spoofax project of a given PSI element.
+     *
+     * @param element The PSI element.
+     * @return The corresponding Spoofax project;
+     * or <code>null</code> if no project could be found.
+     */
+    @Nullable
+    IntelliJProject get(PsiElement element);
 
 }

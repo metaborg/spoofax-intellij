@@ -22,6 +22,7 @@ package org.metaborg.spoofax.intellij.idea.languages;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.style.IStyle;
 import org.metaborg.core.style.Style;
+import org.metaborg.spoofax.intellij.idea.psi.*;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -37,14 +38,11 @@ import java.util.Map;
  */
 public final class SpoofaxTokenTypeManager {
 
-    @NotNull
     private final Map<IStyle, SpoofaxTokenType> map = new HashMap<>();
-    @NotNull
     private final SpoofaxIdeaLanguage language;
-    @NotNull
     private final CharacterTokenType characterTokenType;
-    @NotNull
-    private final OldSpoofaxTokenType dummySpoofaxTokenType;
+    private final SpoofaxElementType elementType;
+    private final SpoofaxIdentifierType identifierType;
 
     /**
      * Initializes a new instance of the {@link SpoofaxTokenTypeManager} class.
@@ -54,7 +52,8 @@ public final class SpoofaxTokenTypeManager {
     public SpoofaxTokenTypeManager(@NotNull SpoofaxIdeaLanguage language) {
         this.language = language;
         this.characterTokenType = new CharacterTokenType(language);
-        this.dummySpoofaxTokenType = new OldSpoofaxTokenType("DUMMY", language);
+        this.elementType = new SpoofaxElementType(language);
+        this.identifierType = new SpoofaxIdentifierType(language);
     }
 
     /**
@@ -67,13 +66,9 @@ public final class SpoofaxTokenTypeManager {
         return this.characterTokenType;
     }
 
-    /**
-     * Returns a special dummy token type used for the parser.
-     *
-     * @return The parser.
-     */
-    @NotNull
-    public OldSpoofaxTokenType getDummySpoofaxTokenType() { return this.dummySpoofaxTokenType; }
+
+    public SpoofaxElementType getElementType() { return this.elementType; }
+    public SpoofaxIdentifierType getIdentifierType() { return this.identifierType; }
 
     /**
      * Returns the token type corresponding to the specified style.

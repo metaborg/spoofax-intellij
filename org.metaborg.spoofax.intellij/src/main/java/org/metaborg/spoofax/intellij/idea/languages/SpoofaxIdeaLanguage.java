@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 
 /**
- * A Spoofax languages used in IntelliJ IDEA.
+ * A Spoofax language used in IntelliJ IDEA.
  * <p>
  * There are no implementations of this class because it's instantiated dynamically.
  */

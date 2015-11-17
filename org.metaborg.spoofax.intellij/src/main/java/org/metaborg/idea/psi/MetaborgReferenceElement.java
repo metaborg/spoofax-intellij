@@ -17,12 +17,10 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
-
-import com.intellij.psi.PsiElement;
+package org.metaborg.idea.psi;
 
 /**
- * Spoofax PSI element.
+ * A PSI element that's a reference to a declaration.
  */
-public interface ISpoofaxPsiElement extends PsiElement {
+public interface MetaborgReferenceElement extends MetaborgElement {
 }

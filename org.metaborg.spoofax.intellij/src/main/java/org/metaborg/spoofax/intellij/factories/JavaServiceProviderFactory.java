@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * <pre>
  * class MyModule extends AbstractModule {
  *
- *     @Override
+ *     &#064;Override
  *     protected void configure() {
  *         // ...
  *         install(new JavaServiceProviderFactory().provide(IMyInterface.class));

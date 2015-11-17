@@ -17,21 +17,27 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.spoofax.intellij.factories;
 
-import com.intellij.psi.tree.IElementType;
+import com.intellij.lang.Language;
+import com.intellij.psi.tree.IFileElementType;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxFileElementType;
 
-// NOTE: This class will eventually be replaced.
-public class OldSpoofaxTokenType extends IElementType {
+/**
+ * Factory for file element types.
+ */
+public interface IFileElementTypeFactory {
 
-    public OldSpoofaxTokenType(@NotNull String debugName, @NotNull SpoofaxIdeaLanguage language) {
-        super(debugName, language);
-    }
-
-    @Override
-    public String toString() {
-        return "OldSpoofaxTokenType." + super.toString();
-    }
+    /**
+     * Creates a new file element type.
+     *
+     * @param language The IntelliJ language.
+     * @param tokenTypesManager The token type manager.
+     * @return The created parser definition.
+     */
+    @NotNull
+    IFileElementType create(@NotNull Language language, @NotNull SpoofaxTokenTypeManager tokenTypesManager);
 
 }
