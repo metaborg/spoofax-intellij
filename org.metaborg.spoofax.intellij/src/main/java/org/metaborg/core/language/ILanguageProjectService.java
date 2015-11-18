@@ -133,7 +133,6 @@ public interface ILanguageProjectService {
      * @return The language implementations or dialects that can apply to the specified project/file
      * combination.
      */
-    @Nullable
     Set<LanguageDialect> getCandidateImpls(
             @Nullable Iterable<? extends ILanguageImpl> languages,
             @Nullable IProject project,
@@ -153,7 +152,6 @@ public interface ILanguageProjectService {
      * @return The language implementations or dialects that can apply to the specified project/file
      * combination.
      */
-    @Nullable
     Set<LanguageDialect> getCandidateImpls(
             @Nullable ILanguage language,
             @Nullable IProject project,

@@ -34,6 +34,9 @@ import org.metaborg.core.project.Compound;
 import org.metaborg.core.project.CompoundProjectService;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
+import org.metaborg.idea.gui.DefaultLanguageListItemsProvider;
+import org.metaborg.idea.gui.ILanguageListItemsProvider;
+import org.metaborg.idea.gui.ILanguageListItemsProviderFactory;
 import org.metaborg.idea.psi.IMetaborgReferenceProviderFactory;
 import org.metaborg.idea.psi.MetaborgReferenceProvider;
 import org.metaborg.idea.spoofax.psi.SpoofaxReferenceProvider;
@@ -126,6 +129,10 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(MetaborgReferenceProvider.class, SpoofaxReferenceProvider.class)
                         .build(IMetaborgReferenceProviderFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(ILanguageListItemsProvider.class, DefaultLanguageListItemsProvider.class)
+                        .build(ILanguageListItemsProviderFactory.class));
+
         install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 

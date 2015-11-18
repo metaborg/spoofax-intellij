@@ -169,7 +169,6 @@ public final class LanguageProjectService implements ILanguageProjectService {
     /**
      * {@inheritDoc}
      */
-    @Nullable
     public Set<LanguageDialect> getCandidateImpls(
             @Nullable final Iterable<? extends ILanguageImpl> languages,
             @Nullable final IProject project,
@@ -204,7 +203,6 @@ public final class LanguageProjectService implements ILanguageProjectService {
     /**
      * {@inheritDoc}
      */
-    @Nullable
     public Set<LanguageDialect> getCandidateImpls(
             @Nullable final ILanguage language,
             @Nullable final IProject project,
