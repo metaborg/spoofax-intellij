@@ -19,34 +19,28 @@
 
 package org.metaborg.idea.gui;
 
+import com.intellij.ui.ColoredTreeCellRenderer;
+import org.jetbrains.annotations.NotNull;
+import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
+
 import javax.swing.*;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
-import java.awt.*;
+import javax.swing.tree.TreeNode;
 
-public class TreeModelNodeCellRenderer extends DefaultTreeCellRenderer {
-
-    public TreeModelNodeCellRenderer() {
-    }
-
+public class LanguageCellRenderer extends ColoredTreeCellRenderer {
     @Override
-    public Component getTreeCellRendererComponent(
-            final JTree tree,
+    public void customizeCellRenderer(
+            @NotNull final JTree tree,
             final Object value,
             final boolean selected,
             final boolean expanded,
             final boolean leaf,
             final int row,
             final boolean hasFocus) {
-        Component component = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-
-//        setText();
-
-        if (value instanceof ITreeNodeWithIcon) {
-            ITreeNodeWithIcon node = (ITreeNodeWithIcon)value;
-            setIcon(node.getIcon());
-        }
-
-        return component;
+        this.setIcon(SpoofaxIcons.INSTANCE.Default);
+//        this.append()
+//        this.append("\"%s\"", StyleAttributesProvider.getKeyValueAttribute());
+//        ITreeNodeDescriptor descriptor = ((ITreeNodeWithDescriptor) value).descriptor();
+//        descriptor.renderNode(this);
     }
 }

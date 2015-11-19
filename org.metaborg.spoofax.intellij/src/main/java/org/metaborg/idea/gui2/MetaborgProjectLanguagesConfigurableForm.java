@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.idea.gui;
+package org.metaborg.idea.gui2;
 
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplPanel;
 

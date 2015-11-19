@@ -32,18 +32,19 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 /**
  * Tree model for languages and their implementation.
  */
 public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
 
-    private static final ColumnInfo[] COLUMNS = ArrayUtils.toArray(
-            new TreeModelColumnInfo("Name")
-    );
+//    private static final ColumnInfo[] COLUMNS = ArrayUtils.toArray(
+//            new TreeModelColumnInfo("Name")
+//    );
 
-    public LanguageTreeModel() {
-        super(new DefaultMutableTreeNode(""), COLUMNS);
+    public LanguageTreeModel(TreeNode root, ColumnInfo[] columns) {
+        super(root, columns);
     }
 
     @Override

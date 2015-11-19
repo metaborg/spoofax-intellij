@@ -20,15 +20,13 @@
 package org.metaborg.idea.gui;
 
 import com.google.inject.Inject;
-import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
-import org.metaborg.idea.psi.IMetaborgReferenceProviderFactory;
+import org.metaborg.idea.gui2.MetaborgProjectLanguagesConfigurableForm;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 
 import javax.swing.*;

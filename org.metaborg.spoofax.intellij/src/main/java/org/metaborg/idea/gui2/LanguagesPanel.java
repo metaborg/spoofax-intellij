@@ -17,34 +17,35 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.idea.gui;
+package org.metaborg.idea.gui2;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.ui.*;
-import com.intellij.ui.components.JBList;
+import com.google.common.collect.Lists;
+import com.intellij.ui.IdeBorderFactory;
+import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.dualView.TreeTableView;
-import com.intellij.ui.table.TableView;
+import com.intellij.ui.treeStructure.treetable.ListTreeTableModel;
+import com.intellij.ui.treeStructure.treetable.ListTreeTableModelOnColumns;
+import com.intellij.ui.treeStructure.treetable.TreeColumnInfo;
 import com.intellij.ui.treeStructure.treetable.TreeTable;
-import com.intellij.util.ui.tree.AbstractFileTreeTable;
+import com.intellij.util.ui.ColumnInfo;
+import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
+import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
+import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.idea.gui.LanguageTreeModel;
+import org.metaborg.idea.gui.LanguageTreeTableView;
+import org.metaborg.idea.gui.LanguagesConfigurable;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class LanguagesPanel extends JPanel {
-//    private final JBList languagesList;
-//    private final TreeTableView languagesTree;
+
     private final TreeTable languagesTree;
     @Nullable
     private LanguagesConfigurable controller;
@@ -52,35 +53,28 @@ public final class LanguagesPanel extends JPanel {
     public LanguagesPanel() {
         super(new BorderLayout());
 
-//        LanguageTreeModel model = new LanguageTreeModel();
-//        model.getRoot().add(new LanguageTreeModel.ProjectNode("Child 1"));
-//        model.getRoot().add(new LanguageTreeModel.ProjectNode("Child 2"));
-//        this.languagesTree = new TreeTableView(model);
-        this.languagesTree = new LanguageTreeTableView(new DefaultMutableTreeNode(""));
-//        this.languagesTree.setTreeCellRenderer(new TreeModelNodeCellRenderer());
+        this.languagesTree = new TreeTableView(new ListTreeTableModelOnColumns(new DefaultMutableTreeNode(""), new ColumnInfo[]{
+                new TreeColumnInfo("Language"),
+                new ColumnInfo("Version") {
+                    @org.jetbrains.annotations.Nullable
+                    @Override
+                    public Object valueOf(final Object obj) {
+                        if (obj instanceof LanguageTreeModel.LanguageNode) {
+                            LanguageTreeModel.LanguageNode node = (LanguageTreeModel.LanguageNode)obj;
+                            return null;
+//                            return node.getValue().name();
+                        }
+                        if (obj instanceof LanguageTreeModel.LanguageImplNode) {
+                            LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)obj;
+                            return node.getValue().id().version;
+                        }
+                        return null;
+                    }
+                },
+        }));
         this.languagesTree.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        // See:
-        // https://github.com/consulo/consulo-android/blob/4c18d652a777c1d36eea3acbce4b1ba7556f31ed/android/sdk-updates/src/com/android/tools/idea/updater/configure/PlatformComponentsPanel.java
-        // https://github.com/consulo/consulo-android/blob/4c18d652a777c1d36eea3acbce4b1ba7556f31ed/android/sdk-updates/src/com/android/tools/idea/updater/configure/ToolComponentsPanel.java
-        // https://github.com/liveqmock/platform-tools-idea/blob/1c4b76108add6110898a7e3f8f70b970e352d3d4/plugins/IntelliLang/java-support/org/intellij/plugins/intelliLang/inject/config/ui/MethodParameterPanel.java
-        // https://github.com/JetBrains/intellij-community/blob/210e0ed138627926e10094bb9c76026319cec178/plugins/IntelliLang/java-support/org/intellij/plugins/intelliLang/inject/config/ui/MethodParameterPanel.java
-//        this.languagesList = new JBList(new DefaultListModel<>());
-//        this.languagesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//        this.languagesList.setCellRenderer(new LanguageRenderer());
-//        DoubleClickListener doubleClickListener = new DoubleClickListener() {
-//            @Override
-//            protected boolean onDoubleClick(MouseEvent e) {
-//                ILanguage language = selectedLanguage();
-//                if (controller != null && controller.canEditLanguage(language)) {
-//                    controller.editLanguage(language);
-//                }
-//                return true;
-//            }
-//        };
-//        doubleClickListener.installOn(this.languagesList);
-//
+
         ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(this.languagesTree)
-//        ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(this.languagesList)
                 .setAddAction(button -> addLanguage())
                 .setAddActionUpdater(e -> canAddLanguage())
                 .setRemoveAction(button -> removeLanguage(selectedLanguage()))
@@ -123,8 +117,8 @@ public final class LanguagesPanel extends JPanel {
     }
 
     public void setLanguages(Iterable<ILanguageImpl> languageImpls) {
-        LanguageTreeModel model = (LanguageTreeModel)this.languagesTree.getTableModel();
-        DefaultMutableTreeNode root = model.getRoot();
+        ListTreeTableModelOnColumns model = (ListTreeTableModelOnColumns)this.languagesTree.getTableModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
         root.removeAllChildren();
         model.reload();
 
@@ -135,22 +129,12 @@ public final class LanguagesPanel extends JPanel {
             if (languageNode == null) {
                 languageNode = new LanguageTreeModel.LanguageNode(language);
                 languageNodes.put(language, languageNode);
-                model.appendNodeInto(languageNode, root);
+                model.insertNodeInto(languageNode, root, root.getChildCount());
             }
             LanguageTreeModel.LanguageImplNode languageImplNode = new LanguageTreeModel.LanguageImplNode(impl);
-            model.appendNodeInto(languageImplNode, languageNode);
+            model.insertNodeInto(languageImplNode, languageNode, languageNode.getChildCount());
         }
         model.reload();
-//        for (ILanguage language : languages) {
-//            LanguageTreeModel.LanguageNode languageNode = new LanguageTreeModel.LanguageNode(language);
-//            model.appendNodeInto(languageNode, root);
-////            root.add(languageNode);
-//            for (ILanguageImpl impl : language.impls()) {
-//                LanguageTreeModel.LanguageImplNode languageImplNode = new LanguageTreeModel.LanguageImplNode(impl);
-//                model.appendNodeInto(languageImplNode, languageNode);
-//            }
-//        }
-//        ScrollingUtil.ensureSelectionExists(this.languagesList);
     }
 
     /**
@@ -161,14 +145,6 @@ public final class LanguagesPanel extends JPanel {
      */
     @Nullable
     public ILanguage selectedLanguage() {
-//        java.util.List selection = this.languagesTree.getSelection();
-//        if (selection.size() == 1) {
-//            Object selected = selection.get(0);
-//            if (selected instanceof LanguageTreeModel.LanguageNode) {
-//                LanguageTreeModel.LanguageNode node = (LanguageTreeModel.LanguageNode)selected;
-//                return node.getValue();
-//            }
-//        }
         return null;
     }
 
@@ -179,9 +155,6 @@ public final class LanguagesPanel extends JPanel {
      * or <code>null</code> to select none.
      */
     public void selectLanguage(@Nullable ILanguage language) {
-//        this.languagesList.clearSelection();
-//        this.languagesList.setSelectedValue(language, true);
-//        this.languagesList.requestFocus();
     }
 
     /**
