@@ -17,26 +17,27 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.vfs;
+package org.metaborg.spoofax.idea.vfs;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.StringFormatter;
 import org.metaborg.core.language.ILanguage;
+import org.metaborg.idea.vfs.MetaborgFileType;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
 import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
 
 import javax.swing.*;
-import java.util.Set;
 
+// TODO: Generalize for Metaborg languages.
 /**
  * A Spoofax language file type.
  * <p>
  * There are no implementations of this class because it's instantiated dynamically.
  */
-public abstract class SpoofaxFileType extends LanguageFileType {
+public abstract class SpoofaxFileType extends LanguageFileType implements MetaborgFileType {
 
     /**
      * Initializes a new instance of the {@link SpoofaxFileType} class.
@@ -110,7 +111,7 @@ public abstract class SpoofaxFileType extends LanguageFileType {
      * @return A set of file extensions.
      */
     @NotNull
-    public Set<String> getExtensions() {
+    public Iterable<String> getExtensions() {
         return LanguageUtils.getExtensions(this.getSpoofaxLanguage());
     }
 

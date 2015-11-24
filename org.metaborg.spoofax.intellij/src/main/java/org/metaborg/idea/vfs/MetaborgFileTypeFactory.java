@@ -17,27 +17,33 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.vfs;
+package org.metaborg.idea.vfs;
 
-import com.intellij.ide.highlighter.ArchiveFileType;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Factory for non-language-specific file types.
+ * File type factory for file types implementing the {@link MetaborgFileType} interface.
  */
-public final class SpoofaxFileTypeFactory extends FileTypeFactory {
+public abstract class MetaborgFileTypeFactory extends FileTypeFactory {
 
     /**
-     * {@inheritDoc}
+     * Initializes a new instance of the {@link MetaborgFileTypeFactory} class.
      */
-    @Override
-    public void createFileTypes(@NotNull final FileTypeConsumer consumer) {
-        consumer.consume(ArchiveFileType.INSTANCE, "spoofax-language");
-        // NOTE: There's also:
-        //   PlainTextFileType (*.txt, *.sh),
-        //   NativeFileType (*.docx, *.chm), and
-        //   UnknownFileType (*.lib, *.dll).
+    protected MetaborgFileTypeFactory() {
+
     }
+
+    @Override
+    public final void createFileTypes(@NotNull final FileTypeConsumer consumer) {
+        createFileTypes(new MetaborgFileTypeConsumer(consumer));
+    }
+
+    /**
+     * Lets the consumer consume all new file types and their associated matchers or extensions.
+     *
+     * @param consumer The consumer.
+     */
+    public abstract void createFileTypes(@NotNull final MetaborgFileTypeConsumer consumer);
 }

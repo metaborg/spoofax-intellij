@@ -81,13 +81,13 @@ public final class LanguageUtils {
      * @param language The language.
      * @return The default file extension; or <code>null</code>.
      */
-    @Nullable
+    @NotNull
     public final static String getDefaultExtension(@NotNull final ILanguage language) {
         // FIXME: The first of a set is non-deterministic! Also, shouldn't every language
         // have a settable default extension that is used when files of that language are created?
         final Set<String> extensions = getExtensions(language);
         if (extensions.isEmpty())
-            return null;
+            throw new RuntimeException("No extensions registered for language.");
         return extensions.iterator().next();
     }
 }

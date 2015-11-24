@@ -17,26 +17,29 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
+package org.metaborg.idea.vfs;
 
-import com.intellij.lang.ParserDefinition;
-import com.intellij.psi.tree.IFileElementType;
+import com.intellij.ide.highlighter.ArchiveFileType;
+import com.intellij.openapi.fileTypes.*;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
 
 /**
- * Factory for parser definitions.
+ * Extended file type.
+ *
+ * When implementing a file type that has content of a particular language,
+ * extend the {@link LanguageFileType} class. Otherwise, extend one of the
+ * {@link ArchiveFileType} (*.zip), {@link PlainTextFileType} (*.txt, *.sh),
+ * {@link NativeFileType} (*.docx, *.chm) or {@link UnknownFileType} (*.lib,
+ * *.dll) classes.
  */
-public interface IParserDefinitionFactory {
+public interface MetaborgFileType extends FileType {
 
     /**
-     * Creates a new parser definition for the specified file type.
+     * Gets all extensions for which this file type must be registered by default.
      *
-     * @param fileType The file type.
-     * @param fileElementType The file element type.
-     * @return The created parser definition.
+     * @return A sequence of extensions, all without a leading '.'.
      */
     @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
+    Iterable<String> getExtensions();
 
 }

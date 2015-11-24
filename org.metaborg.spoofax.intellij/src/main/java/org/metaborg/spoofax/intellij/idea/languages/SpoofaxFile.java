@@ -20,14 +20,13 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.util.Key;
 import com.intellij.psi.FileViewProvider;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.analysis.AnalysisFileResult;
 import org.metaborg.core.analysis.AnalysisResult;
 import org.metaborg.core.syntax.ParseResult;
-import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**

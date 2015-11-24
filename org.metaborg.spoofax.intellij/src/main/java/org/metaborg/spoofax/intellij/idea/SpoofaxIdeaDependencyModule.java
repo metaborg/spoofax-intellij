@@ -41,6 +41,7 @@ import org.metaborg.idea.psi.IMetaborgReferenceProviderFactory;
 import org.metaborg.idea.psi.MetaborgReferenceProvider;
 import org.metaborg.idea.spoofax.psi.SpoofaxReferenceProvider;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
+import org.metaborg.spoofax.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.languages.*;
@@ -85,6 +86,7 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
                 StrategoResourceTransformer.class);
         bind(SpoofaxAnnotator.class).in(Singleton.class);
         bind(ISpoofaxPsiElementFactory.class).to(SpoofaxPsiElementFactory.class).in(Singleton.class);
+        bind(SpoofaxArtifactFileType.class).in(Singleton.class);
 
         bind(SpoofaxSyntaxHighlighterFactory.class);
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(

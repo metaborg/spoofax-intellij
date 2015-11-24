@@ -34,8 +34,8 @@ import javax.swing.*;
 public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigurable {
 
     private MetaborgProjectLanguagesConfigurableForm form;
-    private LanguagesPanel languagesPanel;
-    private ILanguageService languageService;
+//    private LanguagesPanel languagesPanel;
+//    private ILanguageService languageService;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -47,8 +47,9 @@ public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigu
     }
 
     @Inject
-    private void inject(final ILanguageService languageService) {
-        this.languageService = languageService;
+    protected void inject(final ILanguageService languageService) {
+        super.inject(languageService);
+//        this.languageService = languageService;
     }
 
     @Nls
@@ -82,24 +83,31 @@ public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigu
         return this.form.getComponent();
     }
 
-    @Override
-    public void apply() throws ConfigurationException {
 
-    }
-
+    /**
+     * Called on form load and Cancel.
+     */
     @Override
     public void reset() {
+        super.reset();
         this.form.getLanguagesPanel().attachController(this);
+
         updateLanguagesList();
     }
 
+    /**
+     * Called on form unload.
+     */
     @Override
     public void disposeUIResources() {
 
     }
 
-    @SuppressWarnings("unchecked")
-    private void updateLanguagesList() {
-        this.form.getLanguagesPanel().setLanguages((Iterable<ILanguageImpl>) this.languageService.getAllImpls());
+
+//    @SuppressWarnings("unchecked")
+    @Override
+    protected void updateLanguagesList() {
+        this.form.getLanguagesPanel().setLanguages(getLanguages());
+//        this.form.getLanguagesPanel().setLanguages((Iterable<ILanguageImpl>) this.languageService.getAllImpls());
     }
 }
