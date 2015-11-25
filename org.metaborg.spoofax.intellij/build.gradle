@@ -45,7 +45,7 @@ eclipse {
 }
 
 intellij {
-    version 'IC-15.0'
+    version 'IC-15.0.1'
     //plugins 'maven'
 }
 
