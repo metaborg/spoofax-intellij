@@ -29,15 +29,23 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.module.ModifiableModuleModel;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.StdModuleTypes;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.project.DumbAwareRunnable;
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.DisposeAwareRunnable;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -75,7 +83,45 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
     @InjectLogger
     private Logger logger;
     // The project.
-    private IntelliJProject project;
+//    private IntelliJProject project;
+
+    private String name;
+
+    /**
+     * Gets the name of the module.
+     *
+     * @return The name; or <code>null</code>.
+     */
+    @Nullable
+    public String getName() { return this.name; }
+
+    /**
+     * Sets the name of the module.
+     *
+     * @param name The name; or <code>null</code>.
+     */
+    public void setName(@Nullable String name) { this.name = name; }
+
+    private LanguageIdentifier languageId;
+    /**
+     * Gets the language ID of the module.
+     *
+     * @return The language identifier; or <code>null</code>.
+     */
+    @Nullable
+    public LanguageIdentifier getLanguageIdentifier() {
+        return this.languageId;
+    }
+
+    /**
+     * Sets the language ID of the module.
+     *
+     * @param languageId The language identifier; or <code>null</code>.
+     */
+    public void setLanguageIdentifier(@Nullable LanguageIdentifier languageId) {
+        this.languageId = languageId;
+    }
+
 
     @Inject
     private SpoofaxModuleBuilder(
@@ -103,7 +149,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
 
 
     }
-
     /**
      * Gets the wizard step shown under the SDK selection.
      *
@@ -149,16 +194,70 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
             return;
         }
 
+
         setSdk(rootModel);
 
         // Set the module.
-        Module module = rootModel.getModule();
-        FileObject location = resourceService.resolve(contentEntry.getFile());
-        this.project = this.projectFactory.create(module, location);
-        this.projectService.open(this.project);
+        final Module module = rootModel.getModule();
+        final Project project = module.getProject();
 
-        // Generate the module structure (files and directories).
-        generateModuleStructure(this.project, rootModel, contentEntry);
+        runWhenInitialized(project, new DumbAwareRunnable() {
+            @Override
+            public void run() {
+                // Generate the module structure (files and directories).
+                System.out.println("Running");
+                FileObject location = resourceService.resolve(contentEntry.getFile());
+                IntelliJProject intelliJProject = projectFactory.create(module, location);
+                projectService.open(intelliJProject);
+                WriteCommandAction.runWriteCommandAction(project, "Create new Spoofax module", null, () -> {
+                    generateModuleStructure(intelliJProject);
+                });
+            }
+        });
+
+    }
+
+//    @Nullable
+//    @Override
+//    public Module commitModule(@NotNull final Project project, @Nullable final ModifiableModuleModel model) {
+//        Module module = super.commitModule(project, model);
+//
+//        if (module != null) {
+//            // Generate the module structure (files and directories).
+//            FileObject location = resourceService.resolve(contentEntry.getFile());
+//            IntelliJProject intelliJProject = this.projectFactory.create(module, location);
+//            this.projectService.open(intelliJProject);
+//            generateModuleStructure(intelliJProject);
+//        }
+//
+//        return module;
+//    }
+
+    /**
+     * Runs a runnable once the specified project has been initialized.
+     *
+     * @param project The project.
+     * @param runnable The runnable.
+     */
+    private static void runWhenInitialized(@NotNull final Project project, @NotNull final Runnable runnable) {
+        if (project.isDisposed())
+            // Project is disposed. Nothing to do.
+            return;
+
+        Application application = ApplicationManager.getApplication();
+        if (application.isHeadlessEnvironment() || application.isUnitTestMode()) {
+            // Runnable cannot be run in background. Just run it.
+            runnable.run();
+        } else if (!project.isInitialized()) {
+            // Run runnable once project has initialized.
+            StartupManager.getInstance(project).registerPostStartupActivity(DisposeAwareRunnable.create(runnable, project));
+        } else if (DumbService.isDumbAware(runnable)) {
+            // The runnable is dumb aware. Just run it.
+            runnable.run();
+        } else {
+            // The runnable is not dumb aware. Run it when applicable.
+            DumbService.getInstance(project).runWhenSmart(DisposeAwareRunnable.create(runnable, project));
+        }
     }
 
     /**
@@ -180,13 +279,13 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
      * Generates the module directory structure and files.
      *
      * @param project      The project.
-     * @param rootModel    The root model.
-     * @param contentEntry The content entry.
+//     * @param rootModel    The root model.
+//     * @param contentEntry The content entry.
      */
     private final void generateModuleStructure(
-            @NotNull final IProject project,
-            @NotNull final ModifiableRootModel rootModel,
-            @NotNull final ContentEntry contentEntry) {
+            @NotNull final IProject project) {
+//            @NotNull final ModifiableRootModel rootModel,
+//            @NotNull final ContentEntry contentEntry) {
         // TODO: Specify name in wizard
         final String name = "TestProject";
         // TODO: Specify in wizard
@@ -207,7 +306,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
 
             // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
             final VirtualFile f = resourceService.unresolve(project.location().resolveFile("editor/java/"));
-            contentEntry.addSourceFolder(f, false, "");
+//            contentEntry.addSourceFolder(f, false, "");
 
 
         } catch (ProjectException e) {
@@ -264,7 +363,8 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
     @Override
     @NotNull
     public final String getDescription() {
-        return "Creates a new Spoofax module.";
+        return "Creates a new <b>Spoofax Language</b> module, used for developing domain-specific languages " +
+                "using the <b>Spoofax Language Workbench</b>.";
     }
 
     /**
@@ -277,7 +377,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
     @Override
     @NotNull
     public final String getPresentableName() {
-        return "Spoofax";
+        return "Spoofax Language";
     }
 
     /**

@@ -30,6 +30,7 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.idea.gui2.wizards.MetaborgModuleWizardStep;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 
 import javax.swing.*;
@@ -143,7 +144,7 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
             @NotNull ModulesProvider modulesProvider) {
         ArrayList<ModuleWizardStep> steps = new ArrayList<>();
 
-        steps.add(new PageOneWizardStep());
+        steps.add(new MetaborgModuleWizardStep(moduleBuilder, wizardContext));
 
         final ModuleWizardStep[] wizardSteps = steps.toArray(new ModuleWizardStep[steps.size()]);
         return ArrayUtil.mergeArrays(wizardSteps,
