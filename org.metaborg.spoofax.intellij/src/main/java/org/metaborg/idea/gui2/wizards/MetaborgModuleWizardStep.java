@@ -62,7 +62,7 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      */
     @Override
     public JComponent getPreferredFocusedComponent() {
-        return this.txtGroupId;
+        return this.txtName;
     }
 
     /**

@@ -96,108 +96,6 @@
     <orderEntry type="library" name="Gradle: org.apache.ant:ant-launcher:1.9.6" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-simple:1.7.10" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.12" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:protobuf-2.5.0:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jdom:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:resources_en:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:netty-all-4.1.0.Beta6:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:imgscalr-lib-4.2:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:log4j:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:nanoxml-2.2.3:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:coverage-util:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:commons-logging-1.2:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:groovy-all-2.3.9:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:idea:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:coverage-instrumenter:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:slf4j-api-1.7.10:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:hamcrest-core-1.3:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:ecj-4.4:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jsch-0.1.52:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jsch.agentproxy.pageant:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:microba:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jsch.agentproxy.core:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:sanselan-0.98-snapshot:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jsch.agentproxy.usocket-jna:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:picocontainer:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:util:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:xbean:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:miglayout-swing:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jsch.agentproxy.usocket-nc:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:trang-core:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:xercesImpl:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:junit-4.12:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:boot:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:winp-1.23:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:cli-parser-1.1:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:markdownj-core-0.4.2-SNAPSHOT:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:nekohtml-1.9.14:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:javac2:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:commons-httpclient-3.1-patched:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:httpmime-4.4.1:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:oromatcher:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jsr166e:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:swingx-core-1.6.2:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:asm-all:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:icons:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:asm-commons:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jna-platform:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:xstream-1.4.3:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jgoodies-common-1.2.1:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:gson-2.3.1:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:resources:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jps-launcher:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:xmlrpc-2.0:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:rhino-js-1_7R4:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:kotlin-runtime:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jcip-annotations:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:proxy-vole_20131209:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jaxen-1.1.3:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jing:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:forms_rt:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:trove4j:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jgoodies-looks-2.4.2:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:automaton:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jna:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:cglib-2.2.2:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:idea_rt:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jsr173_1.0_api:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jps-model:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:openapi:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:serviceMessages:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:commons-net-3.3:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:isorelax:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:markdown4j-2.2:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:optimizedFileManager:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:annotations:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:slf4j-log4j12-1.7.10:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:asm:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:httpcore-4.4.1:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:resolver:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:commons-codec-1.9:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:extensions:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:purejavacomm:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:pty4j-0.5:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:xpp3-1.1.4-min:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jps-builders:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jayatana-1.2.4:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jzlib-1.1.1:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jgoodies-forms:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:rngom-20051226-patched:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:fluent-hc-4.4.1:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:velocity:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:asm4-all:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jsch.agentproxy.connector-factory:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:bootstrap:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jsch.agentproxy.sshagent:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:httpclient-4.4.1:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:junit:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jh:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:xml-apis:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:jdkAnnotations:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:snappy-in-java-0.3.1:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:guava-17.0:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:coverage-agent:15.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.jetbrains:kotlin-reflect:15.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.jetbrains:tools:15.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_build_classes_test:settings/build/classes/test">
         <CLASSES>
@@ -208,18 +106,1140 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_build_resources_test:settings/build/resources/test">
+      <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_jackson_build_classes_test:jackson/build/classes/test">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../org.metaborg.settings/build/resources/test" />
+          <root url="file://$MODULE_DIR$/../org.metaborg.settings.jackson/build/classes/test" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_jackson_build_classes_test:jackson/build/classes/test">
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:protobuf-2.5.0:15.0.1">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../org.metaborg.settings.jackson/build/classes/test" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/protobuf-2.5.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jdom:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jdom.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:resources_en:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/resources_en.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:netty-all-4.1.0.Beta6:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/netty-all-4.1.0.Beta6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:imgscalr-lib-4.2:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/imgscalr-lib-4.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:log4j:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/log4j.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:nanoxml-2.2.3:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/nanoxml-2.2.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:coverage-util:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/coverage-util.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:commons-logging-1.2:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/commons-logging-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:groovy-all-2.3.9:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/groovy-all-2.3.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:idea:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/idea.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:coverage-instrumenter:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/coverage-instrumenter.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:slf4j-api-1.7.10:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/slf4j-api-1.7.10.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:hamcrest-core-1.3:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/hamcrest-core-1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:ecj-4.4:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/ecj-4.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jsch-0.1.52:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jsch-0.1.52.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jsch.agentproxy.pageant:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jsch.agentproxy.pageant.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:microba:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/microba.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jsch.agentproxy.core:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jsch.agentproxy.core.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:sanselan-0.98-snapshot:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/sanselan-0.98-snapshot.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jsch.agentproxy.usocket-jna:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jsch.agentproxy.usocket-jna.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:picocontainer:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/picocontainer.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:util:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/util.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:xbean:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/xbean.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:miglayout-swing:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/miglayout-swing.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jsch.agentproxy.usocket-nc:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jsch.agentproxy.usocket-nc.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:trang-core:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/trang-core.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:xercesImpl:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/xercesImpl.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:junit-4.12:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/junit-4.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:boot:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/boot.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:winp-1.23:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/winp-1.23.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:cli-parser-1.1:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/cli-parser-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:markdownj-core-0.4.2-SNAPSHOT:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/markdownj-core-0.4.2-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:nekohtml-1.9.14:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/nekohtml-1.9.14.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:javac2:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/javac2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:commons-httpclient-3.1-patched:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/commons-httpclient-3.1-patched.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:httpmime-4.4.1:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/httpmime-4.4.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:oromatcher:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/oromatcher.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jsr166e:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jsr166e.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:swingx-core-1.6.2:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/swingx-core-1.6.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:asm-all:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/asm-all.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:icons:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/icons.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:asm-commons:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/asm-commons.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jna-platform:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jna-platform.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:xstream-1.4.3:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/xstream-1.4.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jgoodies-common-1.2.1:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jgoodies-common-1.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:gson-2.3.1:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/gson-2.3.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:resources:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/resources.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jps-launcher:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jps-launcher.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:xmlrpc-2.0:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/xmlrpc-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:rhino-js-1_7R4:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/rhino-js-1_7R4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:kotlin-runtime:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/kotlin-runtime.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jcip-annotations:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jcip-annotations.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:proxy-vole_20131209:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/proxy-vole_20131209.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jaxen-1.1.3:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jaxen-1.1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jing:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jing.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:forms_rt:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/forms_rt.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:trove4j:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/trove4j.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jgoodies-looks-2.4.2:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jgoodies-looks-2.4.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:automaton:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/automaton.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jna:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jna.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:cglib-2.2.2:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/cglib-2.2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:idea_rt:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/idea_rt.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jsr173_1.0_api:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jsr173_1.0_api.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jps-model:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jps-model.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:openapi:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/openapi.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:serviceMessages:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/serviceMessages.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:commons-net-3.3:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/commons-net-3.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:isorelax:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/isorelax.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:markdown4j-2.2:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/markdown4j-2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:optimizedFileManager:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/optimizedFileManager.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:annotations:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/annotations.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:slf4j-log4j12-1.7.10:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/slf4j-log4j12-1.7.10.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:asm:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/asm.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:httpcore-4.4.1:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/httpcore-4.4.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:resolver:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/resolver.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:commons-codec-1.9:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/commons-codec-1.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:extensions:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/extensions.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:purejavacomm:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/purejavacomm.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:pty4j-0.5:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/pty4j-0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:xpp3-1.1.4-min:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/xpp3-1.1.4-min.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jps-builders:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jps-builders.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jayatana-1.2.4:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jayatana-1.2.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jzlib-1.1.1:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jzlib-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jgoodies-forms:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jgoodies-forms.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:rngom-20051226-patched:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/rngom-20051226-patched.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:fluent-hc-4.4.1:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/fluent-hc-4.4.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:velocity:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/velocity.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:asm4-all:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/asm4-all.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jsch.agentproxy.connector-factory:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jsch.agentproxy.connector-factory.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:bootstrap:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/bootstrap.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jsch.agentproxy.sshagent:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jsch.agentproxy.sshagent.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:httpclient-4.4.1:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/httpclient-4.4.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:junit:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/junit.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jh:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jh.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:xml-apis:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/xml-apis.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:jdkAnnotations:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/jdkAnnotations.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:snappy-in-java-0.3.1:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/snappy-in-java-0.3.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:guava-17.0:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/guava-17.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:coverage-agent:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/coverage-agent.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.jetbrains:kotlin-reflect:15.0.1">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/a0217d95925df8e423046a885c9d9c3ac6aff8f6/ideaIC-15.0.1/lib/kotlin-reflect.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library name="Gradle: com.jetbrains:tools:15.0.1">
+        <CLASSES>
+          <root url="jar:///usr/lib/jvm/java-8-oracle/lib/tools.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/15.0.1/fdbd69b98d93658a5d395f6c4e5fbaf3a026a642/ideaIC-15.0.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library name="Gradle: _home_daniel_repos_spoofax_intellij_org_metaborg_settings_build_resources_test:settings/build/resources/test">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../org.metaborg.settings/build/resources/test" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

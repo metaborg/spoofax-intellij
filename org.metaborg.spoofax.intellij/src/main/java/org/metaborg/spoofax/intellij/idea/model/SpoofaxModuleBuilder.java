@@ -21,10 +21,7 @@ package org.metaborg.spoofax.intellij.idea.model;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.intellij.ide.util.projectWizard.ModuleBuilder;
-import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ide.util.projectWizard.SettingsStep;
-import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.ide.util.projectWizard.*;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -42,11 +39,19 @@ import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.ArrayUtil;
 import com.intellij.util.DisposeAwareRunnable;
+import org.apache.commons.lang.UnhandledException;
 import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.LanguageIdentifier;
@@ -56,6 +61,7 @@ import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.ProjectException;
 import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.ProjectSettings;
+import org.metaborg.idea.gui2.wizards.MetaborgModuleWizardStep;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.spoofax.generator.language.NewProjectGenerator;
 import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
@@ -66,13 +72,16 @@ import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Builds a new Spoofax module.
  */
 @Singleton
-public final class SpoofaxModuleBuilder extends ModuleBuilder {
+public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourcePathsBuilder {
 
     @NotNull
     private final IIntelliJResourceService resourceService;
@@ -82,6 +91,8 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
     private final IIntelliJProjectService projectService;
     @InjectLogger
     private Logger logger;
+
+    private List<Pair<String,String>> sourcePaths;
     // The project.
 //    private IntelliJProject project;
 
@@ -133,22 +144,22 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
         this.projectService = projectService;
     }
 
-    public final void displayInitError(@NotNull final String error, @NotNull final Project project) {
-        SwingUtilities.invokeLater(() -> {
-            String text = "<html><a href=\"openBrowser\" target=\"_top\">How do I fix this?</a></html>";
-            Notifications.Bus.notify(new Notification("SourceFinder",
-                                                      error,
-                                                      text,
-                                                      NotificationType.ERROR,
-                                                      (notification, event) -> {
-                                                          if (event.getDescription().equals("openBrowser")) {
-                                                              //launchBrowser("https://bitbucket.org/mtiigi/intellij-sourcefinder-plugin");
-                                                          }
-                                                      }), project);
-        });
-
-
-    }
+//    public final void displayInitError(@NotNull final String error, @NotNull final Project project) {
+//        SwingUtilities.invokeLater(() -> {
+//            String text = "<html><a href=\"openBrowser\" target=\"_top\">How do I fix this?</a></html>";
+//            Notifications.Bus.notify(new Notification("SourceFinder",
+//                                                      error,
+//                                                      text,
+//                                                      NotificationType.ERROR,
+//                                                      (notification, event) -> {
+//                                                          if (event.getDescription().equals("openBrowser")) {
+//                                                              //launchBrowser("https://bitbucket.org/mtiigi/intellij-sourcefinder-plugin");
+//                                                          }
+//                                                      }), project);
+//        });
+//
+//
+//    }
     /**
      * Gets the wizard step shown under the SDK selection.
      *
@@ -161,9 +172,25 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
     public final ModuleWizardStep getCustomOptionsStep(
             @NotNull final WizardContext context,
             @NotNull final Disposable parentDisposable) {
-        SpoofaxProjectWizardStep step = new SpoofaxProjectWizardStep(context);
-        Disposer.register(parentDisposable, step);
-        return step;
+
+//        SpoofaxProjectWizardStep step = new SpoofaxProjectWizardStep(context);
+//        Disposer.register(parentDisposable, new MetaborgModuleWizardStep(this, context));
+//        return step;
+        return new MetaborgModuleWizardStep(this, context);
+    }
+
+    @Override
+    public ModuleWizardStep[] createWizardSteps(
+            @NotNull final WizardContext wizardContext, @NotNull final ModulesProvider modulesProvider) {
+//        ArrayList<ModuleWizardStep> steps = new ArrayList<>();
+//
+//        steps.add(new MetaborgModuleWizardStep(moduleBuilder, wizardContext));
+//
+//        final ModuleWizardStep[] wizardSteps = steps.toArray(new ModuleWizardStep[steps.size()]);
+//        return ArrayUtil.mergeArrays(wizardSteps,
+//                                     super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider));
+        return ModuleWizardStep.EMPTY_ARRAY;
+//        return super.createWizardSteps(wizardContext, modulesProvider);
     }
 
     @Override
@@ -175,7 +202,9 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
     @Override
     @NotNull
     public final ModuleWizardStep modifyProjectTypeStep(@NotNull final SettingsStep settingsStep) {
-        return StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
+        ModuleWizardStep wizardStep = StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
+        assert wizardStep != null;
+        return wizardStep;
         //return super.modifyProjectTypeStep(settingsStep);
     }
 
@@ -187,13 +216,12 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
      */
     @Override
     public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
-        // Add the content entry path as a content root.
-        final ContentEntry contentEntry = doAddContentEntry(rootModel);
-        if (contentEntry == null) {
-            // LOG: No content entry path for the module.
-            return;
-        }
 
+        final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
+//        if (contentEntry == null) {
+//            // LOG: No content entry path for the module.
+//            return;
+//        }
 
         setSdk(rootModel);
 
@@ -206,7 +234,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
             public void run() {
                 // Generate the module structure (files and directories).
                 System.out.println("Running");
-                FileObject location = resourceService.resolve(contentEntry.getFile());
+                FileObject location = resourceService.resolve(getContentEntryPath());//contentEntry.getFile());
                 IntelliJProject intelliJProject = projectFactory.create(module, location);
                 projectService.open(intelliJProject);
                 WriteCommandAction.runWriteCommandAction(project, "Create new Spoofax module", null, () -> {
@@ -394,4 +422,75 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder {
         return "Spoofax";
     }
 
+    /**
+     * Gets a list of source paths.
+     *
+     * @return A list of (path, packagePrefix) pairs.
+     * @throws ConfigurationException
+     */
+    @Override
+    public List<Pair<String, String>> getSourcePaths() throws ConfigurationException {
+        if (this.sourcePaths == null) {
+            final List<Pair<String, String>> paths = new ArrayList<>();
+            final String path = getContentEntryPath() + File.separator + "editor" + File.separator + "java";
+            new File(path).mkdirs();
+            paths.add(Pair.create(path, ""));
+            return paths;
+        }
+        return this.sourcePaths;
+    }
+
+    /**
+     * Sets the list of source paths.
+     *
+     * @param sourcePaths A list of (path, packagePrefix) pairs.
+     */
+    @Override
+    public void setSourcePaths(final List<Pair<String, String>> sourcePaths) {
+        this.sourcePaths = sourcePaths != null ? new ArrayList<>(sourcePaths) : null;
+    }
+
+    /**
+     * Adds a source path.
+     *
+     * @param sourcePathInfo A (path, packagePrefix) pair.
+     */
+    @Override
+    public void addSourcePath(final Pair<String, String> sourcePathInfo) {
+        if (this.sourcePaths == null) {
+            this.sourcePaths = new ArrayList<>();
+        }
+        this.sourcePaths.add(sourcePathInfo);
+    }
+
+    @Nullable
+    protected ContentEntry doAddContentEntryAndSourceRoots(ModifiableRootModel rootModel) throws ConfigurationException {
+        // Add the content entry path as a content root.
+        final ContentEntry contentEntry = doAddContentEntry(rootModel);
+        if (contentEntry == null)
+            return null;
+
+//        if (contentEntry != null) {
+        final List<Pair<String,String>> sourcePaths = getSourcePaths();
+
+        if (sourcePaths == null)
+            return null;
+//            if (sourcePaths != null) {
+        for (final Pair<String, String> sourcePath : sourcePaths) {
+            String first = sourcePath.first;
+            try {
+                VfsUtil.createDirectories(first);
+            } catch (IOException e) {
+                throw new UnhandledException(e);
+            }
+            final VirtualFile sourceRoot = LocalFileSystem.getInstance()
+                    .refreshAndFindFileByPath(FileUtil.toSystemIndependentName(first));
+            if (sourceRoot != null) {
+                contentEntry.addSourceFolder(sourceRoot, false, sourcePath.second);
+            }
+        }
+//            }
+//        }
+        return contentEntry;
+    }
 }
