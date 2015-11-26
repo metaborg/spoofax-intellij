@@ -34,10 +34,14 @@ import org.metaborg.core.project.Compound;
 import org.metaborg.core.project.CompoundProjectService;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
+import org.metaborg.idea.gui.DefaultLanguageListItemsProvider;
+import org.metaborg.idea.gui.ILanguageListItemsProvider;
+import org.metaborg.idea.gui.ILanguageListItemsProviderFactory;
 import org.metaborg.idea.psi.IMetaborgReferenceProviderFactory;
 import org.metaborg.idea.psi.MetaborgReferenceProvider;
 import org.metaborg.idea.spoofax.psi.SpoofaxReferenceProvider;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
+import org.metaborg.spoofax.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
 import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.languages.*;
@@ -82,6 +86,7 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
                 StrategoResourceTransformer.class);
         bind(SpoofaxAnnotator.class).in(Singleton.class);
         bind(ISpoofaxPsiElementFactory.class).to(SpoofaxPsiElementFactory.class).in(Singleton.class);
+        bind(SpoofaxArtifactFileType.class).in(Singleton.class);
 
         bind(SpoofaxSyntaxHighlighterFactory.class);
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
@@ -126,6 +131,10 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
         install(new FactoryModuleBuilder()
                         .implement(MetaborgReferenceProvider.class, SpoofaxReferenceProvider.class)
                         .build(IMetaborgReferenceProviderFactory.class));
+        install(new FactoryModuleBuilder()
+                        .implement(ILanguageListItemsProvider.class, DefaultLanguageListItemsProvider.class)
+                        .build(ILanguageListItemsProviderFactory.class));
+
         install(new IntelliJExtensionProviderFactory().provide(SpoofaxSdkType.class, SdkType.EP_NAME.getName()));
     }
 

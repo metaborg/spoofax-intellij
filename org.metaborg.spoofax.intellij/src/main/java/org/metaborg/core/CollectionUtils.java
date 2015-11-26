@@ -23,11 +23,9 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 // TODO: Move this class to Metaborg Core?
 
@@ -69,6 +67,37 @@ public final class CollectionUtils {
         for (T item : iterable) {
             list.add(item);
         }
+        return list;
+    }
+
+    /**
+     * Returns a sorted list with the elements in the collection.
+     *
+     * @param collection The collection.
+     * @param <T> The type of elements.
+     * @return A sorted list.
+     */
+    @NotNull
+    public static <T extends Comparable<? super T>> List<T> toSortedList(@NotNull final Collection<T> collection) {
+        Preconditions.checkNotNull(collection);
+
+        return toSortedList(collection, null);
+    }
+
+    /**
+     * Returns a sorted list with the elements in the collection.
+     *
+     * @param collection The collection.
+     * @param comparator The comparator.
+     * @param <T> The type of elements.
+     * @return A sorted list.
+     */
+    @NotNull
+    public static <T> List<T> toSortedList(@NotNull final Collection<T> collection, @Nullable final Comparator<? super T> comparator) {
+        Preconditions.checkNotNull(collection);
+
+        List<T> list = new ArrayList<>(collection);
+        list.sort(comparator);
         return list;
     }
 

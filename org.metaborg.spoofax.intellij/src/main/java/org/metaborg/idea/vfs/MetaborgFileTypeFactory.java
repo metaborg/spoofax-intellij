@@ -17,26 +17,33 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
+package org.metaborg.idea.vfs;
 
-import com.intellij.lang.ParserDefinition;
-import com.intellij.psi.tree.IFileElementType;
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import com.intellij.openapi.fileTypes.FileTypeFactory;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
 
 /**
- * Factory for parser definitions.
+ * File type factory for file types implementing the {@link MetaborgFileType} interface.
  */
-public interface IParserDefinitionFactory {
+public abstract class MetaborgFileTypeFactory extends FileTypeFactory {
 
     /**
-     * Creates a new parser definition for the specified file type.
-     *
-     * @param fileType The file type.
-     * @param fileElementType The file element type.
-     * @return The created parser definition.
+     * Initializes a new instance of the {@link MetaborgFileTypeFactory} class.
      */
-    @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
+    protected MetaborgFileTypeFactory() {
 
+    }
+
+    @Override
+    public final void createFileTypes(@NotNull final FileTypeConsumer consumer) {
+        createFileTypes(new MetaborgFileTypeConsumer(consumer));
+    }
+
+    /**
+     * Lets the consumer consume all new file types and their associated matchers or extensions.
+     *
+     * @param consumer The consumer.
+     */
+    public abstract void createFileTypes(@NotNull final MetaborgFileTypeConsumer consumer);
 }

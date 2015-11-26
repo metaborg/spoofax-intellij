@@ -30,6 +30,7 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.idea.gui2.wizards.MetaborgModuleWizardStep;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 
 import javax.swing.*;
@@ -127,38 +128,38 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
         return SpoofaxIcons.INSTANCE.Default;
     }
 
-    /**
-     * Creates wizard steps for the module builder.
-     *
-     * @param wizardContext   The wizard context.
-     * @param moduleBuilder   The module builder.
-     * @param modulesProvider The modules provider.
-     * @return An array of wizard steps.
-     */
-    @NotNull
-    @Override
-    public ModuleWizardStep[] createWizardSteps(
-            @NotNull WizardContext wizardContext,
-            @NotNull SpoofaxModuleBuilder moduleBuilder,
-            @NotNull ModulesProvider modulesProvider) {
-        ArrayList<ModuleWizardStep> steps = new ArrayList<>();
+//    /**
+//     * Creates wizard steps for the module builder.
+//     *
+//     * @param wizardContext   The wizard context.
+//     * @param moduleBuilder   The module builder.
+//     * @param modulesProvider The modules provider.
+//     * @return An array of wizard steps.
+//     */
+//    @NotNull
+//    @Override
+//    public ModuleWizardStep[] createWizardSteps(
+//            @NotNull WizardContext wizardContext,
+//            @NotNull SpoofaxModuleBuilder moduleBuilder,
+//            @NotNull ModulesProvider modulesProvider) {
+//        ArrayList<ModuleWizardStep> steps = new ArrayList<>();
+//
+//        steps.add(new MetaborgModuleWizardStep(moduleBuilder, wizardContext));
+//
+//        final ModuleWizardStep[] wizardSteps = steps.toArray(new ModuleWizardStep[steps.size()]);
+//        return ArrayUtil.mergeArrays(wizardSteps,
+//                                     super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider));
+//    }
 
-        steps.add(new PageOneWizardStep());
-
-        final ModuleWizardStep[] wizardSteps = steps.toArray(new ModuleWizardStep[steps.size()]);
-        return ArrayUtil.mergeArrays(wizardSteps,
-                                     super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider));
-    }
-
-    @Nullable
-    @Override
-    public ModuleWizardStep modifyProjectTypeStep(
-            @NotNull SettingsStep settingsStep,
-            @NotNull ModuleBuilder moduleBuilder) {
-        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep,
-                                                                             moduleBuilder,
-                                                                             sdk -> moduleBuilder.isSuitableSdkType(sdk));
-    }
+//    @Nullable
+//    @Override
+//    public ModuleWizardStep modifyProjectTypeStep(
+//            @NotNull SettingsStep settingsStep,
+//            @NotNull ModuleBuilder moduleBuilder) {
+//        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep,
+//                                                                             moduleBuilder,
+//                                                                             sdk -> moduleBuilder.isSuitableSdkType(sdk));
+//    }
 
 
     @Override

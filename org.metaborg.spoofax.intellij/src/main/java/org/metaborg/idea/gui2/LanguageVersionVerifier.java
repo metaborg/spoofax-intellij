@@ -17,26 +17,32 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
+package org.metaborg.idea.gui2;
 
-import com.intellij.lang.ParserDefinition;
-import com.intellij.psi.tree.IFileElementType;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
+import org.metaborg.core.language.LanguageIdentifier;
+import org.metaborg.core.language.LanguageVersion;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
 
 /**
- * Factory for parser definitions.
+ * Verifies that a component's input is a valid language version.
  */
-public interface IParserDefinitionFactory {
+public final class LanguageVersionVerifier extends InputVerifier {
 
     /**
-     * Creates a new parser definition for the specified file type.
-     *
-     * @param fileType The file type.
-     * @param fileElementType The file element type.
-     * @return The created parser definition.
+     * Initializes a new instance of the {@link LanguageVersionVerifier} class.
      */
-    @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
+    public LanguageVersionVerifier() {
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean verify(final JComponent input) {
+        String text = ((JTextComponent)input).getText();
+        return LanguageVersion.valid(text);
+    }
 }

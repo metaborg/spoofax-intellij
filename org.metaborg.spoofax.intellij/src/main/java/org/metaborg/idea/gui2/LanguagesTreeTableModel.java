@@ -17,26 +17,18 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
+package org.metaborg.idea.gui2;
 
-import com.intellij.lang.ParserDefinition;
-import com.intellij.psi.tree.IFileElementType;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
+import com.intellij.ui.treeStructure.treetable.ListTreeTableModel;
+import com.intellij.ui.treeStructure.treetable.TreeTableModel;
+import com.intellij.util.ui.ColumnInfo;
 
-/**
- * Factory for parser definitions.
- */
-public interface IParserDefinitionFactory {
+import javax.swing.tree.TreeNode;
 
-    /**
-     * Creates a new parser definition for the specified file type.
-     *
-     * @param fileType The file type.
-     * @param fileElementType The file element type.
-     * @return The created parser definition.
-     */
-    @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
+public class LanguagesTreeTableModel extends ListTreeTableModel {
+
+    public LanguagesTreeTableModel(final TreeNode root, final ColumnInfo[] columns) {
+        super(root, columns);
+    }
 
 }

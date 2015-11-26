@@ -33,10 +33,9 @@ import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.factories.*;
-import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
-import org.metaborg.spoofax.intellij.idea.psi.SpoofaxFileElementType;
 import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;

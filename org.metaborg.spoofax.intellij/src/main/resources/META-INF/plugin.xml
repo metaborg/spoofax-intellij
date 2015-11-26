@@ -25,7 +25,7 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileTypeFactory implementation="org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileTypeFactory"/>
+        <fileTypeFactory implementation="org.metaborg.spoofax.idea.vfs.SpoofaxFileTypeFactory"/>
         <!--<fileTypeFactory implementation="org.metaborg.spoofax.intellij.languages.SpoofaxFileTypeFactory"/>-->
         <moduleType id="SPOOFAX_MODULE"
                     implementationClass="org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType"/>
@@ -43,6 +43,7 @@
         <lang.elementManipulator forClass="org.metaborg.spoofax.intellij.idea.psi.SpoofaxIdentifier"
                                  implementationClass="org.metaborg.spoofax.intellij.idea.psi.SpoofaxIdentifierManipulator"/>
         <psi.referenceContributor implementation="org.metaborg.idea.psi.MetaborgReferenceContributor"/>
+        <projectConfigurable id="metaborg.project.language.settings" groupId="language" instance="org.metaborg.idea.gui.MetaborgProjectLanguagesConfigurable" />
     </extensions>
 
     <application-components>
@@ -67,6 +68,12 @@
                     text="Load languages" description="Loads languages."/>
             <action id="Spoofax.UnloadLanguages" class="org.metaborg.spoofax.intellij.UnloadLanguagesAction"
                     text="Unload languages" description="Unloads languages."/>
+        </group>
+        <group id="Spoofax.AddLanguagePopup" popup="true">
+            <action id="Spoofax.AddLanguageFromDirectory" class="org.metaborg.idea.gui2.AddLanguageFromDirectoryAction"
+                    text="Directory..." description="Add a language by specifying its directory."/>
+            <action id="Spoofax.AddLanguageFromArtifact" class="org.metaborg.idea.gui2.AddLanguageFromArtifactAction"
+                    text="Artifact..." description="Add a language by specifying its artifact."/>
         </group>
     </actions>
 

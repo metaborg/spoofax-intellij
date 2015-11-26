@@ -17,26 +17,21 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.factories;
+package org.metaborg.idea.gui2;
 
-import com.intellij.lang.ParserDefinition;
-import com.intellij.psi.tree.IFileElementType;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.intellij.idea.project.LanguageImplPanel;
+
+import javax.swing.*;
 
 /**
- * Factory for parser definitions.
+ * Created by daniel on 11/17/15.
  */
-public interface IParserDefinitionFactory {
+public class MetaborgProjectLanguagesConfigurableForm {
+    private JPanel mainPanel;
+    private LanguagesPanel languagesPanel;
 
-    /**
-     * Creates a new parser definition for the specified file type.
-     *
-     * @param fileType The file type.
-     * @param fileElementType The file element type.
-     * @return The created parser definition.
-     */
-    @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
-
+    public JPanel getComponent() {
+        return this.mainPanel;
+    }
+    public LanguagesPanel getLanguagesPanel() { return this.languagesPanel; }
 }
