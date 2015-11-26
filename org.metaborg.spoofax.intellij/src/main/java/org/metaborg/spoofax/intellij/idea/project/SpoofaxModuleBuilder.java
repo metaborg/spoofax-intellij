@@ -17,19 +17,15 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.model;
+package org.metaborg.spoofax.intellij.idea.project;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.intellij.ide.util.projectWizard.*;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.module.ModifiableModuleModel;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.StdModuleTypes;
@@ -41,17 +37,14 @@ import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.startup.StartupManager;
-import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ArrayUtil;
 import com.intellij.util.DisposeAwareRunnable;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.LanguageIdentifier;
@@ -187,9 +180,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
             @NotNull final WizardContext context,
             @NotNull final Disposable parentDisposable) {
 
-//        SpoofaxProjectWizardStep step = new SpoofaxProjectWizardStep(context);
-//        Disposer.register(parentDisposable, new MetaborgModuleWizardStep(this, context));
-//        return step;
         return new MetaborgModuleWizardStep(this, context);
     }
 
@@ -234,8 +224,12 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
         final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
         if (contentEntry != null) {
             // TODO: Add this information to Metaborg Core somewhere?
+            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
+            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".cache");
+            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "lib");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "src-gen");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
+
         }
 //        if (contentEntry == null) {
 //            // LOG: No content entry path for the module.

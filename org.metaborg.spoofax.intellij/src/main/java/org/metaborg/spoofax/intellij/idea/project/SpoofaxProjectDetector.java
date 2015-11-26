@@ -25,14 +25,12 @@ import com.intellij.ide.util.importProject.ModuleDescriptor;
 import com.intellij.ide.util.importProject.ProjectDescriptor;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
-import com.intellij.ide.util.projectWizard.importSources.DetectedProjectRoot;
-import com.intellij.ide.util.projectWizard.importSources.ProjectFromSourcesBuilder;
-import com.intellij.ide.util.projectWizard.importSources.ProjectStructureDetector;
+import com.intellij.ide.util.projectWizard.ProjectWizardStepFactory;
+import com.intellij.ide.util.projectWizard.importSources.*;
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.slf4j.Logger;
 
@@ -120,12 +118,10 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
             final ProjectFromSourcesBuilder builder,
             final ProjectDescriptor projectDescriptor,
             final Icon stepIcon) {
-        return Collections.singletonList(new ProjectJdkForModuleStep(builder.getContext(), this.sdkType));
-//        return Collections.singletonList(ProjectWizardStepFactory.getInstance().createProjectJdkStep(builder.getContext()));
-//        SpoofaxModuleInsight moduleInsight = insightFactory.create(new DelegatingProgressIndicator(), builder.getExistingModuleNames(), builder.getExistingProjectLibraryNames());
-//        final List<ModuleWizardStep> steps = new ArrayList<>();
-//        steps.add(new ModulesDetectionStep(this, builder, projectDescriptor, moduleInsight, stepIcon, "reference.dialogs.new.project.fromCode.page1"));
-//        return steps;
+
+        final ModuleWizardStep sdkStep = ProjectWizardStepFactory.getInstance().createProjectJdkStep(builder.getContext());
+        return Collections.singletonList(sdkStep);
+        //return Collections.singletonList(new ProjectJdkForModuleStep(builder.getContext(), this.sdkType));
     }
 
     @Override
@@ -142,15 +138,20 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
         modules = new ArrayList<>();
         for (DetectedProjectRoot root : roots) {
 
-            // TODO: Fix source roots
+            File directory = new File(root.getDirectory(), "editor/java");
+            DetectedSourceRoot javaFolder = new JavaModuleSourceRoot(directory, "", "Spoofax");
             File rootDir = root.getDirectory();
             ModuleDescriptor descriptor = new ModuleDescriptor(rootDir,
                                                                this.moduleType,
-                                                               ContainerUtil.emptyList());
+                                                               Collections.singletonList(javaFolder));
+//                                                               ContainerUtil.emptyList());
+
+
 //            File javaDir = root.getDirectory().toPath().resolve("target/java").toFile();
 //            descriptor.addSourceRoot(root.getDirectory(), new JavaModuleSourceRoot(javaDir, "", "Java"));
             modules.add(descriptor);
         }
         projectDescriptor.setModules(modules);
     }
+
 }

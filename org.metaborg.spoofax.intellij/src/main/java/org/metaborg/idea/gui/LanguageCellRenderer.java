@@ -21,11 +21,9 @@ package org.metaborg.idea.gui;
 
 import com.intellij.ui.ColoredTreeCellRenderer;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
+import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
 
 import javax.swing.*;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeNode;
 
 public class LanguageCellRenderer extends ColoredTreeCellRenderer {
     @Override

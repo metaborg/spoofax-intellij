@@ -17,24 +17,18 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.model;
+package org.metaborg.spoofax.intellij.idea.project;
 
 
 import com.google.inject.Inject;
-import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.projectRoots.Sdk;
-import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
-import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.metaborg.idea.gui2.wizards.MetaborgModuleWizardStep;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
 /**
  * The type of a Spoofax module.

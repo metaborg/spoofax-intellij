@@ -20,16 +20,11 @@
 package org.metaborg.spoofax.idea.vfs;
 
 import com.intellij.ide.highlighter.ArchiveFileType;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.idea.vfs.MetaborgFileType;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 /**

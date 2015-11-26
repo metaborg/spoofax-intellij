@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.java.JavaSourceRootType;
 import org.metaborg.spoofax.intellij.factories.ILanguageImplEditorFactory;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
 
 /**
  * Provides editors for the module's settings in the <em>Project Structure</em> dialog.

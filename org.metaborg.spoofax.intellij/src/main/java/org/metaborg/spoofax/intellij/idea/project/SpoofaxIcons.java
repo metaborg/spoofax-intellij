@@ -17,22 +17,22 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.model;
+package org.metaborg.spoofax.intellij.idea.project;
 
+import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-/**
- * Created by daniel on 9/16/15.
- */
-public final class PageOne {
-    private JPanel panel;
-    private JButton button1;
-    private JButton button2;
+// TODO: Make this into an icon manager.
+public final class SpoofaxIcons {
+    @NotNull
+    public static final SpoofaxIcons INSTANCE = new SpoofaxIcons();
 
     @NotNull
-    public JPanel getPanel() {
-        return this.panel;
+    public final Icon Default;
+
+    private SpoofaxIcons() {
+        this.Default = IconLoader.getIcon("/SpoofaxDefault.png");
     }
 }

@@ -23,7 +23,6 @@ import com.intellij.openapi.roots.ui.CellAppearanceEx;
 import com.intellij.openapi.roots.ui.util.SimpleTextCellAppearance;
 import com.intellij.ui.ColoredTableCellRenderer;
 import org.metaborg.core.language.ILanguage;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
 
 import javax.swing.*;
 

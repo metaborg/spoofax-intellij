@@ -26,7 +26,7 @@ import org.metaborg.core.StringFormatter;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.idea.vfs.MetaborgFileType;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
+import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
 
 import javax.swing.*;

@@ -33,11 +33,10 @@ import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.idea.gui.LanguageTreeModel;
 import org.metaborg.idea.gui.LanguagesConfigurable;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
+import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;

@@ -23,7 +23,7 @@ import com.intellij.ui.LayeredIcon;
 import com.intellij.ui.ListCellRendererWrapper;
 import com.intellij.util.ui.EmptyIcon;
 import org.metaborg.core.language.ILanguage;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
+import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
 
 import javax.swing.*;
 

@@ -19,14 +19,11 @@
 
 package org.metaborg.idea.gui;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.ui.treeStructure.treetable.ListTreeTableModelOnColumns;
-import com.intellij.ui.treeStructure.treetable.TreeColumnInfo;
 import com.intellij.util.ui.ColumnInfo;
-import org.apache.commons.lang3.ArrayUtils;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
+import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
 
 import javax.annotation.Nullable;
 import javax.swing.*;

@@ -30,16 +30,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.language.LanguageVersion;
-import org.metaborg.idea.gui2.LanguageIdentifierVerifier;
-import org.metaborg.idea.gui2.LanguageVersionVerifier;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleBuilder;
+import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
+import org.metaborg.spoofax.intellij.idea.project.SpoofaxModuleBuilder;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.PlainDocument;
 import java.util.regex.Pattern;
 
 /**

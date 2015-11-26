@@ -24,11 +24,7 @@ import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiReferenceContributor;
 import com.intellij.psi.PsiReferenceRegistrar;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType;
-import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
-import org.slf4j.Logger;
 
 /**
  * Contributes reference providers for PSI elements that match a certain pattern.

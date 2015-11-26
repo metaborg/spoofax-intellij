@@ -28,7 +28,7 @@
         <fileTypeFactory implementation="org.metaborg.spoofax.idea.vfs.SpoofaxFileTypeFactory"/>
         <!--<fileTypeFactory implementation="org.metaborg.spoofax.intellij.languages.SpoofaxFileTypeFactory"/>-->
         <moduleType id="SPOOFAX_MODULE"
-                    implementationClass="org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleType"/>
+                    implementationClass="org.metaborg.spoofax.intellij.idea.project.SpoofaxModuleType"/>
         <!--<compiler.buildTargetScopeProvider
                 implementation="org.metaborg.spoofax.intellij.idea.SpoofaxBuildTargetScopeProvider"/>-->
         <moduleConfigurationEditorProvider
@@ -79,7 +79,7 @@
 
     <module-components>
         <component>
-            <implementation-class>org.metaborg.spoofax.intellij.idea.model.SpoofaxModuleComponent</implementation-class>
+            <implementation-class>org.metaborg.spoofax.intellij.idea.project.SpoofaxModuleComponent</implementation-class>
         </component>
     </module-components>
 </idea-plugin>

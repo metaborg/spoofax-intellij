@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.idea.model;
+package org.metaborg.spoofax.intellij.idea.project;
 
 import com.google.inject.Inject;
 import com.intellij.openapi.module.Module;
