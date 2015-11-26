@@ -96,30 +96,44 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     // The project.
 //    private IntelliJProject project;
 
-    private String name;
+    private String name = "Untitled";
 
     /**
      * Gets the name of the module.
      *
-     * @return The name; or <code>null</code>.
+     * @return The name.
      */
-    @Nullable
     public String getName() { return this.name; }
 
     /**
      * Sets the name of the module.
      *
-     * @param name The name; or <code>null</code>.
+     * @param name The name.
      */
-    public void setName(@Nullable String name) { this.name = name; }
+    public void setName(String name) { this.name = name; }
 
-    private LanguageIdentifier languageId;
+    private String extension = "u";
+
+    /**
+     * Gets the extension of the language.
+     *
+     * @return The language file extension.
+     */
+    public String getExtension() { return this.extension; }
+
+    /**
+     * Sets the extension of the language.
+     *
+     * @param extension The language file extension.
+     */
+    public void setExtension(String extension) { this.extension = extension; }
+
+    private LanguageIdentifier languageId = new LanguageIdentifier("org.example", "untitled", LanguageVersion.parse("1.0.0-SNAPSHOT"));
     /**
      * Gets the language ID of the module.
      *
-     * @return The language identifier; or <code>null</code>.
+     * @return The language identifier.
      */
-    @Nullable
     public LanguageIdentifier getLanguageIdentifier() {
         return this.languageId;
     }
@@ -129,7 +143,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      *
      * @param languageId The language identifier; or <code>null</code>.
      */
-    public void setLanguageIdentifier(@Nullable LanguageIdentifier languageId) {
+    public void setLanguageIdentifier(LanguageIdentifier languageId) {
         this.languageId = languageId;
     }
 
@@ -218,6 +232,11 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
 
         final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
+        if (contentEntry != null) {
+            // TODO: Add this information to Metaborg Core somewhere?
+            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "src-gen");
+            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
+        }
 //        if (contentEntry == null) {
 //            // LOG: No content entry path for the module.
 //            return;
@@ -314,12 +333,8 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
             @NotNull final IProject project) {
 //            @NotNull final ModifiableRootModel rootModel,
 //            @NotNull final ContentEntry contentEntry) {
-        // TODO: Specify name in wizard
-        final String name = "TestProject";
-        // TODO: Specify in wizard
-        final LanguageIdentifier identifier = new LanguageIdentifier("org.metaborg.test",
-                                                                     "lang-id",
-                                                                     new LanguageVersion(1, 0, 0, ""));
+        final String name = getName(); //"TestProject";
+        final LanguageIdentifier identifier = getLanguageIdentifier();
         final IProjectSettings settings = new ProjectSettings(identifier, name);
 
         try {
@@ -328,23 +343,16 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
             final GeneratorProjectSettings generatorSettings = new GeneratorProjectSettings(spoofaxSettings);
             // TODO: Get from SDK.
             generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
-            // TODO: Specify extension in wizard.
-            final NewProjectGenerator generator = new NewProjectGenerator(generatorSettings, new String[]{"spx"});
+            final NewProjectGenerator generator = new NewProjectGenerator(generatorSettings, new String[]{getExtension()});
             generator.generateAll();
 
-            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
-            final VirtualFile f = resourceService.unresolve(project.location().resolveFile("editor/java/"));
+//            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
+//            final VirtualFile f = resourceService.unresolve(project.location().resolveFile("editor/java/"));
 //            contentEntry.addSourceFolder(f, false, "");
 
 
-        } catch (ProjectException e) {
-            // Invalid project settings
-            logger.error("Unhandled exception.", e);
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            // Failed to generate project files
-            logger.error("Unhandled exception.", e);
-            throw new RuntimeException(e);
+        } catch (ProjectException | IOException e) {
+            throw new UnhandledException(e);
         }
     }
 
