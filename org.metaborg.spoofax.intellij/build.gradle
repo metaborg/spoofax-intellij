@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'commons-io:commons-io:2.4'
+    }
+}
+
 plugins {
     id "org.jetbrains.intellij" version "0.0.28"
 }
@@ -55,6 +65,16 @@ afterEvaluate {
     task("debugIdea", type: org.jetbrains.intellij.RunIdeaTask, group: 'intellij', dependsOn: 'prepareSandbox', description: 'Runs Intellij IDEA with installed plugin and debugger support for JPS on port 5005.') {
         jvmArgs += ["-Dcompiler.process.debug.port=5005"]
     }
+}
+
+// Prints the list of JPS plugin dependencies.
+task('print-jps-dependencies') << {
+	def jars = configurations.runtime.resolve().collect { it.name }.findAll { !it.startsWith('slf4j') }
+	def result = jars + [
+		'../classes/jpslib/slf4j-api-1.7.12.jar',
+		'../classes/jpslib/slf4j-simple-1.7.12'
+	]
+	println result.sort().join(';')
 }
 
 dependencies {
