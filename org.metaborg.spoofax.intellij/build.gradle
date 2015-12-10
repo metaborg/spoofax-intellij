@@ -82,7 +82,7 @@ processResources.dependsOn copyLanguageDependencies
 processTestResources.dependsOn copyTestLanguageDependencies
 
 // Prints the list of JPS plugin dependencies.
-task(printJpsDependencies) << {
+task(printJpsDependencies, description: 'Prints a semi-colon-separated list of dependencies for the JPS plugin.') << {
 	def jars = configurations.runtime.resolve().collect { it.name }.findAll { !it.startsWith('slf4j') }
 	def result = jars + [
 		'../classes/jpslib/slf4j-api-1.7.12.jar',
