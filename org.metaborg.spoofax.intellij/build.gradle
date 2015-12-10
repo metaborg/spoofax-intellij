@@ -56,7 +56,6 @@ eclipse {
 
 intellij {
     version 'IC-15.0.1'
-    //plugins 'maven'
 }
 
 // Task to allow a debugger to be attached to port 5005 for debugging the JPS plugin.
@@ -79,9 +78,6 @@ task('print-jps-dependencies') << {
 
 dependencies {
     // Main dependencies
-    compile project(':org.metaborg.settings')
-    compile project(':org.metaborg.settings.jackson')
-
     compile('org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
     }
@@ -107,9 +103,7 @@ dependencies {
     compile 'org.slf4j:slf4j-simple:1.7.10'
 
     // Test dependencies
-    testCompile project(':org.metaborg.settings').sourceSets.test.output
-    testCompile project(':org.metaborg.settings.jackson').sourceSets.test.output
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile 'junit:junit:4.12'
 }
 
 uploadArchives {

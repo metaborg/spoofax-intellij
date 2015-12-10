@@ -1,2 +1,0 @@
-include ':org.metaborg.settings'
-project(':org.metaborg.settings').projectDir = new File(settingsDir, '../org.metaborg.settings')
