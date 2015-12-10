@@ -19,22 +19,42 @@
 
 package org.metaborg.core.project;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 public final class ArtifactProjectServiceTests {
+
+    private static final String SDF_DEPENDENCY = "res:languages/org.metaborg.meta.lang.sdf-1.5.0-SNAPSHOT.spoofax-language";
+
+//    @Test
+//    public void testTest() throws IOException {
+//        FileSystemManager manager = VFS.getManager();
+//        FileObject f = manager.resolveFile("res:languages/org.metaborg.meta.lang.sdf-1.5.0-SNAPSHOT.spoofax-language");
+////        FileObject f = manager.resolveFile("res:src-gen/metaborg.generated.yaml");
+//        assertTrue(f.exists());
+////        InputStream stream = f.getContent().getInputStream();
+////        String content = IOUtils.toString(stream);
+////        System.out.println(content);
+//    }
 
     @Test
     public void getsProjectForArtifact() throws FileSystemException {
         FileSystemManager manager = VFS.getManager();
+
         ArtifactProjectService sut = new ArtifactProjectService(manager);
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
         IProject project = sut.get(artifact);
 
@@ -45,7 +65,7 @@ public final class ArtifactProjectServiceTests {
     public void getsProjectReturnsSameProjectForSameArtifact() throws FileSystemException {
         FileSystemManager manager = VFS.getManager();
         ArtifactProjectService sut = new ArtifactProjectService(manager);
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
         IProject project1 = sut.get(artifact);
         IProject project2 = sut.get(artifact);

@@ -79,8 +79,8 @@ public final class LanguageManager {
         loadLanguage("org.metaborg.meta.lang.ts-1.5.0-SNAPSHOT");
         loadLanguage("org.metaborg.meta.lib.analysis-1.5.0-SNAPSHOT");
 
-        loadLanguage("org.metaborg.meta.lang.esv-1.5.0-baseline-20150905-200051");
-        loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-baseline-20150905-200051");
+        loadLanguage("org.metaborg.meta.lang.esv-1.5.0-baseline-20150917-172646");
+        loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-baseline-20150917-172646");
     }
 
     /**
@@ -89,7 +89,7 @@ public final class LanguageManager {
      * @param id The ID.
      */
     private void loadLanguage(@NotNull final String id) {
-        final URL url = this.getClass().getClassLoader().getResource("meta-languages/" + id + ".spoofax-language");
+        final URL url = this.getClass().getClassLoader().getResource("languages/" + id + ".spoofax-language");
         if (url == null) {
             logger.error("Meta language '" + id + "' could not be resolved to a class path.");
             return;

@@ -31,6 +31,8 @@ import static org.junit.Assert.assertNull;
 
 public final class CompoundProjectServiceTests {
 
+    private static final String SDF_DEPENDENCY = "res:languages/org.metaborg.meta.lang.sdf-1.5.0-SNAPSHOT.spoofax-language";
+
     @Test
     public void getsOneProjectFromMultipleProjectServices() throws FileSystemException {
         FileSystemManager manager = VFS.getManager();
@@ -40,7 +42,7 @@ public final class CompoundProjectServiceTests {
                 new ProjectServiceStub(null)
         ));
 
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
         IProject project = sut.get(artifact);
 
@@ -55,7 +57,7 @@ public final class CompoundProjectServiceTests {
                 new ProjectServiceStub(null)
         ));
 
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
         IProject project = sut.get(artifact);
 
@@ -70,7 +72,7 @@ public final class CompoundProjectServiceTests {
                 new ArtifactProjectService(manager)
         ));
 
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
         sut.get(artifact);
     }

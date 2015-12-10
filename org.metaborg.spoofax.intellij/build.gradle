@@ -37,6 +37,8 @@ subprojects {
 
 configurations {
     provided
+    language
+    testLanguage
 }
 
 sourceSets.main.compileClasspath += configurations.provided
@@ -66,8 +68,21 @@ afterEvaluate {
     }
 }
 
+task copyLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the resources.') {
+    into "src/main/resources/languages/"
+    from configurations.language
+}
+
+task copyTestLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the test resources.') {
+    into "src/test/resources/languages/"
+    from configurations.testLanguage
+}
+
+processResources.dependsOn copyLanguageDependencies
+processTestResources.dependsOn copyTestLanguageDependencies
+
 // Prints the list of JPS plugin dependencies.
-task('print-jps-dependencies') << {
+task(printJpsDependencies) << {
 	def jars = configurations.runtime.resolve().collect { it.name }.findAll { !it.startsWith('slf4j') }
 	def result = jars + [
 		'../classes/jpslib/slf4j-api-1.7.12.jar',
@@ -102,8 +117,21 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.10'
     compile 'org.slf4j:slf4j-simple:1.7.10'
 
+    language 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.nabl:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.template:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.ts:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lib.analysis:1.5.0-SNAPSHOT@spoofax-language'
+
+    language 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-baseline-20150917-172646@spoofax-language'
+
     // Test dependencies
     testCompile 'junit:junit:4.12'
+
+    testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT@spoofax-language'
 }
 
 uploadArchives {
