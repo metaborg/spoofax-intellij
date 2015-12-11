@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 /**
  * Project settings service for IntelliJ.
  */
+@Deprecated
 @Singleton
 public final class IntelliJProjectSettingsService implements IProjectSettingsService {
 

@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.project;
+package org.metaborg.idea.project;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -27,22 +27,17 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProject;
 
 /**
- * An IntelliJ project.
- *
- * @author Daniël Pelsmaeker
- * @since 1.0
+ * An IntelliJ IDEA project.
  */
-public final class IntelliJProject implements IProject {
+public class IdeaProject implements IProject {
 
-    @NotNull
     private final Module module;
-    @NotNull
     private final FileObject location;
 
     @Inject
-    /* package private */ IntelliJProject(
-            @Assisted @NotNull final Module module,
-            @Assisted @NotNull final FileObject location) {
+    /* package private */ IdeaProject(
+            @Assisted final Module module,
+            @Assisted final FileObject location) {
         this.module = module;
         this.location = location;
     }
@@ -52,7 +47,6 @@ public final class IntelliJProject implements IProject {
      *
      * @return The module.
      */
-    @NotNull
     public final Module getModule() {
         return this.module;
     }
@@ -63,7 +57,6 @@ public final class IntelliJProject implements IProject {
      * @return The project root location.
      */
     @Override
-    @NotNull
     public final FileObject location() {
         return this.location;
     }

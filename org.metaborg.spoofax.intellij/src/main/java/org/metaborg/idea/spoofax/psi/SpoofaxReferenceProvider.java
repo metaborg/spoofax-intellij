@@ -21,7 +21,6 @@ package org.metaborg.idea.spoofax.psi;
 
 import com.google.inject.Inject;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiReference;
 import com.intellij.util.ProcessingContext;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgException;
@@ -37,7 +36,7 @@ import org.metaborg.idea.psi.MetaborgReference;
 import org.metaborg.idea.psi.MetaborgReferenceElement;
 import org.metaborg.idea.psi.MetaborgReferenceProvider;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxReference;
-import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
+import org.metaborg.idea.project.IIdeaProjectService;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -63,7 +62,7 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
      */
     @Inject
     public SpoofaxReferenceProvider(
-            final IIntelliJProjectService projectService,
+            final IIdeaProjectService projectService,
             final IIntelliJResourceService resourceService,
             final ILanguageProjectService languageProjectService,
             final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,

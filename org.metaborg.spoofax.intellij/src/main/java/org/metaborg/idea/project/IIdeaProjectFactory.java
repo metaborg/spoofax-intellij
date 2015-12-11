@@ -17,23 +17,25 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.core.logging;
+package org.metaborg.idea.project;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.intellij.openapi.module.Module;
+import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.NotNull;
 
 /**
- * Annotation for a field that wants a logger to be injected.
- * <p>
- * For example:
- * <pre>
- *
- * &#064;InjectLogger private Logger logger;
- * </pre>
+ * Factory for IntelliJ IDEA projects.
  */
-@SuppressWarnings("NullableProblems")
-@Target({ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface InjectLogger {}
+public interface IIdeaProjectFactory {
+
+    /**
+     * Creates a new project.
+     *
+     * @param ideaModule The IntelliJ IDEA module.
+     * @param rootFolder Root folder of the module.
+     * @return The created project.
+     */
+    @NotNull
+    IdeaLanguageSpecProject create(@NotNull Module ideaModule, @NotNull FileObject rootFolder);
+
+}

@@ -17,33 +17,32 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.project;
+package org.metaborg.idea.project;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.project.IProjectService;
 
 import javax.annotation.Nullable;
 
 /**
- * Project service for IntelliJ.
+ * Project service for IntelliJ IDEA.
  */
-public interface IIntelliJProjectService extends IProjectService {
+public interface IIdeaProjectService extends IProjectService {
 
     /**
      * Indicates to the project service that a Spoofax project was opened.
      *
      * @param project The Spoofax project that was opened.
      */
-    void open(@NotNull IntelliJProject project);
+    void open(IdeaProject project);
 
     /**
      * Indicates to the project service that a Spoofax project was closed.
      *
      * @param module The IntelliJ module of the project.
      */
-    void close(@NotNull Module module);
+    void close(Module module);
 
     /**
      * Retrieves the Spoofax project of a given IntelliJ module.
@@ -53,7 +52,7 @@ public interface IIntelliJProjectService extends IProjectService {
      * or <code>null</code> if no project could be found.
      */
     @Nullable
-    IntelliJProject get(Module module);
+    IdeaProject get(Module module);
 
     /**
      * Retrieves the Spoofax project of a given PSI element.
@@ -63,6 +62,6 @@ public interface IIntelliJProjectService extends IProjectService {
      * or <code>null</code> if no project could be found.
      */
     @Nullable
-    IntelliJProject get(PsiElement element);
+    IdeaProject get(PsiElement element);
 
 }

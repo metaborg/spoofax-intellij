@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.project;
+package org.metaborg.idea.project;
 
 import com.google.inject.Inject;
 import com.intellij.openapi.module.Module;
@@ -27,7 +27,6 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
@@ -39,20 +38,17 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Project service for IntelliJ.
+ * Project service for IntelliJ IDEA.
  */
-public final class IntelliJProjectService implements IIntelliJProjectService {
+public final class IdeaProjectService implements IIdeaProjectService {
 
-    @NotNull
     private final IIntelliJResourceService resourceService;
-    @NotNull
-    private final Map<Module, IntelliJProject> modules = new HashMap<>();
+    private final Map<Module, IdeaProject> modules = new HashMap<>();
     @InjectLogger
     private Logger logger;
 
     @Inject
-    private IntelliJProjectService(
-            @NotNull final IIntelliJResourceService resourceService) {
+    private IdeaProjectService(final IIntelliJResourceService resourceService) {
         this.resourceService = resourceService;
     }
 
@@ -60,7 +56,7 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
      * {@inheritDoc}
      */
     @Override
-    public void open(@NotNull final IntelliJProject project) {
+    public void open(final IdeaProject project) {
         this.modules.put(project.getModule(), project);
     }
 
@@ -68,7 +64,7 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
      * {@inheritDoc}
      */
     @Override
-    public void close(@NotNull final Module module) {
+    public void close(final Module module) {
         this.modules.remove(module);
     }
 
@@ -77,7 +73,7 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
      */
     @Nullable
     @Override
-    public IntelliJProject get(@NotNull final Module module) {
+    public IdeaProject get(final Module module) {
         return this.modules.get(module);
     }
 
@@ -86,8 +82,8 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
      */
     @Nullable
     @Override
-    public IntelliJProject get(final PsiElement element) {
-        Module module = ModuleUtil.findModuleForPsiElement(element);
+    public IdeaProject get(final PsiElement element) {
+        @Nullable Module module = ModuleUtil.findModuleForPsiElement(element);
         if (module == null)
             return null;
         return get(module);
@@ -98,12 +94,12 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
      */
     @Nullable
     @Override
-    public IntelliJProject get(@NotNull final FileObject resource) {
-        final VirtualFile file = this.resourceService.unresolve(resource);
+    public IdeaProject get(final FileObject resource) {
+        @Nullable final VirtualFile file = this.resourceService.unresolve(resource);
         if (file == null)
             return null;
 
-        final Module module = getModule(file);
+        @Nullable final Module module = getModule(file);
         if (module == null)
             return null;
         return get(module);
@@ -116,10 +112,10 @@ public final class IntelliJProjectService implements IIntelliJProjectService {
      * @return The {@link Module} of the file.
      */
     @Nullable
-    private Module getModule(@NotNull final VirtualFile file) {
+    private Module getModule(final VirtualFile file) {
         Set<Module> candidates = new HashSet<>();
         for (Project project : ProjectManager.getInstance().getOpenProjects()) {
-            final Module module = ModuleUtil.findModuleForFile(file, project);
+            @Nullable final Module module = ModuleUtil.findModuleForFile(file, project);
             if (module != null)
                 candidates.add(module);
         }

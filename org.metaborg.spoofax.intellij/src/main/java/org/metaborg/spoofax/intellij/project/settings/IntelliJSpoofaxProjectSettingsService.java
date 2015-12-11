@@ -32,6 +32,7 @@ import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 /**
  * Spoofax project settings service for IntelliJ.
  */
+@Deprecated
 @Singleton
 public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProjectSettingsService {
 

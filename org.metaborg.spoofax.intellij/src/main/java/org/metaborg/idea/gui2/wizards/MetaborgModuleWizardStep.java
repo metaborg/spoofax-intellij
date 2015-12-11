@@ -220,10 +220,7 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
                 this.txtArtifactId.getText(),
                 LanguageVersion.parse(this.txtVersion.getText())));
         this.builder.setExtension(cleanupExtension(this.txtExtension.getText()));
-
-//        if (this.context.getProjectName() == null) {
-            this.context.setProjectName(this.builder.getName());
-//        }
+        this.context.setProjectName(this.builder.getName());
     }
 
     /**
@@ -333,20 +330,6 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * the {@link ModuleBuilder} and {@link WizardContext}.
      */
     private void updateComponents() {
-//        String projectName = this.context.getProjectName();
-//        if (projectName != null) {
-//            this.txtName.setText(projectName);
-//            this.txtExtension.setText(toExtension(projectName));
-//            this.txtGroupId.setText(this.builder.getLanguageIdentifier().groupId);
-//            this.txtArtifactId.setText(toArtifactId(projectName));
-//            this.txtVersion.setText(this.builder.getLanguageIdentifier().version.toString());
-//        } else {
-//            this.txtName.setText(this.builder.getName());
-//            this.txtExtension.setText(this.builder.getExtension());
-//            this.txtGroupId.setText(this.builder.getLanguageIdentifier().groupId);
-//            this.txtArtifactId.setText(this.builder.getLanguageIdentifier().id);
-//            this.txtVersion.setText(this.builder.getLanguageIdentifier().version.toString());
-//        }
         String name = this.context.getProjectName() != null ? this.context.getProjectName() : this.builder.getName();
         this.txtName.setText(name);
         this.txtExtension.setText(toExtension(name));
@@ -354,41 +337,5 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
         this.txtArtifactId.setText(toArtifactId(name));
         this.txtVersion.setText(this.builder.getLanguageIdentifier().version.toString());
     }
-//
-//    private class NameFieldDocument extends PlainDocument {
-//        public NameFieldDocument() {
-//            addDocumentListener(new DocumentAdapter() {
-//
-//                @Override
-//                protected void textChanged(final DocumentEvent e) {
-////                    isArtifactIdChangedByUser = true;
-//                    syncArtifactIdAndName();
-//                }
-//            });
-
-//        }
-//
-//        private void syncArtifactIdAndName() {
-//            if (!isArtifactIdChangedByUser) {
-//                try {
-//                    txtArtifactId.setText(getText(0, getLength()).toLowerCase());
-//                } catch (BadLocationException e) {
-//                    throw new UnhandledException(e);
-//                }
-//            }
-//        }
-//    }
-//
-//    private class ArtifactIDFieldDocument extends PlainDocument {
-//        public ArtifactIDFieldDocument() {
-//            addDocumentListener(new DocumentAdapter() {
-//
-//                @Override
-//                protected void textChanged(final DocumentEvent e) {
-//                    isArtifactIdChangedByUser = true;
-//                }
-//            });
-//        }
-//    }
 
 }

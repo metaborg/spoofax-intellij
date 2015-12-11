@@ -37,6 +37,7 @@ import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.idea.gui.DefaultLanguageListItemsProvider;
 import org.metaborg.idea.gui.ILanguageListItemsProvider;
 import org.metaborg.idea.gui.ILanguageListItemsProviderFactory;
+import org.metaborg.idea.project.*;
 import org.metaborg.idea.psi.IMetaborgReferenceProviderFactory;
 import org.metaborg.idea.psi.MetaborgReferenceProvider;
 import org.metaborg.idea.spoofax.psi.SpoofaxReferenceProvider;
@@ -55,9 +56,8 @@ import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxFileElementType;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxPsiElementFactory;
 import org.metaborg.spoofax.intellij.menu.*;
-import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
-import org.metaborg.spoofax.intellij.project.IntelliJProject;
-import org.metaborg.spoofax.intellij.project.IntelliJProjectService;
+import org.metaborg.idea.project.IIdeaProjectService;
+import org.metaborg.idea.project.IdeaProjectService;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -108,8 +108,8 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
                         .implement(IFileElementType.class, SpoofaxFileElementType.class)
                         .build(IFileElementTypeFactory.class));
         install(new FactoryModuleBuilder()
-                        .implement(IntelliJProject.class, IntelliJProject.class)
-                        .build(IProjectFactory.class));
+                        .implement(IdeaProject.class, IdeaProject.class)
+                        .build(IIdeaProjectFactory.class));
         install(new FactoryModuleBuilder()
                         .implement(LanguageImplTableModel.class, LanguageImplTableModel.class)
                         .build(ILanguageImplTableModelFactory.class));
@@ -143,17 +143,17 @@ public final class SpoofaxIdeaDependencyModule extends SpoofaxIntelliJDependency
      */
     @Override
     protected void bindProject() {
-        bind(IntelliJProjectService.class).in(Singleton.class);
+        bind(IdeaProjectService.class).in(Singleton.class);
         bind(IProjectService.class).to(CompoundProjectService.class).in(Singleton.class);
-//        bind(IProjectService.class).to(IntelliJProjectService.class).in(Singleton.class);
-        bind(IIntelliJProjectService.class).to(IntelliJProjectService.class).in(Singleton.class);
+//        bind(IProjectService.class).to(IdeaProjectService.class).in(Singleton.class);
+        bind(IIdeaProjectService.class).to(IdeaProjectService.class).in(Singleton.class);
         bind(ArtifactProjectService.class).in(Singleton.class);
         bind(CompoundProjectService.class).in(Singleton.class);
 
         Multibinder<IProjectService> uriBinder = Multibinder.newSetBinder(binder(),
                                                                           IProjectService.class,
                                                                           Compound.class);
-        uriBinder.addBinding().to(IntelliJProjectService.class);
+        uriBinder.addBinding().to(IdeaProjectService.class);
         uriBinder.addBinding().to(ArtifactProjectService.class);
     }
 

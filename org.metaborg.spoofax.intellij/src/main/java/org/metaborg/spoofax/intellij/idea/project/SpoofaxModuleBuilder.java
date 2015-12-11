@@ -50,17 +50,24 @@ import org.metaborg.core.UnhandledException;
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.language.LanguageVersion;
 import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.core.project.ILanguageSpec;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.ProjectException;
+import org.metaborg.core.project.configuration.ILanguageSpecConfig;
 import org.metaborg.core.project.settings.IProjectSettings;
 import org.metaborg.core.project.settings.ProjectSettings;
 import org.metaborg.idea.gui2.wizards.MetaborgModuleWizardStep;
+import org.metaborg.idea.project.IIdeaProjectService;
+import org.metaborg.idea.project.IdeaLanguageSpecProject;
+import org.metaborg.idea.project.IdeaProject;
+import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfigBuilder;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
+import org.metaborg.spoofax.generator.language.NewLanguageSpecGenerator;
 import org.metaborg.spoofax.generator.language.NewProjectGenerator;
 import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
-import org.metaborg.spoofax.intellij.factories.IProjectFactory;
-import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
-import org.metaborg.spoofax.intellij.project.IntelliJProject;
+import org.metaborg.idea.project.IIdeaProjectFactory;
+import org.metaborg.spoofax.generator.project.LanguageSpecGeneratorScope;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
 
@@ -76,18 +83,16 @@ import java.util.List;
 @Singleton
 public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourcePathsBuilder {
 
-    @NotNull
     private final IIntelliJResourceService resourceService;
-    @NotNull
-    private final IProjectFactory projectFactory;
-    @NotNull
-    private final IIntelliJProjectService projectService;
+    private final IIdeaProjectFactory projectFactory;
+    private final IIdeaProjectService projectService;
+    private final ISpoofaxLanguageSpecConfigBuilder configBuilder;
     @InjectLogger
     private Logger logger;
 
     private List<Pair<String,String>> sourcePaths;
     // The project.
-//    private IntelliJProject project;
+//    private IdeaProject project;
 
     private String name = "Untitled";
 
@@ -143,12 +148,14 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
 
     @Inject
     private SpoofaxModuleBuilder(
-            @NotNull final IIntelliJResourceService resourceService,
-            @NotNull final IProjectFactory projectFactory,
-            @NotNull final IIntelliJProjectService projectService) {
+            final IIntelliJResourceService resourceService,
+            final IIdeaProjectFactory projectFactory,
+            final IIdeaProjectService projectService,
+            final ISpoofaxLanguageSpecConfigBuilder configBuilder) {
         this.resourceService = resourceService;
         this.projectFactory = projectFactory;
         this.projectService = projectService;
+        this.configBuilder = configBuilder;
     }
 
 //    public final void displayInitError(@NotNull final String error, @NotNull final Project project) {
@@ -248,10 +255,10 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
                 // Generate the module structure (files and directories).
                 System.out.println("Running");
                 FileObject location = resourceService.resolve(getContentEntryPath());//contentEntry.getFile());
-                IntelliJProject intelliJProject = projectFactory.create(module, location);
-                projectService.open(intelliJProject);
+                IdeaLanguageSpecProject ideaProject = projectFactory.create(module, location);
+                projectService.open(ideaProject);
                 WriteCommandAction.runWriteCommandAction(project, "Create new Spoofax module", null, () -> {
-                    generateModuleStructure(intelliJProject);
+                    generateModuleStructure(ideaProject);
                 });
             }
         });
@@ -266,7 +273,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
 //        if (module != null) {
 //            // Generate the module structure (files and directories).
 //            FileObject location = resourceService.resolve(contentEntry.getFile());
-//            IntelliJProject intelliJProject = this.projectFactory.create(module, location);
+//            IdeaProject intelliJProject = this.projectFactory.create(module, location);
 //            this.projectService.open(intelliJProject);
 //            generateModuleStructure(intelliJProject);
 //        }
@@ -319,11 +326,54 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     /**
      * Generates the module directory structure and files.
      *
+     * @param languageSpec      The language specification.
+    //     * @param rootModel    The root model.
+    //     * @param contentEntry The content entry.
+     */
+    private final void generateModuleStructure(
+            @NotNull final ILanguageSpec languageSpec) {
+//            @NotNull final ModifiableRootModel rootModel,
+//            @NotNull final ContentEntry contentEntry) {
+        final String name = getName();
+        final LanguageIdentifier identifier = getLanguageIdentifier();
+//        final IProjectSettings settings = new ProjectSettings(identifier, name);
+
+        try {
+            final FileObject location = languageSpec.location();
+            ISpoofaxLanguageSpecConfig config = this.configBuilder
+                    .reset()
+                    .withIdentifier(identifier)
+                    .withName(name)
+                    .build();
+//            final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, location);
+            final LanguageSpecGeneratorScope scope = new LanguageSpecGeneratorScope(location, config);
+//            final GeneratorProjectSettings generatorSettings = new GeneratorProjectSettings(spoofaxSettings);
+//            // TODO: Get from SDK.
+//            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
+//            final LanguageSpecGenerator
+            final NewLanguageSpecGenerator generator = new NewLanguageSpecGenerator(scope, new String[]{getExtension()});
+//            final NewProjectGenerator generator = new NewProjectGenerator(generatorSettings, new String[]{getExtension()});
+            generator.generateAll();
+
+//            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
+//            final VirtualFile f = resourceService.unresolve(project.location().resolveFile("editor/java/"));
+//            contentEntry.addSourceFolder(f, false, "");
+
+
+        } catch (ProjectException | IOException e) {
+            throw new UnhandledException(e);
+        }
+    }
+
+    /**
+     * Generates the module directory structure and files.
+     *
      * @param project      The project.
 //     * @param rootModel    The root model.
 //     * @param contentEntry The content entry.
      */
-    private final void generateModuleStructure(
+    @Deprecated
+    private final void oldGenerateModuleStructure(
             @NotNull final IProject project) {
 //            @NotNull final ModifiableRootModel rootModel,
 //            @NotNull final ContentEntry contentEntry) {

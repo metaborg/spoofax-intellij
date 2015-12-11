@@ -25,15 +25,9 @@ import org.apache.commons.vfs2.FileSystemManager;
 import org.metaborg.core.language.ILanguageProjectService;
 import org.metaborg.core.language.LanguageProjectService;
 import org.metaborg.core.logging.Slf4JTypeListener;
-import org.metaborg.core.project.settings.IProjectSettingsService;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.core.SpoofaxModule;
-import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
-import org.metaborg.spoofax.intellij.project.settings.IProjectSettingsService2;
-import org.metaborg.spoofax.intellij.project.settings.IntelliJProjectSettingsService;
-import org.metaborg.spoofax.intellij.project.settings.IntelliJSpoofaxProjectSettingsService;
-import org.metaborg.spoofax.intellij.project.settings.YamlProjectSettingsService;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.intellij.resources.IntelliJFileSystemManagerProvider;
 import org.metaborg.spoofax.intellij.resources.IntelliJResourceService;
@@ -57,15 +51,15 @@ public abstract class SpoofaxIntelliJDependencyModule extends SpoofaxModule {
         bind(ILanguageProjectService.class).to(LanguageProjectService.class).in(Singleton.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void bindProjectSettings() {
-        bind(IProjectSettingsService2.class).to(YamlProjectSettingsService.class).in(Singleton.class);
-        bind(IProjectSettingsService.class).to(IntelliJProjectSettingsService.class).in(Singleton.class);
-        bind(ISpoofaxProjectSettingsService.class).to(IntelliJSpoofaxProjectSettingsService.class).in(Singleton.class);
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    protected void bindProjectSettings() {
+//        bind(IProjectSettingsService2.class).to(YamlProjectSettingsService.class).in(Singleton.class);
+//        bind(IProjectSettingsService.class).to(IntelliJProjectSettingsService.class).in(Singleton.class);
+//        bind(ISpoofaxProjectSettingsService.class).to(IntelliJSpoofaxProjectSettingsService.class).in(Singleton.class);
+//    }
 
     /**
      * {@inheritDoc}

@@ -40,6 +40,7 @@ import java.net.URL;
 /**
  * A project settings service that stores the settings in a YAML file.
  */
+@Deprecated
 @Singleton
 public final class YamlProjectSettingsService implements IProjectSettingsService2 {
 

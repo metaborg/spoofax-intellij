@@ -26,6 +26,7 @@ import org.metaborg.core.project.settings.IProjectSettings;
 /**
  * Loads and stores the settings of a project.
  */
+@Deprecated
 public interface IProjectSettingsService2 {
 
     /**

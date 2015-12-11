@@ -48,7 +48,7 @@ import org.metaborg.spoofax.intellij.idea.languages.ILexerParserManager;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFile;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
-import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
+import org.metaborg.idea.project.IIdeaProjectService;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -57,7 +57,7 @@ import javax.annotation.Nullable;
 public class SpoofaxFileElementType extends IFileElementType { //IStubFileElementType {
 
     private final ILexerParserManager lexerParserManager;
-    private final IIntelliJProjectService projectService;
+    private final IIdeaProjectService projectService;
     private final ILanguageProjectService languageProjectService;
     private final SpoofaxTokenTypeManager tokenTypesManager;
     private final ILanguageIdentifierService identifierService;
@@ -82,7 +82,7 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
             final IParserConfiguration parserConfiguration,
             final IContextService contextService,
             final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester,
-            final IIntelliJProjectService projectService,
+            final IIdeaProjectService projectService,
             final IATermAstElementTypeProviderFactory elementTypeProviderFactory) {
 
         super(language);

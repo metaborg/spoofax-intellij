@@ -20,8 +20,6 @@
 package org.metaborg.idea.psi;
 
 import com.google.common.base.Preconditions;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -31,15 +29,12 @@ import com.intellij.util.ProcessingContext;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.CollectionUtils;
-import org.metaborg.core.analysis.AnalysisFileResult;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.IProjectService;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFile;
-import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
-import org.metaborg.spoofax.intellij.project.IntelliJProject;
+import org.metaborg.idea.project.IIdeaProjectService;
+import org.metaborg.idea.project.IdeaProject;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
-import org.spoofax.interpreter.terms.IStrategoTerm;
 
 import javax.annotation.Nullable;
 
@@ -48,7 +43,7 @@ import javax.annotation.Nullable;
  */
 public abstract class MetaborgReferenceProvider extends PsiReferenceProvider {
 
-    private final IIntelliJProjectService projectService;
+    private final IIdeaProjectService projectService;
     private final IIntelliJResourceService resourceService;
     private final ILanguageProjectService languageProjectService;
 
@@ -59,7 +54,7 @@ public abstract class MetaborgReferenceProvider extends PsiReferenceProvider {
      * @param resourceService The resource service.
      * @param languageProjectService The language project service.
      */
-    protected MetaborgReferenceProvider(final IIntelliJProjectService projectService,
+    protected MetaborgReferenceProvider(final IIdeaProjectService projectService,
                                         final IIntelliJResourceService resourceService,
                                         final ILanguageProjectService languageProjectService) {
         Preconditions.checkNotNull(projectService);
@@ -82,7 +77,7 @@ public abstract class MetaborgReferenceProvider extends PsiReferenceProvider {
         SpoofaxFile fileElement = (SpoofaxFile)element.getContainingFile();
         ILanguage language = fileElement.getFileType().getSpoofaxLanguage();
         FileObject resource = getResource(element);
-        IntelliJProject project = this.projectService.get(element);
+        IdeaProject project = this.projectService.get(element);
         LanguageDialect languageDialect = this.languageProjectService.getImpl(language, project, resource);
         assert languageDialect != null;
         ILanguageImpl impl = languageDialect.dialectOrBaseLanguage();

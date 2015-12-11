@@ -39,6 +39,7 @@ configurations {
     provided
     language
     testLanguage
+    jpsRuntime
 }
 
 sourceSets.main.compileClasspath += configurations.provided
@@ -68,6 +69,11 @@ afterEvaluate {
     }
 }
 
+task copyJpsLibraries(type: Copy, description: 'Copies the JPS libraries to the resources.') {
+    into "src/main/resources/jpslib/"
+    from configurations.jpsRuntime
+}
+
 task copyLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the resources.') {
     into "src/main/resources/languages/"
     from configurations.language
@@ -79,6 +85,7 @@ task copyTestLanguageDependencies(type: Copy, description: 'Copies the language 
 }
 
 processResources.dependsOn copyLanguageDependencies
+processResources.dependsOn copyJpsLibraries
 processTestResources.dependsOn copyTestLanguageDependencies
 
 // Prints the list of JPS plugin dependencies.
@@ -116,6 +123,9 @@ dependencies {
     compile 'org.javassist:javassist:3.20.0-GA'
     compile 'org.slf4j:slf4j-api:1.7.10'
     compile 'org.slf4j:slf4j-simple:1.7.10'
+    
+    jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
+    jpsRuntime 'org.slf4j:slf4j-simple:1.7.12'
 
     language 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.nabl:1.5.0-SNAPSHOT@spoofax-language'

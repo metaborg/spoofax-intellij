@@ -26,10 +26,10 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.spoofax.intellij.factories.IProjectFactory;
+import org.metaborg.idea.project.IIdeaProjectService;
+import org.metaborg.idea.project.IdeaProject;
+import org.metaborg.idea.project.IIdeaProjectFactory;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
-import org.metaborg.spoofax.intellij.project.IIntelliJProjectService;
-import org.metaborg.spoofax.intellij.project.IntelliJProject;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
 
@@ -45,9 +45,9 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
     @InjectLogger
     private Logger logger;
     @NotNull
-    private IIntelliJProjectService projectService;
+    private IIdeaProjectService projectService;
     @NotNull
-    private IProjectFactory projectFactory;
+    private IIdeaProjectFactory projectFactory;
     @NotNull
     private IIntelliJResourceService resourceService;
 
@@ -62,8 +62,8 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
 
     @Inject
     private void inject(
-            @NotNull final IIntelliJProjectService projectService,
-            @NotNull final IProjectFactory projectFactory,
+            @NotNull final IIdeaProjectService projectService,
+            @NotNull final IIdeaProjectFactory projectFactory,
             @NotNull final IIntelliJResourceService resourceService) {
         this.projectService = projectService;
         this.projectFactory = projectFactory;
@@ -106,7 +106,7 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
         FileObject root = getRootDirectory(this.module);
         if (root == null)
             return;
-        IntelliJProject project = this.projectFactory.create(this.module, root);
+        IdeaProject project = this.projectFactory.create(this.module, root);
         this.projectService.open(project);
     }
 
