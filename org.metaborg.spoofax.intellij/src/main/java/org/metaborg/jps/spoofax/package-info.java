@@ -17,33 +17,10 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps;
-
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import org.jetbrains.annotations.NotNull;
-
 /**
- * JPS plugin class.
+ * JetBrains Project System (JPS) plugin with Spoofax Core functionality.
  */
-public final class JpsPlugin {
+@NonNullByDefault
+package org.metaborg.jps.spoofax;
 
-    @NotNull
-    private static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxJpsDependencyModule()));
-
-    private JpsPlugin() {
-    }
-
-    /**
-     * Gets the injector.
-     *
-     * @return The current injector.
-     */
-    @NotNull
-    public final static Injector injector() {
-        return injector.get();
-    }
-
-}
+import org.metaborg.core.NonNullByDefault;

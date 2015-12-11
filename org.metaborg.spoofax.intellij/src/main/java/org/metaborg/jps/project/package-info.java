@@ -18,9 +18,9 @@
  */
 
 /**
- * IntelliJ IDEA plugin with Metaborg Core functionality.
+ * JPS Metaborg Core project functionality.
  */
 @NonNullByDefault
-package org.metaborg.idea;
+package org.metaborg.jps.project;
 
 import org.metaborg.core.NonNullByDefault;

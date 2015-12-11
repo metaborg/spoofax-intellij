@@ -17,36 +17,33 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps.project;
+package org.metaborg.jps;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jps.model.module.JpsModule;
-import org.metaborg.core.project.IProjectService;
-
-import javax.annotation.Nullable;
 
 /**
- * A project service for JPS.
+ * JPS plugin class.
  */
-public interface IJpsProjectService extends IProjectService {
+public final class JpsPlugin {
+
+    @NotNull
+    private static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxJpsDependencyModule()));
+
+    private JpsPlugin() {
+    }
 
     /**
-     * Creates and adds a new project for the specified JPS module.
+     * Gets the injector.
      *
-     * @param module The JPS module.
-     * @return The created project.
+     * @return The current injector.
      */
     @NotNull
-    SpoofaxJpsProject create(@NotNull JpsModule module);
-
-    /**
-     * Finds the project corresponding to the specified module.
-     *
-     * @param module The JPS module to look for.
-     * @return The project that corresponds to the JPS module;
-     * or <code>null</code> when not found.
-     */
-    @Nullable
-    SpoofaxJpsProject get(@NotNull JpsModule module);
+    public final static Injector injector() {
+        return injector.get();
+    }
 
 }

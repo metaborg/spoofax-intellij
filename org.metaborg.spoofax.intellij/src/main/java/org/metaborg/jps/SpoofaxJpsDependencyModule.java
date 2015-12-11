@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps;
+package org.metaborg.jps;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -28,12 +28,12 @@ import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.jetbrains.jps.incremental.TargetBuilder;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJDependencyModule;
-import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
-import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
-import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPostBuilder;
-import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPostTargetType;
-import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPreBuilder;
-import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPreTargetType;
+import org.metaborg.jps.project.IJpsProjectService;
+import org.metaborg.jps.project.JpsProjectService;
+import org.metaborg.jps.targetbuilders.SpoofaxPostBuilder;
+import org.metaborg.jps.targetbuilders.SpoofaxPostTargetType;
+import org.metaborg.jps.targetbuilders.SpoofaxPreBuilder;
+import org.metaborg.jps.targetbuilders.SpoofaxPreTargetType;
 import org.metaborg.spoofax.meta.core.ant.AntRunnerService;
 import org.metaborg.spoofax.meta.core.ant.IAntRunnerService;
 

@@ -17,25 +17,35 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps.targetbuilders;
+package org.metaborg.jps.targetbuilders;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTarget;
 import org.jetbrains.jps.builders.BuildTargetRegistry;
 import org.jetbrains.jps.builders.TargetOutputIndex;
-import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
+import org.jetbrains.jps.builders.java.JavaModuleBuildTargetType;
+import org.jetbrains.jps.incremental.ModuleBuildTarget;
+import org.metaborg.jps.project.MetaborgJpsProject;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 /**
- * Build target for Spoofax projects pre-Java.
+ * Build target for Spoofax projects post-Java.
  */
-public final class SpoofaxPreTarget extends SpoofaxTarget {
+public final class SpoofaxPostTarget extends SpoofaxTarget {
+
+    @NotNull
+    private final SpoofaxPreTargetType preTargetType;
 
     // TODO: Inject!
-    public SpoofaxPreTarget(@NotNull final SpoofaxJpsProject project, @NotNull final SpoofaxPreTargetType targetType) {
+    public SpoofaxPostTarget(
+            @NotNull final MetaborgJpsProject project,
+            @NotNull final SpoofaxPostTargetType targetType,
+            @NotNull final SpoofaxPreTargetType preTargetType) {
         super(project, targetType);
+        this.preTargetType = preTargetType;
     }
 
     /**
@@ -43,7 +53,7 @@ public final class SpoofaxPreTarget extends SpoofaxTarget {
      */
     @Override
     public final boolean isCompiledBeforeModuleLevelBuilders() {
-        return true;
+        return false;
     }
 
     /**
@@ -53,7 +63,10 @@ public final class SpoofaxPreTarget extends SpoofaxTarget {
     public final Collection<BuildTarget<?>> computeDependencies(
             @NotNull final BuildTargetRegistry buildTargetRegistry,
             @NotNull final TargetOutputIndex targetOutputIndex) {
-        return Collections.emptyList();
+        final List<BuildTarget<?>> dependencies = new ArrayList<>();
+        dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
+        dependencies.add(this.preTargetType.createTarget(super.myModule));
+        return dependencies;
     }
 
     /**
@@ -62,7 +75,7 @@ public final class SpoofaxPreTarget extends SpoofaxTarget {
     @NotNull
     @Override
     public final String getPresentableName() {
-        return "Spoofax PRE target 2 '" + getId() + "'";
+        return "Spoofax POST target 2 '" + getId() + "'";
     }
 
 }

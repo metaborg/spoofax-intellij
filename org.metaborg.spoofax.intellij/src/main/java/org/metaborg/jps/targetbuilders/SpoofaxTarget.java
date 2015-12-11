@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps.targetbuilders;
+package org.metaborg.jps.targetbuilders;
 
 import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +33,7 @@ import org.jetbrains.jps.model.java.JavaSourceRootType;
 import org.jetbrains.jps.model.java.JpsJavaExtensionService;
 import org.jetbrains.jps.model.module.JpsTypedModuleSourceRoot;
 import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
-import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
+import org.metaborg.jps.project.MetaborgJpsProject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ import java.util.List;
 public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
 
     @NotNull
-    private final SpoofaxJpsProject project;
+    private final MetaborgJpsProject project;
 
     /**
      * Initializes a new instance of the {@link SpoofaxTarget} class.
@@ -56,7 +56,7 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      * @param targetType The target type.
      */
     protected SpoofaxTarget(
-            @NotNull final SpoofaxJpsProject project,
+            @NotNull final MetaborgJpsProject project,
             @NotNull final ModuleBasedBuildTargetType<?> targetType) {
         super(targetType, project.module());
         this.project = project;
@@ -89,7 +89,7 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      * @return The project.
      */
     @NotNull
-    public final SpoofaxJpsProject project() {
+    public final MetaborgJpsProject project() {
         return this.project;
     }
 

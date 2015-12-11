@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps.targetbuilders;
+package org.metaborg.jps.targetbuilders;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -33,8 +33,8 @@ import org.metaborg.core.project.ProjectException;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
-import org.metaborg.spoofax.intellij.jps.project.JpsProjectService;
-import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
+import org.metaborg.jps.project.JpsProjectService;
+import org.metaborg.jps.project.MetaborgJpsProject;
 import org.metaborg.spoofax.meta.core.MetaBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
@@ -91,7 +91,7 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
             @NotNull final CompileContext context) throws ProjectBuildException, IOException {
 
         try {
-            final SpoofaxJpsProject project = projectService.get(target.getModule());
+            final MetaborgJpsProject project = projectService.get(target.getModule());
             final SpoofaxProjectSettings settings = settingsService.get(project);
             final MetaBuildInput input = new MetaBuildInput(project, settings);
 

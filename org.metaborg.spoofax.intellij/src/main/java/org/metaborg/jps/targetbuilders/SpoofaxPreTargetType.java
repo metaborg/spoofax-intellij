@@ -17,12 +17,12 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps.targetbuilders;
+package org.metaborg.jps.targetbuilders;
 
 import com.google.inject.Inject;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
-import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
+import org.metaborg.jps.project.IJpsProjectService;
+import org.metaborg.jps.project.MetaborgJpsProject;
 
 public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarget> {
 
@@ -35,7 +35,7 @@ public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarg
      * {@inheritDoc}
      */
     @NotNull
-    public final SpoofaxPreTarget createTarget(@NotNull final SpoofaxJpsProject project) {
+    public final SpoofaxPreTarget createTarget(@NotNull final MetaborgJpsProject project) {
         return new SpoofaxPreTarget(project, this);
     }
 

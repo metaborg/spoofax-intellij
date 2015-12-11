@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps.targetbuilders;
+package org.metaborg.jps.targetbuilders;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,8 +28,8 @@ import org.jetbrains.jps.model.JpsModel;
 import org.jetbrains.jps.model.module.JpsModule;
 import org.jetbrains.jps.model.module.JpsTypedModule;
 import org.metaborg.spoofax.intellij.JpsSpoofaxModuleType;
-import org.metaborg.spoofax.intellij.jps.project.IJpsProjectService;
-import org.metaborg.spoofax.intellij.jps.project.SpoofaxJpsProject;
+import org.metaborg.jps.project.IJpsProjectService;
+import org.metaborg.jps.project.MetaborgJpsProject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      * @return The created build target.
      */
     @NotNull
-    public abstract T createTarget(@NotNull SpoofaxJpsProject project);
+    public abstract T createTarget(@NotNull MetaborgJpsProject project);
 
     /**
      * Creates a build target for the specified JPS module.
@@ -66,7 +66,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      */
     @NotNull
     public final T createTarget(@NotNull final JpsModule module) {
-        SpoofaxJpsProject project = projectService.get(module);
+        MetaborgJpsProject project = projectService.get(module);
         if (project == null)
             project = projectService.create(module);
         return createTarget(project);

@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps.project;
+package org.metaborg.jps.project;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -41,7 +41,7 @@ import java.util.List;
 public final class JpsProjectService implements IJpsProjectService {
 
     @NotNull
-    private final List<SpoofaxJpsProject> projects = new ArrayList<>();
+    private final List<MetaborgJpsProject> projects = new ArrayList<>();
     @NotNull
     private final IResourceService resourceService;
 
@@ -54,9 +54,9 @@ public final class JpsProjectService implements IJpsProjectService {
      * {@inheritDoc}
      */
     @NotNull
-    public SpoofaxJpsProject create(@NotNull final JpsModule module) {
+    public MetaborgJpsProject create(@NotNull final JpsModule module) {
         final FileObject location = resourceService.resolve(module.getContentRootsList().getUrls().get(0));
-        final SpoofaxJpsProject project = new SpoofaxJpsProject(module, location);
+        final MetaborgJpsProject project = new MetaborgJpsProject(module, location);
         this.projects.add(project);
         return project;
     }
@@ -65,8 +65,8 @@ public final class JpsProjectService implements IJpsProjectService {
      * {@inheritDoc}
      */
     @Nullable
-    public SpoofaxJpsProject get(@NotNull final JpsModule module) {
-        for (SpoofaxJpsProject project : this.projects) {
+    public MetaborgJpsProject get(@NotNull final JpsModule module) {
+        for (MetaborgJpsProject project : this.projects) {
             if (project.module().equals(module))
                 return project;
         }
@@ -78,8 +78,8 @@ public final class JpsProjectService implements IJpsProjectService {
      */
     @Nullable
     @Override
-    public SpoofaxJpsProject get(@NotNull final FileObject resource) {
-        for (SpoofaxJpsProject project : this.projects) {
+    public MetaborgJpsProject get(@NotNull final FileObject resource) {
+        for (MetaborgJpsProject project : this.projects) {
             JpsModule module = project.module();
             if (isInContentRoot(module, resource))
                 return project;

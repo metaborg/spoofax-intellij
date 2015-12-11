@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.spoofax.intellij.jps;
+package org.metaborg.jps;
 
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;

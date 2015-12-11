@@ -18,7 +18,7 @@
  */
 
 /**
- * Metaborg Core project classes for IntelliJ IDEA.
+ * IntelliJ IDEA Metaborg Core project functionality.
  */
 @NonNullByDefault
 package org.metaborg.idea.project;

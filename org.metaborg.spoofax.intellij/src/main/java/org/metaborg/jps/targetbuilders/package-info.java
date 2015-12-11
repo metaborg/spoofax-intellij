@@ -18,9 +18,10 @@
  */
 
 /**
- * IntelliJ IDEA plugin with Metaborg Core functionality.
+ * All the builder targets and builders used by the JPS plugin to
+ * build Metaborg Core projects.
  */
 @NonNullByDefault
-package org.metaborg.idea;
+package org.metaborg.jps.targetbuilders;
 
 import org.metaborg.core.NonNullByDefault;

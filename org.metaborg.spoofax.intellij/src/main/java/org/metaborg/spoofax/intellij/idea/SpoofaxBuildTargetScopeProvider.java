@@ -27,8 +27,8 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.api.CmdlineProtoUtil;
 import org.jetbrains.jps.api.CmdlineRemoteProto.Message.ControllerMessage.ParametersMessage.TargetTypeBuildScope;
-import org.metaborg.spoofax.intellij.jps.JpsPlugin;
-import org.metaborg.spoofax.intellij.jps.targetbuilders.SpoofaxPostTargetType;
+import org.metaborg.jps.JpsPlugin;
+import org.metaborg.jps.targetbuilders.SpoofaxPostTargetType;
 
 import java.util.Collections;
 import java.util.List;
