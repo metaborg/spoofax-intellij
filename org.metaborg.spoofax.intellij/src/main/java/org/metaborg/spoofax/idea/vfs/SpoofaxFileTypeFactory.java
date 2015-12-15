@@ -55,7 +55,7 @@ public final class SpoofaxFileTypeFactory extends MetaborgFileTypeFactory {
      * {@inheritDoc}
      */
     @Override
-    public void createFileTypes(@NotNull final MetaborgFileTypeConsumer consumer) {
+    public void createFileTypes(final MetaborgFileTypeConsumer consumer) {
         consumer.consume(this.artifactFileType);
     }
 }

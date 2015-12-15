@@ -44,7 +44,7 @@ public abstract class SpoofaxFileType extends LanguageFileType implements Metabo
      *
      * @param language The language.
      */
-    protected SpoofaxFileType(@NotNull final SpoofaxIdeaLanguage language) {
+    protected SpoofaxFileType(final SpoofaxIdeaLanguage language) {
         super(language);
     }
 
@@ -53,7 +53,6 @@ public abstract class SpoofaxFileType extends LanguageFileType implements Metabo
      *
      * @return The name.
      */
-    @NotNull
     @Override
     public String getName() {
         return this.getSpoofaxLanguage().name();
@@ -76,7 +75,6 @@ public abstract class SpoofaxFileType extends LanguageFileType implements Metabo
      *
      * @return The description.
      */
-    @NotNull
     @Override
     public String getDescription() {
         return StringFormatter.format("{} (Spoofax)", this.getSpoofaxLanguage().name());
@@ -87,7 +85,6 @@ public abstract class SpoofaxFileType extends LanguageFileType implements Metabo
      *
      * @return The default extension.
      */
-    @NotNull
     @Override
     public String getDefaultExtension() {
         return LanguageUtils.getDefaultExtension(this.getSpoofaxLanguage());
@@ -110,7 +107,6 @@ public abstract class SpoofaxFileType extends LanguageFileType implements Metabo
      *
      * @return A set of file extensions.
      */
-    @NotNull
     public Iterable<String> getExtensions() {
         return LanguageUtils.getExtensions(this.getSpoofaxLanguage());
     }

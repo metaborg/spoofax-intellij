@@ -42,7 +42,7 @@ public final class MetaborgFileTypeConsumer {
      *
      * @param consumer The file type consumer to wrap.
      */
-    public MetaborgFileTypeConsumer(@NotNull final FileTypeConsumer consumer) {
+    public MetaborgFileTypeConsumer(final FileTypeConsumer consumer) {
         Preconditions.checkNotNull(consumer);
 
         this.consumer = consumer;
@@ -53,7 +53,7 @@ public final class MetaborgFileTypeConsumer {
      *
      * @param fileType The file type.
      */
-    public void consume(@NotNull final MetaborgFileType fileType) {
+    public void consume(final MetaborgFileType fileType) {
         Preconditions.checkNotNull(fileType);
 
         consume(fileType, Iterables.toArray(fileType.getExtensions(), String.class));
@@ -65,7 +65,7 @@ public final class MetaborgFileTypeConsumer {
      * @param fileType The file type.
      * @param extensions The file extensions, without a leading '.'.
      */
-    public void consume(@NotNull final FileType fileType, @NonNls final String... extensions) {
+    public void consume(final FileType fileType, @NonNls final String... extensions) {
         Preconditions.checkNotNull(fileType);
         Preconditions.checkNotNull(extensions);
 
@@ -82,7 +82,7 @@ public final class MetaborgFileTypeConsumer {
      * @param fileType The file type.
      * @param matchers The file name matchers.
      */
-    public void consume(@NotNull final FileType fileType, @NotNull final FileNameMatcher... matchers) {
+    public void consume(final FileType fileType, final FileNameMatcher... matchers) {
         Preconditions.checkNotNull(fileType);
         Preconditions.checkNotNull(matchers);
 

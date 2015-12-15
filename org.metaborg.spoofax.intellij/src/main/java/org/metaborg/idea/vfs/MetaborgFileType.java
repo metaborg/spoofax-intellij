@@ -39,7 +39,6 @@ public interface MetaborgFileType extends FileType {
      *
      * @return A sequence of extensions, all without a leading '.'.
      */
-    @NotNull
     Iterable<String> getExtensions();
 
 }

@@ -36,7 +36,7 @@ public abstract class MetaborgFileTypeFactory extends FileTypeFactory {
     }
 
     @Override
-    public final void createFileTypes(@NotNull final FileTypeConsumer consumer) {
+    public final void createFileTypes(final FileTypeConsumer consumer) {
         createFileTypes(new MetaborgFileTypeConsumer(consumer));
     }
 
@@ -45,5 +45,5 @@ public abstract class MetaborgFileTypeFactory extends FileTypeFactory {
      *
      * @param consumer The consumer.
      */
-    public abstract void createFileTypes(@NotNull final MetaborgFileTypeConsumer consumer);
+    public abstract void createFileTypes(final MetaborgFileTypeConsumer consumer);
 }

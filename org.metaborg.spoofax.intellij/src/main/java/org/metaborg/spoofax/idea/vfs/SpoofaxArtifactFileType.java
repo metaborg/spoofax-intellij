@@ -35,7 +35,6 @@ public class SpoofaxArtifactFileType extends ArchiveFileType implements Metaborg
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public String getName() {
         return "SPOOFAX_ARTIFACT";
@@ -44,7 +43,6 @@ public class SpoofaxArtifactFileType extends ArchiveFileType implements Metaborg
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public String getDescription() {
         return "Spoofax artifact";
@@ -53,7 +51,6 @@ public class SpoofaxArtifactFileType extends ArchiveFileType implements Metaborg
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public String getDefaultExtension() {
         return getExtensions().iterator().next();
@@ -72,7 +69,6 @@ public class SpoofaxArtifactFileType extends ArchiveFileType implements Metaborg
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public Iterable<String> getExtensions() {
         return Collections.singletonList("spoofax-language");
