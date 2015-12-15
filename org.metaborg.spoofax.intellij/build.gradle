@@ -38,7 +38,9 @@ subprojects {
 configurations {
     provided
     language
+    languageBaseline
     testLanguage
+    testLanguageBaseline
     jpsRuntime
 }
 
@@ -84,9 +86,19 @@ task copyTestLanguageDependencies(type: Copy, description: 'Copies the language 
     from configurations.testLanguage
 }
 
-processResources.dependsOn copyLanguageDependencies
+task copyLanguageBaselineDependencies(type: Copy, description: 'Copies the language dependencies to the resources.', dependsOn: copyLanguageDependencies) {
+    into "src/main/resources/languages/"
+    from configurations.languageBaseline
+}
+
+task copyTestLanguageBaselineDependencies(type: Copy, description: 'Copies the language dependencies to the test resources.', dependsOn: copyTestLanguageDependencies) {
+    into "src/test/resources/languages/"
+    from configurations.testLanguageBaseline
+}
+
+processResources.dependsOn copyLanguageBaselineDependencies
 processResources.dependsOn copyJpsLibraries
-processTestResources.dependsOn copyTestLanguageDependencies
+processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
 // Prints the list of JPS plugin dependencies.
 task(printJpsDependencies, description: 'Prints a semi-colon-separated list of dependencies for the JPS plugin.') << {
@@ -130,13 +142,13 @@ dependencies {
     language 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.nabl:1.5.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.template:1.5.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.ts:1.5.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lib.analysis:1.5.0-SNAPSHOT@spoofax-language'
 
-    language 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-baseline-20150917-172646@spoofax-language'
+    languageBaseline 'org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646@spoofax-language'
+    languageBaseline 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646@spoofax-language'
+    languageBaseline 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-baseline-20150917-172646@spoofax-language'
 
     // Test dependencies
     testCompile 'junit:junit:4.12'
