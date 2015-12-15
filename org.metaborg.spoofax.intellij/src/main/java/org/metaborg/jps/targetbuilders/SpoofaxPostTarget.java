@@ -36,14 +36,13 @@ import java.util.List;
  */
 public final class SpoofaxPostTarget extends SpoofaxTarget {
 
-    @NotNull
     private final SpoofaxPreTargetType preTargetType;
 
     // TODO: Inject!
     public SpoofaxPostTarget(
-            @NotNull final MetaborgJpsProject project,
-            @NotNull final SpoofaxPostTargetType targetType,
-            @NotNull final SpoofaxPreTargetType preTargetType) {
+            final MetaborgJpsProject project,
+            final SpoofaxPostTargetType targetType,
+            final SpoofaxPreTargetType preTargetType) {
         super(project, targetType);
         this.preTargetType = preTargetType;
     }
@@ -61,8 +60,8 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
      */
     @Override
     public final Collection<BuildTarget<?>> computeDependencies(
-            @NotNull final BuildTargetRegistry buildTargetRegistry,
-            @NotNull final TargetOutputIndex targetOutputIndex) {
+            final BuildTargetRegistry buildTargetRegistry,
+            final TargetOutputIndex targetOutputIndex) {
         final List<BuildTarget<?>> dependencies = new ArrayList<>();
         dependencies.add(new ModuleBuildTarget(super.myModule, JavaModuleBuildTargetType.PRODUCTION));
         dependencies.add(this.preTargetType.createTarget(super.myModule));
@@ -72,7 +71,6 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public final String getPresentableName() {
         return "Spoofax POST target 2 '" + getId() + "'";

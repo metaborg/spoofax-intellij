@@ -27,13 +27,12 @@ import org.metaborg.jps.project.MetaborgJpsProject;
 
 public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTarget> {
 
-    @NotNull
     private final SpoofaxPreTargetType preTargetType;
 
     @Inject
     /* package private */ SpoofaxPostTargetType(
-            @NotNull final IJpsProjectService projectService,
-            @NotNull final SpoofaxPreTargetType preTargetType) {
+            final IJpsProjectService projectService,
+            final SpoofaxPreTargetType preTargetType) {
         super("spoofax-post-production", projectService);
         this.preTargetType = preTargetType;
     }
@@ -42,8 +41,7 @@ public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTa
      * {@inheritDoc}
      */
     @Override
-    @NotNull
-    public final SpoofaxPostTarget createTarget(@NotNull final MetaborgJpsProject project) {
+    public final SpoofaxPostTarget createTarget(final MetaborgJpsProject project) {
         return new SpoofaxPostTarget(project, this, this.preTargetType);
     }
 

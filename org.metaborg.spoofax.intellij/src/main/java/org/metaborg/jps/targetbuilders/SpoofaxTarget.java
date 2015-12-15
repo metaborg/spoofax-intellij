@@ -32,7 +32,6 @@ import org.jetbrains.jps.model.java.JavaSourceRootProperties;
 import org.jetbrains.jps.model.java.JavaSourceRootType;
 import org.jetbrains.jps.model.java.JpsJavaExtensionService;
 import org.jetbrains.jps.model.module.JpsTypedModuleSourceRoot;
-import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
 import org.metaborg.jps.project.MetaborgJpsProject;
 
 import java.io.File;
@@ -42,11 +41,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Base class for Spoofax build targetbuilders.
+ * Base class for Spoofax build target builders.
  */
 public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootDescriptor> {
 
-    @NotNull
     private final MetaborgJpsProject project;
 
     /**
@@ -56,8 +54,8 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      * @param targetType The target type.
      */
     protected SpoofaxTarget(
-            @NotNull final MetaborgJpsProject project,
-            @NotNull final ModuleBasedBuildTargetType<?> targetType) {
+            final MetaborgJpsProject project,
+            final ModuleBasedBuildTargetType<?> targetType) {
         super(targetType, project.module());
         this.project = project;
     }
@@ -88,7 +86,6 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      *
      * @return The project.
      */
-    @NotNull
     public final MetaborgJpsProject project() {
         return this.project;
     }
@@ -99,7 +96,6 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      * @return The ID.
      */
     @Override
-    @NotNull
     public final String getId() {
         // Default implementation.
         return super.myModule.getName();
@@ -126,13 +122,12 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      * @param buildDataPaths     The build data paths.
      * @return A list of source root descriptors.
      */
-    @NotNull
     @Override
     public final List<SpoofaxSourceRootDescriptor> computeRootDescriptors(
-            @NotNull final JpsModel jpsModel,
-            @NotNull final ModuleExcludeIndex moduleExcludeIndex,
-            @NotNull final IgnoredFileIndex ignoredFileIndex,
-            @NotNull final BuildDataPaths buildDataPaths) {
+            final JpsModel jpsModel,
+            final ModuleExcludeIndex moduleExcludeIndex,
+            final IgnoredFileIndex ignoredFileIndex,
+            final BuildDataPaths buildDataPaths) {
         // Default implementation.
         List<SpoofaxSourceRootDescriptor> result = new ArrayList<>();
         JavaSourceRootType type = isTests() ? JavaSourceRootType.TEST_SOURCE : JavaSourceRootType.SOURCE;
@@ -148,12 +143,13 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
     @Nullable
     @Override
     public final SpoofaxSourceRootDescriptor findRootDescriptor(
-            @NotNull final String rootId,
-            @NotNull final BuildRootIndex rootIndex) {
+            final String rootId,
+            final BuildRootIndex rootIndex) {
         // Default implementation.
-        return ContainerUtil.getFirstItem(rootIndex.getRootDescriptors(new File(rootId),
-                                                                       Collections.singletonList(getSpoofaxTargetType()),
-                                                                       null));
+        return ContainerUtil.getFirstItem(rootIndex.getRootDescriptors(
+                new File(rootId),
+                Collections.singletonList(getSpoofaxTargetType()),
+                null));
     }
 
     /**
@@ -161,14 +157,12 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      *
      * @return The presentable name.
      */
-    @NotNull
     @Override
     public abstract String getPresentableName();
 
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public final Collection<File> getOutputRoots(@NotNull final CompileContext compileContext) {
         // Default implementation.
@@ -176,11 +170,7 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
                                                                                                                isTests()));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @NotNull
-    private final SpoofaxTargetType<?> getSpoofaxTargetType() {
+    private SpoofaxTargetType<? extends BuildTarget<SpoofaxSourceRootDescriptor>> getSpoofaxTargetType() {
         // Default implementation.
         return (SpoofaxTargetType<?>) getTargetType();
     }

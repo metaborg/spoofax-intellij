@@ -23,7 +23,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.tools.ant.BuildListener;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildOutputConsumer;
 import org.jetbrains.jps.builders.DirtyFilesHolder;
 import org.jetbrains.jps.incremental.CompileContext;
@@ -44,7 +43,6 @@ import org.metaborg.spoofax.core.processing.SpoofaxProcessorRunner;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.spoofax.core.resource.SpoofaxIgnoresSelector;
-import org.metaborg.spoofax.intellij.SpoofaxSourceRootDescriptor;
 import org.metaborg.jps.project.JpsProjectService;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.meta.core.MetaBuildInput;
@@ -63,33 +61,26 @@ import java.net.URL;
 @Singleton
 public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
 
-    @NotNull
     private final ISpoofaxProjectSettingsService settingsService;
-    @NotNull
     private final SpoofaxMetaBuilder builder;
-    @NotNull
     private final JpsProjectService projectService;
-    @NotNull
     private final LanguageManager languageManager;
-    @NotNull
     private final ILanguagePathService languagePathService;
-    @NotNull
     private final IDependencyService dependencyService;
-    @NotNull
     private final SpoofaxProcessorRunner processorRunner;
     @InjectLogger
     private Logger logger;
 
     @Inject
     public SpoofaxPreBuilder(
-            @NotNull final SpoofaxPreTargetType targetType,
-            @NotNull final ISpoofaxProjectSettingsService settingsService,
-            @NotNull final SpoofaxMetaBuilder builder,
-            @NotNull final JpsProjectService projectService,
-            @NotNull final LanguageManager languageManager,
-            @NotNull ILanguagePathService languagePathService,
-            @NotNull IDependencyService dependencyService,
-            @NotNull SpoofaxProcessorRunner processorRunner) {
+            final SpoofaxPreTargetType targetType,
+            final ISpoofaxProjectSettingsService settingsService,
+            final SpoofaxMetaBuilder builder,
+            final JpsProjectService projectService,
+            final LanguageManager languageManager,
+            ILanguagePathService languagePathService,
+            IDependencyService dependencyService,
+            SpoofaxProcessorRunner processorRunner) {
         super(targetType);
         this.settingsService = settingsService;
         this.builder = builder;
@@ -103,7 +94,6 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public final String getPresentableName() {
         return "Spoofax pre-Java builder";
@@ -114,10 +104,10 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      */
     @Override
     public final void build(
-            @NotNull final SpoofaxPreTarget target,
-            @NotNull final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-            @NotNull final BuildOutputConsumer consumer,
-            @NotNull final CompileContext context) throws ProjectBuildException, IOException {
+            final SpoofaxPreTarget target,
+            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
+            final BuildOutputConsumer consumer,
+            final CompileContext context) throws ProjectBuildException, IOException {
 
         try {
             final MetaborgJpsProject project = this.projectService.get(target.getModule());
@@ -149,7 +139,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      * @throws Exception
      * @throws ProjectBuildException
      */
-    private final void initialize(@NotNull final MetaBuildInput metaInput, @NotNull final CompileContext context) throws
+    private final void initialize(final MetaBuildInput metaInput, final CompileContext context) throws
             ProjectBuildException {
         try {
             context.checkCanceled();
@@ -170,8 +160,8 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      * @throws ProjectBuildException
      */
     private final void generateSources(
-            @NotNull final MetaBuildInput metaInput,
-            @NotNull final CompileContext context) throws Exception, ProjectBuildException {
+            final MetaBuildInput metaInput,
+            final CompileContext context) throws Exception, ProjectBuildException {
         try {
             context.checkCanceled();
             context.processMessage(BuilderUtils.formatProgress(0f,
@@ -192,9 +182,9 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      * @throws Exception
      * @throws ProjectBuildException
      */
-    private final void regularBuild(
-            @NotNull final MetaBuildInput metaInput,
-            @NotNull final CompileContext context) throws ProjectBuildException {
+    private void regularBuild(
+            final MetaBuildInput metaInput,
+            final CompileContext context) throws ProjectBuildException {
 
         context.processMessage(BuilderUtils.formatProgress(0f, "Analyzing and transforming {}", metaInput.project));
         context.checkCanceled();
@@ -239,11 +229,11 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      * @throws Exception
      * @throws ProjectBuildException
      */
-    private final void compilePreJava(
-            @NotNull final MetaBuildInput metaInput,
+    private void compilePreJava(
+            final MetaBuildInput metaInput,
             @Nullable final URL[] classpath,
             @Nullable final BuildListener listener,
-            @NotNull final CompileContext context) throws Exception, ProjectBuildException {
+            final CompileContext context) throws Exception, ProjectBuildException {
         context.checkCanceled();
         context.processMessage(BuilderUtils.formatProgress(0f, "Building language project {}", metaInput.project));
         this.builder.compilePreJava(metaInput, classpath, listener, null);
@@ -258,10 +248,10 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      * @return The created {@link BuildInput}.
      * @throws ProjectBuildException
      */
-    private final BuildInput getBuildInput(
-            @NotNull final MetaBuildInput metaInput,
-            @NotNull final IDependencyService dependencyService,
-            @NotNull final ILanguagePathService languagePathService) throws
+    private BuildInput getBuildInput(
+            final MetaBuildInput metaInput,
+            final IDependencyService dependencyService,
+            final ILanguagePathService languagePathService) throws
             ProjectBuildException {
         BuildInput input;
         try {

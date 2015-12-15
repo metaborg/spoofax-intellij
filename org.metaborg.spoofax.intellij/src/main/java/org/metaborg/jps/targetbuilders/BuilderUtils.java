@@ -41,10 +41,9 @@ public final class BuilderUtils {
      * @param args    The message string arguments.
      * @return The formatted progress message.
      */
-    @NotNull
     public final static ProgressMessage formatProgress(
             final float done,
-            @NotNull final String message,
+            final String message,
             final Object... args) {
         final String msgString = StringFormatter.format(message, args);
         return new ProgressMessage(msgString, done);
@@ -59,11 +58,10 @@ public final class BuilderUtils {
      * @param args        The message string arguments.
      * @return The formatted message.
      */
-    @NotNull
     public final static CompilerMessage formatMessage(
-            @NotNull final String builderName,
-            @NotNull final BuildMessage.Kind kind,
-            @NotNull final String message,
+            final String builderName,
+            final BuildMessage.Kind kind,
+            final String message,
             final Object... args) {
         final String msgString = StringFormatter.format(message, args);
         return new CompilerMessage(builderName, kind, msgString);
@@ -76,10 +74,9 @@ public final class BuilderUtils {
      * @param message     The message to format.
      * @return The formatted message.
      */
-    @NotNull
     public final static CompilerMessage formatMessage(
-            @NotNull final String builderName,
-            @NotNull final IMessage message) {
+            final String builderName,
+            final IMessage message) {
         final BuildMessage.Kind kind;
         switch (message.severity()) {
             case NOTE:

@@ -55,9 +55,9 @@ public final class SpoofaxBuilderService extends BuilderService {
 
     @Inject
     private void inject(
-            @NotNull Collection<BuildTargetType<?>> targets,
-            @NotNull Collection<TargetBuilder<?, ?>> builders,
-            @NotNull Collection<ModuleLevelBuilder> moduleLevelBuilders) {
+            Collection<BuildTargetType<?>> targets,
+            Collection<TargetBuilder<?, ?>> builders,
+            Collection<ModuleLevelBuilder> moduleLevelBuilders) {
         this.targets = Collections.unmodifiableList(new ArrayList<>(targets));
         this.builders = Collections.unmodifiableList(new ArrayList<>(builders));
         this.moduleLevelBuilders = Collections.unmodifiableList(new ArrayList<>(moduleLevelBuilders));
@@ -68,7 +68,6 @@ public final class SpoofaxBuilderService extends BuilderService {
      *
      * @return A list of build target types.
      */
-    @NotNull
     @Override
     public List<? extends BuildTargetType<?>> getTargetTypes() {
         return this.targets;
@@ -81,7 +80,6 @@ public final class SpoofaxBuilderService extends BuilderService {
      *
      * @return A list of module level builders.
      */
-    @NotNull
     @Override
     public List<? extends ModuleLevelBuilder> createModuleLevelBuilders() {
         return this.moduleLevelBuilders;
@@ -94,7 +92,6 @@ public final class SpoofaxBuilderService extends BuilderService {
      *
      * @return A list of target builders.
      */
-    @NotNull
     @Override
     public List<? extends TargetBuilder<?, ?>> createBuilders() {
         return this.builders;

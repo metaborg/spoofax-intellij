@@ -34,7 +34,7 @@ import java.util.Collections;
 public final class SpoofaxPreTarget extends SpoofaxTarget {
 
     // TODO: Inject!
-    public SpoofaxPreTarget(@NotNull final MetaborgJpsProject project, @NotNull final SpoofaxPreTargetType targetType) {
+    public SpoofaxPreTarget(final MetaborgJpsProject project, final SpoofaxPreTargetType targetType) {
         super(project, targetType);
     }
 
@@ -51,15 +51,14 @@ public final class SpoofaxPreTarget extends SpoofaxTarget {
      */
     @Override
     public final Collection<BuildTarget<?>> computeDependencies(
-            @NotNull final BuildTargetRegistry buildTargetRegistry,
-            @NotNull final TargetOutputIndex targetOutputIndex) {
+            final BuildTargetRegistry buildTargetRegistry,
+            final TargetOutputIndex targetOutputIndex) {
         return Collections.emptyList();
     }
 
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public final String getPresentableName() {
         return "Spoofax PRE target 2 '" + getId() + "'";

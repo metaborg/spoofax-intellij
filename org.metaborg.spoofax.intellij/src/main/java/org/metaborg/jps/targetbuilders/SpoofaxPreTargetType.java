@@ -27,15 +27,14 @@ import org.metaborg.jps.project.MetaborgJpsProject;
 public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarget> {
 
     @Inject
-    /* package private */ SpoofaxPreTargetType(@NotNull final IJpsProjectService projectService) {
+    /* package private */ SpoofaxPreTargetType(final IJpsProjectService projectService) {
         super("spoofax-pre-production", projectService);
     }
 
     /**
      * {@inheritDoc}
      */
-    @NotNull
-    public final SpoofaxPreTarget createTarget(@NotNull final MetaborgJpsProject project) {
+    public final SpoofaxPreTarget createTarget(final MetaborgJpsProject project) {
         return new SpoofaxPreTarget(project, this);
     }
 
