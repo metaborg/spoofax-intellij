@@ -25,8 +25,11 @@ import org.jetbrains.jps.incremental.messages.CompilerMessage;
 import org.jetbrains.jps.incremental.messages.ProgressMessage;
 import org.metaborg.core.StringFormatter;
 import org.metaborg.core.messages.IMessage;
+import org.metaborg.core.source.ISourceRegion;
 import org.spoofax.interpreter.terms.IStrategoList;
 import org.strategoxt.lang.StrategoErrorExit;
+
+import javax.annotation.Nullable;
 
 /**
  * Builder utility functions.
@@ -41,7 +44,7 @@ public final class BuilderUtils {
      * @param args    The message string arguments.
      * @return The formatted progress message.
      */
-    public final static ProgressMessage formatProgress(
+    public static ProgressMessage formatProgress(
             final float done,
             final String message,
             final Object... args) {
@@ -58,7 +61,7 @@ public final class BuilderUtils {
      * @param args        The message string arguments.
      * @return The formatted message.
      */
-    public final static CompilerMessage formatMessage(
+    public static CompilerMessage formatMessage(
             final String builderName,
             final BuildMessage.Kind kind,
             final String message,
@@ -74,7 +77,7 @@ public final class BuilderUtils {
      * @param message     The message to format.
      * @return The formatted message.
      */
-    public final static CompilerMessage formatMessage(
+    public static CompilerMessage formatMessage(
             final String builderName,
             final IMessage message) {
         final BuildMessage.Kind kind;
@@ -93,7 +96,7 @@ public final class BuilderUtils {
         }
 
         String msgString = message.message();
-        Throwable exception = message.exception();
+        @Nullable Throwable exception = message.exception();
         while (exception != null) {
             msgString += "\n" + exception.getMessage();
             if (exception instanceof StrategoErrorExit) {
@@ -114,12 +117,13 @@ public final class BuilderUtils {
         long locationLine = -1L;
         long locationColumn = -1L;
 
-        if (message.region() != null && !(message.region().startOffset() == 0 && message.region().endOffset() == 0 && message.region().startRow() == 0 && message.region().endRow() == 0 && message.region().startColumn() == 0 && message.region().endColumn() == 0)) {
-            problemBeginOffset = message.region().startOffset();
-            problemEndOffset = message.region().endOffset();
-            problemLocationOffset = message.region().startOffset();
-            locationLine = message.region().startRow() + 1;
-            locationColumn = message.region().startColumn() + 1;
+        @Nullable final ISourceRegion region = message.region();
+        if (region != null && !(region.startOffset() == 0 && region.endOffset() == 0 && region.startRow() == 0 && region.endRow() == 0 && region.startColumn() == 0 && region.endColumn() == 0)) {
+            problemBeginOffset = region.startOffset();
+            problemEndOffset = region.endOffset();
+            problemLocationOffset = region.startOffset();
+            locationLine = region.startRow() + 1;
+            locationColumn = region.startColumn() + 1;
         }
 
         return new CompilerMessage(builderName,

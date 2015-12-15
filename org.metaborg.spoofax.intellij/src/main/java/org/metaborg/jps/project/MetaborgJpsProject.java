@@ -22,12 +22,13 @@ package org.metaborg.jps.project;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.module.JpsModule;
+import org.metaborg.core.project.ILanguageSpec;
 import org.metaborg.core.project.IProject;
 
 /**
  * A Spoofax project used in JPS.
  */
-public final class MetaborgJpsProject implements IProject {
+public final class MetaborgJpsProject implements IProject, ILanguageSpec {
 
     @NotNull
     private final FileObject location;

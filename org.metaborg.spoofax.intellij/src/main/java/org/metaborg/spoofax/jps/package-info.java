@@ -21,6 +21,6 @@
  * JetBrains Project System (JPS) plugin with Spoofax Core functionality.
  */
 @NonNullByDefault
-package org.metaborg.jps.spoofax;
+package org.metaborg.spoofax.jps;
 
 import org.metaborg.core.NonNullByDefault;

@@ -53,6 +53,7 @@ public final class SpoofaxBuilderService extends BuilderService {
         JpsPlugin.injector().injectMembers(this);
     }
 
+    @SuppressWarnings("unused")
     @Inject
     private void inject(
             Collection<BuildTargetType<?>> targets,
