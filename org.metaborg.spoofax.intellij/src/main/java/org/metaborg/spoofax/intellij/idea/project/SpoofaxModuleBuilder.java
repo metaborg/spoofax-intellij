@@ -193,15 +193,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     @Override
     public ModuleWizardStep[] createWizardSteps(
             @NotNull final WizardContext wizardContext, @NotNull final ModulesProvider modulesProvider) {
-//        ArrayList<ModuleWizardStep> steps = new ArrayList<>();
-//
-//        steps.add(new MetaborgModuleWizardStep(moduleBuilder, wizardContext));
-//
-//        final ModuleWizardStep[] wizardSteps = steps.toArray(new ModuleWizardStep[steps.size()]);
-//        return ArrayUtil.mergeArrays(wizardSteps,
-//                                     super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider));
         return ModuleWizardStep.EMPTY_ARRAY;
-//        return super.createWizardSteps(wizardContext, modulesProvider);
     }
 
     @Override
@@ -265,22 +257,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
 
     }
 
-//    @Nullable
-//    @Override
-//    public Module commitModule(@NotNull final Project project, @Nullable final ModifiableModuleModel model) {
-//        Module module = super.commitModule(project, model);
-//
-//        if (module != null) {
-//            // Generate the module structure (files and directories).
-//            FileObject location = resourceService.resolve(contentEntry.getFile());
-//            IdeaProject intelliJProject = this.projectFactory.create(module, location);
-//            this.projectService.open(intelliJProject);
-//            generateModuleStructure(intelliJProject);
-//        }
-//
-//        return module;
-//    }
-
     /**
      * Runs a runnable once the specified project has been initialized.
      *
@@ -327,16 +303,11 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      * Generates the module directory structure and files.
      *
      * @param languageSpec      The language specification.
-    //     * @param rootModel    The root model.
-    //     * @param contentEntry The content entry.
      */
     private final void generateModuleStructure(
             @NotNull final ILanguageSpec languageSpec) {
-//            @NotNull final ModifiableRootModel rootModel,
-//            @NotNull final ContentEntry contentEntry) {
         final String name = getName();
         final LanguageIdentifier identifier = getLanguageIdentifier();
-//        final IProjectSettings settings = new ProjectSettings(identifier, name);
 
         try {
             final FileObject location = languageSpec.location();
@@ -345,49 +316,10 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
                     .withIdentifier(identifier)
                     .withName(name)
                     .build();
-//            final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, location);
             final LanguageSpecGeneratorScope scope = new LanguageSpecGeneratorScope(location, config);
-//            final GeneratorProjectSettings generatorSettings = new GeneratorProjectSettings(spoofaxSettings);
 //            // TODO: Get from SDK.
 //            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
-//            final LanguageSpecGenerator
             final NewLanguageSpecGenerator generator = new NewLanguageSpecGenerator(scope, new String[]{getExtension()});
-//            final NewProjectGenerator generator = new NewProjectGenerator(generatorSettings, new String[]{getExtension()});
-            generator.generateAll();
-
-//            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
-//            final VirtualFile f = resourceService.unresolve(project.location().resolveFile("editor/java/"));
-//            contentEntry.addSourceFolder(f, false, "");
-
-
-        } catch (ProjectException | IOException e) {
-            throw new UnhandledException(e);
-        }
-    }
-
-    /**
-     * Generates the module directory structure and files.
-     *
-     * @param project      The project.
-//     * @param rootModel    The root model.
-//     * @param contentEntry The content entry.
-     */
-    @Deprecated
-    private final void oldGenerateModuleStructure(
-            @NotNull final IProject project) {
-//            @NotNull final ModifiableRootModel rootModel,
-//            @NotNull final ContentEntry contentEntry) {
-        final String name = getName(); //"TestProject";
-        final LanguageIdentifier identifier = getLanguageIdentifier();
-        final IProjectSettings settings = new ProjectSettings(identifier, name);
-
-        try {
-            final FileObject location = project.location();
-            final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, location);
-            final GeneratorProjectSettings generatorSettings = new GeneratorProjectSettings(spoofaxSettings);
-            // TODO: Get from SDK.
-            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
-            final NewProjectGenerator generator = new NewProjectGenerator(generatorSettings, new String[]{getExtension()});
             generator.generateAll();
 
 //            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.

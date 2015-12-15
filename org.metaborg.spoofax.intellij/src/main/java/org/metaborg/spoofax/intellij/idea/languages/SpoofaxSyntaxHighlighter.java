@@ -94,7 +94,7 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
         TextAttributesKey[] attributes = this.styleMap.getOrDefault(style, null);
         if (attributes == null) {
             String name = "STYLE_" + style.hashCode();
-            TextAttributesKey attribute = createTextAttributesKey(name, new TextAttributes(
+            @SuppressWarnings("deprecation") TextAttributesKey attribute = createTextAttributesKey(name, new TextAttributes(
                     style.color(),
                     style.backgroundColor(),
                     null,

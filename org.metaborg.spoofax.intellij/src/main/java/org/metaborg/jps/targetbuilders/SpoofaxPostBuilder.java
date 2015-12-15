@@ -27,13 +27,21 @@ import org.jetbrains.jps.builders.BuildOutputConsumer;
 import org.jetbrains.jps.builders.DirtyFilesHolder;
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.ProjectBuildException;
+import org.jetbrains.jps.model.module.JpsModule;
+import org.metaborg.core.MessageFormatter;
 import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.core.project.ILanguageSpec;
+import org.metaborg.core.project.ILanguageSpecService;
 import org.metaborg.core.project.ProjectException;
+import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfigService;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.jps.project.JpsProjectService;
 import org.metaborg.jps.project.MetaborgJpsProject;
+import org.metaborg.spoofax.meta.core.LanguageSpecBuildInput;
 import org.metaborg.spoofax.meta.core.MetaBuildInput;
+import org.metaborg.spoofax.meta.core.SpoofaxLanguageSpecBuilder;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
 import org.slf4j.Logger;
@@ -48,22 +56,19 @@ import java.net.URL;
 @Singleton
 public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> {
 
-    private final ISpoofaxProjectSettingsService settingsService;
-    private final SpoofaxMetaBuilder builder;
-    private final JpsProjectService projectService;
+    private final SpoofaxLanguageSpecBuilder builder;
     @InjectLogger
     private Logger logger;
 
     @Inject
     private SpoofaxPostBuilder(
             final SpoofaxPostTargetType targetType,
-            final ISpoofaxProjectSettingsService settingsService,
-            final SpoofaxMetaBuilder builder,
-            final JpsProjectService projectService) {
-        super(targetType);
-        this.settingsService = settingsService;
+            final SpoofaxLanguageSpecBuilder builder,
+            final JpsProjectService projectService,
+            final ILanguageSpecService languageSpecService,
+            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService) {
+        super(targetType, projectService, languageSpecService, spoofaxLanguageSpecConfigService);
         this.builder = builder;
-        this.projectService = projectService;
     }
 
     /**
@@ -85,11 +90,9 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
             final CompileContext context) throws ProjectBuildException, IOException {
 
         try {
-            final MetaborgJpsProject project = projectService.get(target.getModule());
-            final SpoofaxProjectSettings settings = settingsService.get(project);
-            final MetaBuildInput input = new MetaBuildInput(project, settings);
+            final LanguageSpecBuildInput metaInput = getBuildInput(target.getModule());
 
-            compilePostJava(input, null, new AntSLF4JLogger(), context);
+            compilePostJava(metaInput, null, new AntSLF4JLogger(), context);
 
         } catch (FileSystemException e) {
             logger.error("An unexpected IO exception occurred.", e);
@@ -115,14 +118,35 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
      * @throws ProjectBuildException
      */
     private void compilePostJava(
-            final MetaBuildInput metaInput,
+            final LanguageSpecBuildInput metaInput,
             @Nullable final URL[] classpath,
             @Nullable final BuildListener listener,
             final CompileContext context) throws Exception, ProjectBuildException {
         context.checkCanceled();
-        context.processMessage(BuilderUtils.formatProgress(0f, "Packaging language project {}", metaInput.project));
+        context.processMessage(BuilderUtils.formatProgress(0f, "Packaging language project {}", metaInput.languageSpec));
         this.builder.compilePostJava(metaInput, classpath, listener, null);
     }
 
-
+//    /**
+//     * Gets the build input.
+//     *
+//     * @param module The JPS module.
+//     * @return The build input.
+//     * @throws ProjectBuildException
+//     * @throws IOException
+//     */
+//    protected LanguageSpecBuildInput getBuildInput(final JpsModule module) throws ProjectBuildException,
+//            IOException {
+//        @Nullable final MetaborgJpsProject project = projectService.get(module);
+//        if (project == null)
+//            throw new ProjectBuildException(MessageFormatter.format("Could not get a project for the module {}", module));
+//        @Nullable final ILanguageSpec languageSpec = languageSpecService.get(project);
+//        if (languageSpec == null)
+//            throw new ProjectBuildException(MessageFormatter.format("Could not get a language specification for the project {}", project));
+//        @Nullable final ISpoofaxLanguageSpecConfig config = this.spoofaxLanguageSpecConfigService.get(languageSpec);
+//        if (config == null)
+//            throw new ProjectBuildException(MessageFormatter.format("Could not get a configuration for language specification {}", languageSpec));
+//
+//        return new LanguageSpecBuildInput(languageSpec, config);
+//    }
 }

@@ -25,6 +25,9 @@ import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.build.dependency.IDependencyService;
+import org.metaborg.core.build.dependency.INewDependencyService;
+import org.metaborg.core.project.ILanguageSpec;
+import org.metaborg.core.project.ILanguageSpecService;
 import org.metaborg.core.project.IProject;
 
 import javax.annotation.Nullable;
@@ -41,14 +44,16 @@ import java.util.Set;
 public final class LanguageProjectService implements ILanguageProjectService {
 
     private final ILanguageIdentifierService identifierService;
-    private final IDependencyService dependencyService;
+    private final INewDependencyService dependencyService;
     private final ILanguageService languageService;
+    private final ILanguageSpecService languageSpecService;
 
     @Inject
-    /* package private */ LanguageProjectService(final ILanguageIdentifierService identifierService, final IDependencyService dependencyService, final ILanguageService languageService) {
+    /* package private */ LanguageProjectService(final ILanguageIdentifierService identifierService, final INewDependencyService dependencyService, final ILanguageService languageService, final ILanguageSpecService languageSpecService) {
         this.identifierService = identifierService;
         this.dependencyService = dependencyService;
         this.languageService = languageService;
+        this.languageSpecService = languageSpecService;
     }
 
     /**
@@ -57,7 +62,8 @@ public final class LanguageProjectService implements ILanguageProjectService {
     @Override
     public Iterable<ILanguageImpl> activeImpls(@Nullable final IProject project) {
         try {
-            final Iterable<ILanguageComponent> dependencies = this.dependencyService.compileDependencies(project);
+            final ILanguageSpec languageSpec = this.languageSpecService.get(project);
+            final Iterable<ILanguageComponent> dependencies = this.dependencyService.compileDependencies(languageSpec);
             return LanguageUtils.toImpls(dependencies);
         } catch (MetaborgException e) {
             // There is nothing we can do about this exception.

@@ -37,96 +37,96 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
 
-/**
- * A project settings service that stores the settings in a YAML file.
- */
-@Deprecated
-@Singleton
-public final class YamlProjectSettingsService implements IProjectSettingsService2 {
-
-    /**
-     * Path to the project settings file, relative to the project's root.
-     */
-    @NotNull
-    private static final String SETTINGS_FILE = "spoofax-project.yaml";
-    @NotNull
-    private static final String ALT_SETTINGS_FILE = "src-gen/metaborg.generated.yaml";
-    /**
-     * Path to the default settings file, relative to the resources root.
-     */
-    @NotNull
-    private static final String DEFAULT_SETTINGS_FILE = "defaultsettings.yaml";
-    @NotNull
-    private final IResourceService resourceService;
-    @InjectLogger
-    private Logger logger;
-
-    @Inject
-    private YamlProjectSettingsService(@NotNull final IResourceService resourceService) {
-        this.resourceService = resourceService;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @NotNull
-    public final IProjectSettings getDefault() {
-        URL resource = this.getClass().getClassLoader().getResource(DEFAULT_SETTINGS_FILE);
-        assert resource != null;
-        final String url = resource.toString();
-        final FileObject defaultSettings = this.resourceService.resolve(url);
-
-        try {
-            return YAMLProjectSettingsSerializer.read(defaultSettings);
-        } catch (IOException e) {
-            throw new MetaborgRuntimeException(StringFormatter.format(
-                    "Reading default settings file failed unexpectedly: {}",
-                    defaultSettings), e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @NotNull
-    public IProjectSettings get(@NotNull final IProject project) {
-        final FileObject location = project.location();
-        try {
-            final FileObject settingsFile = getSettingsFile(location);
-            if (settingsFile == null) {
-                return getDefault();
-            }
-            return YAMLProjectSettingsSerializer.read(settingsFile);
-        } catch (IOException e) {
-            logger.warn(String.format("Reading settings file failed unexpectedly: %s/%s", location, SETTINGS_FILE), e);
-            return getDefault();
-        }
-    }
-
-    @Nullable
-    private FileObject getSettingsFile(@NotNull FileObject projectLocation) throws FileSystemException {
-        FileObject settingsFile;
-        settingsFile = projectLocation.resolveFile(SETTINGS_FILE);
-        if (settingsFile.exists()) return settingsFile;
-        settingsFile = projectLocation.resolveFile(ALT_SETTINGS_FILE);
-        if (settingsFile.exists()) return settingsFile;
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @NotNull
-    public void set(@NotNull final IProject project, @NotNull final IProjectSettings settings) {
-        final FileObject location = project.location();
-        try {
-            final FileObject settingsFile = location.resolveFile(SETTINGS_FILE);
-            YAMLProjectSettingsSerializer.write(settingsFile, settings);
-        } catch (IOException e) {
-            logger.warn(String.format("Writing settings file failed unexpectedly: %s/%s", location, SETTINGS_FILE), e);
-        }
-    }
-}
+///**
+// * A project settings service that stores the settings in a YAML file.
+// */
+//@Deprecated
+//@Singleton
+//public final class YamlProjectSettingsService implements IProjectSettingsService2 {
+//
+//    /**
+//     * Path to the project settings file, relative to the project's root.
+//     */
+//    @NotNull
+//    private static final String SETTINGS_FILE = "spoofax-project.yaml";
+//    @NotNull
+//    private static final String ALT_SETTINGS_FILE = "src-gen/metaborg.generated.yaml";
+//    /**
+//     * Path to the default settings file, relative to the resources root.
+//     */
+//    @NotNull
+//    private static final String DEFAULT_SETTINGS_FILE = "defaultsettings.yaml";
+//    @NotNull
+//    private final IResourceService resourceService;
+//    @InjectLogger
+//    private Logger logger;
+//
+//    @Inject
+//    private YamlProjectSettingsService(@NotNull final IResourceService resourceService) {
+//        this.resourceService = resourceService;
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    @NotNull
+//    public final IProjectSettings getDefault() {
+//        URL resource = this.getClass().getClassLoader().getResource(DEFAULT_SETTINGS_FILE);
+//        assert resource != null;
+//        final String url = resource.toString();
+//        final FileObject defaultSettings = this.resourceService.resolve(url);
+//
+//        try {
+//            return YAMLProjectSettingsSerializer.read(defaultSettings);
+//        } catch (IOException e) {
+//            throw new MetaborgRuntimeException(StringFormatter.format(
+//                    "Reading default settings file failed unexpectedly: {}",
+//                    defaultSettings), e);
+//        }
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    @NotNull
+//    public IProjectSettings get(@NotNull final IProject project) {
+//        final FileObject location = project.location();
+//        try {
+//            final FileObject settingsFile = getSettingsFile(location);
+//            if (settingsFile == null) {
+//                return getDefault();
+//            }
+//            return YAMLProjectSettingsSerializer.read(settingsFile);
+//        } catch (IOException e) {
+//            logger.warn(String.format("Reading settings file failed unexpectedly: %s/%s", location, SETTINGS_FILE), e);
+//            return getDefault();
+//        }
+//    }
+//
+//    @Nullable
+//    private FileObject getSettingsFile(@NotNull FileObject projectLocation) throws FileSystemException {
+//        FileObject settingsFile;
+//        settingsFile = projectLocation.resolveFile(SETTINGS_FILE);
+//        if (settingsFile.exists()) return settingsFile;
+//        settingsFile = projectLocation.resolveFile(ALT_SETTINGS_FILE);
+//        if (settingsFile.exists()) return settingsFile;
+//        return null;
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    @NotNull
+//    public void set(@NotNull final IProject project, @NotNull final IProjectSettings settings) {
+//        final FileObject location = project.location();
+//        try {
+//            final FileObject settingsFile = location.resolveFile(SETTINGS_FILE);
+//            YAMLProjectSettingsSerializer.write(settingsFile, settings);
+//        } catch (IOException e) {
+//            logger.warn(String.format("Writing settings file failed unexpectedly: %s/%s", location, SETTINGS_FILE), e);
+//        }
+//    }
+//}

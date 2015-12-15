@@ -29,47 +29,47 @@ import org.metaborg.spoofax.core.project.settings.Format;
 import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
 import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 
-/**
- * Spoofax project settings service for IntelliJ.
- */
-@Deprecated
-@Singleton
-public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProjectSettingsService {
-
-    @NotNull
-    private final IProjectSettingsService2 projectSettingsService;
-
-    @Inject
-    /* package private */ IntelliJSpoofaxProjectSettingsService(@NotNull final IProjectSettingsService2 projectSettingsService) {
-        this.projectSettingsService = projectSettingsService;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SpoofaxProjectSettings get(@NotNull final IProject project) throws ProjectException {
-        final IProjectSettings settings = this.projectSettingsService.get(project);
-        final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, project.location());
-
-        // TODO: Read these special settings:
-        Format format = Format.jar;
-//        List<String> pardonedLanguages;
-//        List<String> sdfArgs;
-//        List<String> strategoArgs;
-//        String externalDef;
-//        String externalJar;
-//        String externalJarFlags;
-
-        // TODO: And add them to the settings.
-        spoofaxSettings.setFormat(format);
-//        spoofaxSettings.setPardonedLanguages(pardonedLanguages);
-//        spoofaxSettings.setSdfArgs(sdfArgs);
-//        spoofaxSettings.setStrategoArgs(strategoArgs);
-//        spoofaxSettings.setExternalDef(externalDef);
-//        spoofaxSettings.setExternalJar(externalJar);
-//        spoofaxSettings.setExternalJarFlags(externalJarFlags);
-
-        return spoofaxSettings;
-    }
-}
+///**
+// * Spoofax project settings service for IntelliJ.
+// */
+//@Deprecated
+//@Singleton
+//public final class IntelliJSpoofaxProjectSettingsService implements ISpoofaxProjectSettingsService {
+//
+//    @NotNull
+//    private final IProjectSettingsService2 projectSettingsService;
+//
+//    @Inject
+//    /* package private */ IntelliJSpoofaxProjectSettingsService(@NotNull final IProjectSettingsService2 projectSettingsService) {
+//        this.projectSettingsService = projectSettingsService;
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public SpoofaxProjectSettings get(@NotNull final IProject project) throws ProjectException {
+//        final IProjectSettings settings = this.projectSettingsService.get(project);
+//        final SpoofaxProjectSettings spoofaxSettings = new SpoofaxProjectSettings(settings, project.location());
+//
+//        // TODO: Read these special settings:
+//        Format format = Format.jar;
+////        List<String> pardonedLanguages;
+////        List<String> sdfArgs;
+////        List<String> strategoArgs;
+////        String externalDef;
+////        String externalJar;
+////        String externalJarFlags;
+//
+//        // TODO: And add them to the settings.
+//        spoofaxSettings.setFormat(format);
+////        spoofaxSettings.setPardonedLanguages(pardonedLanguages);
+////        spoofaxSettings.setSdfArgs(sdfArgs);
+////        spoofaxSettings.setStrategoArgs(strategoArgs);
+////        spoofaxSettings.setExternalDef(externalDef);
+////        spoofaxSettings.setExternalJar(externalJar);
+////        spoofaxSettings.setExternalJarFlags(externalJarFlags);
+//
+//        return spoofaxSettings;
+//    }
+//}

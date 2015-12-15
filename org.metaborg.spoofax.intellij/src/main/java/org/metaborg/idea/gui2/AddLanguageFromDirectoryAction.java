@@ -31,6 +31,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.metaborg.core.UnhandledException;
 import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
+import org.metaborg.core.language.INewLanguageDiscoveryService;
 import org.metaborg.spoofax.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
@@ -43,7 +44,7 @@ public class AddLanguageFromDirectoryAction extends AnAction {
 
     private ILanguageService languageService;
     private IIdeaLanguageManager ideaLanguageManager;
-    private ILanguageDiscoveryService discoveryService;
+    private INewLanguageDiscoveryService discoveryService;
     private SpoofaxArtifactFileType artifactFileType;
     private LanguageManager languageManager;
 
@@ -57,7 +58,7 @@ public class AddLanguageFromDirectoryAction extends AnAction {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final LanguageManager languageManager, final ILanguageDiscoveryService discoveryService, final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager, final SpoofaxArtifactFileType artifactFileType) {
+    private void inject(final LanguageManager languageManager, final INewLanguageDiscoveryService discoveryService, final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager, final SpoofaxArtifactFileType artifactFileType) {
         this.languageService = languageService;
         this.ideaLanguageManager = ideaLanguageManager;
         this.artifactFileType = artifactFileType;

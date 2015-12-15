@@ -29,10 +29,7 @@ import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.UnhandledException;
-import org.metaborg.core.language.ILanguageComponent;
-import org.metaborg.core.language.ILanguageDiscoveryService;
-import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.core.language.ILanguageService;
+import org.metaborg.core.language.*;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
@@ -51,7 +48,7 @@ public final class LanguageManager {
     @NotNull
     private final ILanguageService languageService;
     @NotNull
-    private final ILanguageDiscoveryService discoveryService;
+    private final INewLanguageDiscoveryService discoveryService;
     @NotNull
     private final IIntelliJResourceService resourceService;
     @InjectLogger
@@ -60,7 +57,7 @@ public final class LanguageManager {
     @Inject
     private LanguageManager(
             @NotNull final ILanguageService languageService,
-            @NotNull final ILanguageDiscoveryService discoveryService,
+            @NotNull final INewLanguageDiscoveryService discoveryService,
             @NotNull final IIntelliJResourceService resourceService) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;

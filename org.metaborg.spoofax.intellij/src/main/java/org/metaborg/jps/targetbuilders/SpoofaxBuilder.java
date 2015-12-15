@@ -25,7 +25,17 @@ import org.jetbrains.jps.builders.DirtyFilesHolder;
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.ProjectBuildException;
 import org.jetbrains.jps.incremental.TargetBuilder;
+import org.jetbrains.jps.model.module.JpsModule;
+import org.metaborg.core.MessageFormatter;
+import org.metaborg.core.project.ILanguageSpec;
+import org.metaborg.core.project.ILanguageSpecService;
+import org.metaborg.jps.project.JpsProjectService;
+import org.metaborg.jps.project.MetaborgJpsProject;
+import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfigService;
+import org.metaborg.spoofax.meta.core.LanguageSpecBuildInput;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -33,6 +43,10 @@ import java.util.Collections;
  * Spoofax builder.
  */
 public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuilder<SpoofaxSourceRootDescriptor, T> {
+
+    protected final JpsProjectService projectService;
+    protected final ILanguageSpecService languageSpecService;
+    protected final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService;
 
     /**
      * Gets the presentable name of the builder.
@@ -47,8 +61,14 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
      *
      * @param targetType The target type.
      */
-    protected SpoofaxBuilder(final BuildTargetType<T> targetType) {
+    protected SpoofaxBuilder(final BuildTargetType<T> targetType,
+                             final JpsProjectService projectService,
+                             final ILanguageSpecService languageSpecService,
+                             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService) {
         super(Collections.singletonList(targetType));
+        this.projectService = projectService;
+        this.languageSpecService = languageSpecService;
+        this.spoofaxLanguageSpecConfigService = spoofaxLanguageSpecConfigService;
     }
 
     /**
@@ -67,5 +87,28 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
             final DirtyFilesHolder<SpoofaxSourceRootDescriptor, T> holder,
             final BuildOutputConsumer consumer,
             final CompileContext context) throws ProjectBuildException, IOException;
+
+    /**
+     * Gets the build input.
+     *
+     * @param module The JPS module.
+     * @return The build input.
+     * @throws ProjectBuildException
+     * @throws IOException
+     */
+    protected LanguageSpecBuildInput getBuildInput(final JpsModule module) throws ProjectBuildException,
+            IOException {
+        @Nullable final MetaborgJpsProject project = projectService.get(module);
+        if (project == null)
+            throw new ProjectBuildException(MessageFormatter.format("Could not get a project for the module {}", module));
+        @Nullable final ILanguageSpec languageSpec = languageSpecService.get(project);
+        if (languageSpec == null)
+            throw new ProjectBuildException(MessageFormatter.format("Could not get a language specification for the project {}", project));
+        @Nullable final ISpoofaxLanguageSpecConfig config = this.spoofaxLanguageSpecConfigService.get(languageSpec);
+        if (config == null)
+            throw new ProjectBuildException(MessageFormatter.format("Could not get a configuration for language specification {}", languageSpec));
+
+        return new LanguageSpecBuildInput(languageSpec, config);
+    }
 
 }

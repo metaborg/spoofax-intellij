@@ -30,44 +30,44 @@ import org.metaborg.core.project.settings.IProjectSettingsService;
 
 import javax.annotation.Nullable;
 
-/**
- * Project settings service for IntelliJ.
- */
-@Deprecated
-@Singleton
-public final class IntelliJProjectSettingsService implements IProjectSettingsService {
-
-    @NotNull
-    private final IProjectService projectService;
-    @NotNull
-    private final IProjectSettingsService2 projectSettingsService;
-
-    @Inject
-    /* package private */ IntelliJProjectSettingsService(
-            @NotNull IProjectService projectService,
-            @NotNull IProjectSettingsService2 projectSettingsService) {
-        this.projectService = projectService;
-        this.projectSettingsService = projectSettingsService;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Nullable
-    @Override
-    public final IProjectSettings get(@NotNull final IProject project) {
-        return this.projectSettingsService.get(project);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Nullable
-    @Override
-    public final IProjectSettings get(@NotNull final FileObject location) {
-        IProject project = projectService.get(location);
-        if (project == null)
-            return null;
-        return get(project);
-    }
-}
+///**
+// * Project settings service for IntelliJ.
+// */
+//@Deprecated
+//@Singleton
+//public final class IntelliJProjectSettingsService implements IProjectSettingsService {
+//
+//    @NotNull
+//    private final IProjectService projectService;
+//    @NotNull
+//    private final IProjectSettingsService2 projectSettingsService;
+//
+//    @Inject
+//    /* package private */ IntelliJProjectSettingsService(
+//            @NotNull IProjectService projectService,
+//            @NotNull IProjectSettingsService2 projectSettingsService) {
+//        this.projectService = projectService;
+//        this.projectSettingsService = projectSettingsService;
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Nullable
+//    @Override
+//    public final IProjectSettings get(@NotNull final IProject project) {
+//        return this.projectSettingsService.get(project);
+//    }
+//
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Nullable
+//    @Override
+//    public final IProjectSettings get(@NotNull final FileObject location) {
+//        IProject project = projectService.get(location);
+//        if (project == null)
+//            return null;
+//        return get(project);
+//    }
+//}
