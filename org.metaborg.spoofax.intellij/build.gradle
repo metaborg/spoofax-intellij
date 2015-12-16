@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.0.28"
+    id "org.jetbrains.intellij" version "0.0.33"
 }
 
 apply plugin: 'java'
@@ -104,8 +104,8 @@ processTestResources.dependsOn copyTestLanguageBaselineDependencies
 task(printJpsDependencies, description: 'Prints a semi-colon-separated list of dependencies for the JPS plugin.') << {
 	def jars = configurations.runtime.resolve().collect { it.name }.findAll { !it.startsWith('slf4j') }
 	def result = jars + [
-		'../classes/jpslib/slf4j-api-1.7.12.jar',
-		'../classes/jpslib/slf4j-simple-1.7.12'
+		'../classes/jpslib/slf4j-api-1.7.12.jar'//,
+		//'../classes/jpslib/slf4j-simple-1.7.12'
 	]
 	println result.sort().join(';')
 }
@@ -134,10 +134,10 @@ dependencies {
     compile 'com.google.inject.extensions:guice-assistedinject:3.0'
     compile 'org.javassist:javassist:3.20.0-GA'
     compile 'org.slf4j:slf4j-api:1.7.10'
-    compile 'org.slf4j:slf4j-simple:1.7.10'
+    //compile 'org.slf4j:slf4j-simple:1.7.10'
     
     jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
-    jpsRuntime 'org.slf4j:slf4j-simple:1.7.12'
+    //jpsRuntime 'org.slf4j:slf4j-simple:1.7.12'
 
     language 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.nabl:1.5.0-SNAPSHOT@spoofax-language'

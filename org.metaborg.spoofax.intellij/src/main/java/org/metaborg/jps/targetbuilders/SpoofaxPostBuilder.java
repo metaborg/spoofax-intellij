@@ -97,6 +97,9 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
         } catch (FileSystemException e) {
             logger.error("An unexpected IO exception occurred.", e);
             throw e;
+        } catch (ProjectBuildException e) {
+            this.logger.error("An unexpected project build exception occurred.", e);
+            throw e;
         } catch (ProjectException e) {
             logger.error("An unexpected project exception occurred.", e);
             throw new ProjectBuildException(e);

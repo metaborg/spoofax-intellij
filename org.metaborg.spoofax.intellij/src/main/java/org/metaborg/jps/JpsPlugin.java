@@ -42,7 +42,7 @@ public final class JpsPlugin {
      * @return The current injector.
      */
     @NotNull
-    public final static Injector injector() {
+    public static Injector injector() {
         return injector.get();
     }
 

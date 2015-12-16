@@ -22,6 +22,7 @@ package org.metaborg.jps;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.ModuleLevelBuilder;
@@ -37,6 +38,8 @@ import org.metaborg.jps.targetbuilders.SpoofaxPreTargetType;
 import org.metaborg.spoofax.meta.core.ant.AntRunnerService;
 import org.metaborg.spoofax.meta.core.ant.IAntRunnerService;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;

@@ -79,6 +79,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
     private final ISpoofaxLanguageSpecPathsService languageSpecPathsService;
     @InjectLogger
     private Logger logger;
+    //private final static Logger logger = com.intellij.openapi.diagnostic.Logger.getInstance(SpoofaxPreBuilder.class);
 
     @Inject
     public SpoofaxPreBuilder(
@@ -128,7 +129,9 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             generateSources(metaInput, context);
             regularBuild(metaInput, context);
             compilePreJava(metaInput, null, new AntSLF4JLogger(), context);
-
+        } catch (ProjectBuildException e) {
+            this.logger.error("An unexpected project build exception occurred.", e);
+            throw e;
         } catch (ProjectException e) {
             this.logger.error("An unexpected project exception occurred.", e);
             throw new ProjectBuildException(e);
