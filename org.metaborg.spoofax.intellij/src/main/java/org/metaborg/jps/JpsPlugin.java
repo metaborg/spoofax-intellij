@@ -23,6 +23,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -30,9 +31,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class JpsPlugin {
 
-    @NotNull
     private static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxJpsDependencyModule()));
+    private static final Logger logger = Logger.getInstance(JpsPlugin.class);
 
+    static {
+        logger.info("Spoofax for JPS plugin loaded.");
+    }
+
+    // Prevent instantiation.
     private JpsPlugin() {
     }
 
@@ -41,7 +47,6 @@ public final class JpsPlugin {
      *
      * @return The current injector.
      */
-    @NotNull
     public static Injector injector() {
         return injector.get();
     }
