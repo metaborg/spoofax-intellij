@@ -41,6 +41,12 @@ configurations {
     languageBaseline
     testLanguage
     testLanguageBaseline
+    
+    //jpsRuntime2 {
+    //    extendsFrom runtime
+    //    exclude group: 'com.jetbrains'
+    //    exclude module: 'ant'
+    //}
 
     jpsRuntime {
         extendsFrom runtime
@@ -116,6 +122,13 @@ task(printJpsDependencies, description: 'Prints a semi-colon-separated list of d
 	println result.sort().join(';')
 }
 
+task(printAllDependencies) << {
+	def r = configurations.jpsRuntime.resolve()	// + configurations.runtime.resolve()
+	r.collect { it.name }.sort().each { dep ->
+        println "      ${dep}"
+    }
+}
+
 dependencies {
     // Main dependencies
     compile('org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT') {
@@ -130,9 +143,8 @@ dependencies {
     compile('org.metaborg:org.metaborg.spoofax.meta.core:1.5.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
     }
-
     compile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile 'com.google.guava:guava:18.0'
+    compile 'com.google.guava:guava:17.0'
     compile 'org.metaborg:make-permissive:1.5.0-SNAPSHOT'
     compile 'org.apache.ant:ant:1.9.6'
     compile 'org.apache.commons:commons-vfs2:2.0'
@@ -141,6 +153,26 @@ dependencies {
     compile 'org.javassist:javassist:3.20.0-GA'
     compile 'org.slf4j:slf4j-api:1.7.10'
     
+//    jpsRuntime('org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT') {
+//        exclude group: 'org.slf4j'
+//    }
+//    jpsRuntime('org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT') {
+//        exclude group: 'org.slf4j'
+//    }
+//    jpsRuntime('org.metaborg:org.metaborg.spoofax.generator:1.5.0-SNAPSHOT') {
+//        exclude group: 'org.slf4j'
+//    }
+//    jpsRuntime('org.metaborg:org.metaborg.spoofax.meta.core:1.5.0-SNAPSHOT') {
+//        exclude group: 'org.slf4j'
+//    }
+//    jpsRuntime 'com.google.code.findbugs:jsr305:3.0.0'
+//    jpsRuntime 'com.google.guava:guava:17.0'
+//    jpsRuntime 'org.metaborg:make-permissive:1.5.0-SNAPSHOT'
+//    jpsRuntime 'org.apache.ant:ant:1.9.6'
+//    jpsRuntime 'org.apache.commons:commons-vfs2:2.0'
+//    jpsRuntime 'com.google.inject:guice:3.0'
+//    jpsRuntime 'com.google.inject.extensions:guice-assistedinject:3.0'
+//    jpsRuntime 'org.javassist:javassist:3.20.0-GA'
     jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
 
     language 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-SNAPSHOT@spoofax-language'
