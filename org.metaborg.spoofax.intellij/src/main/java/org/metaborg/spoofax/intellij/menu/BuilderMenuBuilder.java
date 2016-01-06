@@ -28,9 +28,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.IdentifierUtils;
 import org.metaborg.core.MetaborgRuntimeException;
+import org.metaborg.core.action.IAction;
+import org.metaborg.core.action.ITransformAction;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.menu.*;
-import org.metaborg.spoofax.core.menu.TransformAction;
 import org.metaborg.spoofax.intellij.factories.IBuilderActionGroupFactory;
 import org.metaborg.spoofax.intellij.factories.ITransformIdeaActionFactory;
 
@@ -101,7 +102,7 @@ public final class BuilderMenuBuilder {
         }
 
         @Override
-        public void visitAction(final IAction action) {
+        public void visitAction(final IMenuAction action) {
             this.group.add(createAction(action));
         }
 
@@ -127,21 +128,11 @@ public final class BuilderMenuBuilder {
         }
 
         @NotNull
-        private AnAction createAction(@NotNull final IAction action) {
+        private AnAction createAction(@NotNull final IMenuAction action) {
             String id = IdentifierUtils.create("SPOOFAX_MENU_");
-            if (action instanceof TransformAction) {
-                return this.transformationActionFactory.create(id,
-                                                               this.implementation,
-                                                               (TransformAction) action);
-            } else {
-                return new AnActionWithId(id, action.name()) {
-
-                    @Override
-                    public void actionPerformed(final AnActionEvent anActionEvent) {
-                        // TODO: Show an error bubble: this kind of action is not supported.
-                    }
-                };
-            }
+            return this.transformationActionFactory.create(id,
+                                                           action.action(),
+                                                           this.implementation);
         }
 
         @NotNull

@@ -25,7 +25,7 @@ import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MessageFormatter;
 import org.metaborg.core.MetaborgException;
-import org.metaborg.core.build.dependency.IDependencyService;
+//import org.metaborg.core.build.dependency.IDependencyService;
 import org.metaborg.core.build.dependency.INewDependencyService;
 import org.metaborg.core.project.ILanguageSpec;
 import org.metaborg.core.project.ILanguageSpecService;

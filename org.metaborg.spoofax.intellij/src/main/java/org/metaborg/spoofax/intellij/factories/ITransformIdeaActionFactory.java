@@ -19,9 +19,11 @@
 
 package org.metaborg.spoofax.intellij.factories;
 
+import com.google.inject.assistedinject.Assisted;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.action.ITransformAction;
+import org.metaborg.core.action.ITransformGoal;
 import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.core.menu.TransformAction;
 import org.metaborg.spoofax.intellij.menu.TransformationAction;
 
 /**
@@ -33,11 +35,9 @@ public interface ITransformIdeaActionFactory {
      * Creates a new transformation action.
      *
      * @param id       The ID of the action.
+     * @param action   The transformation action.
      * @param language The language implementation.
-     * @param action   The action.
      * @return The created action.
      */
-    @NotNull
-    TransformationAction create(@NotNull String id, @NotNull ILanguageImpl language, @NotNull TransformAction action);
-
+    TransformationAction create(String id, ITransformAction action, @NotNull ILanguageImpl language);
 }

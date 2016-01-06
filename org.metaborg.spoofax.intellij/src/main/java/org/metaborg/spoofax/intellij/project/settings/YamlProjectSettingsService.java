@@ -19,23 +19,23 @@
 
 package org.metaborg.spoofax.intellij.project.settings;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.StringFormatter;
-import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.settings.IProjectSettings;
-import org.metaborg.core.project.settings.YAMLProjectSettingsSerializer;
-import org.metaborg.core.resource.IResourceService;
-import org.slf4j.Logger;
-
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.net.URL;
+//import com.google.inject.Inject;
+//import com.google.inject.Singleton;
+//import org.apache.commons.vfs2.FileObject;
+//import org.apache.commons.vfs2.FileSystemException;
+//import org.jetbrains.annotations.NotNull;
+//import org.metaborg.core.MetaborgRuntimeException;
+//import org.metaborg.core.StringFormatter;
+//import org.metaborg.core.logging.InjectLogger;
+//import org.metaborg.core.project.IProject;
+//import org.metaborg.core.project.settings.IProjectSettings;
+//import org.metaborg.core.project.settings.YAMLProjectSettingsSerializer;
+//import org.metaborg.core.resource.IResourceService;
+//import org.slf4j.Logger;
+//
+//import javax.annotation.Nullable;
+//import java.io.IOException;
+//import java.net.URL;
 
 ///**
 // * A project settings service that stores the settings in a YAML file.

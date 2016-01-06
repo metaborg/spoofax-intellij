@@ -23,6 +23,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
@@ -91,4 +93,24 @@ public final class ActionHelper {
         return result;
     }
 
+    /**
+     * Gets a list of files currently selected.
+     *
+     * @param e The event arguments.
+     * @return A list of files.
+     */
+    public List<TransformResource> getActiveResources(@NotNull final AnActionEvent e) {
+        VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
+        if (files == null || files.length == 0)
+            return Collections.emptyList();
+        ArrayList<TransformResource> result = new ArrayList<>(files.length);
+        for (VirtualFile file : files) {
+            if (file.isDirectory())
+                continue;
+            FileObject resource = this.resourceService.resolve(file);
+            final Document document = FileDocumentManager.getInstance().getCachedDocument(file);
+            result.add(new TransformResource(resource, document.getText()));
+        }
+        return result;
+    }
 }

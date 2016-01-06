@@ -19,9 +19,9 @@
 
 package org.metaborg.spoofax.intellij.project.settings;
 
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.settings.IProjectSettings;
+//import org.jetbrains.annotations.NotNull;
+//import org.metaborg.core.project.IProject;
+//import org.metaborg.core.project.settings.IProjectSettings;
 
 ///**
 // * Loads and stores the settings of a project.

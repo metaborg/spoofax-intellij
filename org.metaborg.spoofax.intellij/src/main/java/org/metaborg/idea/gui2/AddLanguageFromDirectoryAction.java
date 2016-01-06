@@ -29,7 +29,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.metaborg.core.UnhandledException;
-import org.metaborg.core.language.ILanguageDiscoveryService;
+//import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.language.INewLanguageDiscoveryService;
 import org.metaborg.spoofax.idea.vfs.SpoofaxArtifactFileType;

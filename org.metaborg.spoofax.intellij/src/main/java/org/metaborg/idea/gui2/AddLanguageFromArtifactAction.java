@@ -20,20 +20,20 @@
 package org.metaborg.idea.gui2;
 
 import com.google.inject.Inject;
-import com.intellij.notification.Notification;
-import com.intellij.notification.Notifications;
+//import com.intellij.notification.Notification;
+//import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.command.WriteCommandAction;
+//import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.UnhandledException;
-import org.metaborg.core.language.ILanguageDiscoveryService;
+//import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.language.INewLanguageDiscoveryService;
 import org.metaborg.spoofax.idea.vfs.SpoofaxArtifactFileType;

@@ -19,16 +19,16 @@
 
 package org.metaborg.spoofax.intellij.project.settings;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.IProjectService;
-import org.metaborg.core.project.settings.IProjectSettings;
-import org.metaborg.core.project.settings.IProjectSettingsService;
-
-import javax.annotation.Nullable;
+//import com.google.inject.Inject;
+//import com.google.inject.Singleton;
+//import org.apache.commons.vfs2.FileObject;
+//import org.jetbrains.annotations.NotNull;
+//import org.metaborg.core.project.IProject;
+//import org.metaborg.core.project.IProjectService;
+//import org.metaborg.core.project.settings.IProjectSettings;
+//import org.metaborg.core.project.settings.IProjectSettingsService;
+//
+//import javax.annotation.Nullable;
 
 ///**
 // * Project settings service for IntelliJ.

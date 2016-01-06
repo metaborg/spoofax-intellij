@@ -19,15 +19,15 @@
 
 package org.metaborg.spoofax.intellij.project.settings;
 
-import com.google.inject.Inject;
-import groovy.lang.Singleton;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.project.IProject;
-import org.metaborg.core.project.ProjectException;
-import org.metaborg.core.project.settings.IProjectSettings;
-import org.metaborg.spoofax.core.project.settings.Format;
-import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
-import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
+//import com.google.inject.Inject;
+//import groovy.lang.Singleton;
+//import org.jetbrains.annotations.NotNull;
+//import org.metaborg.core.project.IProject;
+//import org.metaborg.core.project.ProjectException;
+//import org.metaborg.core.project.settings.IProjectSettings;
+//import org.metaborg.spoofax.core.project.settings.Format;
+//import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
+//import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 
 ///**
 // * Spoofax project settings service for IntelliJ.

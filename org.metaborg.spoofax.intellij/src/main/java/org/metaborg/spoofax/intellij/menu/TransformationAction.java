@@ -28,9 +28,20 @@ import com.intellij.openapi.project.Project;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
+import org.metaborg.core.action.ITransformAction;
+import org.metaborg.core.action.ITransformGoal;
+import org.metaborg.core.analysis.AnalysisFileResult;
+import org.metaborg.core.context.ContextException;
+import org.metaborg.core.context.IContext;
+import org.metaborg.core.context.IContextService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.spoofax.core.menu.TransformAction;
+import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
+import org.metaborg.core.processing.parse.IParseResultRequester;
+import org.metaborg.core.syntax.ParseResult;
+import org.metaborg.core.transform.ITransformService;
+import org.metaborg.core.transform.TransformException;
+import org.metaborg.util.concurrent.IClosableLock;
 import org.slf4j.Logger;
 
 import javax.swing.*;
@@ -41,12 +52,16 @@ import java.util.List;
 /**
  * A transformation action from a builder menu.
  */
-public final class TransformationAction extends AnActionWithId {
+public final class TransformationAction<P, A, T> extends AnActionWithId {
 
-    @NotNull
+    private final ITransformGoal goal;
     private final ILanguageImpl language;
-    @NotNull
-    private final TransformAction action;
+//    private final IContextService contextService;
+//    private final ITransformService<P, A, T> transformService;
+//    private final IParseResultRequester<P> parseResultRequester;
+//    private final IAnalysisResultRequester<P, A> analysisResultRequester;
+//    @NotNull
+//    private final TransformAction action;
     @NotNull
     private final ActionHelper actionHelper;
     @NotNull
@@ -57,13 +72,23 @@ public final class TransformationAction extends AnActionWithId {
     @Inject
     private TransformationAction(
             @Assisted @NotNull final String id,
+            @Assisted @NotNull final ITransformAction action,
             @Assisted @NotNull final ILanguageImpl language,
-            @Assisted @NotNull final TransformAction action,
+//            @Assisted @NotNull final TransformAction action,
+//            @NotNull final ITransformService<P, A, T> transformService,
+//            @NotNull final IContextService contextService,
+//            @NotNull final IParseResultRequester<P> parseResultRequester,
+//            @NotNull final IAnalysisResultRequester<P, A> analysisResultRequester,
             @NotNull final ActionHelper actionHelper,
             @NotNull final IResourceTransformer transformer) {
         super(id, action.name(), (String) null, (Icon) null);
         this.language = language;
-        this.action = action;
+        this.goal = action.goal();
+//        this.action = action;
+//        this.transformService = transformService;
+//        this.parseResultRequester = parseResultRequester;
+//        this.analysisResultRequester = analysisResultRequester;
+//        this.contextService = contextService;
         this.actionHelper = actionHelper;
         this.transformer = transformer;
     }
@@ -72,14 +97,40 @@ public final class TransformationAction extends AnActionWithId {
     public void actionPerformed(@NotNull final AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
-        List<FileObject> files = this.actionHelper.getActiveFiles(e);
+        List<TransformResource> resources = this.actionHelper.getActiveResources(e);
         WriteCommandAction.runWriteCommandAction(project, () -> {
+//            transformAll(resources, this.language, this.goal);
             try {
-                this.transformer.execute(this.action, this.language, files);
+                this.transformer.execute(resources, this.language, this.goal);
             } catch (MetaborgException ex) {
                 this.logger.error("An exception occurred: {}", ex);
             }
         });
     }
 
+//    private void transformAll(Iterable<TransformResource> resources, ILanguageImpl language, ITransformGoal goal) {
+//        for (TransformResource transformResource : resources) {
+//            final FileObject resource = transformResource.resource();
+//            try {
+//                transform(resource, language, transformResource.text(), goal);
+//            } catch (ContextException | TransformException e) {
+//                logger.error("Transformation failed for {}", resource, e);
+//            }
+//        }
+//    }
+//
+//    private void transform(FileObject resource, ILanguageImpl language, String text, ITransformGoal goal) throws ContextException, TransformException {
+//        final IContext context = this.contextService.get(resource, language);
+//        if (this.transformService.requiresAnalysis(context, goal)) {
+//            final AnalysisFileResult<P, A> analysisResult =
+//                    this.analysisResultRequester.request(resource, context, text).toBlocking().single();
+//            try (IClosableLock lock = context.read()) {
+//                this.transformService.transform(analysisResult, context, goal);
+//            }
+//        } else {
+//            final ParseResult<P> parseResult =
+//                    this.parseResultRequester.request(resource, language, text).toBlocking().single();
+//            this.transformService.transform(parseResult, context, goal);
+//        }
+//    }
 }
