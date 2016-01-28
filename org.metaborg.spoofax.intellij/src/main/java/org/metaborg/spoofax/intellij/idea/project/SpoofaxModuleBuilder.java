@@ -62,9 +62,11 @@ import org.metaborg.intellij.idea.project.IdeaLanguageSpecProject;
 //import org.metaborg.intellij.idea.project.IdeaProject;
 import org.metaborg.spoofax.core.project.ISpoofaxLanguageSpecPaths;
 import org.metaborg.spoofax.core.project.ISpoofaxLanguageSpecPathsService;
+import org.metaborg.spoofax.core.project.SpoofaxLanguageSpecPaths;
 import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfigBuilder;
 //import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
+import org.metaborg.spoofax.generator.language.LanguageSpecGenerator;
 import org.metaborg.spoofax.generator.language.NewLanguageSpecGenerator;
 //import org.metaborg.spoofax.generator.language.NewProjectGenerator;
 //import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
@@ -310,24 +312,28 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      *
      * @param languageSpec      The language specification.
      */
-    private final void generateModuleStructure(
+    private void generateModuleStructure(
             @NotNull final ILanguageSpec languageSpec) {
         final String name = getName();
         final LanguageIdentifier identifier = getLanguageIdentifier();
 
         try {
-            final FileObject location = languageSpec.location();
-            ISpoofaxLanguageSpecConfig config = this.configBuilder
+            final ISpoofaxLanguageSpecConfig config = this.configBuilder
                     .reset()
                     .withIdentifier(identifier)
                     .withName(name)
-                    .build(location);
-            ISpoofaxLanguageSpecPaths paths = this.pathsService.get(languageSpec);
+                    .build(languageSpec.location());
+            // TODO: Use ISpoofaxLanguageSpecPathsService instead.
+            final ISpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(languageSpec.location(), config);
             final LanguageSpecGeneratorScope scope = new LanguageSpecGeneratorScope(config, paths);
 //            // TODO: Get from SDK.
 //            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
-            final NewLanguageSpecGenerator generator = new NewLanguageSpecGenerator(scope, new String[]{getExtension()});
+            final NewLanguageSpecGenerator newGenerator = new NewLanguageSpecGenerator(scope, new String[]{getExtension()});
+            newGenerator.generateAll();
+            final LanguageSpecGenerator generator = new LanguageSpecGenerator(scope);
             generator.generateAll();
+
+
 
 //            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
 //            final VirtualFile f = resourceService.unresolve(project.location().resolveFile("editor/java/"));

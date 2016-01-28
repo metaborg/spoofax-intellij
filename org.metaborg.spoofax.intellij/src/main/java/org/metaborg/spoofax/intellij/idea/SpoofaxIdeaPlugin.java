@@ -22,21 +22,27 @@ package org.metaborg.spoofax.intellij.idea;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.diagnostic.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.core.Spoofax;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.meta.core.SpoofaxMeta;
-import org.slf4j.Logger;
 
-public class SpoofaxIdeaPlugin implements ApplicationComponent {
+public class SpoofaxIdeaPlugin {
 //    @NotNull
 //    protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
 
     // Static //
 
+    private static final Logger logger = Logger.getInstance(SpoofaxIdeaPlugin.class);
     private static SpoofaxIdeaPlugin plugin;
+
+    static {
+        plugin = new SpoofaxIdeaPlugin();
+        logger.info("Spoofax for IDEA plugin loaded.");
+    }
 
     /**
      * Gets the injector.
@@ -70,54 +76,16 @@ public class SpoofaxIdeaPlugin implements ApplicationComponent {
 
     // Instance //
 
-    @InjectLogger
-    private Logger logger;
-    private LanguageManager languageManager;
     private Spoofax spoofax;
     private SpoofaxMeta spoofaxMeta;
 
-    /**
-     * This instance is created by IntelliJ's plugin system.
-     * Do not call this method manually.
-     */
-    public SpoofaxIdeaPlugin() {
-        plugin = this;
+    private SpoofaxIdeaPlugin() {
         try {
             this.spoofax = new Spoofax(new SpoofaxIdeaModule());
             this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new SpoofaxIdeaMetaModule());
         } catch (MetaborgException e) {
             throw new RuntimeException(e);
         }
-        SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
-    @SuppressWarnings("unused")
-    private void inject(@NotNull final LanguageManager languageManager) {
-        this.languageManager = languageManager;
-    }
-
-    /**
-     * Initializes the plugin.
-     */
-    public final void initComponent() {
-        this.languageManager.loadMetaLanguages();
-    }
-
-    /**
-     * Disposes the plugin.
-     */
-    public final void disposeComponent() {
-
-    }
-
-    /**
-     * Gets the name of the application component.
-     *
-     * @return The name of the component.
-     */
-    @NotNull
-    public String getComponentName() {
-        return SpoofaxIdeaPlugin.class.getName();
-    }
 }

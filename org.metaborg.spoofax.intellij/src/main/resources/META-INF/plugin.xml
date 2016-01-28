@@ -50,7 +50,7 @@
     <application-components>
         <!-- Add your application components here -->
         <component>
-            <implementation-class>org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin</implementation-class>
+            <implementation-class>org.metaborg.spoofax.intellij.idea.SpoofaxApplicationComponent</implementation-class>
         </component>
     </application-components>
 
