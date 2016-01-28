@@ -24,7 +24,7 @@ import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
+import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
 import org.slf4j.Logger;
 
@@ -42,7 +42,7 @@ public final class SpoofaxProjectComponent implements ProjectComponent {
      */
     public SpoofaxProjectComponent(@NotNull Project project) {
         this.project = project;
-        IdeaPlugin.injector().injectMembers(this);
+        SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject

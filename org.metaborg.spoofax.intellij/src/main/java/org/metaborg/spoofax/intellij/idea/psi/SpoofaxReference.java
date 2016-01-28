@@ -22,13 +22,10 @@ package org.metaborg.spoofax.intellij.idea.psi;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiReferenceBase;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.source.ISourceRegion;
-import org.metaborg.idea.psi.MetaborgDeclarationElement;
-import org.metaborg.idea.psi.MetaborgReference;
-import org.metaborg.idea.psi.MetaborgReferenceElement;
+import org.metaborg.intellij.idea.psi.MetaborgReference;
+import org.metaborg.intellij.idea.psi.MetaborgReferenceElement;
 
 /**
  * A reference to a definition.

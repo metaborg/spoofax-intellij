@@ -27,6 +27,9 @@ targetCompatibility = 1.8
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url "http://artifacts.metaborg.org/content/repositories/releases/"
+    }
 }
 
 // FIX: Circular dependency due to adding test class dependencies
@@ -70,7 +73,7 @@ eclipse {
 }
 
 intellij {
-    version 'IC-15.0.2'
+    version 'IC-15.0.3'
 }
 
 // Task to allow a debugger to be attached to port 5005 for debugging the JPS plugin.

@@ -48,7 +48,7 @@ import org.metaborg.spoofax.intellij.idea.languages.ILexerParserManager;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFile;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
-import org.metaborg.idea.project.IIdeaProjectService;
+import org.metaborg.intellij.idea.project.IIdeaProjectService;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 

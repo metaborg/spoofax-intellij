@@ -27,8 +27,8 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.api.CmdlineProtoUtil;
 import org.jetbrains.jps.api.CmdlineRemoteProto.Message.ControllerMessage.ParametersMessage.TargetTypeBuildScope;
-import org.metaborg.jps.JpsPlugin;
-import org.metaborg.jps.targetbuilders.SpoofaxPostTargetType;
+import org.metaborg.spoofax.intellij.jps.SpoofaxJpsPlugin;
+import org.metaborg.intellij.jps.targetbuilders.SpoofaxPostTargetType;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +45,7 @@ public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvi
      * Do not call this method manually.
      */
     public SpoofaxBuildTargetScopeProvider() {
-        JpsPlugin.injector().injectMembers(this);
+        SpoofaxJpsPlugin.injector().injectMembers(this);
     }
 
     @Inject

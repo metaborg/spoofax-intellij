@@ -24,13 +24,11 @@ import com.google.inject.Singleton;
 import com.intellij.ide.util.importProject.ModuleDescriptor;
 import com.intellij.ide.util.importProject.ProjectDescriptor;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
 import com.intellij.ide.util.projectWizard.ProjectWizardStepFactory;
 import com.intellij.ide.util.projectWizard.importSources.*;
-import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
+import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.slf4j.Logger;
 
@@ -60,7 +58,7 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
      * Do not call this method manually.
      */
     public SpoofaxProjectDetector() {
-        IdeaPlugin.injector().injectMembers(this);
+        SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject

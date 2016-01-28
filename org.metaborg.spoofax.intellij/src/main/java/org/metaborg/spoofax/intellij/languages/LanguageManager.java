@@ -48,7 +48,7 @@ public final class LanguageManager {
     @NotNull
     private final ILanguageService languageService;
     @NotNull
-    private final INewLanguageDiscoveryService discoveryService;
+    private final ILanguageDiscoveryService discoveryService;
     @NotNull
     private final IIntelliJResourceService resourceService;
     @InjectLogger
@@ -57,7 +57,7 @@ public final class LanguageManager {
     @Inject
     private LanguageManager(
             @NotNull final ILanguageService languageService,
-            @NotNull final INewLanguageDiscoveryService discoveryService,
+            @NotNull final ILanguageDiscoveryService discoveryService,
             @NotNull final IIntelliJResourceService resourceService) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
@@ -194,7 +194,7 @@ public final class LanguageManager {
         try {
             // TODO: Assert that this doesn't load the language, just discovers it.
             // Loading happens only after the user clicked OK or Apply in the settings dialog.
-            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(folder);
+            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(this.discoveryService.request(folder));
             final List<ILanguageImpl> lis = new ArrayList<>();
             for (ILanguageComponent c : discovery) {
                 for (ILanguageImpl li : c.contributesTo()) {

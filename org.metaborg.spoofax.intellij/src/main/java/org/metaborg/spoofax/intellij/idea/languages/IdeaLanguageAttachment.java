@@ -23,7 +23,7 @@ import com.intellij.lang.ParserDefinition;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
 
 /**

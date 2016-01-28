@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.analysis.AnalysisFileResult;
 import org.metaborg.core.analysis.AnalysisResult;
 import org.metaborg.core.syntax.ParseResult;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**

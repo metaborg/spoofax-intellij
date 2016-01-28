@@ -1,0 +1,123 @@
+/*
+ * Copyright © 2015-2016
+ *
+ * This file is part of Spoofax for IntelliJ.
+ *
+ * Spoofax for IntelliJ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoofax for IntelliJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package org.metaborg.spoofax.intellij.idea;
+
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.intellij.openapi.components.ApplicationComponent;
+import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.MetaborgException;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.spoofax.core.Spoofax;
+import org.metaborg.spoofax.intellij.languages.LanguageManager;
+import org.metaborg.spoofax.meta.core.SpoofaxMeta;
+import org.slf4j.Logger;
+
+public class SpoofaxIdeaPlugin implements ApplicationComponent {
+//    @NotNull
+//    protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
+
+    // Static //
+
+    private static SpoofaxIdeaPlugin plugin;
+
+    /**
+     * Gets the injector.
+     *
+     * @return The current injector.
+     */
+    public static Injector injector() {
+        return plugin.spoofaxMeta.injector;
+    }
+
+    /**
+     * Gets the facade.
+     *
+     * @return The facade.
+     */
+    public static Spoofax spoofax() { return plugin.spoofax; }
+
+    /**
+     * Gets the meta facade.
+     *
+     * @return The meta facade.
+     */
+    public static SpoofaxMeta spoofaxMeta() { return plugin.spoofaxMeta; }
+
+    /**
+     * Gets the plugin.
+     *
+     * @return The plugin.
+     */
+    public static SpoofaxIdeaPlugin plugin() { return plugin; }
+
+    // Instance //
+
+    @InjectLogger
+    private Logger logger;
+    private LanguageManager languageManager;
+    private Spoofax spoofax;
+    private SpoofaxMeta spoofaxMeta;
+
+    /**
+     * This instance is created by IntelliJ's plugin system.
+     * Do not call this method manually.
+     */
+    public SpoofaxIdeaPlugin() {
+        plugin = this;
+        try {
+            this.spoofax = new Spoofax(new SpoofaxIdeaModule());
+            this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new SpoofaxIdeaMetaModule());
+        } catch (MetaborgException e) {
+            throw new RuntimeException(e);
+        }
+        SpoofaxIdeaPlugin.injector().injectMembers(this);
+    }
+
+    @Inject
+    @SuppressWarnings("unused")
+    private void inject(@NotNull final LanguageManager languageManager) {
+        this.languageManager = languageManager;
+    }
+
+    /**
+     * Initializes the plugin.
+     */
+    public final void initComponent() {
+        this.languageManager.loadMetaLanguages();
+    }
+
+    /**
+     * Disposes the plugin.
+     */
+    public final void disposeComponent() {
+
+    }
+
+    /**
+     * Gets the name of the application component.
+     *
+     * @return The name of the component.
+     */
+    @NotNull
+    public String getComponentName() {
+        return SpoofaxIdeaPlugin.class.getName();
+    }
+}

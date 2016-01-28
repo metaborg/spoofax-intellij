@@ -56,17 +56,19 @@ import org.metaborg.core.project.ProjectException;
 //import org.metaborg.core.project.configuration.ILanguageSpecConfig;
 //import org.metaborg.core.project.settings.IProjectSettings;
 //import org.metaborg.core.project.settings.ProjectSettings;
-import org.metaborg.idea.gui2.wizards.MetaborgModuleWizardStep;
-import org.metaborg.idea.project.IIdeaProjectService;
-import org.metaborg.idea.project.IdeaLanguageSpecProject;
-//import org.metaborg.idea.project.IdeaProject;
+import org.metaborg.intellij.idea.gui2.wizards.MetaborgModuleWizardStep;
+import org.metaborg.intellij.idea.project.IIdeaProjectService;
+import org.metaborg.intellij.idea.project.IdeaLanguageSpecProject;
+//import org.metaborg.intellij.idea.project.IdeaProject;
+import org.metaborg.spoofax.core.project.ISpoofaxLanguageSpecPaths;
+import org.metaborg.spoofax.core.project.ISpoofaxLanguageSpecPathsService;
 import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfigBuilder;
 //import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.spoofax.generator.language.NewLanguageSpecGenerator;
 //import org.metaborg.spoofax.generator.language.NewProjectGenerator;
 //import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
-import org.metaborg.idea.project.IIdeaProjectFactory;
+import org.metaborg.intellij.idea.project.IIdeaProjectFactory;
 import org.metaborg.spoofax.generator.project.LanguageSpecGeneratorScope;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
@@ -87,6 +89,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     private final IIdeaProjectFactory projectFactory;
     private final IIdeaProjectService projectService;
     private final ISpoofaxLanguageSpecConfigBuilder configBuilder;
+    private final ISpoofaxLanguageSpecPathsService pathsService;
     @InjectLogger
     private Logger logger;
 
@@ -151,10 +154,12 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
             final IIntelliJResourceService resourceService,
             final IIdeaProjectFactory projectFactory,
             final IIdeaProjectService projectService,
+            final ISpoofaxLanguageSpecPathsService pathsService,
             final ISpoofaxLanguageSpecConfigBuilder configBuilder) {
         this.resourceService = resourceService;
         this.projectFactory = projectFactory;
         this.projectService = projectService;
+        this.pathsService = pathsService;
         this.configBuilder = configBuilder;
     }
 
@@ -241,6 +246,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
         final Module module = rootModel.getModule();
         final Project project = module.getProject();
 
+        //noinspection Convert2Lambda
         runWhenInitialized(project, new DumbAwareRunnable() {
             @Override
             public void run() {
@@ -315,8 +321,9 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
                     .reset()
                     .withIdentifier(identifier)
                     .withName(name)
-                    .build();
-            final LanguageSpecGeneratorScope scope = new LanguageSpecGeneratorScope(location, config);
+                    .build(location);
+            ISpoofaxLanguageSpecPaths paths = this.pathsService.get(languageSpec);
+            final LanguageSpecGeneratorScope scope = new LanguageSpecGeneratorScope(config, paths);
 //            // TODO: Get from SDK.
 //            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
             final NewLanguageSpecGenerator generator = new NewLanguageSpecGenerator(scope, new String[]{getExtension()});

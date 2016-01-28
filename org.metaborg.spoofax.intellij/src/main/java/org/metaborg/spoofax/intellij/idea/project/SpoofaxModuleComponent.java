@@ -26,10 +26,10 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.idea.project.IIdeaProjectService;
-import org.metaborg.idea.project.IdeaProject;
-import org.metaborg.idea.project.IIdeaProjectFactory;
-import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
+import org.metaborg.intellij.idea.project.IIdeaProjectService;
+import org.metaborg.intellij.idea.project.IdeaProject;
+import org.metaborg.intellij.idea.project.IIdeaProjectFactory;
+import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
 
@@ -57,7 +57,7 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
      */
     public SpoofaxModuleComponent(@NotNull final Module module) {
         this.module = module;
-        IdeaPlugin.injector().injectMembers(this);
+        SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject

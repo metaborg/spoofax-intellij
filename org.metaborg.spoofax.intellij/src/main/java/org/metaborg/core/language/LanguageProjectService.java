@@ -26,7 +26,7 @@ import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MessageFormatter;
 import org.metaborg.core.MetaborgException;
 //import org.metaborg.core.build.dependency.IDependencyService;
-import org.metaborg.core.build.dependency.INewDependencyService;
+import org.metaborg.core.build.dependency.IDependencyService;
 import org.metaborg.core.project.ILanguageSpec;
 import org.metaborg.core.project.ILanguageSpecService;
 import org.metaborg.core.project.IProject;
@@ -45,12 +45,12 @@ import java.util.Set;
 public final class LanguageProjectService implements ILanguageProjectService {
 
     private final ILanguageIdentifierService identifierService;
-    private final INewDependencyService dependencyService;
+    private final IDependencyService dependencyService;
     private final ILanguageService languageService;
     private final ILanguageSpecService languageSpecService;
 
     @Inject
-    /* package private */ LanguageProjectService(final ILanguageIdentifierService identifierService, final INewDependencyService dependencyService, final ILanguageService languageService, final ILanguageSpecService languageSpecService) {
+    /* package private */ LanguageProjectService(final ILanguageIdentifierService identifierService, final IDependencyService dependencyService, final ILanguageService languageService, final ILanguageSpecService languageSpecService) {
         this.identifierService = identifierService;
         this.dependencyService = dependencyService;
         this.languageService = languageService;

@@ -34,7 +34,7 @@ import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.tracing.IResolverService;
 import org.metaborg.spoofax.intellij.factories.ISpoofaxPsiElementFactory;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 

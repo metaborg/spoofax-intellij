@@ -26,7 +26,7 @@ import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.projectRoots.Sdk;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
+import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 
 import javax.swing.*;
 
@@ -49,7 +49,7 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
      */
     public SpoofaxModuleType() {
         super(ID);
-        IdeaPlugin.injector().injectMembers(this);
+        SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     // TODO: Remove
@@ -76,7 +76,7 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
     @NotNull
     @Override
     public SpoofaxModuleBuilder createModuleBuilder() {
-        return IdeaPlugin.injector().getInstance(SpoofaxModuleBuilder.class);
+        return SpoofaxIdeaPlugin.injector().getInstance(SpoofaxModuleBuilder.class);
     }
 
     /**

@@ -27,7 +27,7 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageService;
-import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
+import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
@@ -41,9 +41,9 @@ public class UnloadLanguagesAction extends AnAction {
     private final IIdeaLanguageManager ideaLanguageManager;
 
     public UnloadLanguagesAction() {
-        this.languageManager = IdeaPlugin.injector().getInstance(LanguageManager.class);
-        this.languageService = IdeaPlugin.injector().getInstance(ILanguageService.class);
-        this.ideaLanguageManager = IdeaPlugin.injector().getInstance(IIdeaLanguageManager.class);
+        this.languageManager = SpoofaxIdeaPlugin.injector().getInstance(LanguageManager.class);
+        this.languageService = SpoofaxIdeaPlugin.injector().getInstance(ILanguageService.class);
+        this.ideaLanguageManager = SpoofaxIdeaPlugin.injector().getInstance(IIdeaLanguageManager.class);
     }
 
     public void actionPerformed(AnActionEvent e) {
