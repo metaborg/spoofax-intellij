@@ -38,7 +38,7 @@ public abstract class SpoofaxIdeaLanguage extends Language {
      *
      * @param language The language.
      */
-    protected SpoofaxIdeaLanguage(@NotNull final ILanguage language) {
+    protected SpoofaxIdeaLanguage(final ILanguage language) {
         super(language.name());
 
         this.language = language;

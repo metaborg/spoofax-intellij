@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  */
 public final class MultipleServicesRespondedException extends RuntimeException {
 
-    private final static String DEFAULT_MESSAGE = "More than one service responded.";
+    private static final String DEFAULT_MESSAGE = "More than one service responded.";
 
     /**
      * Initializes a new instance of the {@link MultipleServicesRespondedException} class.

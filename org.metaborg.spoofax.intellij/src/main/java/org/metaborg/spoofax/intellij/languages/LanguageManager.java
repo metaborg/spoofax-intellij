@@ -24,18 +24,15 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.apache.commons.lang.UnhandledException;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
-import org.metaborg.core.language.ILanguageComponent;
-import org.metaborg.core.language.ILanguageDiscoveryService;
-import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.core.language.ILanguageService;
+import org.metaborg.core.UnhandledException;
+import org.metaborg.core.language.*;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
-import org.slf4j.Logger;
+import org.metaborg.util.log.ILogger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -55,13 +52,13 @@ public final class LanguageManager {
     @NotNull
     private final IIntelliJResourceService resourceService;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
     private LanguageManager(
-            @NotNull final ILanguageService languageService,
-            @NotNull final ILanguageDiscoveryService discoveryService,
-            @NotNull final IIntelliJResourceService resourceService) {
+            final ILanguageService languageService,
+            final ILanguageDiscoveryService discoveryService,
+            final IIntelliJResourceService resourceService) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
         this.resourceService = resourceService;
@@ -79,8 +76,8 @@ public final class LanguageManager {
         loadLanguage("org.metaborg.meta.lang.ts-1.5.0-SNAPSHOT");
         loadLanguage("org.metaborg.meta.lib.analysis-1.5.0-SNAPSHOT");
 
-        loadLanguage("org.metaborg.meta.lang.esv-1.5.0-baseline-20150905-200051");
-        loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-baseline-20150905-200051");
+        loadLanguage("org.metaborg.meta.lang.esv-1.5.0-baseline-20150917-172646");
+        loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-baseline-20150917-172646");
     }
 
     /**
@@ -88,10 +85,10 @@ public final class LanguageManager {
      *
      * @param id The ID.
      */
-    private void loadLanguage(@NotNull final String id) {
-        final URL url = this.getClass().getClassLoader().getResource("meta-languages/" + id + ".spoofax-language");
+    private void loadLanguage(final String id) {
+        final URL url = this.getClass().getClassLoader().getResource("languages/" + id + ".spoofax-language");
         if (url == null) {
-            logger.error("Meta language '" + id + "' could not be resolved to a class path.");
+            this.logger.error("Meta language '{}' could not be resolved to a class path.", id);
             return;
         }
 
@@ -99,33 +96,9 @@ public final class LanguageManager {
 
         try {
             loadLanguageFromArtifact(file);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new UnhandledException(e);
         }
-
-//        final String zipUri = "zip://" + url.getPath();
-//        final FileObject file = this.resourceService.resolve(zipUri);
-//        try {
-//            if (!file.exists()) {
-//                logger.error("Meta language '" + id + "' does not exist in classpath at: " + file.toString());
-//                return;
-//            }
-//        } catch (FileSystemException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(file);
-//            final List<ILanguageImpl> lis = new ArrayList<ILanguageImpl>();
-//            for (ILanguageComponent c : discovery) {
-//                for (ILanguageImpl li : c.contributesTo()) {
-//                    lis.add(li);
-//                }
-//            }
-//            logger.info("For '" + id + "' loaded languages: " + Joiner.on(", ").join(lis));
-//        } catch (MetaborgException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
     /**
@@ -134,7 +107,7 @@ public final class LanguageManager {
      * @param artifact The artifact file.
      * @return Whether a language was successfully loaded.
      */
-    public boolean loadLanguageFromArtifact(@NotNull final VirtualFile artifact) throws
+    public boolean loadLanguageFromArtifact(final VirtualFile artifact) throws
             IOException {
         Preconditions.checkNotNull(artifact);
 
@@ -147,28 +120,18 @@ public final class LanguageManager {
      * @param artifact The artifact file.
      * @return Whether a language was successfully loaded.
      */
-    public boolean loadLanguageFromArtifact(@NotNull final FileObject artifact) throws
+    public boolean loadLanguageFromArtifact(final FileObject artifact) throws
             IOException {
         Preconditions.checkNotNull(artifact);
 
         final String zipUri;
         try {
             zipUri = "zip://" + artifact.getURL().getPath();
-        } catch (FileSystemException e) {
+        } catch (final FileSystemException e) {
             throw new UnhandledException(e);
         }
 
         final FileObject file = this.resourceService.resolve(zipUri);
-//        try {
-//            file.ex
-//            if (!file.exists()) {
-//                logger.error("Language artifact not found at: {}", file);
-//
-//            }
-//        } catch (FileSystemException e) {
-//            throw new RuntimeException("Unhandled exception", e);
-//        }
-
         return loadLanguageFromFolder(file);
     }
 
@@ -178,7 +141,7 @@ public final class LanguageManager {
      * @param folder The folder.
      * @return Whether a language was successfully loaded.
      */
-    public boolean loadLanguageFromFolder(VirtualFile folder) throws
+    public boolean loadLanguageFromFolder(final VirtualFile folder) throws
             IOException {
         Preconditions.checkNotNull(folder);
 
@@ -191,22 +154,23 @@ public final class LanguageManager {
      * @param folder The folder.
      * @return Whether a language was successfully loaded.
      */
-    public boolean loadLanguageFromFolder(FileObject folder) throws
+    public boolean loadLanguageFromFolder(final FileObject folder) throws
             IOException {
         Preconditions.checkNotNull(folder);
         try {
             // TODO: Assert that this doesn't load the language, just discovers it.
             // Loading happens only after the user clicked OK or Apply in the settings dialog.
-            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(folder);
+            final Iterable<ILanguageDiscoveryRequest> request = this.discoveryService.request(folder);
+            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(request);
             final List<ILanguageImpl> lis = new ArrayList<>();
-            for (ILanguageComponent c : discovery) {
-                for (ILanguageImpl li : c.contributesTo()) {
+            for (final ILanguageComponent c : discovery) {
+                for (final ILanguageImpl li : c.contributesTo()) {
                     lis.add(li);
                 }
             }
-            logger.info("From '{}' loaded languages: {}", folder, Joiner.on(", ").join(lis));
+            this.logger.info("From '{}' loaded languages: {}", folder, Joiner.on(", ").join(lis));
             return discovery.iterator().hasNext();
-        } catch (MetaborgException e) {
+        } catch (final MetaborgException e) {
             throw new UnhandledException(e);
         }
     }

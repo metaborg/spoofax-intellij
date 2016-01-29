@@ -25,17 +25,27 @@ dependency-reduced-pom.xml
 buildNumber.properties
 
 
+### Gradle ###
+.gradle
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+
+
 ### Intellij ###
-.idea/gradle.xml
-.idea/libraries
+*.iml
+*.ipr
+*.iws
+.idea/libraries/
+.idea/dictionaries/
 .idea/workspace.xml
 .idea/tasks.xml
-.idea/dataSources.ids
 .idea/dataSources.xml
+.idea/dataSources.ids
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
-.idea_modules/
 out/
 atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
@@ -43,9 +53,22 @@ crashlytics.properties
 crashlytics-build.properties
 
 
-### Gradle ###
-.gradle
-build/
-gradle-app.setting
-!gradle-wrapper.jar
-
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.project
+.externalToolBuilders/
+.classpath
+.factorypath
+.buildpath
+.target
+.texlipse
+.springBeans

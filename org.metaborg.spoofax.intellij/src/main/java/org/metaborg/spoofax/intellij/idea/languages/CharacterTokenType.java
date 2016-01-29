@@ -20,7 +20,6 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Token type for a single character.
@@ -34,7 +33,7 @@ public final class CharacterTokenType extends IElementType {
      *
      * @param language The associated IDEA language.
      */
-    public CharacterTokenType(@NotNull final SpoofaxIdeaLanguage language) {
+    public CharacterTokenType(final SpoofaxIdeaLanguage language) {
         super("CHARACTER", language);
     }
 

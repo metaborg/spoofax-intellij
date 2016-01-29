@@ -22,7 +22,8 @@ package org.metaborg.spoofax.intellij.idea.languages;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.style.IStyle;
 import org.metaborg.core.style.Style;
-import org.metaborg.spoofax.intellij.idea.psi.*;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxElementType;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxIdentifierType;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -49,7 +50,7 @@ public final class SpoofaxTokenTypeManager {
      *
      * @param language The IDEA language.
      */
-    public SpoofaxTokenTypeManager(@NotNull SpoofaxIdeaLanguage language) {
+    public SpoofaxTokenTypeManager(final SpoofaxIdeaLanguage language) {
         this.language = language;
         this.characterTokenType = new CharacterTokenType(language);
         this.elementType = new SpoofaxElementType(language);
@@ -68,6 +69,7 @@ public final class SpoofaxTokenTypeManager {
 
 
     public SpoofaxElementType getElementType() { return this.elementType; }
+
     public SpoofaxIdentifierType getIdentifierType() { return this.identifierType; }
 
     /**

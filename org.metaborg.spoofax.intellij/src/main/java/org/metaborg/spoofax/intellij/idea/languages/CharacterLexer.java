@@ -23,21 +23,18 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lexer.LexerBase;
 import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.core.StringFormatter;
 import org.metaborg.core.logging.InjectLogger;
-import org.slf4j.Logger;
+import org.metaborg.util.log.ILogger;
 
 /**
  * Lexer that always lexes a single character.
  */
 public final class CharacterLexer extends LexerBase {
 
-    @NotNull
     private final SpoofaxTokenTypeManager tokenTypesManager;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
     // The character buffer.
     private CharSequence buffer;
     // Zero-based offset of the start of the relevant character range.
@@ -48,7 +45,8 @@ public final class CharacterLexer extends LexerBase {
     private int offst;
 
     @Inject
-    private CharacterLexer(@Assisted @NotNull final SpoofaxTokenTypeManager tokenTypesManager) {
+    private CharacterLexer(@Assisted final SpoofaxTokenTypeManager tokenTypesManager) {
+        super();
         this.tokenTypesManager = tokenTypesManager;
     }
 
@@ -62,7 +60,7 @@ public final class CharacterLexer extends LexerBase {
      */
     @Override
     public void start(
-            @NotNull final CharSequence buffer,
+            final CharSequence buffer,
             final int bufferStart,
             final int bufferEnd,
             final int initialState) {
@@ -109,11 +107,12 @@ public final class CharacterLexer extends LexerBase {
      */
     @Override
     public int getTokenStart() {
-        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : StringFormatter.format(
+        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : this.logger.format(
                 "Offset {} must be between [{}, {}).",
                 this.offst,
                 this.bufferStart,
-                this.bufferEnd);
+                this.bufferEnd
+        );
         return this.offst;
     }
 
@@ -124,11 +123,12 @@ public final class CharacterLexer extends LexerBase {
      */
     @Override
     public int getTokenEnd() {
-        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : StringFormatter.format(
+        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : this.logger.format(
                 "Offset {} must be between [{}, {}).",
                 this.offst,
                 this.bufferStart,
-                this.bufferEnd);
+                this.bufferEnd
+        );
         return this.offst + 1;
     }
 
@@ -145,7 +145,6 @@ public final class CharacterLexer extends LexerBase {
      *
      * @return The character buffer.
      */
-    @NotNull
     @Override
     public CharSequence getBufferSequence() {
         return this.buffer;

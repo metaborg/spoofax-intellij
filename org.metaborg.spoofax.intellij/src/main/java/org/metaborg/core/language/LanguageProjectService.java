@@ -25,7 +25,11 @@ import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.build.dependency.IDependencyService;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.core.project.ILanguageSpec;
+import org.metaborg.core.project.ILanguageSpecService;
 import org.metaborg.core.project.IProject;
+import org.metaborg.util.log.ILogger;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -43,12 +47,20 @@ public final class LanguageProjectService implements ILanguageProjectService {
     private final ILanguageIdentifierService identifierService;
     private final IDependencyService dependencyService;
     private final ILanguageService languageService;
+    private final ILanguageSpecService languageSpecService;
+    @InjectLogger
+    private ILogger logger;
 
     @Inject
-    /* package private */ LanguageProjectService(final ILanguageIdentifierService identifierService, final IDependencyService dependencyService, final ILanguageService languageService) {
+    /* package private */ LanguageProjectService(
+            final ILanguageIdentifierService identifierService,
+            final IDependencyService dependencyService,
+            final ILanguageService languageService,
+            final ILanguageSpecService languageSpecService) {
         this.identifierService = identifierService;
         this.dependencyService = dependencyService;
         this.languageService = languageService;
+        this.languageSpecService = languageSpecService;
     }
 
     /**
@@ -57,41 +69,14 @@ public final class LanguageProjectService implements ILanguageProjectService {
     @Override
     public Iterable<ILanguageImpl> activeImpls(@Nullable final IProject project) {
         try {
-            final Iterable<ILanguageComponent> dependencies = this.dependencyService.compileDependencies(project);
+            final ILanguageSpec languageSpec = this.languageSpecService.get(project);
+            final Iterable<ILanguageComponent> dependencies = this.dependencyService.compileDependencies(languageSpec);
             return LanguageUtils.toImpls(dependencies);
-        } catch (MetaborgException e) {
+        } catch (final MetaborgException e) {
             // There is nothing we can do about this exception.
             throw new RuntimeException(e);
         }
     }
-
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Nullable
-//    @Override
-//    public ILanguageImpl getImpl(final ILanguage language, @Nullable final IProject project) {
-//        getCandidateImpls(language, project, null)
-//        Iterable<ILanguageImpl> impls = activeImpls(project);
-//        Set<ILanguageImpl> candidates = getImplsBelongToLanguage(language, impls);
-//        if (candidates.size() > 1)
-//            throw new IllegalStateException("More than one candidate implementation found for the specified language.");
-//        return candidates.size() != 0 ? candidates.iterator().next() : null;
-//    }
-//
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Nullable
-//    @Override
-//    public LanguageDialect getImpl(@Nullable final IProject project, @Nullable final FileObject file) {
-//        LanguageDialect result = getImpl(activeImpls(project), project, file);
-//        if(result == null) {
-//            // Try with all active languages if identification with dependencies fails
-//            result = getImpl(LanguageUtils.allActiveImpls(this.languageService), project, file);
-//        }
-//        return result;
-//    }
 
     /**
      * {@inheritDoc}
@@ -102,37 +87,14 @@ public final class LanguageProjectService implements ILanguageProjectService {
             @Nullable final ILanguage language,
             @Nullable final IProject project,
             @Nullable final FileObject file) {
-        return getImpl(language.impls(), project, file);
-//        if (file != null) {
-//            LanguageDialect result = getImpl(project, file);
-//            if (result.dialectOrBaseLanguage().belongsTo().equals(language))
-//                return result;
-//            else
-//                return null;
-//        }
-//        else {
-//            ILanguageImpl impl = getImpl(language, project);
-//            if (impl != null)
-//                return new LanguageDialect(impl, null);
-//            else
-//                return null;
-//        }
+        final Set<LanguageDialect> candidates = getCandidateImpls(language.impls(), project, file);
+        if (candidates.size() > 1)
+            throw new IllegalStateException(this.logger.format(
+                    "For language {} more than one candidate implementation found for file {} in project {}: {}",
+                    language, file, project, candidates
+            ));
+        return !candidates.isEmpty() ? candidates.iterator().next() : null;
     }
-
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Nullable
-//    @Override
-//    public ILanguageImpl getImpl(
-//            final Iterable<? extends ILanguageImpl> languages,
-//            @Nullable final IProject project) {
-//        Set<ILanguageImpl> candidates = Sets.newHashSet(activeImpls(project));
-//        candidates.retainAll(Lists.newArrayList(languages));
-//        if (candidates.size() > 1)
-//            throw new IllegalStateException("More than one candidate implementation found for the specified language.");
-//        return candidates.size() != 0 ? candidates.iterator().next() : null;
-//    }
 
     /**
      * {@inheritDoc}
@@ -143,32 +105,19 @@ public final class LanguageProjectService implements ILanguageProjectService {
             @Nullable final Iterable<? extends ILanguageImpl> languages,
             @Nullable final IProject project,
             @Nullable final FileObject file) {
-        Set<LanguageDialect> candidates = getCandidateImpls(languages, project, file);
+        final Set<LanguageDialect> candidates = getCandidateImpls(languages, project, file);
         if (candidates.size() > 1)
-            throw new IllegalStateException("More than one candidate implementation found for the specified language.");
-        return candidates.size() != 0 ? candidates.iterator().next() : null;
+            throw new IllegalStateException(this.logger.format(
+                    "From {} more than one candidate implementation found for file {} in project {}: {}",
+                    languages, file, project, candidates
+            ));
+        return !candidates.isEmpty() ? candidates.iterator().next() : null;
     }
-
-//    /**
-//     * Returns only those implementations that belong to the specified language.
-//     *
-//     * @param language The language.
-//     * @param impls The implementations.
-//     * @return A set of implementations, which may be empty.
-//     */
-//    private Set<ILanguageImpl> getImplsBelongToLanguage(final ILanguage language, final Iterable<? extends ILanguageImpl> impls) {
-//        final Set<ILanguageImpl> identifiedImpls = Sets.newLinkedHashSet();
-//        for(ILanguageImpl impl : impls) {
-//            if (impl.belongsTo().equals(language)) {
-//                identifiedImpls.add(impl);
-//            }
-//        }
-//        return identifiedImpls;
-//    }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<LanguageDialect> getCandidateImpls(
             @Nullable final Iterable<? extends ILanguageImpl> languages,
             @Nullable final IProject project,
@@ -176,24 +125,24 @@ public final class LanguageProjectService implements ILanguageProjectService {
         if (languages == null)
             return getCandidateImpls(this.languageService.getAllImpls(), project, file);
 
-        Set<LanguageDialect> candidates = new HashSet<>();
+        final Set<LanguageDialect> candidates = new HashSet<>();
         if (file != null) {
             // Find all implementations that the file identifies to.
-            for (ILanguageImpl impl : languages) {
+            for (final ILanguageImpl impl : languages) {
                 if (this.identifierService.identify(file, impl)) {
                     candidates.add(new LanguageDialect(impl, null));
                 }
             }
         } else if (project != null) {
             // Find all implementations that the project supports.
-            Set<ILanguageImpl> input = Sets.newHashSet(activeImpls(project));
+            final Set<ILanguageImpl> input = Sets.newHashSet(activeImpls(project));
             input.retainAll(Lists.newArrayList(languages));
-            for (ILanguageImpl impl : input) {
+            for (final ILanguageImpl impl : input) {
                 candidates.add(new LanguageDialect(impl, null));
             }
         } else {
             // Find all implementations.
-            for (ILanguageImpl impl : languages) {
+            for (final ILanguageImpl impl : languages) {
                 candidates.add(new LanguageDialect(impl, null));
             }
         }
@@ -203,6 +152,7 @@ public final class LanguageProjectService implements ILanguageProjectService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Set<LanguageDialect> getCandidateImpls(
             @Nullable final ILanguage language,
             @Nullable final IProject project,

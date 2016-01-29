@@ -5,75 +5,16 @@
       <GradleProjectSettings>
         <option name="createEmptyContentRootDirectories" value="true" />
         <option name="distributionType" value="LOCAL" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/org.metaborg.settings" />
-        <option name="gradleHome" value="/usr/lib/gradle/2.8" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/org.metaborg.settings" />
-          </set>
-        </option>
-        <option name="useAutoImport" value="true" />
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$/org.metaborg.settings" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="createEmptyContentRootDirectories" value="true" />
-        <option name="distributionType" value="LOCAL" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/org.metaborg.settings.jackson" />
-        <option name="gradleHome" value="/usr/lib/gradle/2.8" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/org.metaborg.settings" />
-            <option value="$PROJECT_DIR$/org.metaborg.settings.jackson" />
-          </set>
-        </option>
-        <option name="useAutoImport" value="true" />
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$/org.metaborg.settings" />
-            <option value="$PROJECT_DIR$/org.metaborg.settings.jackson" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="createEmptyContentRootDirectories" value="true" />
-        <option name="distributionType" value="LOCAL" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/org.metaborg.settings.maven" />
-        <option name="gradleHome" value="/usr/lib/gradle/2.8" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/org.metaborg.settings" />
-            <option value="$PROJECT_DIR$/org.metaborg.settings.maven" />
-          </set>
-        </option>
-        <option name="useAutoImport" value="true" />
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$/org.metaborg.settings" />
-            <option value="$PROJECT_DIR$/org.metaborg.settings.maven" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="createEmptyContentRootDirectories" value="true" />
-        <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/org.metaborg.spoofax.intellij" />
-        <option name="gradleHome" value="/usr/lib/gradle/2.8" />
+        <option name="gradleHome" value="/usr/lib/gradle/default" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/org.metaborg.settings" />
-            <option value="$PROJECT_DIR$/org.metaborg.settings.jackson" />
             <option value="$PROJECT_DIR$/org.metaborg.spoofax.intellij" />
           </set>
         </option>
         <option name="useAutoImport" value="true" />
         <option name="myModules">
           <set>
-            <option value="$PROJECT_DIR$/org.metaborg.settings" />
-            <option value="$PROJECT_DIR$/org.metaborg.settings.jackson" />
             <option value="$PROJECT_DIR$/org.metaborg.spoofax.intellij" />
           </set>
         </option>

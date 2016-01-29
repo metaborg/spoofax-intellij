@@ -25,7 +25,6 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemOptions;
 import org.apache.commons.vfs2.provider.AbstractFileName;
 import org.apache.commons.vfs2.provider.AbstractFileSystem;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
@@ -42,9 +41,9 @@ public final class IntelliJFileSystem extends AbstractFileSystem {
      * @param fileSystemOptions The file system options.
      */
     public IntelliJFileSystem(
-            @NotNull final FileName rootName,
-            @NotNull final FileObject parentLayer,
-            @NotNull final FileSystemOptions fileSystemOptions) {
+            final FileName rootName,
+            final FileObject parentLayer,
+            final FileSystemOptions fileSystemOptions) {
         super(rootName, parentLayer, fileSystemOptions);
     }
 
@@ -52,7 +51,7 @@ public final class IntelliJFileSystem extends AbstractFileSystem {
      * {@inheritDoc}
      */
     @Override
-    protected final FileObject createFile(@NotNull final AbstractFileName name) throws Exception {
+    protected final FileObject createFile(final AbstractFileName name) throws Exception {
         return new IntelliJFileObject(name, this);
     }
 
@@ -60,7 +59,7 @@ public final class IntelliJFileSystem extends AbstractFileSystem {
      * {@inheritDoc}
      */
     @Override
-    protected final void addCapabilities(@NotNull final Collection<Capability> collection) {
+    protected final void addCapabilities(final Collection<Capability> collection) {
         collection.addAll(IntelliJResourceProvider.capabilities);
     }
 

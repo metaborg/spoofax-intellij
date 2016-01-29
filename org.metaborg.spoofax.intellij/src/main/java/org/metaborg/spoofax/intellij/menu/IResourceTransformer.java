@@ -19,13 +19,15 @@
 
 package org.metaborg.spoofax.intellij.menu;
 
-import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.MetaborgException;
-import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.core.menu.TransformAction;
+//import org.apache.commons.vfs2.FileObject;
+//import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import org.metaborg.core.MetaborgException;
+import org.metaborg.core.action.ITransformGoal;
+import org.metaborg.core.language.ILanguageImpl;
+//import org.metaborg.spoofax.core.menu.TransformAction;
+
+//import java.util.List;
 
 /**
  * Executes a transformation action on resources.
@@ -35,13 +37,12 @@ public interface IResourceTransformer {
     /**
      * Executes the specified action.
      *
-     * @param action      The action to execute.
-     * @param language    The language implementation.
-     * @param activeFiles The active files.
+     * @param language  The language implementation.
+     * @param resources The active resources.
+     * @param goal      The transformation goal.
      */
     boolean execute(
-            @NotNull final TransformAction action,
-            @NotNull final ILanguageImpl language,
-            @NotNull final List<FileObject> activeFiles)
+            final Iterable<TransformResource> resources, final ILanguageImpl language,
+            final ITransformGoal goal)
             throws MetaborgException;
 }

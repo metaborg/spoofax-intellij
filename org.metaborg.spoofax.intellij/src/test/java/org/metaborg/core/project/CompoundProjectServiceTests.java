@@ -31,46 +31,49 @@ import static org.junit.Assert.assertNull;
 
 public final class CompoundProjectServiceTests {
 
+    private static final String SDF_DEPENDENCY =
+            "res:languages/org.metaborg.meta.lang.sdf-1.5.0-SNAPSHOT.spoofax-language";
+
     @Test
     public void getsOneProjectFromMultipleProjectServices() throws FileSystemException {
-        FileSystemManager manager = VFS.getManager();
-        CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(
+        final FileSystemManager manager = VFS.getManager();
+        final CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(
                 new ProjectServiceStub(null),
                 new ArtifactProjectService(manager),
                 new ProjectServiceStub(null)
         ));
 
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        final FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
-        IProject project = sut.get(artifact);
+        final IProject project = sut.get(artifact);
 
         assertNotNull(project);
     }
 
     @Test
     public void returnsNullWhenNoServiceReturnsAProject() throws FileSystemException {
-        FileSystemManager manager = VFS.getManager();
-        CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(
+        final FileSystemManager manager = VFS.getManager();
+        final CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(
                 new ProjectServiceStub(null),
                 new ProjectServiceStub(null)
         ));
 
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        final FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
-        IProject project = sut.get(artifact);
+        final IProject project = sut.get(artifact);
 
         assertNull(project);
     }
 
     @Test(expected = MultipleServicesRespondedException.class)
     public void throwsExceptionWhenMultipleProjectServicesReturnAProject() throws FileSystemException {
-        FileSystemManager manager = VFS.getManager();
-        CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(
+        final FileSystemManager manager = VFS.getManager();
+        final CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(
                 new ArtifactProjectService(manager),
                 new ArtifactProjectService(manager)
         ));
 
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        final FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
         sut.get(artifact);
     }

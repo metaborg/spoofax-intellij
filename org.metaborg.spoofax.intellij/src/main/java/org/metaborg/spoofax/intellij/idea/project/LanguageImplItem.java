@@ -19,7 +19,6 @@
 
 package org.metaborg.spoofax.intellij.idea.project;
 
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 
@@ -34,26 +33,23 @@ import java.util.List;
  */
 public final class LanguageImplItem {
 
-    @NotNull
     private final ILanguage language;
     @Nullable
     private ILanguageImpl currentImplementation;
 
-    public LanguageImplItem(@NotNull ILanguage language) {
+    public LanguageImplItem(final ILanguage language) {
         this.language = language;
     }
 
-    @NotNull
     public final ILanguage language() { return this.language; }
 
     @Nullable
     public final ILanguageImpl currentImplementation() { return this.currentImplementation; }
 
-    @NotNull
     public final List<ILanguageImpl> getImplementations() {
-        ArrayList<ILanguageImpl> implementations = new ArrayList<ILanguageImpl>();
+        final ArrayList<ILanguageImpl> implementations = new ArrayList<>();
         implementations.add(null);
-        for (ILanguageImpl impl : this.language.impls()) {
+        for (final ILanguageImpl impl : this.language.impls()) {
             implementations.add(impl);
         }
         return implementations;

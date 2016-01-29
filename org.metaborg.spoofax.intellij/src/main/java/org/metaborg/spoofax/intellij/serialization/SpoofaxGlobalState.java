@@ -19,8 +19,8 @@
 
 package org.metaborg.spoofax.intellij.serialization;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.annotation.Nullable;
 
@@ -37,7 +37,7 @@ public final class SpoofaxGlobalState {
         return this.myName;
     }
 
-    public final void setMyName(@Nullable String value) {
+    public final void setMyName(@Nullable final String value) {
         this.myName = value;
     }
 
@@ -47,7 +47,6 @@ public final class SpoofaxGlobalState {
     @Override
     public final int hashCode() {
         return new HashCodeBuilder(19, 31)
-                .append(this.myName)
                 .toHashCode();
     }
 
@@ -55,13 +54,13 @@ public final class SpoofaxGlobalState {
      * {@inheritDoc}
      */
     @Override
-    public final boolean equals(@Nullable Object obj) {
+    public final boolean equals(@Nullable final Object obj) {
         if (!(obj instanceof SpoofaxGlobalState))
             return false;
-        return equals((SpoofaxGlobalState) obj);
+        return equals((SpoofaxGlobalState)obj);
     }
 
-    public final boolean equals(@Nullable SpoofaxGlobalState other) {
+    public final boolean equals(@Nullable final SpoofaxGlobalState other) {
         if (other == this)
             return true;
         if (other == null)

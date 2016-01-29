@@ -24,9 +24,9 @@ package org.metaborg.core.project;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.StringFormatter;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -38,11 +38,12 @@ import java.util.Set;
  */
 public final class CompoundProjectService implements IProjectService {
 
-    @NotNull
+    @InjectLogger
+    private ILogger logger;
     private final Set<IProjectService> services;
 
     @Inject
-    /* package private */ CompoundProjectService(@NotNull @Compound final Set<IProjectService> services) {
+    /* package private */ CompoundProjectService(@Compound final Set<IProjectService> services) {
         this.services = services;
     }
 
@@ -54,20 +55,21 @@ public final class CompoundProjectService implements IProjectService {
      */
     @Nullable
     @Override
-    public IProject get(@NotNull final FileObject resource) {
+    public IProject get(final FileObject resource) {
         Preconditions.checkNotNull(resource);
 
-        List<IProject> projects = new ArrayList<>(1);
-        for (IProjectService service : this.services) {
-            IProject project = service.get(resource);
+        final List<IProject> projects = new ArrayList<>(1);
+        for (final IProjectService service : this.services) {
+            final IProject project = service.get(resource);
             if (project != null)
                 projects.add(project);
         }
 
         if (projects.size() > 1) {
-            throw new MultipleServicesRespondedException(StringFormatter.format(
+            throw new MultipleServicesRespondedException(this.logger.format(
                     "Multiple project services provided a project for the resource {}.",
-                    resource));
+                    resource
+            ));
         } else if (projects.size() == 1) {
             return projects.get(0);
         } else {

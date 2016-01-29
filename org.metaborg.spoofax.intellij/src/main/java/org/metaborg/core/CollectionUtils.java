@@ -21,7 +21,6 @@ package org.metaborg.core;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Array;
@@ -45,8 +44,7 @@ public final class CollectionUtils {
      * @param <T>      The type of elements.
      * @return An immutable list.
      */
-    @NotNull
-    public static <T> List<T> toList(@NotNull final Iterable<? extends T> iterable) {
+    public static <T> List<T> toList(final Iterable<? extends T> iterable) {
         Preconditions.checkNotNull(iterable);
 
         return Collections.unmodifiableList(toMutableList(iterable));
@@ -59,12 +57,11 @@ public final class CollectionUtils {
      * @param <T>      The type of elements.
      * @return A mutable list.
      */
-    @NotNull
-    public static <T> List<T> toMutableList(@NotNull final Iterable<? extends T> iterable) {
+    public static <T> List<T> toMutableList(final Iterable<? extends T> iterable) {
         Preconditions.checkNotNull(iterable);
 
-        ArrayList<T> list = new ArrayList<>();
-        for (T item : iterable) {
+        final ArrayList<T> list = new ArrayList<>();
+        for (final T item : iterable) {
             list.add(item);
         }
         return list;
@@ -74,11 +71,10 @@ public final class CollectionUtils {
      * Returns a sorted list with the elements in the collection.
      *
      * @param collection The collection.
-     * @param <T> The type of elements.
+     * @param <T>        The type of elements.
      * @return A sorted list.
      */
-    @NotNull
-    public static <T extends Comparable<? super T>> List<T> toSortedList(@NotNull final Collection<T> collection) {
+    public static <T extends Comparable<? super T>> List<T> toSortedList(final Collection<T> collection) {
         Preconditions.checkNotNull(collection);
 
         return toSortedList(collection, null);
@@ -89,14 +85,15 @@ public final class CollectionUtils {
      *
      * @param collection The collection.
      * @param comparator The comparator.
-     * @param <T> The type of elements.
+     * @param <T>        The type of elements.
      * @return A sorted list.
      */
-    @NotNull
-    public static <T> List<T> toSortedList(@NotNull final Collection<T> collection, @Nullable final Comparator<? super T> comparator) {
+    public static <T> List<T> toSortedList(
+            final Collection<T> collection,
+            @Nullable final Comparator<? super T> comparator) {
         Preconditions.checkNotNull(collection);
 
-        List<T> list = new ArrayList<>(collection);
+        final List<T> list = new ArrayList<>(collection);
         list.sort(comparator);
         return list;
     }
@@ -108,8 +105,7 @@ public final class CollectionUtils {
      * @param <T>      The type of elements.
      * @return An array.
      */
-    @NotNull
-    public static <T> T[] toArray(@NotNull final Iterable<? extends T> iterable, @NotNull final Class<T> clazz) {
+    public static <T> T[] toArray(final Iterable<? extends T> iterable, final Class<T> clazz) {
         Preconditions.checkNotNull(iterable);
         Preconditions.checkNotNull(clazz);
 
@@ -124,15 +120,14 @@ public final class CollectionUtils {
      * @param <T>        The type of elements.
      * @return An array.
      */
-    @NotNull
-    public static <T> T[] toArray(@NotNull final Collection<? extends T> collection, @NotNull final Class<T> clazz) {
+    public static <T> T[] toArray(final Collection<? extends T> collection, final Class<T> clazz) {
         Preconditions.checkNotNull(collection);
         Preconditions.checkNotNull(clazz);
 
-        @SuppressWarnings("unchecked")
-        T[] result = (T[]) Array.newInstance(clazz, collection.size());
+        @SuppressWarnings("unchecked") final
+        T[] result = (T[])Array.newInstance(clazz, collection.size());
         int index = 0;
-        for (T item : collection) {
+        for (final T item : collection) {
             result[index] = item;
             index++;
         }

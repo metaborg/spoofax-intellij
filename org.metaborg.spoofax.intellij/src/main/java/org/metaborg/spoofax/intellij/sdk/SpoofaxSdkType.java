@@ -23,7 +23,7 @@ import com.google.inject.Singleton;
 import com.intellij.openapi.projectRoots.*;
 import org.jdom.Element;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.spoofax.intellij.idea.model.SpoofaxIcons;
+import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
 
 import javax.swing.*;
 
@@ -110,7 +110,7 @@ public final class SpoofaxSdkType extends SdkType {
      */
     @Override
     public Icon getIcon() {
-        return SpoofaxIcons.INSTANCE.Default;
+        return SpoofaxIcons.INSTANCE.defaultIcon();
     }
 
     @Override

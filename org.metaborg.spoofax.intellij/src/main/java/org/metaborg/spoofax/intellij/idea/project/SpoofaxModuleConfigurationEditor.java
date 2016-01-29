@@ -39,7 +39,7 @@ public final class SpoofaxModuleConfigurationEditor implements ModuleConfigurati
      *
      * @param state The configuration state.
      */
-    public SpoofaxModuleConfigurationEditor(ModuleConfigurationState state) {
+    public SpoofaxModuleConfigurationEditor(final ModuleConfigurationState state) {
 
     }
 

@@ -22,17 +22,17 @@ package org.metaborg.spoofax.intellij.factories;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.intellij.openapi.extensions.Extensions;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.StringFormatter;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 
 /**
  * Provides an instance from the IntelliJ extensions.
  */
 /* package private */ final class IntelliJExtensionProvider<T> implements Provider<T> {
 
-    @NotNull
+    @InjectLogger
+    private ILogger logger;
     private final Class<T> extensionClass;
-    @NotNull
     private final String extensionPointName;
 
     /**
@@ -42,25 +42,25 @@ import org.metaborg.core.StringFormatter;
      * @param extensionPointName The extension point name.
      */
     /* package private */ IntelliJExtensionProvider(
-            @NotNull final Class<T> extensionClass,
-            @NotNull final String extensionPointName) {
+            final Class<T> extensionClass,
+            final String extensionPointName) {
         this.extensionClass = extensionClass;
         this.extensionPointName = extensionPointName;
     }
 
     @Override
-    @NotNull
     public T get() {
-        Object[] candidates = Extensions.getExtensions(this.extensionPointName);
+        final Object[] candidates = Extensions.getExtensions(this.extensionPointName);
 
-        for (Object candidate : candidates) {
+        for (final Object candidate : candidates) {
             if (candidate.getClass().equals(this.extensionClass)) {
-                return (T) candidate;
+                return (T)candidate;
             }
         }
-        throw new ProvisionException(StringFormatter.format(
+        throw new ProvisionException(this.logger.format(
                 "No extensions are registered for the class {} in extension point {}.",
                 this.extensionClass,
-                this.extensionPointName));
+                this.extensionPointName
+        ));
     }
 }

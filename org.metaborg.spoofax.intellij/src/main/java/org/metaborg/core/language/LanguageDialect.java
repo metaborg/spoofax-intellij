@@ -20,7 +20,6 @@
 package org.metaborg.core.language;
 
 import com.google.common.base.Preconditions;
-import com.intellij.lang.*;
 
 import javax.annotation.Nullable;
 
@@ -36,10 +35,10 @@ public final class LanguageDialect {
     /**
      * Initializes a new instance of the {@link LanguageDialect} class.
      *
-     * @param baseLanguage The base language implementation.
+     * @param baseLanguage    The base language implementation.
      * @param dialectLanguage The dialect language implementation; or <code>null</code>.
      */
-    public LanguageDialect(ILanguageImpl baseLanguage, @Nullable ILanguageImpl dialectLanguage) {
+    public LanguageDialect(final ILanguageImpl baseLanguage, @Nullable final ILanguageImpl dialectLanguage) {
         Preconditions.checkNotNull(baseLanguage);
 
         this.baseLanguage = baseLanguage;
@@ -72,7 +71,9 @@ public final class LanguageDialect {
      *
      * @return The dialect or base language implementation.
      */
-    public ILanguageImpl dialectOrBaseLanguage() { return this.dialectLanguage != null ? this.dialectLanguage : this.baseLanguage; }
+    public ILanguageImpl dialectOrBaseLanguage() {
+        return this.dialectLanguage != null ? this.dialectLanguage : this.baseLanguage;
+    }
 
     /**
      * {@inheritDoc}

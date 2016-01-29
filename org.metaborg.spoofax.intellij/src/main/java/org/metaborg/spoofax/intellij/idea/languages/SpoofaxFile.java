@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.analysis.AnalysisFileResult;
 import org.metaborg.core.analysis.AnalysisResult;
 import org.metaborg.core.syntax.ParseResult;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**
@@ -35,8 +35,10 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 public final class SpoofaxFile extends PsiFileBase {
 
     public static final Key<ParseResult<IStrategoTerm>> PARSE_RESULT_KEY = new Key<>("PARSE_RESULT_KEY");
-    public static final Key<AnalysisFileResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_FILE_RESULT_KEY = new Key<>("ANALYSIS_FILE_RESULT_KEY");
-    public static final Key<AnalysisResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_RESULT_KEY = new Key<>("ANALYSIS_RESULT_KEY");
+    public static final Key<AnalysisFileResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_FILE_RESULT_KEY = new Key<>(
+            "ANALYSIS_FILE_RESULT_KEY");
+    public static final Key<AnalysisResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_RESULT_KEY = new Key<>(
+            "ANALYSIS_RESULT_KEY");
 
     @NotNull
     private final SpoofaxFileType fileType;
@@ -47,7 +49,7 @@ public final class SpoofaxFile extends PsiFileBase {
      * @param viewProvider The file view provider.
      * @param fileType     The file type.
      */
-    public SpoofaxFile(@NotNull final FileViewProvider viewProvider, @NotNull final SpoofaxFileType fileType) {
+    public SpoofaxFile(final FileViewProvider viewProvider, final SpoofaxFileType fileType) {
         super(viewProvider, fileType.getLanguage());
         this.fileType = fileType;
     }
@@ -57,6 +59,7 @@ public final class SpoofaxFile extends PsiFileBase {
      *
      * @return The file type.
      */
+    @Override
     @NotNull
     public SpoofaxFileType getFileType() {
         return this.fileType;

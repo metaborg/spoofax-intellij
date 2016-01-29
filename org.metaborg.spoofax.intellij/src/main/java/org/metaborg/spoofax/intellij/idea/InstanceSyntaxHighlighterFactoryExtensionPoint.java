@@ -22,7 +22,6 @@ package org.metaborg.spoofax.intellij.idea;
 import com.intellij.lang.Language;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactoryEP;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Syntax highlighter factory extension point value wrapper.
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
  * This wrapper is used to provide an instance to a language extension point instead of a class.
  */
 public final class InstanceSyntaxHighlighterFactoryExtensionPoint extends SyntaxHighlighterFactoryEP {
-    @NotNull
     private final SyntaxHighlighterFactory instance;
 
     /**
@@ -39,13 +37,15 @@ public final class InstanceSyntaxHighlighterFactoryExtensionPoint extends Syntax
      * @param language The language.
      * @param instance The instance.
      */
-    public InstanceSyntaxHighlighterFactoryExtensionPoint(@NotNull final Language language, @NotNull final SyntaxHighlighterFactory instance) {
+    public InstanceSyntaxHighlighterFactoryExtensionPoint(
+            final Language language,
+            final SyntaxHighlighterFactory instance) {
+        super();
         this.instance = instance;
         this.language = language.getID();
         this.implementationClass = null;
     }
 
-    @NotNull
     @Override
     public final SyntaxHighlighterFactory getInstance() {
         return this.instance;

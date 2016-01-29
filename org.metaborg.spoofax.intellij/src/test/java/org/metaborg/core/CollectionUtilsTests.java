@@ -33,9 +33,9 @@ public final class CollectionUtilsTests {
 
     @Test
     public void toListEmptyIterable() {
-        Iterable<String> iterable = Collections.emptyList();
+        final Iterable<String> iterable = Collections.emptyList();
 
-        List<String> result = CollectionUtils.toList(iterable);
+        final List<String> result = CollectionUtils.toList(iterable);
 
         assertEquals(iterable, result);
         assertNotSame(iterable, result);
@@ -43,9 +43,9 @@ public final class CollectionUtilsTests {
 
     @Test
     public void toListNonEmptyIterable() {
-        Iterable<String> iterable = Arrays.asList("a", "b", "c");
+        final Iterable<String> iterable = Arrays.asList("a", "b", "c");
 
-        List<String> result = CollectionUtils.toList(iterable);
+        final List<String> result = CollectionUtils.toList(iterable);
 
         assertEquals(iterable, result);
         assertNotSame(iterable, result);
@@ -53,15 +53,15 @@ public final class CollectionUtilsTests {
 
     @Test(expected = UnsupportedOperationException.class)
     public void toListIsUnmodifiable() {
-        List<String> result = CollectionUtils.toList(Arrays.asList("a", "b", "c"));
+        final List<String> result = CollectionUtils.toList(Arrays.asList("a", "b", "c"));
         result.add("x");
     }
 
     @Test
     public void toMutableListEmptyIterable() {
-        Iterable<String> iterable = Collections.emptyList();
+        final Iterable<String> iterable = Collections.emptyList();
 
-        List<String> result = CollectionUtils.toMutableList(iterable);
+        final List<String> result = CollectionUtils.toMutableList(iterable);
 
         assertEquals(iterable, result);
         assertNotSame(iterable, result);
@@ -69,9 +69,9 @@ public final class CollectionUtilsTests {
 
     @Test
     public void toMutableListNonEmptyIterable() {
-        Iterable<String> iterable = Arrays.asList("a", "b", "c");
+        final Iterable<String> iterable = Arrays.asList("a", "b", "c");
 
-        List<String> result = CollectionUtils.toMutableList(iterable);
+        final List<String> result = CollectionUtils.toMutableList(iterable);
 
         assertEquals(iterable, result);
         assertNotSame(iterable, result);
@@ -79,7 +79,7 @@ public final class CollectionUtilsTests {
 
     @Test
     public void toMutableListIsModifiable() {
-        List<String> result = CollectionUtils.toMutableList(Arrays.asList("a", "b", "c"));
+        final List<String> result = CollectionUtils.toMutableList(Arrays.asList("a", "b", "c"));
         result.add("x");
 
         assertEquals(4, result.size());
@@ -87,36 +87,36 @@ public final class CollectionUtilsTests {
 
     @Test
     public void toArrayEmptyIterable() {
-        Iterable<String> iterable = Collections.emptyList();
+        final Iterable<String> iterable = Collections.emptyList();
 
-        String[] result = CollectionUtils.toArray(iterable, String.class);
+        final String[] result = CollectionUtils.toArray(iterable, String.class);
 
         assertEquals(iterable, Arrays.asList(result));
     }
 
     @Test
     public void toArrayNonEmptyIterable() {
-        Iterable<String> iterable = Arrays.asList("a", "b", "c");
+        final Iterable<String> iterable = Arrays.asList("a", "b", "c");
 
-        String[] result = CollectionUtils.toArray(iterable, String.class);
+        final String[] result = CollectionUtils.toArray(iterable, String.class);
 
         assertEquals(iterable, Arrays.asList(result));
     }
 
     @Test
     public void toArrayEmptyCollection() {
-        Collection<String> iterable = Collections.emptyList();
+        final Collection<String> iterable = Collections.emptyList();
 
-        String[] result = CollectionUtils.toArray(iterable, String.class);
+        final String[] result = CollectionUtils.toArray(iterable, String.class);
 
         assertEquals(iterable, Arrays.asList(result));
     }
 
     @Test
     public void toArrayNonEmptyCollection() {
-        Collection<String> iterable = Arrays.asList("a", "b", "c");
+        final Collection<String> iterable = Arrays.asList("a", "b", "c");
 
-        String[] result = CollectionUtils.toArray(iterable, String.class);
+        final String[] result = CollectionUtils.toArray(iterable, String.class);
 
         assertEquals(iterable, Arrays.asList(result));
     }

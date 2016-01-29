@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;
 
 /**
@@ -29,10 +28,12 @@ import org.metaborg.core.language.ILanguageImpl;
  */
 public final class IdeaLanguageImplAttachment {
 
-    @NotNull
-    public final Lexer lexer;
-    @NotNull
-    public final DefaultActionGroup buildActionGroup;
+    private final Lexer lexer;
+    private final DefaultActionGroup buildActionGroup;
+
+    public Lexer lexer() { return this.lexer;}
+
+    public DefaultActionGroup buildActionGroup() { return this.buildActionGroup; }
 
     /**
      * Creates a new instance of the {@link IdeaLanguageImplAttachment} class.
@@ -41,8 +42,8 @@ public final class IdeaLanguageImplAttachment {
      * @param buildActionGroup The build action group.
      */
     /* package private */ IdeaLanguageImplAttachment(
-            @NotNull final Lexer lexer,
-            @NotNull final DefaultActionGroup buildActionGroup) {
+            final Lexer lexer,
+            final DefaultActionGroup buildActionGroup) {
         this.lexer = lexer;
         this.buildActionGroup = buildActionGroup;
     }

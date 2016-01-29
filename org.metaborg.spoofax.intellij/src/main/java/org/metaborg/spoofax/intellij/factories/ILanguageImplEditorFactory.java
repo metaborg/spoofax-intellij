@@ -20,7 +20,6 @@
 package org.metaborg.spoofax.intellij.factories;
 
 import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
 
 /**
@@ -34,6 +33,5 @@ public interface ILanguageImplEditorFactory {
      * @param state The module configuration state.
      * @return The editor.
      */
-    @NotNull
-    LanguageImplEditor create(@NotNull final ModuleConfigurationState state);
+    LanguageImplEditor create(final ModuleConfigurationState state);
 }

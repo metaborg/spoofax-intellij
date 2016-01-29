@@ -37,7 +37,7 @@ public final class SpoofaxTokenType extends IElementType {
      * @param language The associated IDEA language.
      * @param style    The token style.
      */
-    public SpoofaxTokenType(@NotNull final SpoofaxIdeaLanguage language, @NotNull final IStyle style) {
+    public SpoofaxTokenType(final SpoofaxIdeaLanguage language, final IStyle style) {
         super(style.toString(), language);
         this.style = style;
     }

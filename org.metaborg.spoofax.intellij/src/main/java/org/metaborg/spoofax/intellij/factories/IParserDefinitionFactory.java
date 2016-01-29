@@ -21,8 +21,7 @@ package org.metaborg.spoofax.intellij.factories;
 
 import com.intellij.lang.ParserDefinition;
 import com.intellij.psi.tree.IFileElementType;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 
 /**
  * Factory for parser definitions.
@@ -32,11 +31,10 @@ public interface IParserDefinitionFactory {
     /**
      * Creates a new parser definition for the specified file type.
      *
-     * @param fileType The file type.
+     * @param fileType        The file type.
      * @param fileElementType The file element type.
      * @return The created parser definition.
      */
-    @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
+    ParserDefinition create(SpoofaxFileType fileType, IFileElementType fileElementType);
 
 }

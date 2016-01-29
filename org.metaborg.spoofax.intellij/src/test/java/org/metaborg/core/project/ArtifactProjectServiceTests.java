@@ -30,25 +30,29 @@ import static org.junit.Assert.assertSame;
 
 public final class ArtifactProjectServiceTests {
 
+    private static final String SDF_DEPENDENCY =
+            "res:languages/org.metaborg.meta.lang.sdf-1.5.0-SNAPSHOT.spoofax-language";
+
     @Test
     public void getsProjectForArtifact() throws FileSystemException {
-        FileSystemManager manager = VFS.getManager();
-        ArtifactProjectService sut = new ArtifactProjectService(manager);
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        final FileSystemManager manager = VFS.getManager();
 
-        IProject project = sut.get(artifact);
+        final ArtifactProjectService sut = new ArtifactProjectService(manager);
+        final FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
+
+        final IProject project = sut.get(artifact);
 
         assertNotNull(project);
     }
 
     @Test
     public void getsProjectReturnsSameProjectForSameArtifact() throws FileSystemException {
-        FileSystemManager manager = VFS.getManager();
-        ArtifactProjectService sut = new ArtifactProjectService(manager);
-        FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile("res:meta-languages/sdf.spoofax-language").getURL());
+        final FileSystemManager manager = VFS.getManager();
+        final ArtifactProjectService sut = new ArtifactProjectService(manager);
+        final FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
-        IProject project1 = sut.get(artifact);
-        IProject project2 = sut.get(artifact);
+        final IProject project1 = sut.get(artifact);
+        final IProject project2 = sut.get(artifact);
 
         assertNotNull(project1);
         assertSame(project1, project2);

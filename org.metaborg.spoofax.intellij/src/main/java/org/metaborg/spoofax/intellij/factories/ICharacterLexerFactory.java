@@ -20,7 +20,6 @@
 package org.metaborg.spoofax.intellij.factories;
 
 import com.intellij.lexer.Lexer;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
 
 /**
@@ -35,7 +34,6 @@ public interface ICharacterLexerFactory {
      * @param tokenTypeManager The token type manager.
      * @return The created lexer.
      */
-    @NotNull
-    Lexer create(@NotNull SpoofaxTokenTypeManager tokenTypeManager);
+    Lexer create(SpoofaxTokenTypeManager tokenTypeManager);
 
 }

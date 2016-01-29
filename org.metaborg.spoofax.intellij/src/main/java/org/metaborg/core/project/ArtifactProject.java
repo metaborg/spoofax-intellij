@@ -21,7 +21,6 @@ package org.metaborg.core.project;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 
 // TODO: Move this to Spoofax core?
 
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class ArtifactProject implements IProject {
 
-    @NotNull
     private final FileObject location;
 
     /**
@@ -38,14 +36,13 @@ public final class ArtifactProject implements IProject {
      *
      * @param location The location of the artifact's archive.
      */
-    public ArtifactProject(@NotNull final FileObject location) {
+    public ArtifactProject(final FileObject location) {
         Preconditions.checkNotNull(location);
 
         this.location = location;
     }
 
     @Override
-    @NotNull
     public FileObject location() {
         return this.location;
     }

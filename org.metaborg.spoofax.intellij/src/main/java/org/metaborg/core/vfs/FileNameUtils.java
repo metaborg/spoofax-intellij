@@ -23,7 +23,6 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.provider.LayeredFileName;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -45,11 +44,11 @@ public final class FileNameUtils {
      * @return The outer file name; or <code>null</code> when there is none.
      */
     @Nullable
-    public static FileName getOuterFileName(@NotNull final FileName fileName) {
+    public static FileName getOuterFileName(final FileName fileName) {
         Preconditions.checkNotNull(fileName);
 
         if (fileName instanceof LayeredFileName) {
-            return ((LayeredFileName) fileName).getOuterName();
+            return ((LayeredFileName)fileName).getOuterName();
         } else {
             return null;
         }

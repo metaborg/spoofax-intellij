@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.idea.psi;
 
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
 
@@ -48,7 +47,7 @@ public class SpoofaxElementType extends IElementType {
      */
     protected SpoofaxElementType(
             @Nullable final SpoofaxIdeaLanguage language,
-            @NotNull @NonNls final String debugName) {
+            @NonNls final String debugName) {
         super(debugName, language);
     }
 
@@ -58,6 +57,6 @@ public class SpoofaxElementType extends IElementType {
      * @return The {@link SpoofaxIdeaLanguage}.
      */
     @Nullable
-    public SpoofaxIdeaLanguage getSpoofaxIdeaLanguage() { return (SpoofaxIdeaLanguage) getLanguage(); }
+    public SpoofaxIdeaLanguage getSpoofaxIdeaLanguage() { return (SpoofaxIdeaLanguage)getLanguage(); }
 
 }

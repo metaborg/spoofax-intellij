@@ -27,7 +27,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemManager;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.resource.ResourceService;
 
@@ -40,8 +39,8 @@ public final class IntelliJResourceService extends ResourceService implements II
 
     @Inject
     /* package private */ IntelliJResourceService(
-            @NotNull final FileSystemManager fileSystemManager,
-            @NotNull @Named("ResourceClassLoader") final ClassLoader classLoader) {
+            final FileSystemManager fileSystemManager,
+            @Named("ResourceClassLoader") final ClassLoader classLoader) {
         super(fileSystemManager, classLoader);
     }
 
@@ -49,31 +48,28 @@ public final class IntelliJResourceService extends ResourceService implements II
      * {@inheritDoc}
      */
     @Override
-    public final FileObject resolve(@NotNull final VirtualFile resource) {
+    public final FileObject resolve(final VirtualFile resource) {
         return resolve("file://" + resource.getPath());
-//        return resolve("idea://" + resource.getPath());
     }
 
     /**
      * {@inheritDoc}
      */
-    @Nullable
     @Override
-    public final VirtualFile unresolve(@NotNull final FileObject resource) {
+    public final VirtualFile unresolve(final FileObject resource) {
         if (resource instanceof IntelliJFileObject) {
-            final IntelliJFileObject intellijResource = (IntelliJFileObject) resource;
+            final IntelliJFileObject intellijResource = (IntelliJFileObject)resource;
             final VirtualFile intellijFile = intellijResource.getIntelliJFile();
             if (intellijFile != null)
                 return intellijFile;
         }
 
-        URI uri = toUri(resource.getName().getURI());
-        VirtualFileSystem fileSystem = getFileSystem(uri);
-        String path = getPath(uri);
+        final URI uri = toUri(resource.getName().getURI());
+        final VirtualFileSystem fileSystem = getFileSystem(uri);
+        final String path = getPath(uri);
         if (fileSystem == null || path == null)
             throw new MetaborgRuntimeException("Can't unresolve this URI: " + uri);
         return fileSystem.findFileByPath(path);
-//        return LocalFileSystem.getInstance().findFileByPath(resource.getName().getPath());
     }
 
     /**
@@ -83,7 +79,7 @@ public final class IntelliJResourceService extends ResourceService implements II
      * @return The file system; or <code>null</code> if not found.
      */
     @Nullable
-    private VirtualFileSystem getFileSystem(@NotNull final URI uri) {
+    private VirtualFileSystem getFileSystem(final URI uri) {
         switch (uri.getScheme()) {
             case "file":
                 return StandardFileSystems.local();
@@ -103,9 +99,9 @@ public final class IntelliJResourceService extends ResourceService implements II
      * @return The path of the URI; or <code>null</code> when the URI contains no path.
      */
     @Nullable
-    private String getPath(@NotNull final URI uri) {
+    private String getPath(final URI uri) {
         if (uri.getPath() == null) {
-            String part = uri.getSchemeSpecificPart();
+            final String part = uri.getSchemeSpecificPart();
             if (part == null)
                 return null;
             return getPath(toUri(part));
@@ -119,11 +115,10 @@ public final class IntelliJResourceService extends ResourceService implements II
      * @param uri The URI string.
      * @return The URI object.
      */
-    @NotNull
-    private URI toUri(@NotNull final String uri) {
+    private URI toUri(final String uri) {
         try {
             return new URI(uri);
-        } catch (URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             throw new RuntimeException("Unexpected exception", e);
         }
     }

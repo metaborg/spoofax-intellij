@@ -44,7 +44,7 @@ public final class SpoofaxProjectConfig extends SpoofaxConfig<SpoofaxProjectStat
     @NotNull
     @Override
     public final SpoofaxProjectConfig createCopy() {
-        SpoofaxProjectConfig config = new SpoofaxProjectConfig();
+        final SpoofaxProjectConfig config = new SpoofaxProjectConfig();
         config.applyChanges(this);
         return config;
     }

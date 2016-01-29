@@ -22,7 +22,6 @@ package org.metaborg.spoofax.intellij.factories;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
 import com.google.inject.Provider;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory for IntelliJ extension providers.
@@ -50,11 +49,11 @@ public final class IntelliJExtensionProviderFactory {
      * @param extensionPointName The extension point name.
      * @return A {@link Module} that binds the provider.
      */
-    public <T> Module provide(@NotNull final Class<T> extensionClass, @NotNull final String extensionPointName) {
+    public <T> Module provide(final Class<T> extensionClass, final String extensionPointName) {
         return new AbstractModule() {
             @Override
             protected void configure() {
-                Provider<T> provider = new IntelliJExtensionProvider<>(extensionClass, extensionPointName);
+                final Provider<T> provider = new IntelliJExtensionProvider<>(extensionClass, extensionPointName);
                 bind(extensionClass).toProvider(provider);
             }
         };

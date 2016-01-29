@@ -52,7 +52,8 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
      *
      * @param lexer The lexer to use for highlighting.
      */
-    public SpoofaxSyntaxHighlighter(@NotNull final Lexer lexer) {
+    public SpoofaxSyntaxHighlighter(final Lexer lexer) {
+        super();
         this.lexer = lexer;
     }
 
@@ -75,12 +76,12 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
      */
     @NotNull
     @Override
-    public TextAttributesKey[] getTokenHighlights(@NotNull final IElementType tokenType) {
+    public TextAttributesKey[] getTokenHighlights(final IElementType tokenType) {
         if (!(tokenType instanceof SpoofaxTokenType))
             return EMPTY_KEYS;
 
         // TODO: Use fixed categorized styles, so we don't have to use createTextAttributesKey.
-        return getTextAttributesKeyForStyle(((SpoofaxTokenType) tokenType).getStyle());
+        return getTextAttributesKeyForStyle(((SpoofaxTokenType)tokenType).getStyle());
     }
 
     /**
@@ -90,17 +91,21 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
      * @return The text attributes.
      */
     @NotNull
-    private TextAttributesKey[] getTextAttributesKeyForStyle(@NotNull final IStyle style) {
+    private TextAttributesKey[] getTextAttributesKeyForStyle(final IStyle style) {
         TextAttributesKey[] attributes = this.styleMap.getOrDefault(style, null);
         if (attributes == null) {
-            String name = "STYLE_" + style.hashCode();
-            TextAttributesKey attribute = createTextAttributesKey(name, new TextAttributes(
-                    style.color(),
-                    style.backgroundColor(),
-                    null,
-                    (style.underscore() ? EffectType.LINE_UNDERSCORE : null),
-                    (style.bold() ? Font.BOLD : Font.PLAIN)
-                            + (style.italic() ? Font.ITALIC : Font.PLAIN)));
+            final String name = "STYLE_" + style.hashCode();
+            @SuppressWarnings("deprecation") final TextAttributesKey attribute = createTextAttributesKey(
+                    name,
+                    new TextAttributes(
+                            style.color(),
+                            style.backgroundColor(),
+                            null,
+                            (style.underscore() ? EffectType.LINE_UNDERSCORE : null),
+                            (style.bold() ? Font.BOLD : Font.PLAIN)
+                                    + (style.italic() ? Font.ITALIC : Font.PLAIN)
+                    )
+            );
             attributes = new TextAttributesKey[]{attribute};
 
             this.styleMap.put(style, attributes);

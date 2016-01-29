@@ -23,7 +23,6 @@ import com.google.common.base.Preconditions;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.spoofax.intellij.factories.IATermAstElementTypeProviderFactory;
@@ -77,19 +76,19 @@ public final class AstBuilder {
         Preconditions.checkNotNull(root);
         Preconditions.checkNotNull(builder);
 
-        ATermAstElementTypeProvider elementTypeProvider = this.elementTypeProviderFactory.create(
+        final ATermAstElementTypeProvider elementTypeProvider = this.elementTypeProviderFactory.create(
                 this.language,
                 parseResult,
                 this.tokenTypesManager
         );
 
-        PsiBuilder.Marker m = builder.mark();
+        final PsiBuilder.Marker m = builder.mark();
         if (parseResult != null && parseResult.result != null) {
             buildTermIterative(builder, parseResult.result, elementTypeProvider);
         } else {
             // We have no parse result. Therefore,
             // parse a single element for all tokens.
-            PsiBuilder.Marker m2 = builder.mark();
+            final PsiBuilder.Marker m2 = builder.mark();
             while (!builder.eof()) {
                 builder.advanceLexer();
             }
@@ -97,8 +96,7 @@ public final class AstBuilder {
         }
         m.done(root);
 
-        ASTNode astNode = builder.getTreeBuilt();
-        return astNode;
+        return builder.getTreeBuilt();
     }
 
     /**
@@ -110,19 +108,19 @@ public final class AstBuilder {
             final PsiBuilder builder,
             final IStrategoTerm root,
             final ATermAstElementTypeProvider elementTypeProvider) {
-        Stack<TermTask> tasks = new Stack<>();
+        final Stack<TermTask> tasks = new Stack<>();
         tasks.push(new TermTask(root));
 
         while (!tasks.empty()) {
-            TermTask task = tasks.pop();
-            IStrategoTerm term = task.term;
+            final TermTask task = tasks.pop();
+            final IStrategoTerm term = task.term;
             PsiBuilder.Marker marker = task.marker;
             if (marker == null) {
                 // Start
                 marker = buildTermStart(builder, term);
                 tasks.push(new TermTask(term, marker));
 
-                IStrategoTerm[] subterms = term.getAllSubterms();
+                final IStrategoTerm[] subterms = term.getAllSubterms();
                 for (int i = subterms.length - 1; i >= 0; i--) {
                     tasks.push(new TermTask(subterms[i]));
                 }
@@ -141,8 +139,7 @@ public final class AstBuilder {
      */
     private PsiBuilder.Marker buildTermStart(final PsiBuilder builder, final IStrategoTerm term) {
         moveToStart(builder, term);
-        PsiBuilder.Marker marker = builder.mark();
-        return marker;
+        return builder.mark();
     }
 
     /**
@@ -156,7 +153,7 @@ public final class AstBuilder {
             final IStrategoTerm term,
             final PsiBuilder.Marker marker,
             final ATermAstElementTypeProvider elementTypeProvider) {
-        IElementType elementType = elementTypeProvider.getElementType(term);
+        final IElementType elementType = elementTypeProvider.getElementType(term);
 
         moveToEnd(builder, term);
         marker.done(elementType);
@@ -169,7 +166,7 @@ public final class AstBuilder {
      */
     private void moveToStart(final PsiBuilder builder, final IStrategoTerm term) {
         final ImploderAttachment imploderAttachment = ImploderAttachment.get(term);
-        int start = imploderAttachment.getLeftToken().getStartOffset();
+        final int start = imploderAttachment.getLeftToken().getStartOffset();
         moveTo(builder, start);
     }
 
@@ -180,7 +177,7 @@ public final class AstBuilder {
      */
     private void moveToEnd(final PsiBuilder builder, final IStrategoTerm term) {
         final ImploderAttachment imploderAttachment = ImploderAttachment.get(term);
-        int end = imploderAttachment.getRightToken().getEndOffset() + 1;
+        final int end = imploderAttachment.getRightToken().getEndOffset() + 1;
         moveTo(builder, end);
     }
 
@@ -189,7 +186,7 @@ public final class AstBuilder {
      *
      * @param offset The target offset.
      */
-    private void moveTo(final PsiBuilder builder, int offset) {
+    private void moveTo(final PsiBuilder builder, final int offset) {
         // We assume the builder to be _before_ the target offset.
         while (builder.getCurrentOffset() < offset) {
             builder.advanceLexer();
@@ -208,27 +205,32 @@ public final class AstBuilder {
             final PsiBuilder builder,
             final IStrategoTerm term,
             final ATermAstElementTypeProvider elementTypeProvider) {
-        PsiBuilder.Marker marker = buildTermStart(builder, term);
+        final PsiBuilder.Marker marker = buildTermStart(builder, term);
 
-        IStrategoTerm[] subterms = term.getAllSubterms();
-        for (int i = 0; i < subterms.length; i++) {
+        final IStrategoTerm[] subterms = term.getAllSubterms();
+        for (final IStrategoTerm subterm : subterms) {
             // Recurse
-            buildTermRecursive(builder, subterms[i], elementTypeProvider);
+            buildTermRecursive(builder, subterm, elementTypeProvider);
         }
 
         buildTermEnd(builder, term, marker, elementTypeProvider);
     }
 
     private static class TermTask {
-        public final IStrategoTerm term;
+        private final IStrategoTerm term;
         @Nullable
-        public final PsiBuilder.Marker marker;
+        private final PsiBuilder.Marker marker;
 
-        public TermTask(IStrategoTerm term) {
+        public IStrategoTerm term() { return this.term;}
+
+        @Nullable
+        public PsiBuilder.Marker marker() { return this.marker;}
+
+        public TermTask(final IStrategoTerm term) {
             this(term, null);
         }
 
-        public TermTask(IStrategoTerm term, PsiBuilder.Marker marker) {
+        public TermTask(final IStrategoTerm term, final PsiBuilder.Marker marker) {
             this.term = term;
             this.marker = marker;
         }

@@ -20,7 +20,6 @@
 package org.metaborg.spoofax.intellij.factories;
 
 import com.intellij.lang.ASTNode;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxPsiElement;
 
 /**
@@ -34,7 +33,6 @@ public interface ISpoofaxPsiElementFactory {
      * @param node The AST node.
      * @return The created PSI element.
      */
-    @NotNull
-    SpoofaxPsiElement create(@NotNull final ASTNode node);
+    SpoofaxPsiElement create(final ASTNode node);
 
 }
