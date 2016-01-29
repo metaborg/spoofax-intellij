@@ -28,4 +28,7 @@
  * See <a href="http://www.jetbrains.org/intellij/sdk/docs/basics/architectural_overview.html">IntelliJ
  * IDEA Architectural Overview</a> for a high-level overview.
  */
+@NonNullByDefault
 package org.metaborg.intellij.idea.psi;
+
+import org.metaborg.core.NonNullByDefault;

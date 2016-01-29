@@ -43,7 +43,7 @@ import org.metaborg.intellij.idea.project.IdeaProject;
 import org.metaborg.intellij.idea.project.IdeaProjectService;
 import org.metaborg.intellij.idea.psi.IMetaborgReferenceProviderFactory;
 import org.metaborg.intellij.idea.psi.MetaborgReferenceProvider;
-import org.metaborg.intellij.idea.spoofax.psi.SpoofaxReferenceProvider;
+import org.metaborg.spoofax.intellij.idea.psi.SpoofaxReferenceProvider;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJModule;
 import org.metaborg.spoofax.intellij.factories.*;

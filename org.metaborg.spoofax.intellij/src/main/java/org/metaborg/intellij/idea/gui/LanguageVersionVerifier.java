@@ -1,5 +1,5 @@
 /*
- * Copyright © 2015-2015
+ * Copyright © 2015-2016
  *
  * This file is part of Spoofax for IntelliJ.
  *
@@ -17,12 +17,32 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Implementations for using Spoofax languages in IntelliJ IDEA.
- * <p>
- * This package contains all classes needed to make a Spoofax language loadable, unloadable and usable in IntelliJ IDEA.
- */
-@NonNullByDefault
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.intellij.idea.gui;
 
-import org.metaborg.core.NonNullByDefault;
+import org.metaborg.core.language.LanguageVersion;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
+
+/**
+ * Verifies that a component's input is a valid language version.
+ */
+public final class LanguageVersionVerifier extends InputVerifier {
+
+    /**
+     * Initializes a new instance of the {@link LanguageVersionVerifier} class.
+     */
+    public LanguageVersionVerifier() {
+        super();
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean verify(final JComponent input) {
+        final String text = ((JTextComponent)input).getText();
+        return LanguageVersion.valid(text);
+    }
+}

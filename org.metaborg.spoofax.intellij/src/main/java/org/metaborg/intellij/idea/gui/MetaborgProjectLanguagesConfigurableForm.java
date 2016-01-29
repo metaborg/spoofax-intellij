@@ -1,5 +1,5 @@
 /*
- * Copyright © 2015-2015
+ * Copyright © 2015-2016
  *
  * This file is part of Spoofax for IntelliJ.
  *
@@ -17,12 +17,17 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Implementations for using Spoofax languages in IntelliJ IDEA.
- * <p>
- * This package contains all classes needed to make a Spoofax language loadable, unloadable and usable in IntelliJ IDEA.
- */
-@NonNullByDefault
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.intellij.idea.gui;
 
-import org.metaborg.core.NonNullByDefault;
+import javax.swing.*;
+
+public class MetaborgProjectLanguagesConfigurableForm {
+    private JPanel mainPanel;
+    private LanguagesPanel languagesPanel;
+
+    public JPanel getComponent() {
+        return this.mainPanel;
+    }
+
+    public LanguagesPanel getLanguagesPanel() { return this.languagesPanel; }
+}

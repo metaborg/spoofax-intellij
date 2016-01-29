@@ -52,7 +52,7 @@ import org.metaborg.core.language.LanguageVersion;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.project.ILanguageSpec;
 import org.metaborg.core.project.ProjectException;
-import org.metaborg.intellij.idea.gui2.wizards.MetaborgModuleWizardStep;
+import org.metaborg.intellij.idea.gui.wizards.MetaborgModuleWizardStep;
 import org.metaborg.intellij.idea.project.IIdeaProjectFactory;
 import org.metaborg.intellij.idea.project.IIdeaProjectService;
 import org.metaborg.intellij.idea.project.IdeaLanguageSpecProject;
@@ -66,22 +66,12 @@ import org.metaborg.spoofax.generator.language.NewLanguageSpecGenerator;
 import org.metaborg.spoofax.generator.project.LanguageSpecGeneratorScope;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-//import org.metaborg.core.project.IProject;
-//import org.metaborg.core.project.configuration.ILanguageSpecConfig;
-//import org.metaborg.core.project.settings.IProjectSettings;
-//import org.metaborg.core.project.settings.ProjectSettings;
-//import org.metaborg.intellij.idea.project.IdeaProject;
-//import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
-//import org.metaborg.spoofax.generator.language.NewProjectGenerator;
-//import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
 
 /**
  * Builds a new Spoofax module.

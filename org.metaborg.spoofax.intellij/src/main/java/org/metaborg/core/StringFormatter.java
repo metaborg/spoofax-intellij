@@ -22,6 +22,7 @@ package org.metaborg.core;
 import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.helpers.MessageFormatter;
 
 import javax.annotation.Nullable;
@@ -39,8 +40,11 @@ import javax.annotation.Nullable;
  * <code>{}</code> in your string, escape it by preceding it with a backslash
  * (thus <code>\{}</code>). Note that in Java source code you might have to escape
  * the backslash itself with a backslash.
+ *
+ * @deprecated Use {@link ILogger#format} instead.
  */
 @Singleton
+@Deprecated
 public final class StringFormatter {
 
     // To prevent instantiation.

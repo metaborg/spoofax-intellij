@@ -22,4 +22,7 @@
  * <p>
  * The Spoofax SDK is used to specify the Metaborg Spoofax version that is used.
  */
+@NonNullByDefault
 package org.metaborg.spoofax.intellij.sdk;
+
+import org.metaborg.core.NonNullByDefault;

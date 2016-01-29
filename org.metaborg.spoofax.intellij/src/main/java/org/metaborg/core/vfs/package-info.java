@@ -1,5 +1,5 @@
 /*
- * Copyright © 2015-2015
+ * Copyright © 2015-2016
  *
  * This file is part of Spoofax for IntelliJ.
  *
@@ -18,11 +18,9 @@
  */
 
 /**
- * Implementations for using Spoofax languages in IntelliJ IDEA.
- * <p>
- * This package contains all classes needed to make a Spoofax language loadable, unloadable and usable in IntelliJ IDEA.
+ * Virtual file system functionality.
  */
 @NonNullByDefault
-package org.metaborg.spoofax.intellij.idea.languages;
+package org.metaborg.core.vfs;
 
 import org.metaborg.core.NonNullByDefault;

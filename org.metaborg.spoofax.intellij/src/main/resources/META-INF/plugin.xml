@@ -71,9 +71,9 @@
                     text="Unload languages" description="Unloads languages."/>
         </group>
         <group id="Spoofax.AddLanguagePopup" popup="true">
-            <action id="Spoofax.AddLanguageFromDirectory" class="org.metaborg.intellij.idea.gui2.AddLanguageFromDirectoryAction"
+            <action id="Spoofax.AddLanguageFromDirectory" class="org.metaborg.intellij.idea.gui.AddLanguageFromDirectoryAction"
                     text="Directory..." description="Add a language by specifying its directory."/>
-            <action id="Spoofax.AddLanguageFromArtifact" class="org.metaborg.intellij.idea.gui2.AddLanguageFromArtifactAction"
+            <action id="Spoofax.AddLanguageFromArtifact" class="org.metaborg.intellij.idea.gui.AddLanguageFromArtifactAction"
                     text="Artifact..." description="Add a language by specifying its artifact."/>
         </group>
     </actions>

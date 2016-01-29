@@ -24,7 +24,6 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.ILanguageService;
-import org.metaborg.intellij.idea.gui2.MetaborgProjectLanguagesConfigurableForm;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 
 import javax.swing.*;
