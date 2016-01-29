@@ -30,7 +30,6 @@ import org.apache.commons.vfs2.provider.AbstractFileName;
 import org.apache.commons.vfs2.provider.AbstractFileObject;
 import org.apache.commons.vfs2.provider.AbstractFileSystem;
 import org.apache.commons.vfs2.util.RandomAccessMode;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -63,7 +62,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * @param name The name of the file.
      * @param fs   The file system.
      */
-    public IntelliJFileObject(@NotNull AbstractFileName name, @NotNull AbstractFileSystem fs) {
+    public IntelliJFileObject(final AbstractFileName name, final AbstractFileSystem fs) {
         super(name, fs);
     }
 
@@ -133,9 +132,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     protected final FileType doGetType() throws Exception {
         assert (isAttached());
 
-        if (!file.exists())
+        if (!this.file.exists())
             return FileType.IMAGINARY;
-        else if (file.isDirectory())
+        else if (this.file.isDirectory())
             return FileType.FOLDER;
         else
             return FileType.FILE;
@@ -196,7 +195,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     protected final Map<String, Object> doGetAttributes() throws Exception {
         return super.doGetAttributes();
     }
@@ -205,7 +203,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    protected final void doSetAttribute(@NotNull final String attrName, @Nullable final Object value) throws Exception {
+    protected final void doSetAttribute(final String attrName, @Nullable final Object value) throws Exception {
         super.doSetAttribute(attrName, value);
     }
 
@@ -213,7 +211,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    protected final void doRemoveAttribute(@NotNull final String attrName) throws Exception {
+    protected final void doRemoveAttribute(final String attrName) throws Exception {
         super.doRemoveAttribute(attrName);
     }
 
@@ -221,7 +219,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     protected final String[] doListChildren() throws Exception {
         assert (isAttached());
 
@@ -239,7 +236,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     protected final FileObject[] doListChildrenResolved() throws Exception {
         assert (isAttached());
 
@@ -260,7 +256,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
     protected final long doGetContentSize() throws Exception {
         assert (isAttached());
 
-        return file.getLength();
+        return this.file.getLength();
     }
 
     /**
@@ -270,7 +266,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
     protected final InputStream doGetInputStream() throws Exception {
         assert (isAttached());
 
-        return file.getInputStream();
+        return this.file.getInputStream();
     }
 
     /**
@@ -285,14 +281,14 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
         // FIXME: We're ignoring `append`.
 
-        return file.getOutputStream(null);
+        return this.file.getOutputStream(null);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected final RandomAccessContent doGetRandomAccessContent(@NotNull final RandomAccessMode mode) throws
+    protected final RandomAccessContent doGetRandomAccessContent(final RandomAccessMode mode) throws
             Exception {
         assert (isAttached());
 
@@ -310,7 +306,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 this.file.getParent().createChildDirectory(null, this.getName().getBaseName());
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         });
@@ -320,13 +316,13 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    protected final void doRename(@NotNull final FileObject newfile) throws Exception {
+    protected final void doRename(final FileObject newfile) throws Exception {
         assert (isAttached());
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 this.file.rename(null, newfile.getName().getBaseName());
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         });
@@ -342,7 +338,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 this.file.delete(null);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         });
@@ -352,7 +348,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     protected final Certificate[] doGetCertificates() throws Exception {
         return super.doGetCertificates();
     }

@@ -31,17 +31,17 @@ import static org.junit.Assert.assertNull;
 public final class FileNameUtilsTests {
     @Test
     public void getOuterFileNameOfLayeredFileName() throws FileSystemException {
-        FileSystemManager manager = VFS.getManager();
-        FileName fileName = manager.resolveURI("zip:ram:///test/archive.zip!/document.txt");
-        FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
+        final FileSystemManager manager = VFS.getManager();
+        final FileName fileName = manager.resolveURI("zip:ram:///test/archive.zip!/document.txt");
+        final FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
         assertEquals("ram:///test/archive.zip", outerFileName.getURI());
     }
 
     @Test
     public void getOuterFileNameOfNoneLayeredFileName() throws FileSystemException {
-        FileSystemManager manager = VFS.getManager();
-        FileName fileName = manager.resolveURI("ram:///test/archive.zip");
-        FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
+        final FileSystemManager manager = VFS.getManager();
+        final FileName fileName = manager.resolveURI("ram:///test/archive.zip");
+        final FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
         assertNull(outerFileName);
     }
 }

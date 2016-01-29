@@ -33,13 +33,14 @@ public interface IATermAstElementTypeProviderFactory {
     /**
      * Creates a new ATerm AST element type provider.
      *
-     * @param language The language implementation.
-     * @param parseResult The parse result.
+     * @param language         The language implementation.
+     * @param parseResult      The parse result.
      * @param tokenTypeManager The token type manager.
      * @return The created ATerm AST element type providers.
      */
-    ATermAstElementTypeProvider create(ILanguageImpl language,
-                                       ParseResult<IStrategoTerm> parseResult,
-                                       SpoofaxTokenTypeManager tokenTypeManager);
+    ATermAstElementTypeProvider create(
+            ILanguageImpl language,
+            ParseResult<IStrategoTerm> parseResult,
+            SpoofaxTokenTypeManager tokenTypeManager);
 
 }

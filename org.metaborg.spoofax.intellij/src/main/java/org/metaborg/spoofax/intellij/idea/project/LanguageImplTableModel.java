@@ -43,103 +43,104 @@ import java.util.ArrayList;
 public final class LanguageImplTableModel extends ListTableModel<LanguageImplItem> implements ItemRemovable {
 
     private static final String LANGUAGE_COLUMN_NAME = "Language";
-    private static final ColumnInfo<LanguageImplItem, ILanguage> LANGUAGE_COLUMN_INFO = new ColumnInfo<LanguageImplItem, ILanguage>(
-            LANGUAGE_COLUMN_NAME) {
-        @Nullable
-        @Override
-        public ILanguage valueOf(final LanguageImplItem item) {
-            return item.language();
-        }
+    private static final ColumnInfo<LanguageImplItem, ILanguage> LANGUAGE_COLUMN_INFO =
+            new ColumnInfo<LanguageImplItem, ILanguage>(LANGUAGE_COLUMN_NAME) {
 
-        @Override
-        public boolean isCellEditable(final LanguageImplItem item) {
-            return false;
-        }
-//
-//        @Override
-//        public Class<?> getColumnClass() {
-//            return ILanguage.class;
-//        }
+                @Nullable
+                @Override
+                public ILanguage valueOf(final LanguageImplItem item) {
+                    return item.language();
+                }
 
+                @Override
+                public boolean isCellEditable(final LanguageImplItem item) {
+                    return false;
+                }
 
-        @Nullable
-        @Override
-        public TableCellRenderer getRenderer(final LanguageImplItem item) {
-            return new LanguageItemRenderer();
-        }
+                @Nullable
+                @Override
+                public TableCellRenderer getRenderer(final LanguageImplItem item) {
+                    return new LanguageItemRenderer();
+                }
 
-    };
+            };
     private static final String IMPLEMENTATION_COLUMN_NAME = "Implementation";
 
     /*
      * The columns.
      */
-    private static final ColumnInfo<LanguageImplItem, ILanguageImpl> IMPLEMENTATION_COLUMN_INFO = new ColumnInfo<LanguageImplItem, ILanguageImpl>(
-            IMPLEMENTATION_COLUMN_NAME) {
-        @Nullable
-        @Override
-        public ILanguageImpl valueOf(final LanguageImplItem item) {
-            return item.currentImplementation();
-        }
-
-        @Override
-        public boolean isCellEditable(final LanguageImplItem item) {
-            return true;
-        }
-
-        @Override
-        public void setValue(final LanguageImplItem item, final ILanguageImpl value) {
-            item.setCurrentImplementation(value);
-        }
-
-        @Override
-        public TableCellRenderer getCustomizedRenderer(final LanguageImplItem o, final TableCellRenderer renderer) {
-            return super.getCustomizedRenderer(o, renderer);
-        }
-
-        @Nullable
-        @Override
-        public TableCellRenderer getRenderer(final LanguageImplItem item) {
-            return new ComboBoxTableRenderer<ILanguageImpl>(item.getImplementations().toArray(new ILanguageImpl[0])) {
-
-                /**
-                 * Gets the text to display for the value.
-                 *
-                 * Note that this method is not called for <code>null</code> values,
-                 * which simply display an empty string.
-                 *
-                 * @param value The value, which is never <code>null</code>.
-                 * @return The text.
-                 */
+    private static final ColumnInfo<LanguageImplItem, ILanguageImpl> IMPLEMENTATION_COLUMN_INFO =
+            new ColumnInfo<LanguageImplItem, ILanguageImpl>(IMPLEMENTATION_COLUMN_NAME) {
+                @Nullable
                 @Override
-                protected String getTextFor(@NotNull final ILanguageImpl value) {
-                    return value.id().version.toString();
+                public ILanguageImpl valueOf(final LanguageImplItem item) {
+                    return item.currentImplementation();
+                }
+
+                @Override
+                public boolean isCellEditable(final LanguageImplItem item) {
+                    return true;
+                }
+
+                @Override
+                public void setValue(final LanguageImplItem item, final ILanguageImpl value) {
+                    item.setCurrentImplementation(value);
+                }
+
+                @Override
+                public TableCellRenderer getCustomizedRenderer(
+                        final LanguageImplItem o,
+                        final TableCellRenderer renderer) {
+                    return super.getCustomizedRenderer(o, renderer);
+                }
+
+                @Nullable
+                @Override
+                public TableCellRenderer getRenderer(final LanguageImplItem item) {
+                    final java.util.List<ILanguageImpl> var = item.getImplementations();
+                    return new ComboBoxTableRenderer<ILanguageImpl>(var.toArray(new ILanguageImpl[var.size()])) {
+
+                        /**
+                         * Gets the text to display for the value.
+                         *
+                         * Note that this method is not called for <code>null</code> values,
+                         * which simply display an empty string.
+                         *
+                         * @param value The value, which is never <code>null</code>.
+                         * @return The text.
+                         */
+                        @Override
+                        protected String getTextFor(final ILanguageImpl value) {
+                            return value.id().version.toString();
+                        }
+                    };
+                }
+
+                @Nullable
+                @Override
+                public TableCellEditor getEditor(final LanguageImplItem item) {
+                    final ComboBox comboBox = new ComboBox(new CollectionComboBoxModel(
+                            item.getImplementations(),
+                            item
+                    ));
+                    comboBox.setRenderer(new ListCellRendererWrapper<ILanguageImpl>() {
+
+                        @Override
+                        public void customize(
+                                final JList list,
+                                final ILanguageImpl value,
+                                final int index,
+                                final boolean selected,
+                                final boolean hasFocus) {
+                            if (value != null)
+                                setText(value.id().version.toString());
+                            else
+                                setText("(none)");
+                        }
+                    });
+                    return new DefaultCellEditor(comboBox);
                 }
             };
-        }
-
-        @Nullable
-        @Override
-        public TableCellEditor getEditor(final LanguageImplItem item) {
-            final ComboBox comboBox = new ComboBox(new CollectionComboBoxModel(item.getImplementations(), item));
-            comboBox.setRenderer(new ListCellRendererWrapper<ILanguageImpl>() {
-
-                @Override
-                public void customize(
-                        final JList list,
-                        final ILanguageImpl value,
-                        final int index,
-                        final boolean selected,
-                        final boolean hasFocus) {
-                    if (value != null)
-                        setText(value.id().version.toString());
-                    else
-                        setText("(none)");
-                }
-            });
-            return new DefaultCellEditor(comboBox);
-        }
-    };
     @NotNull
     final ModuleConfigurationState state;
     @NotNull
@@ -147,16 +148,16 @@ public final class LanguageImplTableModel extends ListTableModel<LanguageImplIte
 
     @Inject
     /* package private */ LanguageImplTableModel(
-            @Assisted @NotNull final ModuleConfigurationState state,
-            @NotNull final ILanguageService languageService) {
+            @Assisted final ModuleConfigurationState state,
+            final ILanguageService languageService) {
         super(LANGUAGE_COLUMN_INFO, IMPLEMENTATION_COLUMN_INFO);
         this.state = state;
         this.languageService = languageService;
 
-        ArrayList<LanguageImplItem> languages = new ArrayList<>();
-        for (ILanguage language : this.languageService.getAllLanguages()) {
+        final ArrayList<LanguageImplItem> languages = new ArrayList<>();
+        for (final ILanguage language : this.languageService.getAllLanguages()) {
             // TODO: Get project active implementation!
-            LanguageImplItem item = new LanguageImplItem(language);
+            final LanguageImplItem item = new LanguageImplItem(language);
             languages.add(item);
         }
         setItems(languages);

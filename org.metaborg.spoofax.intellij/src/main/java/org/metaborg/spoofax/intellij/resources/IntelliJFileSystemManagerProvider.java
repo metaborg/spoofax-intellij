@@ -31,7 +31,8 @@ public final class IntelliJFileSystemManagerProvider extends DefaultFileSystemMa
     // the default. If you don't want to change the default, just `return super.addProviders(manager)`.
 
     // FIXME: The `idea://` provider was the default, but this caused issues:
-    // org.apache.commons.vfs2.FileSystemException: Could not determine the type of file "idea:///home/daniel/eclipse/spoofax1507/workspace/TestProject/untitled20/pom.xml".
+    // org.apache.commons.vfs2.FileSystemException: Could not determine the type of file
+    // "idea:///home/daniel/eclipse/spoofax1507/workspace/TestProject/untitled20/pom.xml".
     // Therefore, I used the default `file://` provider, and just added `idea://` without making it the default.
 
 }

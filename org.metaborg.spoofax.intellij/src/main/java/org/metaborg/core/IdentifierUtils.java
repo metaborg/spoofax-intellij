@@ -20,7 +20,6 @@
 package org.metaborg.core;
 
 import com.google.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,7 +42,6 @@ public final class IdentifierUtils {
      *
      * @return The created identifier.
      */
-    @NotNull
     public static String create() {
         return create("");
     }
@@ -54,7 +52,6 @@ public final class IdentifierUtils {
      * @param prefix The identifier prefix.
      * @return The created identifier.
      */
-    @NotNull
     public static String create(@Nullable final String prefix) {
         final int value = counter.getAndIncrement();
         return ((prefix != null) ? prefix : "") + value;

@@ -20,7 +20,6 @@
 package org.metaborg.spoofax.intellij.languages;
 
 import com.intellij.psi.PsiElement;
-import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
@@ -37,7 +36,7 @@ public interface IIdeaLanguageIdentifierService extends ILanguageIdentifierServi
      * the specified {@link PsiElement} belongs.
      *
      * @param language The language of the file.
-     * @param element The PSI element.
+     * @param element  The PSI element.
      * @return The language implementation.
      */
     @Nullable

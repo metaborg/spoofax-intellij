@@ -28,7 +28,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiFile;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.analysis.AnalysisFileResult;
 import org.metaborg.core.analysis.IAnalysisService;
@@ -63,6 +62,7 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
             final IParseResultRequester<IStrategoTerm> parseResultRequester,
             final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester
     ) {
+        super();
         this.contextService = contextService;
         this.analysisService = analysisService;
         this.resourceService = resourceService;
@@ -73,22 +73,22 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
 
     @Nullable
     @Override
-    public SpoofaxAnnotationInfo collectInformation(@NotNull final PsiFile file) {
+    public SpoofaxAnnotationInfo collectInformation(final PsiFile file) {
         throw new UnsupportedOperationException("This method is not expected to be called, ever.");
     }
 
     @Nullable
     @Override
     public SpoofaxAnnotationInfo collectInformation(
-            @NotNull final PsiFile file, @NotNull final Editor editor, final boolean hasErrors) {
+            final PsiFile file, final Editor editor, final boolean hasErrors) {
 
         try {
-            FileObject resource = this.resourceService.resolve(file.getVirtualFile());
-            ILanguageImpl language = this.identifierService.identify(resource);
-            IContext context = this.contextService.get(resource, language);
-            String text = editor.getDocument().getImmutableCharSequence().toString();
+            final FileObject resource = this.resourceService.resolve(file.getVirtualFile());
+            final ILanguageImpl language = this.identifierService.identify(resource);
+            final IContext context = this.contextService.get(resource, language);
+            final String text = editor.getDocument().getImmutableCharSequence().toString();
             return new SpoofaxAnnotationInfo(resource, text, context);
-        } catch (ContextException e) {
+        } catch (final ContextException e) {
             throw new RuntimeException("Unhandled exception.", e);
         }
     }
@@ -105,12 +105,12 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
 
     @Override
     public void apply(
-            @NotNull final PsiFile file,
+            final PsiFile file,
             final AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisResult,
-            @NotNull final AnnotationHolder holder) {
-        for (IMessage message : analysisResult.messages) {
-            TextRange range = SourceRegionUtil.toTextRange(message.region());
-            HighlightSeverity severity;
+            final AnnotationHolder holder) {
+        for (final IMessage message : analysisResult.messages) {
+            final TextRange range = SourceRegionUtil.toTextRange(message.region());
+            final HighlightSeverity severity;
             switch (message.severity()) {
                 case ERROR:
                     severity = HighlightSeverity.ERROR;

@@ -31,7 +31,7 @@ import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.java.JavaSourceRootType;
 import org.metaborg.spoofax.intellij.factories.ILanguageImplEditorFactory;
-import org.metaborg.spoofax.intellij.idea.IdeaPlugin;
+import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 
 /**
  * Provides editors for the module's settings in the <em>Project Structure</em> dialog.
@@ -49,13 +49,13 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
      * Do not call this method manually.
      */
     public SpoofaxModuleConfigurationEditorProvider() {
-        IdeaPlugin.injector().injectMembers(this);
+        SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject
     private void inject(
-            @NotNull final SpoofaxModuleType spoofaxModuleType,
-            @NotNull final ILanguageImplEditorFactory languageImplEditorFactory) {
+            final SpoofaxModuleType spoofaxModuleType,
+            final ILanguageImplEditorFactory languageImplEditorFactory) {
         this.spoofaxModuleType = spoofaxModuleType;
         this.languageImplEditorFactory = languageImplEditorFactory;
     }
@@ -65,17 +65,19 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
      */
     @Override
     @NotNull
-    public ModuleConfigurationEditor[] createEditors(@NotNull final ModuleConfigurationState state) {
+    public ModuleConfigurationEditor[] createEditors(final ModuleConfigurationState state) {
         final Module module = state.getRootModel().getModule();
         final ModuleType moduleType = ModuleType.get(module);
         if (moduleType != this.spoofaxModuleType) {
             return ModuleConfigurationEditor.EMPTY;
         }
         return new ModuleConfigurationEditor[]{
-                new CommonContentEntriesEditor(module.getName(),
-                                               state,
-                                               JavaSourceRootType.SOURCE,
-                                               JavaSourceRootType.TEST_SOURCE),
+                new CommonContentEntriesEditor(
+                        module.getName(),
+                        state,
+                        JavaSourceRootType.SOURCE,
+                        JavaSourceRootType.TEST_SOURCE
+                ),
                 new ClasspathEditor(state),
                 this.languageImplEditorFactory.create(state),
         };

@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.idea;
 
 import com.intellij.lang.Language;
 import com.intellij.util.KeyedLazyInstanceEP;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Language extension point value wrapper.
@@ -31,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> The type of instance.
  */
 public final class InstanceKeyedExtensionPoint<T> extends KeyedLazyInstanceEP<T> {
-    @NotNull
+
     private final T instance;
 
     /**
@@ -40,13 +39,13 @@ public final class InstanceKeyedExtensionPoint<T> extends KeyedLazyInstanceEP<T>
      * @param language The language.
      * @param instance The instance.
      */
-    public InstanceKeyedExtensionPoint(@NotNull final Language language, @NotNull final T instance) {
+    public InstanceKeyedExtensionPoint(final Language language, final T instance) {
+        super();
         this.instance = instance;
         this.key = language.getID();
         this.implementationClass = null;
     }
 
-    @NotNull
     @Override
     public final T getInstance() {
         return this.instance;

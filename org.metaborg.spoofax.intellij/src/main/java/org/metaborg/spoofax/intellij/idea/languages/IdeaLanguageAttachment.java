@@ -20,31 +20,37 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.lang.ParserDefinition;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
-import org.metaborg.spoofax.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 
 /**
  * Stores the IntelliJ IDEA objects that are associated with a particular {@link ILanguage}.
  */
 public final class IdeaLanguageAttachment {
 
-    @NotNull
-    public final SpoofaxIdeaLanguage ideaLanguage;
-    @NotNull
-    public final SpoofaxFileType fileType;
-    @NotNull
-    public final SpoofaxTokenTypeManager tokenTypeManager;
-    @NotNull
-    public final ParserDefinition parserDefinition;
-    @NotNull
-    public final ICharacterLexerFactory characterLexerFactory;
-    @NotNull
-    public final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory;
-    @NotNull
-    public final SpoofaxAnnotator spoofaxAnnotator;
+    private final SpoofaxIdeaLanguage ideaLanguage;
+    private final SpoofaxFileType fileType;
+    private final SpoofaxTokenTypeManager tokenTypeManager;
+    private final ParserDefinition parserDefinition;
+    private final ICharacterLexerFactory characterLexerFactory;
+    private final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory;
+    private final SpoofaxAnnotator spoofaxAnnotator;
+
+    public SpoofaxIdeaLanguage ideaLanguage() { return this.ideaLanguage; }
+
+    public SpoofaxFileType fileType() { return this.fileType; }
+
+    public SpoofaxTokenTypeManager tokenTypeManager() { return this.tokenTypeManager; }
+
+    public ParserDefinition parserDefinition() { return this.parserDefinition; }
+
+    public ICharacterLexerFactory characterLexerFactory() { return this.characterLexerFactory; }
+
+    public SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory() { return this.syntaxHighlighterFactory; }
+
+    public SpoofaxAnnotator spoofaxAnnotator() { return this.spoofaxAnnotator; }
 
     /**
      * Initializes a new instance of the {@link IdeaLanguageAttachment} class.
@@ -57,13 +63,13 @@ public final class IdeaLanguageAttachment {
      * @param characterLexerFactory    The character lexer factory.
      */
     /* package private */ IdeaLanguageAttachment(
-            @NotNull final SpoofaxIdeaLanguage ideaLanguage,
-            @NotNull final SpoofaxFileType fileType,
-            @NotNull final SpoofaxTokenTypeManager tokenTypeManager,
-            @NotNull final ParserDefinition parserDefinition,
-            @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory,
-            @NotNull final ICharacterLexerFactory characterLexerFactory,
-            @NotNull final SpoofaxAnnotator spoofaxAnnotator) {
+            final SpoofaxIdeaLanguage ideaLanguage,
+            final SpoofaxFileType fileType,
+            final SpoofaxTokenTypeManager tokenTypeManager,
+            final ParserDefinition parserDefinition,
+            final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory,
+            final ICharacterLexerFactory characterLexerFactory,
+            final SpoofaxAnnotator spoofaxAnnotator) {
         this.ideaLanguage = ideaLanguage;
         this.fileType = fileType;
         this.tokenTypeManager = tokenTypeManager;

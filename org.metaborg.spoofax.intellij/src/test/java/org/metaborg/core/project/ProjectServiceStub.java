@@ -21,7 +21,6 @@ package org.metaborg.core.project;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -47,7 +46,7 @@ public final class ProjectServiceStub implements IProjectService {
      */
     @Nullable
     @Override
-    public IProject get(@NotNull final FileObject resource) {
+    public IProject get(final FileObject resource) {
         Preconditions.checkNotNull(resource);
 
         return this.project;

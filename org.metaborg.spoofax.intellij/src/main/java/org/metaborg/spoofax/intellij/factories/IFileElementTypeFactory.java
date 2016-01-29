@@ -21,9 +21,7 @@ package org.metaborg.spoofax.intellij.factories;
 
 import com.intellij.lang.Language;
 import com.intellij.psi.tree.IFileElementType;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
-import org.metaborg.spoofax.intellij.idea.psi.SpoofaxFileElementType;
 
 /**
  * Factory for file element types.
@@ -33,11 +31,10 @@ public interface IFileElementTypeFactory {
     /**
      * Creates a new file element type.
      *
-     * @param language The IntelliJ language.
+     * @param language          The IntelliJ language.
      * @param tokenTypesManager The token type manager.
      * @return The created parser definition.
      */
-    @NotNull
-    IFileElementType create(@NotNull Language language, @NotNull SpoofaxTokenTypeManager tokenTypesManager);
+    IFileElementType create(Language language, SpoofaxTokenTypeManager tokenTypesManager);
 
 }

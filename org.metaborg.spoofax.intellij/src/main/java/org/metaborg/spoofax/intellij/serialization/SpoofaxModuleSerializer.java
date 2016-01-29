@@ -40,7 +40,7 @@ public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer
     @Override
     @NotNull
     public final JpsDummyElement loadProperties(@Nullable final Element element) {
-        JpsDummyElement result = JpsElementFactory.getInstance().createDummyElement();
+        final JpsDummyElement result = JpsElementFactory.getInstance().createDummyElement();
 
         return result;
     }
@@ -49,7 +49,7 @@ public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer
      * {@inheritDoc}
      */
     @Override
-    public final void saveProperties(@NotNull final JpsDummyElement jpsDummyElement, @NotNull final Element element) {
+    public final void saveProperties(final JpsDummyElement jpsDummyElement, final Element element) {
         throw new UnsupportedOperationException("The `saveProperties()` method is not supported.");
     }
 

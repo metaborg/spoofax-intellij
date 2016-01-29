@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.idea.psi;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Visitor for Spoofax PSI elements.
@@ -33,7 +32,7 @@ public final class SpoofaxPsiVisitor extends PsiElementVisitor {
      *
      * @param property The property.
      */
-    public void visitProperty(@NotNull SpoofaxPsiElement property) {
+    public void visitProperty(final SpoofaxPsiElement property) {
         visitPsiElement(property);
     }
 
@@ -42,7 +41,7 @@ public final class SpoofaxPsiVisitor extends PsiElementVisitor {
      *
      * @param element The element.
      */
-    public void visitPsiElement(@NotNull PsiElement element) {
+    public void visitPsiElement(final PsiElement element) {
         visitElement(element);
     }
 
@@ -51,7 +50,7 @@ public final class SpoofaxPsiVisitor extends PsiElementVisitor {
      *
      * @param property The property.
      */
-    public void visitProperty(@NotNull SpoofaxIdentifier property) {
+    public void visitProperty(final SpoofaxIdentifier property) {
         visitPsiElement(property);
     }
 

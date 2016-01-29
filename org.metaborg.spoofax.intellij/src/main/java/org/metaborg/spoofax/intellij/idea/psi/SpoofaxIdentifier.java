@@ -26,12 +26,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.tracing.IResolverService;
-import org.metaborg.idea.psi.MetaborgDeclarationElement;
-import org.metaborg.idea.psi.MetaborgIdentifierElement;
-import org.metaborg.idea.psi.MetaborgReferenceElement;
+import org.metaborg.intellij.idea.psi.MetaborgDeclarationElement;
+import org.metaborg.intellij.idea.psi.MetaborgIdentifierElement;
+import org.metaborg.intellij.idea.psi.MetaborgReferenceElement;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -58,7 +57,7 @@ public class SpoofaxIdentifier extends SpoofaxPsiElement implements PsiNamedElem
      * {@inheritDoc}
      */
     @Override
-    public PsiElement setName(@NonNls @NotNull final String name) throws IncorrectOperationException {
+    public PsiElement setName(@NonNls final String name) throws IncorrectOperationException {
         // TODO: Rename refactoring
         throw new RuntimeException("Not implemented.");
         // See also:

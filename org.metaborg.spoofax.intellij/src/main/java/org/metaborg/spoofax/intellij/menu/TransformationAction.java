@@ -25,15 +25,14 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
+import org.metaborg.core.action.ITransformAction;
+import org.metaborg.core.action.ITransformGoal;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.spoofax.core.menu.TransformAction;
-import org.slf4j.Logger;
+import org.metaborg.util.log.ILogger;
 
-import javax.swing.*;
 import java.util.List;
 
 //import org.jetbrains.annotations.NotNull;
@@ -41,42 +40,40 @@ import java.util.List;
 /**
  * A transformation action from a builder menu.
  */
-public final class TransformationAction extends AnActionWithId {
+public final class TransformationAction<P, A, T> extends AnActionWithId {
 
-    @NotNull
+    private final ITransformGoal goal;
     private final ILanguageImpl language;
-    @NotNull
-    private final TransformAction action;
     @NotNull
     private final ActionHelper actionHelper;
     @NotNull
     private final IResourceTransformer transformer;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
     private TransformationAction(
-            @Assisted @NotNull final String id,
-            @Assisted @NotNull final ILanguageImpl language,
-            @Assisted @NotNull final TransformAction action,
-            @NotNull final ActionHelper actionHelper,
-            @NotNull final IResourceTransformer transformer) {
-        super(id, action.name(), (String) null, (Icon) null);
+            @Assisted final String id,
+            @Assisted final ITransformAction action,
+            @Assisted final ILanguageImpl language,
+            final ActionHelper actionHelper,
+            final IResourceTransformer transformer) {
+        super(id, action.name(), null, null);
         this.language = language;
-        this.action = action;
+        this.goal = action.goal();
         this.actionHelper = actionHelper;
         this.transformer = transformer;
     }
 
     @Override
-    public void actionPerformed(@NotNull final AnActionEvent e) {
+    public void actionPerformed(final AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
-        List<FileObject> files = this.actionHelper.getActiveFiles(e);
+        final List<TransformResource> resources = this.actionHelper.getActiveResources(e);
         WriteCommandAction.runWriteCommandAction(project, () -> {
             try {
-                this.transformer.execute(this.action, this.language, files);
-            } catch (MetaborgException ex) {
+                this.transformer.execute(resources, this.language, this.goal);
+            } catch (final MetaborgException ex) {
                 this.logger.error("An exception occurred: {}", ex);
             }
         });

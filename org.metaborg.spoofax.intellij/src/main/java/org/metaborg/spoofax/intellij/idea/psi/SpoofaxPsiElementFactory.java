@@ -50,8 +50,8 @@ public final class SpoofaxPsiElementFactory implements ISpoofaxPsiElementFactory
 
     @NotNull
     @Override
-    public SpoofaxPsiElement create(@NotNull final ASTNode node) {
-        IElementType type = node.getElementType();
+    public SpoofaxPsiElement create(final ASTNode node) {
+        final IElementType type = node.getElementType();
         if (type instanceof SpoofaxIdentifierType) {
             return new SpoofaxIdentifier(
                     node,

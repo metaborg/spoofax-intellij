@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 
@@ -36,8 +35,7 @@ public interface ILexerParserManager {
      * @param implementation The language implementation.
      * @return The lexer.
      */
-    @NotNull
-    Lexer getHighlightingLexer(@NotNull ILanguageImpl implementation);
+    Lexer getHighlightingLexer(ILanguageImpl implementation);
 
     /**
      * Creates and returns the lexer for the specified language.
@@ -45,17 +43,16 @@ public interface ILexerParserManager {
      * @param language The language.
      * @return The created lexer.
      */
-    @NotNull
-    Lexer createCharacterLexer(@NotNull ILanguage language);
+    Lexer createCharacterLexer(ILanguage language);
 
     // TODO: Remove
+
     /**
      * Creates and returns the parser for the specified language.
      *
      * @param language The language.
      * @return The created parser.
      */
-    @NotNull
-    PsiParser createParser(@NotNull ILanguage language);
+    PsiParser createParser(ILanguage language);
 
 }

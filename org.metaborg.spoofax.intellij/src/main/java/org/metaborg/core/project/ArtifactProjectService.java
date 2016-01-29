@@ -25,10 +25,9 @@ import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.vfs.FileNameUtils;
-import org.slf4j.Logger;
+import org.metaborg.util.log.ILogger;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -41,15 +40,13 @@ import java.util.Map;
  */
 public final class ArtifactProjectService implements IProjectService {
 
-    @NotNull
     private final FileSystemManager fileSystemManager;
-    @NotNull
     private final Map<FileName, ArtifactProject> projects = new HashMap<>();
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
-    /* package private */ ArtifactProjectService(@NotNull final FileSystemManager fileSystemManager) {
+    /* package private */ ArtifactProjectService(final FileSystemManager fileSystemManager) {
         this.fileSystemManager = fileSystemManager;
     }
 
@@ -58,14 +55,14 @@ public final class ArtifactProjectService implements IProjectService {
      */
     @Nullable
     @Override
-    public IProject get(@NotNull final FileObject resource) {
+    public IProject get(final FileObject resource) {
         Preconditions.checkNotNull(resource);
 
-        FileObject artifactRoot = getArtifactRoot(resource);
+        final FileObject artifactRoot = getArtifactRoot(resource);
         if (artifactRoot == null)
             return null;
 
-        FileName artifactName = artifactRoot.getName();
+        final FileName artifactName = artifactRoot.getName();
 
         ArtifactProject project = this.projects.get(artifactName);
         if (project == null) {
@@ -82,7 +79,7 @@ public final class ArtifactProjectService implements IProjectService {
      * @return The language artifact root; or <code>null</code> when there is none.
      */
     @Nullable
-    private FileObject getArtifactRoot(@NotNull final FileObject file) {
+    private FileObject getArtifactRoot(final FileObject file) {
         FileObject current = getRoot(file);
         while (current != null && !isArtifactRoot(current.getName())) {
             current = getParentRoot(current);
@@ -97,12 +94,12 @@ public final class ArtifactProjectService implements IProjectService {
      * @return The root file; or <code>null</code>.
      */
     @Nullable
-    private FileObject getRoot(@Nullable FileObject layer) {
+    private FileObject getRoot(@Nullable final FileObject layer) {
         if (layer == null)
             return null;
         try {
             return layer.getFileSystem().getRoot();
-        } catch (FileSystemException e) {
+        } catch (final FileSystemException e) {
             this.logger.error("Ignored exception.", e);
             return null;
         }
@@ -117,8 +114,8 @@ public final class ArtifactProjectService implements IProjectService {
      * @return <code>true</code> when the file is a language artifact root;
      * otherwise, <code>false</code>.
      */
-    private boolean isArtifactRoot(@NotNull final FileName fileName) {
-        FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
+    private boolean isArtifactRoot(final FileName fileName) {
+        final FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
         if (outerFileName == null)
             return false;
         return "spoofax-language".equals(outerFileName.getExtension());
@@ -131,10 +128,10 @@ public final class ArtifactProjectService implements IProjectService {
      * @return The parent root; or <code>null</code>.
      */
     @Nullable
-    private FileObject getParentRoot(@NotNull FileObject file) {
+    private FileObject getParentRoot(final FileObject file) {
         try {
             return getRoot(file.getFileSystem().getParentLayer());
-        } catch (FileSystemException e) {
+        } catch (final FileSystemException e) {
             this.logger.error("Ignored exception.", e);
             return null;
         }

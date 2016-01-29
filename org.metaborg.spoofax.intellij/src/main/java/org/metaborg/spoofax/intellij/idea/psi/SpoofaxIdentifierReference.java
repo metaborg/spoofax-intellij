@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class SpoofaxIdentifierReference extends PsiReferenceBase<PsiElement> {
 
-    public SpoofaxIdentifierReference(@NotNull final PsiElement element) {
+    public SpoofaxIdentifierReference(final PsiElement element) {
         super(element);
     }
 

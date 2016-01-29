@@ -24,22 +24,21 @@ import com.intellij.psi.AbstractElementManipulator;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NotNull;
 
 public final class SpoofaxIdentifierManipulator extends AbstractElementManipulator<SpoofaxIdentifier> {
     @Override
     public SpoofaxIdentifier handleContentChange(
-            @NotNull final SpoofaxIdentifier element, @NotNull final TextRange range, final String newContent) throws
+            final SpoofaxIdentifier element, final TextRange range, final String newContent) throws
             IncorrectOperationException {
 
-        String oldText = element.getText();
-        String newText = oldText.substring(
+        final String oldText = element.getText();
+        final String newText = oldText.substring(
                 0,
                 range.getStartOffset()
         ) + newContent + oldText.substring(range.getEndOffset());
-        PsiElement child = element.getFirstChild();
+        final PsiElement child = element.getFirstChild();
         if (child instanceof LeafPsiElement) {
-            ((LeafPsiElement) child).replaceWithText(newText);
+            ((LeafPsiElement)child).replaceWithText(newText);
             return element;
         }
         throw new IncorrectOperationException("Bad PSI.");

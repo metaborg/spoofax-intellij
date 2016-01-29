@@ -22,4 +22,7 @@
  * <p>
  * This package contains all classes needed to make a Spoofax language loadable, unloadable and usable in IntelliJ IDEA.
  */
+@NonNullByDefault
 package org.metaborg.spoofax.intellij.idea.languages;
+
+import org.metaborg.core.NonNullByDefault;

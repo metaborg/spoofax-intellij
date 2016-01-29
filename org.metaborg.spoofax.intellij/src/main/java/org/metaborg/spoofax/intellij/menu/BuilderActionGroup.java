@@ -23,7 +23,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;
 
 /**
@@ -31,9 +30,7 @@ import org.metaborg.core.language.ILanguageImpl;
  */
 public final class BuilderActionGroup extends DefaultActionGroup {
 
-    @NotNull
     private final ILanguageImpl implementation;
-    @NotNull
     private final ActionHelper actionHelper;
 
     /**
@@ -43,16 +40,16 @@ public final class BuilderActionGroup extends DefaultActionGroup {
      */
     @Inject
     /* package private */ BuilderActionGroup(
-            @Assisted @NotNull final ILanguageImpl implementation,
-            @NotNull final ActionHelper actionHelper) {
+            @Assisted final ILanguageImpl implementation,
+            final ActionHelper actionHelper) {
         super(implementation.belongsTo().name(), true);
         this.implementation = implementation;
         this.actionHelper = actionHelper;
     }
 
     @Override
-    public void update(@NotNull final AnActionEvent e) {
-        boolean visible = this.actionHelper.isActiveFileLanguage(e, this.implementation);
+    public void update(final AnActionEvent e) {
+        final boolean visible = this.actionHelper.isActiveFileLanguage(e, this.implementation);
         e.getPresentation().setVisible(visible);
         super.update(e);
     }
