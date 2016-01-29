@@ -28,7 +28,7 @@ public final class run {
      *
      * @param args Command line arguments.
      */
-    public static final void main(final String[] args) {
+    public static void main(final String[] args) {
         HybridInterpreter.main(args);
     }
 }

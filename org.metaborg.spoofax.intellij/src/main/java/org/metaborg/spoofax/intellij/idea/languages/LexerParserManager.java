@@ -47,7 +47,7 @@ public final class LexerParserManager implements ILexerParserManager {
     @NotNull
     @Override
     public Lexer getHighlightingLexer(@NotNull final ILanguageImpl implementation) {
-        return this.attachmentManager.get(implementation).lexer;
+        return this.attachmentManager.get(implementation).lexer();
     }
 
     /**
@@ -56,8 +56,8 @@ public final class LexerParserManager implements ILexerParserManager {
     @NotNull
     @Override
     public Lexer createCharacterLexer(@NotNull final ILanguage language) {
-        IdeaLanguageAttachment attachment = this.attachmentManager.get(language);
-        return attachment.characterLexerFactory.create(attachment.tokenTypeManager);
+        final IdeaLanguageAttachment attachment = this.attachmentManager.get(language);
+        return attachment.characterLexerFactory().create(attachment.tokenTypeManager());
     }
 
     /**
@@ -67,7 +67,5 @@ public final class LexerParserManager implements ILexerParserManager {
     @Override
     public PsiParser createParser(@NotNull final ILanguage language) {
         throw new UnsupportedOperationException("Deprecated");
-//        IdeaLanguageAttachment attachment = this.attachmentManager.get(language);
-//        return this.attachmentManager.get(language).parserFactory.create(language, attachment.tokenTypeManager);
     }
 }

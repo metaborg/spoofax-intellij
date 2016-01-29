@@ -49,15 +49,16 @@ public final class SpoofaxBuilderService extends BuilderService {
      * Do not call this method manually.
      */
     public SpoofaxBuilderService() {
+        super();
         SpoofaxJpsPlugin.injector().injectMembers(this);
     }
 
     @SuppressWarnings("unused")
     @Inject
     private void inject(
-            Collection<BuildTargetType<?>> targets,
-            Collection<TargetBuilder<?, ?>> builders,
-            Collection<ModuleLevelBuilder> moduleLevelBuilders) {
+            final Collection<BuildTargetType<?>> targets,
+            final Collection<TargetBuilder<?, ?>> builders,
+            final Collection<ModuleLevelBuilder> moduleLevelBuilders) {
         this.targets = Collections.unmodifiableList(new ArrayList<>(targets));
         this.builders = Collections.unmodifiableList(new ArrayList<>(builders));
         this.moduleLevelBuilders = Collections.unmodifiableList(new ArrayList<>(moduleLevelBuilders));

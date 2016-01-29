@@ -34,6 +34,6 @@ import java.lang.annotation.Target;
  * </pre>
  */
 @SuppressWarnings("NullableProblems")
-@Target({ElementType.FIELD})
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface InjectLogger {}

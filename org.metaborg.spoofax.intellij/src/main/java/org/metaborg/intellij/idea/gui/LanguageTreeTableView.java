@@ -44,11 +44,11 @@ public final class LanguageTreeTableView extends TreeTable {
         @Override
         public Object valueOf(final Object obj) {
             if (obj instanceof LanguageTreeModel.LanguageNode) {
-                LanguageTreeModel.LanguageNode node = (LanguageTreeModel.LanguageNode)obj;
+                final LanguageTreeModel.LanguageNode node = (LanguageTreeModel.LanguageNode)obj;
                 return node.getValue().name();
             }
             if (obj instanceof LanguageTreeModel.LanguageImplNode) {
-                LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)obj;
+                final LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)obj;
                 return node.getValue().id();
             }
             throw new UnsupportedOperationException();
@@ -80,7 +80,7 @@ public final class LanguageTreeTableView extends TreeTable {
                 return null;
             }
             if (obj instanceof LanguageTreeModel.LanguageImplNode) {
-                LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)obj;
+                final LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)obj;
                 return node.getValue().id().version;
             }
             throw new UnsupportedOperationException();
@@ -89,10 +89,11 @@ public final class LanguageTreeTableView extends TreeTable {
 
     private final ColumnInfo[] columns;
 
-    public LanguageTreeTableView(TreeNode rootNode) {
-        this(rootNode, new ColumnInfo[]{ LANGUAGE, VERSION });
+    public LanguageTreeTableView(final TreeNode rootNode) {
+        this(rootNode, new ColumnInfo[]{LANGUAGE, VERSION});
     }
-    private LanguageTreeTableView(TreeNode rootNode, ColumnInfo[] columns) {
+
+    private LanguageTreeTableView(final TreeNode rootNode, final ColumnInfo[] columns) {
         super(new LanguageTreeModel(rootNode, columns));
 
         this.columns = columns;
@@ -106,13 +107,13 @@ public final class LanguageTreeTableView extends TreeTable {
         TreeUtil.expand(tree, 1);
 
         new TreeTableSpeedSearch(this, path -> {
-            TreeNode obj = (TreeNode)path.getLastPathComponent();
+            final TreeNode obj = (TreeNode)path.getLastPathComponent();
             if (obj instanceof LanguageTreeModel.LanguageNode) {
-                LanguageTreeModel.LanguageNode node = (LanguageTreeModel.LanguageNode)obj;
+                final LanguageTreeModel.LanguageNode node = (LanguageTreeModel.LanguageNode)obj;
                 return node.getValue().name();
             }
             if (obj instanceof LanguageTreeModel.LanguageImplNode) {
-                LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)obj;
+                final LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)obj;
                 return node.getValue().id().toString();
             }
             return null;
@@ -121,10 +122,10 @@ public final class LanguageTreeTableView extends TreeTable {
 
     @Override
     public TableCellRenderer getCellRenderer(final int row, final int column) {
-        TreePath path = getTree().getPathForRow(row);
+        final TreePath path = getTree().getPathForRow(row);
         TableCellRenderer renderer = null;
         if (path != null) {
-            TreeNode node = (TreeNode)path.getLastPathComponent();
+            final TreeNode node = (TreeNode)path.getLastPathComponent();
             renderer = this.columns[column].getRenderer(node);
         }
         return renderer != null ? renderer : super.getCellRenderer(row, column);
@@ -132,10 +133,10 @@ public final class LanguageTreeTableView extends TreeTable {
 
     @Override
     public TableCellEditor getCellEditor(final int row, final int column) {
-        TreePath path = getTree().getPathForRow(row);
+        final TreePath path = getTree().getPathForRow(row);
         TableCellEditor editor = null;
         if (path != null) {
-            TreeNode node = (TreeNode)path.getLastPathComponent();
+            final TreeNode node = (TreeNode)path.getLastPathComponent();
             editor = this.columns[column].getEditor(node);
         }
         return editor != null ? editor : super.getCellEditor(row, column);

@@ -53,9 +53,10 @@ public final class JpsProjectService implements IJpsProjectService {
     /**
      * {@inheritDoc}
      */
+    @Override
     @NotNull
     public MetaborgJpsProject create(@NotNull final JpsModule module) {
-        final FileObject location = resourceService.resolve(module.getContentRootsList().getUrls().get(0));
+        final FileObject location = this.resourceService.resolve(module.getContentRootsList().getUrls().get(0));
         final MetaborgJpsProject project = new MetaborgJpsProject(module, location);
         this.projects.add(project);
         return project;
@@ -64,9 +65,10 @@ public final class JpsProjectService implements IJpsProjectService {
     /**
      * {@inheritDoc}
      */
+    @Override
     @Nullable
     public MetaborgJpsProject get(@NotNull final JpsModule module) {
-        for (MetaborgJpsProject project : this.projects) {
+        for (final MetaborgJpsProject project : this.projects) {
             if (project.module().equals(module))
                 return project;
         }
@@ -79,8 +81,8 @@ public final class JpsProjectService implements IJpsProjectService {
     @Nullable
     @Override
     public MetaborgJpsProject get(@NotNull final FileObject resource) {
-        for (MetaborgJpsProject project : this.projects) {
-            JpsModule module = project.module();
+        for (final MetaborgJpsProject project : this.projects) {
+            final JpsModule module = project.module();
             if (isInContentRoot(module, resource))
                 return project;
         }
@@ -97,7 +99,7 @@ public final class JpsProjectService implements IJpsProjectService {
      */
     private boolean isInContentRoot(@NotNull final JpsModule module, @NotNull final FileObject resource) {
         final JpsUrlList contentRootsList = module.getContentRootsList();
-        for (String url : contentRootsList.getUrls()) {
+        for (final String url : contentRootsList.getUrls()) {
             if (isEqualOrDescendant(url, resource))
                 return true;
         }

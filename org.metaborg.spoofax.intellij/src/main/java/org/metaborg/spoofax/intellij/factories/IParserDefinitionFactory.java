@@ -32,7 +32,7 @@ public interface IParserDefinitionFactory {
     /**
      * Creates a new parser definition for the specified file type.
      *
-     * @param fileType The file type.
+     * @param fileType        The file type.
      * @param fileElementType The file element type.
      * @return The created parser definition.
      */

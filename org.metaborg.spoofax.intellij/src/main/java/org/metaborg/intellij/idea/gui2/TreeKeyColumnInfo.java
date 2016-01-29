@@ -44,19 +44,19 @@ public class TreeKeyColumnInfo<Item> extends TreeColumnInfo {
 
     /**
      * Gets the text to display for the specified item.
-     *
+     * <p>
      * Override this method to change the value displayed for the specified item.
      *
      * @param item The item.
      * @return The value to display.
      */
-    public String getTextFor(Item item) {
+    public String getTextFor(final Item item) {
         return item.toString();
     }
 
     /**
      * Gets the icon to display for the specified item.
-     *
+     * <p>
      * Override this method to change the icon displayed for the specified item.
      *
      * @param item The item.
@@ -64,7 +64,7 @@ public class TreeKeyColumnInfo<Item> extends TreeColumnInfo {
      * or <code>null</code> to display the default icon.
      */
     @Nullable
-    public Icon getIconFor(Item item) {
+    public Icon getIconFor(final Item item) {
         return null;
     }
 

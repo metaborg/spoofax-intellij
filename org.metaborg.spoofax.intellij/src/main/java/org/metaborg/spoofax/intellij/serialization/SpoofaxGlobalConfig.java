@@ -43,7 +43,7 @@ public final class SpoofaxGlobalConfig extends SpoofaxConfig<SpoofaxGlobalState,
     @NotNull
     @Override
     public final SpoofaxGlobalConfig createCopy() {
-        SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();
+        final SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();
         config.applyChanges(this);
         return config;
     }

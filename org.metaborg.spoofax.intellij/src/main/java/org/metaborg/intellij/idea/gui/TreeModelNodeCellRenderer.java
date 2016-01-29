@@ -26,6 +26,7 @@ import java.awt.*;
 public class TreeModelNodeCellRenderer extends DefaultTreeCellRenderer {
 
     public TreeModelNodeCellRenderer() {
+        super();
     }
 
     @Override
@@ -37,12 +38,18 @@ public class TreeModelNodeCellRenderer extends DefaultTreeCellRenderer {
             final boolean leaf,
             final int row,
             final boolean hasFocus) {
-        Component component = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-
-//        setText();
+        final Component component = super.getTreeCellRendererComponent(
+                tree,
+                value,
+                selected,
+                expanded,
+                leaf,
+                row,
+                hasFocus
+        );
 
         if (value instanceof ITreeNodeWithIcon) {
-            ITreeNodeWithIcon node = (ITreeNodeWithIcon)value;
+            final ITreeNodeWithIcon node = (ITreeNodeWithIcon)value;
             setIcon(node.getIcon());
         }
 

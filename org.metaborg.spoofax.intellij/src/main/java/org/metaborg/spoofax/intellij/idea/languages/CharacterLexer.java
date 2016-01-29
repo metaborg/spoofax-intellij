@@ -49,6 +49,7 @@ public final class CharacterLexer extends LexerBase {
 
     @Inject
     private CharacterLexer(@Assisted @NotNull final SpoofaxTokenTypeManager tokenTypesManager) {
+        super();
         this.tokenTypesManager = tokenTypesManager;
     }
 
@@ -113,7 +114,8 @@ public final class CharacterLexer extends LexerBase {
                 "Offset {} must be between [{}, {}).",
                 this.offst,
                 this.bufferStart,
-                this.bufferEnd);
+                this.bufferEnd
+        );
         return this.offst;
     }
 
@@ -128,7 +130,8 @@ public final class CharacterLexer extends LexerBase {
                 "Offset {} must be between [{}, {}).",
                 this.offst,
                 this.bufferStart,
-                this.bufferEnd);
+                this.bufferEnd
+        );
         return this.offst + 1;
     }
 

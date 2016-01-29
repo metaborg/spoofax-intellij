@@ -39,6 +39,7 @@ public final class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
      * @param target The build target to which the source root belongs.
      */
     public SpoofaxSourceRootDescriptor(final File root, final BuildTarget<?> target) {
+        super();
         this.root = root;
         this.target = target;
     }

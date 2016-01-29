@@ -19,25 +19,18 @@
 
 package org.metaborg.spoofax.intellij.idea;
 
-import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.diagnostic.Logger;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
-import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.core.Spoofax;
-import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.meta.core.SpoofaxMeta;
 
 public class SpoofaxIdeaPlugin {
-//    @NotNull
-//    protected static final Supplier<Injector> injector = Suppliers.memoize(() -> Guice.createInjector(new SpoofaxIdeaDependencyModule()));
 
     // Static //
 
     private static final Logger logger = Logger.getInstance(SpoofaxIdeaPlugin.class);
-    private static SpoofaxIdeaPlugin plugin;
+    private static final SpoofaxIdeaPlugin plugin;
 
     static {
         plugin = new SpoofaxIdeaPlugin();
@@ -76,14 +69,14 @@ public class SpoofaxIdeaPlugin {
 
     // Instance //
 
-    private Spoofax spoofax;
-    private SpoofaxMeta spoofaxMeta;
+    private final Spoofax spoofax;
+    private final SpoofaxMeta spoofaxMeta;
 
     private SpoofaxIdeaPlugin() {
         try {
             this.spoofax = new Spoofax(new SpoofaxIdeaModule());
             this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new SpoofaxIdeaMetaModule());
-        } catch (MetaborgException e) {
+        } catch (final MetaborgException e) {
             throw new RuntimeException(e);
         }
     }

@@ -31,6 +31,7 @@ import org.metaborg.spoofax.intellij.languages.LanguageUtils;
 import javax.swing.*;
 
 // TODO: Generalize for Metaborg languages.
+
 /**
  * A Spoofax language file type.
  * <p>
@@ -63,7 +64,7 @@ public abstract class SpoofaxFileType extends LanguageFileType implements Metabo
      * @return The Spoofax language.
      */
     public final ILanguage getSpoofaxLanguage() {
-        return ((SpoofaxIdeaLanguage) super.getLanguage()).language();
+        return ((SpoofaxIdeaLanguage)super.getLanguage()).language();
     }
 
     /**
@@ -98,7 +99,7 @@ public abstract class SpoofaxFileType extends LanguageFileType implements Metabo
     @Override
     public Icon getIcon() {
         // TODO: Get icon from ILanguage facet, otherwise use default.
-        return SpoofaxIcons.INSTANCE.Default;
+        return SpoofaxIcons.INSTANCE.defaultIcon();
     }
 
     /**
@@ -106,6 +107,7 @@ public abstract class SpoofaxFileType extends LanguageFileType implements Metabo
      *
      * @return A set of file extensions.
      */
+    @Override
     public Iterable<String> getExtensions() {
         return LanguageUtils.getExtensions(this.getSpoofaxLanguage());
     }

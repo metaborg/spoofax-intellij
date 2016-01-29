@@ -19,10 +19,8 @@
 
 package org.metaborg.spoofax.intellij.factories;
 
-import com.google.inject.assistedinject.Assisted;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.action.ITransformAction;
-import org.metaborg.core.action.ITransformGoal;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.menu.TransformationAction;
 

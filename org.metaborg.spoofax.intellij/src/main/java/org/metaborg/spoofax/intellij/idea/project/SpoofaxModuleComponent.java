@@ -26,9 +26,9 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.intellij.idea.project.IIdeaProjectFactory;
 import org.metaborg.intellij.idea.project.IIdeaProjectService;
 import org.metaborg.intellij.idea.project.IdeaProject;
-import org.metaborg.intellij.idea.project.IIdeaProjectFactory;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
@@ -70,6 +70,7 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
         this.resourceService = resourceService;
     }
 
+    @Override
     @NotNull
     public String getComponentName() {
         return "SpoofaxModuleComponent";
@@ -78,8 +79,9 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
     /**
      * Occurs when the module is initialized.
      */
+    @Override
     public void initComponent() {
-        logger.info("Module {} init.", this.module);
+        this.logger.info("Module {} init.", this.module);
     }
 
     /**
@@ -87,8 +89,9 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
      * <p>
      * Called after {@link #projectClosed()}.
      */
+    @Override
     public void disposeComponent() {
-        logger.info("Module {} dispose.", this.module);
+        this.logger.info("Module {} dispose.", this.module);
         // TODO: insert component disposal logic here
     }
 
@@ -100,21 +103,23 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
      * This method is not called when modules are created
      * in a {@link com.intellij.ide.util.projectWizard.ModuleBuilder}.
      */
+    @Override
     public void projectOpened() {
-        logger.info("Module {} opened.", this.module);
+        this.logger.info("Module {} opened.", this.module);
 
-        FileObject root = getRootDirectory(this.module);
+        final FileObject root = getRootDirectory(this.module);
         if (root == null)
             return;
-        IdeaProject project = this.projectFactory.create(this.module, root);
+        final IdeaProject project = this.projectFactory.create(this.module, root);
         this.projectService.open(project);
     }
 
     /**
      * Occurs when the module is closed.
      */
+    @Override
     public void projectClosed() {
-        logger.info("Module {} closed.", this.module);
+        this.logger.info("Module {} closed.", this.module);
 
         this.projectService.close(this.module);
     }
@@ -124,8 +129,9 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
      * <p>
      * Called after {@link #initComponent()}. May be called twice for a module.
      */
+    @Override
     public void moduleAdded() {
-        logger.info("Module {} added.", this.module);
+        this.logger.info("Module {} added.", this.module);
     }
 
     /**
@@ -138,8 +144,8 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
     private FileObject getRootDirectory(@NotNull final Module module) {
         try {
             return this.resourceService.resolve(module.getModuleFilePath()).getParent();
-        } catch (FileSystemException e) {
-            logger.error("Unhandled exception.", e);
+        } catch (final FileSystemException e) {
+            this.logger.error("Unhandled exception.", e);
         }
         return null;
     }

@@ -21,6 +21,7 @@ package org.metaborg.spoofax.intellij.serialization;
 
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,11 +38,11 @@ public final class SpoofaxProjectService implements PersistentStateComponent<Spo
     private SpoofaxProjectState state;
 
     public SpoofaxProjectService() {
-        state = new SpoofaxProjectState();
+        this.state = new SpoofaxProjectState();
     }
 
     @NotNull
-    public final static SpoofaxProjectService getInstance(@NotNull final Project project) {
+    public static SpoofaxProjectService getInstance(@NotNull final Project project) {
         final SpoofaxProjectService service = ServiceManager.getService(project, SpoofaxProjectService.class);
         assert service != null;
         return service;
@@ -69,16 +70,17 @@ public final class SpoofaxProjectService implements PersistentStateComponent<Spo
      */
     @Override
     public final int hashCode() {
-        return this.state.hashCode();
+        return new HashCodeBuilder(19, 31)
+                .toHashCode();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final boolean equals(Object obj) {
+    public final boolean equals(final Object obj) {
         if (!(obj instanceof SpoofaxProjectService))
             return false;
-        return this.state.equals(((SpoofaxProjectService) obj).state);
+        return this.state.equals(((SpoofaxProjectService)obj).state);
     }
 }

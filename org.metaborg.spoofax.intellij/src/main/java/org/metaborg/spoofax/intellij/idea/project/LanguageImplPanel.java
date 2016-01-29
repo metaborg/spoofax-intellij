@@ -61,22 +61,11 @@ public final class LanguageImplPanel extends JPanel {
             }
         };
 
-
-//        this.table.setSurrendersFocusOnKeystroke(true);
-        //this.table.setShowGrid(false);
-//        this.table.setDragEnabled(false);
-//        this.table.setIntercellSpacing(new Dimension(0, 0));
-//        this.table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        //this.table.setDefaultRenderer(ILanguage.class, new LanguageItemRenderer());
-        //JComboBox implEditor = new ComboBox(new CollectionListModel<>(ILanguageImpl.class));
-        //this.table.setDefaultEditor(ILanguageImpl.class, new DefaultCellEditor(implEditor));
-
         add(createTableWithButtons(), BorderLayout.CENTER);
     }
 
     private JComponent createTableWithButtons() {
         final ToolbarDecorator decorator = ToolbarDecorator.createDecorator(this.table);
-        final JPanel panel = decorator.createPanel();
-        return panel;
+        return decorator.createPanel();
     }
 }

@@ -33,6 +33,7 @@ public final class LanguageVersionVerifier extends InputVerifier {
      * Initializes a new instance of the {@link LanguageVersionVerifier} class.
      */
     public LanguageVersionVerifier() {
+        super();
 
     }
 
@@ -41,7 +42,7 @@ public final class LanguageVersionVerifier extends InputVerifier {
      */
     @Override
     public boolean verify(final JComponent input) {
-        String text = ((JTextComponent)input).getText();
+        final String text = ((JTextComponent)input).getText();
         return LanguageVersion.valid(text);
     }
 }

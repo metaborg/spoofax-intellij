@@ -29,10 +29,12 @@ import org.metaborg.core.language.ILanguageImpl;
  */
 public final class IdeaLanguageImplAttachment {
 
-    @NotNull
-    public final Lexer lexer;
-    @NotNull
-    public final DefaultActionGroup buildActionGroup;
+    private final Lexer lexer;
+    private final DefaultActionGroup buildActionGroup;
+
+    public Lexer lexer() { return this.lexer;}
+
+    public DefaultActionGroup buildActionGroup() { return this.buildActionGroup; }
 
     /**
      * Creates a new instance of the {@link IdeaLanguageImplAttachment} class.

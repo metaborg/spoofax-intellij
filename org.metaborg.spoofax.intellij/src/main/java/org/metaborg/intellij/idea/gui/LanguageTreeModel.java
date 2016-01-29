@@ -36,11 +36,7 @@ import javax.swing.tree.TreeNode;
  */
 public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
 
-//    private static final ColumnInfo[] COLUMNS = ArrayUtils.toArray(
-//            new TreeModelColumnInfo("Name")
-//    );
-
-    public LanguageTreeModel(TreeNode root, ColumnInfo[] columns) {
+    public LanguageTreeModel(final TreeNode root, final ColumnInfo[] columns) {
         super(root, columns);
     }
 
@@ -53,14 +49,14 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
      * Appends a node to a parent.
      *
      * @param newChild The new child node.
-     * @param parent The parent node.
+     * @param parent   The parent node.
      */
-    public void appendNodeInto(@Nullable MutableTreeNode newChild, MutableTreeNode parent) {
+    public void appendNodeInto(@Nullable final MutableTreeNode newChild, final MutableTreeNode parent) {
         insertNodeInto(newChild, parent, parent.getChildCount());
     }
 
     public static class LanguageNode extends TreeNodeWithValue<ILanguage, LanguageNode> implements ITreeNodeWithIcon {
-        public LanguageNode(ILanguage language) {
+        public LanguageNode(final ILanguage language) {
             super(language);
         }
 
@@ -73,12 +69,13 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
         @Nullable
         @Override
         public Icon getIcon() {
-            return SpoofaxIcons.INSTANCE.Default;
+            return SpoofaxIcons.INSTANCE.defaultIcon();
         }
     }
 
-    public static class LanguageImplNode extends TreeNodeWithValue<ILanguageImpl, LanguageImplNode> implements ITreeNodeWithIcon {
-        public LanguageImplNode(ILanguageImpl language) {
+    public static class LanguageImplNode extends TreeNodeWithValue<ILanguageImpl, LanguageImplNode>
+            implements ITreeNodeWithIcon {
+        public LanguageImplNode(final ILanguageImpl language) {
             super(language);
         }
 

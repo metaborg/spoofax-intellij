@@ -63,7 +63,7 @@ public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer 
         throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
     }
 
-    private final void loadExtensionWithState(
+    private void loadExtensionWithState(
             @NotNull final JpsGlobal global,
             @Nullable final SpoofaxGlobalState state) {
         final SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();

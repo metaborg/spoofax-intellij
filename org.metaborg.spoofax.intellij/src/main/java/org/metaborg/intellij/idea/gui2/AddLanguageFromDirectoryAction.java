@@ -29,15 +29,16 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.metaborg.core.UnhandledException;
-//import org.metaborg.core.language.ILanguageDiscoveryService;
-import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.language.ILanguageDiscoveryService;
+import org.metaborg.core.language.ILanguageService;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
-import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
 import java.io.IOException;
+
+//import org.metaborg.core.language.ILanguageDiscoveryService;
 
 
 public class AddLanguageFromDirectoryAction extends AnAction {
@@ -53,12 +54,16 @@ public class AddLanguageFromDirectoryAction extends AnAction {
      * Do not call this method manually.
      */
     public AddLanguageFromDirectoryAction() {
+        super();
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final LanguageManager languageManager, final ILanguageDiscoveryService discoveryService, final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager, final SpoofaxArtifactFileType artifactFileType) {
+    private void inject(
+            final LanguageManager languageManager, final ILanguageDiscoveryService discoveryService,
+            final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager,
+            final SpoofaxArtifactFileType artifactFileType) {
         this.languageService = languageService;
         this.ideaLanguageManager = ideaLanguageManager;
         this.artifactFileType = artifactFileType;
@@ -66,23 +71,19 @@ public class AddLanguageFromDirectoryAction extends AnAction {
         this.languageManager = languageManager;
     }
 
-    public void actionPerformed(AnActionEvent e) {
+    @Override
+    public void actionPerformed(final AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
-        FileChooserDescriptor chooserDescriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
-        VirtualFile folder = FileChooser.chooseFile(chooserDescriptor, project, null);
+        final FileChooserDescriptor chooserDescriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
+        final VirtualFile folder = FileChooser.chooseFile(chooserDescriptor, project, null);
 
         try {
             // TODO: Load on settings OK.
-            boolean success = this.languageManager.loadLanguageFromFolder(folder);
+            final boolean success = this.languageManager.loadLanguageFromFolder(folder);
             // TODO: Notify when not successful.
-        } catch (IOException e1) {
+        } catch (final IOException e1) {
             throw new UnhandledException(e1);
         }
-
-//        WriteCommandAction.runWriteCommandAction(project, () -> {
-//
-//        });
-
     }
 }

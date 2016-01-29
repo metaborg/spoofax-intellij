@@ -63,7 +63,6 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
             final ISpoofaxPsiElementFactory psiElementFactory) {
         this.fileType = fileType;
         this.fileElement = fileElementType;
-//        this.fileElement = new SpoofaxFileElementType((SpoofaxIdeaLanguage)fileType.getLanguage(), lexerParserManager);
         this.lexerParserManager = lexerParserManager;
         this.resolverService = resolverService;
         this.resourceService = resourceService;
@@ -91,7 +90,6 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
     @Override
     public PsiParser createParser(@NotNull final Project project) {
         throw new UnsupportedOperationException("See SpoofaxFileElementType class.");
-//        return this.lexerParserManager.createParser(this.fileType.getSpoofaxLanguage());
     }
 
     /**

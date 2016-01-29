@@ -53,7 +53,7 @@ public final class JavaServiceProviderFactory {
         return new AbstractModule() {
             @Override
             protected void configure() {
-                Provider<T> provider = new JavaServiceProvider<>(serviceClass);
+                final Provider<T> provider = new JavaServiceProvider<>(serviceClass);
                 bind(serviceClass).toProvider(provider);
             }
         };

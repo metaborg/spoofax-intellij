@@ -35,6 +35,7 @@ public class TreeModelColumnInfo<Item extends IModelItem<Item>> extends ModelCol
     /**
      * {@inheritDoc}
      */
+    @Override
     public final Class getColumnClass() {
         return TreeTableModel.class;
     }

@@ -51,8 +51,6 @@ public final class LanguagesPanel extends JPanel {
     private final TreeTableView languagesTree;
     @Nullable
     private LanguagesConfigurable controller;
-//    @Nullable
-//    private List<PopupAction> myPopupActions = null;
 
     public LanguagesPanel() {
         super(new BorderLayout());
@@ -66,7 +64,7 @@ public final class LanguagesPanel extends JPanel {
                             @Override
                             public Object valueOf(final Object obj) {
                                 if (obj instanceof LanguageTreeModel.LanguageImplNode) {
-                                    LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode) obj;
+                                    final LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)obj;
                                     return node.getValue().id().groupId;
                                 }
                                 return null;
@@ -77,18 +75,11 @@ public final class LanguagesPanel extends JPanel {
                             @Override
                             public Object valueOf(final Object obj) {
                                 if (obj instanceof LanguageTreeModel.LanguageImplNode) {
-                                    LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode) obj;
+                                    final LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)obj;
                                     return node.getValue().id().version;
                                 }
                                 return null;
                             }
-
-//                            @org.jetbrains.annotations.Nullable
-//                            @Override
-//                            public TableCellRenderer getRenderer(
-//                                    final Object o) {
-//                                return super.getRenderer(o);
-//                            }
                         },
                 }
         ));
@@ -103,15 +94,15 @@ public final class LanguagesPanel extends JPanel {
                     final int row,
                     final boolean hasFocus) {
 
-                Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+                final Component c = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
                 if (value instanceof LanguageTreeModel.LanguageNode) {
-                    LanguageTreeModel.LanguageNode node = (LanguageTreeModel.LanguageNode) value;
+                    final LanguageTreeModel.LanguageNode node = (LanguageTreeModel.LanguageNode)value;
                     setText(node.getValue().name());
-                    setIcon(SpoofaxIcons.INSTANCE.Default);
+                    setIcon(SpoofaxIcons.INSTANCE.defaultIcon());
                 }
                 if (value instanceof LanguageTreeModel.LanguageImplNode) {
-                    LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode) value;
+                    final LanguageTreeModel.LanguageImplNode node = (LanguageTreeModel.LanguageImplNode)value;
                     setText(node.getValue().id().id);
                 }
 
@@ -120,23 +111,20 @@ public final class LanguagesPanel extends JPanel {
         });
         this.languagesTree.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(this.languagesTree)
+        final ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(this.languagesTree)
                 .setAddAction(this::addLanguage)
                 .setAddActionUpdater(e -> canAddLanguage())
                 .setRemoveAction(button -> removeLanguage(selectedLanguageImpl()))
                 .setRemoveActionUpdater(e -> canRemoveLanguage(selectedLanguageImpl()))
-//                .setEditAction(button -> editLanguage(selectedLanguageImpl()))
-//                .setEditActionUpdater(e -> canEditLanguage(selectedLanguageImpl()))
                 .disableUpDownActions();
 
         add(toolbarDecorator.createPanel(), BorderLayout.CENTER);
         setBorder(IdeBorderFactory.createTitledBorder("Loaded languages", false));
     }
 
-    private void addLanguage(AnActionButton button) {
+    private void addLanguage(final AnActionButton button) {
         if (this.controller == null || !canAddLanguage())
             return;
-//        this.controller.addLanguage();
         showPopupActions(button);
     }
 
@@ -153,37 +141,24 @@ public final class LanguagesPanel extends JPanel {
     private boolean canRemoveLanguage(final ILanguageImpl language) {
         return this.controller != null
                 && language != null;
-//                && this.controller.canRemoveLanguage(language);
     }
-//
-//    private void editLanguage(final ILanguageImpl language) {
-//        if (this.controller == null || !canEditLanguage(language))
-//            return;
-//        this.controller.editLanguage(language);
-//    }
-//
-//    private boolean canEditLanguage(final ILanguageImpl language) {
-//        return this.controller != null
-//                && language != null
-//                && this.controller.canEditLanguage(language);
-//    }
 
-    public void setLanguages(Iterable<ILanguageImpl> languageImpls) {
-        ListTreeTableModelOnColumns model = (ListTreeTableModelOnColumns) this.languagesTree.getTableModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+    public void setLanguages(final Iterable<ILanguageImpl> languageImpls) {
+        final ListTreeTableModelOnColumns model = (ListTreeTableModelOnColumns)this.languagesTree.getTableModel();
+        final DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
         root.removeAllChildren();
         model.reload();
 
-        Map<ILanguage, LanguageTreeModel.LanguageNode> languageNodes = new HashMap<>();
-        for (ILanguageImpl impl : languageImpls) {
-            ILanguage language = impl.belongsTo();
+        final Map<ILanguage, LanguageTreeModel.LanguageNode> languageNodes = new HashMap<>();
+        for (final ILanguageImpl impl : languageImpls) {
+            final ILanguage language = impl.belongsTo();
             LanguageTreeModel.LanguageNode languageNode = languageNodes.get(language);
             if (languageNode == null) {
                 languageNode = new LanguageTreeModel.LanguageNode(language);
                 languageNodes.put(language, languageNode);
                 model.insertNodeInto(languageNode, root, root.getChildCount());
             }
-            LanguageTreeModel.LanguageImplNode languageImplNode = new LanguageTreeModel.LanguageImplNode(impl);
+            final LanguageTreeModel.LanguageImplNode languageImplNode = new LanguageTreeModel.LanguageImplNode(impl);
             model.insertNodeInto(languageImplNode, languageNode, languageNode.getChildCount());
         }
         model.reload();
@@ -197,23 +172,14 @@ public final class LanguagesPanel extends JPanel {
      */
     @Nullable
     public ILanguageImpl selectedLanguageImpl() {
-        List<ILanguageImpl> languages = ((List<Object>) this.languagesTree.getSelection()).stream()
+        final List<ILanguageImpl> languages = ((List<Object>)this.languagesTree.getSelection()).stream()
                 .filter(x -> x instanceof LanguageTreeModel.LanguageImplNode)
-                .map(x -> ((LanguageTreeModel.LanguageImplNode) x).getValue())
+                .map(x -> ((LanguageTreeModel.LanguageImplNode)x).getValue())
                 .collect(toList());
         if (languages.size() != 1)
             return null;
         return languages.get(0);
     }
-
-//    /**
-//     * Sets the currently selected language.
-//     *
-//     * @param language The currently selected language;
-//     *                 or <code>null</code> to select none.
-//     */
-//    public void selectLanguage(@Nullable ILanguageImpl language) {
-//    }
 
     /**
      * Attaches a controller to the panel.
@@ -224,8 +190,8 @@ public final class LanguagesPanel extends JPanel {
         this.controller = controller;
     }
 
-    private void showPopupActions(AnActionButton button) {
-        ActionGroup group = (ActionGroup) ActionManager.getInstance().getAction("Spoofax.AddLanguagePopup");
+    private void showPopupActions(final AnActionButton button) {
+        final ActionGroup group = (ActionGroup)ActionManager.getInstance().getAction("Spoofax.AddLanguagePopup");
 
         JBPopupFactory.getInstance().createActionGroupPopup(null, group,
                                                             DataManager.getInstance().getDataContext(button.getContextComponent()),

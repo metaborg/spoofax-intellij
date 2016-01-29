@@ -29,10 +29,11 @@ public final class SpoofaxIcons {
     @NotNull
     public static final SpoofaxIcons INSTANCE = new SpoofaxIcons();
 
-    @NotNull
-    public final Icon Default;
+    private final Icon defaultIcon;
+
+    public Icon defaultIcon() { return this.defaultIcon; }
 
     private SpoofaxIcons() {
-        this.Default = IconLoader.getIcon("/SpoofaxDefault.png");
+        this.defaultIcon = IconLoader.getIcon("/SpoofaxDefault.png");
     }
 }

@@ -27,7 +27,8 @@ import com.intellij.openapi.project.Project;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * {@see <a href="https://confluence.jetbrains.com/display/IDEADEV/Customizing+the+IDEA+Settings+Dialog">Customizing the
@@ -37,8 +38,6 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
 
     private ILanguageService languageService;
     private final Project project;
-//    private final List<FileObject> artifactsToLoad = new ArrayList<FileObject>();
-//    private final List<FileObject> foldersToLoad = new ArrayList<FileObject>();
     private Set<ILanguageImpl> languages = null;
     private final Set<ILanguageImpl> languagesToLoad = new HashSet<>();
     private final Set<ILanguageImpl> languagesToUnload = new HashSet<>();
@@ -47,10 +46,10 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
      * This instance is created by IntelliJ's plugin system.
      */
     protected LanguagesConfigurable(final Project project) {
+        super();
         Preconditions.checkNotNull(project);
 
         this.project = project;
-//        this.languageService = languageService;
     }
 
     protected void inject(final ILanguageService languageService) {
@@ -102,7 +101,7 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
      *
      * @param language The language implementation to add.
      */
-    public void addLanguage(ILanguageImpl language) {
+    public void addLanguage(final ILanguageImpl language) {
         this.languagesToUnload.remove(language);
         if (!this.languages.contains(language)) {
             this.languagesToLoad.add(language);
@@ -115,7 +114,7 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
      *
      * @param language The language implementation to remove.
      */
-    public void removeLanguage(ILanguageImpl language) {
+    public void removeLanguage(final ILanguageImpl language) {
         this.languagesToLoad.remove(language);
         if (this.languages.contains(language)) {
             this.languagesToUnload.add(language);
@@ -129,7 +128,7 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
      * @return A list of language implementations.
      */
     public Set<ILanguageImpl> getLanguages() {
-        HashSet<ILanguageImpl> languages = Sets.newHashSet(this.languages);
+        final HashSet<ILanguageImpl> languages = Sets.newHashSet(this.languages);
         languages.removeAll(this.languagesToUnload);
 //        return CollectionUtils.toSortedList(languages, new ComparatorDelegate<>(x -> x.id().toString(), new ComparableComparator()));
         languages.addAll(this.languagesToLoad);
@@ -138,38 +137,4 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
 
     protected abstract void updateLanguagesList();
 
-//    public void addLanguage() {
-//        // TODO
-//    }
-//    public void removeLanguage(final ILanguageImpl language) {
-//        // TODO: Unload the specified language
-//    }
-//    public void editLanguage(final ILanguageImpl language) {
-//        // Nothing to do.
-//    }
-//    public boolean canEditLanguage(final ILanguageImpl language) {
-//        return false;
-//    }
-//    public boolean canRemoveLanguage(final ILanguageImpl language) {
-//        return true;
-//    }
-//
-//    private static class LanguageIterable implements Iterator<ILanguageImpl> {
-//
-//        private final LanguagesConfigurable configurable;
-//
-//        public LanguageIterable(final LanguagesConfigurable configurable) {
-//            this.configurable = configurable;
-//        }
-//
-//        @Override
-//        public boolean hasNext() {
-//            return false;
-//        }
-//
-//        @Override
-//        public ILanguageImpl next() {
-//            return null;
-//        }
-//    }
 }

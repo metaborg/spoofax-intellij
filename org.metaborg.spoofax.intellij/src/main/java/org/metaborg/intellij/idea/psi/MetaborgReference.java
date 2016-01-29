@@ -33,9 +33,9 @@ public abstract class MetaborgReference extends PsiReferenceBase<MetaborgReferen
      * Initializes a new instance of the {@link MetaborgReference} class.
      *
      * @param reference The reference.
-     * @param isSoft Whether the reference is a soft reference.
+     * @param isSoft    Whether the reference is a soft reference.
      */
-    public MetaborgReference(final MetaborgReferenceElement reference, boolean isSoft) {
+    protected MetaborgReference(final MetaborgReferenceElement reference, final boolean isSoft) {
         super(reference, isSoft);
     }
 

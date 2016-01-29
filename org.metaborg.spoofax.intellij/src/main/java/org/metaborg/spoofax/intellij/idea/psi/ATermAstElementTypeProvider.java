@@ -59,7 +59,7 @@ public final class ATermAstElementTypeProvider implements IAstElementTypeProvide
     }
 
     @Override
-    public IElementType getElementType(IStrategoTerm term) {
+    public IElementType getElementType(final IStrategoTerm term) {
         final ICategory category = getCategory(term);
         IElementType elementType = null;
         if (category instanceof TokenCategory) {
@@ -78,13 +78,12 @@ public final class ATermAstElementTypeProvider implements IAstElementTypeProvide
     }
 
     @Nullable
-    private ICategory getCategory(IStrategoTerm term) {
+    private ICategory getCategory(final IStrategoTerm term) {
         final ImploderAttachment rootImploderAttachment = ImploderAttachment.get(term);
         final IToken token = rootImploderAttachment.getLeftToken();
         final ISourceRegion region = JSGLRSourceRegionFactory.fromToken(token);
-        for (IRegionCategory<IStrategoTerm> category : this.categories) {
+        for (final IRegionCategory<IStrategoTerm> category : this.categories) {
             if ((category.fragment() != null && category.fragment().equals(term)) || category.region().equals(region)) {
-//            if (category.region().equals(region)) {
                 return category.category();
             }
         }

@@ -51,7 +51,6 @@ public final class IntelliJResourceService extends ResourceService implements II
     @Override
     public final FileObject resolve(@NotNull final VirtualFile resource) {
         return resolve("file://" + resource.getPath());
-//        return resolve("idea://" + resource.getPath());
     }
 
     /**
@@ -61,19 +60,18 @@ public final class IntelliJResourceService extends ResourceService implements II
     @Override
     public final VirtualFile unresolve(@NotNull final FileObject resource) {
         if (resource instanceof IntelliJFileObject) {
-            final IntelliJFileObject intellijResource = (IntelliJFileObject) resource;
+            final IntelliJFileObject intellijResource = (IntelliJFileObject)resource;
             final VirtualFile intellijFile = intellijResource.getIntelliJFile();
             if (intellijFile != null)
                 return intellijFile;
         }
 
-        URI uri = toUri(resource.getName().getURI());
-        VirtualFileSystem fileSystem = getFileSystem(uri);
-        String path = getPath(uri);
+        final URI uri = toUri(resource.getName().getURI());
+        final VirtualFileSystem fileSystem = getFileSystem(uri);
+        final String path = getPath(uri);
         if (fileSystem == null || path == null)
             throw new MetaborgRuntimeException("Can't unresolve this URI: " + uri);
         return fileSystem.findFileByPath(path);
-//        return LocalFileSystem.getInstance().findFileByPath(resource.getName().getPath());
     }
 
     /**
@@ -105,7 +103,7 @@ public final class IntelliJResourceService extends ResourceService implements II
     @Nullable
     private String getPath(@NotNull final URI uri) {
         if (uri.getPath() == null) {
-            String part = uri.getSchemeSpecificPart();
+            final String part = uri.getSchemeSpecificPart();
             if (part == null)
                 return null;
             return getPath(toUri(part));
@@ -123,7 +121,7 @@ public final class IntelliJResourceService extends ResourceService implements II
     private URI toUri(@NotNull final String uri) {
         try {
             return new URI(uri);
-        } catch (URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             throw new RuntimeException("Unexpected exception", e);
         }
     }

@@ -35,8 +35,10 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 public final class SpoofaxFile extends PsiFileBase {
 
     public static final Key<ParseResult<IStrategoTerm>> PARSE_RESULT_KEY = new Key<>("PARSE_RESULT_KEY");
-    public static final Key<AnalysisFileResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_FILE_RESULT_KEY = new Key<>("ANALYSIS_FILE_RESULT_KEY");
-    public static final Key<AnalysisResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_RESULT_KEY = new Key<>("ANALYSIS_RESULT_KEY");
+    public static final Key<AnalysisFileResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_FILE_RESULT_KEY = new Key<>(
+            "ANALYSIS_FILE_RESULT_KEY");
+    public static final Key<AnalysisResult<IStrategoTerm, IStrategoTerm>> ANALYSIS_RESULT_KEY = new Key<>(
+            "ANALYSIS_RESULT_KEY");
 
     @NotNull
     private final SpoofaxFileType fileType;
@@ -57,6 +59,7 @@ public final class SpoofaxFile extends PsiFileBase {
      *
      * @return The file type.
      */
+    @Override
     @NotNull
     public SpoofaxFileType getFileType() {
         return this.fileType;

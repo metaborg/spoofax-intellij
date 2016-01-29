@@ -64,11 +64,12 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
      *
      * @param targetType The target type.
      */
-    protected SpoofaxBuilder(final BuildTargetType<T> targetType,
-                             final JpsProjectService projectService,
-                             final ILanguageSpecService languageSpecService,
-                             final ISpoofaxLanguageSpecPathsService pathsService,
-                             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService) {
+    protected SpoofaxBuilder(
+            final BuildTargetType<T> targetType,
+            final JpsProjectService projectService,
+            final ILanguageSpecService languageSpecService,
+            final ISpoofaxLanguageSpecPathsService pathsService,
+            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService) {
         super(Collections.singletonList(targetType));
         this.projectService = projectService;
         this.languageSpecService = languageSpecService;
@@ -103,15 +104,24 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
      */
     protected LanguageSpecBuildInput getBuildInput(final JpsModule module) throws ProjectBuildException,
             IOException {
-        @Nullable final MetaborgJpsProject project = projectService.get(module);
+        @Nullable final MetaborgJpsProject project = this.projectService.get(module);
         if (project == null)
-            throw new ProjectBuildException(MessageFormatter.format("Could not get a project for the module {}", module));
-        @Nullable final ILanguageSpec languageSpec = languageSpecService.get(project);
+            throw new ProjectBuildException(MessageFormatter.format(
+                    "Could not get a project for the module {}",
+                    module
+            ));
+        @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
         if (languageSpec == null)
-            throw new ProjectBuildException(MessageFormatter.format("Could not get a language specification for the project {}", project));
+            throw new ProjectBuildException(MessageFormatter.format(
+                    "Could not get a language specification for the project {}",
+                    project
+            ));
         @Nullable final ISpoofaxLanguageSpecConfig config = this.spoofaxLanguageSpecConfigService.get(languageSpec);
         if (config == null)
-            throw new ProjectBuildException(MessageFormatter.format("Could not get a configuration for language specification {}", languageSpec));
+            throw new ProjectBuildException(MessageFormatter.format(
+                    "Could not get a configuration for language specification {}",
+                    languageSpec
+            ));
         final ISpoofaxLanguageSpecPaths paths = this.pathsService.get(languageSpec);
 
         return new LanguageSpecBuildInput(languageSpec, config, paths);

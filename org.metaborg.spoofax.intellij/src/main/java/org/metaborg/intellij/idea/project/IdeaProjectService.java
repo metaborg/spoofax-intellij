@@ -83,7 +83,7 @@ public final class IdeaProjectService implements IIdeaProjectService {
     @Nullable
     @Override
     public IdeaProject get(final PsiElement element) {
-        @Nullable Module module = ModuleUtil.findModuleForPsiElement(element);
+        @Nullable final Module module = ModuleUtil.findModuleForPsiElement(element);
         if (module == null)
             return null;
         return get(module);
@@ -113,18 +113,20 @@ public final class IdeaProjectService implements IIdeaProjectService {
      */
     @Nullable
     private Module getModule(final VirtualFile file) {
-        Set<Module> candidates = new HashSet<>();
-        for (Project project : ProjectManager.getInstance().getOpenProjects()) {
+        final Set<Module> candidates = new HashSet<>();
+        for (final Project project : ProjectManager.getInstance().getOpenProjects()) {
             @Nullable final Module module = ModuleUtil.findModuleForFile(file, project);
             if (module != null)
                 candidates.add(module);
         }
         if (candidates.size() > 1) {
-            logger.error("File {} found in multiple modules. Picking a random one. These modules: {}",
-                         file,
-                         candidates);
+            this.logger.error(
+                    "File {} found in multiple modules. Picking a random one. These modules: {}",
+                    file,
+                    candidates
+            );
         }
-        if (candidates.size() != 0) {
+        if (!candidates.isEmpty()) {
             return candidates.iterator().next();
         }
         return null;

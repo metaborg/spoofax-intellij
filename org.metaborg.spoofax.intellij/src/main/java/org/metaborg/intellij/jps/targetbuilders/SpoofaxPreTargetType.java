@@ -33,6 +33,7 @@ public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarg
     /**
      * {@inheritDoc}
      */
+    @Override
     public final SpoofaxPreTarget createTarget(final MetaborgJpsProject project) {
         return new SpoofaxPreTarget(project, this);
     }

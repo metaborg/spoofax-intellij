@@ -49,7 +49,7 @@ public final class FileNameUtils {
         Preconditions.checkNotNull(fileName);
 
         if (fileName instanceof LayeredFileName) {
-            return ((LayeredFileName) fileName).getOuterName();
+            return ((LayeredFileName)fileName).getOuterName();
         } else {
             return null;
         }

@@ -25,17 +25,12 @@ import com.google.inject.Singleton;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.builders.BuildTargetType;
 import org.jetbrains.jps.incremental.ModuleLevelBuilder;
-import org.jetbrains.jps.incremental.TargetBuilder;
 import org.metaborg.core.project.IProjectService;
-import org.metaborg.spoofax.intellij.SpoofaxIntelliJModule;
 import org.metaborg.intellij.jps.project.IJpsProjectService;
 import org.metaborg.intellij.jps.project.JpsProjectService;
-import org.metaborg.intellij.jps.targetbuilders.SpoofaxPostBuilder;
 import org.metaborg.intellij.jps.targetbuilders.SpoofaxPostTargetType;
-import org.metaborg.intellij.jps.targetbuilders.SpoofaxPreBuilder;
 import org.metaborg.intellij.jps.targetbuilders.SpoofaxPreTargetType;
-import org.metaborg.spoofax.meta.core.ant.AntRunnerService;
-import org.metaborg.spoofax.meta.core.ant.IAntRunnerService;
+import org.metaborg.spoofax.intellij.SpoofaxIntelliJModule;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,6 +45,7 @@ public final class SpoofaxJpsModule extends SpoofaxIntelliJModule {
      * Initializes a new instance of the {@link SpoofaxJpsModule} class.
      */
     public SpoofaxJpsModule() {
+        super();
     }
 
     /**
@@ -62,11 +58,7 @@ public final class SpoofaxJpsModule extends SpoofaxIntelliJModule {
         bind(SpoofaxPreTargetType.class).in(Singleton.class);
         bind(SpoofaxPostTargetType.class).in(Singleton.class);
 
-
         bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
-
-
-//        bind(IAntRunnerService.class).to(AntRunnerService.class).in(Singleton.class);
     }
 
     /**
@@ -82,8 +74,8 @@ public final class SpoofaxJpsModule extends SpoofaxIntelliJModule {
     @Inject
     @NotNull
     public final Collection<BuildTargetType<?>> provideTargetTypes(
-            SpoofaxPreTargetType preTargetType,
-            SpoofaxPostTargetType postTargetType) {
+            final SpoofaxPreTargetType preTargetType,
+            final SpoofaxPostTargetType postTargetType) {
         return Arrays.asList(preTargetType, postTargetType);
     }
 

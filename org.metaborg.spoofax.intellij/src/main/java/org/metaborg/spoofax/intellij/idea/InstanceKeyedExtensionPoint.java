@@ -41,6 +41,7 @@ public final class InstanceKeyedExtensionPoint<T> extends KeyedLazyInstanceEP<T>
      * @param instance The instance.
      */
     public InstanceKeyedExtensionPoint(@NotNull final Language language, @NotNull final T instance) {
+        super();
         this.instance = instance;
         this.key = language.getID();
         this.implementationClass = null;

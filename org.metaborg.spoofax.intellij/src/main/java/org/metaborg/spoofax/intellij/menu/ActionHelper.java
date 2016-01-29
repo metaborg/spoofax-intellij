@@ -63,11 +63,11 @@ public final class ActionHelper {
      * @return <code>true</code> when all active files are of the specified language;
      * otherwise, <code>false</code>.
      */
-    public boolean isActiveFileLanguage(@NotNull final AnActionEvent e, ILanguageImpl language) {
-        List<FileObject> files = getActiveFiles(e);
-        if (files.size() == 0)
+    public boolean isActiveFileLanguage(@NotNull final AnActionEvent e, final ILanguageImpl language) {
+        final List<FileObject> files = getActiveFiles(e);
+        if (files.isEmpty())
             return false;
-        for (FileObject file : files) {
+        for (final FileObject file : files) {
             if (!this.identifierService.identify(file, language))
                 return false;
         }
@@ -81,11 +81,11 @@ public final class ActionHelper {
      * @return A list of files.
      */
     public List<FileObject> getActiveFiles(@NotNull final AnActionEvent e) {
-        VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
+        final VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
         if (files == null || files.length == 0)
             return Collections.emptyList();
-        ArrayList<FileObject> result = new ArrayList<>(files.length);
-        for (VirtualFile file : files) {
+        final ArrayList<FileObject> result = new ArrayList<>(files.length);
+        for (final VirtualFile file : files) {
             if (file.isDirectory())
                 continue;
             result.add(this.resourceService.resolve(file));
@@ -100,14 +100,14 @@ public final class ActionHelper {
      * @return A list of files.
      */
     public List<TransformResource> getActiveResources(@NotNull final AnActionEvent e) {
-        VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
+        final VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
         if (files == null || files.length == 0)
             return Collections.emptyList();
-        ArrayList<TransformResource> result = new ArrayList<>(files.length);
-        for (VirtualFile file : files) {
+        final ArrayList<TransformResource> result = new ArrayList<>(files.length);
+        for (final VirtualFile file : files) {
             if (file.isDirectory())
                 continue;
-            FileObject resource = this.resourceService.resolve(file);
+            final FileObject resource = this.resourceService.resolve(file);
             final Document document = FileDocumentManager.getInstance().getCachedDocument(file);
             result.add(new TransformResource(resource, document.getText()));
         }

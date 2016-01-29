@@ -33,6 +33,7 @@ public final class LanguageIdentifierVerifier extends InputVerifier {
      * Initializes a new instance of the {@link LanguageIdentifierVerifier} class.
      */
     public LanguageIdentifierVerifier() {
+        super();
 
     }
 
@@ -41,7 +42,7 @@ public final class LanguageIdentifierVerifier extends InputVerifier {
      */
     @Override
     public boolean verify(final JComponent input) {
-        String text = ((JTextComponent)input).getText();
+        final String text = ((JTextComponent)input).getText();
         return LanguageIdentifier.validId(text);
     }
 }

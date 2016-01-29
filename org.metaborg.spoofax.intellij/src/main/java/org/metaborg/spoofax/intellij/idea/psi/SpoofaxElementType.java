@@ -58,6 +58,6 @@ public class SpoofaxElementType extends IElementType {
      * @return The {@link SpoofaxIdeaLanguage}.
      */
     @Nullable
-    public SpoofaxIdeaLanguage getSpoofaxIdeaLanguage() { return (SpoofaxIdeaLanguage) getLanguage(); }
+    public SpoofaxIdeaLanguage getSpoofaxIdeaLanguage() { return (SpoofaxIdeaLanguage)getLanguage(); }
 
 }

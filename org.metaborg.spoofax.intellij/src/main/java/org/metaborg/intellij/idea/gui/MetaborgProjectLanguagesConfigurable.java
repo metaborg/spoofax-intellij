@@ -32,22 +32,20 @@ import javax.swing.*;
 public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigurable {
 
     private MetaborgProjectLanguagesConfigurableForm form;
-//    private LanguagesPanel languagesPanel;
-//    private ILanguageService languageService;
 
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public MetaborgProjectLanguagesConfigurable(Project project) {
+    public MetaborgProjectLanguagesConfigurable(final Project project) {
         super(project);
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
+    @Override
     @Inject
     protected void inject(final ILanguageService languageService) {
         super.inject(languageService);
-//        this.languageService = languageService;
     }
 
     @Nls
@@ -65,16 +63,6 @@ public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigu
     @Nullable
     @Override
     public JComponent createComponent() {
-//        this.languagesPanel = new LanguagesPanel();
-//        this.languagesPanel.attachActions(this);
-//        this.languagesPanel.myFileTypesList.addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(@Nullable ListSelectionEvent e) {
-//                updateExtensionList();
-//            }
-//        });
-//        return myFileTypePanel.getComponent();
-//
         if (this.form == null) {
             this.form = new MetaborgProjectLanguagesConfigurableForm();
         }
@@ -101,11 +89,8 @@ public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigu
 
     }
 
-
-//    @SuppressWarnings("unchecked")
     @Override
     protected void updateLanguagesList() {
         this.form.getLanguagesPanel().setLanguages(getLanguages());
-//        this.form.getLanguagesPanel().setLanguages((Iterable<ILanguageImpl>) this.languageService.getAllImpls());
     }
 }

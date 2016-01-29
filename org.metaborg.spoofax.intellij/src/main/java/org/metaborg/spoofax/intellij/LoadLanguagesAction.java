@@ -31,6 +31,7 @@ import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 
 // Will be replaced in the future.
+@Deprecated
 public class LoadLanguagesAction extends AnAction {
 
     //    @NotNull
@@ -43,18 +44,20 @@ public class LoadLanguagesAction extends AnAction {
 //    private final IProjectLanguageIdentifierService languageIdentifierService;
 
     public LoadLanguagesAction() {
+        super();
         // TODO: Cleanup
 //        this.languageManager = IdeaPlugin.injector().getInstance(LanguageManager.class);
         this.languageService = SpoofaxIdeaPlugin.injector().getInstance(ILanguageService.class);
         this.ideaLanguageManager = SpoofaxIdeaPlugin.injector().getInstance(IIdeaLanguageManager.class);
     }
 
-    public void actionPerformed(AnActionEvent e) {
+    @Override
+    public void actionPerformed(final AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
         //this.languageManager.loadMetaLanguages();
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            for (ILanguage language : this.languageService.getAllLanguages()) {
+            for (final ILanguage language : this.languageService.getAllLanguages()) {
 //                for (ILanguageImpl implementation : language.impls()) {
 //                    this.ideaLanguageManager.load(implementation);
 //                }

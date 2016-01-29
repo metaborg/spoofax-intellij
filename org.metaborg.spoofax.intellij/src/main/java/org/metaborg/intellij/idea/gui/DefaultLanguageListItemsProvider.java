@@ -44,7 +44,9 @@ public final class DefaultLanguageListItemsProvider implements ILanguageListItem
      * @param project The IDEA project for which to list the languages.
      */
     @Inject
-    public DefaultLanguageListItemsProvider(@Assisted final Project project, final ILanguageProjectService languageProjectService) {
+    public DefaultLanguageListItemsProvider(
+            @Assisted final Project project,
+            final ILanguageProjectService languageProjectService) {
         Preconditions.checkNotNull(project);
         Preconditions.checkNotNull(languageProjectService);
 
@@ -58,7 +60,7 @@ public final class DefaultLanguageListItemsProvider implements ILanguageListItem
     @Override
     public Iterable<ILanguage> all() {
         // TODO: Get only languages per IntelliJ project (i.e. workspace)
-        Set<LanguageDialect> impls = this.languageProjectService.getCandidateImpls((ILanguage)null, null, null);
+        final Set<LanguageDialect> impls = this.languageProjectService.getCandidateImpls((ILanguage)null, null, null);
         return impls.stream().map(x -> x.dialectOrBaseLanguage().belongsTo()).collect(Collectors.toList());
     }
 }

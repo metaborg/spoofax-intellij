@@ -59,14 +59,14 @@ public final class MetaborgFileTypeConsumer {
     /**
      * Consumes the file type with only the specified extensions.
      *
-     * @param fileType The file type.
+     * @param fileType   The file type.
      * @param extensions The file extensions, without a leading '.'.
      */
     public void consume(final FileType fileType, @NonNls final String... extensions) {
         Preconditions.checkNotNull(fileType);
         Preconditions.checkNotNull(extensions);
 
-        FileNameMatcher[] matchers = new FileNameMatcher[extensions.length];
+        final FileNameMatcher[] matchers = new FileNameMatcher[extensions.length];
         for (int i = 0; i < extensions.length; i++) {
             matchers[i] = new ExtensionFileNameMatcher(extensions[i]);
         }

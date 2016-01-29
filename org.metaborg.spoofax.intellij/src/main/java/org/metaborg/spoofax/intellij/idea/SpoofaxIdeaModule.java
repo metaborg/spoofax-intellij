@@ -37,27 +37,24 @@ import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.intellij.idea.gui.DefaultLanguageListItemsProvider;
 import org.metaborg.intellij.idea.gui.ILanguageListItemsProvider;
 import org.metaborg.intellij.idea.gui.ILanguageListItemsProviderFactory;
-import org.metaborg.intellij.idea.project.*;
+import org.metaborg.intellij.idea.project.IIdeaProjectFactory;
+import org.metaborg.intellij.idea.project.IIdeaProjectService;
+import org.metaborg.intellij.idea.project.IdeaProject;
+import org.metaborg.intellij.idea.project.IdeaProjectService;
 import org.metaborg.intellij.idea.psi.IMetaborgReferenceProviderFactory;
 import org.metaborg.intellij.idea.psi.MetaborgReferenceProvider;
 import org.metaborg.intellij.idea.spoofax.psi.SpoofaxReferenceProvider;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
-import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJModule;
 import org.metaborg.spoofax.intellij.factories.*;
 import org.metaborg.spoofax.intellij.idea.languages.*;
-import org.metaborg.spoofax.intellij.idea.project.SpoofaxModuleBuilder;
-import org.metaborg.spoofax.intellij.idea.project.SpoofaxModuleType;
-import org.metaborg.spoofax.intellij.idea.project.LanguageImplEditor;
-import org.metaborg.spoofax.intellij.idea.project.LanguageImplPanel;
-import org.metaborg.spoofax.intellij.idea.project.LanguageImplTableModel;
+import org.metaborg.spoofax.intellij.idea.project.*;
 import org.metaborg.spoofax.intellij.idea.psi.ATermAstElementTypeProvider;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxFileElementType;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxPsiElementFactory;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.menu.*;
-import org.metaborg.intellij.idea.project.IIdeaProjectService;
-import org.metaborg.intellij.idea.project.IdeaProjectService;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -93,7 +90,8 @@ public final class SpoofaxIdeaModule extends SpoofaxIntelliJModule {
             /* implode    */ true,
             /* recovery   */ true,
             /* completion */ false,
-            /* timeout    */ 30000));
+            /* timeout    */ 30000
+        ));
 
         install(new FactoryModuleBuilder()
                         .implement(Lexer.class, SpoofaxLexer.class)
@@ -145,14 +143,15 @@ public final class SpoofaxIdeaModule extends SpoofaxIntelliJModule {
     protected void bindProject() {
         bind(IdeaProjectService.class).in(Singleton.class);
         bind(IProjectService.class).to(CompoundProjectService.class).in(Singleton.class);
-//        bind(IProjectService.class).to(IdeaProjectService.class).in(Singleton.class);
         bind(IIdeaProjectService.class).to(IdeaProjectService.class).in(Singleton.class);
         bind(ArtifactProjectService.class).in(Singleton.class);
         bind(CompoundProjectService.class).in(Singleton.class);
 
-        Multibinder<IProjectService> uriBinder = Multibinder.newSetBinder(binder(),
-                                                                          IProjectService.class,
-                                                                          Compound.class);
+        final Multibinder<IProjectService> uriBinder = Multibinder.newSetBinder(
+                binder(),
+                IProjectService.class,
+                Compound.class
+        );
         uriBinder.addBinding().to(IdeaProjectService.class);
         uriBinder.addBinding().to(ArtifactProjectService.class);
     }
@@ -160,6 +159,6 @@ public final class SpoofaxIdeaModule extends SpoofaxIntelliJModule {
     @Provides
     @Singleton
     private SpoofaxModuleType provideModuleType() {
-        return (SpoofaxModuleType) ModuleTypeManager.getInstance().findByID(SpoofaxModuleType.ID);
+        return (SpoofaxModuleType)ModuleTypeManager.getInstance().findByID(SpoofaxModuleType.ID);
     }
 }

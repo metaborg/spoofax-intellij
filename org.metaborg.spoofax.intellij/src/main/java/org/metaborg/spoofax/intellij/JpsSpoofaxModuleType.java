@@ -29,12 +29,14 @@ import org.jetbrains.jps.model.module.JpsModuleType;
  * A JPS Spoofax module type, used to identify Spoofax JPS modules.
  */
 @Singleton
-public final class JpsSpoofaxModuleType extends JpsElementTypeWithDummyProperties implements JpsModuleType<JpsDummyElement> {
+public final class JpsSpoofaxModuleType extends JpsElementTypeWithDummyProperties
+        implements JpsModuleType<JpsDummyElement> {
 
     @NotNull
     public static final JpsSpoofaxModuleType INSTANCE = new JpsSpoofaxModuleType();
 
     private JpsSpoofaxModuleType() {
+        super();
     }
 
 }

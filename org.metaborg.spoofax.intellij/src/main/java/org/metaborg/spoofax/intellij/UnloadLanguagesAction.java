@@ -41,17 +41,20 @@ public class UnloadLanguagesAction extends AnAction {
     private final IIdeaLanguageManager ideaLanguageManager;
 
     public UnloadLanguagesAction() {
+        super();
         this.languageManager = SpoofaxIdeaPlugin.injector().getInstance(LanguageManager.class);
         this.languageService = SpoofaxIdeaPlugin.injector().getInstance(ILanguageService.class);
         this.ideaLanguageManager = SpoofaxIdeaPlugin.injector().getInstance(IIdeaLanguageManager.class);
     }
 
-    public void actionPerformed(AnActionEvent e) {
+    @Override
+    public void actionPerformed(final AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
-        final ILanguage[] loadedLanguages = this.ideaLanguageManager.getLoaded().toArray(new ILanguage[0]);
+        final java.util.Set<ILanguage> var = this.ideaLanguageManager.getLoaded();
+        final ILanguage[] loadedLanguages = var.toArray(new ILanguage[var.size()]);
 
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            for (ILanguage language : loadedLanguages) {
+            for (final ILanguage language : loadedLanguages) {
                 //for (ILanguage language : this.languageService.getAllLanguages()) {
                 this.ideaLanguageManager.unload(language);
             }

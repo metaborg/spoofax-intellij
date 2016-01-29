@@ -34,17 +34,17 @@ public class UnhandledException extends RuntimeException {
      *
      * @param exception The unhandled exception.
      */
-    public UnhandledException(Throwable exception) {
+    public UnhandledException(final Throwable exception) {
         this(DefaultMessage, exception);
     }
 
     /**
      * Initializes a new instance of the {@link UnhandledException} class.
      *
-     * @param message The message to display.
+     * @param message   The message to display.
      * @param exception The unhandled exception.
      */
-    public UnhandledException(String message, Throwable exception) {
+    public UnhandledException(final String message, final Throwable exception) {
         super(message, exception);
     }
 

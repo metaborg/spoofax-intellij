@@ -60,7 +60,7 @@ public final class IntRange {
      * @param start The inclusive start of the range.
      * @param end   The exclusive end of the range.
      */
-    private IntRange(int start, int end) {
+    private IntRange(final int start, final int end) {
         if (end < start)
             throw new IllegalArgumentException("The start must be equal to or less than the end.");
 
@@ -75,7 +75,7 @@ public final class IntRange {
      * @return The created empty range.
      */
     @NotNull
-    public static IntRange at(int position) {
+    public static IntRange at(final int position) {
         return new IntRange(position, position);
     }
 
@@ -105,7 +105,7 @@ public final class IntRange {
      * @return <code>true</code> when the element is in the range;
      * otherwise, <code>false</code>.
      */
-    public boolean contains(int element) {
+    public boolean contains(final int element) {
         return containsRange(IntRange.is(element));
     }
 
@@ -119,7 +119,7 @@ public final class IntRange {
      * @return <code>true</code> when the other range is in this range;
      * otherwise, <code>false</code>.
      */
-    public boolean containsRange(IntRange other) {
+    public boolean containsRange(final IntRange other) {
         return overlapsRange(other)
                 && this.start <= other.start
                 && other.end <= this.end;
@@ -132,7 +132,7 @@ public final class IntRange {
      * @return The created range.
      */
     @NotNull
-    public static IntRange is(int element) {
+    public static IntRange is(final int element) {
         if (element == Integer.MAX_VALUE)
             throw new IllegalArgumentException("The value is out of bounds.");
         return new IntRange(element, element + 1);
@@ -148,7 +148,7 @@ public final class IntRange {
      * @return <code>true</code> when the other range overlaps this range;
      * otherwise, <code>false</code>.
      */
-    public boolean overlapsRange(IntRange other) {
+    public boolean overlapsRange(final IntRange other) {
         return !isBeforeRange(other) && !isAfterRange(other);
     }
 
@@ -159,7 +159,7 @@ public final class IntRange {
      * @return <code>true</code> when this range ends before the specified range starts;
      * otherwise, <code>false</code>.
      */
-    public boolean isBeforeRange(IntRange other) {
+    public boolean isBeforeRange(final IntRange other) {
         return other.start >= this.end;
     }
 
@@ -170,7 +170,7 @@ public final class IntRange {
      * @return <code>true</code> when this range starts after the specified range ends;
      * otherwise, <code>false</code>.
      */
-    public boolean isAfterRange(IntRange other) {
+    public boolean isAfterRange(final IntRange other) {
         return this.start >= other.end;
     }
 
@@ -181,7 +181,7 @@ public final class IntRange {
      * @return <code>true</code> when this range starts after the specified element;
      * otherwise, <code>false</code>.
      */
-    public boolean isAfter(int element) {
+    public boolean isAfter(final int element) {
         return isAfterRange(IntRange.is(element));
     }
 
@@ -192,7 +192,7 @@ public final class IntRange {
      * @return <code>true</code> when this range ends before the specified element;
      * otherwise, <code>false</code>.
      */
-    public boolean isBefore(int element) {
+    public boolean isBefore(final int element) {
         return isBeforeRange(IntRange.is(element));
     }
 
@@ -203,7 +203,7 @@ public final class IntRange {
      * @return <code>true</code> when this range starts directly after after the specified element;
      * otherwise, <code>false</code>.
      */
-    public boolean isStartedBy(int element) {
+    public boolean isStartedBy(final int element) {
         return isStartedByRange(IntRange.is(element));
     }
 
@@ -214,7 +214,7 @@ public final class IntRange {
      * @return <code>true</code> when this range starts directly after the specified range ends;
      * otherwise, <code>false</code>.
      */
-    public boolean isStartedByRange(IntRange other) {
+    public boolean isStartedByRange(final IntRange other) {
         return this.start == other.end;
     }
 
@@ -225,7 +225,7 @@ public final class IntRange {
      * @return <code>true</code> when this range ends before the specified element;
      * otherwise, <code>false</code>.
      */
-    public boolean isEndedBy(int element) {
+    public boolean isEndedBy(final int element) {
         return isEndedByRange(IntRange.is(element));
     }
 
@@ -236,7 +236,7 @@ public final class IntRange {
      * @return <code>true</code> when this range ends directly before the specified range starts;
      * otherwise, <code>false</code>.
      */
-    public boolean isEndedByRange(IntRange other) {
+    public boolean isEndedByRange(final IntRange other) {
         return this.end == other.start;
     }
 
@@ -248,12 +248,12 @@ public final class IntRange {
      * or an empty range (with no specific start and end) when the ranges don't overlap or touch.
      */
     @NotNull
-    public IntRange intersectionWith(IntRange other) {
+    public IntRange intersectionWith(final IntRange other) {
         if (!isTouchedByRange(other))
             throw new IllegalArgumentException("The ranges must touch.");
 
-        int start = Math.max(this.start, other.start);
-        int end = Math.min(this.end, other.end);
+        final int start = Math.max(this.start, other.start);
+        final int end = Math.min(this.end, other.end);
 
         return between(start, end);
     }
@@ -265,7 +265,7 @@ public final class IntRange {
      * @return <code>true</code> when this range touches the specified range;
      * otherwise, <code>false</code>.
      */
-    public boolean isTouchedByRange(IntRange other) {
+    public boolean isTouchedByRange(final IntRange other) {
         return isStartedByRange(other) || overlapsRange(other) || isEndedByRange(other);
     }
 
@@ -277,7 +277,7 @@ public final class IntRange {
      * @return The created range.
      */
     @NotNull
-    public static IntRange between(int startInclusive, int endExclusive) {
+    public static IntRange between(final int startInclusive, final int endExclusive) {
         return new IntRange(startInclusive, endExclusive);
     }
 
@@ -288,12 +288,12 @@ public final class IntRange {
      * @return The union of this range and the other range.
      */
     @NotNull
-    public IntRange unionWith(IntRange other) {
+    public IntRange unionWith(final IntRange other) {
         if (!isTouchedByRange(other))
             throw new IllegalArgumentException("The ranges must touch.");
 
-        int start = Math.min(this.start, other.start);
-        int end = Math.max(this.end, other.end);
+        final int start = Math.min(this.start, other.start);
+        final int end = Math.max(this.end, other.end);
 
         return between(start, end);
     }
@@ -316,7 +316,7 @@ public final class IntRange {
     public boolean equals(final Object obj) {
         if (!(obj instanceof IntRange))
             return false;
-        return equals((IntRange) obj);
+        return equals((IntRange)obj);
     }
 
     /**

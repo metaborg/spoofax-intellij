@@ -36,6 +36,7 @@ public final class SpoofaxFileTypeFactory extends MetaborgFileTypeFactory {
      * Do not call this method manually.
      */
     public SpoofaxFileTypeFactory() {
+        super();
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 

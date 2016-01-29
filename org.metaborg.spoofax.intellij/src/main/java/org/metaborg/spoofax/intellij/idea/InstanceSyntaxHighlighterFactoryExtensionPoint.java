@@ -39,7 +39,10 @@ public final class InstanceSyntaxHighlighterFactoryExtensionPoint extends Syntax
      * @param language The language.
      * @param instance The instance.
      */
-    public InstanceSyntaxHighlighterFactoryExtensionPoint(@NotNull final Language language, @NotNull final SyntaxHighlighterFactory instance) {
+    public InstanceSyntaxHighlighterFactoryExtensionPoint(
+            @NotNull final Language language,
+            @NotNull final SyntaxHighlighterFactory instance) {
+        super();
         this.instance = instance;
         this.language = language.getID();
         this.implementationClass = null;

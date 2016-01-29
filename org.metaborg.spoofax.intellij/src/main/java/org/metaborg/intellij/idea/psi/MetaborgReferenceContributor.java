@@ -28,7 +28,7 @@ import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 
 /**
  * Contributes reference providers for PSI elements that match a certain pattern.
- *
+ * <p>
  * This contributor is run once per project.
  */
 public final class MetaborgReferenceContributor extends PsiReferenceContributor {
@@ -40,6 +40,7 @@ public final class MetaborgReferenceContributor extends PsiReferenceContributor 
      * Do not call this method manually.
      */
     public MetaborgReferenceContributor() {
+        super();
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
@@ -55,7 +56,6 @@ public final class MetaborgReferenceContributor extends PsiReferenceContributor 
     @Override
     public void registerReferenceProviders(@NotNull final PsiReferenceRegistrar registrar) {
         registrar.registerReferenceProvider(
-//                StandardPatterns.instanceOf(MetaborgReferenceElement.class),
                 PlatformPatterns.psiElement(MetaborgReferenceElement.class),
                 this.referenceProviderFactory.create()
         );

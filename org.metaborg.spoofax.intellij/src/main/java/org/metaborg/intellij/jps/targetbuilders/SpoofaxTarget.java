@@ -129,9 +129,9 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
             final IgnoredFileIndex ignoredFileIndex,
             final BuildDataPaths buildDataPaths) {
         // Default implementation.
-        List<SpoofaxSourceRootDescriptor> result = new ArrayList<>();
-        JavaSourceRootType type = isTests() ? JavaSourceRootType.TEST_SOURCE : JavaSourceRootType.SOURCE;
-        for (JpsTypedModuleSourceRoot<JavaSourceRootProperties> root : super.myModule.getSourceRoots(type)) {
+        final List<SpoofaxSourceRootDescriptor> result = new ArrayList<>();
+        final JavaSourceRootType type = isTests() ? JavaSourceRootType.TEST_SOURCE : JavaSourceRootType.SOURCE;
+        for (final JpsTypedModuleSourceRoot<JavaSourceRootProperties> root : super.myModule.getSourceRoots(type)) {
             result.add(new SpoofaxSourceRootDescriptor(root.getFile(), this));
         }
         return result;
@@ -149,7 +149,8 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
         return ContainerUtil.getFirstItem(rootIndex.getRootDescriptors(
                 new File(rootId),
                 Collections.singletonList(getSpoofaxTargetType()),
-                null));
+                null
+        ));
     }
 
     /**
@@ -166,12 +167,14 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
     @Override
     public final Collection<File> getOutputRoots(@NotNull final CompileContext compileContext) {
         // Default implementation.
-        return ContainerUtil.createMaybeSingletonList(JpsJavaExtensionService.getInstance().getOutputDirectory(super.myModule,
-                                                                                                               isTests()));
+        return ContainerUtil.createMaybeSingletonList(JpsJavaExtensionService.getInstance().getOutputDirectory(
+                super.myModule,
+                isTests()
+        ));
     }
 
     private SpoofaxTargetType<? extends BuildTarget<SpoofaxSourceRootDescriptor>> getSpoofaxTargetType() {
         // Default implementation.
-        return (SpoofaxTargetType<?>) getTargetType();
+        return (SpoofaxTargetType<?>)getTargetType();
     }
 }

@@ -21,14 +21,10 @@ package org.metaborg.spoofax.intellij.menu;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.context.IContextService;
-import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.processing.parse.IParseResultRequester;
-import org.metaborg.core.source.ISourceTextService;
 import org.metaborg.core.transform.ITransformService;
-import org.metaborg.core.transform.ITransformer;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 /**
@@ -44,9 +40,11 @@ public final class StrategoResourceTransformer extends ResourceTransformer<IStra
             final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester,
             final ITransformService<IStrategoTerm, IStrategoTerm, IStrategoTerm> transformService
     ) {
-        super(contextService,
-              parseResultRequester,
-              analysisResultRequester,
-              transformService);
+        super(
+                contextService,
+                parseResultRequester,
+                analysisResultRequester,
+                transformService
+        );
     }
 }

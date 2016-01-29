@@ -63,6 +63,7 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
             final IParseResultRequester<IStrategoTerm> parseResultRequester,
             final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester
     ) {
+        super();
         this.contextService = contextService;
         this.analysisService = analysisService;
         this.resourceService = resourceService;
@@ -83,12 +84,12 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
             @NotNull final PsiFile file, @NotNull final Editor editor, final boolean hasErrors) {
 
         try {
-            FileObject resource = this.resourceService.resolve(file.getVirtualFile());
-            ILanguageImpl language = this.identifierService.identify(resource);
-            IContext context = this.contextService.get(resource, language);
-            String text = editor.getDocument().getImmutableCharSequence().toString();
+            final FileObject resource = this.resourceService.resolve(file.getVirtualFile());
+            final ILanguageImpl language = this.identifierService.identify(resource);
+            final IContext context = this.contextService.get(resource, language);
+            final String text = editor.getDocument().getImmutableCharSequence().toString();
             return new SpoofaxAnnotationInfo(resource, text, context);
-        } catch (ContextException e) {
+        } catch (final ContextException e) {
             throw new RuntimeException("Unhandled exception.", e);
         }
     }
@@ -108,9 +109,9 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
             @NotNull final PsiFile file,
             final AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisResult,
             @NotNull final AnnotationHolder holder) {
-        for (IMessage message : analysisResult.messages) {
-            TextRange range = SourceRegionUtil.toTextRange(message.region());
-            HighlightSeverity severity;
+        for (final IMessage message : analysisResult.messages) {
+            final TextRange range = SourceRegionUtil.toTextRange(message.region());
+            final HighlightSeverity severity;
             switch (message.severity()) {
                 case ERROR:
                     severity = HighlightSeverity.ERROR;

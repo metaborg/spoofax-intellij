@@ -22,14 +22,11 @@ package org.metaborg.spoofax.intellij.jps;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.google.inject.multibindings.Multibinder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.incremental.TargetBuilder;
 import org.metaborg.intellij.jps.targetbuilders.SpoofaxPostBuilder;
 import org.metaborg.intellij.jps.targetbuilders.SpoofaxPreBuilder;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJMetaModule;
-import org.metaborg.spoofax.meta.core.IBuildStep;
-import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,8 +49,8 @@ public class SpoofaxJpsMetaModule extends SpoofaxIntelliJMetaModule {
     @Inject
     @NotNull
     public final Collection<TargetBuilder<?, ?>> provideTargetBuilders(
-            SpoofaxPreBuilder preBuilder,
-            SpoofaxPostBuilder postBuilder) {
+            final SpoofaxPreBuilder preBuilder,
+            final SpoofaxPostBuilder postBuilder) {
         return Arrays.asList(preBuilder, postBuilder);
     }
 }

@@ -32,11 +32,11 @@ import org.metaborg.core.project.IProject;
 import org.metaborg.core.source.ISourceLocation;
 import org.metaborg.core.tracing.IResolverService;
 import org.metaborg.core.tracing.Resolution;
+import org.metaborg.intellij.idea.project.IIdeaProjectService;
 import org.metaborg.intellij.idea.psi.MetaborgReference;
 import org.metaborg.intellij.idea.psi.MetaborgReferenceElement;
 import org.metaborg.intellij.idea.psi.MetaborgReferenceProvider;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxReference;
-import org.metaborg.intellij.idea.project.IIdeaProjectService;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -74,7 +74,7 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
     }
 
     /**
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     protected Iterable<MetaborgReference> getReferences(
@@ -83,25 +83,29 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
             final FileObject resource,
             final MetaborgReferenceElement element,
             final ProcessingContext context) {
-        AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = this.analysisResultRequester.get(
+        final AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult = this.analysisResultRequester.get(
                 resource);
         if (analysisFileResult == null)
             return Collections.emptyList();
 
-        List<MetaborgReference> references = new ArrayList<>();
+        final List<MetaborgReference> references = new ArrayList<>();
         try {
-            Resolution resolution = this.resolverService.resolve(element.getTextOffset(), analysisFileResult);
+            final Resolution resolution = this.resolverService.resolve(element.getTextOffset(), analysisFileResult);
             if (resolution != null) {
-                for (ISourceLocation location : resolution.targets) {
-                    FileObject targetResource = location.resource();
+                for (final ISourceLocation location : resolution.targets) {
+                    final FileObject targetResource = location.resource();
                     if (targetResource == null)
                         continue;
-                    VirtualFile targetVirtualFile = this.resourceService.unresolve(targetResource);
-                    SpoofaxReference reference = new SpoofaxReference(element, targetVirtualFile, location.region());
+                    final VirtualFile targetVirtualFile = this.resourceService.unresolve(targetResource);
+                    final SpoofaxReference reference = new SpoofaxReference(
+                            element,
+                            targetVirtualFile,
+                            location.region()
+                    );
                     references.add(reference);
                 }
             }
-        } catch (MetaborgException e) {
+        } catch (final MetaborgException e) {
             throw new RuntimeException(e);
         }
 

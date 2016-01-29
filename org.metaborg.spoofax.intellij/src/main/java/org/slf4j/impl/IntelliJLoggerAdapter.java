@@ -36,12 +36,13 @@ public final class IntelliJLoggerAdapter extends MarkerIgnoringBase implements L
 
     /**
      * Initializes a new instance of the {@link IntelliJLoggerAdapter} class.
-     *
+     * <p>
      * This class is only created by the {@link IntelliJLoggerFactory}.
      *
      * @param logger The IntelliJ logger to use.
      */
-    /* package private */ IntelliJLoggerAdapter(com.intellij.openapi.diagnostic.Logger logger) {
+    /* package private */ IntelliJLoggerAdapter(final com.intellij.openapi.diagnostic.Logger logger) {
+        super();
         this.logger = logger;
     }
 
@@ -332,8 +333,8 @@ public final class IntelliJLoggerAdapter extends MarkerIgnoringBase implements L
             final String msg,
             final Object[] arguments,
             final Throwable throwable) {
-        Object[] newArguments = getArgumentsWithThrowable(arguments, throwable);
-        switch(level) {
+        final Object[] newArguments = getArgumentsWithThrowable(arguments, throwable);
+        switch (level) {
             case LocationAwareLogger.TRACE_INT:
                 trace(msg, newArguments);
                 break;

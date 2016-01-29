@@ -44,7 +44,7 @@ public final class Slf4JMembersInjector<T> implements MembersInjector<T> {
      *
      * @param field The field to inject.
      */
-    public Slf4JMembersInjector(@NotNull Field field) {
+    public Slf4JMembersInjector(@NotNull final Field field) {
         Preconditions.checkNotNull(field);
 
         this.field = field;
@@ -59,7 +59,7 @@ public final class Slf4JMembersInjector<T> implements MembersInjector<T> {
      * @return The created logger instance.
      */
     @NotNull
-    private static Logger createLogger(@NotNull Class<?> clazz) {
+    private static Logger createLogger(@NotNull final Class<?> clazz) {
         return LoggerFactory.getLogger(clazz);
     }
 
@@ -69,12 +69,12 @@ public final class Slf4JMembersInjector<T> implements MembersInjector<T> {
      * @param obj The object.
      */
     @Override
-    public void injectMembers(@NotNull T obj) {
+    public void injectMembers(@NotNull final T obj) {
         Preconditions.checkNotNull(obj);
 
         try {
-            this.field.set(obj, logger);
-        } catch (IllegalAccessException e) {
+            this.field.set(obj, this.logger);
+        } catch (final IllegalAccessException e) {
             throw new RuntimeException("Unexpected exception: " + e);
         }
     }

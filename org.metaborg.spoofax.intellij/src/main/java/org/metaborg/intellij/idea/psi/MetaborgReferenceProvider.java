@@ -29,11 +29,14 @@ import com.intellij.util.ProcessingContext;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.CollectionUtils;
-import org.metaborg.core.language.*;
+import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.language.ILanguageProjectService;
+import org.metaborg.core.language.LanguageDialect;
 import org.metaborg.core.project.IProject;
-import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFile;
 import org.metaborg.intellij.idea.project.IIdeaProjectService;
 import org.metaborg.intellij.idea.project.IdeaProject;
+import org.metaborg.spoofax.intellij.idea.languages.SpoofaxFile;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 
 import javax.annotation.Nullable;
@@ -50,13 +53,15 @@ public abstract class MetaborgReferenceProvider extends PsiReferenceProvider {
     /**
      * Initializes a new instance of the {@link MetaborgReferenceProvider} class.
      *
-     * @param projectService The project service.
-     * @param resourceService The resource service.
+     * @param projectService         The project service.
+     * @param resourceService        The resource service.
      * @param languageProjectService The language project service.
      */
-    protected MetaborgReferenceProvider(final IIdeaProjectService projectService,
-                                        final IIntelliJResourceService resourceService,
-                                        final ILanguageProjectService languageProjectService) {
+    protected MetaborgReferenceProvider(
+            final IIdeaProjectService projectService,
+            final IIntelliJResourceService resourceService,
+            final ILanguageProjectService languageProjectService) {
+        super();
         Preconditions.checkNotNull(projectService);
         Preconditions.checkNotNull(resourceService);
         Preconditions.checkNotNull(languageProjectService);
@@ -67,43 +72,46 @@ public abstract class MetaborgReferenceProvider extends PsiReferenceProvider {
     }
 
     /**
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
     @NotNull
     @Override
     public final PsiReference[] getReferencesByElement(
             @NotNull final PsiElement element, @NotNull final ProcessingContext context) {
         // TODO: MetaborgFile
-        SpoofaxFile fileElement = (SpoofaxFile)element.getContainingFile();
-        ILanguage language = fileElement.getFileType().getSpoofaxLanguage();
-        FileObject resource = getResource(element);
-        IdeaProject project = this.projectService.get(element);
-        LanguageDialect languageDialect = this.languageProjectService.getImpl(language, project, resource);
+        final SpoofaxFile fileElement = (SpoofaxFile)element.getContainingFile();
+        final ILanguage language = fileElement.getFileType().getSpoofaxLanguage();
+        final FileObject resource = getResource(element);
+        final IdeaProject project = this.projectService.get(element);
+        final LanguageDialect languageDialect = this.languageProjectService.getImpl(language, project, resource);
         assert languageDialect != null;
-        ILanguageImpl impl = languageDialect.dialectOrBaseLanguage();
+        final ILanguageImpl impl = languageDialect.dialectOrBaseLanguage();
 
-        Iterable<MetaborgReference> references = getReferences(impl, project, resource, (MetaborgReferenceElement)element, context);
+        final Iterable<MetaborgReference> references = getReferences(impl, project, resource,
+                                                                     (MetaborgReferenceElement)element, context
+        );
         return CollectionUtils.toArray(references, PsiReference.class);
     }
 
     /**
      * Gets the references of the specified element.
-     *
+     * <p>
      * The returned references may be invalid, that is, return <code>null</code>
      * from their {@link MetaborgReference#resolve()} method.
      *
      * @param language The language implementation of the resource.
-     * @param project The project that contains the resource.
+     * @param project  The project that contains the resource.
      * @param resource The resource that contains the element.
-     * @param element The reference PSI element.
-     * @param context The processing context.
+     * @param element  The reference PSI element.
+     * @param context  The processing context.
      * @return An iterable of references.
      */
-    protected abstract Iterable<MetaborgReference> getReferences(final ILanguageImpl language,
-                                                                 final IProject project,
-                                                                 final FileObject resource,
-                                                                 final MetaborgReferenceElement element,
-                                                                 final ProcessingContext context);
+    protected abstract Iterable<MetaborgReference> getReferences(
+            final ILanguageImpl language,
+            final IProject project,
+            final FileObject resource,
+            final MetaborgReferenceElement element,
+            final ProcessingContext context);
 
     /**
      * Gets the source file.
@@ -113,10 +121,10 @@ public abstract class MetaborgReferenceProvider extends PsiReferenceProvider {
      */
     @Nullable
     private FileObject getResource(final PsiElement element) {
-        PsiFile containingFile = element.getContainingFile();
+        final PsiFile containingFile = element.getContainingFile();
         if (containingFile == null)
             return null;
-        VirtualFile virtualFile = containingFile.getVirtualFile();
+        final VirtualFile virtualFile = containingFile.getVirtualFile();
         if (virtualFile == null)
             return null;
         return this.resourceService.resolve(virtualFile);

@@ -99,7 +99,7 @@ public final class BuilderUtils {
         while (exception != null) {
             msgString += "\n" + exception.getMessage();
             if (exception instanceof StrategoErrorExit) {
-                StrategoErrorExit strategoException = (StrategoErrorExit) exception;
+                final StrategoErrorExit strategoException = (StrategoErrorExit)exception;
                 IStrategoList trace = strategoException.getTrace();
                 while (!trace.isEmpty()) {
                     msgString += "\n\t" + trace.head();
@@ -109,7 +109,7 @@ public final class BuilderUtils {
             exception = exception.getCause();
         }
 
-        String sourcePath = message.source().getName().getPath();
+        final String sourcePath = message.source().getName().getPath();
         long problemBeginOffset = -1L;
         long problemEndOffset = -1L;
         long problemLocationOffset = -1L;
@@ -117,7 +117,7 @@ public final class BuilderUtils {
         long locationColumn = -1L;
 
         @Nullable final ISourceRegion region = message.region();
-        if (region != null && !(region.startOffset() == 0 && region.endOffset() == 0 && region.startRow() == 0 && region.endRow() == 0 && region.startColumn() == 0 && region.endColumn() == 0)) {
+        if (!isEmptyRegion(region)) {
             problemBeginOffset = region.startOffset();
             problemEndOffset = region.endOffset();
             problemLocationOffset = region.startOffset();
@@ -125,14 +125,26 @@ public final class BuilderUtils {
             locationColumn = region.startColumn() + 1;
         }
 
-        return new CompilerMessage(builderName,
-                                   kind,
-                                   msgString,
-                                   sourcePath,
-                                   problemBeginOffset,
-                                   problemEndOffset,
-                                   problemLocationOffset,
-                                   locationLine,
-                                   locationColumn);
+        return new CompilerMessage(
+                builderName,
+                kind,
+                msgString,
+                sourcePath,
+                problemBeginOffset,
+                problemEndOffset,
+                problemLocationOffset,
+                locationLine,
+                locationColumn
+        );
+    }
+
+    private static boolean isEmptyRegion(final ISourceRegion region) {
+        return region == null
+                || region.startOffset() == 0
+                || region.endOffset() == 0
+                || region.startRow() == 0
+                || region.endRow() == 0
+                || region.startColumn() == 0
+                || region.endColumn() == 0;
     }
 }

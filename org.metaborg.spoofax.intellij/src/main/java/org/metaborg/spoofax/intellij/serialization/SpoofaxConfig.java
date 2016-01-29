@@ -35,7 +35,8 @@ public abstract class SpoofaxConfig<TState, Self extends SpoofaxConfig<TState, S
      *
      * @param defaultState The default state.
      */
-    protected SpoofaxConfig(TState defaultState) {
+    protected SpoofaxConfig(final TState defaultState) {
+        super();
         this.state = defaultState;
     }
 

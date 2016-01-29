@@ -61,11 +61,11 @@ public final class ArtifactProjectService implements IProjectService {
     public IProject get(@NotNull final FileObject resource) {
         Preconditions.checkNotNull(resource);
 
-        FileObject artifactRoot = getArtifactRoot(resource);
+        final FileObject artifactRoot = getArtifactRoot(resource);
         if (artifactRoot == null)
             return null;
 
-        FileName artifactName = artifactRoot.getName();
+        final FileName artifactName = artifactRoot.getName();
 
         ArtifactProject project = this.projects.get(artifactName);
         if (project == null) {
@@ -97,12 +97,12 @@ public final class ArtifactProjectService implements IProjectService {
      * @return The root file; or <code>null</code>.
      */
     @Nullable
-    private FileObject getRoot(@Nullable FileObject layer) {
+    private FileObject getRoot(@Nullable final FileObject layer) {
         if (layer == null)
             return null;
         try {
             return layer.getFileSystem().getRoot();
-        } catch (FileSystemException e) {
+        } catch (final FileSystemException e) {
             this.logger.error("Ignored exception.", e);
             return null;
         }
@@ -118,7 +118,7 @@ public final class ArtifactProjectService implements IProjectService {
      * otherwise, <code>false</code>.
      */
     private boolean isArtifactRoot(@NotNull final FileName fileName) {
-        FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
+        final FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
         if (outerFileName == null)
             return false;
         return "spoofax-language".equals(outerFileName.getExtension());
@@ -131,10 +131,10 @@ public final class ArtifactProjectService implements IProjectService {
      * @return The parent root; or <code>null</code>.
      */
     @Nullable
-    private FileObject getParentRoot(@NotNull FileObject file) {
+    private FileObject getParentRoot(@NotNull final FileObject file) {
         try {
             return getRoot(file.getFileSystem().getParentLayer());
-        } catch (FileSystemException e) {
+        } catch (final FileSystemException e) {
             this.logger.error("Ignored exception.", e);
             return null;
         }

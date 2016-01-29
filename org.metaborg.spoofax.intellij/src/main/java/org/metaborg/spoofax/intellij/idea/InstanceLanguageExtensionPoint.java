@@ -41,6 +41,7 @@ public final class InstanceLanguageExtensionPoint<T> extends LanguageExtensionPo
      * @param instance The instance.
      */
     public InstanceLanguageExtensionPoint(@NotNull final Language language, @NotNull final T instance) {
+        super();
         this.instance = instance;
         this.language = language.getID();
         this.implementationClass = null;

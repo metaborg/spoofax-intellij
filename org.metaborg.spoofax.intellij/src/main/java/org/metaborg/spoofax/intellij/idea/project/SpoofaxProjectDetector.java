@@ -58,6 +58,7 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
      * Do not call this method manually.
      */
     public SpoofaxProjectDetector() {
+        super();
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
@@ -83,28 +84,15 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
 
         this.logger.info("Detecting Spoofax project in {}", dir);
         if (dir.getName().equals("editor")) {
-            for (File child : children) {
-//                if (child.getName().equals("java") && child.isDirectory()) {
-//                    result.add(new JavaModuleSourceRoot(child, "", "Java"));
-//                }
+            for (final File child : children) {
                 if (child.getName().endsWith(".main.esv") && child.isFile()) {
                     this.logger.info("Detected Spoofax project in {}", dir);
                     result.add(new SpoofaxProjectRoot(dir.getParentFile()));
-//                    result.add(new DetectedContentRoot(dir.getParentFile(), "Spoofax", this.moduleType, JavaModuleType.getModuleType()));
                     return DirectoryProcessingResult.SKIP_CHILDREN;
                 }
             }
         }
-//        for (File child : children) {
-//            if (child.isDirectory() && child.getName() == "editor")
-//            {
-//                FileFilter fileFilter = new WildcardFileFilter("*.main.esv");
-//                if (child.listFiles(fileFilter).length > 0) {
-//                    result.add(new DetectedContentRoot(dir, "Spoofax", this.moduleType, JavaModuleType.getModuleType()));
-//                    return DirectoryProcessingResult.SKIP_CHILDREN;
-//                }
-//            }
-//        }
+
         return DirectoryProcessingResult.PROCESS_CHILDREN;
     }
 
@@ -119,7 +107,6 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
 
         final ModuleWizardStep sdkStep = ProjectWizardStepFactory.getInstance().createProjectJdkStep(builder.getContext());
         return Collections.singletonList(sdkStep);
-        //return Collections.singletonList(new ProjectJdkForModuleStep(builder.getContext(), this.sdkType));
     }
 
     @Override
@@ -134,19 +121,17 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
         if (!modules.isEmpty())
             return;
         modules = new ArrayList<>();
-        for (DetectedProjectRoot root : roots) {
+        for (final DetectedProjectRoot root : roots) {
 
-            File directory = new File(root.getDirectory(), "editor/java");
-            DetectedSourceRoot javaFolder = new JavaModuleSourceRoot(directory, "", "Spoofax");
-            File rootDir = root.getDirectory();
-            ModuleDescriptor descriptor = new ModuleDescriptor(rootDir,
-                                                               this.moduleType,
-                                                               Collections.singletonList(javaFolder));
-//                                                               ContainerUtil.emptyList());
+            final File directory = new File(root.getDirectory(), "editor/java");
+            final DetectedSourceRoot javaFolder = new JavaModuleSourceRoot(directory, "", "Spoofax");
+            final File rootDir = root.getDirectory();
+            final ModuleDescriptor descriptor = new ModuleDescriptor(
+                    rootDir,
+                    this.moduleType,
+                    Collections.singletonList(javaFolder)
+            );
 
-
-//            File javaDir = root.getDirectory().toPath().resolve("target/java").toFile();
-//            descriptor.addSourceRoot(root.getDirectory(), new JavaModuleSourceRoot(javaDir, "", "Java"));
             modules.add(descriptor);
         }
         projectDescriptor.setModules(modules);

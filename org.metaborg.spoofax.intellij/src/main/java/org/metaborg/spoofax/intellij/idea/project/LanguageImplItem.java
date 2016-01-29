@@ -39,7 +39,7 @@ public final class LanguageImplItem {
     @Nullable
     private ILanguageImpl currentImplementation;
 
-    public LanguageImplItem(@NotNull ILanguage language) {
+    public LanguageImplItem(@NotNull final ILanguage language) {
         this.language = language;
     }
 
@@ -51,9 +51,9 @@ public final class LanguageImplItem {
 
     @NotNull
     public final List<ILanguageImpl> getImplementations() {
-        ArrayList<ILanguageImpl> implementations = new ArrayList<ILanguageImpl>();
+        final ArrayList<ILanguageImpl> implementations = new ArrayList<>();
         implementations.add(null);
-        for (ILanguageImpl impl : this.language.impls()) {
+        for (final ILanguageImpl impl : this.language.impls()) {
             implementations.add(impl);
         }
         return implementations;

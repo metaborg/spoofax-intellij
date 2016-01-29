@@ -108,7 +108,7 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
      */
     @Override
     public Icon getBigIcon() {
-        return SpoofaxIcons.INSTANCE.Default;
+        return SpoofaxIcons.INSTANCE.defaultIcon();
     }
 
     /**
@@ -118,46 +118,12 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
      * @return The icon.
      */
     @Override
-    public Icon getNodeIcon(@Deprecated boolean isOpened) {
-        return SpoofaxIcons.INSTANCE.Default;
+    public Icon getNodeIcon(@Deprecated final boolean isOpened) {
+        return SpoofaxIcons.INSTANCE.defaultIcon();
     }
 
-//    /**
-//     * Creates wizard steps for the module builder.
-//     *
-//     * @param wizardContext   The wizard context.
-//     * @param moduleBuilder   The module builder.
-//     * @param modulesProvider The modules provider.
-//     * @return An array of wizard steps.
-//     */
-//    @NotNull
-//    @Override
-//    public ModuleWizardStep[] createWizardSteps(
-//            @NotNull WizardContext wizardContext,
-//            @NotNull SpoofaxModuleBuilder moduleBuilder,
-//            @NotNull ModulesProvider modulesProvider) {
-//        ArrayList<ModuleWizardStep> steps = new ArrayList<>();
-//
-//        steps.add(new MetaborgModuleWizardStep(moduleBuilder, wizardContext));
-//
-//        final ModuleWizardStep[] wizardSteps = steps.toArray(new ModuleWizardStep[steps.size()]);
-//        return ArrayUtil.mergeArrays(wizardSteps,
-//                                     super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider));
-//    }
-
-//    @Nullable
-//    @Override
-//    public ModuleWizardStep modifyProjectTypeStep(
-//            @NotNull SettingsStep settingsStep,
-//            @NotNull ModuleBuilder moduleBuilder) {
-//        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep,
-//                                                                             moduleBuilder,
-//                                                                             sdk -> moduleBuilder.isSuitableSdkType(sdk));
-//    }
-
-
     @Override
-    public boolean isValidSdk(@NotNull Module module, Sdk projectSdk) {
+    public boolean isValidSdk(@NotNull final Module module, final Sdk projectSdk) {
         return super.isValidSdk(module, projectSdk);
     }
 }

@@ -21,9 +21,6 @@ package org.metaborg.intellij.idea.gui2;
 
 import javax.swing.*;
 
-/**
- * Created by daniel on 11/17/15.
- */
 public class MetaborgProjectLanguagesConfigurableForm {
     private JPanel mainPanel;
     private LanguagesPanel languagesPanel;
@@ -31,5 +28,6 @@ public class MetaborgProjectLanguagesConfigurableForm {
     public JPanel getComponent() {
         return this.mainPanel;
     }
+
     public LanguagesPanel getLanguagesPanel() { return this.languagesPanel; }
 }

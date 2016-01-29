@@ -29,25 +29,4 @@ import com.intellij.psi.PsiElement;
  */
 public interface MetaborgElement extends PsiElement {
 
-//    /**
-//     * Initializes a new instance of the {@link MetaborgElement} class.
-//     *
-//     * @param node The AST node to wrap.
-//     */
-//    public MetaborgElement(final ASTNode node) {
-//        super(node);
-//    }
-//
-//    @Override
-//    public PsiReference getReference() {
-//        PsiReference[] references = getReferences();
-//        return references.length == 0 ? null : references[0];
-//    }
-//
-//    @NotNull
-//    @Override
-//    public PsiReference[] getReferences() {
-//        return ReferenceProvidersRegistry.getReferencesFromProviders(this);
-//    }
-
 }

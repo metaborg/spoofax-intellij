@@ -77,7 +77,7 @@ public final class LanguageImplEditor extends ModuleElementsEditor {
     @Override
     protected JComponent createComponentImpl() {
         this.panel = this.languageImplPanelFactory.create(getState());
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        final JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
         mainPanel.add(this.panel, BorderLayout.CENTER);
         return mainPanel;

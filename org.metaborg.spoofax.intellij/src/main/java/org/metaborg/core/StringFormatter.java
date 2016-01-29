@@ -54,7 +54,7 @@ public final class StringFormatter {
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(@NotNull final String pattern, @Nullable final Object argument0) {
+    public static String format(@NotNull final String pattern, @Nullable final Object argument0) {
         Preconditions.checkNotNull(pattern);
 
         return format(pattern, new Object[]{argument0});
@@ -68,7 +68,7 @@ public final class StringFormatter {
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(@NotNull final String pattern, @Nullable final Object... arguments) {
+    public static String format(@NotNull final String pattern, @Nullable final Object... arguments) {
         Preconditions.checkNotNull(pattern);
 
         return MessageFormatter.arrayFormat(pattern, arguments).getMessage();
@@ -83,7 +83,7 @@ public final class StringFormatter {
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(
+    public static String format(
             @NotNull final String pattern,
             @Nullable final Object argument0,
             @Nullable final Object argument1) {
@@ -103,7 +103,7 @@ public final class StringFormatter {
      * @return The formatted message.
      */
     @NotNull
-    public static final String format(
+    public static String format(
             @NotNull final String pattern,
             @Nullable final Object argument0,
             @Nullable final Object argument1,

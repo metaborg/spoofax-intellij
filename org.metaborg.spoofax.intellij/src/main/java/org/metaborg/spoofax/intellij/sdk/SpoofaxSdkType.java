@@ -110,7 +110,7 @@ public final class SpoofaxSdkType extends SdkType {
      */
     @Override
     public Icon getIcon() {
-        return SpoofaxIcons.INSTANCE.Default;
+        return SpoofaxIcons.INSTANCE.defaultIcon();
     }
 
     @Override

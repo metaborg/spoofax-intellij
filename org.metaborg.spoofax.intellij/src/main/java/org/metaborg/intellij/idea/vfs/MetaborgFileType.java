@@ -24,7 +24,7 @@ import com.intellij.openapi.fileTypes.*;
 
 /**
  * Extended file type.
- *
+ * <p>
  * When implementing a file type that has content of a particular language,
  * extend the {@link LanguageFileType} class. Otherwise, extend one of the
  * {@link ArchiveFileType} (*.zip), {@link PlainTextFileType} (*.txt, *.sh),

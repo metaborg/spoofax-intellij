@@ -28,6 +28,7 @@ public class LanguageImplPanelImpl extends JPanel {
 
 
     public LanguageImplPanelImpl(@NotNull final ModuleConfigurationState state) {
+        super();
 
     }
 

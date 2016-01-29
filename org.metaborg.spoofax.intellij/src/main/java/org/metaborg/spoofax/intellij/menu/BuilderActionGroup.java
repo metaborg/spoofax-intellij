@@ -52,7 +52,7 @@ public final class BuilderActionGroup extends DefaultActionGroup {
 
     @Override
     public void update(@NotNull final AnActionEvent e) {
-        boolean visible = this.actionHelper.isActiveFileLanguage(e, this.implementation);
+        final boolean visible = this.actionHelper.isActiveFileLanguage(e, this.implementation);
         e.getPresentation().setVisible(visible);
         super.update(e);
     }

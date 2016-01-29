@@ -32,10 +32,12 @@ public final class SimpleMetaborgReference extends MetaborgReference {
     /**
      * Initializes a new instance of the {@link SimpleMetaborgReference} class.
      *
-     * @param reference The reference.
+     * @param reference   The reference.
      * @param declaration The declaration; or <code>null</code>.
      */
-    public SimpleMetaborgReference(final MetaborgReferenceElement reference, @Nullable final MetaborgDeclarationElement declaration) {
+    public SimpleMetaborgReference(
+            final MetaborgReferenceElement reference,
+            @Nullable final MetaborgDeclarationElement declaration) {
         super(reference, false);
         this.declaration = declaration;
     }

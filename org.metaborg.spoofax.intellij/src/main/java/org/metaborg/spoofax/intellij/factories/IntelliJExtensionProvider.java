@@ -51,16 +51,17 @@ import org.metaborg.core.StringFormatter;
     @Override
     @NotNull
     public T get() {
-        Object[] candidates = Extensions.getExtensions(this.extensionPointName);
+        final Object[] candidates = Extensions.getExtensions(this.extensionPointName);
 
-        for (Object candidate : candidates) {
+        for (final Object candidate : candidates) {
             if (candidate.getClass().equals(this.extensionClass)) {
-                return (T) candidate;
+                return (T)candidate;
             }
         }
         throw new ProvisionException(StringFormatter.format(
                 "No extensions are registered for the class {} in extension point {}.",
                 this.extensionClass,
-                this.extensionPointName));
+                this.extensionPointName
+        ));
     }
 }

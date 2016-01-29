@@ -48,7 +48,7 @@ public final class Slf4JTypeListener implements TypeListener {
 
         Class<?> clazz = typeLiteral.getRawType();
         while (clazz != null) {
-            for (Field field : clazz.getDeclaredFields()) {
+            for (final Field field : clazz.getDeclaredFields()) {
                 if (field.getType() == Logger.class &&
                         field.isAnnotationPresent(InjectLogger.class)) {
                     typeEncounter.register(new Slf4JMembersInjector<>(field));

@@ -35,10 +35,6 @@ public class LanguageCellRenderer extends ColoredTreeCellRenderer {
             final boolean leaf,
             final int row,
             final boolean hasFocus) {
-        this.setIcon(SpoofaxIcons.INSTANCE.Default);
-//        this.append()
-//        this.append("\"%s\"", StyleAttributesProvider.getKeyValueAttribute());
-//        ITreeNodeDescriptor descriptor = ((ITreeNodeWithDescriptor) value).descriptor();
-//        descriptor.renderNode(this);
+        this.setIcon(SpoofaxIcons.INSTANCE.defaultIcon());
     }
 }

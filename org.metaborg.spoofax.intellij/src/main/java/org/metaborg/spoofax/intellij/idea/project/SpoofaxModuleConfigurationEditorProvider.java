@@ -72,10 +72,12 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
             return ModuleConfigurationEditor.EMPTY;
         }
         return new ModuleConfigurationEditor[]{
-                new CommonContentEntriesEditor(module.getName(),
-                                               state,
-                                               JavaSourceRootType.SOURCE,
-                                               JavaSourceRootType.TEST_SOURCE),
+                new CommonContentEntriesEditor(
+                        module.getName(),
+                        state,
+                        JavaSourceRootType.SOURCE,
+                        JavaSourceRootType.TEST_SOURCE
+                ),
                 new ClasspathEditor(state),
                 this.languageImplEditorFactory.create(state),
         };

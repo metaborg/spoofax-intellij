@@ -63,8 +63,8 @@ public final class CollectionUtils {
     public static <T> List<T> toMutableList(@NotNull final Iterable<? extends T> iterable) {
         Preconditions.checkNotNull(iterable);
 
-        ArrayList<T> list = new ArrayList<>();
-        for (T item : iterable) {
+        final ArrayList<T> list = new ArrayList<>();
+        for (final T item : iterable) {
             list.add(item);
         }
         return list;
@@ -74,7 +74,7 @@ public final class CollectionUtils {
      * Returns a sorted list with the elements in the collection.
      *
      * @param collection The collection.
-     * @param <T> The type of elements.
+     * @param <T>        The type of elements.
      * @return A sorted list.
      */
     @NotNull
@@ -89,14 +89,16 @@ public final class CollectionUtils {
      *
      * @param collection The collection.
      * @param comparator The comparator.
-     * @param <T> The type of elements.
+     * @param <T>        The type of elements.
      * @return A sorted list.
      */
     @NotNull
-    public static <T> List<T> toSortedList(@NotNull final Collection<T> collection, @Nullable final Comparator<? super T> comparator) {
+    public static <T> List<T> toSortedList(
+            @NotNull final Collection<T> collection,
+            @Nullable final Comparator<? super T> comparator) {
         Preconditions.checkNotNull(collection);
 
-        List<T> list = new ArrayList<>(collection);
+        final List<T> list = new ArrayList<>(collection);
         list.sort(comparator);
         return list;
     }
@@ -129,10 +131,10 @@ public final class CollectionUtils {
         Preconditions.checkNotNull(collection);
         Preconditions.checkNotNull(clazz);
 
-        @SuppressWarnings("unchecked")
-        T[] result = (T[]) Array.newInstance(clazz, collection.size());
+        @SuppressWarnings("unchecked") final
+        T[] result = (T[])Array.newInstance(clazz, collection.size());
         int index = 0;
-        for (T item : collection) {
+        for (final T item : collection) {
             result[index] = item;
             index++;
         }

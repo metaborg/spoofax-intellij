@@ -36,7 +36,7 @@ public final class IntRangeTests {
 
         @Test
         public void emptyRangeStartsAndEndsAtZero() {
-            IntRange sut = IntRange.EMPTY;
+            final IntRange sut = IntRange.EMPTY;
 
             assertEquals(0, sut.start);
             assertEquals(0, sut.end);
@@ -46,7 +46,7 @@ public final class IntRangeTests {
 
         @Test
         public void createdEmptyRangeHasCorrectStartAndEnd() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
 
             assertEquals(5, sut.start);
             assertEquals(5, sut.end);
@@ -56,7 +56,7 @@ public final class IntRangeTests {
 
         @Test
         public void createdSingletonRangeHasCorrectStartAndEnd() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
 
             assertEquals(5, sut.start);
             assertEquals(6, sut.end);
@@ -66,7 +66,7 @@ public final class IntRangeTests {
 
         @Test
         public void createdRangeHasCorrectStartAndEnd() {
-            IntRange sut = IntRange.between(4, 7);
+            final IntRange sut = IntRange.between(4, 7);
 
             assertEquals(4, sut.start);
             assertEquals(7, sut.end);
@@ -80,7 +80,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.contains(4));
@@ -90,7 +90,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.contains(4));
@@ -100,7 +100,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.contains(4));
@@ -111,7 +111,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsEmptyRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.containsRange(IntRange.at(4)));
@@ -121,7 +121,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsEmptyRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.containsRange(IntRange.at(4)));
@@ -132,7 +132,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsEmptyRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.containsRange(IntRange.at(4)));
@@ -144,7 +144,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsSingletonRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.containsRange(IntRange.is(4)));
@@ -154,7 +154,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsSingletonRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.containsRange(IntRange.is(4)));
@@ -165,7 +165,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsSingletonRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.containsRange(IntRange.is(4)));
@@ -177,7 +177,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.containsRange(IntRange.between(4, 6)));
@@ -187,7 +187,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.containsRange(IntRange.between(4, 6)));
@@ -198,7 +198,7 @@ public final class IntRangeTests {
 
         @Test
         public void containsRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.containsRange(IntRange.between(4, 6)));
@@ -246,8 +246,8 @@ public final class IntRangeTests {
             }
 
             @Theory
-            public void iffContainsInSingletonRangeThenOverlaps(IntRange value) {
-                IntRange sut = IntRange.is(5);
+            public void iffContainsInSingletonRangeThenOverlaps(final IntRange value) {
+                final IntRange sut = IntRange.is(5);
                 assertEquals(1, sut.length());
 
                 assumeTrue(sut.containsRange(value));
@@ -255,8 +255,8 @@ public final class IntRangeTests {
             }
 
             @Theory
-            public void iffContainsInRangeThenOverlaps(IntRange value) {
-                IntRange sut = IntRange.between(5, 7);
+            public void iffContainsInRangeThenOverlaps(final IntRange value) {
+                final IntRange sut = IntRange.between(5, 7);
                 assertEquals(2, sut.length());
 
                 assumeTrue(sut.containsRange(value));
@@ -264,8 +264,8 @@ public final class IntRangeTests {
             }
 
             @Theory
-            public void containsValueAndContainsSingleton(IntRange sut) {
-                int value = 6;
+            public void containsValueAndContainsSingleton(final IntRange sut) {
+                final int value = 6;
 
                 assertEquals(sut.contains(value), sut.containsRange(IntRange.is(value)));
             }
@@ -277,7 +277,7 @@ public final class IntRangeTests {
 
         @Test
         public void overlapsEmptyRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.overlapsRange(IntRange.at(4)));
@@ -287,7 +287,7 @@ public final class IntRangeTests {
 
         @Test
         public void overlapsEmptyRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.overlapsRange(IntRange.at(4)));
@@ -298,7 +298,7 @@ public final class IntRangeTests {
 
         @Test
         public void overlapsEmptyRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.overlapsRange(IntRange.at(4)));
@@ -310,7 +310,7 @@ public final class IntRangeTests {
 
         @Test
         public void overlapsSingletonRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.overlapsRange(IntRange.is(4)));
@@ -320,7 +320,7 @@ public final class IntRangeTests {
 
         @Test
         public void overlapsSingletonRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.overlapsRange(IntRange.is(4)));
@@ -331,7 +331,7 @@ public final class IntRangeTests {
 
         @Test
         public void overlapsSingletonRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.overlapsRange(IntRange.is(4)));
@@ -343,7 +343,7 @@ public final class IntRangeTests {
 
         @Test
         public void overlapsRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.overlapsRange(IntRange.between(2, 4)));
@@ -355,7 +355,7 @@ public final class IntRangeTests {
 
         @Test
         public void overlapsRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.overlapsRange(IntRange.between(2, 4)));
@@ -368,7 +368,7 @@ public final class IntRangeTests {
 
         @Test
         public void overlapsRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.overlapsRange(IntRange.between(2, 4)));
@@ -418,8 +418,8 @@ public final class IntRangeTests {
             }
 
             @Theory
-            public void iffOverlapsThenInverseOverlaps(IntRange value) {
-                IntRange sut = IntRange.at(5);
+            public void iffOverlapsThenInverseOverlaps(final IntRange value) {
+                final IntRange sut = IntRange.at(5);
                 assertEquals(0, sut.length());
 
                 assumeTrue(sut.overlapsRange(value));
@@ -427,8 +427,8 @@ public final class IntRangeTests {
             }
 
             @Theory
-            public void iffOverlapsThenNotBeforeNotAfter(IntRange value) {
-                IntRange sut = IntRange.at(5);
+            public void iffOverlapsThenNotBeforeNotAfter(final IntRange value) {
+                final IntRange sut = IntRange.at(5);
                 assertEquals(0, sut.length());
 
                 assumeTrue(sut.overlapsRange(value));
@@ -446,7 +446,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isBefore(4));
@@ -456,7 +456,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isBefore(4));
@@ -466,7 +466,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isBefore(4));
@@ -477,7 +477,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeEmptyRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isBeforeRange(IntRange.at(4)));
@@ -487,7 +487,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeEmptyRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isBeforeRange(IntRange.at(4)));
@@ -498,7 +498,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeEmptyRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isBeforeRange(IntRange.at(4)));
@@ -510,7 +510,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeSingletonRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isBeforeRange(IntRange.is(4)));
@@ -520,7 +520,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeSingletonRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isBeforeRange(IntRange.is(4)));
@@ -531,7 +531,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeSingletonRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isBeforeRange(IntRange.is(4)));
@@ -543,7 +543,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isBeforeRange(IntRange.between(3, 5)));
@@ -554,7 +554,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isBeforeRange(IntRange.between(3, 5)));
@@ -566,7 +566,7 @@ public final class IntRangeTests {
 
         @Test
         public void isBeforeRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isBeforeRange(IntRange.between(3, 5)));
@@ -615,8 +615,8 @@ public final class IntRangeTests {
             }
 
             @Theory
-            public void beforeEmptyRange(IntRange value) {
-                IntRange sut = IntRange.at(5);
+            public void beforeEmptyRange(final IntRange value) {
+                final IntRange sut = IntRange.at(5);
                 assertEquals(0, sut.length());
 
                 assumeTrue(value.isBeforeRange(sut));
@@ -625,8 +625,8 @@ public final class IntRangeTests {
             }
 
             @Theory
-            public void beforeSingletonRange(IntRange value) {
-                IntRange sut = IntRange.is(5);
+            public void beforeSingletonRange(final IntRange value) {
+                final IntRange sut = IntRange.is(5);
                 assertEquals(1, sut.length());
 
                 assumeTrue(value.isBeforeRange(sut));
@@ -637,8 +637,8 @@ public final class IntRangeTests {
 
 
             @Theory
-            public void beforeRange(IntRange value) {
-                IntRange sut = IntRange.between(5, 7);
+            public void beforeRange(final IntRange value) {
+                final IntRange sut = IntRange.between(5, 7);
                 assertEquals(2, sut.length());
 
                 assumeTrue(value.isBeforeRange(sut));
@@ -655,7 +655,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertTrue(sut.isAfter(4));
@@ -665,7 +665,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertTrue(sut.isAfter(4));
@@ -675,7 +675,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertTrue(sut.isAfter(4));
@@ -686,7 +686,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterEmptyRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertTrue(sut.isAfterRange(IntRange.at(4)));
@@ -696,7 +696,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterEmptyRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertTrue(sut.isAfterRange(IntRange.at(4)));
@@ -707,7 +707,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterEmptyRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertTrue(sut.isAfterRange(IntRange.at(4)));
@@ -719,7 +719,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterSingletonRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertTrue(sut.isAfterRange(IntRange.is(4)));
@@ -729,7 +729,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterSingletonRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertTrue(sut.isAfterRange(IntRange.is(4)));
@@ -740,7 +740,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterSingletonRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertTrue(sut.isAfterRange(IntRange.is(4)));
@@ -752,7 +752,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertTrue(sut.isAfterRange(IntRange.between(3, 5)));
@@ -763,7 +763,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertTrue(sut.isAfterRange(IntRange.between(3, 5)));
@@ -775,7 +775,7 @@ public final class IntRangeTests {
 
         @Test
         public void isAfterRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertTrue(sut.isAfterRange(IntRange.between(3, 5)));
@@ -792,7 +792,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedByEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertTrue(sut.isStartedBy(4));
@@ -802,7 +802,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedBySingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertTrue(sut.isStartedBy(4));
@@ -812,7 +812,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedByRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertTrue(sut.isStartedBy(4));
@@ -823,7 +823,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedByEmptyRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isStartedByRange(IntRange.at(4)));
@@ -833,7 +833,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedByEmptyRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isStartedByRange(IntRange.at(4)));
@@ -844,7 +844,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedByEmptyRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isStartedByRange(IntRange.at(4)));
@@ -856,7 +856,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedBySingletonRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertTrue(sut.isStartedByRange(IntRange.is(4)));
@@ -866,7 +866,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedBySingletonRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertTrue(sut.isStartedByRange(IntRange.is(4)));
@@ -877,7 +877,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedBySingletonRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertTrue(sut.isStartedByRange(IntRange.is(4)));
@@ -889,7 +889,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedByRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isStartedByRange(IntRange.between(2, 4)));
@@ -901,7 +901,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedByRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isStartedByRange(IntRange.between(2, 4)));
@@ -914,7 +914,7 @@ public final class IntRangeTests {
 
         @Test
         public void isStartedByRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isStartedByRange(IntRange.between(2, 4)));
@@ -932,7 +932,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedByEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isEndedBy(4));
@@ -942,7 +942,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedBySingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isEndedBy(4));
@@ -952,7 +952,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedByRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isEndedBy(4));
@@ -964,7 +964,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedByEmptyRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isEndedByRange(IntRange.at(4)));
@@ -974,7 +974,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedByEmptyRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isEndedByRange(IntRange.at(4)));
@@ -985,7 +985,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedByEmptyRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isEndedByRange(IntRange.at(4)));
@@ -997,7 +997,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedBySingletonRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isEndedByRange(IntRange.is(4)));
@@ -1007,7 +1007,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedBySingletonRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isEndedByRange(IntRange.is(4)));
@@ -1018,7 +1018,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedBySingletonRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isEndedByRange(IntRange.is(4)));
@@ -1030,7 +1030,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedByRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isEndedByRange(IntRange.between(2, 4)));
@@ -1042,7 +1042,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedByRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isEndedByRange(IntRange.between(2, 4)));
@@ -1055,7 +1055,7 @@ public final class IntRangeTests {
 
         @Test
         public void isEndedByRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isEndedByRange(IntRange.between(2, 4)));
@@ -1073,7 +1073,7 @@ public final class IntRangeTests {
 
         @Test
         public void isTouchedByEmptyRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isTouchedByRange(IntRange.at(4)));
@@ -1083,7 +1083,7 @@ public final class IntRangeTests {
 
         @Test
         public void isTouchedByEmptyRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isTouchedByRange(IntRange.at(4)));
@@ -1094,7 +1094,7 @@ public final class IntRangeTests {
 
         @Test
         public void isTouchedByEmptyRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isTouchedByRange(IntRange.at(4)));
@@ -1106,7 +1106,7 @@ public final class IntRangeTests {
 
         @Test
         public void isTouchedBySingletonRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isTouchedByRange(IntRange.is(3)));
@@ -1118,7 +1118,7 @@ public final class IntRangeTests {
 
         @Test
         public void isTouchedBySingletonRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isTouchedByRange(IntRange.is(3)));
@@ -1130,7 +1130,7 @@ public final class IntRangeTests {
 
         @Test
         public void isTouchedBySingletonRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isTouchedByRange(IntRange.is(3)));
@@ -1144,7 +1144,7 @@ public final class IntRangeTests {
 
         @Test
         public void isTouchedByRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertFalse(sut.isTouchedByRange(IntRange.between(2, 4)));
@@ -1156,7 +1156,7 @@ public final class IntRangeTests {
 
         @Test
         public void isTouchedByRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertFalse(sut.isTouchedByRange(IntRange.between(2, 4)));
@@ -1169,7 +1169,7 @@ public final class IntRangeTests {
 
         @Test
         public void isTouchedByRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertFalse(sut.isTouchedByRange(IntRange.between(2, 4)));
@@ -1188,7 +1188,7 @@ public final class IntRangeTests {
 
         @Test
         public void intersectionWithEmptyRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertEquals(IntRange.at(5), sut.intersectionWith(IntRange.at(5)));
@@ -1196,7 +1196,7 @@ public final class IntRangeTests {
 
         @Test
         public void intersectionWithEmptyRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertEquals(IntRange.at(5), sut.intersectionWith(IntRange.at(5)));
@@ -1205,7 +1205,7 @@ public final class IntRangeTests {
 
         @Test
         public void intersectionWithEmptyRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertEquals(IntRange.at(5), sut.intersectionWith(IntRange.at(5)));
@@ -1215,7 +1215,7 @@ public final class IntRangeTests {
 
         @Test
         public void intersectionWithSingletonRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertEquals(IntRange.at(5), sut.intersectionWith(IntRange.is(4)));
@@ -1224,7 +1224,7 @@ public final class IntRangeTests {
 
         @Test
         public void intersectionWithSingletonRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertEquals(IntRange.at(5), sut.intersectionWith(IntRange.is(4)));
@@ -1234,7 +1234,7 @@ public final class IntRangeTests {
 
         @Test
         public void intersectionWithSingletonRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertEquals(IntRange.at(5), sut.intersectionWith(IntRange.is(4)));
@@ -1245,7 +1245,7 @@ public final class IntRangeTests {
 
         @Test
         public void intersectionWithInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertEquals(IntRange.at(5), sut.intersectionWith(IntRange.between(3, 5)));
@@ -1255,7 +1255,7 @@ public final class IntRangeTests {
 
         @Test
         public void intersectionWithInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertEquals(IntRange.at(5), sut.intersectionWith(IntRange.between(3, 5)));
@@ -1266,7 +1266,7 @@ public final class IntRangeTests {
 
         @Test
         public void intersectionWithInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertEquals(IntRange.at(5), sut.intersectionWith(IntRange.between(3, 5)));
@@ -1282,7 +1282,7 @@ public final class IntRangeTests {
 
         @Test
         public void unionWithEmptyRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertEquals(IntRange.at(5), sut.unionWith(IntRange.at(5)));
@@ -1290,7 +1290,7 @@ public final class IntRangeTests {
 
         @Test
         public void unionWithEmptyRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertEquals(IntRange.is(5), sut.unionWith(IntRange.at(5)));
@@ -1299,7 +1299,7 @@ public final class IntRangeTests {
 
         @Test
         public void unionWithEmptyRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertEquals(IntRange.between(5, 7), sut.unionWith(IntRange.at(5)));
@@ -1309,7 +1309,7 @@ public final class IntRangeTests {
 
         @Test
         public void unionWithSingletonRangeInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertEquals(IntRange.is(4), sut.unionWith(IntRange.is(4)));
@@ -1318,7 +1318,7 @@ public final class IntRangeTests {
 
         @Test
         public void unionWithSingletonRangeInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertEquals(IntRange.between(4, 6), sut.unionWith(IntRange.is(4)));
@@ -1328,7 +1328,7 @@ public final class IntRangeTests {
 
         @Test
         public void unionWithSingletonRangeInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertEquals(IntRange.between(4, 7), sut.unionWith(IntRange.is(4)));
@@ -1339,7 +1339,7 @@ public final class IntRangeTests {
 
         @Test
         public void unionWithInEmptyRange() {
-            IntRange sut = IntRange.at(5);
+            final IntRange sut = IntRange.at(5);
             assertEquals(0, sut.length());
 
             assertEquals(IntRange.between(3, 5), sut.unionWith(IntRange.between(3, 5)));
@@ -1349,7 +1349,7 @@ public final class IntRangeTests {
 
         @Test
         public void unionWithInSingletonRange() {
-            IntRange sut = IntRange.is(5);
+            final IntRange sut = IntRange.is(5);
             assertEquals(1, sut.length());
 
             assertEquals(IntRange.between(3, 6), sut.unionWith(IntRange.between(3, 5)));
@@ -1360,7 +1360,7 @@ public final class IntRangeTests {
 
         @Test
         public void unionWithInRange() {
-            IntRange sut = IntRange.between(5, 7);
+            final IntRange sut = IntRange.between(5, 7);
             assertEquals(2, sut.length());
 
             assertEquals(IntRange.between(3, 7), sut.unionWith(IntRange.between(3, 5)));

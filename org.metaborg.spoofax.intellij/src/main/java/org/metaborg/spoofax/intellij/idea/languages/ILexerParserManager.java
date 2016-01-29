@@ -49,6 +49,7 @@ public interface ILexerParserManager {
     Lexer createCharacterLexer(@NotNull ILanguage language);
 
     // TODO: Remove
+
     /**
      * Creates and returns the parser for the specified language.
      *

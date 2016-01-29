@@ -22,14 +22,11 @@ package org.metaborg.spoofax.intellij.menu;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.IdentifierUtils;
 import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.action.IAction;
-import org.metaborg.core.action.ITransformAction;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.menu.*;
 import org.metaborg.spoofax.intellij.factories.IBuilderActionGroupFactory;
@@ -65,13 +62,15 @@ public final class BuilderMenuBuilder {
      * @return The built builder menu.
      */
     public DefaultActionGroup build(@NotNull final ILanguageImpl implementation) {
-        Iterable<IMenuItem> items = this.menuService.menuItems(implementation);
+        final Iterable<IMenuItem> items = this.menuService.menuItems(implementation);
 
-        DefaultActionGroup group = builderActionGroupFactory.create(implementation);
-        BuilderMenuBuilderState state = new BuilderMenuBuilderState(group,
-                                                                    implementation,
-                                                                    this.transformationActionFactory);
-        for (IMenuItem item : items) {
+        final DefaultActionGroup group = this.builderActionGroupFactory.create(implementation);
+        final BuilderMenuBuilderState state = new BuilderMenuBuilderState(
+                group,
+                implementation,
+                this.transformationActionFactory
+        );
+        for (final IMenuItem item : items) {
             item.accept(state);
         }
 
@@ -129,19 +128,23 @@ public final class BuilderMenuBuilder {
 
         @NotNull
         private AnAction createAction(@NotNull final IMenuAction action) {
-            String id = IdentifierUtils.create("SPOOFAX_MENU_");
-            return this.transformationActionFactory.create(id,
-                                                           action.action(),
-                                                           this.implementation);
+            final String id = IdentifierUtils.create("SPOOFAX_MENU_");
+            return this.transformationActionFactory.create(
+                    id,
+                    action.action(),
+                    this.implementation
+            );
         }
 
         @NotNull
         private DefaultActionGroup createMenu(@NotNull final IMenu menu) {
-            DefaultActionGroup subGroup = new DefaultActionGroup(menu.name(), true);
-            BuilderMenuBuilderState state = new BuilderMenuBuilderState(subGroup,
-                                                                        this.implementation,
-                                                                        this.transformationActionFactory);
-            for (IMenuItem item : menu.items()) {
+            final DefaultActionGroup subGroup = new DefaultActionGroup(menu.name(), true);
+            final BuilderMenuBuilderState state = new BuilderMenuBuilderState(
+                    subGroup,
+                    this.implementation,
+                    this.transformationActionFactory
+            );
+            for (final IMenuItem item : menu.items()) {
                 item.accept(state);
             }
             return subGroup;

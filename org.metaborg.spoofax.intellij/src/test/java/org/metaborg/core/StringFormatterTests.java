@@ -27,48 +27,48 @@ public final class StringFormatterTests {
 
     @Test
     public void formatsStringWithoutPlaceholders() {
-        String input = "String without placeholders.";
-        String result = StringFormatter.format(input);
+        final String input = "String without placeholders.";
+        final String result = StringFormatter.format(input);
 
         assertEquals(input, result);
     }
 
     @Test
     public void formatsStringWithOnePlaceholder() {
-        String input = "String {} placeholders.";
-        String result = StringFormatter.format(input, "with");
+        final String input = "String {} placeholders.";
+        final String result = StringFormatter.format(input, "with");
 
         assertEquals("String with placeholders.", result);
     }
 
     @Test
     public void formatsStringWithTwoPlaceholders() {
-        String input = "String {} {} placeholders.";
-        String result = StringFormatter.format(input, "with", "some");
+        final String input = "String {} {} placeholders.";
+        final String result = StringFormatter.format(input, "with", "some");
 
         assertEquals("String with some placeholders.", result);
     }
 
     @Test
     public void formatsStringWithThreePlaceholders() {
-        String input = "String {} {} {} placeholders.";
-        String result = StringFormatter.format(input, "with", "some", "more");
+        final String input = "String {} {} {} placeholders.";
+        final String result = StringFormatter.format(input, "with", "some", "more");
 
         assertEquals("String with some more placeholders.", result);
     }
 
     @Test
     public void formatsStringWithFourPlaceholders() {
-        String input = "String {} {} {} {} placeholders.";
-        String result = StringFormatter.format(input, "with", "an", "array", "of");
+        final String input = "String {} {} {} {} placeholders.";
+        final String result = StringFormatter.format(input, "with", "an", "array", "of");
 
         assertEquals("String with an array of placeholders.", result);
     }
 
     @Test
     public void formatsStringWithValueArray() {
-        String input = "String {} {} {} {} placeholders.";
-        String result = StringFormatter.format(input, new Object[]{"with", "an", "array", "of"});
+        final String input = "String {} {} {} {} placeholders.";
+        final String result = StringFormatter.format(input, "with", "an", "array", "of");
 
         assertEquals("String with an array of placeholders.", result);
     }

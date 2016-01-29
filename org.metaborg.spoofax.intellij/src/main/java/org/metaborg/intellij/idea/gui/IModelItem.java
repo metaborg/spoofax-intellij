@@ -39,7 +39,7 @@ public interface IModelItem<Item extends IModelItem<Item>> {
      * Sets the value of this item in the specified column.
      *
      * @param column The column.
-     * @param value The new value.
+     * @param value  The new value.
      */
     void setValueOfColumn(ModelColumnInfo<Item> column, @Nullable Object value);
 

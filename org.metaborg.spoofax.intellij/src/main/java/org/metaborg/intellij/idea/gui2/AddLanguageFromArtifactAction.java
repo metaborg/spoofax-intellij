@@ -20,28 +20,29 @@
 package org.metaborg.intellij.idea.gui2;
 
 import com.google.inject.Inject;
-//import com.intellij.notification.Notification;
-//import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-//import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-//import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.UnhandledException;
-//import org.metaborg.core.language.ILanguageDiscoveryService;
-import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.language.ILanguageDiscoveryService;
+import org.metaborg.core.language.ILanguageService;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
-import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
 import java.io.IOException;
+
+//import com.intellij.notification.Notification;
+//import com.intellij.notification.Notifications;
+//import com.intellij.openapi.command.WriteCommandAction;
+//import org.jetbrains.annotations.NotNull;
+//import org.metaborg.core.language.ILanguageDiscoveryService;
 
 
 public class AddLanguageFromArtifactAction extends AnAction {
@@ -57,12 +58,16 @@ public class AddLanguageFromArtifactAction extends AnAction {
      * Do not call this method manually.
      */
     public AddLanguageFromArtifactAction() {
+        super();
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final LanguageManager languageManager, final ILanguageDiscoveryService discoveryService, final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager, final SpoofaxArtifactFileType artifactFileType) {
+    private void inject(
+            final LanguageManager languageManager, final ILanguageDiscoveryService discoveryService,
+            final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager,
+            final SpoofaxArtifactFileType artifactFileType) {
         this.languageService = languageService;
         this.ideaLanguageManager = ideaLanguageManager;
         this.artifactFileType = artifactFileType;
@@ -70,26 +75,20 @@ public class AddLanguageFromArtifactAction extends AnAction {
         this.languageManager = languageManager;
     }
 
-    public void actionPerformed(AnActionEvent e) {
+    @Override
+    public void actionPerformed(final AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
-        FileChooserDescriptor chooserDescriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(this.artifactFileType);
-        VirtualFile file = FileChooser.chooseFile(chooserDescriptor, project, null);
+        final FileChooserDescriptor chooserDescriptor = FileChooserDescriptorFactory
+                .createSingleFileDescriptor(this.artifactFileType);
+        final VirtualFile file = FileChooser.chooseFile(chooserDescriptor, project, null);
 
         try {
             // TODO: Load on settings OK.
-            boolean success = this.languageManager.loadLanguageFromArtifact(file);
+            final boolean success = this.languageManager.loadLanguageFromArtifact(file);
             // TODO: Notify when not successful.
-        } catch (IOException e1) {
+        } catch (final IOException e1) {
             throw new UnhandledException(e1);
         }
-
-//        this.discoveryService.discover()
-
-//        System.out.println(file);
-//        WriteCommandAction.runWriteCommandAction(project, () -> {
-//
-//        });
-
     }
 }

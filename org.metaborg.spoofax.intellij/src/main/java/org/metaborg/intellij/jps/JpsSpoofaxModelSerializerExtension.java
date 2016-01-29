@@ -43,6 +43,7 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
      * Do not call this method manually.
      */
     public JpsSpoofaxModelSerializerExtension() {
+        super();
     }
 
     /**

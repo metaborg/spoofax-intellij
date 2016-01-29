@@ -27,8 +27,8 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.api.CmdlineProtoUtil;
 import org.jetbrains.jps.api.CmdlineRemoteProto.Message.ControllerMessage.ParametersMessage.TargetTypeBuildScope;
-import org.metaborg.spoofax.intellij.jps.SpoofaxJpsPlugin;
 import org.metaborg.intellij.jps.targetbuilders.SpoofaxPostTargetType;
+import org.metaborg.spoofax.intellij.jps.SpoofaxJpsPlugin;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,11 +45,12 @@ public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvi
      * Do not call this method manually.
      */
     public SpoofaxBuildTargetScopeProvider() {
+        super();
         SpoofaxJpsPlugin.injector().injectMembers(this);
     }
 
     @Inject
-    private void inject(SpoofaxPostTargetType postTargetType) {
+    private void inject(final SpoofaxPostTargetType postTargetType) {
         this.postTargetType = postTargetType;
     }
 
@@ -62,7 +63,7 @@ public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvi
             @NotNull final CompileScope baseScope,
             @SuppressWarnings("deprecation") @NotNull final CompilerFilter filter,
             @NotNull final Project project,
-            boolean forceBuild) {
-        return Collections.singletonList(CmdlineProtoUtil.createAllTargetsScope(postTargetType, forceBuild));
+            final boolean forceBuild) {
+        return Collections.singletonList(CmdlineProtoUtil.createAllTargetsScope(this.postTargetType, forceBuild));
     }
 }

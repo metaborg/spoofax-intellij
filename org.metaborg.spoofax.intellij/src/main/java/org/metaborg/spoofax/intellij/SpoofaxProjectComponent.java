@@ -40,14 +40,14 @@ public final class SpoofaxProjectComponent implements ProjectComponent {
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public SpoofaxProjectComponent(@NotNull Project project) {
+    public SpoofaxProjectComponent(@NotNull final Project project) {
         this.project = project;
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject
     @SuppressWarnings("unused")
-    private final void inject() {
+    private void inject() {
 
     }
 

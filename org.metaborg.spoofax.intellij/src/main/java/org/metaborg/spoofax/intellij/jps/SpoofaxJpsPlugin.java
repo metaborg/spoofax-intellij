@@ -23,7 +23,6 @@ import com.google.inject.Injector;
 import com.intellij.openapi.diagnostic.Logger;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.spoofax.core.Spoofax;
-import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.meta.core.SpoofaxMeta;
 
 /**
@@ -76,14 +75,14 @@ public final class SpoofaxJpsPlugin {
     // Instance //
 
 
-    private Spoofax spoofax;
-    private SpoofaxMeta spoofaxMeta;
+    private final Spoofax spoofax;
+    private final SpoofaxMeta spoofaxMeta;
 
     private SpoofaxJpsPlugin() {
         try {
             this.spoofax = new Spoofax(new SpoofaxJpsModule());
             this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new SpoofaxJpsMetaModule());
-        } catch (MetaborgException e) {
+        } catch (final MetaborgException e) {
             throw new RuntimeException(e);
         }
     }

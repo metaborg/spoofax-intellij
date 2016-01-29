@@ -32,7 +32,7 @@ public final class SourceRegionUtil {
      * @param region The source region.
      * @return The equivalent text range.
      */
-    public static TextRange toTextRange(ISourceRegion region) {
+    public static TextRange toTextRange(final ISourceRegion region) {
         return new TextRange(region.startOffset(), region.endOffset() + 1);
     }
 }

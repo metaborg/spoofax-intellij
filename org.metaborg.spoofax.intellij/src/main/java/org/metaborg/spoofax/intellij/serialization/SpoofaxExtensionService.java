@@ -31,7 +31,7 @@ import org.jetbrains.jps.service.JpsServiceManager;
 public abstract class SpoofaxExtensionService {
 
     // TODO: Inject
-    public final static SpoofaxExtensionService getInstance() {
+    public static SpoofaxExtensionService getInstance() {
         return JpsServiceManager.getInstance().getService(SpoofaxExtensionService.class);
     }
 

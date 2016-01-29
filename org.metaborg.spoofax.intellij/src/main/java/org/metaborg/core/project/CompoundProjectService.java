@@ -57,9 +57,9 @@ public final class CompoundProjectService implements IProjectService {
     public IProject get(@NotNull final FileObject resource) {
         Preconditions.checkNotNull(resource);
 
-        List<IProject> projects = new ArrayList<>(1);
-        for (IProjectService service : this.services) {
-            IProject project = service.get(resource);
+        final List<IProject> projects = new ArrayList<>(1);
+        for (final IProjectService service : this.services) {
+            final IProject project = service.get(resource);
             if (project != null)
                 projects.add(project);
         }
@@ -67,7 +67,8 @@ public final class CompoundProjectService implements IProjectService {
         if (projects.size() > 1) {
             throw new MultipleServicesRespondedException(StringFormatter.format(
                     "Multiple project services provided a project for the resource {}.",
-                    resource));
+                    resource
+            ));
         } else if (projects.size() == 1) {
             return projects.get(0);
         } else {

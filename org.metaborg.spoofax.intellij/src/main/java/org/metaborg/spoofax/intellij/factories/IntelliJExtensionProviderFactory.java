@@ -54,7 +54,7 @@ public final class IntelliJExtensionProviderFactory {
         return new AbstractModule() {
             @Override
             protected void configure() {
-                Provider<T> provider = new IntelliJExtensionProvider<>(extensionClass, extensionPointName);
+                final Provider<T> provider = new IntelliJExtensionProvider<>(extensionClass, extensionPointName);
                 bind(extensionClass).toProvider(provider);
             }
         };

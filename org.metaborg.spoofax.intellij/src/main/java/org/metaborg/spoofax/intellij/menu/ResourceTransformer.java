@@ -27,21 +27,22 @@ import org.metaborg.core.analysis.AnalysisFileResult;
 import org.metaborg.core.context.ContextException;
 import org.metaborg.core.context.IContext;
 import org.metaborg.core.context.IContextService;
-//import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.processing.parse.IParseResultRequester;
-//import org.metaborg.core.source.ISourceTextService;
 import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.core.transform.ITransformService;
-//import org.metaborg.core.transform.ITransformer;
-//import org.metaborg.core.transform.ITransformerGoal;
 import org.metaborg.core.transform.TransformException;
-//import org.metaborg.core.transform.TransformerException;
-//import org.metaborg.spoofax.core.menu.TransformAction;
 import org.metaborg.util.concurrent.IClosableLock;
 import org.slf4j.Logger;
+
+//import org.metaborg.core.language.ILanguageIdentifierService;
+//import org.metaborg.core.source.ISourceTextService;
+//import org.metaborg.core.transform.ITransformer;
+//import org.metaborg.core.transform.ITransformerGoal;
+//import org.metaborg.core.transform.TransformerException;
+//import org.metaborg.spoofax.core.menu.TransformAction;
 
 //import java.io.IOException;
 //import java.util.ArrayList;
@@ -54,10 +55,6 @@ public class ResourceTransformer<P, A, T> implements IResourceTransformer {
 
     @NotNull
     private final IContextService contextService;
-//    @NotNull
-//    private final ISourceTextService sourceTextService;
-//    @NotNull
-//    private final ILanguageIdentifierService identifierService;
     @NotNull
     private final IParseResultRequester<P> parseResultRequester;
     @NotNull
@@ -74,8 +71,6 @@ public class ResourceTransformer<P, A, T> implements IResourceTransformer {
             final ITransformService<P, A, T> transformService
     ) {
         this.contextService = contextService;
-//        this.sourceTextService = sourceTextService;
-//        this.identifierService = identifierService;
         this.parseResultRequester = parseResultRequester;
         this.analysisResultRequester = analysisResultRequester;
         this.transformService = transformService;
@@ -84,93 +79,33 @@ public class ResourceTransformer<P, A, T> implements IResourceTransformer {
     /**
      * Executes the specified action.
      *
-     * @param language    The language implementation.
-     * @param resources   The active resources.
-     * @param goal        The transformation goal.
+     * @param language  The language implementation.
+     * @param resources The active resources.
+     * @param goal      The transformation goal.
      */
     @Override
-    public boolean execute(final Iterable<TransformResource> resources, final ILanguageImpl language, final ITransformGoal goal) throws
-            MetaborgException {
+    public boolean execute(
+            final Iterable<TransformResource> resources, final ILanguageImpl language,
+            final ITransformGoal goal) throws MetaborgException {
 
-//        List<TransformResource> resources = new ArrayList<>();
-//        for (FileObject file : activeFiles) {
-//            if (!this.identifierService.identify(file, language))
-//                continue;
-//            try {
-//                final String text = this.sourceTextService.text(file);
-//                resources.add(new TransformResource(file, text));
-//            } catch (IOException e) {
-//                this.logger.error("Cannot transform {}; skipped. Exception while retrieving text: {}", file, e);
-//                continue;
-//            }
-//        }
-//        transformAll(resources, language, goal)
-//        for (TransformResource resource : resources) {
-//            try {
-//                transform(resource, goal, language, action.flags.parsed);
-//            } catch (ContextException | TransformerException e) {
-//                this.logger.error("Transformation failed for {}: {}", resource.resource(), e);
-//                // TODO: Display error!
-//                return false;
-//            }
-//        }
-        for (TransformResource transformResource : resources) {
+        for (final TransformResource transformResource : resources) {
             final FileObject resource = transformResource.resource();
             try {
                 transform(resource, language, transformResource.text(), goal);
             } catch (ContextException | TransformException e) {
-                logger.error("Transformation failed for {}", resource, e);
+                this.logger.error("Transformation failed for {}", resource, e);
             }
         }
 
         return true;
     }
 
-//    /**
-//     * Transforms the specified resource.
-//     *
-//     * @param resource The resource.
-//     * @param goal     The goal.
-//     * @param language The language.
-//     * @param parsed   Whether this transformation action has the <em>parsed</em> flag.
-//     * @throws ContextException
-//     * @throws TransformerException
-//     */
-//    private void transform(
-//            @NotNull final TransformResource resource,
-//            @NotNull final ITransformerGoal goal,
-//            @NotNull final ILanguageImpl language,
-//            boolean parsed) throws ContextException,
-//            TransformerException {
-//        final IContext context = this.contextService.get(resource.resource(), language);
-//        if (parsed) {
-//            final ParseResult<P> result = this.parseResultRequester.request(resource.resource(),
-//                                                                            language,
-//                                                                            resource.text()).toBlocking().single();
-//            this.transformer.transform(result, context, goal);
-//        } else {
-//            final AnalysisFileResult<P, A> result = this.analysisResultRequester.request(resource.resource(),
-//                                                                                         context,
-//                                                                                         resource.text()).toBlocking().single();
-//            try (IClosableLock lock = context.read()) {
-//                transformer.transform(result, context, goal);
-//            }
-//        }
-//    }
-
-
-//    private void transformAll(Iterable<TransformResource> resources, ILanguageImpl language, ITransformGoal goal) {
-//        for (TransformResource transformResource : resources) {
-//            final FileObject resource = transformResource.resource();
-//            try {
-//                transform(resource, language, transformResource.text(), goal);
-//            } catch (ContextException | TransformException e) {
-//                logger.error("Transformation failed for {}", resource, e);
-//            }
-//        }
-//    }
-
-    private void transform(FileObject resource, ILanguageImpl language, String text, ITransformGoal goal) throws ContextException, TransformException {
+    private void transform(
+            final FileObject resource,
+            final ILanguageImpl language,
+            final String text,
+            final ITransformGoal goal)
+            throws ContextException, TransformException {
         final IContext context = this.contextService.get(resource, language);
         if (this.transformService.requiresAnalysis(context, goal)) {
             final AnalysisFileResult<P, A> analysisResult =

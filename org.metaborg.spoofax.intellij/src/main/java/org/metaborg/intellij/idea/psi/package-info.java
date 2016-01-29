@@ -19,15 +19,13 @@
 
 /**
  * Functionality for PSI trees in IntelliJ IDEA.
- *
+ * <p>
  * The PSI tree is the AST format used by IntelliJ. It's used to represent not just syntax,
  * but also the files themselves.
- *
+ * <p>
  * <h3>PSI elements</h3>
  * The common base interface of all PSI elements is {@link com.intellij.psi.PsiElement}.
  * See <a href="http://www.jetbrains.org/intellij/sdk/docs/basics/architectural_overview.html">IntelliJ
  * IDEA Architectural Overview</a> for a high-level overview.
- *
- *
  */
 package org.metaborg.intellij.idea.psi;

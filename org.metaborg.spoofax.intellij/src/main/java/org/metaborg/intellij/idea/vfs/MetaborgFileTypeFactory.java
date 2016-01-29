@@ -31,6 +31,7 @@ public abstract class MetaborgFileTypeFactory extends FileTypeFactory {
      * Initializes a new instance of the {@link MetaborgFileTypeFactory} class.
      */
     protected MetaborgFileTypeFactory() {
+        super();
 
     }
 

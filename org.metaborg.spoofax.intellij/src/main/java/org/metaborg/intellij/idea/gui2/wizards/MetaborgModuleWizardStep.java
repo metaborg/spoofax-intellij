@@ -78,7 +78,7 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
     @Nullable
     @Override
     public Icon getIcon() {
-        return SpoofaxIcons.INSTANCE.Default;
+        return SpoofaxIcons.INSTANCE.defaultIcon();
     }
 
     /**
@@ -87,8 +87,10 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * @param builder The {@link ModuleBuilder}.
      * @param context The {@link WizardContext}.
      */
-    public MetaborgModuleWizardStep(@NotNull final SpoofaxModuleBuilder builder,
-                                    @NotNull final WizardContext context) {
+    public MetaborgModuleWizardStep(
+            @NotNull final SpoofaxModuleBuilder builder,
+            @NotNull final WizardContext context) {
+        super();
 
         this.builder = builder;
         this.context = context;
@@ -101,11 +103,11 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      */
     @Override
     public boolean validate() throws ConfigurationException {
-        validateLanguageIdentifier("Name", txtName.getText());
-        validateExtension("File Extension", txtExtension.getText());
-        validateLanguageIdentifier("Group ID", txtGroupId.getText());
-        validateLanguageIdentifier("Artifact ID", txtArtifactId.getText());
-        validateLanguageVersion("Version", txtVersion.getText());
+        validateLanguageIdentifier("Name", this.txtName.getText());
+        validateExtension("File Extension", this.txtExtension.getText());
+        validateLanguageIdentifier("Group ID", this.txtGroupId.getText());
+        validateLanguageIdentifier("Artifact ID", this.txtArtifactId.getText());
+        validateLanguageVersion("Version", this.txtVersion.getText());
 
         return super.validate();
     }
@@ -114,15 +116,17 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * Validates that a language identifier is not empty and valid.
      *
      * @param fieldName The human-readable name of the field. Usually the label.
-     * @param text The text to validate.
+     * @param text      The text to validate.
      * @return Always <code>true</code>.
      * @throws ConfigurationException Validation failed.
      */
-    private boolean validateLanguageIdentifier(String fieldName, String text) throws ConfigurationException {
+    private boolean validateLanguageIdentifier(final String fieldName, final String text) throws
+            ConfigurationException {
         if (StringUtil.isEmptyOrSpaces(text))
             throw new ConfigurationException("Please specify a " + fieldName + ".");
         if (!LanguageIdentifier.validId(text))
-            throw new ConfigurationException("Please specify a valid " + fieldName + "; " + LanguageIdentifier.errorDescription);
+            throw new ConfigurationException("Please specify a valid " + fieldName + "; " +
+                                                     LanguageIdentifier.errorDescription);
         return true;
     }
 
@@ -130,15 +134,16 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * Validates that a language version is not empty and valid.
      *
      * @param fieldName The human-readable name of the field. Usually the label.
-     * @param text The text to validate.
+     * @param text      The text to validate.
      * @return Always <code>true</code>.
      * @throws ConfigurationException Validation failed.
      */
-    private boolean validateLanguageVersion(String fieldName, String text) throws ConfigurationException {
+    private boolean validateLanguageVersion(final String fieldName, final String text) throws ConfigurationException {
         if (StringUtil.isEmptyOrSpaces(text))
             throw new ConfigurationException("Please specify a " + fieldName + ".");
         if (!LanguageVersion.valid(text))
-            throw new ConfigurationException("Please specify a valid " + fieldName + "; " + LanguageVersion.errorDescription);
+            throw new ConfigurationException("Please specify a valid " + fieldName + "; " +
+                                                     LanguageVersion.errorDescription);
         return true;
     }
 
@@ -146,15 +151,16 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * Validates that a file extension is not empty and valid.
      *
      * @param fieldName The human-readable name of the field. Usually the label.
-     * @param text The text to validate.
+     * @param text      The text to validate.
      * @return Always <code>true</code>.
      * @throws ConfigurationException Validation failed.
      */
-    private boolean validateExtension(String fieldName, String text) throws ConfigurationException {
+    private boolean validateExtension(final String fieldName, final String text) throws ConfigurationException {
         if (StringUtil.isEmptyOrSpaces(text))
             throw new ConfigurationException("Please specify a " + fieldName + ".");
         if (!isValidExtension(text))
-            throw new ConfigurationException("Please specify a valid " + fieldName + "; only alphanumeric characters and dot.");
+            throw new ConfigurationException("Please specify a valid " + fieldName +
+                                                     "; only alphanumeric characters and dot.");
         return true;
     }
 
@@ -179,15 +185,12 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
             // An extension cannot contain a sequence of dots.
             return false;
         }
-        if (Pattern.compile("[^a-zA-Z0-9.]").matcher(text).find()) {
-            // The extension contains illegal characters.
-            return false;
-        }
-        return true;
+        return !Pattern.compile("[^a-zA-Z0-9.]").matcher(text).find();
     }
 
     /**
      * Cleans a valid extension.
+     *
      * @param extension The extension.
      * @return The cleaned extension, without the leading dot.
      */
@@ -218,7 +221,8 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
         this.builder.setLanguageIdentifier(new LanguageIdentifier(
                 this.txtGroupId.getText(),
                 this.txtArtifactId.getText(),
-                LanguageVersion.parse(this.txtVersion.getText())));
+                LanguageVersion.parse(this.txtVersion.getText())
+        ));
         this.builder.setExtension(cleanupExtension(this.txtExtension.getText()));
         this.context.setProjectName(this.builder.getName());
     }
@@ -238,11 +242,11 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
         this.txtName.getDocument().addDocumentListener(new DocumentAdapter() {
             @Override
             protected void textChanged(final DocumentEvent e) {
-                if (!isArtifactIdChangedByUser) {
-                    txtArtifactId.setText(toArtifactId(getDocumentText(e.getDocument())));
+                if (!MetaborgModuleWizardStep.this.isArtifactIdChangedByUser) {
+                    MetaborgModuleWizardStep.this.txtArtifactId.setText(toArtifactId(getDocumentText(e.getDocument())));
                 }
-                if (!isExtensionChangedByUser) {
-                    txtExtension.setText(toExtension(getDocumentText(e.getDocument())));
+                if (!MetaborgModuleWizardStep.this.isExtensionChangedByUser) {
+                    MetaborgModuleWizardStep.this.txtExtension.setText(toExtension(getDocumentText(e.getDocument())));
                 }
             }
         });
@@ -250,14 +254,18 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
         this.txtArtifactId.getDocument().addDocumentListener(new DocumentAdapter() {
             @Override
             protected void textChanged(final DocumentEvent e) {
-                isArtifactIdChangedByUser = !getDocumentText(e.getDocument()).equals(toArtifactId(txtName.getText()));
+                MetaborgModuleWizardStep.this.isArtifactIdChangedByUser =
+                        !getDocumentText(e.getDocument()).equals(
+                                toArtifactId(MetaborgModuleWizardStep.this.txtName.getText()));
             }
         });
 
         this.txtExtension.getDocument().addDocumentListener(new DocumentAdapter() {
             @Override
             protected void textChanged(final DocumentEvent e) {
-                isExtensionChangedByUser = !getDocumentText(e.getDocument()).equals(toExtension(txtName.getText()));
+                MetaborgModuleWizardStep.this.isExtensionChangedByUser =
+                        !getDocumentText(e.getDocument()).equals(
+                                toExtension(MetaborgModuleWizardStep.this.txtName.getText()));
             }
         });
 
@@ -269,10 +277,10 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * @param doc The document.
      * @return The document text.
      */
-    private static String getDocumentText(Document doc) {
+    private static String getDocumentText(final Document doc) {
         try {
             return doc.getText(0, doc.getLength());
-        } catch (BadLocationException ex) {
+        } catch (final BadLocationException ex) {
             throw new UnhandledException(ex);
         }
     }
@@ -283,7 +291,7 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * @param input The input string.
      * @return The identifier.
      */
-    private static String toIdentifier(String input) {
+    private static String toIdentifier(final String input) {
         String id = input
                 .trim()
                 .replaceAll("[^A-Za-z0-9]", "-")
@@ -301,12 +309,13 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * @param input The input string.
      * @return The artifact ID.
      */
-    private static String toArtifactId(String input) {
+    private static String toArtifactId(final String input) {
         return toIdentifier(input).toLowerCase();
     }
 
     /**
      * Turns any string into an extension.
+     *
      * @param input The input string.
      * @return The extension, max 8 characters.
      */
@@ -315,7 +324,7 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
             return "";
         input = input.trim();
         input = input.replaceAll("[^A-Za-z0-9]", "");
-        if (input.length() == 0)
+        if (input.isEmpty())
             return "";
         // NOTE: We keep the first alphanumeric character, even if it's lowercase.
         String ext = input.substring(0, 1) + input.substring(1).replaceAll("[^A-Z0-9]", "");
@@ -330,7 +339,7 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * the {@link ModuleBuilder} and {@link WizardContext}.
      */
     private void updateComponents() {
-        String name = this.context.getProjectName() != null ? this.context.getProjectName() : this.builder.getName();
+        final String name = this.context.getProjectName() != null ? this.context.getProjectName() : this.builder.getName();
         this.txtName.setText(name);
         this.txtExtension.setText(toExtension(name));
         this.txtGroupId.setText(this.builder.getLanguageIdentifier().groupId);

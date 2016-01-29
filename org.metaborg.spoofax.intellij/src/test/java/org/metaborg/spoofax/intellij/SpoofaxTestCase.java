@@ -28,11 +28,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class SpoofaxTestCase extends LightPlatformCodeInsightFixtureTestCase {
 
-    private static SpoofaxTestProjectDescriptor projectDescriptor = new SpoofaxTestProjectDescriptor();
+    private static final SpoofaxTestProjectDescriptor projectDescriptor = new SpoofaxTestProjectDescriptor();
 
     @Override
     @NotNull
     protected LightProjectDescriptor getProjectDescriptor() {
-        return this.projectDescriptor;
+        return projectDescriptor;
     }
 }

@@ -21,6 +21,7 @@ package org.metaborg.spoofax.intellij.menu;
 
 //import org.apache.commons.vfs2.FileObject;
 //import org.jetbrains.annotations.NotNull;
+
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.action.ITransformGoal;
 import org.metaborg.core.language.ILanguageImpl;
@@ -36,10 +37,12 @@ public interface IResourceTransformer {
     /**
      * Executes the specified action.
      *
-     * @param language    The language implementation.
-     * @param resources   The active resources.
-     * @param goal        The transformation goal.
+     * @param language  The language implementation.
+     * @param resources The active resources.
+     * @param goal      The transformation goal.
      */
-    boolean execute(final Iterable<TransformResource> resources, final ILanguageImpl language, final ITransformGoal goal)
+    boolean execute(
+            final Iterable<TransformResource> resources, final ILanguageImpl language,
+            final ITransformGoal goal)
             throws MetaborgException;
 }

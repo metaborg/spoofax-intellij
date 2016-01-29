@@ -51,15 +51,18 @@ import java.util.ServiceLoader;
         final Iterator<T> iterator = loader.iterator();
 
         if (!iterator.hasNext())
-            throw new ProvisionException(StringFormatter.format("No implementations are registered for the class {}.",
-                                                                this.service));
+            throw new ProvisionException(StringFormatter.format(
+                    "No implementations are registered for the class {}.",
+                    this.service
+            ));
 
         final T obj = iterator.next();
 
         if (iterator.hasNext())
             throw new ProvisionException(StringFormatter.format(
                     "Multiple implementations are registered for the class {}.",
-                    this.service));
+                    this.service
+            ));
 
         return obj;
     }

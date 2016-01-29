@@ -51,16 +51,6 @@ public abstract class SpoofaxIntelliJModule extends SpoofaxModule {
         bind(ILanguageProjectService.class).to(LanguageProjectService.class).in(Singleton.class);
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    protected void bindProjectSettings() {
-//        bind(IProjectSettingsService2.class).to(YamlProjectSettingsService.class).in(Singleton.class);
-//        bind(IProjectSettingsService.class).to(IntelliJProjectSettingsService.class).in(Singleton.class);
-//        bind(ISpoofaxProjectSettingsService.class).to(IntelliJSpoofaxProjectSettingsService.class).in(Singleton.class);
-//    }
-
     /**
      * {@inheritDoc}
      */

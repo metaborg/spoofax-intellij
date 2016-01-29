@@ -54,11 +54,11 @@ import java.util.Set;
 public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
 
     @NotNull
-    private final static String PARSER_DEFINITION_EXTENSION = "com.intellij.lang.parserDefinition";
+    private static final String PARSER_DEFINITION_EXTENSION = "com.intellij.lang.parserDefinition";
     @NotNull
-    private final static String SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION = "com.intellij.lang.syntaxHighlighterFactory";
+    private static final String SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION = "com.intellij.lang.syntaxHighlighterFactory";
     @NotNull
-    private final static String EXTERNAL_ANNOTATOR_EXTENSION = "com.intellij.externalAnnotator";
+    private static final String EXTERNAL_ANNOTATOR_EXTENSION = "com.intellij.externalAnnotator";
     @NotNull
     private final IIdeaAttachmentManager objectManager;
     @NotNull
@@ -81,16 +81,16 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
         if (!canLoad(language))
             throw new IllegalArgumentException("Language '" + language + "' is not loadable.");
 
-        RegisteredIdeaLanguageObject obj = new RegisteredIdeaLanguageObject(this.objectManager.get(language));
+        final RegisteredIdeaLanguageObject obj = new RegisteredIdeaLanguageObject(this.objectManager.get(language));
 
         installLanguage(obj);
-        for (ILanguageImpl implementation : language.impls()) {
+        for (final ILanguageImpl implementation : language.impls()) {
             installLanguageImplementation(this.objectManager.get(implementation));
         }
 
-        loadedLanguages.put(language, obj);
+        this.loadedLanguages.put(language, obj);
 
-        logger.info("Loaded language {}", language);
+        this.logger.info("Loaded language {}", language);
     }
 
     /**
@@ -100,14 +100,14 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     public boolean unload(@NotNull final ILanguage language) {
         if (!isLoaded(language))
             return false;
-        RegisteredIdeaLanguageObject obj = this.loadedLanguages.remove(language);
+        final RegisteredIdeaLanguageObject obj = this.loadedLanguages.remove(language);
 
-        for (ILanguageImpl implementation : language.impls()) {
+        for (final ILanguageImpl implementation : language.impls()) {
             uninstallLanguageImplementation(this.objectManager.get(implementation));
         }
         uninstallLanguage(obj);
 
-        logger.info("Unloaded language {}", language);
+        this.logger.info("Unloaded language {}", language);
 
         return obj != null;
     }
@@ -124,7 +124,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public boolean canLoad(@NotNull ILanguage language) {
+    public boolean canLoad(@NotNull final ILanguage language) {
         return LanguageUtils.isRealLanguage(language);
     }
 
@@ -144,19 +144,22 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      */
     private void installLanguage(@NotNull final RegisteredIdeaLanguageObject obj) {
         obj.parserDefinitionExtension = new InstanceLanguageExtensionPoint<>(
-                obj.languageObject.ideaLanguage,
-                obj.languageObject.parserDefinition);
+                obj.languageObject.ideaLanguage(),
+                obj.languageObject.parserDefinition()
+        );
         obj.externalAnnotatorExtension = new InstanceLanguageExtensionPoint<>(
-                obj.languageObject.ideaLanguage,
-                obj.languageObject.spoofaxAnnotator);
+                obj.languageObject.ideaLanguage(),
+                obj.languageObject.spoofaxAnnotator()
+        );
         obj.syntaxHighlighterFactoryExtension = new InstanceSyntaxHighlighterFactoryExtensionPoint(
-                obj.languageObject.ideaLanguage,
-                obj.languageObject.syntaxHighlighterFactory);
+                obj.languageObject.ideaLanguage(),
+                obj.languageObject.syntaxHighlighterFactory()
+        );
 
         registerExtension(PARSER_DEFINITION_EXTENSION, obj.parserDefinitionExtension);
         registerExtension(EXTERNAL_ANNOTATOR_EXTENSION, obj.externalAnnotatorExtension);
         registerExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION, obj.syntaxHighlighterFactoryExtension);
-        registerFileType(obj.languageObject.fileType);
+        registerFileType(obj.languageObject.fileType());
     }
 
     /**
@@ -165,7 +168,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param obj The language implementation's attachment.
      */
     private void installLanguageImplementation(@NotNull final IdeaLanguageImplAttachment obj) {
-        addAndRegisterActionGroup(obj.buildActionGroup, IdeActions.GROUP_MAIN_MENU);
+        addAndRegisterActionGroup(obj.buildActionGroup(), IdeActions.GROUP_MAIN_MENU);
     }
 
     /**
@@ -175,7 +178,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param value              The extension to register.
      */
     private void registerExtension(@NotNull final String extensionPointName, @NotNull final Object value) {
-        ExtensionPoint<Object> extensionPoint = Extensions.getRootArea().getExtensionPoint(extensionPointName);
+        final ExtensionPoint<Object> extensionPoint = Extensions.getRootArea().getExtensionPoint(extensionPointName);
         extensionPoint.registerExtension(value);
     }
 
@@ -186,9 +189,9 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      */
     private void registerFileType(@NotNull final SpoofaxFileType fileType) {
         FileTypeManagerEx.getInstanceEx().registerFileType(fileType);
-        FileTypeManager fileTypeManager = FileTypeManager.getInstance();
-        for (String ext : fileType.getExtensions()) {
-            FileNameMatcher matcher = new ExtensionFileNameMatcher(ext);
+        final FileTypeManager fileTypeManager = FileTypeManager.getInstance();
+        for (final String ext : fileType.getExtensions()) {
+            final FileNameMatcher matcher = new ExtensionFileNameMatcher(ext);
             fileTypeManager.associate(fileType, matcher);
         }
     }
@@ -199,9 +202,9 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param action   The action to add.
      * @param parentID The parent ID.
      */
-    private void addAndRegisterActionGroup(@NotNull final AnAction action, @NotNull String parentID) {
-        ActionManager manager = ActionManager.getInstance();
-        DefaultActionGroup parent = (DefaultActionGroup) manager.getAction(parentID);
+    private void addAndRegisterActionGroup(@NotNull final AnAction action, @NotNull final String parentID) {
+        final ActionManager manager = ActionManager.getInstance();
+        final DefaultActionGroup parent = (DefaultActionGroup)manager.getAction(parentID);
         parent.add(action);
         registerActions(manager, action);
     }
@@ -213,10 +216,10 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      */
     private void registerActions(@NotNull final ActionManager manager, @NotNull final AnAction action) {
         if (action instanceof AnActionWithId) {
-            manager.registerAction(((AnActionWithId) action).id(), action);
+            manager.registerAction(((AnActionWithId)action).id(), action);
         }
         if (action instanceof DefaultActionGroup) {
-            registerActions(manager, (DefaultActionGroup) action);
+            registerActions(manager, (DefaultActionGroup)action);
         }
     }
 
@@ -226,7 +229,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param actionGroup The action group.
      */
     private void registerActions(@NotNull final ActionManager manager, @NotNull final DefaultActionGroup actionGroup) {
-        for (AnAction action : actionGroup.getChildActionsOrStubs()) {
+        for (final AnAction action : actionGroup.getChildActionsOrStubs()) {
             registerActions(manager, action);
         }
     }
@@ -238,7 +241,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param obj The language to remove.
      */
     private void uninstallLanguage(@NotNull final RegisteredIdeaLanguageObject obj) {
-        unregisterFileType(obj.languageObject.fileType);
+        unregisterFileType(obj.languageObject.fileType());
         unregisterExtension(SYNTAX_HIGHLIGHTER_FACTORY_EXTENSION, obj.syntaxHighlighterFactoryExtension);
         unregisterExtension(EXTERNAL_ANNOTATOR_EXTENSION, obj.externalAnnotatorExtension);
         unregisterExtension(PARSER_DEFINITION_EXTENSION, obj.parserDefinitionExtension);
@@ -250,7 +253,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param obj The language implementation's attachment.
      */
     private void uninstallLanguageImplementation(@NotNull final IdeaLanguageImplAttachment obj) {
-        removeAndUnregisterActionGroup(obj.buildActionGroup, IdeActions.GROUP_MAIN_MENU);
+        removeAndUnregisterActionGroup(obj.buildActionGroup(), IdeActions.GROUP_MAIN_MENU);
     }
 
     /**
@@ -278,9 +281,9 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param action   The action to remove.
      * @param parentID The parent ID.
      */
-    private void removeAndUnregisterActionGroup(@NotNull final AnAction action, @NotNull String parentID) {
-        ActionManager manager = ActionManager.getInstance();
-        DefaultActionGroup parent = (DefaultActionGroup) manager.getAction(parentID);
+    private void removeAndUnregisterActionGroup(@NotNull final AnAction action, @NotNull final String parentID) {
+        final ActionManager manager = ActionManager.getInstance();
+        final DefaultActionGroup parent = (DefaultActionGroup)manager.getAction(parentID);
         parent.remove(action);
         unregisterActions(manager, action);
     }
@@ -292,10 +295,10 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      */
     private void unregisterActions(@NotNull final ActionManager manager, @NotNull final AnAction action) {
         if (action instanceof AnActionWithId) {
-            manager.unregisterAction(((AnActionWithId) action).id());
+            manager.unregisterAction(((AnActionWithId)action).id());
         }
         if (action instanceof DefaultActionGroup) {
-            unregisterActions(manager, (DefaultActionGroup) action);
+            unregisterActions(manager, (DefaultActionGroup)action);
         }
     }
 
@@ -307,7 +310,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     private void unregisterActions(
             @NotNull final ActionManager manager,
             @NotNull final DefaultActionGroup actionGroup) {
-        for (AnAction action : actionGroup.getChildActionsOrStubs()) {
+        for (final AnAction action : actionGroup.getChildActionsOrStubs()) {
             unregisterActions(manager, action);
         }
     }
@@ -318,10 +321,26 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     private final class RegisteredIdeaLanguageObject {
 
         @NotNull
-        public final IdeaLanguageAttachment languageObject;
-        public InstanceLanguageExtensionPoint<?> parserDefinitionExtension;
-        public InstanceLanguageExtensionPoint<?> externalAnnotatorExtension;
-        public InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension;
+        private final IdeaLanguageAttachment languageObject;
+        private InstanceLanguageExtensionPoint<?> parserDefinitionExtension;
+        private InstanceLanguageExtensionPoint<?> externalAnnotatorExtension;
+        private InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension;
+
+
+        @NotNull
+        public IdeaLanguageAttachment languageObject() { return this.languageObject; }
+
+        public InstanceLanguageExtensionPoint<?> parserDefinitionExtension() { return this.parserDefinitionExtension; }
+
+        public void setParserDefinitionExtension(final InstanceLanguageExtensionPoint<?> parserDefinitionExtension) { this.parserDefinitionExtension = parserDefinitionExtension; }
+
+        public InstanceLanguageExtensionPoint<?> externalAnnotatorExtension() { return this.externalAnnotatorExtension; }
+
+        public void setExternalAnnotatorExtension(final InstanceLanguageExtensionPoint<?> externalAnnotatorExtension) { this.externalAnnotatorExtension = externalAnnotatorExtension; }
+
+        public InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension() { return this.syntaxHighlighterFactoryExtension; }
+
+        public void setSyntaxHighlighterFactoryExtension(final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension) { this.syntaxHighlighterFactoryExtension = syntaxHighlighterFactoryExtension; }
 
         public RegisteredIdeaLanguageObject(@NotNull final IdeaLanguageAttachment languageObject) {
             this.languageObject = languageObject;

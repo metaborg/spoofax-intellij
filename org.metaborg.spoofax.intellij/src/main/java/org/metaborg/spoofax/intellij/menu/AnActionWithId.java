@@ -39,8 +39,8 @@ public abstract class AnActionWithId extends AnAction {
      *
      * @param id The ID of the action.
      */
-    public AnActionWithId(@NotNull String id) {
-        this(id, (String) null, (String) null, (Icon) null);
+    protected AnActionWithId(@NotNull final String id) {
+        this(id, null, null, null);
     }
 
     /**
@@ -51,11 +51,11 @@ public abstract class AnActionWithId extends AnAction {
      * @param description The description of the action; or <code>null</code>.
      * @param icon        The icon of the action; or <code>null</code>.
      */
-    public AnActionWithId(
-            @NotNull String id,
-            @Nullable String text,
-            @Nullable String description,
-            @Nullable Icon icon) {
+    protected AnActionWithId(
+            @NotNull final String id,
+            @Nullable final String text,
+            @Nullable final String description,
+            @Nullable final Icon icon) {
         super(text, description, icon);
         this.id = id;
     }
@@ -66,8 +66,8 @@ public abstract class AnActionWithId extends AnAction {
      * @param id   The ID of the action.
      * @param icon The icon of the action; or <code>null</code>.
      */
-    public AnActionWithId(@NotNull String id, Icon icon) {
-        this(id, (String) null, (String) null, icon);
+    protected AnActionWithId(@NotNull final String id, final Icon icon) {
+        this(id, null, null, icon);
     }
 
     /**
@@ -76,8 +76,8 @@ public abstract class AnActionWithId extends AnAction {
      * @param id   The ID of the action.
      * @param text The text of the action; or <code>null</code>.
      */
-    public AnActionWithId(@NotNull String id, @Nullable String text) {
-        this(id, text, (String) null, (Icon) null);
+    protected AnActionWithId(@NotNull final String id, @Nullable final String text) {
+        this(id, text, null, null);
     }
 
     /**

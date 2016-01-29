@@ -88,7 +88,7 @@ public final class LanguageManager {
     private void loadLanguage(@NotNull final String id) {
         final URL url = this.getClass().getClassLoader().getResource("languages/" + id + ".spoofax-language");
         if (url == null) {
-            logger.error("Meta language '" + id + "' could not be resolved to a class path.");
+            this.logger.error("Meta language '" + id + "' could not be resolved to a class path.");
             return;
         }
 
@@ -96,33 +96,9 @@ public final class LanguageManager {
 
         try {
             loadLanguageFromArtifact(file);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new UnhandledException(e);
         }
-
-//        final String zipUri = "zip://" + url.getPath();
-//        final FileObject file = this.resourceService.resolve(zipUri);
-//        try {
-//            if (!file.exists()) {
-//                logger.error("Meta language '" + id + "' does not exist in classpath at: " + file.toString());
-//                return;
-//            }
-//        } catch (FileSystemException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(file);
-//            final List<ILanguageImpl> lis = new ArrayList<ILanguageImpl>();
-//            for (ILanguageComponent c : discovery) {
-//                for (ILanguageImpl li : c.contributesTo()) {
-//                    lis.add(li);
-//                }
-//            }
-//            logger.info("For '" + id + "' loaded languages: " + Joiner.on(", ").join(lis));
-//        } catch (MetaborgException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
     /**
@@ -151,21 +127,11 @@ public final class LanguageManager {
         final String zipUri;
         try {
             zipUri = "zip://" + artifact.getURL().getPath();
-        } catch (FileSystemException e) {
+        } catch (final FileSystemException e) {
             throw new UnhandledException(e);
         }
 
         final FileObject file = this.resourceService.resolve(zipUri);
-//        try {
-//            file.ex
-//            if (!file.exists()) {
-//                logger.error("Language artifact not found at: {}", file);
-//
-//            }
-//        } catch (FileSystemException e) {
-//            throw new RuntimeException("Unhandled exception", e);
-//        }
-
         return loadLanguageFromFolder(file);
     }
 
@@ -175,7 +141,7 @@ public final class LanguageManager {
      * @param folder The folder.
      * @return Whether a language was successfully loaded.
      */
-    public boolean loadLanguageFromFolder(VirtualFile folder) throws
+    public boolean loadLanguageFromFolder(final VirtualFile folder) throws
             IOException {
         Preconditions.checkNotNull(folder);
 
@@ -188,22 +154,23 @@ public final class LanguageManager {
      * @param folder The folder.
      * @return Whether a language was successfully loaded.
      */
-    public boolean loadLanguageFromFolder(FileObject folder) throws
+    public boolean loadLanguageFromFolder(final FileObject folder) throws
             IOException {
         Preconditions.checkNotNull(folder);
         try {
             // TODO: Assert that this doesn't load the language, just discovers it.
             // Loading happens only after the user clicked OK or Apply in the settings dialog.
-            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(this.discoveryService.request(folder));
+            final Iterable<ILanguageDiscoveryRequest> request = this.discoveryService.request(folder);
+            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(request);
             final List<ILanguageImpl> lis = new ArrayList<>();
-            for (ILanguageComponent c : discovery) {
-                for (ILanguageImpl li : c.contributesTo()) {
+            for (final ILanguageComponent c : discovery) {
+                for (final ILanguageImpl li : c.contributesTo()) {
                     lis.add(li);
                 }
             }
-            logger.info("From '{}' loaded languages: {}", folder, Joiner.on(", ").join(lis));
+            this.logger.info("From '{}' loaded languages: {}", folder, Joiner.on(", ").join(lis));
             return discovery.iterator().hasNext();
-        } catch (MetaborgException e) {
+        } catch (final MetaborgException e) {
             throw new UnhandledException(e);
         }
     }

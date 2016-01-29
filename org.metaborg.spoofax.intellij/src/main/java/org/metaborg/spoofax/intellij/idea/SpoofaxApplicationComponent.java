@@ -20,14 +20,10 @@
 package org.metaborg.spoofax.intellij.idea;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.intellij.openapi.components.ApplicationComponent;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.MetaborgException;
 import org.metaborg.core.logging.InjectLogger;
-import org.metaborg.spoofax.core.Spoofax;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
-import org.metaborg.spoofax.meta.core.SpoofaxMeta;
 import org.slf4j.Logger;
 
 public class SpoofaxApplicationComponent implements ApplicationComponent {
@@ -35,6 +31,7 @@ public class SpoofaxApplicationComponent implements ApplicationComponent {
     @InjectLogger
     private Logger logger;
     private LanguageManager languageManager;
+
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
@@ -52,6 +49,7 @@ public class SpoofaxApplicationComponent implements ApplicationComponent {
     /**
      * Initializes the plugin.
      */
+    @Override
     public final void initComponent() {
         this.languageManager.loadMetaLanguages();
     }
@@ -59,6 +57,7 @@ public class SpoofaxApplicationComponent implements ApplicationComponent {
     /**
      * Disposes the plugin.
      */
+    @Override
     public final void disposeComponent() {
 
     }
@@ -68,6 +67,7 @@ public class SpoofaxApplicationComponent implements ApplicationComponent {
      *
      * @return The name of the component.
      */
+    @Override
     @NotNull
     public String getComponentName() {
         return SpoofaxApplicationComponent.class.getName();

@@ -27,9 +27,9 @@ import org.jetbrains.jps.model.JpsDummyElement;
 import org.jetbrains.jps.model.JpsModel;
 import org.jetbrains.jps.model.module.JpsModule;
 import org.jetbrains.jps.model.module.JpsTypedModule;
-import org.metaborg.spoofax.intellij.JpsSpoofaxModuleType;
 import org.metaborg.intellij.jps.project.IJpsProjectService;
 import org.metaborg.intellij.jps.project.MetaborgJpsProject;
+import org.metaborg.spoofax.intellij.JpsSpoofaxModuleType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +66,9 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      */
     @NotNull
     public final T createTarget(@NotNull final JpsModule module) {
-        MetaborgJpsProject project = projectService.get(module);
+        MetaborgJpsProject project = this.projectService.get(module);
         if (project == null)
-            project = projectService.create(module);
+            project = this.projectService.create(module);
         return createTarget(project);
     }
 
@@ -83,7 +83,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
     public final List<T> computeAllTargets(@NotNull final JpsModel model) {
         // Default implementation.
         final List<T> targets = new ArrayList<>();
-        for (JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(JpsSpoofaxModuleType.INSTANCE)) {
+        for (final JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(JpsSpoofaxModuleType.INSTANCE)) {
             targets.add(createTarget(module));
         }
         return targets;
@@ -102,8 +102,8 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
         return new BuildTargetLoader<T>() {
             @Nullable
             @Override
-            public T createTarget(@NotNull String targetId) {
-                for (T target : computeAllTargets(model)) {
+            public T createTarget(@NotNull final String targetId) {
+                for (final T target : computeAllTargets(model)) {
                     if (target.getId().equals(targetId))
                         return target;
                 }

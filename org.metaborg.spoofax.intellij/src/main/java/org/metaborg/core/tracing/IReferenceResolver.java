@@ -20,9 +20,7 @@
 package org.metaborg.core.tracing;
 
 import org.metaborg.core.MetaborgException;
-import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.syntax.ParseResult;
-import org.spoofax.interpreter.terms.IStrategoTerm;
 
 import javax.annotation.Nullable;
 
@@ -33,11 +31,11 @@ public interface IReferenceResolver<T> {
 
     /**
      * Determines whether the specified term could be a reference.
-     *
+     * <p>
      * This method should return <code>true</code> for all references, even invalid ones;
      * but return <code>false</code> for non-references.
      *
-     * @param term The term to check.
+     * @param term   The term to check.
      * @param result The parse result.
      * @return <code>true</code> when the term could be a reference;
      * otherwise, <code>false</code>.

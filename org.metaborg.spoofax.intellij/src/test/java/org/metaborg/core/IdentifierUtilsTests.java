@@ -29,29 +29,29 @@ public final class IdentifierUtilsTests {
 
     @Test
     public void createReturnsNumber() {
-        String result = IdentifierUtils.create();
+        final String result = IdentifierUtils.create();
         Integer.parseInt(result);
     }
 
     @Test
     public void createReturnsDifferentIdentifierEachTime() {
-        String result1 = IdentifierUtils.create();
-        String result2 = IdentifierUtils.create();
+        final String result1 = IdentifierUtils.create();
+        final String result2 = IdentifierUtils.create();
 
         assertNotEquals(result1, result2);
     }
 
     @Test
     public void createWithPrefixReturnsPrefixedNumber() {
-        String result = IdentifierUtils.create("x_");
+        final String result = IdentifierUtils.create("x_");
         assertTrue(result.startsWith("x_"));
         Integer.parseInt(result.substring(2));
     }
 
     @Test
     public void createWithPrefixReturnsDifferentIdentifierEachTime() {
-        String result1 = IdentifierUtils.create("x_");
-        String result2 = IdentifierUtils.create("x_");
+        final String result1 = IdentifierUtils.create("x_");
+        final String result2 = IdentifierUtils.create("x_");
 
         assertNotEquals(result1, result2);
     }

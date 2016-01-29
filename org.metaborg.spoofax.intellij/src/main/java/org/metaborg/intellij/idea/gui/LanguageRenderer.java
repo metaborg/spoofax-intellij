@@ -35,6 +35,7 @@ public final class LanguageRenderer extends ListCellRendererWrapper<ILanguage> {
     private static final Icon EMPTY_ICON = EmptyIcon.ICON_18;
 
     public LanguageRenderer() {
+        super();
 
     }
 
@@ -56,11 +57,13 @@ public final class LanguageRenderer extends ListCellRendererWrapper<ILanguage> {
      * @return The icon.
      */
     private Icon getIcon(final ILanguage language) {
-        LayeredIcon layeredIcon = new LayeredIcon(2);
+        final LayeredIcon layeredIcon = new LayeredIcon(2);
         layeredIcon.setIcon(EMPTY_ICON, 0);
-        final Icon icon = SpoofaxIcons.INSTANCE.Default;
+        final Icon icon = SpoofaxIcons.INSTANCE.defaultIcon();
         if (icon != null) {
-            layeredIcon.setIcon(icon, 1, (- icon.getIconWidth() + EMPTY_ICON.getIconWidth())/2, (EMPTY_ICON.getIconHeight() - icon.getIconHeight())/2);
+            layeredIcon.setIcon(icon, 1, (-icon.getIconWidth() + EMPTY_ICON.getIconWidth()) / 2,
+                                (EMPTY_ICON.getIconHeight() - icon.getIconHeight()) / 2
+            );
         }
         return layeredIcon;
     }

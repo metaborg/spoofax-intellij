@@ -63,7 +63,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * @param name The name of the file.
      * @param fs   The file system.
      */
-    public IntelliJFileObject(@NotNull AbstractFileName name, @NotNull AbstractFileSystem fs) {
+    public IntelliJFileObject(@NotNull final AbstractFileName name, @NotNull final AbstractFileSystem fs) {
         super(name, fs);
     }
 
@@ -133,9 +133,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     protected final FileType doGetType() throws Exception {
         assert (isAttached());
 
-        if (!file.exists())
+        if (!this.file.exists())
             return FileType.IMAGINARY;
-        else if (file.isDirectory())
+        else if (this.file.isDirectory())
             return FileType.FOLDER;
         else
             return FileType.FILE;
@@ -260,7 +260,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
     protected final long doGetContentSize() throws Exception {
         assert (isAttached());
 
-        return file.getLength();
+        return this.file.getLength();
     }
 
     /**
@@ -270,7 +270,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
     protected final InputStream doGetInputStream() throws Exception {
         assert (isAttached());
 
-        return file.getInputStream();
+        return this.file.getInputStream();
     }
 
     /**
@@ -285,7 +285,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
         // FIXME: We're ignoring `append`.
 
-        return file.getOutputStream(null);
+        return this.file.getOutputStream(null);
     }
 
     /**
@@ -310,7 +310,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 this.file.getParent().createChildDirectory(null, this.getName().getBaseName());
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         });
@@ -326,7 +326,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 this.file.rename(null, newfile.getName().getBaseName());
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         });
@@ -342,7 +342,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
                 this.file.delete(null);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         });

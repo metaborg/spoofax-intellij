@@ -23,11 +23,12 @@ import com.intellij.codeInsight.completion.CompletionContributor;
 
 /**
  * Contributes completion providers for a language.
- *
+ * <p>
  * This completion provider must be registered for each language.
  */
 public class MetaborgCompletionContributor extends CompletionContributor {
     public MetaborgCompletionContributor() {
+        super();
         // TODO
         // See: https://github.com/pantsbuild/intellij-pants-plugin/blob/9e72634923841169c9df5cd683e54335d1af5835/src/com/twitter/intellij/pants/completion/PantsCompletionContributor.java
     }

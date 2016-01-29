@@ -28,10 +28,12 @@ import org.metaborg.core.IntRange;
  */
 public final class SpoofaxToken {
 
-    @NotNull
-    public final SpoofaxTokenType type;
-    @NotNull
-    public final IntRange range;
+    private final SpoofaxTokenType type;
+    private final IntRange range;
+
+    public SpoofaxTokenType type() { return this.type; }
+
+    public IntRange range() { return this.range; }
 
     /**
      * Initializes a new instance of the {@link SpoofaxToken} class.
@@ -46,7 +48,7 @@ public final class SpoofaxToken {
 
     @Override
     public String toString() {
-        return type.toString() + " [" + range.start + ", " + range.end + ")";
+        return this.type.toString() + " [" + this.range.start + ", " + this.range.end + ")";
     }
 
 }

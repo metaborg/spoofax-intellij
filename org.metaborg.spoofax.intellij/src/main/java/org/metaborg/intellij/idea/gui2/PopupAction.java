@@ -35,7 +35,7 @@ public class PopupAction implements ActionListener {
     private final String text;
     private final Icon icon;
 
-    public PopupAction(String text, Icon icon) {
+    public PopupAction(final String text, final Icon icon) {
         Preconditions.checkNotNull(text);
 
         this.text = text;

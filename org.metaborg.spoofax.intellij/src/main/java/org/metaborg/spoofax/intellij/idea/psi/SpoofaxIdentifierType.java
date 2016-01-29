@@ -32,7 +32,7 @@ public class SpoofaxIdentifierType extends SpoofaxElementType {
      *
      * @param language The language.
      */
-    public SpoofaxIdentifierType(@NotNull SpoofaxIdeaLanguage language) {
+    public SpoofaxIdentifierType(@NotNull final SpoofaxIdeaLanguage language) {
         super(language, "SPOOFAX_IDENTIFIER_TYPE");
     }
 

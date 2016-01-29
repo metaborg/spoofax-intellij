@@ -51,26 +51,18 @@ import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.language.LanguageVersion;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.project.ILanguageSpec;
-//import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.ProjectException;
-//import org.metaborg.core.project.configuration.ILanguageSpecConfig;
-//import org.metaborg.core.project.settings.IProjectSettings;
-//import org.metaborg.core.project.settings.ProjectSettings;
 import org.metaborg.intellij.idea.gui2.wizards.MetaborgModuleWizardStep;
+import org.metaborg.intellij.idea.project.IIdeaProjectFactory;
 import org.metaborg.intellij.idea.project.IIdeaProjectService;
 import org.metaborg.intellij.idea.project.IdeaLanguageSpecProject;
-//import org.metaborg.intellij.idea.project.IdeaProject;
 import org.metaborg.spoofax.core.project.ISpoofaxLanguageSpecPaths;
 import org.metaborg.spoofax.core.project.ISpoofaxLanguageSpecPathsService;
 import org.metaborg.spoofax.core.project.SpoofaxLanguageSpecPaths;
 import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfigBuilder;
-//import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
 import org.metaborg.spoofax.generator.language.LanguageSpecGenerator;
 import org.metaborg.spoofax.generator.language.NewLanguageSpecGenerator;
-//import org.metaborg.spoofax.generator.language.NewProjectGenerator;
-//import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
-import org.metaborg.intellij.idea.project.IIdeaProjectFactory;
 import org.metaborg.spoofax.generator.project.LanguageSpecGeneratorScope;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.slf4j.Logger;
@@ -80,6 +72,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+//import org.metaborg.core.project.IProject;
+//import org.metaborg.core.project.configuration.ILanguageSpecConfig;
+//import org.metaborg.core.project.settings.IProjectSettings;
+//import org.metaborg.core.project.settings.ProjectSettings;
+//import org.metaborg.intellij.idea.project.IdeaProject;
+//import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
+//import org.metaborg.spoofax.generator.language.NewProjectGenerator;
+//import org.metaborg.spoofax.generator.project.GeneratorProjectSettings;
 
 /**
  * Builds a new Spoofax module.
@@ -95,9 +96,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     @InjectLogger
     private Logger logger;
 
-    private List<Pair<String,String>> sourcePaths;
-    // The project.
-//    private IdeaProject project;
+    private List<Pair<String, String>> sourcePaths;
 
     private String name = "Untitled";
 
@@ -106,6 +105,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      *
      * @return The name.
      */
+    @Override
     public String getName() { return this.name; }
 
     /**
@@ -113,7 +113,8 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      *
      * @param name The name.
      */
-    public void setName(String name) { this.name = name; }
+    @Override
+    public void setName(final String name) { this.name = name; }
 
     private String extension = "u";
 
@@ -129,9 +130,14 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      *
      * @param extension The language file extension.
      */
-    public void setExtension(String extension) { this.extension = extension; }
+    public void setExtension(final String extension) { this.extension = extension; }
 
-    private LanguageIdentifier languageId = new LanguageIdentifier("org.example", "untitled", LanguageVersion.parse("1.0.0-SNAPSHOT"));
+    private LanguageIdentifier languageId = new LanguageIdentifier(
+            "org.example",
+            "untitled",
+            LanguageVersion.parse("1.0.0-SNAPSHOT")
+    );
+
     /**
      * Gets the language ID of the module.
      *
@@ -146,7 +152,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      *
      * @param languageId The language identifier; or <code>null</code>.
      */
-    public void setLanguageIdentifier(LanguageIdentifier languageId) {
+    public void setLanguageIdentifier(final LanguageIdentifier languageId) {
         this.languageId = languageId;
     }
 
@@ -158,6 +164,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
             final IIdeaProjectService projectService,
             final ISpoofaxLanguageSpecPathsService pathsService,
             final ISpoofaxLanguageSpecConfigBuilder configBuilder) {
+        super();
         this.resourceService = resourceService;
         this.projectFactory = projectFactory;
         this.projectService = projectService;
@@ -165,22 +172,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
         this.configBuilder = configBuilder;
     }
 
-//    public final void displayInitError(@NotNull final String error, @NotNull final Project project) {
-//        SwingUtilities.invokeLater(() -> {
-//            String text = "<html><a href=\"openBrowser\" target=\"_top\">How do I fix this?</a></html>";
-//            Notifications.Bus.notify(new Notification("SourceFinder",
-//                                                      error,
-//                                                      text,
-//                                                      NotificationType.ERROR,
-//                                                      (notification, event) -> {
-//                                                          if (event.getDescription().equals("openBrowser")) {
-//                                                              //launchBrowser("https://bitbucket.org/mtiigi/intellij-sourcefinder-plugin");
-//                                                          }
-//                                                      }), project);
-//        });
-//
-//
-//    }
     /**
      * Gets the wizard step shown under the SDK selection.
      *
@@ -212,10 +203,9 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     @Override
     @NotNull
     public final ModuleWizardStep modifyProjectTypeStep(@NotNull final SettingsStep settingsStep) {
-        ModuleWizardStep wizardStep = StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
+        final ModuleWizardStep wizardStep = StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
         assert wizardStep != null;
         return wizardStep;
-        //return super.modifyProjectTypeStep(settingsStep);
     }
 
     /**
@@ -229,18 +219,13 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
 
         final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
         if (contentEntry != null) {
-            // TODO: Add this information to Metaborg Core somewhere?
+            // TODO: Get this from the paths interface.
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".cache");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "lib");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "src-gen");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
-
         }
-//        if (contentEntry == null) {
-//            // LOG: No content entry path for the module.
-//            return;
-//        }
 
         setSdk(rootModel);
 
@@ -253,13 +238,15 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
             @Override
             public void run() {
                 // Generate the module structure (files and directories).
-                System.out.println("Running");
-                FileObject location = resourceService.resolve(getContentEntryPath());//contentEntry.getFile());
-                IdeaLanguageSpecProject ideaProject = projectFactory.create(module, location);
-                projectService.open(ideaProject);
-                WriteCommandAction.runWriteCommandAction(project, "Create new Spoofax module", null, () -> {
-                    generateModuleStructure(ideaProject);
-                });
+                final FileObject location = SpoofaxModuleBuilder.this.resourceService.resolve(getContentEntryPath());
+                final IdeaLanguageSpecProject ideaProject = SpoofaxModuleBuilder.this.projectFactory.create(
+                        module,
+                        location
+                );
+                SpoofaxModuleBuilder.this.projectService.open(ideaProject);
+                WriteCommandAction.runWriteCommandAction(project, "Create new Spoofax module", null,
+                                                         () -> generateModuleStructure(ideaProject)
+                );
             }
         });
 
@@ -268,7 +255,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     /**
      * Runs a runnable once the specified project has been initialized.
      *
-     * @param project The project.
+     * @param project  The project.
      * @param runnable The runnable.
      */
     private static void runWhenInitialized(@NotNull final Project project, @NotNull final Runnable runnable) {
@@ -276,13 +263,16 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
             // Project is disposed. Nothing to do.
             return;
 
-        Application application = ApplicationManager.getApplication();
+        final Application application = ApplicationManager.getApplication();
         if (application.isHeadlessEnvironment() || application.isUnitTestMode()) {
             // Runnable cannot be run in background. Just run it.
             runnable.run();
         } else if (!project.isInitialized()) {
             // Run runnable once project has initialized.
-            StartupManager.getInstance(project).registerPostStartupActivity(DisposeAwareRunnable.create(runnable, project));
+            StartupManager.getInstance(project).registerPostStartupActivity(DisposeAwareRunnable.create(
+                    runnable,
+                    project
+            ));
         } else if (DumbService.isDumbAware(runnable)) {
             // The runnable is dumb aware. Just run it.
             runnable.run();
@@ -297,7 +287,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      *
      * @param rootModel The root model.
      */
-    private final void setSdk(@NotNull final ModifiableRootModel rootModel) {
+    private void setSdk(@NotNull final ModifiableRootModel rootModel) {
         if (this.myJdk != null) {
             // An SDK was selected in the wizard.
             rootModel.setSdk(this.myJdk);
@@ -310,7 +300,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     /**
      * Generates the module directory structure and files.
      *
-     * @param languageSpec      The language specification.
+     * @param languageSpec The language specification.
      */
     private void generateModuleStructure(
             @NotNull final ILanguageSpec languageSpec) {
@@ -328,12 +318,13 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
             final LanguageSpecGeneratorScope scope = new LanguageSpecGeneratorScope(config, paths);
 //            // TODO: Get from SDK.
 //            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
-            final NewLanguageSpecGenerator newGenerator = new NewLanguageSpecGenerator(scope, new String[]{getExtension()});
+            final NewLanguageSpecGenerator newGenerator = new NewLanguageSpecGenerator(
+                    scope,
+                    new String[]{getExtension()}
+            );
             newGenerator.generateAll();
             final LanguageSpecGenerator generator = new LanguageSpecGenerator(scope);
             generator.generateAll();
-
-
 
 //            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
 //            final VirtualFile f = resourceService.unresolve(project.location().resolveFile("editor/java/"));
@@ -365,7 +356,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     @Override
     @NotNull
     public final Icon getBigIcon() {
-        return SpoofaxIcons.INSTANCE.Default;
+        return SpoofaxIcons.INSTANCE.defaultIcon();
     }
 
     /**
@@ -377,7 +368,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     @Override
     @NotNull
     public final Icon getNodeIcon() {
-        return SpoofaxIcons.INSTANCE.Default;
+        return SpoofaxIcons.INSTANCE.defaultIcon();
     }
 
     /**
@@ -461,23 +452,23 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     }
 
     @Nullable
-    protected ContentEntry doAddContentEntryAndSourceRoots(ModifiableRootModel rootModel) throws ConfigurationException {
+    protected ContentEntry doAddContentEntryAndSourceRoots(final ModifiableRootModel rootModel) throws
+            ConfigurationException {
         // Add the content entry path as a content root.
         final ContentEntry contentEntry = doAddContentEntry(rootModel);
         if (contentEntry == null)
             return null;
 
-//        if (contentEntry != null) {
-        final List<Pair<String,String>> sourcePaths = getSourcePaths();
+        final List<Pair<String, String>> sourcePaths = getSourcePaths();
 
         if (sourcePaths == null)
             return null;
-//            if (sourcePaths != null) {
+
         for (final Pair<String, String> sourcePath : sourcePaths) {
-            String first = sourcePath.first;
+            final String first = sourcePath.first;
             try {
                 VfsUtil.createDirectories(first);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new UnhandledException(e);
             }
             final VirtualFile sourceRoot = LocalFileSystem.getInstance()
@@ -486,8 +477,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
                 contentEntry.addSourceFolder(sourceRoot, false, sourcePath.second);
             }
         }
-//            }
-//        }
+
         return contentEntry;
     }
 }
