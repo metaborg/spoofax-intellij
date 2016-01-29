@@ -31,6 +31,7 @@ import org.metaborg.intellij.idea.project.IIdeaProjectService;
 import org.metaborg.intellij.idea.project.IdeaProject;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -43,7 +44,7 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
     @NotNull
     private final Module module;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
     @NotNull
     private IIdeaProjectService projectService;
     @NotNull

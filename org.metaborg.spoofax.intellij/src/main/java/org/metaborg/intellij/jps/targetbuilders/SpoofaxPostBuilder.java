@@ -36,6 +36,7 @@ import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfi
 import org.metaborg.spoofax.meta.core.LanguageSpecBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -60,7 +61,7 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
 
     private final SpoofaxMetaBuilder builder;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
     private SpoofaxPostBuilder(

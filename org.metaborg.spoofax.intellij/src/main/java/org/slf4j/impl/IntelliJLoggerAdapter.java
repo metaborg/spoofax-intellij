@@ -270,7 +270,7 @@ public final class IntelliJLoggerAdapter extends MarkerIgnoringBase implements L
      */
     @Override
     public boolean isErrorEnabled() {
-        return false;
+        return true;
     }
 
     /**

@@ -24,7 +24,8 @@ import com.google.inject.matcher.Matchers;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.metaborg.core.language.ILanguageProjectService;
 import org.metaborg.core.language.LanguageProjectService;
-import org.metaborg.core.logging.Slf4JTypeListener;
+import org.metaborg.core.logging.MetaborgLoggerTypeListener;
+import org.metaborg.core.logging.Slf4JLoggerTypeListener;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.spoofax.core.SpoofaxModule;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
@@ -43,12 +44,18 @@ public abstract class SpoofaxIntelliJModule extends SpoofaxModule {
     @Override
     protected void configure() {
         super.configure();
+        bindLoggerListeners();
 
         bind(LanguageManager.class).in(Singleton.class);
-
-        bindListener(Matchers.any(), new Slf4JTypeListener());
-
         bind(ILanguageProjectService.class).to(LanguageProjectService.class).in(Singleton.class);
+    }
+
+    /**
+     * Binds listeners for injected loggers.
+     */
+    protected void bindLoggerListeners() {
+        bindListener(Matchers.any(), new Slf4JLoggerTypeListener());
+        bindListener(Matchers.any(), new MetaborgLoggerTypeListener());
     }
 
     /**

@@ -26,7 +26,7 @@ import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.ProjectBuildException;
 import org.jetbrains.jps.incremental.TargetBuilder;
 import org.jetbrains.jps.model.module.JpsModule;
-import org.metaborg.core.MessageFormatter;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.project.ILanguageSpec;
 import org.metaborg.core.project.ILanguageSpecService;
 import org.metaborg.intellij.jps.project.JpsProjectService;
@@ -36,6 +36,7 @@ import org.metaborg.spoofax.core.project.ISpoofaxLanguageSpecPathsService;
 import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfigService;
 import org.metaborg.spoofax.meta.core.LanguageSpecBuildInput;
+import org.metaborg.util.log.ILogger;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -50,6 +51,8 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
     protected final ILanguageSpecService languageSpecService;
     protected final ISpoofaxLanguageSpecPathsService pathsService;
     protected final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService;
+    @InjectLogger
+    private ILogger logger;
 
     /**
      * Gets the presentable name of the builder.
@@ -106,19 +109,19 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
             IOException {
         @Nullable final MetaborgJpsProject project = this.projectService.get(module);
         if (project == null)
-            throw new ProjectBuildException(MessageFormatter.format(
+            throw new ProjectBuildException(logger.format(
                     "Could not get a project for the module {}",
                     module
             ));
         @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
         if (languageSpec == null)
-            throw new ProjectBuildException(MessageFormatter.format(
+            throw new ProjectBuildException(logger.format(
                     "Could not get a language specification for the project {}",
                     project
             ));
         @Nullable final ISpoofaxLanguageSpecConfig config = this.spoofaxLanguageSpecConfigService.get(languageSpec);
         if (config == null)
-            throw new ProjectBuildException(MessageFormatter.format(
+            throw new ProjectBuildException(logger.format(
                     "Could not get a configuration for language specification {}",
                     languageSpec
             ));

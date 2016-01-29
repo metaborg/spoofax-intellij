@@ -29,11 +29,12 @@ public class SpoofaxIdeaPlugin {
 
     // Static //
 
-    private static final Logger logger = Logger.getInstance(SpoofaxIdeaPlugin.class);
+    private static final Logger logger;
     private static final SpoofaxIdeaPlugin plugin;
 
     static {
         plugin = new SpoofaxIdeaPlugin();
+        logger = Logger.getInstance(SpoofaxIdeaPlugin.class);
         logger.info("Spoofax for IDEA plugin loaded.");
     }
 

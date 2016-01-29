@@ -48,6 +48,7 @@ import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.meta.core.LanguageSpecBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
@@ -77,8 +78,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
     private final IDependencyService dependencyService;
     private final SpoofaxProcessorRunner processorRunner;
     @InjectLogger
-    private Logger logger;
-    //private final static Logger logger = com.intellij.openapi.diagnostic.Logger.getInstance(SpoofaxPreBuilder.class);
+    private ILogger logger;
 
     @Inject
     public SpoofaxPreBuilder(

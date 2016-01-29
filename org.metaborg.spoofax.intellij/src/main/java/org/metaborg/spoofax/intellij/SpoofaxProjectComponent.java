@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 // Remove this class.
@@ -34,7 +35,7 @@ public final class SpoofaxProjectComponent implements ProjectComponent {
     @NotNull
     private final Project project;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     /**
      * This instance is created by IntelliJ's plugin system.

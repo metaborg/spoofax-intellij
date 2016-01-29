@@ -65,6 +65,7 @@ import org.metaborg.spoofax.generator.language.LanguageSpecGenerator;
 import org.metaborg.spoofax.generator.language.NewLanguageSpecGenerator;
 import org.metaborg.spoofax.generator.project.LanguageSpecGeneratorScope;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import javax.swing.*;
@@ -94,7 +95,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     private final ISpoofaxLanguageSpecConfigBuilder configBuilder;
     private final ISpoofaxLanguageSpecPathsService pathsService;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     private List<Pair<String, String>> sourcePaths;
 

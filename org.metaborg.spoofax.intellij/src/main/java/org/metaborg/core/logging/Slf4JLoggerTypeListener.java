@@ -31,7 +31,7 @@ import java.lang.reflect.Field;
 /**
  * Listens for injections in a type.
  */
-public final class Slf4JTypeListener implements TypeListener {
+public final class Slf4JLoggerTypeListener implements TypeListener {
 
     /**
      * {@inheritDoc}
@@ -51,7 +51,7 @@ public final class Slf4JTypeListener implements TypeListener {
             for (final Field field : clazz.getDeclaredFields()) {
                 if (field.getType() == Logger.class &&
                         field.isAnnotationPresent(InjectLogger.class)) {
-                    typeEncounter.register(new Slf4JMembersInjector<>(field));
+                    typeEncounter.register(new Slf4JLoggerMembersInjector<>(field));
                 }
             }
             clazz = clazz.getSuperclass();

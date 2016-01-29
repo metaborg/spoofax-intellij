@@ -37,6 +37,7 @@ import org.metaborg.core.syntax.IParserConfiguration;
 import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
 import org.metaborg.core.syntax.ParseResult;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.IToken;
@@ -67,7 +68,7 @@ public final class SpoofaxLexer extends LexerBase {
     @NotNull
     private final IResourceService resourceService;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
     // The character buffer.
     private CharSequence buffer;
     // The range of characters in the buffer to lex.

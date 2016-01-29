@@ -31,6 +31,7 @@ import org.metaborg.core.action.ITransformAction;
 import org.metaborg.core.action.ITransformGoal;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public final class TransformationAction<P, A, T> extends AnActionWithId {
     @NotNull
     private final IResourceTransformer transformer;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
     private TransformationAction(

@@ -29,6 +29,7 @@ import com.intellij.psi.PsiElement;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -45,7 +46,7 @@ public final class IdeaProjectService implements IIdeaProjectService {
     private final IIntelliJResourceService resourceService;
     private final Map<Module, IdeaProject> modules = new HashMap<>();
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
     private IdeaProjectService(final IIntelliJResourceService resourceService) {

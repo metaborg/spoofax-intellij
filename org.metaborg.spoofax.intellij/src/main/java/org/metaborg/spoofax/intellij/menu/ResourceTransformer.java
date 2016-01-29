@@ -35,6 +35,7 @@ import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.core.transform.ITransformService;
 import org.metaborg.core.transform.TransformException;
 import org.metaborg.util.concurrent.IClosableLock;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 //import org.metaborg.core.language.ILanguageIdentifierService;
@@ -62,7 +63,7 @@ public class ResourceTransformer<P, A, T> implements IResourceTransformer {
     @NotNull
     private final ITransformService<P, A, T> transformService;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     protected ResourceTransformer(
             final IContextService contextService,
@@ -93,7 +94,7 @@ public class ResourceTransformer<P, A, T> implements IResourceTransformer {
             try {
                 transform(resource, language, transformResource.text(), goal);
             } catch (ContextException | TransformException e) {
-                this.logger.error("Transformation failed for {}", resource, e);
+                this.logger.error("Transformation failed for {}", e, resource);
             }
         }
 

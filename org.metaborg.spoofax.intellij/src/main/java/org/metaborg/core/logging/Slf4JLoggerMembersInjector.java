@@ -32,7 +32,7 @@ import java.lang.reflect.Field;
  *
  * @param <T> The type of object.
  */
-public final class Slf4JMembersInjector<T> implements MembersInjector<T> {
+public final class Slf4JLoggerMembersInjector<T> implements MembersInjector<T> {
 
     @NotNull
     private final Field field;
@@ -40,11 +40,11 @@ public final class Slf4JMembersInjector<T> implements MembersInjector<T> {
     private final Logger logger;
 
     /**
-     * Initializes a new instance of the {@link Slf4JMembersInjector} class.
+     * Initializes a new instance of the {@link Slf4JLoggerMembersInjector} class.
      *
      * @param field The field to inject.
      */
-    public Slf4JMembersInjector(@NotNull final Field field) {
+    public Slf4JLoggerMembersInjector(@NotNull final Field field) {
         Preconditions.checkNotNull(field);
 
         this.field = field;

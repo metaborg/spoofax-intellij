@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import javax.swing.*;
@@ -47,7 +48,7 @@ import java.util.List;
 public final class SpoofaxProjectDetector extends ProjectStructureDetector {
 
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
     @NotNull
     private SpoofaxModuleType moduleType;
     @NotNull

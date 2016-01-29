@@ -39,6 +39,7 @@ import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -71,7 +72,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     @NotNull
     private final SpoofaxAnnotator spoofaxAnnotator;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
     private IdeaAttachmentManager(

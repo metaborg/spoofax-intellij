@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * For example:
  * <pre>
  *
- * &#064;InjectLogger private Logger logger;
+ * &#064;InjectLogger private ILogger logger;
  * </pre>
  */
 @SuppressWarnings("NullableProblems")

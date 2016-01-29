@@ -40,6 +40,7 @@ import org.metaborg.spoofax.intellij.idea.InstanceSyntaxHighlighterFactoryExtens
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
 import org.metaborg.spoofax.intellij.menu.AnActionWithId;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import java.util.Collections;
@@ -64,7 +65,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     @NotNull
     private final Map<ILanguage, RegisteredIdeaLanguageObject> loadedLanguages = new HashMap<>();
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
     private IdeaLanguageManagerImpl(@NotNull final IIdeaAttachmentManager objectManager) {

@@ -32,6 +32,7 @@ import org.metaborg.core.UnhandledException;
 import org.metaborg.core.language.*;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -52,7 +53,7 @@ public final class LanguageManager {
     @NotNull
     private final IIntelliJResourceService resourceService;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
     private LanguageManager(
@@ -88,7 +89,7 @@ public final class LanguageManager {
     private void loadLanguage(@NotNull final String id) {
         final URL url = this.getClass().getClassLoader().getResource("languages/" + id + ".spoofax-language");
         if (url == null) {
-            this.logger.error("Meta language '" + id + "' could not be resolved to a class path.");
+            this.logger.error("Meta language '{}' could not be resolved to a class path.", id);
             return;
         }
 

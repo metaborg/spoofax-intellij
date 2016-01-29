@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.StringFormatter;
 import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 /**
@@ -37,7 +38,7 @@ public final class CharacterLexer extends LexerBase {
     @NotNull
     private final SpoofaxTokenTypeManager tokenTypesManager;
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
     // The character buffer.
     private CharSequence buffer;
     // Zero-based offset of the start of the relevant character range.

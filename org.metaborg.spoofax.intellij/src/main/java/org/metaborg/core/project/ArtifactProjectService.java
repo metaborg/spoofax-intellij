@@ -28,6 +28,7 @@ import org.apache.commons.vfs2.FileSystemManager;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.vfs.FileNameUtils;
+import org.metaborg.util.log.ILogger;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -46,7 +47,7 @@ public final class ArtifactProjectService implements IProjectService {
     @NotNull
     private final Map<FileName, ArtifactProject> projects = new HashMap<>();
     @InjectLogger
-    private Logger logger;
+    private ILogger logger;
 
     @Inject
     /* package private */ ArtifactProjectService(@NotNull final FileSystemManager fileSystemManager) {
