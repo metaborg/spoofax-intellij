@@ -38,8 +38,7 @@ public interface IIdeaAttachmentManager {
      * @param language The language.
      * @return The corresponding {@link IdeaLanguageAttachment}.
      */
-    @NotNull
-    IdeaLanguageAttachment get(@NotNull ILanguage language);
+    IdeaLanguageAttachment get(ILanguage language);
 
     /**
      * Gets the {@link IdeaLanguageImplAttachment} for a particular language implementation.
@@ -50,6 +49,5 @@ public interface IIdeaAttachmentManager {
      * @param implementation The language implementation.
      * @return The corresponding {@link IdeaLanguageImplAttachment}.
      */
-    @NotNull
-    IdeaLanguageImplAttachment get(@NotNull ILanguageImpl implementation);
+    IdeaLanguageImplAttachment get(ILanguageImpl implementation);
 }

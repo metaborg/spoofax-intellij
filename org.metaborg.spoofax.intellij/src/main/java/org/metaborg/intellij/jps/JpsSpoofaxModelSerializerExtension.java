@@ -51,7 +51,6 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
      *
      * @return A list of project extension serializers.
      */
-    @NotNull
     @Override
     public final List<? extends JpsProjectExtensionSerializer> getProjectExtensionSerializers() {
         return Collections.singletonList(new SpoofaxProjectSerializer());
@@ -62,7 +61,6 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
      *
      * @return A list of global extension serializers.
      */
-    @NotNull
     @Override
     public final List<? extends JpsGlobalExtensionSerializer> getGlobalExtensionSerializers() {
         return Collections.singletonList(new SpoofaxGlobalSerializer());
@@ -73,7 +71,6 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
      *
      * @return A list of module properties serializers.
      */
-    @NotNull
     @Override
     public final List<? extends JpsModulePropertiesSerializer<?>> getModulePropertiesSerializers() {
         return Collections.singletonList(new SpoofaxModuleSerializer());

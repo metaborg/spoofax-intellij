@@ -42,7 +42,7 @@ public abstract class SpoofaxExtensionService {
      * @return The configuration.
      */
     @NotNull
-    public abstract SpoofaxGlobalConfig getConfiguration(@NotNull JpsGlobal global);
+    public abstract SpoofaxGlobalConfig getConfiguration(JpsGlobal global);
 
     /**
      * Sets the global configuration.
@@ -50,7 +50,7 @@ public abstract class SpoofaxExtensionService {
      * @param global The global.
      * @param config The configuration.
      */
-    public abstract void setConfiguration(@NotNull JpsGlobal global, @NotNull SpoofaxGlobalConfig config);
+    public abstract void setConfiguration(JpsGlobal global, SpoofaxGlobalConfig config);
 
     /**
      * Gets the project configuration.
@@ -59,7 +59,7 @@ public abstract class SpoofaxExtensionService {
      * @return The configuration.
      */
     @NotNull
-    public abstract SpoofaxProjectConfig getConfiguration(@NotNull JpsProject project);
+    public abstract SpoofaxProjectConfig getConfiguration(JpsProject project);
 
     /**
      * Sets the project configuration.
@@ -67,5 +67,5 @@ public abstract class SpoofaxExtensionService {
      * @param project The project.
      * @param config  The configuration.
      */
-    public abstract void setConfiguration(@NotNull JpsProject project, @NotNull SpoofaxProjectConfig config);
+    public abstract void setConfiguration(JpsProject project, SpoofaxProjectConfig config);
 }

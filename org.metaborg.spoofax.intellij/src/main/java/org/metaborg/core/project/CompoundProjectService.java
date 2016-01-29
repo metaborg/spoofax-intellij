@@ -38,11 +38,10 @@ import java.util.Set;
  */
 public final class CompoundProjectService implements IProjectService {
 
-    @NotNull
     private final Set<IProjectService> services;
 
     @Inject
-    /* package private */ CompoundProjectService(@NotNull @Compound final Set<IProjectService> services) {
+    /* package private */ CompoundProjectService( @Compound final Set<IProjectService> services) {
         this.services = services;
     }
 
@@ -54,7 +53,7 @@ public final class CompoundProjectService implements IProjectService {
      */
     @Nullable
     @Override
-    public IProject get(@NotNull final FileObject resource) {
+    public IProject get(final FileObject resource) {
         Preconditions.checkNotNull(resource);
 
         final List<IProject> projects = new ArrayList<>(1);

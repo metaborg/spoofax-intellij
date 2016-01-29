@@ -33,7 +33,6 @@ import java.util.Collection;
 public final class IntelliJResourceProvider extends AbstractOriginatingFileProvider {
 
     // @formatter:off
-    @NotNull
     public static final Collection<Capability> capabilities = ImmutableList.of(
             Capability.CREATE,
             Capability.DELETE,
@@ -56,7 +55,6 @@ public final class IntelliJResourceProvider extends AbstractOriginatingFileProvi
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     public final Collection<Capability> getCapabilities() {
         return capabilities;
     }
@@ -65,10 +63,9 @@ public final class IntelliJResourceProvider extends AbstractOriginatingFileProvi
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     protected final FileSystem doCreateFileSystem(
-            @NotNull final FileName rootName,
-            @NotNull final FileSystemOptions fileSystemOptions)
+            final FileName rootName,
+            final FileSystemOptions fileSystemOptions)
             throws FileSystemException {
         return new IntelliJFileSystem(rootName, null, fileSystemOptions);
     }

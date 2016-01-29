@@ -43,7 +43,7 @@ public class SpoofaxApplicationComponent implements ApplicationComponent {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(@NotNull final LanguageManager languageManager) {
+    private void inject(final LanguageManager languageManager) {
         this.languageManager = languageManager;
     }
 

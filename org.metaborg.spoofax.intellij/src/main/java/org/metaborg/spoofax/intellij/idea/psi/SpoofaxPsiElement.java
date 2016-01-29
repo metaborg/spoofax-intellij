@@ -81,7 +81,7 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements PsiElemen
      * @param visitor The visitor.
      */
     @Override
-    public void accept(@NotNull final PsiElementVisitor visitor) {
+    public void accept(final PsiElementVisitor visitor) {
         if (visitor instanceof SpoofaxPsiVisitor)
             ((SpoofaxPsiVisitor)visitor).visitProperty(this);
         else super.accept(visitor);

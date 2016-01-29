@@ -34,6 +34,5 @@ public interface IBuilderActionGroupFactory {
      * @param language The language implementation.
      * @return The created action group.
      */
-    @NotNull
-    BuilderActionGroup create(@NotNull ILanguageImpl language);
+    BuilderActionGroup create( ILanguageImpl language);
 }

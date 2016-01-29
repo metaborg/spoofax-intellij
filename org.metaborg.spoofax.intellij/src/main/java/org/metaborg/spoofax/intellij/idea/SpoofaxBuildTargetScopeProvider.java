@@ -60,9 +60,9 @@ public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvi
     @NotNull
     @Override
     public List<TargetTypeBuildScope> getBuildTargetScopes(
-            @NotNull final CompileScope baseScope,
-            @SuppressWarnings("deprecation") @NotNull final CompilerFilter filter,
-            @NotNull final Project project,
+            final CompileScope baseScope,
+            @SuppressWarnings("deprecation") final CompilerFilter filter,
+            final Project project,
             final boolean forceBuild) {
         return Collections.singletonList(CmdlineProtoUtil.createAllTargetsScope(this.postTargetType, forceBuild));
     }

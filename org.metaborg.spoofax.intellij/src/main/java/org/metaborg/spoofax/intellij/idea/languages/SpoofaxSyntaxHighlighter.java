@@ -52,7 +52,7 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
      *
      * @param lexer The lexer to use for highlighting.
      */
-    public SpoofaxSyntaxHighlighter(@NotNull final Lexer lexer) {
+    public SpoofaxSyntaxHighlighter(final Lexer lexer) {
         super();
         this.lexer = lexer;
     }
@@ -76,7 +76,7 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
      */
     @NotNull
     @Override
-    public TextAttributesKey[] getTokenHighlights(@NotNull final IElementType tokenType) {
+    public TextAttributesKey[] getTokenHighlights(final IElementType tokenType) {
         if (!(tokenType instanceof SpoofaxTokenType))
             return EMPTY_KEYS;
 
@@ -91,7 +91,7 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
      * @return The text attributes.
      */
     @NotNull
-    private TextAttributesKey[] getTextAttributesKeyForStyle(@NotNull final IStyle style) {
+    private TextAttributesKey[] getTextAttributesKeyForStyle(final IStyle style) {
         TextAttributesKey[] attributes = this.styleMap.getOrDefault(style, null);
         if (attributes == null) {
             final String name = "STYLE_" + style.hashCode();

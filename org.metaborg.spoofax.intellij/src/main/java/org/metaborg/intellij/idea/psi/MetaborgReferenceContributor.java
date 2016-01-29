@@ -54,7 +54,7 @@ public final class MetaborgReferenceContributor extends PsiReferenceContributor 
      * {@inheritDoc}
      */
     @Override
-    public void registerReferenceProviders(@NotNull final PsiReferenceRegistrar registrar) {
+    public void registerReferenceProviders(final PsiReferenceRegistrar registrar) {
         registrar.registerReferenceProvider(
                 PlatformPatterns.psiElement(MetaborgReferenceElement.class),
                 this.referenceProviderFactory.create()

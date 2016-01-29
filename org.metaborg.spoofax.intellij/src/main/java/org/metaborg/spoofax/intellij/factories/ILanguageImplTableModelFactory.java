@@ -34,6 +34,5 @@ public interface ILanguageImplTableModelFactory {
      * @param state The module configuration state.
      * @return The table model.
      */
-    @NotNull
-    LanguageImplTableModel create(@NotNull final ModuleConfigurationState state);
+    LanguageImplTableModel create(final ModuleConfigurationState state);
 }

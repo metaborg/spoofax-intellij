@@ -63,7 +63,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * @param name The name of the file.
      * @param fs   The file system.
      */
-    public IntelliJFileObject(@NotNull final AbstractFileName name, @NotNull final AbstractFileSystem fs) {
+    public IntelliJFileObject(final AbstractFileName name, final AbstractFileSystem fs) {
         super(name, fs);
     }
 
@@ -196,7 +196,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     protected final Map<String, Object> doGetAttributes() throws Exception {
         return super.doGetAttributes();
     }
@@ -205,7 +204,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    protected final void doSetAttribute(@NotNull final String attrName, @Nullable final Object value) throws Exception {
+    protected final void doSetAttribute(final String attrName, @Nullable final Object value) throws Exception {
         super.doSetAttribute(attrName, value);
     }
 
@@ -213,7 +212,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    protected final void doRemoveAttribute(@NotNull final String attrName) throws Exception {
+    protected final void doRemoveAttribute(final String attrName) throws Exception {
         super.doRemoveAttribute(attrName);
     }
 
@@ -221,7 +220,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     protected final String[] doListChildren() throws Exception {
         assert (isAttached());
 
@@ -239,7 +237,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     protected final FileObject[] doListChildrenResolved() throws Exception {
         assert (isAttached());
 
@@ -292,7 +289,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    protected final RandomAccessContent doGetRandomAccessContent(@NotNull final RandomAccessMode mode) throws
+    protected final RandomAccessContent doGetRandomAccessContent(final RandomAccessMode mode) throws
             Exception {
         assert (isAttached());
 
@@ -320,7 +317,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    protected final void doRename(@NotNull final FileObject newfile) throws Exception {
+    protected final void doRename(final FileObject newfile) throws Exception {
         assert (isAttached());
 
         ApplicationManager.getApplication().runWriteAction(() -> {
@@ -352,7 +349,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     protected final Certificate[] doGetCertificates() throws Exception {
         return super.doGetCertificates();
     }

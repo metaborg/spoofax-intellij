@@ -45,7 +45,7 @@ public abstract class SpoofaxConfig<TState, Self extends SpoofaxConfig<TState, S
      *
      * @param value The state.
      */
-    public final void loadState(@NotNull final TState value) {
+    public final void loadState(final TState value) {
         this.state = value;
     }
 
@@ -64,7 +64,7 @@ public abstract class SpoofaxConfig<TState, Self extends SpoofaxConfig<TState, S
      * @param modified The other configuration.
      */
     @Override
-    public void applyChanges(@NotNull final Self modified) {
+    public void applyChanges(final Self modified) {
         this.state = modified.getState();
     }
 

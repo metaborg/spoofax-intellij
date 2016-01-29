@@ -44,7 +44,7 @@ public final class MetaborgLoggerMembersInjector<T> implements MembersInjector<T
      *
      * @param field The field to inject.
      */
-    public MetaborgLoggerMembersInjector(@NotNull final Field field) {
+    public MetaborgLoggerMembersInjector(final Field field) {
         Preconditions.checkNotNull(field);
 
         this.field = field;
@@ -59,7 +59,7 @@ public final class MetaborgLoggerMembersInjector<T> implements MembersInjector<T
      * @return The created logger instance.
      */
     @NotNull
-    private static ILogger createLogger(@NotNull final Class<?> clazz) {
+    private static ILogger createLogger(final Class<?> clazz) {
         return LoggerUtils.logger(clazz);
     }
 
@@ -69,7 +69,7 @@ public final class MetaborgLoggerMembersInjector<T> implements MembersInjector<T
      * @param obj The object.
      */
     @Override
-    public void injectMembers(@NotNull final T obj) {
+    public void injectMembers(final T obj) {
         Preconditions.checkNotNull(obj);
 
         try {

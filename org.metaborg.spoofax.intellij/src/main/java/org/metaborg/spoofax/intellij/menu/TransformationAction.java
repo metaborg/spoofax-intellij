@@ -54,11 +54,11 @@ public final class TransformationAction<P, A, T> extends AnActionWithId {
 
     @Inject
     private TransformationAction(
-            @Assisted @NotNull final String id,
-            @Assisted @NotNull final ITransformAction action,
-            @Assisted @NotNull final ILanguageImpl language,
-            @NotNull final ActionHelper actionHelper,
-            @NotNull final IResourceTransformer transformer) {
+            @Assisted final String id,
+            @Assisted final ITransformAction action,
+            @Assisted final ILanguageImpl language,
+            final ActionHelper actionHelper,
+            final IResourceTransformer transformer) {
         super(id, action.name(), null, null);
         this.language = language;
         this.goal = action.goal();
@@ -67,7 +67,7 @@ public final class TransformationAction<P, A, T> extends AnActionWithId {
     }
 
     @Override
-    public void actionPerformed(@NotNull final AnActionEvent e) {
+    public void actionPerformed(final AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
         final List<TransformResource> resources = this.actionHelper.getActiveResources(e);

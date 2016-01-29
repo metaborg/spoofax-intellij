@@ -47,7 +47,7 @@ public final class ProjectServiceStub implements IProjectService {
      */
     @Nullable
     @Override
-    public IProject get(@NotNull final FileObject resource) {
+    public IProject get(final FileObject resource) {
         Preconditions.checkNotNull(resource);
 
         return this.project;

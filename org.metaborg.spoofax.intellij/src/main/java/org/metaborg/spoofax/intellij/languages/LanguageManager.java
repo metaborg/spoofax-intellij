@@ -57,9 +57,9 @@ public final class LanguageManager {
 
     @Inject
     private LanguageManager(
-            @NotNull final ILanguageService languageService,
-            @NotNull final ILanguageDiscoveryService discoveryService,
-            @NotNull final IIntelliJResourceService resourceService) {
+            final ILanguageService languageService,
+            final ILanguageDiscoveryService discoveryService,
+            final IIntelliJResourceService resourceService) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
         this.resourceService = resourceService;
@@ -86,7 +86,7 @@ public final class LanguageManager {
      *
      * @param id The ID.
      */
-    private void loadLanguage(@NotNull final String id) {
+    private void loadLanguage(final String id) {
         final URL url = this.getClass().getClassLoader().getResource("languages/" + id + ".spoofax-language");
         if (url == null) {
             this.logger.error("Meta language '{}' could not be resolved to a class path.", id);
@@ -108,7 +108,7 @@ public final class LanguageManager {
      * @param artifact The artifact file.
      * @return Whether a language was successfully loaded.
      */
-    public boolean loadLanguageFromArtifact(@NotNull final VirtualFile artifact) throws
+    public boolean loadLanguageFromArtifact(final VirtualFile artifact) throws
             IOException {
         Preconditions.checkNotNull(artifact);
 
@@ -121,7 +121,7 @@ public final class LanguageManager {
      * @param artifact The artifact file.
      * @return Whether a language was successfully loaded.
      */
-    public boolean loadLanguageFromArtifact(@NotNull final FileObject artifact) throws
+    public boolean loadLanguageFromArtifact(final FileObject artifact) throws
             IOException {
         Preconditions.checkNotNull(artifact);
 

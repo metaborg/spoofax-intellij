@@ -51,38 +51,28 @@ import java.util.HashMap;
 @Singleton
 public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
 
-    @NotNull
     private final ProxyFactory proxyFactory;
-    @NotNull
     private final IHighlightingLexerFactory lexerFactory;
-    @NotNull
     private final IParserDefinitionFactory parserDefinitionFactory;
-    @NotNull
     private final ICharacterLexerFactory characterLexerFactory;
-    @NotNull
     private final IFileElementTypeFactory fileElementTypeFactory;
-    @NotNull
     private final BuilderMenuBuilder builderMenuBuilder;
-    @NotNull
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
-    @NotNull
     private final HashMap<ILanguage, IdeaLanguageAttachment> languages = new HashMap<>();
-    @NotNull
     private final HashMap<ILanguageImpl, IdeaLanguageImplAttachment> implementations = new HashMap<>();
-    @NotNull
     private final SpoofaxAnnotator spoofaxAnnotator;
     @InjectLogger
     private ILogger logger;
 
     @Inject
     private IdeaAttachmentManager(
-            @NotNull final IHighlightingLexerFactory lexerFactory,
-            @NotNull final IParserDefinitionFactory parserDefinitionFactory,
-            @NotNull final ICharacterLexerFactory characterLexerFactory,
-            @NotNull final IFileElementTypeFactory fileElementTypeFactory,
-            @NotNull final BuilderMenuBuilder builderMenuBuilder,
-            @NotNull final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
-            @NotNull final SpoofaxAnnotator spoofaxAnnotator) {
+            final IHighlightingLexerFactory lexerFactory,
+            final IParserDefinitionFactory parserDefinitionFactory,
+            final ICharacterLexerFactory characterLexerFactory,
+            final IFileElementTypeFactory fileElementTypeFactory,
+            final BuilderMenuBuilder builderMenuBuilder,
+            final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
+            final SpoofaxAnnotator spoofaxAnnotator) {
         this.lexerFactory = lexerFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.characterLexerFactory = characterLexerFactory;
@@ -99,7 +89,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * {@inheritDoc}
      */
     @Override
-    public IdeaLanguageAttachment get(@NotNull final ILanguage language) {
+    public IdeaLanguageAttachment get(final ILanguage language) {
         IdeaLanguageAttachment obj = this.languages.get(language);
         if (obj == null) {
             obj = createLanguageAttachment(language);
@@ -115,7 +105,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * {@inheritDoc}
      */
     @Override
-    public IdeaLanguageImplAttachment get(@NotNull final ILanguageImpl implementation) {
+    public IdeaLanguageImplAttachment get(final ILanguageImpl implementation) {
         IdeaLanguageImplAttachment obj = this.implementations.get(implementation);
         if (obj == null) {
             obj = createLanguageImplAttachment(implementation);
@@ -139,8 +129,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @param language The language.
      * @return The created {@link IdeaLanguageAttachment}.
      */
-    @NotNull
-    private IdeaLanguageAttachment createLanguageAttachment(@NotNull final ILanguage language) {
+    private IdeaLanguageAttachment createLanguageAttachment(final ILanguage language) {
         final SpoofaxIdeaLanguage ideaLanguage = createIdeaLanguage(language);
         final SpoofaxFileType fileType = createFileType(ideaLanguage);
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
@@ -165,8 +154,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @param implementation The language implementation.
      * @return The created {@link IdeaLanguageImplAttachment}.
      */
-    @NotNull
-    private IdeaLanguageImplAttachment createLanguageImplAttachment(@NotNull final ILanguageImpl implementation) {
+    private IdeaLanguageImplAttachment createLanguageImplAttachment(final ILanguageImpl implementation) {
         final IdeaLanguageAttachment langAtt = get(implementation.belongsTo());
 
         final Lexer lexer = createLexer(implementation, langAtt.tokenTypeManager());
@@ -181,8 +169,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @param language The language.
      * @return The created IDEA language.
      */
-    @NotNull
-    private SpoofaxIdeaLanguage createIdeaLanguage(@NotNull final ILanguage language) {
+    private SpoofaxIdeaLanguage createIdeaLanguage(final ILanguage language) {
         try {
             this.proxyFactory.setSuperclass(SpoofaxIdeaLanguage.class);
             return (SpoofaxIdeaLanguage)this.proxyFactory.create(
@@ -201,8 +188,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @param language The IDEA language.
      * @return The created file type.
      */
-    @NotNull
-    private SpoofaxFileType createFileType(@NotNull final SpoofaxIdeaLanguage language) {
+    private SpoofaxFileType createFileType(final SpoofaxIdeaLanguage language) {
         try {
             this.proxyFactory.setSuperclass(SpoofaxFileType.class);
             return (SpoofaxFileType)this.proxyFactory.create(
@@ -216,10 +202,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         }
     }
 
-    @NotNull
     private IFileElementType createFileElementType(
-            @NotNull final Language language,
-            @NotNull final SpoofaxTokenTypeManager tokenTypesManager) {
+            final Language language,
+            final SpoofaxTokenTypeManager tokenTypesManager) {
         return this.fileElementTypeFactory.create(language, tokenTypesManager);
     }
 
@@ -229,8 +214,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @param language The IDEA language.
      * @return The created token type manager.
      */
-    @NotNull
-    private SpoofaxTokenTypeManager createTokenTypeManager(@NotNull final SpoofaxIdeaLanguage language) {
+    private SpoofaxTokenTypeManager createTokenTypeManager(final SpoofaxIdeaLanguage language) {
         return new SpoofaxTokenTypeManager(language);
     }
 
@@ -240,10 +224,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @param fileType The language file type.
      * @return The created parser definition.
      */
-    @NotNull
     private ParserDefinition createParserDefinition(
-            @NotNull final SpoofaxFileType fileType,
-            @NotNull final IFileElementType fileElementType) {
+            final SpoofaxFileType fileType,
+            final IFileElementType fileElementType) {
         return this.parserDefinitionFactory.create(fileType, fileElementType);
     }
 
@@ -254,10 +237,9 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @param tokenTypeManager The token type manager.
      * @return The lexer.
      */
-    @NotNull
     private Lexer createLexer(
-            @NotNull final ILanguageImpl language,
-            @NotNull final SpoofaxTokenTypeManager tokenTypeManager) {
+            final ILanguageImpl language,
+            final SpoofaxTokenTypeManager tokenTypeManager) {
         return this.lexerFactory.create(language, tokenTypeManager);
     }
 
@@ -266,7 +248,6 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      *
      * @return The syntax highlighter factory.
      */
-    @NotNull
     private SpoofaxSyntaxHighlighterFactory createSyntaxHighlighterFactory() {
         return this.syntaxHighlighterFactoryProvider.get();
     }
@@ -277,8 +258,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      * @param implementation The language implementation.
      * @return The action group.
      */
-    @NotNull
-    private DefaultActionGroup createAction(@NotNull final ILanguageImpl implementation) {
+    private DefaultActionGroup createAction(final ILanguageImpl implementation) {
         return this.builderMenuBuilder.build(implementation);
     }
 }

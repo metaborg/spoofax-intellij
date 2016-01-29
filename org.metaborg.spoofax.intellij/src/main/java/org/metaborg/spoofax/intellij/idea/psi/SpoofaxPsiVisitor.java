@@ -33,7 +33,7 @@ public final class SpoofaxPsiVisitor extends PsiElementVisitor {
      *
      * @param property The property.
      */
-    public void visitProperty(@NotNull final SpoofaxPsiElement property) {
+    public void visitProperty(final SpoofaxPsiElement property) {
         visitPsiElement(property);
     }
 
@@ -42,7 +42,7 @@ public final class SpoofaxPsiVisitor extends PsiElementVisitor {
      *
      * @param element The element.
      */
-    public void visitPsiElement(@NotNull final PsiElement element) {
+    public void visitPsiElement(final PsiElement element) {
         visitElement(element);
     }
 
@@ -51,7 +51,7 @@ public final class SpoofaxPsiVisitor extends PsiElementVisitor {
      *
      * @param property The property.
      */
-    public void visitProperty(@NotNull final SpoofaxIdentifier property) {
+    public void visitProperty(final SpoofaxIdentifier property) {
         visitPsiElement(property);
     }
 

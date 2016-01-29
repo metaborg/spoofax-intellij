@@ -58,7 +58,7 @@ public class SpoofaxIdentifier extends SpoofaxPsiElement implements PsiNamedElem
      * {@inheritDoc}
      */
     @Override
-    public PsiElement setName(@NonNls @NotNull final String name) throws IncorrectOperationException {
+    public PsiElement setName(@NonNls final String name) throws IncorrectOperationException {
         // TODO: Rename refactoring
         throw new RuntimeException("Not implemented.");
         // See also:

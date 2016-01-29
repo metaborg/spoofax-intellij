@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class ArtifactProject implements IProject {
 
-    @NotNull
     private final FileObject location;
 
     /**
@@ -38,14 +37,13 @@ public final class ArtifactProject implements IProject {
      *
      * @param location The location of the artifact's archive.
      */
-    public ArtifactProject(@NotNull final FileObject location) {
+    public ArtifactProject(final FileObject location) {
         Preconditions.checkNotNull(location);
 
         this.location = location;
     }
 
     @Override
-    @NotNull
     public FileObject location() {
         return this.location;
     }

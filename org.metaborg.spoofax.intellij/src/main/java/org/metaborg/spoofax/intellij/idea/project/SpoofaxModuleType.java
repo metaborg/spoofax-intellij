@@ -123,7 +123,7 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
     }
 
     @Override
-    public boolean isValidSdk(@NotNull final Module module, final Sdk projectSdk) {
+    public boolean isValidSdk(final Module module, final Sdk projectSdk) {
         return super.isValidSdk(module, projectSdk);
     }
 }

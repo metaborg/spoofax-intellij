@@ -42,15 +42,13 @@ import java.util.Map;
  */
 public final class ArtifactProjectService implements IProjectService {
 
-    @NotNull
     private final FileSystemManager fileSystemManager;
-    @NotNull
     private final Map<FileName, ArtifactProject> projects = new HashMap<>();
     @InjectLogger
     private ILogger logger;
 
     @Inject
-    /* package private */ ArtifactProjectService(@NotNull final FileSystemManager fileSystemManager) {
+    /* package private */ ArtifactProjectService(final FileSystemManager fileSystemManager) {
         this.fileSystemManager = fileSystemManager;
     }
 
@@ -59,7 +57,7 @@ public final class ArtifactProjectService implements IProjectService {
      */
     @Nullable
     @Override
-    public IProject get(@NotNull final FileObject resource) {
+    public IProject get(final FileObject resource) {
         Preconditions.checkNotNull(resource);
 
         final FileObject artifactRoot = getArtifactRoot(resource);
@@ -83,7 +81,7 @@ public final class ArtifactProjectService implements IProjectService {
      * @return The language artifact root; or <code>null</code> when there is none.
      */
     @Nullable
-    private FileObject getArtifactRoot(@NotNull final FileObject file) {
+    private FileObject getArtifactRoot(final FileObject file) {
         FileObject current = getRoot(file);
         while (current != null && !isArtifactRoot(current.getName())) {
             current = getParentRoot(current);
@@ -118,7 +116,7 @@ public final class ArtifactProjectService implements IProjectService {
      * @return <code>true</code> when the file is a language artifact root;
      * otherwise, <code>false</code>.
      */
-    private boolean isArtifactRoot(@NotNull final FileName fileName) {
+    private boolean isArtifactRoot(final FileName fileName) {
         final FileName outerFileName = FileNameUtils.getOuterFileName(fileName);
         if (outerFileName == null)
             return false;
@@ -132,7 +130,7 @@ public final class ArtifactProjectService implements IProjectService {
      * @return The parent root; or <code>null</code>.
      */
     @Nullable
-    private FileObject getParentRoot(@NotNull final FileObject file) {
+    private FileObject getParentRoot(final FileObject file) {
         try {
             return getRoot(file.getFileSystem().getParentLayer());
         } catch (final FileSystemException e) {

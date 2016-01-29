@@ -31,9 +31,7 @@ import org.metaborg.core.language.ILanguageImpl;
  */
 public final class BuilderActionGroup extends DefaultActionGroup {
 
-    @NotNull
     private final ILanguageImpl implementation;
-    @NotNull
     private final ActionHelper actionHelper;
 
     /**
@@ -43,15 +41,15 @@ public final class BuilderActionGroup extends DefaultActionGroup {
      */
     @Inject
     /* package private */ BuilderActionGroup(
-            @Assisted @NotNull final ILanguageImpl implementation,
-            @NotNull final ActionHelper actionHelper) {
+            @Assisted final ILanguageImpl implementation,
+            final ActionHelper actionHelper) {
         super(implementation.belongsTo().name(), true);
         this.implementation = implementation;
         this.actionHelper = actionHelper;
     }
 
     @Override
-    public void update(@NotNull final AnActionEvent e) {
+    public void update(final AnActionEvent e) {
         final boolean visible = this.actionHelper.isActiveFileLanguage(e, this.implementation);
         e.getPresentation().setVisible(visible);
         super.update(e);

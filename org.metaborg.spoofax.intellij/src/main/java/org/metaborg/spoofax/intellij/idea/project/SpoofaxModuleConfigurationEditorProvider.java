@@ -54,8 +54,8 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
 
     @Inject
     private void inject(
-            @NotNull final SpoofaxModuleType spoofaxModuleType,
-            @NotNull final ILanguageImplEditorFactory languageImplEditorFactory) {
+            final SpoofaxModuleType spoofaxModuleType,
+            final ILanguageImplEditorFactory languageImplEditorFactory) {
         this.spoofaxModuleType = spoofaxModuleType;
         this.languageImplEditorFactory = languageImplEditorFactory;
     }
@@ -65,7 +65,7 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
      */
     @Override
     @NotNull
-    public ModuleConfigurationEditor[] createEditors(@NotNull final ModuleConfigurationState state) {
+    public ModuleConfigurationEditor[] createEditors(final ModuleConfigurationState state) {
         final Module module = state.getRootModel().getModule();
         final ModuleType moduleType = ModuleType.get(module);
         if (moduleType != this.spoofaxModuleType) {

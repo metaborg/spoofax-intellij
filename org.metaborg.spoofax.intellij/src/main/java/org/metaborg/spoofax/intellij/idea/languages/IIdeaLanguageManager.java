@@ -34,7 +34,7 @@ public interface IIdeaLanguageManager {
      *
      * @param language The language to load.
      */
-    void load(@NotNull ILanguage language);
+    void load(ILanguage language);
 
     /**
      * Unloads a language.
@@ -43,7 +43,7 @@ public interface IIdeaLanguageManager {
      * @return <code>true</code> when the language was successfully unloaded;
      * otherwise, <code>false</code> when the language was not loaded.
      */
-    boolean unload(@NotNull ILanguage language);
+    boolean unload(ILanguage language);
 
     /**
      * Returns whether the specified language is currently loaded.
@@ -52,7 +52,7 @@ public interface IIdeaLanguageManager {
      * @return <code>true</code> when the language
      * is loaded; otherwise <code>false</code>.
      */
-    boolean isLoaded(@NotNull ILanguage language);
+    boolean isLoaded(ILanguage language);
 
     /**
      * Returns whether the specified language could ever be loaded by this manager.
@@ -63,14 +63,13 @@ public interface IIdeaLanguageManager {
      * @return <code>true</code> when this manager can load the language;
      * otherwise, <code>false</code>.
      */
-    boolean canLoad(@NotNull ILanguage language);
+    boolean canLoad(ILanguage language);
 
     /**
      * Returns a collection of loaded languages.
      *
      * @return The loaded languages.
      */
-    @NotNull
     Set<ILanguage> getLoaded();
 
 }

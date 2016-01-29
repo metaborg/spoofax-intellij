@@ -173,27 +173,27 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     @Override
     @Nullable
     public final ModuleWizardStep getCustomOptionsStep(
-            @NotNull final WizardContext context,
-            @NotNull final Disposable parentDisposable) {
+            final WizardContext context,
+            final Disposable parentDisposable) {
 
         return new MetaborgModuleWizardStep(this, context);
     }
 
     @Override
     public ModuleWizardStep[] createWizardSteps(
-            @NotNull final WizardContext wizardContext, @NotNull final ModulesProvider modulesProvider) {
+            final WizardContext wizardContext, final ModulesProvider modulesProvider) {
         return ModuleWizardStep.EMPTY_ARRAY;
     }
 
     @Override
     @Nullable
-    public final ModuleWizardStep modifySettingsStep(@NotNull final SettingsStep settingsStep) {
+    public final ModuleWizardStep modifySettingsStep(final SettingsStep settingsStep) {
         return SpoofaxModuleType.getModuleType().modifySettingsStep(settingsStep, this);
     }
 
     @Override
     @NotNull
-    public final ModuleWizardStep modifyProjectTypeStep(@NotNull final SettingsStep settingsStep) {
+    public final ModuleWizardStep modifyProjectTypeStep(final SettingsStep settingsStep) {
         final ModuleWizardStep wizardStep = StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
         assert wizardStep != null;
         return wizardStep;
@@ -206,7 +206,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      * @throws ConfigurationException
      */
     @Override
-    public void setupRootModel(@NotNull final ModifiableRootModel rootModel) throws ConfigurationException {
+    public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
 
         final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
         if (contentEntry != null) {
@@ -249,7 +249,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      * @param project  The project.
      * @param runnable The runnable.
      */
-    private static void runWhenInitialized(@NotNull final Project project, @NotNull final Runnable runnable) {
+    private static void runWhenInitialized(final Project project, final Runnable runnable) {
         if (project.isDisposed())
             // Project is disposed. Nothing to do.
             return;
@@ -278,7 +278,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      *
      * @param rootModel The root model.
      */
-    private void setSdk(@NotNull final ModifiableRootModel rootModel) {
+    private void setSdk(final ModifiableRootModel rootModel) {
         if (this.myJdk != null) {
             // An SDK was selected in the wizard.
             rootModel.setSdk(this.myJdk);
@@ -294,7 +294,7 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      * @param languageSpec The language specification.
      */
     private void generateModuleStructure(
-            @NotNull final ILanguageSpec languageSpec) {
+            final ILanguageSpec languageSpec) {
         final String name = getName();
         final LanguageIdentifier identifier = getLanguageIdentifier();
 

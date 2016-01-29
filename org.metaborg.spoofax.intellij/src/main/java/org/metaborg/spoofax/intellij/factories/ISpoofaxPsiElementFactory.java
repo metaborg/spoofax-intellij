@@ -34,7 +34,6 @@ public interface ISpoofaxPsiElementFactory {
      * @param node The AST node.
      * @return The created PSI element.
      */
-    @NotNull
-    SpoofaxPsiElement create(@NotNull final ASTNode node);
+    SpoofaxPsiElement create(final ASTNode node);
 
 }

@@ -55,11 +55,11 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
 
     @Inject
     /* package private */ SpoofaxParserDefinition(
-            @Assisted @NotNull final SpoofaxFileType fileType,
-            @Assisted @NotNull final IFileElementType fileElementType,
-            @NotNull final ILexerParserManager lexerParserManager,
-            @NotNull final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
-            @NotNull final IIntelliJResourceService resourceService,
+            @Assisted final SpoofaxFileType fileType,
+            @Assisted final IFileElementType fileElementType,
+            final ILexerParserManager lexerParserManager,
+            final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
+            final IIntelliJResourceService resourceService,
             final ISpoofaxPsiElementFactory psiElementFactory) {
         this.fileType = fileType;
         this.fileElement = fileElementType;
@@ -77,7 +77,7 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
      */
     @NotNull
     @Override
-    public Lexer createLexer(@NotNull final Project project) {
+    public Lexer createLexer(final Project project) {
         return this.lexerParserManager.createCharacterLexer(this.fileType.getSpoofaxLanguage());
     }
 
@@ -88,7 +88,7 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
      * @return The parser.
      */
     @Override
-    public PsiParser createParser(@NotNull final Project project) {
+    public PsiParser createParser(final Project project) {
         throw new UnsupportedOperationException("See SpoofaxFileElementType class.");
     }
 
@@ -143,7 +143,7 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
      */
     @NotNull
     @Override
-    public PsiElement createElement(@NotNull final ASTNode node) {
+    public PsiElement createElement(final ASTNode node) {
         return this.psiElementFactory.create(node);
     }
 
@@ -155,7 +155,7 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
      */
     @Override
     @NotNull
-    public PsiFile createFile(@NotNull final FileViewProvider viewProvider) {
+    public PsiFile createFile(final FileViewProvider viewProvider) {
         return new SpoofaxFile(viewProvider, this.fileType);
     }
 
@@ -169,8 +169,8 @@ public final class SpoofaxParserDefinition implements ParserDefinition {
     @Override
     @NotNull
     public SpaceRequirements spaceExistanceTypeBetweenTokens(
-            @NotNull final ASTNode left,
-            @NotNull final ASTNode right) {
+            final ASTNode left,
+            final ASTNode right) {
         return SpaceRequirements.MAY;
     }
 }

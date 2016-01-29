@@ -28,7 +28,7 @@ import javax.swing.*;
 public class LanguageCellRenderer extends ColoredTreeCellRenderer {
     @Override
     public void customizeCellRenderer(
-            @NotNull final JTree tree,
+            final JTree tree,
             final Object value,
             final boolean selected,
             final boolean expanded,

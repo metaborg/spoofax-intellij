@@ -37,8 +37,7 @@ public interface IIntelliJResourceService extends IResourceService {
      * @param resource The IntelliJ resource to convert.
      * @return The corresponding VFS resource.
      */
-    @NotNull
-    FileObject resolve(@NotNull VirtualFile resource);
+    FileObject resolve(VirtualFile resource);
 
     /**
      * Converts a VFS resource into an IntelliJ resource, if possible.
@@ -47,7 +46,6 @@ public interface IIntelliJResourceService extends IResourceService {
      * @return The corresponding IntelliJ resource,
      * or <code>null</code> if it could not be converted.
      */
-    @Nullable
-    VirtualFile unresolve(@NotNull FileObject resource);
+    VirtualFile unresolve(FileObject resource);
 
 }

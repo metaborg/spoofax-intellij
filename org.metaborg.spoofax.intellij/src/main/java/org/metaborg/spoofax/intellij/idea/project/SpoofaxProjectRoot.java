@@ -34,7 +34,7 @@ public final class SpoofaxProjectRoot extends DetectedProjectRoot {
      *
      * @param directory The root directory.
      */
-    public SpoofaxProjectRoot(@NotNull final File directory) {
+    public SpoofaxProjectRoot(final File directory) {
         super(directory);
     }
 

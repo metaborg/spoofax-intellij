@@ -31,7 +31,6 @@ import javax.swing.*;
  */
 public abstract class AnActionWithId extends AnAction {
 
-    @NotNull
     private final String id;
 
     /**
@@ -39,7 +38,7 @@ public abstract class AnActionWithId extends AnAction {
      *
      * @param id The ID of the action.
      */
-    protected AnActionWithId(@NotNull final String id) {
+    protected AnActionWithId(final String id) {
         this(id, null, null, null);
     }
 
@@ -52,7 +51,7 @@ public abstract class AnActionWithId extends AnAction {
      * @param icon        The icon of the action; or <code>null</code>.
      */
     protected AnActionWithId(
-            @NotNull final String id,
+            final String id,
             @Nullable final String text,
             @Nullable final String description,
             @Nullable final Icon icon) {
@@ -66,7 +65,7 @@ public abstract class AnActionWithId extends AnAction {
      * @param id   The ID of the action.
      * @param icon The icon of the action; or <code>null</code>.
      */
-    protected AnActionWithId(@NotNull final String id, final Icon icon) {
+    protected AnActionWithId(final String id, final Icon icon) {
         this(id, null, null, icon);
     }
 
@@ -76,7 +75,7 @@ public abstract class AnActionWithId extends AnAction {
      * @param id   The ID of the action.
      * @param text The text of the action; or <code>null</code>.
      */
-    protected AnActionWithId(@NotNull final String id, @Nullable final String text) {
+    protected AnActionWithId(final String id, @Nullable final String text) {
         this(id, text, null, null);
     }
 
@@ -85,7 +84,6 @@ public abstract class AnActionWithId extends AnAction {
      *
      * @return The ID of the action.
      */
-    @NotNull
     public String id() {
         return this.id;
     }

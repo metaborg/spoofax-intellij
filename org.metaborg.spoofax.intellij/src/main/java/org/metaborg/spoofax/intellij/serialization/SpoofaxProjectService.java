@@ -42,7 +42,7 @@ public final class SpoofaxProjectService implements PersistentStateComponent<Spo
     }
 
     @NotNull
-    public static SpoofaxProjectService getInstance(@NotNull final Project project) {
+    public static SpoofaxProjectService getInstance(final Project project) {
         final SpoofaxProjectService service = ServiceManager.getService(project, SpoofaxProjectService.class);
         assert service != null;
         return service;

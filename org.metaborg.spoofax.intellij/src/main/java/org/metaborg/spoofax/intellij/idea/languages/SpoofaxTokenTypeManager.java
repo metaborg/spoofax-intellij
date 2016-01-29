@@ -50,7 +50,7 @@ public final class SpoofaxTokenTypeManager {
      *
      * @param language The IDEA language.
      */
-    public SpoofaxTokenTypeManager(@NotNull final SpoofaxIdeaLanguage language) {
+    public SpoofaxTokenTypeManager(final SpoofaxIdeaLanguage language) {
         this.language = language;
         this.characterTokenType = new CharacterTokenType(language);
         this.elementType = new SpoofaxElementType(language);

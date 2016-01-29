@@ -35,7 +35,6 @@ import org.slf4j.Logger;
  */
 public final class CharacterLexer extends LexerBase {
 
-    @NotNull
     private final SpoofaxTokenTypeManager tokenTypesManager;
     @InjectLogger
     private ILogger logger;
@@ -49,7 +48,7 @@ public final class CharacterLexer extends LexerBase {
     private int offst;
 
     @Inject
-    private CharacterLexer(@Assisted @NotNull final SpoofaxTokenTypeManager tokenTypesManager) {
+    private CharacterLexer(@Assisted final SpoofaxTokenTypeManager tokenTypesManager) {
         super();
         this.tokenTypesManager = tokenTypesManager;
     }
@@ -64,7 +63,7 @@ public final class CharacterLexer extends LexerBase {
      */
     @Override
     public void start(
-            @NotNull final CharSequence buffer,
+            final CharSequence buffer,
             final int bufferStart,
             final int bufferEnd,
             final int initialState) {
@@ -149,7 +148,6 @@ public final class CharacterLexer extends LexerBase {
      *
      * @return The character buffer.
      */
-    @NotNull
     @Override
     public CharSequence getBufferSequence() {
         return this.buffer;

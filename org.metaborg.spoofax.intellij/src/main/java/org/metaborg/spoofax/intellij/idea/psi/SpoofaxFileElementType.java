@@ -103,7 +103,7 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
 
     @Override
     protected ASTNode doParseContents(
-            @NotNull final ASTNode chameleon, @NotNull final PsiElement psi) {
+            final ASTNode chameleon, final PsiElement psi) {
         final Project project = psi.getProject();
 
         final SpoofaxIdeaLanguage language = getSpoofaxLanguage();
@@ -147,7 +147,7 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
      * or <code>null</code> when the file exists only in memory.
      */
     @Nullable
-    private FileObject getResource(final PsiElement element, @NotNull final PsiBuilder builder) {
+    private FileObject getResource(final PsiElement element, final PsiBuilder builder) {
         final PsiFile file = element.getContainingFile();
 //        PsiFile file = builder.getUserDataUnprotected(FileContextUtil.CONTAINING_FILE_KEY);
         FileObject fileObject = null;
@@ -171,7 +171,7 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
     private ILanguageImpl getLanguageImpl(
             @Nullable final FileObject resource,
             final PsiElement psi,
-            @NotNull final IElementType root) {
+            final IElementType root) {
         final ILanguage language = ((SpoofaxIdeaLanguage)root.getLanguage()).language();
         final IProject project = this.projectService.get(psi);
 

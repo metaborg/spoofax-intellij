@@ -43,7 +43,6 @@ public final class IdentifierUtils {
      *
      * @return The created identifier.
      */
-    @NotNull
     public static String create() {
         return create("");
     }
@@ -54,7 +53,6 @@ public final class IdentifierUtils {
      * @param prefix The identifier prefix.
      * @return The created identifier.
      */
-    @NotNull
     public static String create(@Nullable final String prefix) {
         final int value = counter.getAndIncrement();
         return ((prefix != null) ? prefix : "") + value;

@@ -44,7 +44,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
     @NotNull
     private final IJpsProjectService projectService;
 
-    protected SpoofaxTargetType(@NotNull final String typeId, @NotNull final IJpsProjectService projectService) {
+    protected SpoofaxTargetType(final String typeId, final IJpsProjectService projectService) {
         super(typeId);
         this.projectService = projectService;
     }
@@ -56,7 +56,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      * @return The created build target.
      */
     @NotNull
-    public abstract T createTarget(@NotNull MetaborgJpsProject project);
+    public abstract T createTarget(MetaborgJpsProject project);
 
     /**
      * Creates a build target for the specified JPS module.
@@ -65,7 +65,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      * @return The created build target.
      */
     @NotNull
-    public final T createTarget(@NotNull final JpsModule module) {
+    public final T createTarget(final JpsModule module) {
         MetaborgJpsProject project = this.projectService.get(module);
         if (project == null)
             project = this.projectService.create(module);
@@ -80,7 +80,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      */
     @NotNull
     @Override
-    public final List<T> computeAllTargets(@NotNull final JpsModel model) {
+    public final List<T> computeAllTargets(final JpsModel model) {
         // Default implementation.
         final List<T> targets = new ArrayList<>();
         for (final JpsTypedModule<JpsDummyElement> module : model.getProject().getModules(JpsSpoofaxModuleType.INSTANCE)) {
@@ -97,12 +97,12 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      */
     @NotNull
     @Override
-    public final BuildTargetLoader<T> createLoader(@NotNull final JpsModel model) {
+    public final BuildTargetLoader<T> createLoader(final JpsModel model) {
         // Default implementation.
         return new BuildTargetLoader<T>() {
             @Nullable
             @Override
-            public T createTarget(@NotNull final String targetId) {
+            public T createTarget(final String targetId) {
                 for (final T target : computeAllTargets(model)) {
                     if (target.getId().equals(targetId))
                         return target;

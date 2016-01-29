@@ -77,7 +77,7 @@ public abstract class MetaborgReferenceProvider extends PsiReferenceProvider {
     @NotNull
     @Override
     public final PsiReference[] getReferencesByElement(
-            @NotNull final PsiElement element, @NotNull final ProcessingContext context) {
+            final PsiElement element, final ProcessingContext context) {
         // TODO: MetaborgFile
         final SpoofaxFile fileElement = (SpoofaxFile)element.getContainingFile();
         final ILanguage language = fileElement.getFileType().getSpoofaxLanguage();

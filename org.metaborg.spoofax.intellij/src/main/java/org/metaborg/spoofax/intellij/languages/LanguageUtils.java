@@ -45,7 +45,7 @@ public final class LanguageUtils {
      * @return <code>true</code> when the language is an actual language;
      * otherwise, <code>false</code> when the language is not an actual language.
      */
-    public static boolean isRealLanguage(@NotNull final ILanguage language) {
+    public static boolean isRealLanguage(final ILanguage language) {
         // For now, we test this by checking the file extensions.
         // If there are none, then it's not a language.
         return !getExtensions(language).isEmpty();
@@ -58,7 +58,7 @@ public final class LanguageUtils {
      * @return A set of extensions, which may be empty.
      */
     @NotNull
-    public static Set<String> getExtensions(@NotNull final ILanguage language) {
+    public static Set<String> getExtensions(final ILanguage language) {
         // FIXME: The extensions for a language should be stored in the ILanguage object,
         // not the ILanguageImpl objects.
         // For now, we take all known language implementations and use all those extensions.
@@ -81,7 +81,7 @@ public final class LanguageUtils {
      * @return The default file extension; or <code>null</code>.
      */
     @NotNull
-    public static String getDefaultExtension(@NotNull final ILanguage language) {
+    public static String getDefaultExtension(final ILanguage language) {
         // FIXME: The first of a set is non-deterministic! Also, shouldn't every language
         // have a settable default extension that is used when files of that language are created?
         final Set<String> extensions = getExtensions(language);

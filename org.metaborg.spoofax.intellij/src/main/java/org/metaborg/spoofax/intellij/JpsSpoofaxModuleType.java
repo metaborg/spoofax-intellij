@@ -32,7 +32,6 @@ import org.jetbrains.jps.model.module.JpsModuleType;
 public final class JpsSpoofaxModuleType extends JpsElementTypeWithDummyProperties
         implements JpsModuleType<JpsDummyElement> {
 
-    @NotNull
     public static final JpsSpoofaxModuleType INSTANCE = new JpsSpoofaxModuleType();
 
     private JpsSpoofaxModuleType() {

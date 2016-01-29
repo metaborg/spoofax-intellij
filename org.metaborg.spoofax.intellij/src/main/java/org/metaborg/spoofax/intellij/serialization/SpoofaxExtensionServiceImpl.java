@@ -33,7 +33,7 @@ public final class SpoofaxExtensionServiceImpl extends SpoofaxExtensionService {
      */
     @NotNull
     @Override
-    public final SpoofaxGlobalConfig getConfiguration(@NotNull final JpsGlobal global) {
+    public final SpoofaxGlobalConfig getConfiguration(final JpsGlobal global) {
         return global.getContainer().getChild(SpoofaxGlobalConfig.ROLE);
     }
 
@@ -41,7 +41,7 @@ public final class SpoofaxExtensionServiceImpl extends SpoofaxExtensionService {
      * {@inheritDoc}
      */
     @Override
-    public final void setConfiguration(@NotNull final JpsGlobal global, @NotNull final SpoofaxGlobalConfig config) {
+    public final void setConfiguration(final JpsGlobal global, final SpoofaxGlobalConfig config) {
         global.getContainer().setChild(SpoofaxGlobalConfig.ROLE, config);
     }
 
@@ -51,7 +51,7 @@ public final class SpoofaxExtensionServiceImpl extends SpoofaxExtensionService {
      */
     @NotNull
     @Override
-    public final SpoofaxProjectConfig getConfiguration(@NotNull final JpsProject project) {
+    public final SpoofaxProjectConfig getConfiguration(final JpsProject project) {
         return project.getContainer().getChild(SpoofaxProjectConfig.ROLE);
     }
 
@@ -59,7 +59,7 @@ public final class SpoofaxExtensionServiceImpl extends SpoofaxExtensionService {
      * {@inheritDoc}
      */
     @Override
-    public final void setConfiguration(@NotNull final JpsProject project, @NotNull final SpoofaxProjectConfig config) {
+    public final void setConfiguration(final JpsProject project, final SpoofaxProjectConfig config) {
         project.getContainer().setChild(SpoofaxProjectConfig.ROLE, config);
     }
 }

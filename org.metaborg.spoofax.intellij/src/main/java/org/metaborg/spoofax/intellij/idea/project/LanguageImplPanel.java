@@ -33,19 +33,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public final class LanguageImplPanel extends JPanel {
-    @NotNull
     private final ModuleConfigurationState state;
-    @NotNull
     private final LanguageImplTableModel model;
-    @NotNull
     private final TableView<LanguageImplItem> table;
-    @NotNull
     private final ILanguageImplTableModelFactory languageImplTableModelFactory;
 
     @Inject
     /* package private */ LanguageImplPanel(
-            @Assisted @NotNull final ModuleConfigurationState state,
-            @NotNull final ILanguageImplTableModelFactory languageImplTableModelFactory) {
+            @Assisted final ModuleConfigurationState state,
+            final ILanguageImplTableModelFactory languageImplTableModelFactory) {
         super(new BorderLayout());
 
         this.state = state;
@@ -56,7 +52,7 @@ public final class LanguageImplPanel extends JPanel {
         new TableViewSpeedSearch<LanguageImplItem>(this.table) {
             @Nullable
             @Override
-            protected String getItemText(@NotNull final LanguageImplItem item) {
+            protected String getItemText(final LanguageImplItem item) {
                 return item.language().name();
             }
         };

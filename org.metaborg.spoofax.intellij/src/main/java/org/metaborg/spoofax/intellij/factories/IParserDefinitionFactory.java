@@ -36,7 +36,6 @@ public interface IParserDefinitionFactory {
      * @param fileElementType The file element type.
      * @return The created parser definition.
      */
-    @NotNull
-    ParserDefinition create(@NotNull SpoofaxFileType fileType, @NotNull IFileElementType fileElementType);
+    ParserDefinition create(SpoofaxFileType fileType, IFileElementType fileElementType);
 
 }

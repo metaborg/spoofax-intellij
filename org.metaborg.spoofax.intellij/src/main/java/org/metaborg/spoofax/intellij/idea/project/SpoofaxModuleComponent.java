@@ -56,16 +56,16 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public SpoofaxModuleComponent(@NotNull final Module module) {
+    public SpoofaxModuleComponent(final Module module) {
         this.module = module;
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     @Inject
     private void inject(
-            @NotNull final IIdeaProjectService projectService,
-            @NotNull final IIdeaProjectFactory projectFactory,
-            @NotNull final IIntelliJResourceService resourceService) {
+            final IIdeaProjectService projectService,
+            final IIdeaProjectFactory projectFactory,
+            final IIntelliJResourceService resourceService) {
         this.projectService = projectService;
         this.projectFactory = projectFactory;
         this.resourceService = resourceService;
@@ -142,7 +142,7 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
      * @return The root directory; or <code>null</code>.
      */
     @Nullable
-    private FileObject getRootDirectory(@NotNull final Module module) {
+    private FileObject getRootDirectory(final Module module) {
         try {
             return this.resourceService.resolve(module.getModuleFilePath()).getParent();
         } catch (final FileSystemException e) {

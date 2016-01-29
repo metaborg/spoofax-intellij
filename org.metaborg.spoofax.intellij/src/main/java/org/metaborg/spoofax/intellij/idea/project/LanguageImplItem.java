@@ -34,22 +34,19 @@ import java.util.List;
  */
 public final class LanguageImplItem {
 
-    @NotNull
     private final ILanguage language;
     @Nullable
     private ILanguageImpl currentImplementation;
 
-    public LanguageImplItem(@NotNull final ILanguage language) {
+    public LanguageImplItem(final ILanguage language) {
         this.language = language;
     }
 
-    @NotNull
     public final ILanguage language() { return this.language; }
 
     @Nullable
     public final ILanguageImpl currentImplementation() { return this.currentImplementation; }
 
-    @NotNull
     public final List<ILanguageImpl> getImplementations() {
         final ArrayList<ILanguageImpl> implementations = new ArrayList<>();
         implementations.add(null);

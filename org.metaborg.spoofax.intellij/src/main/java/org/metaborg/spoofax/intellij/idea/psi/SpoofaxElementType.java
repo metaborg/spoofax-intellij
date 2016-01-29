@@ -48,7 +48,7 @@ public class SpoofaxElementType extends IElementType {
      */
     protected SpoofaxElementType(
             @Nullable final SpoofaxIdeaLanguage language,
-            @NotNull @NonNls final String debugName) {
+            @NonNls final String debugName) {
         super(debugName, language);
     }
 

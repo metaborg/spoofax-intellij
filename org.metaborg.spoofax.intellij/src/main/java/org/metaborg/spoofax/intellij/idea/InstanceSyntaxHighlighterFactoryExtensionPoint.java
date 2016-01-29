@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
  * This wrapper is used to provide an instance to a language extension point instead of a class.
  */
 public final class InstanceSyntaxHighlighterFactoryExtensionPoint extends SyntaxHighlighterFactoryEP {
-    @NotNull
     private final SyntaxHighlighterFactory instance;
 
     /**
@@ -40,15 +39,14 @@ public final class InstanceSyntaxHighlighterFactoryExtensionPoint extends Syntax
      * @param instance The instance.
      */
     public InstanceSyntaxHighlighterFactoryExtensionPoint(
-            @NotNull final Language language,
-            @NotNull final SyntaxHighlighterFactory instance) {
+            final Language language,
+            final SyntaxHighlighterFactory instance) {
         super();
         this.instance = instance;
         this.language = language.getID();
         this.implementationClass = null;
     }
 
-    @NotNull
     @Override
     public final SyntaxHighlighterFactory getInstance() {
         return this.instance;

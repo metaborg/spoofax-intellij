@@ -34,6 +34,5 @@ public interface ILanguageImplPanelFactory {
      * @param state The module configuration state.
      * @return The table panel.
      */
-    @NotNull
-    LanguageImplPanel create(@NotNull final ModuleConfigurationState state);
+    LanguageImplPanel create(final ModuleConfigurationState state);
 }

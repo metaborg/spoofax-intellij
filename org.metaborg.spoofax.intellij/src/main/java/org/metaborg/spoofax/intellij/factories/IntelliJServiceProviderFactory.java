@@ -49,7 +49,7 @@ public final class IntelliJServiceProviderFactory {
      * @param serviceClass The service class.
      * @return A {@link Module} that binds the provider.
      */
-    public <T> Module provide(@NotNull final Class<T> serviceClass) {
+    public <T> Module provide(final Class<T> serviceClass) {
         return new AbstractModule() {
             @Override
             protected void configure() {

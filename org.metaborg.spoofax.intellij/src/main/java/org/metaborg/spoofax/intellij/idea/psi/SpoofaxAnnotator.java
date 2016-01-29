@@ -74,14 +74,14 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
 
     @Nullable
     @Override
-    public SpoofaxAnnotationInfo collectInformation(@NotNull final PsiFile file) {
+    public SpoofaxAnnotationInfo collectInformation(final PsiFile file) {
         throw new UnsupportedOperationException("This method is not expected to be called, ever.");
     }
 
     @Nullable
     @Override
     public SpoofaxAnnotationInfo collectInformation(
-            @NotNull final PsiFile file, @NotNull final Editor editor, final boolean hasErrors) {
+            final PsiFile file, final Editor editor, final boolean hasErrors) {
 
         try {
             final FileObject resource = this.resourceService.resolve(file.getVirtualFile());
@@ -106,9 +106,9 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
 
     @Override
     public void apply(
-            @NotNull final PsiFile file,
+            final PsiFile file,
             final AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisResult,
-            @NotNull final AnnotationHolder holder) {
+            final AnnotationHolder holder) {
         for (final IMessage message : analysisResult.messages) {
             final TextRange range = SourceRegionUtil.toTextRange(message.region());
             final HighlightSeverity severity;

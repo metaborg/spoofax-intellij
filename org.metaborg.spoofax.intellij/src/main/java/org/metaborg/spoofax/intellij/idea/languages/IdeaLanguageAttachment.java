@@ -64,13 +64,13 @@ public final class IdeaLanguageAttachment {
      * @param characterLexerFactory    The character lexer factory.
      */
     /* package private */ IdeaLanguageAttachment(
-            @NotNull final SpoofaxIdeaLanguage ideaLanguage,
-            @NotNull final SpoofaxFileType fileType,
-            @NotNull final SpoofaxTokenTypeManager tokenTypeManager,
-            @NotNull final ParserDefinition parserDefinition,
-            @NotNull final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory,
-            @NotNull final ICharacterLexerFactory characterLexerFactory,
-            @NotNull final SpoofaxAnnotator spoofaxAnnotator) {
+            final SpoofaxIdeaLanguage ideaLanguage,
+            final SpoofaxFileType fileType,
+            final SpoofaxTokenTypeManager tokenTypeManager,
+            final ParserDefinition parserDefinition,
+            final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory,
+            final ICharacterLexerFactory characterLexerFactory,
+            final SpoofaxAnnotator spoofaxAnnotator) {
         this.ideaLanguage = ideaLanguage;
         this.fileType = fileType;
         this.tokenTypeManager = tokenTypeManager;

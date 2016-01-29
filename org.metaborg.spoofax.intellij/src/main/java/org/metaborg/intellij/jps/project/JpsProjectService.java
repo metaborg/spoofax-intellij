@@ -40,13 +40,11 @@ import java.util.List;
 @Singleton
 public final class JpsProjectService implements IJpsProjectService {
 
-    @NotNull
     private final List<MetaborgJpsProject> projects = new ArrayList<>();
-    @NotNull
     private final IResourceService resourceService;
 
     @Inject
-    /* package private */ JpsProjectService(@NotNull final IResourceService resourceService) {
+    /* package private */ JpsProjectService(final IResourceService resourceService) {
         this.resourceService = resourceService;
     }
 
@@ -54,8 +52,7 @@ public final class JpsProjectService implements IJpsProjectService {
      * {@inheritDoc}
      */
     @Override
-    @NotNull
-    public MetaborgJpsProject create(@NotNull final JpsModule module) {
+    public MetaborgJpsProject create(final JpsModule module) {
         final FileObject location = this.resourceService.resolve(module.getContentRootsList().getUrls().get(0));
         final MetaborgJpsProject project = new MetaborgJpsProject(module, location);
         this.projects.add(project);
@@ -67,7 +64,7 @@ public final class JpsProjectService implements IJpsProjectService {
      */
     @Override
     @Nullable
-    public MetaborgJpsProject get(@NotNull final JpsModule module) {
+    public MetaborgJpsProject get(final JpsModule module) {
         for (final MetaborgJpsProject project : this.projects) {
             if (project.module().equals(module))
                 return project;
@@ -80,7 +77,7 @@ public final class JpsProjectService implements IJpsProjectService {
      */
     @Nullable
     @Override
-    public MetaborgJpsProject get(@NotNull final FileObject resource) {
+    public MetaborgJpsProject get(final FileObject resource) {
         for (final MetaborgJpsProject project : this.projects) {
             final JpsModule module = project.module();
             if (isInContentRoot(module, resource))
@@ -97,7 +94,7 @@ public final class JpsProjectService implements IJpsProjectService {
      * @return <code>true</code> when the file is in a content root of the module;
      * otherwise, <code>false</code>.
      */
-    private boolean isInContentRoot(@NotNull final JpsModule module, @NotNull final FileObject resource) {
+    private boolean isInContentRoot(final JpsModule module, final FileObject resource) {
         final JpsUrlList contentRootsList = module.getContentRootsList();
         for (final String url : contentRootsList.getUrls()) {
             if (isEqualOrDescendant(url, resource))
@@ -114,7 +111,7 @@ public final class JpsProjectService implements IJpsProjectService {
      * @return <code>true</code> when the file is equal to or a descendant of the path;
      * otherwise, <code>false</code>.
      */
-    private boolean isEqualOrDescendant(@NotNull final String ancestor, @NotNull final FileObject descendant) {
+    private boolean isEqualOrDescendant(final String ancestor, final FileObject descendant) {
         final FileObject contentRoot = this.resourceService.resolve(ancestor);
         final FileName lhs = contentRoot.getName();
         final FileName rhs = descendant.getName();

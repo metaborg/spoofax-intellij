@@ -42,15 +42,13 @@ import java.util.List;
 @Singleton
 public final class ActionHelper {
 
-    @NotNull
     private final IIntelliJResourceService resourceService;
-    @NotNull
     private final ILanguageIdentifierService identifierService;
 
     @Inject
     /* package private */ ActionHelper(
-            @NotNull final IIntelliJResourceService resourceService,
-            @NotNull final ILanguageIdentifierService identifierService) {
+            final IIntelliJResourceService resourceService,
+            final ILanguageIdentifierService identifierService) {
         this.resourceService = resourceService;
         this.identifierService = identifierService;
     }
@@ -63,7 +61,7 @@ public final class ActionHelper {
      * @return <code>true</code> when all active files are of the specified language;
      * otherwise, <code>false</code>.
      */
-    public boolean isActiveFileLanguage(@NotNull final AnActionEvent e, final ILanguageImpl language) {
+    public boolean isActiveFileLanguage(final AnActionEvent e, final ILanguageImpl language) {
         final List<FileObject> files = getActiveFiles(e);
         if (files.isEmpty())
             return false;
@@ -80,7 +78,7 @@ public final class ActionHelper {
      * @param e The event arguments.
      * @return A list of files.
      */
-    public List<FileObject> getActiveFiles(@NotNull final AnActionEvent e) {
+    public List<FileObject> getActiveFiles(final AnActionEvent e) {
         final VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
         if (files == null || files.length == 0)
             return Collections.emptyList();
@@ -99,7 +97,7 @@ public final class ActionHelper {
      * @param e The event arguments.
      * @return A list of files.
      */
-    public List<TransformResource> getActiveResources(@NotNull final AnActionEvent e) {
+    public List<TransformResource> getActiveResources(final AnActionEvent e) {
         final VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
         if (files == null || files.length == 0)
             return Collections.emptyList();

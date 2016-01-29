@@ -35,7 +35,6 @@ public interface ICharacterLexerFactory {
      * @param tokenTypeManager The token type manager.
      * @return The created lexer.
      */
-    @NotNull
-    Lexer create(@NotNull SpoofaxTokenTypeManager tokenTypeManager);
+    Lexer create(SpoofaxTokenTypeManager tokenTypeManager);
 
 }

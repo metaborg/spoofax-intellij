@@ -35,7 +35,6 @@ public interface IIdeaProjectFactory {
      * @param rootFolder Root folder of the module.
      * @return The created project.
      */
-    @NotNull
-    IdeaLanguageSpecProject create(@NotNull Module ideaModule, @NotNull FileObject rootFolder);
+    IdeaLanguageSpecProject create(Module ideaModule, FileObject rootFolder);
 
 }

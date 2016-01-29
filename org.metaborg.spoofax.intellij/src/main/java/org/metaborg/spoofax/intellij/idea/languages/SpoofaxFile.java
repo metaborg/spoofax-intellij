@@ -49,7 +49,7 @@ public final class SpoofaxFile extends PsiFileBase {
      * @param viewProvider The file view provider.
      * @param fileType     The file type.
      */
-    public SpoofaxFile(@NotNull final FileViewProvider viewProvider, @NotNull final SpoofaxFileType fileType) {
+    public SpoofaxFile(final FileViewProvider viewProvider, final SpoofaxFileType fileType) {
         super(viewProvider, fileType.getLanguage());
         this.fileType = fileType;
     }

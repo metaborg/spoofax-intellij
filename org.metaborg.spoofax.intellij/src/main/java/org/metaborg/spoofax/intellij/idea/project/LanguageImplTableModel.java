@@ -110,7 +110,7 @@ public final class LanguageImplTableModel extends ListTableModel<LanguageImplIte
                          * @return The text.
                          */
                         @Override
-                        protected String getTextFor(@NotNull final ILanguageImpl value) {
+                        protected String getTextFor(final ILanguageImpl value) {
                             return value.id().version.toString();
                         }
                     };
@@ -148,8 +148,8 @@ public final class LanguageImplTableModel extends ListTableModel<LanguageImplIte
 
     @Inject
     /* package private */ LanguageImplTableModel(
-            @Assisted @NotNull final ModuleConfigurationState state,
-            @NotNull final ILanguageService languageService) {
+            @Assisted final ModuleConfigurationState state,
+            final ILanguageService languageService) {
         super(LANGUAGE_COLUMN_INFO, IMPLEMENTATION_COLUMN_INFO);
         this.state = state;
         this.languageService = languageService;

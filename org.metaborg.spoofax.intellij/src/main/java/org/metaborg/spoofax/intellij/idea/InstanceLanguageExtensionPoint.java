@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> The type of instance.
  */
 public final class InstanceLanguageExtensionPoint<T> extends LanguageExtensionPoint<T> {
-    @NotNull
+
     private final T instance;
 
     /**
@@ -40,14 +40,13 @@ public final class InstanceLanguageExtensionPoint<T> extends LanguageExtensionPo
      * @param language The language.
      * @param instance The instance.
      */
-    public InstanceLanguageExtensionPoint(@NotNull final Language language, @NotNull final T instance) {
+    public InstanceLanguageExtensionPoint(final Language language, final T instance) {
         super();
         this.instance = instance;
         this.language = language.getID();
         this.implementationClass = null;
     }
 
-    @NotNull
     @Override
     public final T getInstance() {
         return this.instance;

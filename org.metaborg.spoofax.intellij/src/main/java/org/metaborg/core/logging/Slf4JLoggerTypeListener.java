@@ -38,8 +38,8 @@ public final class Slf4JLoggerTypeListener implements TypeListener {
      */
     @Override
     public final <I> void hear(
-            @NotNull final TypeLiteral<I> typeLiteral,
-            @NotNull final TypeEncounter<I> typeEncounter) {
+            final TypeLiteral<I> typeLiteral,
+            final TypeEncounter<I> typeEncounter) {
         Preconditions.checkNotNull(typeLiteral);
         Preconditions.checkNotNull(typeEncounter);
 

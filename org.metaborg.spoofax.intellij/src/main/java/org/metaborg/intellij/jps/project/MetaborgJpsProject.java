@@ -40,7 +40,7 @@ public final class MetaborgJpsProject implements IProject, ILanguageSpec {
      *
      * @param location The location of the project root.
      */
-    public MetaborgJpsProject(@NotNull final JpsModule module, @NotNull final FileObject location) {
+    public MetaborgJpsProject(final JpsModule module, final FileObject location) {
         this.module = module;
         // TODO: Get location from JpsModule?
         // NOTE: A module can have multiple content roots, or none at all.

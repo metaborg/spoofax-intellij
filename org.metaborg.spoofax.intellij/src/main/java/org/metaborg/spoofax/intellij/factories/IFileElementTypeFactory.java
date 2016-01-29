@@ -36,7 +36,6 @@ public interface IFileElementTypeFactory {
      * @param tokenTypesManager The token type manager.
      * @return The created parser definition.
      */
-    @NotNull
-    IFileElementType create(@NotNull Language language, @NotNull SpoofaxTokenTypeManager tokenTypesManager);
+    IFileElementType create(Language language, SpoofaxTokenTypeManager tokenTypesManager);
 
 }

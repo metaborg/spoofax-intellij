@@ -32,7 +32,6 @@ import java.util.ServiceLoader;
  */
 /* package private */ final class JavaServiceProvider<T> implements Provider<T> {
 
-    @NotNull
     private final Class<T> service;
 
     /**
@@ -40,12 +39,11 @@ import java.util.ServiceLoader;
      *
      * @param service The class of the service to load.
      */
-    /* package private */ JavaServiceProvider(@NotNull final Class<T> service) {
+    /* package private */ JavaServiceProvider(final Class<T> service) {
         this.service = service;
     }
 
     @Override
-    @NotNull
     public T get() {
         final ServiceLoader<T> loader = ServiceLoader.load(this.service);
         final Iterator<T> iterator = loader.iterator();

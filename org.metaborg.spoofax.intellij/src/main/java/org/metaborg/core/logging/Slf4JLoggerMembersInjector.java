@@ -44,7 +44,7 @@ public final class Slf4JLoggerMembersInjector<T> implements MembersInjector<T> {
      *
      * @param field The field to inject.
      */
-    public Slf4JLoggerMembersInjector(@NotNull final Field field) {
+    public Slf4JLoggerMembersInjector(final Field field) {
         Preconditions.checkNotNull(field);
 
         this.field = field;
@@ -59,7 +59,7 @@ public final class Slf4JLoggerMembersInjector<T> implements MembersInjector<T> {
      * @return The created logger instance.
      */
     @NotNull
-    private static Logger createLogger(@NotNull final Class<?> clazz) {
+    private static Logger createLogger(final Class<?> clazz) {
         return LoggerFactory.getLogger(clazz);
     }
 
@@ -69,7 +69,7 @@ public final class Slf4JLoggerMembersInjector<T> implements MembersInjector<T> {
      * @param obj The object.
      */
     @Override
-    public void injectMembers(@NotNull final T obj) {
+    public void injectMembers(final T obj) {
         Preconditions.checkNotNull(obj);
 
         try {

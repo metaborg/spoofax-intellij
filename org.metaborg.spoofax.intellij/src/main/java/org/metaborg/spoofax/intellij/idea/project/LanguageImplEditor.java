@@ -39,15 +39,14 @@ public final class LanguageImplEditor extends ModuleElementsEditor {
 
     private static final String NAME = "Languages";
 
-    @NotNull
     private final ILanguageImplPanelFactory languageImplPanelFactory;
     @Nullable
     private LanguageImplPanel panel;
 
     @Inject
     /* package private */ LanguageImplEditor(
-            @Assisted @NotNull final ModuleConfigurationState state,
-            @NotNull final ILanguageImplPanelFactory languageImplPanelFactory) {
+            @Assisted final ModuleConfigurationState state,
+            final ILanguageImplPanelFactory languageImplPanelFactory) {
         super(state);
         this.languageImplPanelFactory = languageImplPanelFactory;
     }

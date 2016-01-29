@@ -38,7 +38,7 @@ public final class TransformResource {
      * @param resource The resource to transform.
      * @param text     The text to transform.
      */
-    public TransformResource(@NotNull final FileObject resource, @NotNull final String text) {
+    public TransformResource(final FileObject resource, final String text) {
         this.resource = resource;
         this.text = text;
     }

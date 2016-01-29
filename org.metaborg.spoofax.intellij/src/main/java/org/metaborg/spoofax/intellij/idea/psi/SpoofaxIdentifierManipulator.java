@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 public final class SpoofaxIdentifierManipulator extends AbstractElementManipulator<SpoofaxIdentifier> {
     @Override
     public SpoofaxIdentifier handleContentChange(
-            @NotNull final SpoofaxIdentifier element, @NotNull final TextRange range, final String newContent) throws
+            final SpoofaxIdentifier element, final TextRange range, final String newContent) throws
             IncorrectOperationException {
 
         final String oldText = element.getText();

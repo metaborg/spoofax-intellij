@@ -36,8 +36,7 @@ public interface IJpsProjectService extends IProjectService {
      * @param module The JPS module.
      * @return The created project.
      */
-    @NotNull
-    MetaborgJpsProject create(@NotNull JpsModule module);
+    MetaborgJpsProject create(JpsModule module);
 
     /**
      * Finds the project corresponding to the specified module.
@@ -47,6 +46,6 @@ public interface IJpsProjectService extends IProjectService {
      * or <code>null</code> when not found.
      */
     @Nullable
-    MetaborgJpsProject get(@NotNull JpsModule module);
+    MetaborgJpsProject get(JpsModule module);
 
 }

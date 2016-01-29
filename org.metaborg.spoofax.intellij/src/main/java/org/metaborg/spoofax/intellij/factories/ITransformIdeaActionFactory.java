@@ -37,5 +37,5 @@ public interface ITransformIdeaActionFactory {
      * @param language The language implementation.
      * @return The created action.
      */
-    TransformationAction create(String id, ITransformAction action, @NotNull ILanguageImpl language);
+    TransformationAction create(String id, ITransformAction action, ILanguageImpl language);
 }

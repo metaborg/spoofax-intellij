@@ -165,7 +165,7 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
      * {@inheritDoc}
      */
     @Override
-    public final Collection<File> getOutputRoots(@NotNull final CompileContext compileContext) {
+    public final Collection<File> getOutputRoots(final CompileContext compileContext) {
         // Default implementation.
         return ContainerUtil.createMaybeSingletonList(JpsJavaExtensionService.getInstance().getOutputDirectory(
                 super.myModule,

@@ -45,7 +45,7 @@ public final class FileNameUtils {
      * @return The outer file name; or <code>null</code> when there is none.
      */
     @Nullable
-    public static FileName getOuterFileName(@NotNull final FileName fileName) {
+    public static FileName getOuterFileName(final FileName fileName) {
         Preconditions.checkNotNull(fileName);
 
         if (fileName instanceof LayeredFileName) {

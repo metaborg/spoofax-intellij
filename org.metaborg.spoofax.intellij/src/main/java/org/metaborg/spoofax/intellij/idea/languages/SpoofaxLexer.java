@@ -80,13 +80,13 @@ public final class SpoofaxLexer extends LexerBase {
 
     @Inject
     private SpoofaxLexer(
-            @Assisted @NotNull final ILanguageImpl languageImpl,
-            @Assisted @NotNull final SpoofaxTokenTypeManager tokenTypesManager,
-            @NotNull final ISyntaxService<IStrategoTerm> syntaxService,
-            @NotNull final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizer,
-            @NotNull final IStylerService<IStrategoTerm, IStrategoTerm> styler,
-            @NotNull final IParserConfiguration parserConfiguration,
-            @NotNull final IResourceService resourceService) {
+            @Assisted final ILanguageImpl languageImpl,
+            @Assisted final SpoofaxTokenTypeManager tokenTypesManager,
+            final ISyntaxService<IStrategoTerm> syntaxService,
+            final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizer,
+            final IStylerService<IStrategoTerm, IStrategoTerm> styler,
+            final IParserConfiguration parserConfiguration,
+            final IResourceService resourceService) {
         super();
 
         this.syntaxService = syntaxService;
@@ -108,7 +108,7 @@ public final class SpoofaxLexer extends LexerBase {
      */
     @Override
     public final void start(
-            @NotNull final CharSequence buffer,
+            final CharSequence buffer,
             final int startOffset,
             final int endOffset,
             final int initialState) {
@@ -159,7 +159,7 @@ public final class SpoofaxLexer extends LexerBase {
      *
      * @param result The parse result to tokenize.
      */
-    private void tokenizeAll(@NotNull final ParseResult<IStrategoTerm> result) {
+    private void tokenizeAll(final ParseResult<IStrategoTerm> result) {
         if (result.result == null) {
             // A null parse result might occur when the input contains an error,
             // and recovery fails or is disabled.

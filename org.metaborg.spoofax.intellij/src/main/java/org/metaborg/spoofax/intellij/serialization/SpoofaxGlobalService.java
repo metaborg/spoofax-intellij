@@ -59,7 +59,7 @@ public final class SpoofaxGlobalService implements PersistentStateComponent<Spoo
      * {@inheritDoc}
      */
     @Override
-    public void loadState(@NotNull final SpoofaxGlobalState state) {
+    public void loadState(final SpoofaxGlobalState state) {
         this.state = state;
     }
 

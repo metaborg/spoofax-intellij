@@ -34,7 +34,7 @@ public final class CharacterTokenType extends IElementType {
      *
      * @param language The associated IDEA language.
      */
-    public CharacterTokenType(@NotNull final SpoofaxIdeaLanguage language) {
+    public CharacterTokenType(final SpoofaxIdeaLanguage language) {
         super("CHARACTER", language);
     }
 

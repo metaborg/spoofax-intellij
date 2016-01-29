@@ -64,7 +64,7 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
     }
 
     @Inject
-    private void inject(@NotNull final SpoofaxModuleType moduleType, @NotNull final SpoofaxSdkType sdkType) {
+    private void inject(final SpoofaxModuleType moduleType, final SpoofaxSdkType sdkType) {
         this.moduleType = moduleType;
         this.sdkType = sdkType;
     }
@@ -78,10 +78,10 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
     @NotNull
     @Override
     public DirectoryProcessingResult detectRoots(
-            @NotNull final File dir,
-            @NotNull final File[] children,
-            @NotNull final File base,
-            @NotNull final List<DetectedProjectRoot> result) {
+            final File dir,
+            final File[] children,
+            final File base,
+            final List<DetectedProjectRoot> result) {
 
         this.logger.info("Detecting Spoofax project in {}", dir);
         if (dir.getName().equals("editor")) {
@@ -112,9 +112,9 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
 
     @Override
     public void setupProjectStructure(
-            @NotNull final Collection<DetectedProjectRoot> roots,
-            @NotNull final ProjectDescriptor projectDescriptor,
-            @NotNull final ProjectFromSourcesBuilder builder) {
+            final Collection<DetectedProjectRoot> roots,
+            final ProjectDescriptor projectDescriptor,
+            final ProjectFromSourcesBuilder builder) {
         if (roots.isEmpty() || builder.hasRootsFromOtherDetectors(this))
             return;
 

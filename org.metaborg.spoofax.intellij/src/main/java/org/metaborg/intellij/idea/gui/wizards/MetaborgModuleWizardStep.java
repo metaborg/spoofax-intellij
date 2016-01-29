@@ -88,8 +88,8 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * @param context The {@link WizardContext}.
      */
     public MetaborgModuleWizardStep(
-            @NotNull final SpoofaxModuleBuilder builder,
-            @NotNull final WizardContext context) {
+            final SpoofaxModuleBuilder builder,
+            final WizardContext context) {
         super();
 
         this.builder = builder;

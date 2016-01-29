@@ -36,8 +36,7 @@ public interface ILexerParserManager {
      * @param implementation The language implementation.
      * @return The lexer.
      */
-    @NotNull
-    Lexer getHighlightingLexer(@NotNull ILanguageImpl implementation);
+    Lexer getHighlightingLexer(ILanguageImpl implementation);
 
     /**
      * Creates and returns the lexer for the specified language.
@@ -45,8 +44,7 @@ public interface ILexerParserManager {
      * @param language The language.
      * @return The created lexer.
      */
-    @NotNull
-    Lexer createCharacterLexer(@NotNull ILanguage language);
+    Lexer createCharacterLexer(ILanguage language);
 
     // TODO: Remove
 
@@ -56,7 +54,6 @@ public interface ILexerParserManager {
      * @param language The language.
      * @return The created parser.
      */
-    @NotNull
-    PsiParser createParser(@NotNull ILanguage language);
+    PsiParser createParser(ILanguage language);
 
 }

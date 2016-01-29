@@ -41,7 +41,7 @@ public final class SpoofaxToken {
      * @param type  The token type.
      * @param range The range of the token.
      */
-    public SpoofaxToken(@NotNull final SpoofaxTokenType type, @NotNull final IntRange range) {
+    public SpoofaxToken(final SpoofaxTokenType type, final IntRange range) {
         this.type = type;
         this.range = range;
     }

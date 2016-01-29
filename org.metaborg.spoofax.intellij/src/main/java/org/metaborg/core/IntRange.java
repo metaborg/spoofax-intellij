@@ -74,7 +74,6 @@ public final class IntRange {
      * @param position The position.
      * @return The created empty range.
      */
-    @NotNull
     public static IntRange at(final int position) {
         return new IntRange(position, position);
     }
@@ -131,7 +130,6 @@ public final class IntRange {
      * @param element The element.
      * @return The created range.
      */
-    @NotNull
     public static IntRange is(final int element) {
         if (element == Integer.MAX_VALUE)
             throw new IllegalArgumentException("The value is out of bounds.");
@@ -247,7 +245,6 @@ public final class IntRange {
      * @return The intersection of this range and the other range;
      * or an empty range (with no specific start and end) when the ranges don't overlap or touch.
      */
-    @NotNull
     public IntRange intersectionWith(final IntRange other) {
         if (!isTouchedByRange(other))
             throw new IllegalArgumentException("The ranges must touch.");
@@ -276,7 +273,6 @@ public final class IntRange {
      * @param endExclusive   The exclusive end.
      * @return The created range.
      */
-    @NotNull
     public static IntRange between(final int startInclusive, final int endExclusive) {
         return new IntRange(startInclusive, endExclusive);
     }
@@ -287,7 +283,6 @@ public final class IntRange {
      * @param other The other range.
      * @return The union of this range and the other range.
      */
-    @NotNull
     public IntRange unionWith(final IntRange other) {
         if (!isTouchedByRange(other))
             throw new IllegalArgumentException("The ranges must touch.");
