@@ -49,7 +49,6 @@ import org.metaborg.spoofax.meta.core.LanguageSpecBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 import javax.annotation.Nullable;
@@ -77,6 +76,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
     private final ILanguagePathService languagePathService;
     private final IDependencyService dependencyService;
     private final SpoofaxProcessorRunner processorRunner;
+    private final BuilderMessageFormatter messageFormatter;
     @InjectLogger
     private ILogger logger;
 
@@ -91,13 +91,15 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             final ILanguagePathService languagePathService,
             final IDependencyService dependencyService,
             final SpoofaxProcessorRunner processorRunner,
-            final ISpoofaxLanguageSpecPathsService pathsService) {
+            final ISpoofaxLanguageSpecPathsService pathsService,
+            final BuilderMessageFormatter messageFormatter) {
         super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
         this.builder = builder;
         this.languageManager = languageManager;
         this.languagePathService = languagePathService;
         this.dependencyService = dependencyService;
         this.processorRunner = processorRunner;
+        this.messageFormatter = messageFormatter;
     }
 
     /**
@@ -151,7 +153,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             ProjectBuildException {
         try {
             context.checkCanceled();
-            context.processMessage(BuilderUtils.formatProgress(0f, "Initializing {}", metaInput.languageSpec));
+            context.processMessage(this.messageFormatter.formatProgress(0f, "Initializing {}", metaInput.languageSpec));
 
             this.builder.initialize(metaInput);
         } catch (final FileSystemException e) {
@@ -172,7 +174,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             final CompileContext context) throws Exception {
         try {
             context.checkCanceled();
-            context.processMessage(BuilderUtils.formatProgress(
+            context.processMessage(this.messageFormatter.formatProgress(
                     0f,
                     "Generating Spoofax sources for {}",
                     metaInput.languageSpec
@@ -196,7 +198,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             final LanguageSpecBuildInput metaInput,
             final CompileContext context) throws Exception {
 
-        context.processMessage(BuilderUtils.formatProgress(
+        context.processMessage(this.messageFormatter.formatProgress(
                 0f,
                 "Analyzing and transforming {}",
                 metaInput.languageSpec
@@ -215,10 +217,10 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
                 @Nullable final IBuildOutput<?, ?, ?> output = task.result();
                 if (output != null) {
                     for (final IMessage msg : output.allMessages()) {
-                        context.processMessage(BuilderUtils.formatMessage("Spoofax", msg));
+                        context.processMessage(this.messageFormatter.formatMessage("Spoofax", msg));
                     }
                     for (final IMessage msg : output.extraMessages()) {
-                        context.processMessage(BuilderUtils.formatMessage("Spoofax", msg));
+                        context.processMessage(this.messageFormatter.formatMessage("Spoofax", msg));
                     }
                     // TODO:
                     if (!output.success()) {
@@ -249,7 +251,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             @Nullable final BuildListener listener,
             final CompileContext context) throws Exception {
         context.checkCanceled();
-        context.processMessage(BuilderUtils.formatProgress(0f, "Building language project {}", metaInput.languageSpec));
+        context.processMessage(this.messageFormatter.formatProgress(0f, "Building language project {}", metaInput.languageSpec));
         this.builder.compilePreJava(metaInput);
     }
 

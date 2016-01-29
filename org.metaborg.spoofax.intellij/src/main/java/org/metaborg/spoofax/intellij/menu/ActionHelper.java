@@ -27,7 +27,6 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;

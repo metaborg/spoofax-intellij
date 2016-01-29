@@ -21,10 +21,7 @@ package org.metaborg.spoofax.intellij.resources;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.resource.IResourceService;
-
-import javax.annotation.Nullable;
 
 /**
  * IntelliJ resource service.

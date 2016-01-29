@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.factories;
 
 import com.google.inject.Provider;
 import com.intellij.openapi.components.ServiceManager;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Provides an instance from the IntelliJ {@link com.intellij.openapi.components.ServiceManager}.

@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.idea;
 
 import com.intellij.lang.Language;
 import com.intellij.util.KeyedLazyInstanceEP;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Language extension point value wrapper.

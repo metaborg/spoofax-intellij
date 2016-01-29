@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguageImpl;
 
 /**

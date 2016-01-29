@@ -21,7 +21,6 @@ package org.metaborg.intellij.idea.project;
 
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory for IntelliJ IDEA projects.

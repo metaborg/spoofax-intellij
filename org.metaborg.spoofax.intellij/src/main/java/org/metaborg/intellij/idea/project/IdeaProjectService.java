@@ -30,7 +30,6 @@ import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

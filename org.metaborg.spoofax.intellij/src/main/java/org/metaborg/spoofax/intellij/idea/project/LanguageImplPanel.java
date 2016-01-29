@@ -25,7 +25,6 @@ import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 import com.intellij.ui.TableViewSpeedSearch;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.TableView;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.spoofax.intellij.factories.ILanguageImplTableModelFactory;
 

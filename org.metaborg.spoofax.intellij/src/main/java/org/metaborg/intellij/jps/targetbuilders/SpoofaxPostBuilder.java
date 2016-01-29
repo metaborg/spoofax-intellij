@@ -37,21 +37,10 @@ import org.metaborg.spoofax.meta.core.LanguageSpecBuildInput;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
-
-//import org.jetbrains.jps.model.module.JpsModule;
-//import org.metaborg.core.MessageFormatter;
-//import org.metaborg.core.project.ILanguageSpec;
-//import org.metaborg.spoofax.core.project.configuration.ISpoofaxLanguageSpecConfig;
-//import org.metaborg.spoofax.core.project.settings.ISpoofaxProjectSettingsService;
-//import org.metaborg.spoofax.core.project.settings.SpoofaxProjectSettings;
-//import org.metaborg.intellij.jps.project.MetaborgJpsProject;
-//import org.metaborg.spoofax.meta.core.MetaBuildInput;
-//import org.metaborg.spoofax.meta.core.SpoofaxMetaBuilder;
 
 /**
  * Builder executed after Java compilation.
@@ -60,6 +49,7 @@ import java.net.URL;
 public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> {
 
     private final SpoofaxMetaBuilder builder;
+    private final BuilderMessageFormatter messageFormatter;
     @InjectLogger
     private ILogger logger;
 
@@ -70,9 +60,11 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
             final JpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
             final ISpoofaxLanguageSpecPathsService pathsService,
-            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService) {
+            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
+            final BuilderMessageFormatter messageFormatter) {
         super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
         this.builder = builder;
+        this.messageFormatter = messageFormatter;
     }
 
     /**
@@ -130,7 +122,7 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
             @Nullable final BuildListener listener,
             final CompileContext context) throws Exception {
         context.checkCanceled();
-        context.processMessage(BuilderUtils.formatProgress(
+        context.processMessage(this.messageFormatter.formatProgress(
                 0f,
                 "Packaging language project {}",
                 metaInput.languageSpec

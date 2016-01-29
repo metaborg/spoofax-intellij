@@ -19,7 +19,6 @@
 
 package org.metaborg.spoofax.intellij.idea.languages;
 
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 

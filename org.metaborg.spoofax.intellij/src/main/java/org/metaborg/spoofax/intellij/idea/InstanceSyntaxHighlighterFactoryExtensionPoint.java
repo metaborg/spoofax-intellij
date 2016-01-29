@@ -22,7 +22,6 @@ package org.metaborg.spoofax.intellij.idea;
 import com.intellij.lang.Language;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactoryEP;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Syntax highlighter factory extension point value wrapper.

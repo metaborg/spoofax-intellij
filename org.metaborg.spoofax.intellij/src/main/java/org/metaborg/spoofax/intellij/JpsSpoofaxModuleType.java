@@ -20,7 +20,6 @@
 package org.metaborg.spoofax.intellij;
 
 import com.google.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.JpsDummyElement;
 import org.jetbrains.jps.model.ex.JpsElementTypeWithDummyProperties;
 import org.jetbrains.jps.model.module.JpsModuleType;

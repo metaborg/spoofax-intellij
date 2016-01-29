@@ -28,6 +28,7 @@ import org.jetbrains.jps.incremental.ModuleLevelBuilder;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.intellij.jps.project.IJpsProjectService;
 import org.metaborg.intellij.jps.project.JpsProjectService;
+import org.metaborg.intellij.jps.targetbuilders.BuilderMessageFormatter;
 import org.metaborg.intellij.jps.targetbuilders.SpoofaxPostTargetType;
 import org.metaborg.intellij.jps.targetbuilders.SpoofaxPreTargetType;
 import org.metaborg.spoofax.intellij.SpoofaxIntelliJModule;
@@ -57,6 +58,8 @@ public final class SpoofaxJpsModule extends SpoofaxIntelliJModule {
 
         bind(SpoofaxPreTargetType.class).in(Singleton.class);
         bind(SpoofaxPostTargetType.class).in(Singleton.class);
+
+        bind(BuilderMessageFormatter.class).in(Singleton.class);
 
         bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
     }

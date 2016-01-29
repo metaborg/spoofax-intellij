@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.IntRange;
 import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.StringFormatter;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.resource.IResourceService;
@@ -38,7 +37,6 @@ import org.metaborg.core.syntax.ISyntaxService;
 import org.metaborg.core.syntax.ParseException;
 import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.IToken;
 import org.spoofax.jsglr.client.imploder.ITokenizer;
@@ -208,7 +206,7 @@ public final class SpoofaxLexer extends LexerBase {
             if (tokenRange.isEmpty())
                 continue;
 
-            assert offset == tokenRange.start : StringFormatter.format(
+            assert offset == tokenRange.start : this.logger.format(
                     "The current token (starting @ {}) must start where the previous token left off (@ {}).",
                     tokenStart,
                     offset
@@ -231,7 +229,7 @@ public final class SpoofaxLexer extends LexerBase {
             offset = tokenRange.end;
         }
 
-        assert offset == this.buffer.length() : StringFormatter.format(
+        assert offset == this.buffer.length() : this.logger.format(
                 "The last token ended @ {}, which is before the end of the buffer @ {}.",
                 offset,
                 this.buffer.length()

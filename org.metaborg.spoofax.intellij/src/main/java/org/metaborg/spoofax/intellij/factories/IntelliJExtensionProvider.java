@@ -22,14 +22,16 @@ package org.metaborg.spoofax.intellij.factories;
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
 import com.intellij.openapi.extensions.Extensions;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.StringFormatter;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 
 /**
  * Provides an instance from the IntelliJ extensions.
  */
 /* package private */ final class IntelliJExtensionProvider<T> implements Provider<T> {
 
+    @InjectLogger
+    private ILogger logger;
     private final Class<T> extensionClass;
     private final String extensionPointName;
 
@@ -55,7 +57,7 @@ import org.metaborg.core.StringFormatter;
                 return (T)candidate;
             }
         }
-        throw new ProvisionException(StringFormatter.format(
+        throw new ProvisionException(this.logger.format(
                 "No extensions are registered for the class {} in extension point {}.",
                 this.extensionClass,
                 this.extensionPointName

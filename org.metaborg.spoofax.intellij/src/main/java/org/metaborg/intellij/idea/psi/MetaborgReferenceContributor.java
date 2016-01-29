@@ -23,7 +23,6 @@ import com.google.inject.Inject;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiReferenceContributor;
 import com.intellij.psi.PsiReferenceRegistrar;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 
 /**

@@ -31,7 +31,6 @@ import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 import javax.swing.*;
 import java.io.File;

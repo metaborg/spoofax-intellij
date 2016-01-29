@@ -21,7 +21,8 @@ package org.metaborg.core;
 
 // TODO: Move this to Metaborg Core?
 
-import org.jetbrains.annotations.NotNull;
+import org.metaborg.util.log.ILogger;
+import org.metaborg.util.log.LoggerUtils;
 
 /**
  * An integer range.
@@ -36,6 +37,8 @@ import org.jetbrains.annotations.NotNull;
  * should start at zero.</a>.
  */
 public final class IntRange {
+
+    private ILogger logger = LoggerUtils.logger(IntRange.class);
 
     /**
      * An empty range at zero.
@@ -331,6 +334,6 @@ public final class IntRange {
      */
     @Override
     public String toString() {
-        return StringFormatter.format("{}..{}", this.start, this.end);
+        return this.logger.format("{}..{}", this.start, this.end);
     }
 }

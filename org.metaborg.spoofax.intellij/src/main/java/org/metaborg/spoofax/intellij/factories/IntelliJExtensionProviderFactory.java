@@ -22,7 +22,6 @@ package org.metaborg.spoofax.intellij.factories;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
 import com.google.inject.Provider;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Factory for IntelliJ extension providers.

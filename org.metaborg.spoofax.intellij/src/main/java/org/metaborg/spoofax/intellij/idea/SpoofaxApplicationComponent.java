@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 public class SpoofaxApplicationComponent implements ApplicationComponent {
 

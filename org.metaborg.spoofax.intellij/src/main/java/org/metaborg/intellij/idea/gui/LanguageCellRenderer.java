@@ -20,7 +20,6 @@
 package org.metaborg.intellij.idea.gui;
 
 import com.intellij.ui.ColoredTreeCellRenderer;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
 
 import javax.swing.*;

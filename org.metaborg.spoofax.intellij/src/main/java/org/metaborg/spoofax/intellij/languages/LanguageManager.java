@@ -33,7 +33,6 @@ import org.metaborg.core.language.*;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;

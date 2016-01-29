@@ -23,7 +23,6 @@ package org.metaborg.spoofax.intellij.resources;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.vfs2.*;
 import org.apache.commons.vfs2.provider.AbstractOriginatingFileProvider;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 

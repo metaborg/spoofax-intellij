@@ -21,12 +21,13 @@ package org.metaborg.spoofax.intellij.idea.vfs;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.core.StringFormatter;
 import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.intellij.idea.vfs.MetaborgFileType;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
 import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
 import org.metaborg.spoofax.intellij.languages.LanguageUtils;
+import org.metaborg.util.log.ILogger;
 
 import javax.swing.*;
 
@@ -38,6 +39,9 @@ import javax.swing.*;
  * There are no implementations of this class because it's instantiated dynamically.
  */
 public abstract class SpoofaxFileType extends LanguageFileType implements MetaborgFileType {
+
+    @InjectLogger
+    private ILogger logger;
 
     /**
      * Initializes a new instance of the {@link SpoofaxFileType} class.
@@ -77,7 +81,7 @@ public abstract class SpoofaxFileType extends LanguageFileType implements Metabo
      */
     @Override
     public String getDescription() {
-        return StringFormatter.format("{} (Spoofax)", this.getSpoofaxLanguage().name());
+        return this.logger.format("{} (Spoofax)", this.getSpoofaxLanguage().name());
     }
 
     /**

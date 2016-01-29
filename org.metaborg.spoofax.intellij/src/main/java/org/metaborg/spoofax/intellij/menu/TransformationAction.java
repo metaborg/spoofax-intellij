@@ -32,7 +32,6 @@ import org.metaborg.core.action.ITransformGoal;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 import java.util.List;
 

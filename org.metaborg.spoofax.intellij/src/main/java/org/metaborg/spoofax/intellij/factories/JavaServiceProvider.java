@@ -21,8 +21,8 @@ package org.metaborg.spoofax.intellij.factories;
 
 import com.google.inject.Provider;
 import com.google.inject.ProvisionException;
-import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.StringFormatter;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -32,6 +32,8 @@ import java.util.ServiceLoader;
  */
 /* package private */ final class JavaServiceProvider<T> implements Provider<T> {
 
+    @InjectLogger
+    private ILogger logger;
     private final Class<T> service;
 
     /**
@@ -49,7 +51,7 @@ import java.util.ServiceLoader;
         final Iterator<T> iterator = loader.iterator();
 
         if (!iterator.hasNext())
-            throw new ProvisionException(StringFormatter.format(
+            throw new ProvisionException(this.logger.format(
                     "No implementations are registered for the class {}.",
                     this.service
             ));
@@ -57,7 +59,7 @@ import java.util.ServiceLoader;
         final T obj = iterator.next();
 
         if (iterator.hasNext())
-            throw new ProvisionException(StringFormatter.format(
+            throw new ProvisionException(this.logger.format(
                     "Multiple implementations are registered for the class {}.",
                     this.service
             ));

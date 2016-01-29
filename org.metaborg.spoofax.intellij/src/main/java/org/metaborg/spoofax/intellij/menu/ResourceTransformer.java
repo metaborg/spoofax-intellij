@@ -36,7 +36,6 @@ import org.metaborg.core.transform.ITransformService;
 import org.metaborg.core.transform.TransformException;
 import org.metaborg.util.concurrent.IClosableLock;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 //import org.metaborg.core.language.ILanguageIdentifierService;
 //import org.metaborg.core.source.ISourceTextService;

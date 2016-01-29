@@ -19,7 +19,6 @@
 
 package org.metaborg.spoofax.intellij.factories;
 
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.action.ITransformAction;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.menu.TransformationAction;

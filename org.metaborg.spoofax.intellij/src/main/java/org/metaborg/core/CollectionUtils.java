@@ -21,7 +21,6 @@ package org.metaborg.core;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Array;

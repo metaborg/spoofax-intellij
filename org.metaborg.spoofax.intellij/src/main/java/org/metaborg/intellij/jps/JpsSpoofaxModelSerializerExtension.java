@@ -20,7 +20,6 @@
 package org.metaborg.intellij.jps;
 
 import com.google.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.serialization.JpsGlobalExtensionSerializer;
 import org.jetbrains.jps.model.serialization.JpsModelSerializerExtension;
 import org.jetbrains.jps.model.serialization.JpsProjectExtensionSerializer;

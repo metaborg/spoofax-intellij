@@ -28,7 +28,6 @@ import com.intellij.lexer.Lexer;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.psi.tree.IFileElementType;
 import javassist.util.proxy.ProxyFactory;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
@@ -40,7 +39,6 @@ import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;

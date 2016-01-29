@@ -21,7 +21,6 @@ package org.metaborg.core.project;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 
 // TODO: Move this to Spoofax core?
 

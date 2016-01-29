@@ -20,7 +20,6 @@
 package org.metaborg.core;
 
 import com.google.inject.Singleton;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;

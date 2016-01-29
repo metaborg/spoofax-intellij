@@ -19,21 +19,31 @@
 
 package org.metaborg.intellij.jps.targetbuilders;
 
+import com.google.inject.Inject;
 import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
 import org.jetbrains.jps.incremental.messages.ProgressMessage;
-import org.metaborg.core.StringFormatter;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.messages.IMessage;
 import org.metaborg.core.source.ISourceRegion;
+import org.metaborg.util.log.ILogger;
 import org.spoofax.interpreter.terms.IStrategoList;
 import org.strategoxt.lang.StrategoErrorExit;
 
 import javax.annotation.Nullable;
 
 /**
- * Builder utility functions.
+ * Builder message formatting functions.
  */
-public final class BuilderUtils {
+public final class BuilderMessageFormatter {
+
+    @InjectLogger
+    private ILogger logger;
+
+    @Inject
+    /* package private */ BuilderMessageFormatter() {
+
+    }
 
     /**
      * Formats a progress message.
@@ -43,11 +53,11 @@ public final class BuilderUtils {
      * @param args    The message string arguments.
      * @return The formatted progress message.
      */
-    public static ProgressMessage formatProgress(
+    public ProgressMessage formatProgress(
             final float done,
             final String message,
             final Object... args) {
-        final String msgString = StringFormatter.format(message, args);
+        final String msgString = this.logger.format(message, args);
         return new ProgressMessage(msgString, done);
     }
 
@@ -60,12 +70,12 @@ public final class BuilderUtils {
      * @param args        The message string arguments.
      * @return The formatted message.
      */
-    public static CompilerMessage formatMessage(
+    public CompilerMessage formatMessage(
             final String builderName,
             final BuildMessage.Kind kind,
             final String message,
             final Object... args) {
-        final String msgString = StringFormatter.format(message, args);
+        final String msgString = this.logger.format(message, args);
         return new CompilerMessage(builderName, kind, msgString);
     }
 
@@ -76,7 +86,7 @@ public final class BuilderUtils {
      * @param message     The message to format.
      * @return The formatted message.
      */
-    public static CompilerMessage formatMessage(
+    public CompilerMessage formatMessage(
             final String builderName,
             final IMessage message) {
         final BuildMessage.Kind kind;

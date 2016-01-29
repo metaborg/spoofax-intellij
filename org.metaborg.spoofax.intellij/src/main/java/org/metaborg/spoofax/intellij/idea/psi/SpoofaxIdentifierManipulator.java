@@ -24,7 +24,6 @@ import com.intellij.psi.AbstractElementManipulator;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NotNull;
 
 public final class SpoofaxIdentifierManipulator extends AbstractElementManipulator<SpoofaxIdentifier> {
     @Override

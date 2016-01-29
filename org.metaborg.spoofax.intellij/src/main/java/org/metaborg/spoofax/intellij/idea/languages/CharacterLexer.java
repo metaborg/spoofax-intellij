@@ -23,12 +23,9 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lexer.LexerBase;
 import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.core.StringFormatter;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 /**
  * Lexer that always lexes a single character.
@@ -110,7 +107,7 @@ public final class CharacterLexer extends LexerBase {
      */
     @Override
     public int getTokenStart() {
-        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : StringFormatter.format(
+        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : this.logger.format(
                 "Offset {} must be between [{}, {}).",
                 this.offst,
                 this.bufferStart,
@@ -126,7 +123,7 @@ public final class CharacterLexer extends LexerBase {
      */
     @Override
     public int getTokenEnd() {
-        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : StringFormatter.format(
+        assert this.bufferStart <= this.offst && this.offst < this.bufferEnd : this.logger.format(
                 "Offset {} must be between [{}, {}).",
                 this.offst,
                 this.bufferStart,

@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.factories;
 
 import com.intellij.lang.Language;
 import com.intellij.psi.tree.IFileElementType;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxTokenTypeManager;
 
 /**

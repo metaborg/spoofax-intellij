@@ -27,7 +27,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemManager;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.resource.ResourceService;
 

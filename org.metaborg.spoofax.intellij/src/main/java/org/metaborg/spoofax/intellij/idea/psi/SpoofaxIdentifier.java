@@ -26,7 +26,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.tracing.IResolverService;
 import org.metaborg.intellij.idea.psi.MetaborgDeclarationElement;

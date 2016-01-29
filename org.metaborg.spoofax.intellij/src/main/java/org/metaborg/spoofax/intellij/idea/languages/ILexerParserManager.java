@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 

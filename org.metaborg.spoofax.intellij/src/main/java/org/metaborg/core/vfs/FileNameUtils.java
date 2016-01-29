@@ -23,7 +23,6 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.provider.LayeredFileName;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 

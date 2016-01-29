@@ -21,7 +21,6 @@ package org.metaborg.spoofax.intellij.idea.psi;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Visitor for Spoofax PSI elements.

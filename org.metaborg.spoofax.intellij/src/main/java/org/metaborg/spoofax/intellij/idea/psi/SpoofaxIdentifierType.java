@@ -19,7 +19,6 @@
 
 package org.metaborg.spoofax.intellij.idea.psi;
 
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.spoofax.intellij.idea.languages.SpoofaxIdeaLanguage;
 
 /**

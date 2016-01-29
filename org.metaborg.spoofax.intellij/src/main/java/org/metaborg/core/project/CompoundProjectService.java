@@ -24,9 +24,9 @@ package org.metaborg.core.project;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgRuntimeException;
-import org.metaborg.core.StringFormatter;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -38,10 +38,12 @@ import java.util.Set;
  */
 public final class CompoundProjectService implements IProjectService {
 
+    @InjectLogger
+    private ILogger logger;
     private final Set<IProjectService> services;
 
     @Inject
-    /* package private */ CompoundProjectService( @Compound final Set<IProjectService> services) {
+    /* package private */ CompoundProjectService(@Compound final Set<IProjectService> services) {
         this.services = services;
     }
 
@@ -64,7 +66,7 @@ public final class CompoundProjectService implements IProjectService {
         }
 
         if (projects.size() > 1) {
-            throw new MultipleServicesRespondedException(StringFormatter.format(
+            throw new MultipleServicesRespondedException(this.logger.format(
                     "Multiple project services provided a project for the resource {}.",
                     resource
             ));

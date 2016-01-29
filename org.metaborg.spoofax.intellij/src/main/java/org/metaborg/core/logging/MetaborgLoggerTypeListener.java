@@ -23,7 +23,6 @@ import com.google.common.base.Preconditions;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.util.log.ILogger;
 
 import java.lang.reflect.Field;

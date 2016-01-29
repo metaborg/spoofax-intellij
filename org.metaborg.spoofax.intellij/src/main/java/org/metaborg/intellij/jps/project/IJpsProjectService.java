@@ -19,7 +19,6 @@
 
 package org.metaborg.intellij.jps.project;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jps.model.module.JpsModule;
 import org.metaborg.core.project.IProjectService;
 

@@ -32,7 +32,6 @@ import org.metaborg.intellij.idea.project.IdeaProject;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 

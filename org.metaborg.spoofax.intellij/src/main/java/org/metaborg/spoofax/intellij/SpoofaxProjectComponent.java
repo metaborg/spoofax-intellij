@@ -27,7 +27,6 @@ import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 // Remove this class.
 public final class SpoofaxProjectComponent implements ProjectComponent {

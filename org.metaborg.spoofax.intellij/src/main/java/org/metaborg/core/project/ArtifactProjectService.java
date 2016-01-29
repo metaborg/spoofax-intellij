@@ -25,11 +25,9 @@ import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.vfs.FileNameUtils;
 import org.metaborg.util.log.ILogger;
-import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
