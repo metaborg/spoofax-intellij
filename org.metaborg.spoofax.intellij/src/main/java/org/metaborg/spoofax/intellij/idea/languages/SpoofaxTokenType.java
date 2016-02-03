@@ -28,7 +28,6 @@ import org.metaborg.core.style.IStyle;
  */
 public final class SpoofaxTokenType extends IElementType {
 
-    @NotNull
     private final IStyle style;
 
     /**
@@ -47,7 +46,6 @@ public final class SpoofaxTokenType extends IElementType {
      *
      * @return The token style.
      */
-    @NotNull
     public final IStyle getStyle() { return this.style; }
 
     @Override

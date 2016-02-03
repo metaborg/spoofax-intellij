@@ -57,7 +57,6 @@ public final class LanguageUtils {
      * @param language The language.
      * @return A set of extensions, which may be empty.
      */
-    @NotNull
     public static Set<String> getExtensions(final ILanguage language) {
         // FIXME: The extensions for a language should be stored in the ILanguage object,
         // not the ILanguageImpl objects.
@@ -80,7 +79,6 @@ public final class LanguageUtils {
      * @param language The language.
      * @return The default file extension; or <code>null</code>.
      */
-    @NotNull
     public static String getDefaultExtension(final ILanguage language) {
         // FIXME: The first of a set is non-deterministic! Also, shouldn't every language
         // have a settable default extension that is used when files of that language are created?

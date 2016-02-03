@@ -30,7 +30,6 @@ import org.metaborg.core.language.ILanguage;
  */
 public abstract class SpoofaxIdeaLanguage extends Language {
 
-    @NotNull
     private final ILanguage language;
 
     /**
@@ -49,7 +48,6 @@ public abstract class SpoofaxIdeaLanguage extends Language {
      *
      * @return The associated language.
      */
-    @NotNull
     public final ILanguage language() {
         return this.language;
     }

@@ -75,7 +75,6 @@ public final class SpoofaxProjectComponent implements ProjectComponent {
 
     }
 
-    @NotNull
     @Override
     public final String getComponentName() {
         return this.getClass().getName();

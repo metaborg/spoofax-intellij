@@ -26,7 +26,7 @@ import javax.swing.*;
 
 // TODO: Make this into an icon manager.
 public final class SpoofaxIcons {
-    @NotNull
+
     public static final SpoofaxIcons INSTANCE = new SpoofaxIcons();
 
     private final Icon defaultIcon;

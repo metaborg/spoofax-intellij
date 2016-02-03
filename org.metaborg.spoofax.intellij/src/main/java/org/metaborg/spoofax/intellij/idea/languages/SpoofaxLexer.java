@@ -51,19 +51,12 @@ import java.util.List;
  */
 public final class SpoofaxLexer extends LexerBase {
 
-    @NotNull
     private final ILanguageImpl languageImpl;
-    @NotNull
     private final IParserConfiguration parserConfiguration;
-    @NotNull
     private final ISyntaxService<IStrategoTerm> syntaxService;
-    @NotNull
     private final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizer;
-    @NotNull
     private final IStylerService<IStrategoTerm, IStrategoTerm> styler;
-    @NotNull
     private final SpoofaxTokenTypeManager tokenTypesManager;
-    @NotNull
     private final IResourceService resourceService;
     @InjectLogger
     private ILogger logger;
@@ -297,7 +290,6 @@ public final class SpoofaxLexer extends LexerBase {
      *
      * @return The character buffer.
      */
-    @NotNull
     @Override
     public CharSequence getBufferSequence() {
         return this.buffer;

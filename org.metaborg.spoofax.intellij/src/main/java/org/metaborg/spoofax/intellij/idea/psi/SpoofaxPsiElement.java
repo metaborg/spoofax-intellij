@@ -62,7 +62,6 @@ public class SpoofaxPsiElement extends ASTWrapperPsiElement implements PsiElemen
         this.analysisResultRequester = analysisResultRequester;
     }
 
-    @NotNull
     @Override
     public PsiReference[] getReferences() {
         return ReferenceProvidersRegistry.getReferencesFromProviders(this);

@@ -80,7 +80,6 @@ public class SpoofaxApplicationComponent implements ApplicationComponent {
      * @return The name of the component.
      */
     @Override
-    @NotNull
     public String getComponentName() {
         return SpoofaxApplicationComponent.class.getName();
     }

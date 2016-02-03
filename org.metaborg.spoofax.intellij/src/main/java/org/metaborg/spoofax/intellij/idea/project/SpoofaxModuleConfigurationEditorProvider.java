@@ -39,9 +39,7 @@ import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 @Singleton
 public final class SpoofaxModuleConfigurationEditorProvider implements ModuleConfigurationEditorProvider {
 
-    @NotNull
     private SpoofaxModuleType spoofaxModuleType;
-    @NotNull
     private ILanguageImplEditorFactory languageImplEditorFactory;
 
     /**
@@ -64,7 +62,6 @@ public final class SpoofaxModuleConfigurationEditorProvider implements ModuleCon
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     public ModuleConfigurationEditor[] createEditors(final ModuleConfigurationState state) {
         final Module module = state.getRootModel().getModule();
         final ModuleType moduleType = ModuleType.get(module);

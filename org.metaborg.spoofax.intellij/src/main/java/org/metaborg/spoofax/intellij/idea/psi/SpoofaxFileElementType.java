@@ -167,7 +167,6 @@ public class SpoofaxFileElementType extends IFileElementType { //IStubFileElemen
      * @param root     The root element.
      * @return The language implementation to use.
      */
-    @NotNull
     private ILanguageImpl getLanguageImpl(
             @Nullable final FileObject resource,
             final PsiElement psi,

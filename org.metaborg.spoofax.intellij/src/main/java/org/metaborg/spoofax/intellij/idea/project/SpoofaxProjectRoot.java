@@ -41,7 +41,6 @@ public final class SpoofaxProjectRoot extends DetectedProjectRoot {
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public String getRootTypeName() {
         return "Spoofax module";

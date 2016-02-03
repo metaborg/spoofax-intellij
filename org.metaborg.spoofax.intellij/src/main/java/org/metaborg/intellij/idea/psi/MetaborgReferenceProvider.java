@@ -74,7 +74,6 @@ public abstract class MetaborgReferenceProvider extends PsiReferenceProvider {
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public final PsiReference[] getReferencesByElement(
             final PsiElement element, final ProcessingContext context) {

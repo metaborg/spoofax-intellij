@@ -30,9 +30,7 @@ import org.metaborg.core.project.IProject;
  */
 public final class MetaborgJpsProject implements IProject, ILanguageSpec {
 
-    @NotNull
     private final FileObject location;
-    @NotNull
     private final JpsModule module;
 
     /**
@@ -56,12 +54,10 @@ public final class MetaborgJpsProject implements IProject, ILanguageSpec {
     }
 
     @Override
-    @NotNull
     public FileObject location() {
         return this.location;
     }
 
-    @NotNull
     public JpsModule module() {
         return this.module;
     }

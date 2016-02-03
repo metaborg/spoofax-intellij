@@ -27,7 +27,6 @@ import org.jetbrains.jps.model.ex.JpsElementChildRoleBase;
  * Global JPS configuration.
  */
 public final class SpoofaxGlobalConfig extends SpoofaxConfig<SpoofaxGlobalState, SpoofaxGlobalConfig> {
-    @NotNull
     public static final JpsElementChildRole<SpoofaxGlobalConfig> ROLE = JpsElementChildRoleBase.create("Spoofax");
 
     /**
@@ -40,7 +39,6 @@ public final class SpoofaxGlobalConfig extends SpoofaxConfig<SpoofaxGlobalState,
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public final SpoofaxGlobalConfig createCopy() {
         final SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();

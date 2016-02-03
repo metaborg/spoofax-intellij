@@ -48,7 +48,6 @@ public final class SpoofaxPsiElementFactory implements ISpoofaxPsiElementFactory
         this.analysisResultRequester = analysisResultRequester;
     }
 
-    @NotNull
     @Override
     public SpoofaxPsiElement create(final ASTNode node) {
         final IElementType type = node.getElementType();

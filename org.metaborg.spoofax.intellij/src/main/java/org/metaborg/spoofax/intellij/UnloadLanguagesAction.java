@@ -34,11 +34,9 @@ import org.metaborg.spoofax.intellij.languages.LanguageManager;
 // Will be replaced in the future.
 @Deprecated
 public class UnloadLanguagesAction extends AnAction {
-    @NotNull
+
     private final LanguageManager languageManager;
-    @NotNull
     private final ILanguageService languageService;
-    @NotNull
     private final IIdeaLanguageManager ideaLanguageManager;
 
     public UnloadLanguagesAction() {

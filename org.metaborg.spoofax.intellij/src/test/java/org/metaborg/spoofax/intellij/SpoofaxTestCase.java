@@ -31,7 +31,6 @@ public abstract class SpoofaxTestCase extends LightPlatformCodeInsightFixtureTes
     private static final SpoofaxTestProjectDescriptor projectDescriptor = new SpoofaxTestProjectDescriptor();
 
     @Override
-    @NotNull
     protected LightProjectDescriptor getProjectDescriptor() {
         return projectDescriptor;
     }

@@ -27,7 +27,6 @@ import org.jetbrains.jps.model.ex.JpsElementBase;
  */
 public abstract class SpoofaxConfig<TState, Self extends SpoofaxConfig<TState, Self>> extends JpsElementBase<Self> {
 
-    @NotNull
     private TState state;
 
     /**
@@ -54,7 +53,6 @@ public abstract class SpoofaxConfig<TState, Self extends SpoofaxConfig<TState, S
      *
      * @return The copy.
      */
-    @NotNull
     @Override
     public abstract Self createCopy();
 
@@ -73,7 +71,6 @@ public abstract class SpoofaxConfig<TState, Self extends SpoofaxConfig<TState, S
      *
      * @return The state.
      */
-    @NotNull
     public final TState getState() {
         return this.state;
     }

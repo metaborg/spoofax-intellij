@@ -41,7 +41,6 @@ import java.util.List;
  */
 public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleBasedBuildTargetType<T> {
 
-    @NotNull
     private final IJpsProjectService projectService;
 
     protected SpoofaxTargetType(final String typeId, final IJpsProjectService projectService) {
@@ -55,7 +54,6 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      * @param project The project.
      * @return The created build target.
      */
-    @NotNull
     public abstract T createTarget(MetaborgJpsProject project);
 
     /**
@@ -64,7 +62,6 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      * @param module The JPS module.
      * @return The created build target.
      */
-    @NotNull
     public final T createTarget(final JpsModule module) {
         MetaborgJpsProject project = this.projectService.get(module);
         if (project == null)
@@ -78,7 +75,6 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      * @param model The JPS model.
      * @return A list of build targets.
      */
-    @NotNull
     @Override
     public final List<T> computeAllTargets(final JpsModel model) {
         // Default implementation.
@@ -95,7 +91,6 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      * @param model The JPS model.
      * @return The build target loader.
      */
-    @NotNull
     @Override
     public final BuildTargetLoader<T> createLoader(final JpsModel model) {
         // Default implementation.

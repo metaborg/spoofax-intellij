@@ -48,7 +48,6 @@ public final class SpoofaxIdentifierReference extends PsiReferenceBase<PsiElemen
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public Object[] getVariants() {
         // TODO: For code completion?

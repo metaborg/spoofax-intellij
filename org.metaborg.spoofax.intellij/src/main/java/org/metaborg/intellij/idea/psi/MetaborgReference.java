@@ -49,7 +49,6 @@ public abstract class MetaborgReference extends PsiReferenceBase<MetaborgReferen
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public final Object[] getVariants() {
         return new Object[0];

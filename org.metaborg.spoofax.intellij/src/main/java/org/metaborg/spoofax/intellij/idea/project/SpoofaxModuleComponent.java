@@ -40,15 +40,11 @@ import javax.annotation.Nullable;
  */
 public final class SpoofaxModuleComponent implements ModuleComponent {
 
-    @NotNull
     private final Module module;
     @InjectLogger
     private ILogger logger;
-    @NotNull
     private IIdeaProjectService projectService;
-    @NotNull
     private IIdeaProjectFactory projectFactory;
-    @NotNull
     private IIntelliJResourceService resourceService;
 
     /**
@@ -71,7 +67,6 @@ public final class SpoofaxModuleComponent implements ModuleComponent {
     }
 
     @Override
-    @NotNull
     public String getComponentName() {
         return "SpoofaxModuleComponent";
     }

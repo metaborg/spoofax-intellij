@@ -29,9 +29,7 @@ import javax.annotation.Nullable;
 
 public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
 
-    @NotNull
     public static final String NAME = "SpoofaxGlobalService";
-    @NotNull
     public static final String CONFIG_FILE = "Spoofax.xml";
 
     public SpoofaxGlobalSerializer() {

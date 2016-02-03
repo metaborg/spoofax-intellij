@@ -34,9 +34,7 @@ import java.lang.reflect.Field;
  */
 public final class MetaborgLoggerMembersInjector<T> implements MembersInjector<T> {
 
-    @NotNull
     private final Field field;
-    @NotNull
     private final ILogger logger;
 
     /**
@@ -58,7 +56,6 @@ public final class MetaborgLoggerMembersInjector<T> implements MembersInjector<T
      * @param clazz The class.
      * @return The created logger instance.
      */
-    @NotNull
     private static ILogger createLogger(final Class<?> clazz) {
         return LoggerUtils.logger(clazz);
     }

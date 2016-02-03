@@ -36,11 +36,8 @@ import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
  */
 public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
 
-    @NotNull
     private final IIntelliJResourceService resourceService;
-    @NotNull
     private final ILanguageIdentifierService identifierService;
-    @NotNull
     private final ILexerParserManager lexerParserManager;
 
     @Inject
@@ -61,7 +58,6 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
      * @param virtualFile The file.
      * @return The syntax highlighter.
      */
-    @NotNull
     @Override
     public SyntaxHighlighter getSyntaxHighlighter(
             final Project project,

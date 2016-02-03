@@ -48,9 +48,7 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
 
     @InjectLogger
     private ILogger logger;
-    @NotNull
     private SpoofaxModuleType moduleType;
-    @NotNull
     private SpoofaxSdkType sdkType;
 
     /**
@@ -74,7 +72,6 @@ public final class SpoofaxProjectDetector extends ProjectStructureDetector {
      * We determine that a directory is the root of a Spoofax project when it
      * has a file `editor/*.main.esv`.
      */
-    @NotNull
     @Override
     public DirectoryProcessingResult detectRoots(
             final File dir,

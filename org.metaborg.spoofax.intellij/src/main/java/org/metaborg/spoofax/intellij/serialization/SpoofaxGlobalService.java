@@ -39,7 +39,6 @@ public final class SpoofaxGlobalService implements PersistentStateComponent<Spoo
         this.state = new SpoofaxGlobalState();
     }
 
-    @NotNull
     public static SpoofaxGlobalService getInstance() {
         final SpoofaxGlobalService service = ServiceManager.getService(SpoofaxGlobalService.class);
         assert service != null;

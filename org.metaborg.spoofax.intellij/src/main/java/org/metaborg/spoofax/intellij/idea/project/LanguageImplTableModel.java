@@ -141,9 +141,8 @@ public final class LanguageImplTableModel extends ListTableModel<LanguageImplIte
                     return new DefaultCellEditor(comboBox);
                 }
             };
-    @NotNull
+
     final ModuleConfigurationState state;
-    @NotNull
     final ILanguageService languageService;
 
     @Inject

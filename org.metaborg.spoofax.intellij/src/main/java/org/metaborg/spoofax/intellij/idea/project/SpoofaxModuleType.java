@@ -36,11 +36,8 @@ import javax.swing.*;
 public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
 
     // The module ID. This is displayed to the user when the ModuleType cannot be found.
-    @NotNull
     public static final String ID = "SPOOFAX_MODULE"; // This is also used in plugin.xml.
-    @NotNull
     private static final String NAME = "Spoofax";
-    @NotNull
     private static final String DESCRIPTION = "Spoofax Module";
 
     /**
@@ -59,7 +56,6 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
      *
      * @return The module type.
      */
-    @NotNull
     public static ModuleType getModuleType() {
         return ModuleTypeManager.getInstance().findByID(ID);
     }
@@ -73,7 +69,6 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
      *
      * @return The created module builder.
      */
-    @NotNull
     @Override
     public SpoofaxModuleBuilder createModuleBuilder() {
         return SpoofaxIdeaPlugin.injector().getInstance(SpoofaxModuleBuilder.class);
@@ -84,7 +79,6 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
      *
      * @return The name of the module type.
      */
-    @NotNull
     @Override
     public String getName() {
         return NAME;
@@ -95,7 +89,6 @@ public final class SpoofaxModuleType extends ModuleType<SpoofaxModuleBuilder> {
      *
      * @return The description.
      */
-    @NotNull
     @Override
     public String getDescription() {
         return DESCRIPTION;

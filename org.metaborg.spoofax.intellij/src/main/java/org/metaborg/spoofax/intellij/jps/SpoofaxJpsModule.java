@@ -75,7 +75,6 @@ public final class SpoofaxJpsModule extends SpoofaxIntelliJModule {
     @Singleton
     @Provides
     @Inject
-    @NotNull
     public final Collection<BuildTargetType<?>> provideTargetTypes(
             final SpoofaxPreTargetType preTargetType,
             final SpoofaxPostTargetType postTargetType) {
@@ -85,7 +84,6 @@ public final class SpoofaxJpsModule extends SpoofaxIntelliJModule {
     @Singleton
     @Provides
     @Inject
-    @NotNull
     public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders() {
         return Collections.emptyList();
     }

@@ -27,7 +27,6 @@ import org.jetbrains.jps.model.ex.JpsElementChildRoleBase;
  * Project JPS configuration.
  */
 public final class SpoofaxProjectConfig extends SpoofaxConfig<SpoofaxProjectState, SpoofaxProjectConfig> {
-    @NotNull
     public static final JpsElementChildRole<SpoofaxProjectConfig> ROLE = JpsElementChildRoleBase.create(
             "Spoofax Project");
 
@@ -41,7 +40,6 @@ public final class SpoofaxProjectConfig extends SpoofaxConfig<SpoofaxProjectStat
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public final SpoofaxProjectConfig createCopy() {
         final SpoofaxProjectConfig config = new SpoofaxProjectConfig();

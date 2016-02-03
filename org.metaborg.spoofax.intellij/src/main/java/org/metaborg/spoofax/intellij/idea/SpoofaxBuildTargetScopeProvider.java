@@ -57,7 +57,6 @@ public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvi
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public List<TargetTypeBuildScope> getBuildTargetScopes(
             final CompileScope baseScope,

@@ -45,11 +45,8 @@ import java.util.List;
 @Singleton
 public final class LanguageManager {
 
-    @NotNull
     private final ILanguageService languageService;
-    @NotNull
     private final ILanguageDiscoveryService discoveryService;
-    @NotNull
     private final IIntelliJResourceService resourceService;
     @InjectLogger
     private ILogger logger;

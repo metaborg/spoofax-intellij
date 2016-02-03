@@ -38,7 +38,6 @@ public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer
      * {@inheritDoc}
      */
     @Override
-    @NotNull
     public final JpsDummyElement loadProperties(@Nullable final Element element) {
         final JpsDummyElement result = JpsElementFactory.getInstance().createDummyElement();
 

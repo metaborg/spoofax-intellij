@@ -34,9 +34,7 @@ import java.lang.reflect.Field;
  */
 public final class Slf4JLoggerMembersInjector<T> implements MembersInjector<T> {
 
-    @NotNull
     private final Field field;
-    @NotNull
     private final Logger logger;
 
     /**
@@ -58,7 +56,6 @@ public final class Slf4JLoggerMembersInjector<T> implements MembersInjector<T> {
      * @param clazz The class.
      * @return The created logger instance.
      */
-    @NotNull
     private static Logger createLogger(final Class<?> clazz) {
         return LoggerFactory.getLogger(clazz);
     }

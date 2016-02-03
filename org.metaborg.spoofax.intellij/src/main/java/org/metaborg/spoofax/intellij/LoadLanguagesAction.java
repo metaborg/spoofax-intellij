@@ -34,14 +34,8 @@ import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 @Deprecated
 public class LoadLanguagesAction extends AnAction {
 
-    //    @NotNull
-//    private final LanguageManager languageManager;
-    @NotNull
     private final ILanguageService languageService;
-    @NotNull
     private final IIdeaLanguageManager ideaLanguageManager;
-//    @NotNull
-//    private final IProjectLanguageIdentifierService languageIdentifierService;
 
     public LoadLanguagesAction() {
         super();

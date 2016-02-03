@@ -192,7 +192,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
     }
 
     @Override
-    @NotNull
     public final ModuleWizardStep modifyProjectTypeStep(final SettingsStep settingsStep) {
         final ModuleWizardStep wizardStep = StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
         assert wizardStep != null;
@@ -333,7 +332,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      * @return The module type.
      */
     @Override
-    @NotNull
     public final ModuleType getModuleType() {
         return SpoofaxModuleType.getModuleType();
     }
@@ -345,7 +343,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      */
     // TODO: Use project's ILanguage facet defined icon.
     @Override
-    @NotNull
     public final Icon getBigIcon() {
         return SpoofaxIcons.INSTANCE.defaultIcon();
     }
@@ -357,7 +354,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      */
     // TODO: Use project's ILanguage facet defined icon.
     @Override
-    @NotNull
     public final Icon getNodeIcon() {
         return SpoofaxIcons.INSTANCE.defaultIcon();
     }
@@ -368,7 +364,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      * @return The module builder's description.
      */
     @Override
-    @NotNull
     public final String getDescription() {
         return "Creates a new <b>Spoofax Language</b> module, used for developing domain-specific languages " +
                 "using the <b>Spoofax Language Workbench</b>.";
@@ -382,7 +377,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      * @return The module builder's presentable name.
      */
     @Override
-    @NotNull
     public final String getPresentableName() {
         return "Spoofax Language";
     }
@@ -396,7 +390,6 @@ public final class SpoofaxModuleBuilder extends ModuleBuilder implements SourceP
      * @return The group name.
      */
     @Override
-    @NotNull
     public final String getGroupName() {
         return "Spoofax";
     }

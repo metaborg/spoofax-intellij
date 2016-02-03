@@ -41,7 +41,6 @@ public abstract class SpoofaxExtensionService {
      * @param global The global.
      * @return The configuration.
      */
-    @NotNull
     public abstract SpoofaxGlobalConfig getConfiguration(JpsGlobal global);
 
     /**
@@ -58,7 +57,6 @@ public abstract class SpoofaxExtensionService {
      * @param project The project.
      * @return The configuration.
      */
-    @NotNull
     public abstract SpoofaxProjectConfig getConfiguration(JpsProject project);
 
     /**

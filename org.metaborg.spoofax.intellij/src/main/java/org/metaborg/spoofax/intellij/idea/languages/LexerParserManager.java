@@ -33,7 +33,6 @@ import org.metaborg.core.language.ILanguageImpl;
 @Singleton
 public final class LexerParserManager implements ILexerParserManager {
 
-    @NotNull
     private final IIdeaAttachmentManager attachmentManager;
 
     @Inject
@@ -44,7 +43,6 @@ public final class LexerParserManager implements ILexerParserManager {
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public Lexer getHighlightingLexer(final ILanguageImpl implementation) {
         return this.attachmentManager.get(implementation).lexer();
@@ -53,7 +51,6 @@ public final class LexerParserManager implements ILexerParserManager {
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public Lexer createCharacterLexer(final ILanguage language) {
         final IdeaLanguageAttachment attachment = this.attachmentManager.get(language);
@@ -63,7 +60,6 @@ public final class LexerParserManager implements ILexerParserManager {
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
     public PsiParser createParser(final ILanguage language) {
         throw new UnsupportedOperationException("Deprecated");

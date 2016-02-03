@@ -62,7 +62,6 @@ public final class SpoofaxTokenTypeManager {
      *
      * @return The token type.
      */
-    @NotNull
     public CharacterTokenType getCharacterTokenType() {
         return this.characterTokenType;
     }
@@ -79,7 +78,6 @@ public final class SpoofaxTokenTypeManager {
      *              in which case the default token style is assumed.
      * @return The token type.
      */
-    @NotNull
     public SpoofaxTokenType getTokenType(@Nullable IStyle style) {
         style = style != null ? style : getDefaultStyle();
 
@@ -99,7 +97,6 @@ public final class SpoofaxTokenTypeManager {
      *
      * @return The default style.
      */
-    @NotNull
     public IStyle getDefaultStyle() {
         // TODO: Get this from the IStylerService?
         return new Style(Color.black, Color.white, false, false, false);

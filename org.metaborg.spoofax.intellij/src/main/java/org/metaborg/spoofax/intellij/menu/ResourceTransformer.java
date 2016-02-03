@@ -59,13 +59,9 @@ import java.util.List;
  */
 public class ResourceTransformer<P, A, T> implements IResourceTransformer {
 
-    @NotNull
     private final IContextService contextService;
-    @NotNull
     private final IParseResultRequester<P> parseResultRequester;
-    @NotNull
     private final IAnalysisResultRequester<P, A> analysisResultRequester;
-    @NotNull
     private final ITransformService<P, A, T> transformService;
     @InjectLogger
     private ILogger logger;

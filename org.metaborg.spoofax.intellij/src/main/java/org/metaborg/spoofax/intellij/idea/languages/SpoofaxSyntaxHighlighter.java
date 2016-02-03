@@ -39,12 +39,8 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
  */
 public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
 
-    @NotNull
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
-
-    @NotNull
     private final Map<IStyle, TextAttributesKey[]> styleMap = new HashMap<>();
-    @NotNull
     private final Lexer lexer;
 
     /**
@@ -62,7 +58,6 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
      *
      * @return The highlighting lexer.
      */
-    @NotNull
     @Override
     public Lexer getHighlightingLexer() {
         return this.lexer;
@@ -74,7 +69,6 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
      * @param tokenType The token type.
      * @return The text attributes for the token type.
      */
-    @NotNull
     @Override
     public TextAttributesKey[] getTokenHighlights(final IElementType tokenType) {
         if (!(tokenType instanceof SpoofaxTokenType))
@@ -90,7 +84,6 @@ public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
      * @param style The style.
      * @return The text attributes.
      */
-    @NotNull
     private TextAttributesKey[] getTextAttributesKeyForStyle(final IStyle style) {
         TextAttributesKey[] attributes = this.styleMap.getOrDefault(style, null);
         if (attributes == null) {

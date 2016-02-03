@@ -47,7 +47,6 @@ public class SpoofaxJpsMetaModule extends SpoofaxIntelliJMetaModule {
     @Singleton
     @Provides
     @Inject
-    @NotNull
     public final Collection<TargetBuilder<?, ?>> provideTargetBuilders(
             final SpoofaxPreBuilder preBuilder,
             final SpoofaxPostBuilder postBuilder) {
