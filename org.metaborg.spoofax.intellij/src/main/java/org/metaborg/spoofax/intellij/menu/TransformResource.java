@@ -21,25 +21,27 @@ package org.metaborg.spoofax.intellij.menu;
 
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.project.ILanguageSpec;
 
 /**
  * A tuple with a resource to transform, along with the (part of its) source code to transform.
  */
 public final class TransformResource {
 
-    @NotNull
     private final FileObject resource;
-    @NotNull
+    private final ILanguageSpec project;
     private final String text;
 
     /**
      * Initializes a new instance of the {@link TransformResource} class.
      *
      * @param resource The resource to transform.
+     * @param project  The project to which the resource belongs.
      * @param text     The text to transform.
      */
-    public TransformResource(final FileObject resource, final String text) {
+    public TransformResource(final FileObject resource, final ILanguageSpec project, final String text) {
         this.resource = resource;
+        this.project = project;
         this.text = text;
     }
 
@@ -48,17 +50,22 @@ public final class TransformResource {
      *
      * @return The resource to transform.
      */
-    @NotNull
     public FileObject resource() {
         return this.resource;
     }
+
+    /**
+     * Gets the project to which the resource belongs.
+     *
+     * @return The project of the resource.
+     */
+    public ILanguageSpec project() { return this.project; }
 
     /**
      * Gets the text to transform.
      *
      * @return The text to transform.
      */
-    @NotNull
     public String text() {
         return this.text;
     }

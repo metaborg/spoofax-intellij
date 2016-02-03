@@ -31,11 +31,17 @@ import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.processing.parse.IParseResultRequester;
+import org.metaborg.core.project.ILanguageSpec;
 import org.metaborg.core.syntax.ParseResult;
 import org.metaborg.core.transform.ITransformService;
 import org.metaborg.core.transform.TransformException;
+import org.metaborg.core.transform.TransformResult;
+import org.metaborg.core.transform.TransformResults;
 import org.metaborg.util.concurrent.IClosableLock;
 import org.metaborg.util.log.ILogger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //import org.metaborg.core.language.ILanguageIdentifierService;
 //import org.metaborg.core.source.ISourceTextService;
@@ -84,39 +90,76 @@ public class ResourceTransformer<P, A, T> implements IResourceTransformer {
      * @param goal      The transformation goal.
      */
     @Override
-    public boolean execute(
+    public List<FileObject> execute(
             final Iterable<TransformResource> resources, final ILanguageImpl language,
             final ITransformGoal goal) throws MetaborgException {
 
+        final List<FileObject> outputFiles = new ArrayList<>();
         for (final TransformResource transformResource : resources) {
             final FileObject resource = transformResource.resource();
             try {
-                transform(resource, language, transformResource.text(), goal);
+                this.logger.info("Transforming {}", resource);
+                final TransformResults<?, T> results = transform(
+                        resource,
+                        transformResource.project(),
+                        language,
+                        transformResource.text(),
+                        goal
+                );
+                for (final TransformResult<?, T> r : results.results) {
+                    outputFiles.add(r.output);
+                }
             } catch (ContextException | TransformException e) {
                 this.logger.error("Transformation failed for {}", e, resource);
             }
         }
-
-        return true;
+        return outputFiles;
     }
 
-    private void transform(
+    private TransformResults<?, T> transform(
             final FileObject resource,
+            final ILanguageSpec project,
             final ILanguageImpl language,
             final String text,
             final ITransformGoal goal)
             throws ContextException, TransformException {
-        final IContext context = this.contextService.get(resource, language);
+        final IContext context = this.contextService.get(resource, project, language);
+        final TransformResults<?, T> results;
         if (this.transformService.requiresAnalysis(context, goal)) {
-            final AnalysisFileResult<P, A> analysisResult =
-                    this.analysisResultRequester.request(resource, context, text).toBlocking().single();
-            try (IClosableLock lock = context.read()) {
-                this.transformService.transform(analysisResult, context, goal);
-            }
+            results = transformAnalysis(resource, text, goal, context);
         } else {
-            final ParseResult<P> parseResult =
-                    this.parseResultRequester.request(resource, language, text).toBlocking().single();
-            this.transformService.transform(parseResult, context, goal);
+            results = transformParse(resource, language, text, goal, context);
+        }
+        return results;
+    }
+
+    private TransformResults<P, T> transformParse(
+            final FileObject resource,
+            final ILanguageImpl language,
+            final String text,
+            final ITransformGoal goal, final IContext context) throws TransformException {
+        final ParseResult<P> parseResult =
+                this.parseResultRequester.request(resource, language, text).toBlocking().single();
+        return this.transformService.transform(parseResult, context, goal);
+    }
+
+    private TransformResults<A, T> transformAnalysis(
+            final FileObject resource,
+            final String text,
+            final ITransformGoal goal,
+            final IContext context) throws TransformException {
+        final AnalysisFileResult<P, A> analysisResult =
+                this.analysisResultRequester.request(resource, context, text).toBlocking().single();
+        try (IClosableLock lock = context.read()) {
+            return this.transformService.transform(analysisResult, context, goal);
         }
     }
+
+//    private List<FileObject> getOutputFiles(final TransformResults<?, T> result) {
+//        final List<FileObject> outputFiles = new ArrayList<>();
+//        for (final TransformResult<?, T> r : result.results) {
+//            outputFiles.add(r.output);
+//        }
+//        return outputFiles;
+//    }
 }

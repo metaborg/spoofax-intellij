@@ -69,7 +69,7 @@ public final class IntelliJResourceService extends ResourceService implements II
         final String path = getPath(uri);
         if (fileSystem == null || path == null)
             throw new MetaborgRuntimeException("Can't unresolve this URI: " + uri);
-        return fileSystem.findFileByPath(path);
+        return fileSystem.refreshAndFindFileByPath(path);
     }
 
     /**

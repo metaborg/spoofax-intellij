@@ -171,6 +171,10 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
      * otherwise, <code>false</code>.
      */
     private static boolean isValidExtension(String text) {
+        if (StringUtil.isEmptyOrSpaces(text)) {
+            // An extension cannot be empty.
+            return false;
+        }
         if (text.startsWith(".")) {
             // The extension may optionally start with a dot.
             // Just ignore it.
@@ -180,7 +184,7 @@ public final class MetaborgModuleWizardStep extends ModuleWizardStep {
             // An extension cannot start or end with a dot.
             return false;
         }
-        if (text.contains("src/test")) {
+        if (text.contains("..")) {
             // An extension cannot contain a sequence of dots.
             return false;
         }

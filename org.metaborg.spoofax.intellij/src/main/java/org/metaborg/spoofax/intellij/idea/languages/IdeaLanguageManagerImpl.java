@@ -21,16 +21,14 @@ package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.IdeActions;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.extensions.ExtensionPoint;
 import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileNameMatcher;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
+import com.intellij.openapi.wm.impl.IdeMenuBar;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
@@ -41,6 +39,7 @@ import org.metaborg.spoofax.intellij.languages.LanguageUtils;
 import org.metaborg.spoofax.intellij.menu.AnActionWithId;
 import org.metaborg.util.log.ILogger;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -161,7 +160,7 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param obj The language implementation's attachment.
      */
     private void installLanguageImplementation(final IdeaLanguageImplAttachment obj) {
-        addAndRegisterActionGroup(obj.buildActionGroup(), IdeActions.GROUP_MAIN_MENU);
+        addAndRegisterActionGroup(obj.buildActionGroup(), IdeActions.GROUP_MAIN_MENU, "ToolsMenu", Anchor.AFTER);
     }
 
     /**
@@ -195,11 +194,32 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
      * @param action   The action to add.
      * @param parentID The parent ID.
      */
-    private void addAndRegisterActionGroup(final AnAction action, final String parentID) {
+    private void addAndRegisterActionGroup(final AnAction action, final String parentID, @Nullable final String relativeToActionId, @Nullable final Anchor anchor) {
         final ActionManager manager = ActionManager.getInstance();
         final DefaultActionGroup parent = (DefaultActionGroup)manager.getAction(parentID);
-        parent.add(action);
+        parent.add(action, getActionConstraints(relativeToActionId, anchor));
         registerActions(manager, action);
+    }
+
+    /**
+     * Gets an object that specifies where the action is positioned.
+     *
+     * @param relativeToActionId The action ID relative to which to position the action;
+     *                           or <code>null</code> to position the action at the start or end.
+     * @param anchor The anchor indicating where to position the action;
+     *               or <code>null</code> to position the action after or at the end.
+     * @return The {@link Constraints}.
+     */
+    private Constraints getActionConstraints(@Nullable final String relativeToActionId, @Nullable final Anchor anchor) {
+        if (relativeToActionId != null && anchor != null) {
+            return new Constraints(anchor, relativeToActionId);
+        } else if (relativeToActionId != null) {
+            return new Constraints(Anchor.AFTER, relativeToActionId);
+        } else if (anchor == Anchor.BEFORE || anchor == Anchor.FIRST) {
+            return Constraints.FIRST;
+        } else {
+            return Constraints.LAST;
+        }
     }
 
     /**

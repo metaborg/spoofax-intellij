@@ -23,16 +23,19 @@ import com.google.inject.Inject;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService;
 import org.metaborg.util.log.ILogger;
 
-// Remove this class.
 public final class SpoofaxProjectComponent implements ProjectComponent {
 
-    @NotNull
     private final Project project;
+    private ILanguageService languageService;
+    private IIdeaLanguageManager ideaLanguageManager;
     @InjectLogger
     private ILogger logger;
 
@@ -47,13 +50,14 @@ public final class SpoofaxProjectComponent implements ProjectComponent {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject() {
-
+    private void inject(final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager) {
+        this.languageService = languageService;
+        this.ideaLanguageManager = ideaLanguageManager;
     }
 
     @Override
     public final void projectOpened() {
-        SpoofaxProjectService.getInstance(this.project).getState().setMyName("Project name!");
+//        SpoofaxProjectService.getInstance(this.project).getState().setMyName("Project name!");
     }
 
     @Override

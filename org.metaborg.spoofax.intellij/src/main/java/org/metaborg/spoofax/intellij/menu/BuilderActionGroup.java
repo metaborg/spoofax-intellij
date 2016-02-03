@@ -30,26 +30,31 @@ import org.metaborg.core.language.ILanguageImpl;
  */
 public final class BuilderActionGroup extends DefaultActionGroup {
 
-    private final ILanguageImpl implementation;
+    private final ILanguageImpl languageImpl;
     private final ActionHelper actionHelper;
 
     /**
      * Initializes a new instance of the {@link BuilderActionGroup} class.
      *
-     * @param implementation The implementation to respond to.
+     * @param languageImpl The language implementation to respond to.
      */
     @Inject
     /* package private */ BuilderActionGroup(
-            @Assisted final ILanguageImpl implementation,
+            @Assisted final ILanguageImpl languageImpl,
             final ActionHelper actionHelper) {
-        super(implementation.belongsTo().name(), true);
-        this.implementation = implementation;
+        super(getName(languageImpl), true);
+        this.languageImpl = languageImpl;
         this.actionHelper = actionHelper;
+//        this.getTemplatePresentation().setText(getName(languageImpl), false);
+    }
+
+    private static String getName(final ILanguageImpl languageImpl) {
+        return languageImpl.belongsTo().name();
     }
 
     @Override
     public void update(final AnActionEvent e) {
-        final boolean visible = this.actionHelper.isActiveFileLanguage(e, this.implementation);
+        final boolean visible = this.actionHelper.isActiveFileLanguage(e, this.languageImpl);
         e.getPresentation().setVisible(visible);
         super.update(e);
     }

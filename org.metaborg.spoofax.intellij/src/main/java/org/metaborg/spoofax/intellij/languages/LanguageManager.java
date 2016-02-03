@@ -68,6 +68,10 @@ public final class LanguageManager {
      * Loads the meta languages.
      */
     public final void loadMetaLanguages() {
+        // TODO: Let the user load language artifacts of meta languages,
+        // and store them for the next session,
+        // and use those instead of this fixed list.
+
         loadLanguage("org.metaborg.meta.lang.esv-1.5.0-SNAPSHOT");
         loadLanguage("org.metaborg.meta.lang.nabl-1.5.0-SNAPSHOT");
         loadLanguage("org.metaborg.meta.lang.sdf-1.5.0-SNAPSHOT");

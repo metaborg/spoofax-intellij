@@ -22,9 +22,13 @@ package org.metaborg.spoofax.intellij.menu;
 //import org.apache.commons.vfs2.FileObject;
 //import org.jetbrains.annotations.NotNull;
 
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.action.ITransformGoal;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.transform.TransformResults;
+
+import java.util.List;
 //import org.metaborg.spoofax.core.menu.TransformAction;
 
 //import java.util.List;
@@ -41,7 +45,7 @@ public interface IResourceTransformer {
      * @param resources The active resources.
      * @param goal      The transformation goal.
      */
-    boolean execute(
+    List<FileObject> execute(
             final Iterable<TransformResource> resources, final ILanguageImpl language,
             final ITransformGoal goal)
             throws MetaborgException;

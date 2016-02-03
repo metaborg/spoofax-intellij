@@ -19,12 +19,16 @@
 
 package org.metaborg.spoofax.intellij.idea.psi;
 
+import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.ExternalAnnotator;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtil;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiFile;
 import org.apache.commons.vfs2.FileObject;
@@ -36,26 +40,40 @@ import org.metaborg.core.context.IContext;
 import org.metaborg.core.context.IContextService;
 import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.core.messages.IMessage;
 import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
 import org.metaborg.core.processing.parse.IParseResultRequester;
+import org.metaborg.core.project.ILanguageSpec;
+import org.metaborg.core.project.ILanguageSpecService;
+import org.metaborg.core.project.IProject;
+import org.metaborg.intellij.idea.project.IIdeaProjectService;
+import org.metaborg.intellij.idea.project.IdeaProject;
+import org.metaborg.intellij.idea.project.IdeaProjectService;
 import org.metaborg.spoofax.intellij.SourceRegionUtil;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
+import org.metaborg.util.log.ILogger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
 @Singleton
 public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationInfo, AnalysisFileResult<IStrategoTerm, IStrategoTerm>> {
 
     private final IContextService contextService;
+    private final IIdeaProjectService projectService;
+    private final ILanguageSpecService languageSpecService;
     private final IAnalysisService<IStrategoTerm, IStrategoTerm> analysisService;
     private final IIntelliJResourceService resourceService;
     private final ILanguageIdentifierService identifierService;
     private final IParseResultRequester<IStrategoTerm> parseResultRequester;
     private final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester;
+    @InjectLogger
+    private ILogger logger;
 
     @Inject
     public SpoofaxAnnotator(
             final IContextService contextService,
+            final IIdeaProjectService projectService,
+            final ILanguageSpecService languageSpecService,
             final IAnalysisService<IStrategoTerm, IStrategoTerm> analysisService,
             final IIntelliJResourceService resourceService,
             final ILanguageIdentifierService identifierService,
@@ -64,6 +82,8 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
     ) {
         super();
         this.contextService = contextService;
+        this.projectService = projectService;
+        this.languageSpecService = languageSpecService;
         this.analysisService = analysisService;
         this.resourceService = resourceService;
         this.identifierService = identifierService;
@@ -82,10 +102,18 @@ public final class SpoofaxAnnotator extends ExternalAnnotator<SpoofaxAnnotationI
     public SpoofaxAnnotationInfo collectInformation(
             final PsiFile file, final Editor editor, final boolean hasErrors) {
 
+        @Nullable final ILanguageSpec project = this.languageSpecService.get(this.projectService.get(file));
+
+        if (project == null) {
+            this.logger.warn("Cannot annotate source code; cannot get language specification for resource {}. Is the file excluded?",
+                              Objects.firstNonNull(file.getVirtualFile(), "<unknown>"));
+            return null;
+        }
+
         try {
             final FileObject resource = this.resourceService.resolve(file.getVirtualFile());
-            final ILanguageImpl language = this.identifierService.identify(resource);
-            final IContext context = this.contextService.get(resource, language);
+            @Nullable final ILanguageImpl language = this.identifierService.identify(resource, project);
+            final IContext context = this.contextService.get(resource, project, language);
             final String text = editor.getDocument().getImmutableCharSequence().toString();
             return new SpoofaxAnnotationInfo(resource, text, context);
         } catch (final ContextException e) {

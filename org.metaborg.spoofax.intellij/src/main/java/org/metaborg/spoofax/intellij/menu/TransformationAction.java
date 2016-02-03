@@ -24,13 +24,17 @@ import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.action.ITransformAction;
 import org.metaborg.core.action.ITransformGoal;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
 
 import java.util.List;
@@ -44,9 +48,8 @@ public final class TransformationAction<P, A, T> extends AnActionWithId {
 
     private final ITransformGoal goal;
     private final ILanguageImpl language;
-    @NotNull
     private final ActionHelper actionHelper;
-    @NotNull
+    private final IIntelliJResourceService resourceService;
     private final IResourceTransformer transformer;
     @InjectLogger
     private ILogger logger;
@@ -57,12 +60,14 @@ public final class TransformationAction<P, A, T> extends AnActionWithId {
             @Assisted final ITransformAction action,
             @Assisted final ILanguageImpl language,
             final ActionHelper actionHelper,
-            final IResourceTransformer transformer) {
+            final IResourceTransformer transformer,
+            final IIntelliJResourceService resourceService) {
         super(id, action.name(), null, null);
         this.language = language;
         this.goal = action.goal();
         this.actionHelper = actionHelper;
         this.transformer = transformer;
+        this.resourceService = resourceService;
     }
 
     @Override
@@ -72,7 +77,20 @@ public final class TransformationAction<P, A, T> extends AnActionWithId {
         final List<TransformResource> resources = this.actionHelper.getActiveResources(e);
         WriteCommandAction.runWriteCommandAction(project, () -> {
             try {
-                this.transformer.execute(resources, this.language, this.goal);
+                // NOTE: Using EditorFactory.createDocument() you can create a Document that's
+                // not bound to a VirtualFile. This may be used to display the result of a transformation
+                // if it doesn't necessarily need to be saved (e.g. Show ATerm transformation).
+
+                // TODO: Open the transformation result!
+                //FileEditorManager.getInstance(project).openFile()
+
+                final List<FileObject> outputFiles = this.transformer.execute(resources, this.language, this.goal);
+                for (final FileObject output : outputFiles) {
+
+                    final VirtualFile virtualFile = this.resourceService.unresolve(output);
+                    virtualFile.refresh(true, false);
+                    FileEditorManager.getInstance(project).openFile(virtualFile, false);
+                }
             } catch (final MetaborgException ex) {
                 this.logger.error("An exception occurred: {}", ex);
             }

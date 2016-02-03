@@ -63,6 +63,7 @@
 
     <actions>
         <!-- Add your actions here -->
+        <!--
         <group id="Spoofax.TestMenu" text="Spoofax" description="Spoofax test menu">
             <add-to-group group-id="MainMenu" anchor="last"/>
             <action id="Spoofax.LoadLanguages" class="org.metaborg.spoofax.intellij.LoadLanguagesAction"
@@ -70,6 +71,7 @@
             <action id="Spoofax.UnloadLanguages" class="org.metaborg.spoofax.intellij.UnloadLanguagesAction"
                     text="Unload languages" description="Unloads languages."/>
         </group>
+        -->
         <group id="Spoofax.AddLanguagePopup" popup="true">
             <action id="Spoofax.AddLanguageFromDirectory" class="org.metaborg.intellij.idea.gui.AddLanguageFromDirectoryAction"
                     text="Directory..." description="Add a language by specifying its directory."/>

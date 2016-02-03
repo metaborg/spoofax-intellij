@@ -22,7 +22,10 @@ package org.metaborg.spoofax.intellij.idea;
 import com.google.inject.Inject;
 import com.intellij.openapi.components.ApplicationComponent;
 import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.language.ILanguageService;
 import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.util.log.ILogger;
 
@@ -31,6 +34,8 @@ public class SpoofaxApplicationComponent implements ApplicationComponent {
     @InjectLogger
     private ILogger logger;
     private LanguageManager languageManager;
+    private ILanguageService languageService;
+    private IIdeaLanguageManager ideaLanguageManager;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -42,8 +47,11 @@ public class SpoofaxApplicationComponent implements ApplicationComponent {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final LanguageManager languageManager) {
+    private void inject(final LanguageManager languageManager, final ILanguageService languageService,
+                        final IIdeaLanguageManager ideaLanguageManager) {
         this.languageManager = languageManager;
+        this.languageService = languageService;
+        this.ideaLanguageManager = ideaLanguageManager;
     }
 
     /**
@@ -52,6 +60,10 @@ public class SpoofaxApplicationComponent implements ApplicationComponent {
     @Override
     public final void initComponent() {
         this.languageManager.loadMetaLanguages();
+        for (final ILanguage language : this.languageService.getAllLanguages()) {
+            if (this.ideaLanguageManager.canLoad(language))
+                this.ideaLanguageManager.load(language);
+        }
     }
 
     /**
