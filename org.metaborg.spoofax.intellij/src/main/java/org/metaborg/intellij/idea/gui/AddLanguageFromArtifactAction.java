@@ -60,8 +60,8 @@ public class AddLanguageFromArtifactAction extends LanguagesAction {
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public AddLanguageFromArtifactAction(final ListTreeTableModelOnColumns model) {
-        super(model, "Artifact...", "Add a language by specifying its artifact.", PlatformIcons.JAR_ICON);
+    public AddLanguageFromArtifactAction(final LanguageTreeModel model, final LanguagesConfigurable controller) {
+        super(model, controller, "Artifact...", "Add a language by specifying its artifact.", PlatformIcons.JAR_ICON);
         // TODO: Remove this and use a factory instead.
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
@@ -91,9 +91,7 @@ public class AddLanguageFromArtifactAction extends LanguagesAction {
 
         try {
             final Iterable<ILanguageDiscoveryRequest> requests = this.languageManager.requestLanguagesFromArtifact(file);
-            // TODO: Add requests as nodes to the tree.
-            // TODO: 'Discover' any requests in the tree upon OK.
-            // TODO: Notify when not successful.
+            addRequests(requests);
         } catch (final IOException e1) {
             throw new UnhandledException(e1);
         }

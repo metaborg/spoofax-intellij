@@ -75,8 +75,9 @@ public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigu
     @Override
     public void reset() {
         super.reset();
+        if (this.form == null)
+            return;
         this.form.getLanguagesPanel().attachController(this);
-
         updateLanguagesList();
     }
 

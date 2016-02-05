@@ -37,6 +37,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * Tree model for languages and their implementation.
@@ -130,26 +131,30 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
         insertNodeInto(newChild, parent, parent.getChildCount());
     }
 
+
+
+
     /**
      * Gets the node for the specified language,
      * or adds it if not already present.
      *
-     * @param language The language of the node to get.
+     * @param language The language of the node to get; or <code>null</code> when the language is not known.
      * @return The node representing the language.
      */
-    public LanguageNode getOrAddLanguageNode(final ILanguage language) {
-        return getOrAddLanguageNode(language, (MutableTreeNode)this.root);
+    public LanguageNode getOrAddLanguageNode(@Nullable final ILanguage language) {
+        final MutableTreeNode parent = (MutableTreeNode)this.root;
+        return getOrAddLanguageNode(language, parent);
     }
 
     /**
      * Gets the node for the specified language,
      * or adds it if not already present.
      *
-     * @param language The language of the node to get.
+     * @param language The language of the node to get; or <code>null</code> when the language is not known.
      * @param parent The parent node under which to look.
      * @return The node representing the language.
      */
-    public LanguageNode getOrAddLanguageNode(final ILanguage language, final MutableTreeNode parent) {
+    public LanguageNode getOrAddLanguageNode(@Nullable final ILanguage language, final MutableTreeNode parent) {
         @Nullable LanguageNode node = getLanguageNode(language, parent);
         if (node == null) {
             node = new LanguageNode(language);
@@ -161,25 +166,57 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
     /**
      * Gets the node for the specified language.
      *
-     * @param language The language of the node to get.
+     * @param language The language of the node to get; or <code>null</code> when the language is not known.
      * @return The node representing the language; or <code>null</code> if not found.
      */
     @Nullable
-    public LanguageNode getLanguageNode(final ILanguage language) {
-        return getLanguageNode(language, this.root);
+    public LanguageNode getLanguageNode(@Nullable final ILanguage language) {
+        final TreeNode parent = this.root;
+        return getLanguageNode(language, parent);
     }
 
     /**
      * Gets the node for the specified language.
      *
-     * @param language The language of the node to get.
+     * @param language The language of the node to get; or <code>null</code> when the language is not known.
      * @param parent The parent node under which to look.
      * @return The node representing the language; or <code>null</code> if not found.
      */
     @Nullable
-    public LanguageNode getLanguageNode(final ILanguage language, @Nullable final TreeNode parent) {
+    public LanguageNode getLanguageNode(@Nullable final ILanguage language, @Nullable final TreeNode parent) {
         return getLanguageTreeNode(LanguageNode.class, language, parent);
     }
+
+    /**
+     * Removes the node for the specified language.
+     *
+     * @param language The language of the node to remove; or <code>null</code> when the language is not known.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageNode removeLanguageNode(@Nullable final ILanguage language) {
+        final MutableTreeNode parent = (MutableTreeNode)this.root;
+        return removeLanguageNode(language, parent);
+    }
+
+    /**
+     * Removes the node for the specified language.
+     *
+     * @param language The language of the node to remove; or <code>null</code> when the language is not known.
+     * @param parent The parent node under which to look.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageNode removeLanguageNode(@Nullable final ILanguage language, @Nullable final MutableTreeNode parent) {
+        @Nullable final LanguageNode node = getLanguageNode(language, parent);
+        if (node != null) {
+            parent.remove(node);
+        }
+        return node;
+    }
+
+
+
 
     /**
      * Gets the node for the specified language implementation,
@@ -189,7 +226,8 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
      * @return The node representing the language implementation.
      */
     public LanguageImplNode getOrAddLanguageImplNode(final ILanguageImpl languageImpl) {
-        return getOrAddLanguageImplNode(languageImpl, getOrAddLanguageNode(languageImpl.belongsTo()));
+        final LanguageNode parent = getOrAddLanguageNode(languageImpl.belongsTo());
+        return getOrAddLanguageImplNode(languageImpl, parent);
     }
 
     /**
@@ -217,7 +255,8 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
      */
     @Nullable
     public LanguageImplNode getLanguageImplNode(final ILanguageImpl languageImpl) {
-        return getLanguageImplNode(languageImpl, getLanguageNode(languageImpl.belongsTo()));
+        final LanguageNode parent = getLanguageNode(languageImpl.belongsTo());
+        return getLanguageImplNode(languageImpl, parent);
     }
 
     /**
@@ -233,6 +272,121 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
     }
 
     /**
+     * Removes the node for the specified language implementation.
+     *
+     * @param languageImpl The language implementation of the node to remove.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageImplNode removeLanguageImplNode(final ILanguageImpl languageImpl) {
+        final LanguageNode parent = getLanguageNode(languageImpl.belongsTo());
+        return removeLanguageImplNode(languageImpl, parent);
+    }
+
+    /**
+     * Removes the node for the specified language implementation.
+     *
+     * @param languageImpl The language implementation of the node to remove.
+     * @param parent The parent node under which to look.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageImplNode removeLanguageImplNode(final ILanguageImpl languageImpl, @Nullable final MutableTreeNode parent) {
+        @Nullable final LanguageImplNode node = getLanguageImplNode(languageImpl, parent);
+        if (node != null) {
+            parent.remove(node);
+        }
+        return node;
+    }
+
+
+
+
+    /**
+     * Gets the node for the specified language implementation,
+     * or adds it if not already present.
+     *
+     * @param id The language identifier of the node to get.
+     * @return The node representing the language implementation.
+     */
+    public LanguageImplNode getOrAddLanguageImplNode(final LanguageIdentifier id) {
+        final LanguageNode parent = getOrAddLanguageNode(null);
+        return getOrAddLanguageImplNode(id, parent);
+    }
+
+    /**
+     * Gets the node for the specified language implementation,
+     * or adds it if not already present.
+     *
+     * @param id The language identifier of the node to get.
+     * @param parent The parent node under which to look.
+     * @return The node representing the language implementation.
+     */
+    public LanguageImplNode getOrAddLanguageImplNode(final LanguageIdentifier id, final MutableTreeNode parent) {
+        @Nullable LanguageImplNode node = getLanguageImplNode(id, parent);
+        if (node == null) {
+            node = new LanguageImplNode(id);
+            appendNodeInto(node, parent);
+        }
+        return node;
+    }
+
+    /**
+     * Gets the node for the specified language implementation.
+     *
+     * @param id The language identifier of the node to get.
+     * @return The node representing the language implementation; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageImplNode getLanguageImplNode(final LanguageIdentifier id) {
+        final LanguageNode parent = getLanguageNode(null);
+        return getLanguageImplNode(id, parent);
+    }
+
+    /**
+     * Gets the node for the specified language implementation.
+     *
+     * @param id The language identifier of the node to get.
+     * @param parent The parent node under which to look.
+     * @return The node representing the language implementation; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageImplNode getLanguageImplNode(final LanguageIdentifier id, @Nullable final TreeNode parent) {
+        return getLanguageTreeNode(LanguageImplNode.class,
+                                   (Predicate<LanguageImplNode>)(n) -> n.id().equals(id), parent);
+    }
+
+    /**
+     * Removes the node for the specified language implementation.
+     *
+     * @param id The language identifier of the node to remove.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageImplNode removeLanguageImplNode(final LanguageIdentifier id) {
+        final LanguageNode parent = getLanguageNode(null);
+        return removeLanguageImplNode(id, parent);
+    }
+
+    /**
+     * Removes the node for the specified language implementation.
+     *
+     * @param id The language identifier of the node to remove.
+     * @param parent The parent node under which to look.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageImplNode removeLanguageImplNode(final LanguageIdentifier id, @Nullable final MutableTreeNode parent) {
+        @Nullable final LanguageImplNode node = getLanguageImplNode(id, parent);
+        if (node != null) {
+            parent.remove(node);
+        }
+        return node;
+    }
+
+
+
+    /**
      * Gets the node for the specified language component,
      * or adds it if not already present.
      *
@@ -241,7 +395,8 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
      * @return The node representing the language component.
      */
     public LanguageComponentNode getOrAddLanguageComponentNode(final ILanguageComponent languageComponent, final ILanguageImpl languageImpl) {
-        return getOrAddLanguageComponentNode(languageComponent, getOrAddLanguageImplNode(languageImpl));
+        final LanguageImplNode parent = getOrAddLanguageImplNode(languageImpl);
+        return getOrAddLanguageComponentNode(languageComponent, parent);
     }
 
     /**
@@ -270,7 +425,8 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
      */
     @Nullable
     public LanguageComponentNode getLanguageComponentNode(final ILanguageComponent languageComponent, final ILanguageImpl languageImpl) {
-        return getLanguageComponentNode(languageComponent, getLanguageImplNode(languageImpl));
+        final LanguageImplNode parent = getLanguageImplNode(languageImpl);
+        return getLanguageComponentNode(languageComponent, parent);
     }
 
     /**
@@ -286,15 +442,132 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
     }
 
     /**
+     * Removes the node for the specified language component.
+     *
+     * @param languageComponent The language component of the node to remove.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageComponentNode removeLanguageComponentNode(final ILanguageComponent languageComponent, final ILanguageImpl languageImpl) {
+        final LanguageImplNode parent = getLanguageImplNode(languageImpl);
+        return removeLanguageComponentNode(languageComponent, parent);
+    }
+
+    /**
+     * Removes the node for the specified language component.
+     *
+     * @param languageComponent The language component of the node to remove.
+     * @param parent The parent node under which to look.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageComponentNode removeLanguageComponentNode(final ILanguageComponent languageComponent, @Nullable final MutableTreeNode parent) {
+        @Nullable final LanguageComponentNode node = getLanguageComponentNode(languageComponent, parent);
+        if (node != null) {
+            parent.remove(node);
+        }
+        return node;
+    }
+
+
+
+
+    /**
+     * Gets the node for the specified language discovery request,
+     * or adds it if not already present.
+     *
+     * @param languageRequest The language discovery request of the node to get.
+     * @return The node representing the language discovery request.
+     */
+    public LanguageRequestNode getOrAddLanguageRequestNode(final ILanguageDiscoveryRequest languageRequest) {
+        // FIXME: Config can be null if request is not available.
+        final LanguageImplNode parent = getOrAddLanguageImplNode(languageRequest.config().identifier());
+        return getOrAddLanguageRequestNode(languageRequest, parent);
+    }
+
+    /**
+     * Gets the node for the specified language discovery request,
+     * or adds it if not already present.
+     *
+     * @param languageRequest The language discovery request of the node to get.
+     * @param parent The parent node under which to look.
+     * @return The node representing the language discovery request.
+     */
+    public LanguageRequestNode getOrAddLanguageRequestNode(final ILanguageDiscoveryRequest languageRequest, final MutableTreeNode parent) {
+        @Nullable LanguageRequestNode node = getLanguageRequestNode(languageRequest, parent);
+        if (node == null) {
+            node = new LanguageRequestNode(languageRequest);
+            appendNodeInto(node, parent);
+        }
+        return node;
+    }
+
+    /**
+     * Gets the node for the specified language discovery request.
+     *
+     * @param languageRequest The language discovery request of the node to get.
+     * @return The node representing the language discovery request; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageRequestNode getLanguageRequestNode(final ILanguageDiscoveryRequest languageRequest) {
+        // FIXME: Config can be null if request is not available.
+        final LanguageImplNode parent = getLanguageImplNode(languageRequest.config().identifier());
+        return getLanguageRequestNode(languageRequest, parent);
+    }
+
+    /**
+     * Gets the node for the specified language discovery request.
+     *
+     * @param languageRequest The language discovery request of the node to get.
+     * @param parent The parent node under which to look.
+     * @return The node representing the language discovery request; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageRequestNode getLanguageRequestNode(final ILanguageDiscoveryRequest languageRequest, @Nullable final TreeNode parent) {
+        return getLanguageTreeNode(LanguageRequestNode.class, languageRequest, parent);
+    }
+
+    /**
+     * Removes the node for the specified language discovery request.
+     *
+     * @param languageRequest The language discovery request of the node to remove.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageRequestNode removeLanguageRequestNode(final ILanguageDiscoveryRequest languageRequest) {
+        // FIXME: Config can be null if request is not available.
+        final LanguageImplNode parent = getLanguageImplNode(languageRequest.config().identifier());
+        return removeLanguageRequestNode(languageRequest, parent);
+    }
+
+    /**
+     * Removes the node for the specified language discovery request.
+     *
+     * @param languageRequest The language discovery request of the node to remove.
+     * @param parent The parent node under which to look.
+     * @return The removed node; or <code>null</code> if not found.
+     */
+    @Nullable
+    public LanguageRequestNode removeLanguageRequestNode(final ILanguageDiscoveryRequest languageRequest, @Nullable final MutableTreeNode parent) {
+        @Nullable final LanguageRequestNode node = getLanguageRequestNode(languageRequest, parent);
+        if (node != null) {
+            parent.remove(node);
+        }
+        return node;
+    }
+
+
+
+    /**
      * Gets the node for the specified value.
      *
-     * @param value The value of the node to get.
+     * @param predicate The predicate that returns true for the node to get.
      * @param parent The parent node under which to look.
      * @return The node representing the value; or <code>null</code> if not found.
      */
     @Nullable
-    private <N extends ILanguageTreeNode<V>, V> N getLanguageTreeNode(final Class<N> nodeClass, final V value,
-                                                                     @Nullable final TreeNode parent) {
+    private <N extends ILanguageTreeNode<V>, V> N getLanguageTreeNode(final Class<N> nodeClass, final Predicate<N> predicate,
+                                                                      @Nullable final TreeNode parent) {
         if (parent == null)
             return null;
 
@@ -303,10 +576,23 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
             if (!nodeClass.isInstance(child))
                 continue;
             final N node = (N)child;
-            if (node.getValue() != null && node.getValue().equals(value))
+            if (predicate.test(node))
                 return node;
         }
         return null;
+    }
+
+    /**
+     * Gets the node for the specified value.
+     *
+     * @param value The value of the node to get.
+     * @param parent The parent node under which to look.
+     * @return The node representing the value; or <code>null</code> if not found.
+     */
+    @Nullable
+    private <N extends ILanguageTreeNode<V>, V> N getLanguageTreeNode(final Class<N> nodeClass, @Nullable final V value,
+                                                                     @Nullable final TreeNode parent) {
+        return getLanguageTreeNode(nodeClass, (Predicate<N>)v -> v.getValue() != null && v.getValue().equals(value), parent);
     }
 
 
@@ -321,14 +607,14 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
     }
 
     public static class LanguageNode extends TreeNodeWithValue<ILanguage, LanguageNode> implements ITreeNodeWithIcon, ILanguageTreeNode<ILanguage> {
-        public LanguageNode(final ILanguage language) {
+        public LanguageNode(@Nullable final ILanguage language) {
             super(language);
         }
 
         @Nullable
         @Override
         public Object getValueOfColumn(final ModelColumnInfo<LanguageNode> column) {
-            return getValue().name();
+            return getName();
         }
 
         @Nullable
@@ -340,7 +626,10 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
         @Nullable
         @Override
         public String getName() {
-            return this.getValue().name();
+            if (getValue() != null)
+                return getValue().name();
+            else
+                return "Unknown";
         }
 
         @Override

@@ -57,8 +57,8 @@ public class AddLanguageFromDirectoryAction extends LanguagesAction {
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public AddLanguageFromDirectoryAction(final ListTreeTableModelOnColumns model) {
-        super(model, "Directory...", "Add a language by specifying its directory.", StdModuleTypes.JAVA.getIcon());
+    public AddLanguageFromDirectoryAction(final LanguageTreeModel model, final LanguagesConfigurable controller) {
+        super(model, controller, "Directory...", "Add a language by specifying its directory.", StdModuleTypes.JAVA.getIcon());
 
         // TODO: Remove this and use a factory instead.
         SpoofaxIdeaPlugin.injector().injectMembers(this);
@@ -88,14 +88,7 @@ public class AddLanguageFromDirectoryAction extends LanguagesAction {
 
         try {
             final Iterable<ILanguageDiscoveryRequest> requests = this.languageManager.requestLanguagesFromFolder(folder);
-
-            // Group the requests by language ID.
-            // For each language ID, find the implementation node.
-            // (If no such node exists, create it. If no such parent node exists, create it).
-
-            // TODO: Add requests as nodes to the tree.
-            // TODO: 'Discover' any requests in the tree upon OK.
-            // TODO: Notify when not successful.
+            addRequests(requests);
         } catch (final IOException e1) {
             throw new UnhandledException(e1);
         }

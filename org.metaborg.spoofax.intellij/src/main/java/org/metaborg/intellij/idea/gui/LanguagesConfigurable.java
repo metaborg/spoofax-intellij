@@ -24,6 +24,7 @@ import com.google.common.collect.Sets;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
+import org.metaborg.core.language.ILanguageDiscoveryRequest;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
 
@@ -39,7 +40,7 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
     private ILanguageService languageService;
     private final Project project;
     private Set<ILanguageImpl> languages = null;
-    private final Set<ILanguageImpl> languagesToLoad = new HashSet<>();
+    private final Set<ILanguageDiscoveryRequest> languagesToLoad = new HashSet<>();
     private final Set<ILanguageImpl> languagesToUnload = new HashSet<>();
 
     /**
@@ -97,16 +98,25 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
     }
 
     /**
-     * Adds a language implementation.
+     * Adds a language discovery request.
      *
-     * @param language The language implementation to add.
+     * @param request The language request to add.
      */
-    public void addLanguage(final ILanguageImpl language) {
-        this.languagesToUnload.remove(language);
-        if (!this.languages.contains(language)) {
-            this.languagesToLoad.add(language);
-        }
-        updateLanguagesList();
+    public void addLanguageRequest(final ILanguageDiscoveryRequest request) {
+//        this.languagesToUnload.remove(language);
+//        if (!this.languages.contains(language)) {
+        this.languagesToLoad.add(request);
+//        }
+//        updateLanguagesList();
+    }
+
+    /**
+     * Adds a language discovery request.
+     *
+     * @param request The language request to add.
+     */
+    public void removeLanguageRequest(final ILanguageDiscoveryRequest request) {
+        this.languagesToLoad.remove(request);
     }
 
     /**
@@ -114,12 +124,12 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
      *
      * @param language The language implementation to remove.
      */
-    public void removeLanguage(final ILanguageImpl language) {
-        this.languagesToLoad.remove(language);
-        if (this.languages.contains(language)) {
-            this.languagesToUnload.add(language);
-        }
-        updateLanguagesList();
+    public void removeLanguageImpl(final ILanguageImpl language) {
+//        this.languagesToLoad.remove(language);
+//        if (this.languages.contains(language)) {
+        this.languagesToUnload.add(language);
+//        }
+//        updateLanguagesList();
     }
 
     /**
@@ -129,9 +139,9 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
      */
     public Set<ILanguageImpl> getLanguages() {
         final HashSet<ILanguageImpl> languages = Sets.newHashSet(this.languages);
-        languages.removeAll(this.languagesToUnload);
+//        languages.removeAll(this.languagesToUnload);
 //        return CollectionUtils.toSortedList(languages, new ComparatorDelegate<>(x -> x.id().toString(), new ComparableComparator()));
-        languages.addAll(this.languagesToLoad);
+//        languages.addAll(this.languagesToLoad);
         return languages;
     }
 

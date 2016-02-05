@@ -30,7 +30,7 @@ import javax.swing.tree.TreeCellRenderer;
 /**
  * Key column in a tree table view.
  */
-public class TreeKeyColumnInfo<Item> extends TreeColumnInfo {
+public class TreeKeyColumnInfo extends TreeColumnInfo {
 
     /**
      * Initializes a new instance of the {@link TreeKeyColumnInfo} class.
@@ -40,32 +40,6 @@ public class TreeKeyColumnInfo<Item> extends TreeColumnInfo {
     public TreeKeyColumnInfo(final String name) {
         super(name);
         Preconditions.checkNotNull(name);
-    }
-
-    /**
-     * Gets the text to display for the specified item.
-     * <p>
-     * Override this method to change the value displayed for the specified item.
-     *
-     * @param item The item.
-     * @return The value to display.
-     */
-    public String getTextFor(final Item item) {
-        return item.toString();
-    }
-
-    /**
-     * Gets the icon to display for the specified item.
-     * <p>
-     * Override this method to change the icon displayed for the specified item.
-     *
-     * @param item The item.
-     * @return The icon to display;
-     * or <code>null</code> to display the default icon.
-     */
-    @Nullable
-    public Icon getIconFor(final Item item) {
-        return null;
     }
 
     @org.jetbrains.annotations.Nullable
@@ -79,12 +53,4 @@ public class TreeKeyColumnInfo<Item> extends TreeColumnInfo {
         return super.getCustomizedRenderer(o, renderer);
     }
 
-    @Nullable
-    public final TreeCellRenderer getTreeCellRenderer(final Object obj) {
-        return null;
-    }
-
-    public final TreeCellRenderer getCustomizedTreeCellRenderer(final Object obj, final TreeCellRenderer renderer) {
-        return renderer;
-    }
 }

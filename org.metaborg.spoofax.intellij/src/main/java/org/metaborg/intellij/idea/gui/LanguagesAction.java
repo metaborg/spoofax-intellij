@@ -54,140 +54,38 @@ public abstract class LanguagesAction extends AnAction {
     private ILanguageDiscoveryService discoveryService;
     private SpoofaxArtifactFileType artifactFileType;
     private LanguageManager languageManager;
-    private final ListTreeTableModelOnColumns model;
+    protected final LanguageTreeModel model;
+    protected final LanguagesConfigurable controller;
 
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public LanguagesAction(final ListTreeTableModelOnColumns model, @Nullable final String text, @Nullable final String description, @Nullable final Icon icon/*,
+    public LanguagesAction(final LanguageTreeModel model, final LanguagesConfigurable controller, @Nullable final String text, @Nullable final String description, @Nullable final Icon icon/*,
                            final LanguageManager languageManager, final ILanguageDiscoveryService discoveryService,
                            final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager,
                            final SpoofaxArtifactFileType artifactFileType*/) {
         super(text, description, icon);
         this.model = model;
+        this.controller = controller;
 //        this.languageService = languageService;
 //        this.ideaLanguageManager = ideaLanguageManager;
 //        this.artifactFileType = artifactFileType;
 //        this.discoveryService = discoveryService;
 //        this.languageManager = languageManager;
     }
-//
-//    @Inject
-//    @SuppressWarnings("unused")
-//    private void inject(
-//            final LanguageManager languageManager, final ILanguageDiscoveryService discoveryService,
-//            final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager,
-//            final SpoofaxArtifactFileType artifactFileType) {
-//        this.languageService = languageService;
-//        this.ideaLanguageManager = ideaLanguageManager;
-//        this.artifactFileType = artifactFileType;
-//        this.discoveryService = discoveryService;
-//        this.languageManager = languageManager;
-//    }
-
-//    @Nullable
-//    protected LanguageTreeModel.LanguageNode getOrCreateLanguageNode(ILanguage language) {
-//        final DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-//
-//        final BreathFirstIterable<TreeNode> iterator = new BreathFirstIterable<TreeNode>(root) {
-//            @Override
-//            protected Iterable getChildren(final TreeNode node) {
-//                return Collections.list(node.children());
-//            }
-//        };
-//
-//        for (TreeNode node : iterator) {
-//            if (node instanceof LanguageTreeModel.LanguageNode) {
-//                LanguageTreeModel.LanguageNode languageNode = (LanguageTreeModel.LanguageNode)node;
-//                if (languageNode.getValue().equals(language))
-//                    return languageNode;
-//            }
-//        }
-//
-//        return null;
-//    }
-
-
-
-    @Nullable
-    protected LanguageTreeModel.LanguageNode getOrCreateLanguageNode(final ILanguage language) {
-        @Nullable final LanguageTreeModel.LanguageNode node = getNode(LanguageTreeModel.LanguageNode.class, language);
-        if (node == null) {
-            // TODO: Create node.
-        }
-        // TODO
-        return null;
-    }
-
-    @Nullable
-    protected <N extends LanguageTreeModel.ILanguageTreeNode<V>, V> N getNode(
-            final Class<N> clazz, final V value) {
-        final DefaultMutableTreeNode root = (DefaultMutableTreeNode)this.model.getRoot();
-
-        final BreathFirstIterable<TreeNode> iterator = new BreathFirstIterable<TreeNode>(root) {
-            @Override
-            protected Iterable getChildren(final TreeNode node) {
-                return Collections.list(node.children());
-            }
-        };
-
-        for (final TreeNode node : iterator) {
-            if (node.getClass().equals(clazz)) {
-                final N languageNode = (N)node;
-                @Nullable final V languageNodeValue = languageNode.getValue();
-                if (languageNodeValue != null && languageNodeValue.equals(value))
-                    return languageNode;
-            }
-        }
-
-        return null;
-    }
-
-//    @Nullable
-//    protected LanguageTreeModel.LanguageNode getLanguageNode(ILanguage language) {
-//        final DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-//        return getLanguageNode(language, root);
-//    }
-//
-//    @Nullable
-//    private LanguageTreeModel.LanguageNode getLanguageNode(ILanguage language, TreeNode parent) {
-//        for (int i = 0; i < parent.getChildCount(); i++) {
-//            final TreeNode child = parent.getChildAt(i);
-//            if (child instanceof LanguageTreeModel.LanguageNode) {
-//                LanguageTreeModel.LanguageNode languageChild = (LanguageTreeModel.LanguageNode)child;
-//                if (languageChild.getValue().equals(language))
-//                    return languageChild;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    @Nullable
-//    protected LanguageTreeModel.LanguageImplNode getLanguageImplNode(ILanguageImpl languageImpl) {
-//        final DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-//        for (int i = 0; i < root.getChildCount(); i++) {
-//            final TreeNode child = root.getChildAt(i);
-//            @Nullable final LanguageTreeModel.LanguageImplNode languageImplNode = getLanguageImplNode(languageImpl, child);
-//            if (languageImplNode != null)
-//                return languageImplNode;
-//        }
-//        return null;
-//    }
-//
-//    @Nullable
-//    private LanguageTreeModel.LanguageImplNode getLanguageImplNode(ILanguageImpl languageImpl, TreeNode parent) {
-//        for (int i = 0; i < parent.getChildCount(); i++) {
-//            final TreeNode child = parent.getChildAt(i);
-//            if (child instanceof LanguageTreeModel.LanguageImplNode) {
-//                @Nullable LanguageTreeModel.LanguageImplNode languageChild = (LanguageTreeModel.LanguageImplNode)child;
-//                if (languageChild.getValue().equals(languageImpl))
-//                    return languageChild;
-//            }
-//        }
-//        return null;
-//    }
 
     @Override
     public abstract void actionPerformed(final AnActionEvent e);
+
+    protected void addRequests(Iterable<ILanguageDiscoveryRequest> requests) {
+
+        for (final ILanguageDiscoveryRequest request : requests) {
+            this.controller.addLanguageRequest(request);
+            this.model.getOrAddLanguageRequestNode(request);
+        }
+
+        // TODO: 'Discover' any requests in the tree upon OK.
+        // TODO: Notify when not successful.
+    }
 }

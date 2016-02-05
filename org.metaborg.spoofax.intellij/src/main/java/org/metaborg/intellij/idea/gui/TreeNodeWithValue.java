@@ -32,6 +32,7 @@ public class TreeNodeWithValue<Item, Node extends IModelItem<Node>> extends Defa
         super(value, allowsChildren);
     }
 
+    @Nullable
     public Item getValue() {
         return (Item)getUserObject();
     }
