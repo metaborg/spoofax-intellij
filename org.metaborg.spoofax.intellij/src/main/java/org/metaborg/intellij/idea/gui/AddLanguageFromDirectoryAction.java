@@ -26,9 +26,12 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.module.StdModuleTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.ui.treeStructure.treetable.ListTreeTableModelOnColumns;
 import org.metaborg.core.UnhandledException;
+import org.metaborg.core.language.ILanguageDiscoveryRequest;
 import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
@@ -36,12 +39,13 @@ import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 
 //import org.metaborg.core.language.ILanguageDiscoveryService;
 
 
-public class AddLanguageFromDirectoryAction extends AnAction {
+public class AddLanguageFromDirectoryAction extends LanguagesAction {
 
     private ILanguageService languageService;
     private IIdeaLanguageManager ideaLanguageManager;
@@ -53,8 +57,10 @@ public class AddLanguageFromDirectoryAction extends AnAction {
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public AddLanguageFromDirectoryAction() {
-        super();
+    public AddLanguageFromDirectoryAction(final ListTreeTableModelOnColumns model) {
+        super(model, "Directory...", "Add a language by specifying its directory.", StdModuleTypes.JAVA.getIcon());
+
+        // TODO: Remove this and use a factory instead.
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
@@ -76,11 +82,19 @@ public class AddLanguageFromDirectoryAction extends AnAction {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
         final FileChooserDescriptor chooserDescriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
-        final VirtualFile folder = FileChooser.chooseFile(chooserDescriptor, project, null);
+        @Nullable final VirtualFile folder = FileChooser.chooseFile(chooserDescriptor, project, null);
+        if (folder == null)
+            return;
 
         try {
-            // TODO: Load on settings OK.
-            final boolean success = this.languageManager.loadLanguageFromFolder(folder);
+            final Iterable<ILanguageDiscoveryRequest> requests = this.languageManager.requestLanguagesFromFolder(folder);
+
+            // Group the requests by language ID.
+            // For each language ID, find the implementation node.
+            // (If no such node exists, create it. If no such parent node exists, create it).
+
+            // TODO: Add requests as nodes to the tree.
+            // TODO: 'Discover' any requests in the tree upon OK.
             // TODO: Notify when not successful.
         } catch (final IOException e1) {
             throw new UnhandledException(e1);

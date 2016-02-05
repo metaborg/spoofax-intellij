@@ -30,7 +30,7 @@ import javax.swing.*;
 
 public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigurable {
 
-    private MetaborgProjectLanguagesConfigurableForm form;
+    @Nullable private MetaborgProjectLanguagesConfigurableForm form;
 
     /**
      * This instance is created by IntelliJ's plugin system.

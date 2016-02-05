@@ -28,7 +28,10 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.ui.treeStructure.treetable.ListTreeTableModelOnColumns;
+import com.intellij.util.PlatformIcons;
 import org.metaborg.core.UnhandledException;
+import org.metaborg.core.language.ILanguageDiscoveryRequest;
 import org.metaborg.core.language.ILanguageDiscoveryService;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
@@ -36,6 +39,7 @@ import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 
 //import com.intellij.notification.Notification;
@@ -45,20 +49,20 @@ import java.io.IOException;
 //import org.metaborg.core.language.ILanguageDiscoveryService;
 
 
-public class AddLanguageFromArtifactAction extends AnAction {
+public class AddLanguageFromArtifactAction extends LanguagesAction {
 
     private ILanguageService languageService;
     private IIdeaLanguageManager ideaLanguageManager;
     private ILanguageDiscoveryService discoveryService;
     private SpoofaxArtifactFileType artifactFileType;
     private LanguageManager languageManager;
-
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public AddLanguageFromArtifactAction() {
-        super();
+    public AddLanguageFromArtifactAction(final ListTreeTableModelOnColumns model) {
+        super(model, "Artifact...", "Add a language by specifying its artifact.", PlatformIcons.JAR_ICON);
+        // TODO: Remove this and use a factory instead.
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
@@ -81,11 +85,14 @@ public class AddLanguageFromArtifactAction extends AnAction {
 
         final FileChooserDescriptor chooserDescriptor = FileChooserDescriptorFactory
                 .createSingleFileDescriptor(this.artifactFileType);
-        final VirtualFile file = FileChooser.chooseFile(chooserDescriptor, project, null);
+        @Nullable final VirtualFile file = FileChooser.chooseFile(chooserDescriptor, project, null);
+        if (file == null)
+            return;
 
         try {
-            // TODO: Load on settings OK.
-            final boolean success = this.languageManager.loadLanguageFromArtifact(file);
+            final Iterable<ILanguageDiscoveryRequest> requests = this.languageManager.requestLanguagesFromArtifact(file);
+            // TODO: Add requests as nodes to the tree.
+            // TODO: 'Discover' any requests in the tree upon OK.
             // TODO: Notify when not successful.
         } catch (final IOException e1) {
             throw new UnhandledException(e1);

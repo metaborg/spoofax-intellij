@@ -19,14 +19,12 @@
 
 package org.metaborg.spoofax.intellij.languages;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
-import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.UnhandledException;
 import org.metaborg.core.language.*;
@@ -34,10 +32,9 @@ import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Manages languages.
@@ -96,32 +93,46 @@ public final class LanguageManager {
         final FileObject file = this.resourceService.resolve(url.getPath());
 
         try {
-            loadLanguageFromArtifact(file);
+            loadLanguages(requestLanguagesFromArtifact(file));
         } catch (final IOException e) {
+            throw new UnhandledException(e);
+        } catch (MetaborgException e) {
             throw new UnhandledException(e);
         }
     }
 
     /**
-     * Loads a language from a language artifact.
+     * Loads languages from the specified requests.
      *
-     * @param artifact The artifact file.
-     * @return Whether a language was successfully loaded.
+     * @param requests The language discovery requests.
+     * @return The loaded languages.
+     * @throws MetaborgException
      */
-    public boolean loadLanguageFromArtifact(final VirtualFile artifact) throws
-            IOException {
-        Preconditions.checkNotNull(artifact);
-
-        return loadLanguageFromArtifact(this.resourceService.resolve(artifact));
+    public Iterable<ILanguageComponent> loadLanguages(Iterable<ILanguageDiscoveryRequest> requests) throws
+            MetaborgException {
+        return this.discoveryService.discover(requests);
     }
 
     /**
-     * Loads a language from a language artifact.
+     * Requests languages from a language artifact.
      *
      * @param artifact The artifact file.
-     * @return Whether a language was successfully loaded.
+     * @return The language discovery requests.
      */
-    public boolean loadLanguageFromArtifact(final FileObject artifact) throws
+    public Iterable<ILanguageDiscoveryRequest> requestLanguagesFromArtifact(final VirtualFile artifact) throws
+            IOException {
+        Preconditions.checkNotNull(artifact);
+
+        return requestLanguagesFromArtifact(this.resourceService.resolve(artifact));
+    }
+
+    /**
+     * Requests languages from a language artifact.
+     *
+     * @param artifact The artifact file.
+     * @return The language discovery requests.
+     */
+    public Iterable<ILanguageDiscoveryRequest> requestLanguagesFromArtifact(final FileObject artifact) throws
             IOException {
         Preconditions.checkNotNull(artifact);
 
@@ -133,46 +144,127 @@ public final class LanguageManager {
         }
 
         final FileObject file = this.resourceService.resolve(zipUri);
-        return loadLanguageFromFolder(file);
+        return requestLanguagesFromFolder(file);
     }
 
     /**
-     * Loads a language from a folder.
+     * Requests languages from a folder.
      *
      * @param folder The folder.
-     * @return Whether a language was successfully loaded.
+     * @return The language discovery requests.
      */
-    public boolean loadLanguageFromFolder(final VirtualFile folder) throws
+    public Iterable<ILanguageDiscoveryRequest> requestLanguagesFromFolder(final VirtualFile folder) throws
             IOException {
         Preconditions.checkNotNull(folder);
 
-        return loadLanguageFromFolder(this.resourceService.resolve(folder));
+        return requestLanguagesFromFolder(this.resourceService.resolve(folder));
     }
 
     /**
-     * Loads a language from a folder.
+     * Requests languages from a folder.
      *
      * @param folder The folder.
-     * @return Whether a language was successfully loaded.
+     * @return The language discovery requests.
      */
-    public boolean loadLanguageFromFolder(final FileObject folder) throws
+    public Iterable<ILanguageDiscoveryRequest> requestLanguagesFromFolder(final FileObject folder) throws
             IOException {
         Preconditions.checkNotNull(folder);
+
+        @Nullable LanguageIdentifier id = null;
         try {
             // TODO: Assert that this doesn't load the language, just discovers it.
             // Loading happens only after the user clicked OK or Apply in the settings dialog.
-            final Iterable<ILanguageDiscoveryRequest> request = this.discoveryService.request(folder);
-            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(request);
-            final List<ILanguageImpl> lis = new ArrayList<>();
-            for (final ILanguageComponent c : discovery) {
-                for (final ILanguageImpl li : c.contributesTo()) {
-                    lis.add(li);
-                }
-            }
-            this.logger.info("From '{}' loaded languages: {}", folder, Joiner.on(", ").join(lis));
-            return discovery.iterator().hasNext();
+            return this.discoveryService.request(folder);
         } catch (final MetaborgException e) {
             throw new UnhandledException(e);
         }
     }
+
+//    /**
+//     * Loads a language from a language artifact.
+//     *
+//     * @param artifact The artifact file.
+//     * @return Whether a language was successfully loaded.
+//     */
+//    public boolean loadLanguagesFromArtifact(final VirtualFile artifact) throws
+//            IOException {
+//        Preconditions.checkNotNull(artifact);
+//
+//        return loadLanguagesFromArtifact(this.resourceService.resolve(artifact));
+//    }
+//
+//    /**
+//     * Loads a language from a language artifact.
+//     *
+//     * @param artifact The artifact file.
+//     * @return Whether a language was successfully loaded.
+//     */
+//    public boolean loadLanguagesFromArtifact(final FileObject artifact) throws
+//            IOException {
+//        Preconditions.checkNotNull(artifact);
+//
+//        final String zipUri;
+//        try {
+//            zipUri = "zip://" + artifact.getURL().getPath();
+//        } catch (final FileSystemException e) {
+//            throw new UnhandledException(e);
+//        }
+//
+//        final FileObject file = this.resourceService.resolve(zipUri);
+//        return loadLanguagesFromFolder(file);
+//    }
+//
+//    /**
+//     * Loads a language from a folder.
+//     *
+//     * @param folder The folder.
+//     * @return Whether a language was successfully loaded.
+//     */
+//    public boolean loadLanguagesFromFolder(final VirtualFile folder) throws
+//            IOException {
+//        Preconditions.checkNotNull(folder);
+//
+//        return loadLanguagesFromFolder(this.resourceService.resolve(folder));
+//    }
+//
+//    /**
+//     * Loads a language from a folder.
+//     *
+//     * @param folder The folder.
+//     * @return Whether a language was successfully loaded.
+//     */
+//    public boolean loadLanguagesFromFolder(final FileObject folder) throws
+//            IOException {
+//        Preconditions.checkNotNull(folder);
+//
+//        @Nullable LanguageIdentifier id = null;
+//        try {
+//            // TODO: Assert that this doesn't load the language, just discovers it.
+//            // Loading happens only after the user clicked OK or Apply in the settings dialog.
+//            final Iterable<ILanguageDiscoveryRequest> requests = this.discoveryService.request(folder);
+//            for (final ILanguageDiscoveryRequest request : requests) {
+//                if (request.available()) {
+//                    @Nullable final ILanguageComponentConfig config = request.config();
+//                    assert config != null : "Configuration should not be null since the request is available.";
+//
+//                    if (id != null && id != config.identifier()) {
+//                        // Found
+//                    }
+//
+//                    id = config.identifier();
+//                }
+//            }
+//            final Iterable<ILanguageComponent> discovery = this.discoveryService.discover(request);
+//            final List<ILanguageImpl> lis = new ArrayList<>();
+//            for (final ILanguageComponent c : discovery) {
+//                for (final ILanguageImpl li : c.contributesTo()) {
+//                    lis.add(li);
+//                }
+//            }
+//            this.logger.info("From '{}' loaded languages: {}", folder, Joiner.on(", ").join(lis));
+//            return discovery.iterator().hasNext();
+//        } catch (final MetaborgException e) {
+//            throw new UnhandledException(e);
+//        }
+//    }
 }
