@@ -24,6 +24,7 @@ import com.google.common.collect.Sets;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
+import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.core.language.ILanguageDiscoveryRequest;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.language.ILanguageService;
@@ -41,7 +42,8 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
     private final Project project;
     private Set<ILanguageImpl> languages = null;
     private final Set<ILanguageDiscoveryRequest> languagesToLoad = new HashSet<>();
-    private final Set<ILanguageImpl> languagesToUnload = new HashSet<>();
+    private final Set<ILanguageComponent> languagesToUnload = new HashSet<>();
+//    private final Set<ILanguageImpl> languagesToUnload = new HashSet<>();
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -120,17 +122,30 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
     }
 
     /**
-     * Removes a language implementation.
+     * Removes a language component.
      *
-     * @param language The language implementation to remove.
+     * @param language The language component to remove.
      */
-    public void removeLanguageImpl(final ILanguageImpl language) {
+    public void removeLanguageComponent(final ILanguageComponent language) {
 //        this.languagesToLoad.remove(language);
 //        if (this.languages.contains(language)) {
         this.languagesToUnload.add(language);
 //        }
 //        updateLanguagesList();
     }
+
+//    /**
+//     * Removes a language implementation.
+//     *
+//     * @param language The language implementation to remove.
+//     */
+//    public void removeLanguageImpl(final ILanguageImpl language) {
+////        this.languagesToLoad.remove(language);
+////        if (this.languages.contains(language)) {
+//        this.languagesToUnload.add(language);
+////        }
+////        updateLanguagesList();
+//    }
 
     /**
      * Gets the languages.

@@ -24,11 +24,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class TreeNodeWithValue<Item, Node extends IModelItem<Node>> extends DefaultMutableTreeNode implements IModelItem<Node> {
 
-    public TreeNodeWithValue(final Item value) {
+    public TreeNodeWithValue(@Nullable final Item value) {
         this(value, true);
     }
 
-    public TreeNodeWithValue(final Item value, final boolean allowsChildren) {
+    public TreeNodeWithValue(@Nullable final Item value, final boolean allowsChildren) {
         super(value, allowsChildren);
     }
 
