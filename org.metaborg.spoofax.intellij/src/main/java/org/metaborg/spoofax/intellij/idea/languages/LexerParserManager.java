@@ -45,7 +45,9 @@ public final class LexerParserManager implements ILexerParserManager {
      */
     @Override
     public Lexer getHighlightingLexer(final ILanguageImpl implementation) {
-        return this.attachmentManager.get(implementation).lexer();
+        final IdeaLanguageImplAttachment attachment = this.attachmentManager.get(implementation);
+        return attachment.lexerFactory().create(implementation, attachment.tokenTypeManager());
+//        return this.attachmentManager.get(implementation).lexer();
     }
 
     /**

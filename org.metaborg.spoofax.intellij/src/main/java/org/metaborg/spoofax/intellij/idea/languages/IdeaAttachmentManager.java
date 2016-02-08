@@ -40,6 +40,7 @@ import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
 import org.metaborg.util.log.ILogger;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
@@ -104,7 +105,7 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      */
     @Override
     public IdeaLanguageImplAttachment get(final ILanguageImpl implementation) {
-        IdeaLanguageImplAttachment obj = this.implementations.get(implementation);
+        @Nullable IdeaLanguageImplAttachment obj = this.implementations.get(implementation);
         if (obj == null) {
             obj = createLanguageImplAttachment(implementation);
             this.implementations.put(implementation, obj);
@@ -155,10 +156,11 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private IdeaLanguageImplAttachment createLanguageImplAttachment(final ILanguageImpl implementation) {
         final IdeaLanguageAttachment langAtt = get(implementation.belongsTo());
 
-        final Lexer lexer = createLexer(implementation, langAtt.tokenTypeManager());
+        final IHighlightingLexerFactory lexerFactory = this.lexerFactory;
+        final SpoofaxTokenTypeManager tokenTypeManager = langAtt.tokenTypeManager();
         final DefaultActionGroup buildActionGroup = createAction(implementation);
 
-        return new IdeaLanguageImplAttachment(lexer, buildActionGroup);
+        return new IdeaLanguageImplAttachment(lexerFactory, tokenTypeManager, buildActionGroup);
     }
 
     /**

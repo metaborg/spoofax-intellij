@@ -22,29 +22,39 @@ package org.metaborg.spoofax.intellij.idea.languages;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
 
 /**
  * Stores the IntelliJ IDEA objects that are associated with a particular {@link ILanguageImpl}.
  */
 public final class IdeaLanguageImplAttachment {
 
-    private final Lexer lexer;
+//    private final Lexer lexer;
+    private final IHighlightingLexerFactory lexerFactory;
+    private final SpoofaxTokenTypeManager tokenTypeManager;
     private final DefaultActionGroup buildActionGroup;
 
-    public Lexer lexer() { return this.lexer;}
+//    public Lexer lexer() { return this.lexer;}
+
+    public SpoofaxTokenTypeManager tokenTypeManager() { return this.tokenTypeManager; }
+
+    public IHighlightingLexerFactory lexerFactory() { return this.lexerFactory; }
 
     public DefaultActionGroup buildActionGroup() { return this.buildActionGroup; }
 
     /**
      * Creates a new instance of the {@link IdeaLanguageImplAttachment} class.
      *
-     * @param lexer            The lexer.
+     * @param lexerFactory     The lexer factory.
+     * @param tokenTypeManager The token type manager.
      * @param buildActionGroup The build action group.
      */
     /* package private */ IdeaLanguageImplAttachment(
-            final Lexer lexer,
+            final IHighlightingLexerFactory lexerFactory,
+            final SpoofaxTokenTypeManager tokenTypeManager,
             final DefaultActionGroup buildActionGroup) {
-        this.lexer = lexer;
+        this.lexerFactory = lexerFactory;
+        this.tokenTypeManager = tokenTypeManager;
         this.buildActionGroup = buildActionGroup;
     }
 }

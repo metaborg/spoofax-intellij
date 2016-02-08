@@ -21,13 +21,14 @@ package org.metaborg.intellij.idea.gui;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
-import org.metaborg.core.language.ILanguageComponent;
-import org.metaborg.core.language.ILanguageDiscoveryRequest;
-import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.core.language.ILanguageService;
+import org.metaborg.core.MetaborgException;
+import org.metaborg.core.language.*;
+import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +39,9 @@ import java.util.Set;
  */
 public abstract class LanguagesConfigurable extends BaseConfigurable {
 
+    private LanguageManager languageManager;
     private ILanguageService languageService;
+    private IIdeaLanguageManager ideaLanguageManager;
     private final Project project;
     private Set<ILanguageImpl> languages = null;
     private final Set<ILanguageDiscoveryRequest> languagesToLoad = new HashSet<>();
@@ -55,8 +58,10 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
         this.project = project;
     }
 
-    protected void inject(final ILanguageService languageService) {
+    protected void inject(final LanguageManager languageManager, final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager) {
+        this.languageManager = languageManager;
         this.languageService = languageService;
+        this.ideaLanguageManager = ideaLanguageManager;
     }
 
     /**
@@ -73,7 +78,13 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
      */
     @Override
     public void apply() throws ConfigurationException {
-        // TODO: Actually load/unload languages.
+        unloadAllIdeaLanguages();
+        unloadLanguages(this.languagesToUnload);
+        loadLanguages(this.languagesToLoad);
+        loadAllIdeaLanguages();
+
+        this.languagesToUnload.clear();
+        this.languagesToLoad.clear();
     }
 
     /**
@@ -105,11 +116,7 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
      * @param request The language request to add.
      */
     public void addLanguageRequest(final ILanguageDiscoveryRequest request) {
-//        this.languagesToUnload.remove(language);
-//        if (!this.languages.contains(language)) {
         this.languagesToLoad.add(request);
-//        }
-//        updateLanguagesList();
     }
 
     /**
@@ -127,39 +134,68 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
      * @param language The language component to remove.
      */
     public void removeLanguageComponent(final ILanguageComponent language) {
-//        this.languagesToLoad.remove(language);
-//        if (this.languages.contains(language)) {
         this.languagesToUnload.add(language);
-//        }
-//        updateLanguagesList();
     }
 
-//    /**
-//     * Removes a language implementation.
-//     *
-//     * @param language The language implementation to remove.
-//     */
-//    public void removeLanguageImpl(final ILanguageImpl language) {
-////        this.languagesToLoad.remove(language);
-////        if (this.languages.contains(language)) {
-//        this.languagesToUnload.add(language);
-////        }
-////        updateLanguagesList();
-//    }
-
     /**
-     * Gets the languages.
+     * Gets the currently loaded languages.
      *
      * @return A list of language implementations.
      */
     public Set<ILanguageImpl> getLanguages() {
-        final HashSet<ILanguageImpl> languages = Sets.newHashSet(this.languages);
-//        languages.removeAll(this.languagesToUnload);
-//        return CollectionUtils.toSortedList(languages, new ComparatorDelegate<>(x -> x.id().toString(), new ComparableComparator()));
-//        languages.addAll(this.languagesToLoad);
-        return languages;
+        return Sets.newHashSet(this.languages);
     }
 
     protected abstract void updateLanguagesList();
 
+    /**
+     * Unloads language components.
+     * @param components The components to unload.
+     */
+    private void unloadLanguages(final Set<ILanguageComponent> components) {
+        this.languageManager.unloadLanguages(components);
+    }
+
+    /**
+     * Loads the languages from their discovery requests.
+     * @param requests The requests to load.
+     */
+    private void loadLanguages(final Set<ILanguageDiscoveryRequest> requests) {
+        try {
+            this.languageManager.loadLanguages(requests);
+        } catch (final MetaborgException e) {
+            throw new RuntimeException("An error occurred.", e);
+        }
+    }
+
+    // TODO: Move to IIdeaLanguageManager
+    /**
+     * Unloads all IDEA languages.
+     */
+    private void unloadAllIdeaLanguages() {
+        // FIXED: ConcurrentModificationException
+        final ILanguage[] loadedLanguages = this.ideaLanguageManager.getLoaded().toArray(new ILanguage[0]);
+
+        WriteCommandAction.runWriteCommandAction(project, () -> {
+            for (final ILanguage language : loadedLanguages) {
+                this.ideaLanguageManager.unload(language);
+            }
+        });
+    }
+
+    // TODO: Move to IIdeaLanguageManager
+
+    /**
+     * Loads all IDEA languages.
+     */
+    private void loadAllIdeaLanguages() {
+        final Iterable<? extends ILanguage> languages = this.languageService.getAllLanguages();
+
+        WriteCommandAction.runWriteCommandAction(project, () -> {
+            for (final ILanguage language : languages) {
+                if (this.ideaLanguageManager.canLoad(language))
+                    this.ideaLanguageManager.load(language);
+            }
+        });
+    }
 }

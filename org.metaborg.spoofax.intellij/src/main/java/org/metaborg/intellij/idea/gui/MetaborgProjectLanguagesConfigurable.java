@@ -25,6 +25,8 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.ILanguageService;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
 import javax.swing.*;
 
@@ -43,8 +45,8 @@ public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigu
 
     @Override
     @Inject
-    protected void inject(final ILanguageService languageService) {
-        super.inject(languageService);
+    protected void inject(final LanguageManager languageManager, final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager) {
+        super.inject(languageManager, languageService, ideaLanguageManager);
     }
 
     @Nls

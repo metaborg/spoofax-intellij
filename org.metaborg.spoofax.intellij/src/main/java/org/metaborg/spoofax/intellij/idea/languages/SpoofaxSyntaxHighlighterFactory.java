@@ -31,6 +31,8 @@ import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 
+import javax.annotation.Nullable;
+
 /**
  * Factory for the {@link SpoofaxSyntaxHighlighter} class.
  */
@@ -63,7 +65,13 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
             final Project project,
             final VirtualFile virtualFile) {
         final FileObject file = this.resourceService.resolve(virtualFile);
-        final ILanguageImpl implementation = this.identifierService.identify(file);
+        @Nullable final ILanguageImpl implementation = this.identifierService.identify(file);
+
+        if (implementation == null) {
+            // FIXME: What to do? Can I return null to get the default highlighting?
+            return null;
+        }
+
         final Lexer lexer = this.lexerParserManager.getHighlightingLexer(implementation);
 
         return new SpoofaxSyntaxHighlighter(lexer);

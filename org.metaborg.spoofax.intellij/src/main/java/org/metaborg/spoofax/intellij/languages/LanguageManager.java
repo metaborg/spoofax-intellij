@@ -29,6 +29,7 @@ import org.metaborg.core.MetaborgException;
 import org.metaborg.core.UnhandledException;
 import org.metaborg.core.language.*;
 import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.spoofax.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
 
@@ -45,6 +46,7 @@ public final class LanguageManager {
     private final ILanguageService languageService;
     private final ILanguageDiscoveryService discoveryService;
     private final IIntelliJResourceService resourceService;
+    private final IIdeaLanguageManager ideaLanguageManager;
     @InjectLogger
     private ILogger logger;
 
@@ -52,10 +54,12 @@ public final class LanguageManager {
     private LanguageManager(
             final ILanguageService languageService,
             final ILanguageDiscoveryService discoveryService,
-            final IIntelliJResourceService resourceService) {
+            final IIntelliJResourceService resourceService,
+            final IIdeaLanguageManager ideaLanguageManager) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
         this.resourceService = resourceService;
+        this.ideaLanguageManager = ideaLanguageManager;
     }
 
     /**
@@ -110,7 +114,21 @@ public final class LanguageManager {
      */
     public Iterable<ILanguageComponent> loadLanguages(Iterable<ILanguageDiscoveryRequest> requests) throws
             MetaborgException {
-        return this.discoveryService.discover(requests);
+        final Iterable<ILanguageComponent> components = this.discoveryService.discover(requests);
+//        this.ideaLanguageManager.unload(language);
+        return components;
+    }
+
+    /**
+     * Unloads the specified language components.
+     *
+     * @param components The components to unload.
+     */
+    public void unloadLanguages(final Iterable<ILanguageComponent> components) {
+        for (final ILanguageComponent component : components) {
+            this.languageService.remove(component);
+            // this.ideaLanguageManager.unload(language);
+        }
     }
 
     /**

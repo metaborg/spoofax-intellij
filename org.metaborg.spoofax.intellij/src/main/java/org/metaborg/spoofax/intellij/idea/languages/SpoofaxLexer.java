@@ -182,7 +182,7 @@ public final class SpoofaxLexer extends LexerBase {
         );
         final Iterator<IRegionStyle<IStrategoTerm>> styledTokenIterator = styledTokens.iterator();
 
-        IRegionStyle<IStrategoTerm> currentRegionStyle = styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
+        @Nullable IRegionStyle<IStrategoTerm> currentRegionStyle = styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
 
         final int tokenCount = tokenizer.getTokenCount();
         int offset = 0;
@@ -213,7 +213,7 @@ public final class SpoofaxLexer extends LexerBase {
                     currentRegionStyle = styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
 
                 // Get the style of the token
-                final IStyle tokenStyle = currentRegionStyle != null && currentRegionStyle.region().startOffset() <= tokenRange.start ? currentRegionStyle.style() : null;
+                @Nullable final IStyle tokenStyle = currentRegionStyle != null && currentRegionStyle.region().startOffset() <= tokenRange.start ? currentRegionStyle.style() : null;
                 final SpoofaxTokenType styledTokenType = this.tokenTypesManager.getTokenType(tokenStyle);
 
                 final SpoofaxToken spoofaxToken = new SpoofaxToken(styledTokenType, tokenRange);
@@ -223,7 +223,7 @@ public final class SpoofaxLexer extends LexerBase {
         }
 
         assert offset == this.buffer.length() : this.logger.format(
-                "The last token ended @ {}, which is before the end of the buffer @ {}.",
+                "The last token ended @ {} not at the end of the buffer @ {}.",
                 offset,
                 this.buffer.length()
         );
