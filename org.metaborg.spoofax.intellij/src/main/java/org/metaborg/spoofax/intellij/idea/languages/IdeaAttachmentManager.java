@@ -35,6 +35,7 @@ import org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IFileElementTypeFactory;
 import org.metaborg.spoofax.intellij.factories.IHighlightingLexerFactory;
 import org.metaborg.spoofax.intellij.factories.IParserDefinitionFactory;
+import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxFileType;
 import org.metaborg.spoofax.intellij.menu.BuilderMenuBuilder;
@@ -89,12 +90,14 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
      */
     @Override
     public IdeaLanguageAttachment get(final ILanguage language) {
-        IdeaLanguageAttachment obj = this.languages.get(language);
+        @Nullable IdeaLanguageAttachment obj = this.languages.get(language);
         if (obj == null) {
             obj = createLanguageAttachment(language);
             this.languages.put(language, obj);
             this.logger.debug("Created a new IdeaLanguageAttachment for language {}.", language);
         } else {
+            // The ILanguage instance may change, even if the name stays the same.
+            obj.ideaLanguage().setLanguage(language);
             this.logger.debug("Used cached IdeaLanguageAttachment for language {}.", language);
         }
         return obj;
@@ -121,6 +124,16 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
         }
         return obj;
     }
+
+//    @Override
+//    public void remove(final ILanguage language) {
+//        this.languages.remove(language);
+//    }
+//
+//    @Override
+//    public void remove(final ILanguageImpl languageImpl) {
+//        this.implementations.remove(languageImpl);
+//    }
 
     /**
      * Creates a new {@link IdeaLanguageAttachment}.
@@ -172,10 +185,12 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private SpoofaxIdeaLanguage createIdeaLanguage(final ILanguage language) {
         try {
             this.proxyFactory.setSuperclass(SpoofaxIdeaLanguage.class);
-            return (SpoofaxIdeaLanguage)this.proxyFactory.create(
+            final SpoofaxIdeaLanguage ideaLanguage = (SpoofaxIdeaLanguage)this.proxyFactory.create(
                     new Class<?>[]{ILanguage.class},
                     new Object[]{language}
             );
+            SpoofaxIdeaPlugin.injector().injectMembers(ideaLanguage);
+            return ideaLanguage;
         } catch (NoSuchMethodException | IllegalArgumentException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             this.logger.error("Unexpected unhandled exception.", e);
             throw new RuntimeException(e);
@@ -191,10 +206,12 @@ public final class IdeaAttachmentManager implements IIdeaAttachmentManager {
     private SpoofaxFileType createFileType(final SpoofaxIdeaLanguage language) {
         try {
             this.proxyFactory.setSuperclass(SpoofaxFileType.class);
-            return (SpoofaxFileType)this.proxyFactory.create(
+            final SpoofaxFileType fileType = (SpoofaxFileType)this.proxyFactory.create(
                     new Class<?>[]{SpoofaxIdeaLanguage.class},
                     new Object[]{language}
             );
+            SpoofaxIdeaPlugin.injector().injectMembers(fileType);
+            return fileType;
         } catch (NoSuchMethodException | IllegalArgumentException | InstantiationException | IllegalAccessException
                 | InvocationTargetException e) {
             this.logger.error("Unexpected unhandled exception.", e);

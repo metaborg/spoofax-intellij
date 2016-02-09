@@ -31,12 +31,16 @@ public interface IIdeaLanguageManager {
     /**
      * Loads a language.
      *
+     * Execute this method in a write action.
+     *
      * @param language The language to load.
      */
     void load(ILanguage language);
 
     /**
      * Unloads a language.
+     *
+     * Execute this method in a write action.
      *
      * @param language The language to unload.
      * @return <code>true</code> when the language was successfully unloaded;

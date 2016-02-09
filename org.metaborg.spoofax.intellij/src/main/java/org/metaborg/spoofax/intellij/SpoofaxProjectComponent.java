@@ -20,6 +20,7 @@
 package org.metaborg.spoofax.intellij;
 
 import com.google.inject.Inject;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
@@ -57,6 +58,7 @@ public final class SpoofaxProjectComponent implements ProjectComponent {
 
     @Override
     public final void projectOpened() {
+
 //        SpoofaxProjectService.getInstance(this.project).getState().setMyName("Project name!");
     }
 
@@ -68,6 +70,12 @@ public final class SpoofaxProjectComponent implements ProjectComponent {
     @Override
     public final void initComponent() {
 
+        WriteCommandAction.runWriteCommandAction(this.project, () -> {
+            for (final ILanguage language : this.languageService.getAllLanguages()) {
+                if (this.ideaLanguageManager.canLoad(language))
+                    this.ideaLanguageManager.load(language);
+            }
+        });
     }
 
     @Override

@@ -49,4 +49,22 @@ public interface IIdeaAttachmentManager {
      * @return The corresponding {@link IdeaLanguageImplAttachment}.
      */
     IdeaLanguageImplAttachment get(ILanguageImpl implementation);
+
+//    /**
+//     * Removes the {@link IdeaLanguageAttachment} for a particular language.
+//     *
+//     * When there is no attachment for the specified language, this method does nothing.
+//     *
+//     * @param language The language
+//     */
+//    void remove(ILanguage language);
+//
+//    /**
+//     * Removes the {@link IdeaLanguageImplAttachment} for a particular language implementation.
+//     *
+//     * When there is no attachment for the specified language implementation, this method does nothing.
+//     *
+//     * @param languageImpl The language implementation.
+//     */
+//    void remove(ILanguageImpl languageImpl);
 }

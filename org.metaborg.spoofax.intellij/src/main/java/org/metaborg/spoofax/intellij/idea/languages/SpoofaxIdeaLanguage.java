@@ -20,8 +20,11 @@
 package org.metaborg.spoofax.intellij.idea.languages;
 
 import com.intellij.lang.Language;
+import org.apache.commons.lang.NullArgumentException;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.language.ILanguage;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 
 /**
  * A Spoofax language used in IntelliJ IDEA.
@@ -30,7 +33,9 @@ import org.metaborg.core.language.ILanguage;
  */
 public abstract class SpoofaxIdeaLanguage extends Language {
 
-    private final ILanguage language;
+    private ILanguage language;
+    @InjectLogger
+    private ILogger logger;
 
     /**
      * Initializes a new instance of the {@link SpoofaxIdeaLanguage} class.
@@ -50,5 +55,19 @@ public abstract class SpoofaxIdeaLanguage extends Language {
      */
     public final ILanguage language() {
         return this.language;
+    }
+
+    public void setLanguage(final ILanguage language) {
+        if (!language.name().equals(this.getID())) throw new IllegalArgumentException(this.logger.format(
+                "The expected language name {} does not match the actual language name {}.",
+                this.getID(),
+                language.name())
+        );
+        this.language = language;
+    }
+
+    @Override
+    public String toString() {
+        return language().toString();
     }
 }

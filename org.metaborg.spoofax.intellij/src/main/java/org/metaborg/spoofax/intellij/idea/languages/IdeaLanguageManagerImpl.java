@@ -93,12 +93,16 @@ public final class IdeaLanguageManagerImpl implements IIdeaLanguageManager {
     public boolean unload(final ILanguage language) {
         if (!isLoaded(language))
             return false;
-        final RegisteredIdeaLanguageObject obj = this.loadedLanguages.remove(language);
 
-        for (final ILanguageImpl implementation : language.impls()) {
-            uninstallLanguageImplementation(this.objectManager.get(implementation));
+        @Nullable final RegisteredIdeaLanguageObject obj = this.loadedLanguages.remove(language);
+
+        if (obj != null) {
+            for (final ILanguageImpl implementation : language.impls()) {
+                uninstallLanguageImplementation(this.objectManager.get(implementation));
+            }
+
+            uninstallLanguage(obj);
         }
-        uninstallLanguage(obj);
 
         this.logger.info("Unloaded language {}", language);
 
