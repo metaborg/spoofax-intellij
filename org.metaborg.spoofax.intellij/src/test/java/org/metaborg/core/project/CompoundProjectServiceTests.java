@@ -25,6 +25,8 @@ import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 import org.junit.Test;
+import org.metaborg.core.logging.LoggerUtils;
+import org.metaborg.core.logging.PrintStreamLogger;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -37,11 +39,11 @@ public final class CompoundProjectServiceTests {
     @Test
     public void getsOneProjectFromMultipleProjectServices() throws FileSystemException {
         final FileSystemManager manager = VFS.getManager();
-        final CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(
+        final CompoundProjectService sut = LoggerUtils.injectLogger(new CompoundProjectService(Sets.newHashSet(
                 new ProjectServiceStub(null),
                 new ArtifactProjectService(manager),
                 new ProjectServiceStub(null)
-        ));
+        )), new PrintStreamLogger());
 
         final FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
@@ -53,10 +55,10 @@ public final class CompoundProjectServiceTests {
     @Test
     public void returnsNullWhenNoServiceReturnsAProject() throws FileSystemException {
         final FileSystemManager manager = VFS.getManager();
-        final CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(
+        final CompoundProjectService sut = LoggerUtils.injectLogger(new CompoundProjectService(Sets.newHashSet(
                 new ProjectServiceStub(null),
                 new ProjectServiceStub(null)
-        ));
+        )), new PrintStreamLogger());
 
         final FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 
@@ -68,10 +70,10 @@ public final class CompoundProjectServiceTests {
     @Test(expected = MultipleServicesRespondedException.class)
     public void throwsExceptionWhenMultipleProjectServicesReturnAProject() throws FileSystemException {
         final FileSystemManager manager = VFS.getManager();
-        final CompoundProjectService sut = new CompoundProjectService(Sets.newHashSet(
+        final CompoundProjectService sut = LoggerUtils.injectLogger(new CompoundProjectService(Sets.newHashSet(
                 new ArtifactProjectService(manager),
                 new ArtifactProjectService(manager)
-        ));
+        )), new PrintStreamLogger());
 
         final FileObject artifact = manager.resolveFile("zip:" + manager.resolveFile(SDF_DEPENDENCY).getURL());
 

@@ -112,7 +112,7 @@ public final class LanguageManager {
      * @return The loaded languages.
      * @throws MetaborgException
      */
-    public Iterable<ILanguageComponent> loadLanguages(Iterable<ILanguageDiscoveryRequest> requests) throws
+    public Iterable<ILanguageComponent> loadLanguages(final Iterable<ILanguageDiscoveryRequest> requests) throws
             MetaborgException {
         final Iterable<ILanguageComponent> components = this.discoveryService.discover(requests);
 //        this.ideaLanguageManager.unload(language);

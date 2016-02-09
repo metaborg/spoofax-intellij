@@ -58,6 +58,9 @@ public final class IdeaEditorRegistry implements IEditorRegistry {
      */
     @Override
     public Iterable<IEditor> openEditors() {
+        // This is currently not supported. It's only used to reload languages,
+        // and as we already do that ourselves, it's not worth the complexity of implementing this.
+
         return Collections.emptyList();
     }
 
