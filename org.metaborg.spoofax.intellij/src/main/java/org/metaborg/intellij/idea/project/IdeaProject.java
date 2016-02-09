@@ -23,6 +23,8 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.project.ILanguageSpec;
 import org.metaborg.core.project.IProject;
 
 /**

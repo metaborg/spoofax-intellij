@@ -29,11 +29,13 @@ import com.intellij.lexer.Lexer;
 import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.projectRoots.SdkType;
 import com.intellij.psi.tree.IFileElementType;
+import org.metaborg.core.editor.IEditorRegistry;
 import org.metaborg.core.project.ArtifactProjectService;
 import org.metaborg.core.project.Compound;
 import org.metaborg.core.project.CompoundProjectService;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.syntax.IParserConfiguration;
+import org.metaborg.intellij.idea.editor.IdeaEditorRegistry;
 import org.metaborg.intellij.idea.gui.DefaultLanguageListItemsProvider;
 import org.metaborg.intellij.idea.gui.ILanguageListItemsProvider;
 import org.metaborg.intellij.idea.gui.ILanguageListItemsProviderFactory;
@@ -160,5 +162,10 @@ public final class SpoofaxIdeaModule extends SpoofaxIntelliJModule {
     @Singleton
     private SpoofaxModuleType provideModuleType() {
         return (SpoofaxModuleType)ModuleTypeManager.getInstance().findByID(SpoofaxModuleType.ID);
+    }
+
+    @Override
+    protected void bindEditor() {
+        bind(IEditorRegistry.class).to(IdeaEditorRegistry.class).in(Singleton.class);
     }
 }

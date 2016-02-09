@@ -77,19 +77,12 @@ public final class TransformationAction<P, A, T> extends AnActionWithId {
         final List<TransformResource> resources = this.actionHelper.getActiveResources(e);
         WriteCommandAction.runWriteCommandAction(project, () -> {
             try {
-                // NOTE: Using EditorFactory.createDocument() you can create a Document that's
-                // not bound to a VirtualFile. This may be used to display the result of a transformation
-                // if it doesn't necessarily need to be saved (e.g. Show ATerm transformation).
-
-                // TODO: Open the transformation result!
-                //FileEditorManager.getInstance(project).openFile()
-
                 final List<FileObject> outputFiles = this.transformer.execute(resources, this.language, this.goal);
                 for (final FileObject output : outputFiles) {
 
                     final VirtualFile virtualFile = this.resourceService.unresolve(output);
                     virtualFile.refresh(true, false);
-                    FileEditorManager.getInstance(project).openFile(virtualFile, false);
+//                    FileEditorManager.getInstance(project).openFile(virtualFile, false);
                 }
             } catch (final MetaborgException ex) {
                 this.logger.error("An exception occurred: {}", ex);
