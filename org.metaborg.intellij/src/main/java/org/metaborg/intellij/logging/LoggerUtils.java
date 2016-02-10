@@ -22,7 +22,7 @@ package org.metaborg.intellij.logging;
 import org.metaborg.util.log.ILogger;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Field;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +30,116 @@ import java.util.List;
  * Utility functions for working with loggers.
  */
 public final class LoggerUtils {
+
+    // TODO: Move these four to the ILogger interface and implementation?
+
+    /**
+     * Creates an exception and logs it as an error.
+     *
+     * @param logger The logger to use.
+     * @param exceptionClass The class of exception to create.
+     * @param msg The exception message.
+     * @param t The throwable that caused the exception.
+     * @param <T> The type of exception.
+     * @return The exception object.
+     */
+    public static <T> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg, @Nullable final Throwable t) {
+
+        @Nullable T exception;
+        {
+            // new T(String, Throwable);
+            exception = invokeConstructor(exceptionClass, new Class<?>[]{String.class, Throwable.class}, msg, t);
+        }
+        if (exception == null) {
+            // new T(String);
+            exception = invokeConstructor(exceptionClass, new Class<?>[]{String.class}, msg);
+        }
+        if (exception == null) {
+            // new T(Throwable);
+            exception = invokeConstructor(exceptionClass, new Class<?>[]{Throwable.class}, t);
+        }
+        if (exception == null) {
+            // new T();
+            exception = invokeConstructor(exceptionClass, new Class<?>[]{});
+        }
+        // In extreme cases `exception` can be null here. Nothing we can do about that unfortunately.
+        // Let's assert that's it's not null.
+        assert exception != null;
+
+        // Log the exception.
+        logger.error(msg, exception);
+
+        return exception;
+    }
+
+    /**
+     * Creates an exception and logs it as an error.
+     *
+     * @param logger The logger to use.
+     * @param exceptionClass The class of exception to create.
+     * @param msg The exception message.
+     * @param <T> The type of exception.
+     * @return The exception object.
+     */
+    public static <T> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg) {
+        return exception(logger, exceptionClass, msg, (Throwable)null);
+    }
+
+    /**
+     * Creates an exception and logs it as an error.
+     *
+     * @param logger The logger to use.
+     * @param exceptionClass The class of exception to create.
+     * @param msg The exception message.
+     * @param args The message arguments.
+     * @param <T> The type of exception.
+     * @return The exception object.
+     */
+    public static <T> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg, final Object... args) {
+        return exception(logger, exceptionClass, logger.format(msg, args), (Throwable)null);
+    }
+
+    /**
+     * Creates an exception and logs it as an error.
+     *
+     * @param logger The logger to use.
+     * @param exceptionClass The class of exception to create.
+     * @param msg The exception message.
+     * @param t The throwable that caused the exception.
+     * @param args The message arguments.
+     * @param <T> The type of exception.
+     * @return The exception object.
+     */
+    public static <T> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg, @Nullable final Throwable t, final Object... args) {
+        return exception(logger, exceptionClass, logger.format(msg, args), t);
+    }
+
+    /**
+     * Invokes a constructor.
+     *
+     * @param clazz The class on which to invoke the constructor.
+     * @param paramTypes The parameter types.
+     * @param args The argument types.
+     * @param <T> The type of object to create.
+     * @return The resulting object; or <code>null</code> if an exception occurred.
+     */
+    @Nullable
+    private static <T> T invokeConstructor(final Class<T> clazz, final Class<?>[] paramTypes, final Object... args) {
+        assert paramTypes.length == args.length;
+
+        @Nullable T obj = null;
+        try {
+            if (paramTypes.length > 0) {
+                final Constructor<T> constructor = clazz.getConstructor(paramTypes);
+                obj = constructor.newInstance(args);
+            } else {
+                obj = clazz.newInstance();
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException ex) {
+            // Ignore.
+        }
+        return obj;
+    }
 
     /**
      * Injects the specified logger into the specified object.
