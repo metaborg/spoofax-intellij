@@ -20,34 +20,23 @@
 package org.metaborg.intellij.idea.gui;
 
 import com.intellij.ide.DataManager;
-import com.intellij.ide.actions.SmartPopupActionGroup;
 import com.intellij.openapi.actionSystem.ActionGroup;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.dualView.TreeTableView;
-import com.intellij.ui.treeStructure.treetable.ListTreeTableModelOnColumns;
-import com.intellij.util.ui.ColumnInfo;
-import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.core.language.ILanguageDiscoveryRequest;
 import org.metaborg.core.language.ILanguageImpl;
-import org.metaborg.spoofax.intellij.idea.project.SpoofaxIcons;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -55,7 +44,7 @@ public final class LanguagesPanel extends JPanel {
 
     private final TreeTableView languagesTree;
     @Nullable
-    private LanguagesConfigurable controller;
+    private LanguagesConfiguration controller;
     @Nullable
     private DefaultActionGroup addActionPopupGroup;
 
@@ -222,7 +211,7 @@ public final class LanguagesPanel extends JPanel {
      *
      * @param controller The controller to attach; or <code>null</code> to detach.
      */
-    public void attachController(@Nullable final LanguagesConfigurable controller) {
+    public void attachController(@Nullable final LanguagesConfiguration controller) {
         this.controller = controller;
 
         if (controller != null) {
@@ -238,7 +227,7 @@ public final class LanguagesPanel extends JPanel {
      * @param model
      * @param controller
      */
-    private void initPopupActions(final LanguageTreeModel model, final LanguagesConfigurable controller) {
+    private void initPopupActions(final LanguageTreeModel model, final LanguagesConfiguration controller) {
         this.addActionPopupGroup = new DefaultActionGroup("Add", true);
         this.addActionPopupGroup.add(new AddLanguageFromDirectoryAction(model, controller));
         this.addActionPopupGroup.add(new AddLanguageFromArtifactAction(model, controller));

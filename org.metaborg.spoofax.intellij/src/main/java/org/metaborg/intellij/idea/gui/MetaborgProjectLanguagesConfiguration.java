@@ -20,6 +20,7 @@
 package org.metaborg.intellij.idea.gui;
 
 import com.google.inject.Inject;
+import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,17 @@ import org.metaborg.util.log.ILogger;
 
 import javax.swing.*;
 
-public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigurable {
+@State(
+        name = MetaborgProjectLanguagesConfiguration.NAME,
+        storages = {
+                @Storage(file = StoragePathMacros.PROJECT_FILE),
+                @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/" + MetaborgProjectLanguagesConfiguration.CONFIG_FILE, scheme = StorageScheme.DIRECTORY_BASED)
+        }
+)
+public final class MetaborgProjectLanguagesConfiguration extends LanguagesConfiguration {
+
+    public static final String NAME = "LanguagesConfiguration";
+    public static final String CONFIG_FILE = "Languages.xml";
 
     @Nullable private MetaborgProjectLanguagesConfigurableForm form;
     @InjectLogger
@@ -42,14 +53,15 @@ public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigu
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public MetaborgProjectLanguagesConfigurable(final Project project) {
+    public MetaborgProjectLanguagesConfiguration(final Project project) {
         super(project);
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
     @Override
     @Inject
-    protected void inject(final LanguageManager languageManager, final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager) {
+    protected void inject(final LanguageManager languageManager, final ILanguageService languageService,
+                          final IIdeaLanguageManager ideaLanguageManager) {
         super.inject(languageManager, languageService, ideaLanguageManager);
     }
 
@@ -99,16 +111,18 @@ public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigu
     protected void updateLanguagesList() {
         this.form.getLanguagesPanel().setLanguages(getLanguages());
     }
-
-    @Nullable
-    @Override
-    public LanguagesConfigurable getState() {
-        logger.error("STATE getting!");
-        return null;
-    }
-
-    @Override
-    public void loadState(final LanguagesConfigurable state) {
-        logger.error("STATE loading!");
-    }
+//
+//    @Nullable
+//    @Override
+//    public LanguagesConfiguration getState() {
+//        throw new UnsupportedOperationException();
+////        logger.error("STATE getting!");
+////        return null;
+//    }
+//
+//    @Override
+//    public void loadState(final LanguagesConfiguration state) {
+//        throw new UnsupportedOperationException();
+////        logger.error("STATE loading!");
+//    }
 }

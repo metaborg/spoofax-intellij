@@ -20,7 +20,6 @@
 package org.metaborg.intellij.idea.gui;
 
 import com.google.inject.Inject;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.fileChooser.FileChooser;
@@ -29,7 +28,6 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.module.StdModuleTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.treeStructure.treetable.ListTreeTableModelOnColumns;
 import org.metaborg.core.UnhandledException;
 import org.metaborg.core.language.ILanguageDiscoveryRequest;
 import org.metaborg.core.language.ILanguageDiscoveryService;
@@ -57,7 +55,7 @@ public class AddLanguageFromDirectoryAction extends LanguagesAction {
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public AddLanguageFromDirectoryAction(final LanguageTreeModel model, final LanguagesConfigurable controller) {
+    public AddLanguageFromDirectoryAction(final LanguageTreeModel model, final LanguagesConfiguration controller) {
         super(model, controller, "Directory...", "Add a language by specifying its directory.", StdModuleTypes.JAVA.getIcon());
 
         // TODO: Remove this and use a factory instead.

@@ -46,7 +46,6 @@ public final class LanguageManager {
     private final ILanguageService languageService;
     private final ILanguageDiscoveryService discoveryService;
     private final IIntelliJResourceService resourceService;
-    private final IIdeaLanguageManager ideaLanguageManager;
     @InjectLogger
     private ILogger logger;
 
@@ -54,12 +53,10 @@ public final class LanguageManager {
     private LanguageManager(
             final ILanguageService languageService,
             final ILanguageDiscoveryService discoveryService,
-            final IIntelliJResourceService resourceService,
-            final IIdeaLanguageManager ideaLanguageManager) {
+            final IIntelliJResourceService resourceService) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
         this.resourceService = resourceService;
-        this.ideaLanguageManager = ideaLanguageManager;
     }
 
     /**

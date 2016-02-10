@@ -19,30 +19,15 @@
 
 package org.metaborg.intellij.idea.gui;
 
-import com.google.inject.Inject;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.module.StdModuleTypes;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.treeStructure.treetable.ListTreeTableModelOnColumns;
-import org.metaborg.core.UnhandledException;
 import org.metaborg.core.language.*;
-import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import java.io.IOException;
-import java.util.Collections;
 
 //import org.metaborg.core.language.ILanguageDiscoveryService;
 
@@ -55,13 +40,13 @@ public abstract class LanguagesAction extends AnAction {
     private SpoofaxArtifactFileType artifactFileType;
     private LanguageManager languageManager;
     protected final LanguageTreeModel model;
-    protected final LanguagesConfigurable controller;
+    protected final LanguagesConfiguration controller;
 
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this method manually.
      */
-    public LanguagesAction(final LanguageTreeModel model, final LanguagesConfigurable controller, @Nullable final String text, @Nullable final String description, @Nullable final Icon icon/*,
+    public LanguagesAction(final LanguageTreeModel model, final LanguagesConfiguration controller, @Nullable final String text, @Nullable final String description, @Nullable final Icon icon/*,
                            final LanguageManager languageManager, final ILanguageDiscoveryService discoveryService,
                            final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager,
                            final SpoofaxArtifactFileType artifactFileType*/) {

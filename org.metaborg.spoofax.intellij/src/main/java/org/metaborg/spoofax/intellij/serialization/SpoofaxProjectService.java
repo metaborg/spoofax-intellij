@@ -24,6 +24,8 @@ import com.intellij.openapi.project.Project;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 
 import java.util.Objects;
 
@@ -41,6 +43,8 @@ public final class SpoofaxProjectService implements PersistentStateComponent<Spo
 
     @Nullable
     private SpoofaxProjectState state;
+    @InjectLogger
+    private ILogger logger;
 
     /**
      * Initializes a new instance of the {@link SpoofaxProjectService} class.
@@ -73,6 +77,7 @@ public final class SpoofaxProjectService implements PersistentStateComponent<Spo
     @Override
     public final void loadState(@Nullable final SpoofaxProjectState state) {
         this.state = state;
+        this.logger.info("Loaded project state.");
     }
 
     /**

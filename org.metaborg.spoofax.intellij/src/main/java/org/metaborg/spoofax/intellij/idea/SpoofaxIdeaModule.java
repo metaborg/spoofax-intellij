@@ -56,6 +56,7 @@ import org.metaborg.spoofax.intellij.idea.psi.SpoofaxAnnotator;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxFileElementType;
 import org.metaborg.spoofax.intellij.idea.psi.SpoofaxPsiElementFactory;
 import org.metaborg.spoofax.intellij.idea.vfs.SpoofaxArtifactFileType;
+import org.metaborg.spoofax.intellij.languages.LanguageManager;
 import org.metaborg.spoofax.intellij.menu.*;
 import org.metaborg.spoofax.intellij.sdk.SpoofaxSdkType;
 import org.spoofax.interpreter.terms.IStrategoTerm;

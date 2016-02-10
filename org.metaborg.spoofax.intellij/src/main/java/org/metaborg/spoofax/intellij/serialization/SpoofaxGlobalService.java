@@ -23,6 +23,8 @@ import com.intellij.openapi.components.*;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.logging.InjectLogger;
+import org.metaborg.util.log.ILogger;
 
 import java.util.Objects;
 
@@ -39,6 +41,8 @@ public final class SpoofaxGlobalService implements PersistentStateComponent<Spoo
 
     @Nullable
     private SpoofaxGlobalState state;
+    @InjectLogger
+    private ILogger logger;
 
     /**
      * Initializes a new instance of the {@link SpoofaxGlobalService} class.
@@ -71,6 +75,7 @@ public final class SpoofaxGlobalService implements PersistentStateComponent<Spoo
     @Override
     public void loadState(final SpoofaxGlobalState state) {
         this.state = state;
+        this.logger.info("Loaded global state.");
     }
 
     /**

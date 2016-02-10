@@ -22,7 +22,7 @@ package org.metaborg.intellij.idea.gui;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.*;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
@@ -30,6 +30,7 @@ import org.metaborg.core.MetaborgException;
 import org.metaborg.core.language.*;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
+import org.metaborg.spoofax.intellij.serialization.SpoofaxProjectSerializer;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +39,7 @@ import java.util.Set;
  * {@see <a href="https://confluence.jetbrains.com/display/IDEADEV/Customizing+the+IDEA+Settings+Dialog">Customizing the
  * IDEA Settings Dialog</a>}
  */
-public abstract class LanguagesConfigurable extends BaseConfigurable implements PersistentStateComponent<LanguagesConfigurable> {
+public abstract class LanguagesConfiguration extends BaseConfigurable {
 
     private LanguageManager languageManager;
     private ILanguageService languageService;
@@ -51,7 +52,7 @@ public abstract class LanguagesConfigurable extends BaseConfigurable implements 
     /**
      * This instance is created by IntelliJ's plugin system.
      */
-    protected LanguagesConfigurable(final Project project) {
+    protected LanguagesConfiguration(final Project project) {
         super();
         Preconditions.checkNotNull(project);
 

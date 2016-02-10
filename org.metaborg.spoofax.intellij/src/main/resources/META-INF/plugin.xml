@@ -44,7 +44,7 @@
         <lang.elementManipulator forClass="org.metaborg.spoofax.intellij.idea.psi.SpoofaxIdentifier"
                                  implementationClass="org.metaborg.spoofax.intellij.idea.psi.SpoofaxIdentifierManipulator"/>
         <psi.referenceContributor implementation="org.metaborg.intellij.idea.psi.MetaborgReferenceContributor"/>
-        <projectConfigurable id="metaborg.project.language.settings" groupId="language" instance="org.metaborg.intellij.idea.gui.MetaborgProjectLanguagesConfigurable" />
+        <projectConfigurable id="metaborg.project.language.settings" groupId="language" instance="org.metaborg.intellij.idea.gui.MetaborgProjectLanguagesConfiguration" />
     </extensions>
 
     <application-components>
