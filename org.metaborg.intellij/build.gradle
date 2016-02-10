@@ -1,0 +1,174 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'commons-io:commons-io:2.4'
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.0.39"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'org.jetbrains.intellij'
+
+group 'org.metaborg'
+version '1.5.0-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "http://artifacts.metaborg.org/content/repositories/releases/"
+    }
+}
+
+// FIX: Circular dependency due to adding test class dependencies
+// https://issues.gradle.org/browse/GRADLE-2470
+subprojects {
+    apply plugin: 'java'
+}
+
+configurations {
+    provided
+    language
+    languageBaseline
+    testLanguage
+    testLanguageBaseline
+
+    jpsRuntime {
+        extendsFrom runtime
+        exclude group: 'com.jetbrains'
+    }
+}
+
+sourceSets.main.compileClasspath += configurations.provided
+
+idea {
+    module {
+        inheritOutputDirs = true
+        scopes.PROVIDED.plus += configurations.provided
+    }
+}
+
+eclipse {
+    classpath {
+        plusConfigurations += configurations.provided
+    }
+}
+
+intellij {
+    version 'IC-15.0.3'
+}
+
+// Task to allow a debugger to be attached to port 5005 for debugging the JPS plugin.
+// https://github.com/JetBrains/gradle-intellij-plugin/issues/23
+afterEvaluate {
+    task("debugIdea", type: org.jetbrains.intellij.RunIdeaTask, group: 'intellij', dependsOn: 'prepareSandbox', description: 'Runs Intellij IDEA with installed plugin and debugger support for JPS on port 5005.') {
+        jvmArgs += ["-Dcompiler.process.debug.port=5005"]
+    }
+}
+
+task copyJpsLibraries(type: Copy, description: 'Copies the JPS libraries to the resources.') {
+    into "src/main/resources/jpslib/"
+    from configurations.jpsRuntime
+}
+
+task copyLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the resources.') {
+    into "src/main/resources/languages/"
+    from configurations.language
+}
+
+task copyTestLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the test resources.') {
+    into "src/test/resources/languages/"
+    from configurations.testLanguage
+}
+
+task copyLanguageBaselineDependencies(type: Copy, description: 'Copies the language dependencies to the resources.', dependsOn: copyLanguageDependencies) {
+    into "src/main/resources/languages/"
+    from configurations.languageBaseline
+}
+
+task copyTestLanguageBaselineDependencies(type: Copy, description: 'Copies the language dependencies to the test resources.', dependsOn: copyTestLanguageDependencies) {
+    into "src/test/resources/languages/"
+    from configurations.testLanguageBaseline
+}
+
+processResources.dependsOn copyLanguageBaselineDependencies
+processResources.dependsOn copyJpsLibraries
+processTestResources.dependsOn copyTestLanguageBaselineDependencies
+
+// Prints the list of JPS plugin dependencies.
+task(printJpsDependencies, description: 'Prints a semi-colon-separated list of dependencies for the JPS plugin.') << {
+    def jars = configurations.jpsRuntime.resolve().collect { it.name }.findAll { !it.startsWith('slf4j') }
+	def result = [ './classes/' ] + jars + [
+		'../classes/jpslib/slf4j-api-1.7.12.jar'
+	]
+	println result.sort().join(';')
+}
+
+task(printAllDependencies) << {
+	def r = configurations.jpsRuntime.resolve()	// + configurations.runtime.resolve()
+	r.collect { it.name }.sort().each { dep ->
+        println "      ${dep}"
+    }
+}
+
+dependencies {
+    // Main dependencies
+    compile('org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT') {
+        exclude group: 'org.slf4j'
+    }
+    compile('org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT') {
+        exclude group: 'org.slf4j'
+    }
+    compile('org.metaborg:org.metaborg.spoofax.generator:1.5.0-SNAPSHOT') {
+        exclude group: 'org.slf4j'
+    }
+    compile('org.metaborg:org.metaborg.spoofax.meta.core:1.5.0-SNAPSHOT') {
+        exclude group: 'org.slf4j'
+    }
+    compile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile 'com.google.guava:guava:17.0'
+    compile 'org.metaborg:make-permissive:1.5.0-SNAPSHOT'
+    compile 'org.apache.ant:ant:1.9.6'
+    compile 'org.apache.commons:commons-vfs2:2.0'
+    compile 'com.google.inject:guice:3.0'
+    compile 'com.google.inject.extensions:guice-assistedinject:3.0'
+    compile 'org.javassist:javassist:3.20.0-GA'
+    compile 'org.slf4j:slf4j-api:1.7.10'
+    
+    jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
+
+    language 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.nabl:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.template:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.ts:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lib.analysis:1.5.0-SNAPSHOT@spoofax-language'
+
+    languageBaseline 'org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646@spoofax-language'
+    languageBaseline 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646@spoofax-language'
+    languageBaseline 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-baseline-20150917-172646@spoofax-language'
+
+    // Test dependencies
+    testCompile 'junit:junit:4.12'
+
+    testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT@spoofax-language'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            mavenLocal()
+        }
+    }
+}
