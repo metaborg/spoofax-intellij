@@ -25,6 +25,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
+/**
+ * Loads and saves the project-wide configuration state.
+ */
 @State(
         name = SpoofaxProjectSerializer.NAME,
         storages = {
@@ -37,14 +42,20 @@ public final class SpoofaxProjectService implements PersistentStateComponent<Spo
     @Nullable
     private SpoofaxProjectState state;
 
+    /**
+     * Initializes a new instance of the {@link SpoofaxProjectService} class.
+     */
     public SpoofaxProjectService() {
         this.state = new SpoofaxProjectState();
     }
 
+    /**
+     * Gets the instance of this service.
+     *
+     * @return The instance.
+     */
     public static SpoofaxProjectService getInstance(final Project project) {
-        final SpoofaxProjectService service = ServiceManager.getService(project, SpoofaxProjectService.class);
-        assert service != null;
-        return service;
+        return ServiceManager.getService(project, SpoofaxProjectService.class);
     }
 
     /**
@@ -70,6 +81,7 @@ public final class SpoofaxProjectService implements PersistentStateComponent<Spo
     @Override
     public final int hashCode() {
         return new HashCodeBuilder(19, 31)
+                // Don't add anything here. None of the field are final.
                 .toHashCode();
     }
 
@@ -80,6 +92,6 @@ public final class SpoofaxProjectService implements PersistentStateComponent<Spo
     public final boolean equals(final Object obj) {
         if (!(obj instanceof SpoofaxProjectService))
             return false;
-        return this.state.equals(((SpoofaxProjectService)obj).state);
+        return Objects.equals(this.state, ((SpoofaxProjectService)obj).state);
     }
 }

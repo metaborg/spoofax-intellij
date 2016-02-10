@@ -27,6 +27,9 @@ import org.jetbrains.jps.model.serialization.JpsProjectExtensionSerializer;
 
 import javax.annotation.Nullable;
 
+/**
+ * Deserializes project-wide configuration in JPS.
+ */
 public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerializer {
 
     public static final String NAME = "SpoofaxProjectService";
@@ -41,7 +44,7 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
      */
     @Override
     public final void loadExtension(final JpsProject project, final Element element) {
-        final SpoofaxProjectState state = XmlSerializer.deserialize(element, SpoofaxProjectState.class);
+        @Nullable final SpoofaxProjectState state = XmlSerializer.deserialize(element, SpoofaxProjectState.class);
         loadExtensionWithState(project, state);
     }
 

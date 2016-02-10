@@ -23,14 +23,21 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
+/**
+ * Stores project-wide configuration.
+ */
 public final class SpoofaxProjectState {
 
     @Nullable
     private String myName;
 
+    /**
+     * Initializes a new instance of the {@link SpoofaxProjectState} class.
+     */
     public SpoofaxProjectState() {
-        // Defaults
+        // Set defaults here.
     }
 
     @Nullable
@@ -48,6 +55,7 @@ public final class SpoofaxProjectState {
     @Override
     public final int hashCode() {
         return new HashCodeBuilder(19, 31)
+                // Add only final fields here.
                 .toHashCode();
     }
 
@@ -61,13 +69,21 @@ public final class SpoofaxProjectState {
         return equals((SpoofaxProjectState)obj);
     }
 
+    /**
+     * Indicates whether the specified object is equal to this one.
+     *
+     * @param other The other object to test.
+     * @return <code>true</code> when the objects are equal;
+     * otherwise, <code>false</code>.
+     */
     public final boolean equals(@Nullable final SpoofaxProjectState other) {
-        if (other == this)
+        if (Objects.equals(this, other))
             return true;
         if (other == null)
             return false;
 
         return new EqualsBuilder()
+                // Add all fields here.
                 .append(this.myName, other.myName)
                 .isEquals();
     }

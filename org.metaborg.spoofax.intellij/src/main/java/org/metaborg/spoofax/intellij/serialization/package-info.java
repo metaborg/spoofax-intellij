@@ -19,6 +19,30 @@
 
 /**
  * Spoofax state serialization.
+ *
+ * The configuration is represented by a <code>State</code> object. The configuration is persisted across IntelliJ
+ * IDEA sessions by a <code>Service</code>. The configuration is loaded into a JPS session by a <code>Serializer</code>,
+ * and represented in JPS by a <code>Config</code> object. The serializer doesn't support saving configuration, but
+ * this is not needed from a JPS session.
+ *
+ * For global (application-wide) configuration, these classes are used:
+ * <ul>
+ *     <li>{@link org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalState}</li>
+ *     <li>{@link org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalConfig}</li>
+ *     <li>{@link org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalService}</li>
+ *     <li>{@link org.metaborg.spoofax.intellij.serialization.SpoofaxGlobalSerializer}</li>
+ * </ul>
+ *
+ * For project-wide configuration, these classes are used:
+ * <ul>
+ *     <li>{@link org.metaborg.spoofax.intellij.serialization.SpoofaxProjectState}</li>
+ *     <li>{@link org.metaborg.spoofax.intellij.serialization.SpoofaxProjectConfig}</li>
+ *     <li>{@link org.metaborg.spoofax.intellij.serialization.SpoofaxProjectService}</li>
+ *     <li>{@link org.metaborg.spoofax.intellij.serialization.SpoofaxProjectSerializer}</li>
+ * </ul>
+ *
+ * Currently there is no support for module-specific configuration.
+ *
  */
 @NonNullByDefault
 package org.metaborg.spoofax.intellij.serialization;

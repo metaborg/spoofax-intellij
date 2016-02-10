@@ -28,7 +28,12 @@ import org.metaborg.spoofax.intellij.JpsSpoofaxModuleType;
 
 import javax.annotation.Nullable;
 
+/**
+ * Deserializes module-specific configuration in JPS.
+ */
 public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer<JpsDummyElement> {
+
+    public static final String NAME = "SpoofaxModuleService";
 
     public SpoofaxModuleSerializer() {
         super(JpsSpoofaxModuleType.INSTANCE, "SPOOFAX_MODULE", null);
@@ -39,9 +44,7 @@ public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer
      */
     @Override
     public final JpsDummyElement loadProperties(@Nullable final Element element) {
-        final JpsDummyElement result = JpsElementFactory.getInstance().createDummyElement();
-
-        return result;
+        return JpsElementFactory.getInstance().createDummyElement();
     }
 
     /**

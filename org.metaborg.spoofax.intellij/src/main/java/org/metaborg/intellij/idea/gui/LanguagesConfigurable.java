@@ -22,6 +22,7 @@ package org.metaborg.intellij.idea.gui;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
@@ -37,16 +38,15 @@ import java.util.Set;
  * {@see <a href="https://confluence.jetbrains.com/display/IDEADEV/Customizing+the+IDEA+Settings+Dialog">Customizing the
  * IDEA Settings Dialog</a>}
  */
-public abstract class LanguagesConfigurable extends BaseConfigurable {
+public abstract class LanguagesConfigurable extends BaseConfigurable implements PersistentStateComponent<LanguagesConfigurable> {
 
     private LanguageManager languageManager;
     private ILanguageService languageService;
     private IIdeaLanguageManager ideaLanguageManager;
     private final Project project;
-    private Set<ILanguageImpl> languages = null;
+    private Set<ILanguageImpl> languages = Sets.newHashSet();
     private final Set<ILanguageDiscoveryRequest> languagesToLoad = new HashSet<>();
     private final Set<ILanguageComponent> languagesToUnload = new HashSet<>();
-//    private final Set<ILanguageImpl> languagesToUnload = new HashSet<>();
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -58,7 +58,8 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
         this.project = project;
     }
 
-    protected void inject(final LanguageManager languageManager, final ILanguageService languageService, final IIdeaLanguageManager ideaLanguageManager) {
+    protected void inject(final LanguageManager languageManager, final ILanguageService languageService,
+                          final IIdeaLanguageManager ideaLanguageManager) {
         this.languageManager = languageManager;
         this.languageService = languageService;
         this.ideaLanguageManager = ideaLanguageManager;
@@ -168,7 +169,6 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
         }
     }
 
-    // TODO: Move to IIdeaLanguageManager
     /**
      * Unloads all IDEA languages.
      */
@@ -182,8 +182,6 @@ public abstract class LanguagesConfigurable extends BaseConfigurable {
             }
         });
     }
-
-    // TODO: Move to IIdeaLanguageManager
 
     /**
      * Loads all IDEA languages.

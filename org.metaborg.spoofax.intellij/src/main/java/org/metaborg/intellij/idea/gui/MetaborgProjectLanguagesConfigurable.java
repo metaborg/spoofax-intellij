@@ -24,15 +24,19 @@ import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.ILanguageService;
+import org.metaborg.core.logging.InjectLogger;
 import org.metaborg.spoofax.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.spoofax.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.spoofax.intellij.languages.LanguageManager;
+import org.metaborg.util.log.ILogger;
 
 import javax.swing.*;
 
 public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigurable {
 
     @Nullable private MetaborgProjectLanguagesConfigurableForm form;
+    @InjectLogger
+    private ILogger logger;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -94,5 +98,17 @@ public final class MetaborgProjectLanguagesConfigurable extends LanguagesConfigu
     @Override
     protected void updateLanguagesList() {
         this.form.getLanguagesPanel().setLanguages(getLanguages());
+    }
+
+    @Nullable
+    @Override
+    public LanguagesConfigurable getState() {
+        logger.error("STATE getting!");
+        return null;
+    }
+
+    @Override
+    public void loadState(final LanguagesConfigurable state) {
+        logger.error("STATE loading!");
     }
 }

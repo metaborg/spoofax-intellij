@@ -27,6 +27,9 @@ import org.jetbrains.jps.model.serialization.JpsGlobalExtensionSerializer;
 
 import javax.annotation.Nullable;
 
+/**
+ * Deserializes application-wide configuration in JPS.
+ */
 public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
 
     public static final String NAME = "SpoofaxGlobalService";
@@ -41,7 +44,7 @@ public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer 
      */
     @Override
     public final void loadExtension(final JpsGlobal global, final Element element) {
-        final SpoofaxGlobalState state = XmlSerializer.deserialize(element, SpoofaxGlobalState.class);
+        @Nullable final SpoofaxGlobalState state = XmlSerializer.deserialize(element, SpoofaxGlobalState.class);
         loadExtensionWithState(global, state);
     }
 
