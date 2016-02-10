@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.languages;
+package org.metaborg.intellij.idea.languages;
 
 import com.google.common.cache.*;
 import com.google.common.collect.*;
@@ -25,7 +25,6 @@ import com.google.inject.*;
 import org.apache.commons.lang.*;
 import org.metaborg.core.*;
 import org.metaborg.core.language.*;
-import org.metaborg.core.language.LanguageUtils;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
@@ -40,8 +39,8 @@ public final class DefaultLanguageManager implements ILanguageManager {
 
     private final ILanguageDiscoveryService discoveryService;
     private final ILanguageService languageService;
-    private final Map<ILanguage, IdeaLanguage> loadedLanguages = new HashMap<>();
-    private final Cache<ILanguage, IdeaLanguage> ideaLanguageCache = CacheBuilder.newBuilder().weakKeys().build();
+    private final Map<ILanguage, ActivatedLanguage> loadedLanguages = new HashMap<>();
+    private final Cache<ILanguage, ActivatedLanguage> ideaLanguageCache = CacheBuilder.newBuilder().weakKeys().build();
 
     @InjectLogger
     private ILogger logger;
@@ -127,10 +126,10 @@ public final class DefaultLanguageManager implements ILanguageManager {
             return;
 
         this.logger.debug("Activating language: {}", language);
-        final IdeaLanguage ideaLanguage = getOrCreateIdeaLanguage(language);
+        final ActivatedLanguage activatedLanguage = getOrCreateIdeaLanguage(language);
         // TODO: Activate the language implementations.
         assert false;
-        this.loadedLanguages.put(language, ideaLanguage);
+        this.loadedLanguages.put(language, activatedLanguage);
         this.logger.info("Activated language: {}", language);
     }
 
@@ -143,10 +142,24 @@ public final class DefaultLanguageManager implements ILanguageManager {
             return;
 
         this.logger.debug("Deactivating language: {}", language);
-        final IdeaLanguage ideaLanguage = this.loadedLanguages.remove(language);
+        final ActivatedLanguage activatedLanguage = this.loadedLanguages.remove(language);
         // TODO: Deactivate the language implementations.
         assert false;
         this.logger.info("Deactivated language: {}", language);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ILanguage getLanguage(final MetaborgIdeaLanguage ideaLanguage) {
+        for (ILanguage language : this.languageService.getAllLanguages()) {
+            if (Objects.equals(language.name(), ideaLanguage.getID())) {
+                return language;
+            }
+        }
+        throw LoggerUtils.exception(this.logger, IllegalArgumentException.class,
+                "There is no language associated with the specified MetaborgIdeaLanguage: {}", ideaLanguage);
     }
 
     /**
@@ -172,15 +185,15 @@ public final class DefaultLanguageManager implements ILanguageManager {
      * @param language The language to look up.
      * @return The associated IDEA language.
      */
-    private IdeaLanguage getOrCreateIdeaLanguage(final ILanguage language) {
-        final IdeaLanguage ideaLanguage;
+    private ActivatedLanguage getOrCreateIdeaLanguage(final ILanguage language) {
+        final ActivatedLanguage activatedLanguage;
         try {
-            ideaLanguage = this.ideaLanguageCache.get(language, () -> createIdeaLanguage(language));
+            activatedLanguage = this.ideaLanguageCache.get(language, () -> createIdeaLanguage(language));
         } catch (final ExecutionException ex) {
             throw LoggerUtils.exception(this.logger, UnhandledException.class,
                     "An unhandled checked exception was thrown from createIdeaLanguage().", ex);
         }
-        return ideaLanguage;
+        return activatedLanguage;
     }
 
     /**
@@ -189,7 +202,7 @@ public final class DefaultLanguageManager implements ILanguageManager {
      * @param language The language to look up.
      * @return The created IDEA language.
      */
-    private IdeaLanguage createIdeaLanguage(final ILanguage language) {
+    private ActivatedLanguage createIdeaLanguage(final ILanguage language) {
         // TODO: Implement!
         throw new UnsupportedOperationException();
     }

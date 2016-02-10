@@ -7,6 +7,9 @@
         <option name="GENERATE_FINAL_PARAMETERS" value="true" />
         <option name="USE_SINGLE_CLASS_IMPORTS" value="false" />
         <option name="WRAP_COMMENTS" value="true" />
+        <XML>
+          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+        </XML>
         <codeStyleSettings language="JAVA">
           <option name="SPACE_AFTER_TYPE_CAST" value="false" />
           <option name="THROWS_KEYWORD_WRAP" value="2" />

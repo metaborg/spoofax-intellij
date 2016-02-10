@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.languages;
+package org.metaborg.intellij.idea.languages;
 
 import org.metaborg.core.*;
 

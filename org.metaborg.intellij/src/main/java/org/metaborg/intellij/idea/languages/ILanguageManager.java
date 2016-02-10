@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.languages;
+package org.metaborg.intellij.idea.languages;
 
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageComponent;
@@ -35,6 +35,7 @@ import java.util.Collection;
  * The implementation must be thread-safe.
  */
 public interface ILanguageManager {
+
     /**
      * Gets a collection of all loaded languages.
      *
@@ -110,5 +111,14 @@ public interface ILanguageManager {
      * @param language The language to deactivate.
      */
     void deactivate(ILanguage language);
+
+    /**
+     * Gets the {@link ILanguage} object that corresponds to the
+     * specified {@link MetaborgIdeaLanguage} object.
+     *
+     * @param language The Spoofax IDEA language.
+     * @return The associated {@link ILanguage}.
+     */
+    ILanguage getLanguage(MetaborgIdeaLanguage language);
 
 }

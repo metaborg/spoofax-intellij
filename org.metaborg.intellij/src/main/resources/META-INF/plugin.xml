@@ -36,6 +36,7 @@
     <idea-version since-build="143"/>
 
     <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="org.metaborg.intellij.idea.filetypes.MetaborgFileTypeFactory"/>
     </extensions>
 
     <application-components>

@@ -19,7 +19,10 @@
 
 package org.metaborg.intellij.idea;
 
+import com.google.inject.*;
 import com.google.inject.matcher.Matchers;
+import org.metaborg.intellij.idea.filetypes.*;
+import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
 import org.metaborg.spoofax.core.SpoofaxModule;
@@ -36,6 +39,8 @@ import org.metaborg.spoofax.core.SpoofaxModule;
     protected void configure() {
         super.configure();
         bindLoggerListeners();
+        bindGraphics();
+        bindFileTypes();
     }
 
     /**
@@ -44,5 +49,19 @@ import org.metaborg.spoofax.core.SpoofaxModule;
     protected void bindLoggerListeners() {
         bindListener(Matchers.any(), new Slf4JLoggerTypeListener());
         bindListener(Matchers.any(), new MetaborgLoggerTypeListener());
+    }
+
+    /**
+     * Binds graphics objects.
+     */
+    protected void bindGraphics() {
+        bind(IIconManager.class).to(DefaultIconManager.class).in(Singleton.class);
+    }
+
+    /**
+     * Binds file types.
+     */
+    protected void bindFileTypes() {
+        bind(LanguageArtifactFileType.class).in(Singleton.class);
     }
 }

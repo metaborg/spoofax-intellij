@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.languages;
+package org.metaborg.intellij.idea.languages;
 
 import com.google.common.collect.*;
 import org.metaborg.core.language.*;
@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * Utility functions for working with languages.
  */
-/* package private */ final class LanguageUtils2 {
+public final class LanguageUtils2 {
 
     private LanguageUtils2() {}
 

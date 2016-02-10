@@ -17,12 +17,16 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.languages;
+package org.metaborg.intellij.idea.languages;
 
 /**
  * A language activated in IntelliJ IDEA.
+ *
+ * The fields in this class contain language-specific extension points
+ * that are registered when the language is activated, and unregistered
+ * when the language is deactivated.
  */
-/* package private */ final class IdeaLanguage {
+/* package private */ final class ActivatedLanguage {
 
 //    private final IdeaLanguageAttachment languageObject;
 //    private InstanceLanguageExtensionPoint<?> parserDefinitionExtension;
@@ -44,7 +48,7 @@ package org.metaborg.intellij.languages;
 //
 //    public void setSyntaxHighlighterFactoryExtension(final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension) { this.syntaxHighlighterFactoryExtension = syntaxHighlighterFactoryExtension; }
 
-    public IdeaLanguage() {
+    public ActivatedLanguage() {
     }
 
 }
