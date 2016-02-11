@@ -59,19 +59,19 @@ public interface ILanguageManager {
      */
     boolean isActive(ILanguage language);
 
-    /**
-     * Determines whether the specified language can be activated by this manager.
-     *
-     * One reason why a language might not be activatable is that it's actually
-     * a library and not a language (such as the Spoofax runtime library).
-     *
-     * The result of this method does not depend on whether the language is already activated.
-     *
-     * @param language The language to test.
-     * @return <code>true</code> when the language can be activated;
-     * otherwise, <code>false</code>.
-     */
-    boolean canActivate(ILanguage language);
+//    /**
+//     * Determines whether the specified language can be activated by this manager.
+//     *
+//     * One reason why a language might not be activatable is that it's actually
+//     * a library and not a language (such as the Spoofax runtime library).
+//     *
+//     * The result of this method does not depend on whether the language is already activated.
+//     *
+//     * @param language The language to test.
+//     * @return <code>true</code> when the language can be activated;
+//     * otherwise, <code>false</code>.
+//     */
+//    boolean canActivate(ILanguage language);
 
     /**
      * Loads a language component from the specified language discovery request.

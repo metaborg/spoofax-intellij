@@ -28,6 +28,7 @@ package org.metaborg.intellij.idea.languages;
  */
 /* package private */ final class ActivatedLanguage {
 
+    // TODO: Add fields.
 //    private final IdeaLanguageAttachment languageObject;
 //    private InstanceLanguageExtensionPoint<?> parserDefinitionExtension;
 //    private InstanceLanguageExtensionPoint<?> externalAnnotatorExtension;
@@ -48,6 +49,9 @@ package org.metaborg.intellij.idea.languages;
 //
 //    public void setSyntaxHighlighterFactoryExtension(final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension) { this.syntaxHighlighterFactoryExtension = syntaxHighlighterFactoryExtension; }
 
+    /**
+     * Initializes a new instance of the {@link ActivatedLanguage} class.
+     */
     public ActivatedLanguage() {
     }
 
