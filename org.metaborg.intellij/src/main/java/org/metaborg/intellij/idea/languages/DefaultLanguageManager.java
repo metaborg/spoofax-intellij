@@ -22,14 +22,26 @@ package org.metaborg.intellij.idea.languages;
 import com.google.common.cache.*;
 import com.google.common.collect.*;
 import com.google.inject.*;
+import com.intellij.lang.*;
+import com.intellij.lang.Language;
+import com.intellij.psi.tree.*;
+import javassist.util.proxy.*;
 import org.apache.commons.lang.*;
 import org.metaborg.core.*;
 import org.metaborg.core.language.*;
+import org.metaborg.intellij.*;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.*;
+import org.metaborg.intellij.idea.extensions.*;
+import org.metaborg.intellij.idea.filetypes.*;
+import org.metaborg.intellij.idea.parsing.*;
+import org.metaborg.intellij.idea.parsing.elements.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -38,17 +50,22 @@ import java.util.concurrent.*;
  *
  * This implementation is thread-safe.
  */
-public final class DefaultLanguageManager implements ILanguageManager {
+@Singleton
+public final class DefaultLanguageManager implements ILanguageManager, ILanguageBindingManager {
 
-    // TODO: The ILanguageService and ILanguageDiscoveryService implementations should be thread-safe too.
+    // FIXME: The ILanguageService and ILanguageDiscoveryService implementations should be thread-safe too.
 
     private final Object objectLock = new Object();
+    private final ProxyFactory proxyFactory;
     private final ILanguageDiscoveryService discoveryService;
     private final ILanguageService languageService;
-    private final ConcurrentMap<ILanguage, ActivatedLanguage> loadedLanguages = new ConcurrentHashMap<>();
-    private final ConcurrentMap<ILanguageImpl, ActivatedLanguageImpl> loadedLanguageImpls = new ConcurrentHashMap<>();
-    private final Cache<ILanguage, ActivatedLanguage> ideaLanguageCache = CacheBuilder.newBuilder().weakKeys().build();
-    private final Cache<ILanguageImpl, ActivatedLanguageImpl> ideaLanguageImplCache = CacheBuilder.newBuilder().weakKeys().build();
+    private final IFileElementTypeFactory fileElementTypeFactory;
+    private final IParserDefinitionFactory parserDefinitionFactory;
+    private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
+    private final ConcurrentMap<ILanguage, LanguageBindings> loadedLanguages = new ConcurrentHashMap<>();
+    private final ConcurrentMap<ILanguageImpl, LanguageImplBindings> loadedLanguageImpls = new ConcurrentHashMap<>();
+    private final Cache<ILanguage, LanguageBindings> ideaLanguageCache = CacheBuilder.newBuilder().weakKeys().build();
+    private final Cache<ILanguageImpl, LanguageImplBindings> ideaLanguageImplCache = CacheBuilder.newBuilder().weakKeys().build();
 
     @InjectLogger
     private ILogger logger;
@@ -58,9 +75,18 @@ public final class DefaultLanguageManager implements ILanguageManager {
      */
     @Inject
     public DefaultLanguageManager(final ILanguageService languageService,
-                                  final ILanguageDiscoveryService discoveryService) {
+                                  final ILanguageDiscoveryService discoveryService,
+                                  final IFileElementTypeFactory fileElementTypeFactory,
+                                  final IParserDefinitionFactory parserDefinitionFactory,
+                                  final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
+        this.fileElementTypeFactory = fileElementTypeFactory;
+        this.parserDefinitionFactory = parserDefinitionFactory;
+        this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
+
+        this.proxyFactory = new ProxyFactory();
+        this.proxyFactory.setUseCache(false);
     }
 
     /**
@@ -145,10 +171,10 @@ public final class DefaultLanguageManager implements ILanguageManager {
                 return;
 
             this.logger.debug("Activating language: {}", language);
-            final ActivatedLanguage activatedLanguage = getOrCreateIdeaLanguage(language);
+            final LanguageBindings activatedLanguage = getOrCreateIdeaLanguage(language);
             activateLanguage(activatedLanguage);
             for (final ILanguageImpl implementation : language.impls()) {
-                final ActivatedLanguageImpl activatedLanguageImpl = getOrCreateIdeaLanguageImpl(implementation);
+                final LanguageImplBindings activatedLanguageImpl = getOrCreateIdeaLanguageImpl(implementation);
                 activateLanguageImpl(activatedLanguageImpl);
                 this.loadedLanguageImpls.put(implementation, activatedLanguageImpl);
             }
@@ -174,9 +200,9 @@ public final class DefaultLanguageManager implements ILanguageManager {
                 return;
 
             this.logger.debug("Deactivating language: {}", language);
-            final ActivatedLanguage activatedLanguage = this.loadedLanguages.remove(language);
+            final LanguageBindings activatedLanguage = this.loadedLanguages.remove(language);
             for (final ILanguageImpl implementation : language.impls()) {
-                final ActivatedLanguageImpl activatedLanguageImpl = this.loadedLanguageImpls.remove(implementation);
+                final LanguageImplBindings activatedLanguageImpl = this.loadedLanguageImpls.remove(implementation);
                 deactivateLanguageImpl(activatedLanguageImpl);
             }
             deactivateLanguage(activatedLanguage);
@@ -189,7 +215,7 @@ public final class DefaultLanguageManager implements ILanguageManager {
      */
     @Override
     public ILanguage getLanguage(final MetaborgIdeaLanguage ideaLanguage) {
-        @Nullable ILanguage language = this.languageService.getLanguage(ideaLanguage.getID());
+        @Nullable final ILanguage language = this.languageService.getLanguage(ideaLanguage.getID());
         if (language == null) {
             throw LoggerUtils.exception(this.logger, IllegalArgumentException.class,
                     "There is no language associated with the specified MetaborgIdeaLanguage: {}", ideaLanguage);
@@ -204,7 +230,7 @@ public final class DefaultLanguageManager implements ILanguageManager {
      * @return <code>true</code> if the language is loaded;
      * otherwise, <code>false</code>.
      */
-    private boolean isLoadedLanguage(ILanguage language) {
+    private boolean isLoadedLanguage(final ILanguage language) {
         // HACK: Reference equality check,
         // until the ILanguageService provides an isLoaded(ILanguage) method.
         return this.languageService.getLanguage(language.name()) == language;
@@ -271,13 +297,13 @@ public final class DefaultLanguageManager implements ILanguageManager {
      * @param language The language to look up.
      * @return The associated IDEA language.
      */
-    private ActivatedLanguage getOrCreateIdeaLanguage(final ILanguage language) {
-        final ActivatedLanguage activatedLanguage;
+    private LanguageBindings getOrCreateIdeaLanguage(final ILanguage language) {
+        final LanguageBindings activatedLanguage;
         try {
-            activatedLanguage = this.ideaLanguageCache.get(language, () -> createIdeaLanguage(language));
+            activatedLanguage = this.ideaLanguageCache.get(language, () -> createLanguageBindings(language));
         } catch (final ExecutionException ex) {
             throw LoggerUtils.exception(this.logger, UnhandledException.class,
-                    "An unhandled checked exception was thrown from createIdeaLanguage().", ex);
+                    "An unhandled checked exception was thrown from createLanguageBindings().", ex);
         }
         return activatedLanguage;
     }
@@ -290,13 +316,14 @@ public final class DefaultLanguageManager implements ILanguageManager {
      * @param languageImpl The language implementation to look up.
      * @return The associated IDEA language implementation.
      */
-    private ActivatedLanguageImpl getOrCreateIdeaLanguageImpl(final ILanguageImpl languageImpl) {
-        final ActivatedLanguageImpl activatedLanguageImpl;
+    private LanguageImplBindings getOrCreateIdeaLanguageImpl(final ILanguageImpl languageImpl) {
+        final LanguageImplBindings activatedLanguageImpl;
         try {
-            activatedLanguageImpl = this.ideaLanguageImplCache.get(languageImpl, () -> createIdeaLanguageImpl(languageImpl));
+            activatedLanguageImpl = this.ideaLanguageImplCache.get(languageImpl,
+                    () -> createLanguageImplBindings(languageImpl));
         } catch (final ExecutionException ex) {
             throw LoggerUtils.exception(this.logger, UnhandledException.class,
-                    "An unhandled checked exception was thrown from createIdeaLanguage().", ex);
+                    "An unhandled checked exception was thrown from createLanguageBindings().", ex);
         }
         return activatedLanguageImpl;
     }
@@ -307,9 +334,30 @@ public final class DefaultLanguageManager implements ILanguageManager {
      * @param language The language.
      * @return The created IDEA language.
      */
-    private ActivatedLanguage createIdeaLanguage(final ILanguage language) {
-        // TODO: Implement!
-        throw new UnsupportedOperationException();
+    private LanguageBindings createLanguageBindings(final ILanguage language) {
+        final MetaborgIdeaLanguage ideaLanguage = createIdeaLanguage(language);
+        final MetaborgLanguageFileType fileType = createFileType(ideaLanguage);
+        final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
+        final IFileElementType fileElementType = createFileElementType(ideaLanguage, tokenTypeManager);
+        final ParserDefinition parserDefinition = createParserDefinition(fileType, fileElementType);
+        final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory();
+
+        final InstanceLanguageExtensionPoint<?> parserDefinitionExtension = new InstanceLanguageExtensionPoint<>(
+                ExtensionIds.ParserDefinition,
+                ideaLanguage,
+                parserDefinition
+        );
+        final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension = new InstanceSyntaxHighlighterFactoryExtensionPoint(
+                ideaLanguage,
+                syntaxHighlighterFactory
+        );
+
+        return new LanguageBindings(
+                tokenTypeManager,
+                fileType,
+                parserDefinitionExtension,
+                syntaxHighlighterFactoryExtension
+        );
     }
 
     /**
@@ -318,51 +366,181 @@ public final class DefaultLanguageManager implements ILanguageManager {
      * @param languageImpl The language implementation.
      * @return The created IDEA language implementation.
      */
-    private ActivatedLanguageImpl createIdeaLanguageImpl(final ILanguageImpl languageImpl) {
-        // TODO: Implement!
-        throw new UnsupportedOperationException();
+    private LanguageImplBindings createLanguageImplBindings(final ILanguageImpl languageImpl) {
+        return new LanguageImplBindings(
+        );
     }
 
     /**
      * Activates the specified language.
      *
-     * @param language The language to activate.
+     * @param languageBindings The bindings of the language to activate.
      */
-    private void activateLanguage(ActivatedLanguage language) {
-        // TODO: Register the extension points.
-        // TODO: Register the file type.
-        throw new NotImplementedException();
+    private void activateLanguage(final LanguageBindings languageBindings) {
+        ExtensionUtils.register(languageBindings.getParserDefinitionExtension());
+        ExtensionUtils.register(languageBindings.getSyntaxHighlighterFactoryExtension());
+        // TODO: Register the annotator extension point.
+        FileTypeUtils.register(languageBindings.getFileType());
     }
 
     /**
      * Activates the specified language.
      *
-     * @param languageImpl The language implementation to activate.
+     * @param languageImplBindings The bindings of the language implementation to activate.
      */
-    private void activateLanguageImpl(ActivatedLanguageImpl languageImpl) {
+    private void activateLanguageImpl(final LanguageImplBindings languageImplBindings) {
         // TODO: Register the builder menu action group.
-        throw new NotImplementedException();
     }
 
     /**
      * Deactivates the specified language.
      *
-     * @param language The language to deactivate.
+     * @param languageBindings The bindings of the language to deactivate.
      */
-    private void deactivateLanguage(ActivatedLanguage language) {
-        // TODO: Unregister the file type.
-        // TODO: Unregister the extension points.
-        throw new NotImplementedException();
+    private void deactivateLanguage(final LanguageBindings languageBindings) {
+        FileTypeUtils.unregister(languageBindings.getFileType());
+        // TODO: Unregister the annotator extension point.
+        ExtensionUtils.unregister(languageBindings.getSyntaxHighlighterFactoryExtension());
+        ExtensionUtils.unregister(languageBindings.getParserDefinitionExtension());
     }
 
     /**
      * Deactivates the specified language.
      *
-     * @param languageImpl The language implementation to deactivate.
+     * @param languageImplBindings The bindings of the language implementation to deactivate.
      */
-    private void deactivateLanguageImpl(ActivatedLanguageImpl languageImpl) {
+    private void deactivateLanguageImpl(final LanguageImplBindings languageImplBindings) {
         // TODO: Unregister the builder menu action group.
-        throw new NotImplementedException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SpoofaxTokenTypeManager getTokenTypeManager(final ILanguage language) {
+        return getBindings(language).getTokenTypeManager();
+    }
+
+    /**
+     * Gets the bindings for the specified loaded language.
+     *
+     * @param language The language.
+     * @return The bindings.
+     */
+    private LanguageBindings getBindings(final ILanguage language) {
+        @Nullable final LanguageBindings bindings = this.loadedLanguages.getOrDefault(language, null);
+        if (bindings == null) {
+            throw LoggerUtils.exception(this.logger, IllegalArgumentException.class,
+                    "The specified language is not loaded: {}", language);
+        }
+        return bindings;
+    }
+
+    /**
+     * Gets the bindings for the specified loaded language implementation.
+     *
+     * @param languageImpl The language implementation.
+     * @return The bindings.
+     */
+    private LanguageImplBindings getBindings(final ILanguageImpl languageImpl) {
+        @Nullable final LanguageImplBindings bindings = this.loadedLanguageImpls.getOrDefault(languageImpl, null);
+        if (bindings == null) {
+            throw LoggerUtils.exception(this.logger, IllegalArgumentException.class,
+                    "The specified language implementation is not loaded: {}", languageImpl);
+        }
+        return bindings;
+    }
+
+    /**
+     * Creates a new IDEA language for a Spoofax language.
+     *
+     * @param language The language.
+     * @return The created IDEA language.
+     */
+    private MetaborgIdeaLanguage createIdeaLanguage(final ILanguage language) {
+        return instantiate(MetaborgIdeaLanguage.class,
+                new Class<?>[]{ILanguage.class},
+                language);
+    }
+
+    /**
+     * Creates a new parser definition.
+     *
+     * @param fileType The language file type.
+     * @return The created parser definition.
+     */
+    private ParserDefinition createParserDefinition(
+            final MetaborgLanguageFileType fileType,
+            final IFileElementType fileElementType) {
+        return this.parserDefinitionFactory.create(fileType, fileElementType);
+    }
+
+    /**
+     * Creates a new syntax highlighter factory.
+     *
+     * @return The syntax highlighter factory.
+     */
+    private SpoofaxSyntaxHighlighterFactory createSyntaxHighlighterFactory() {
+        return this.syntaxHighlighterFactoryProvider.get();
+    }
+
+    /**
+     * Creates a new spoofax token type manager for an IDEA language.
+     *
+     * @param language The IDEA language.
+     * @return The created token type manager.
+     */
+    private SpoofaxTokenTypeManager createTokenTypeManager(final MetaborgIdeaLanguage language) {
+        return new SpoofaxTokenTypeManager(language);
+    }
+
+    /**
+     * Creates a new file type for an IDEA language.
+     *
+     * @param language The IDEA language.
+     * @return The created file type.
+     */
+    private MetaborgLanguageFileType createFileType(final MetaborgIdeaLanguage language) {
+        return instantiate(MetaborgLanguageFileType.class,
+                new Class<?>[]{MetaborgIdeaLanguage.class},
+                language);
+    }
+
+    /**
+     * Creates a new file element type.
+     *
+     * @param language The language.
+     * @param tokenTypesManager The token types manager.
+     * @return The file element type.
+     */
+    private IFileElementType createFileElementType(
+            final Language language,
+            final SpoofaxTokenTypeManager tokenTypesManager) {
+        return this.fileElementTypeFactory.create(language, tokenTypesManager);
+    }
+
+    /**
+     * Instantiates an abstract class with no abstract members.
+     *
+     * @param clazz The type of class to instantiate.
+     * @param paramTypes The parameter types.
+     * @param args The arguments.
+     * @param <T> The type of object.
+     * @return The instantiated object.
+     */
+    private <T> T instantiate(final Class<T> clazz, final Class<?>[] paramTypes, final Object... args) {
+        assert paramTypes.length == args.length;
+        try {
+            this.proxyFactory.setSuperclass(clazz);
+            final T obj = (T)this.proxyFactory.create(
+                    paramTypes,
+                    args
+            );
+            SpoofaxIdeaPlugin.injector().injectMembers(obj);
+            return obj;
+        } catch (NoSuchMethodException | IllegalArgumentException | InstantiationException | IllegalAccessException
+                | InvocationTargetException e) {
+            throw LoggerUtils.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);
+        }
+    }
 }

@@ -18,4 +18,10 @@ whereas hotfixes are added to both the `develop` branch and the `master`
 branch (which in turn results in a new release).
 
 
+## Tests
 
+Tests are in the `src/test/` folder. Almost all tests extend the
+`SpoofaxCodeInsightFixtureTestCase` class, which set ups the test
+ environment. The test data can be found in the `testdata/` folder.
+ The test data is not in a source root, as it's not valid source
+ and must not be compiled with the plugin.

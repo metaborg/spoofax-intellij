@@ -27,9 +27,8 @@ import com.intellij.openapi.fileTypes.*;
  * <p>
  * This wrapper is used to provide an instance to a language extension point instead of a class.
  */
-public final class InstanceSyntaxHighlighterFactoryExtensionPoint extends SyntaxHighlighterFactoryEP implements IExtensionPointValue {
-
-    private static final String ID = "com.intellij.lang.syntaxHighlighterFactory";
+public final class InstanceSyntaxHighlighterFactoryExtensionPoint extends SyntaxHighlighterFactoryEP
+        implements IExtensionPointValue {
 
     private final SyntaxHighlighterFactory instance;
 
@@ -61,6 +60,6 @@ public final class InstanceSyntaxHighlighterFactoryExtensionPoint extends Syntax
      */
     @Override
     public String getId() {
-        return ID;
+        return ExtensionIds.SyntaxHighlighterFactory;
     }
 }

@@ -20,34 +20,19 @@
 package org.metaborg.intellij.idea.languages;
 
 import org.metaborg.core.language.*;
+import org.metaborg.intellij.idea.parsing.elements.*;
 
 /**
- * Describes a tag that's used to associate a value with a particular {@link ILanguage} object.
- * @param <T> The type of value.
+ * Manages objects bound to specific languages and language implementations.
  */
-@Deprecated
-public interface ILanguageTag<T> {
+public interface ILanguageBindingManager {
 
     /**
-     * Called when a language is activated.
+     * Gets the token type manager for the specified language.
      *
-     * @param value The value of the tag.
      * @param language The language.
-     * @param ideaLanguage The IDEA language.
+     * @return The token type manager.
      */
-    default void onActivateLanguage(T value, ILanguage language, MetaborgIdeaLanguage ideaLanguage) {
-        // Nothing to do.
-    }
-
-    /**
-     * Called when a language is deactivated.
-     *
-     * @param value The value of the tag.
-     * @param language The language.
-     * @param ideaLanguage The IDEA language.
-     */
-    default void onDectivateLanguage(T value, ILanguage language, MetaborgIdeaLanguage ideaLanguage) {
-        // Nothing to do.
-    }
+    SpoofaxTokenTypeManager getTokenTypeManager(ILanguage language);
 
 }

@@ -17,19 +17,23 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.languages;
+package org.metaborg.intellij.idea.parsing.elements;
+
+import com.intellij.lang.*;
+import com.intellij.psi.tree.*;
 
 /**
- * A language implementation activated in IntelliJ IDEA.
+ * Factory for file element types.
  */
-/* package private */ final class ActivatedLanguageImpl {
-
-    // TODO: Add fields.
+public interface IFileElementTypeFactory {
 
     /**
-     * Initializes a new instance of the {@link ActivatedLanguageImpl} class.
+     * Creates a new file element type.
+     *
+     * @param language          The IntelliJ language.
+     * @param tokenTypesManager The token type manager.
+     * @return The created parser definition.
      */
-    public ActivatedLanguageImpl() {
-    }
+    IFileElementType create(Language language, SpoofaxTokenTypeManager tokenTypesManager);
 
 }
