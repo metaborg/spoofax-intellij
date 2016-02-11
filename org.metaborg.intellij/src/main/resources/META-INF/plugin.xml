@@ -41,7 +41,7 @@
 
     <application-components>
         <component>
-            <implementation-class>org.metaborg.intellij.idea.configuration.MetaborgApplicationConfigManager</implementation-class>
+            <implementation-class>org.metaborg.intellij.idea.configuration.MetaborgApplicationConfig</implementation-class>
         </component>
     </application-components>
 
