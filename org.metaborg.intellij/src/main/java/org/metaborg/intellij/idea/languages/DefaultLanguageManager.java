@@ -27,6 +27,7 @@ import com.intellij.lang.Language;
 import com.intellij.psi.tree.*;
 import javassist.util.proxy.*;
 import org.apache.commons.lang.*;
+import org.apache.commons.vfs2.*;
 import org.metaborg.core.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.*;
@@ -145,6 +146,20 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
      * {@inheritDoc}
      */
     @Override
+    public Collection<ILanguageComponent> loadRange(final Iterable<ILanguageDiscoveryRequest> requests)
+            throws LanguageLoadingFailedException {
+        final List<ILanguageComponent> components = new ArrayList<>();
+        for (final ILanguageDiscoveryRequest request : requests) {
+            final ILanguageComponent component = load(request);
+            components.add(component);
+        }
+        return components;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void unload(final ILanguageComponent component) {
         synchronized(this.objectLock) {
             assertComponentDoesNotContributeToActiveLanguages(component);
@@ -214,6 +229,30 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
      * {@inheritDoc}
      */
     @Override
+    public void activateRange(final Iterable<ILanguage> languages) {
+        synchronized(this.objectLock) {
+            for (final ILanguage language : languages) {
+                activate(language);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deactivateRange(final Iterable<ILanguage> languages) {
+        synchronized(this.objectLock) {
+            for (final ILanguage language : languages) {
+                deactivate(language);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ILanguage getLanguage(final MetaborgIdeaLanguage ideaLanguage) {
         @Nullable final ILanguage language = this.languageService.getLanguage(ideaLanguage.getID());
         if (language == null) {
@@ -221,6 +260,19 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
                     "There is no language associated with the specified MetaborgIdeaLanguage: {}", ideaLanguage);
         }
         return language;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable<ILanguageDiscoveryRequest> discover(final FileObject location) {
+        try {
+            return this.discoveryService.request(location);
+        } catch (final MetaborgException e) {
+            throw LoggerUtils.exception(this.logger, UnhandledException.class,
+                    "An unhandled exception was thrown while requesting languages at: {}", e, location);
+        }
     }
 
     /**
@@ -522,6 +574,8 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
     /**
      * Instantiates an abstract class with no abstract members.
      *
+     * It is preferred that the object injects itself in the constructor.
+     *
      * @param clazz The type of class to instantiate.
      * @param paramTypes The parameter types.
      * @param args The arguments.
@@ -529,6 +583,23 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
      * @return The instantiated object.
      */
     private <T> T instantiate(final Class<T> clazz, final Class<?>[] paramTypes, final Object... args) {
+        return instantiate(clazz, false, paramTypes, args);
+    }
+
+    /**
+     * Instantiates an abstract class with no abstract members.
+     *
+     * It is preferred that the object injects itself in the constructor.
+     *
+     * @param clazz The type of class to instantiate.
+     * @param inject Whether to inject the object.
+     * @param paramTypes The parameter types.
+     * @param args The arguments.
+     * @param <T> The type of object.
+     * @return The instantiated object.
+     */
+    private <T> T instantiate(final Class<T> clazz, final boolean inject, final Class<?>[] paramTypes,
+                              final Object... args) {
         assert paramTypes.length == args.length;
         try {
             this.proxyFactory.setSuperclass(clazz);
@@ -536,7 +607,9 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
                     paramTypes,
                     args
             );
-            SpoofaxIdeaPlugin.injector().injectMembers(obj);
+            if (inject) {
+                SpoofaxIdeaPlugin.injector().injectMembers(obj);
+            }
             return obj;
         } catch (NoSuchMethodException | IllegalArgumentException | InstantiationException | IllegalAccessException
                 | InvocationTargetException e) {

@@ -21,6 +21,8 @@ package org.metaborg.intellij.idea;
 
 import com.google.inject.Injector;
 import com.intellij.openapi.diagnostic.Logger;
+import org.apache.commons.lang.*;
+import org.apache.commons.lang3.concurrent.*;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.spoofax.core.Spoofax;
 import org.metaborg.spoofax.meta.core.SpoofaxMeta;
@@ -36,12 +38,15 @@ public final class SpoofaxIdeaPlugin {
     // Static //
 
     private static final Logger logger;
-    private static final SpoofaxIdeaPlugin plugin;
+    private static final LazyInitializer<SpoofaxIdeaPlugin> pluginLazy = new LazyInitializer<SpoofaxIdeaPlugin>() {
+        @Override
+        protected SpoofaxIdeaPlugin initialize() throws ConcurrentException {
+            return new SpoofaxIdeaPlugin();
+        }
+    };
 
     static {
-        plugin = new SpoofaxIdeaPlugin();
         logger = Logger.getInstance(SpoofaxIdeaPlugin.class);
-        logger.info("Spoofax for IDEA plugin loaded.");
     }
 
     /**
@@ -50,7 +55,7 @@ public final class SpoofaxIdeaPlugin {
      * @return The current injector.
      */
     public static Injector injector() {
-        return plugin.spoofaxMeta.injector;
+        return spoofaxMeta().injector;
     }
 
     /**
@@ -58,21 +63,27 @@ public final class SpoofaxIdeaPlugin {
      *
      * @return The facade.
      */
-    public static Spoofax spoofax() { return plugin.spoofax; }
+    public static Spoofax spoofax() { return plugin().spoofax; }
 
     /**
      * Gets the meta facade.
      *
      * @return The meta facade.
      */
-    public static SpoofaxMeta spoofaxMeta() { return plugin.spoofaxMeta; }
+    public static SpoofaxMeta spoofaxMeta() { return plugin().spoofaxMeta; }
 
     /**
      * Gets the plugin.
      *
      * @return The plugin.
      */
-    public static SpoofaxIdeaPlugin plugin() { return plugin; }
+    public static SpoofaxIdeaPlugin plugin() {
+        try {
+            return pluginLazy.get();
+        } catch (final ConcurrentException e) {
+            throw new UnhandledException("An unexpected unhandled exception occurred during object creation.", e);
+        }
+    }
 
     // Instance //
 
@@ -80,12 +91,14 @@ public final class SpoofaxIdeaPlugin {
     private final SpoofaxMeta spoofaxMeta;
 
     private SpoofaxIdeaPlugin() {
+        logger.debug("Loading Spoofax for IDEA plugin.");
         try {
             this.spoofax = new Spoofax(new IdeaSpoofaxModule());
             this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new IdeaSpoofaxMetaModule());
         } catch (final MetaborgException e) {
             throw new RuntimeException(e);
         }
+        logger.info("Spoofax for IDEA plugin loaded.");
     }
 
 }

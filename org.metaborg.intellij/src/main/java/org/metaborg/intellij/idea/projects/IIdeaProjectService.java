@@ -47,6 +47,9 @@ public interface IIdeaProjectService extends IProjectService {
     /**
      * Retrieves the Spoofax project of a given IntelliJ module.
      *
+     * This method will return null when there is no {@link IdeaProject}
+     * associated with the given module.
+     *
      * @param module The IntelliJ module.
      * @return The corresponding Spoofax project;
      * or <code>null</code> if no project could be found.
@@ -56,6 +59,9 @@ public interface IIdeaProjectService extends IProjectService {
 
     /**
      * Retrieves the Spoofax project of a given PSI element.
+     *
+     * This method will return null when there is no {@link IdeaProject}
+     * associated with the IntelliJ IDEA module of the given PSI element.
      *
      * @param element The PSI element.
      * @return The corresponding Spoofax project;

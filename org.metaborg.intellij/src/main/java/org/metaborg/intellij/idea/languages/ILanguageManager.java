@@ -19,6 +19,7 @@
 
 package org.metaborg.intellij.idea.languages;
 
+import org.apache.commons.vfs2.*;
 import org.metaborg.core.language.ILanguage;
 import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.core.language.ILanguageDiscoveryRequest;
@@ -76,12 +77,23 @@ public interface ILanguageManager {
     /**
      * Loads a language component from the specified language discovery request.
      *
-     * The loaded languages are not automatically acivated.
+     * The loaded languages are not automatically activated.
      *
      * @param request The request whose language component to load.
      * @return The loaded language component.
      */
     ILanguageComponent load(ILanguageDiscoveryRequest request)
+            throws LanguageLoadingFailedException;
+
+    /**
+     * Loads language component from the specified language discovery requests.
+     *
+     * The loaded languages are not automatically activated.
+     *
+     * @param requests The requests whose language components to load.
+     * @return The loaded language components.
+     */
+    Collection<ILanguageComponent> loadRange(Iterable<ILanguageDiscoveryRequest> requests)
             throws LanguageLoadingFailedException;
 
     /**
@@ -113,6 +125,24 @@ public interface ILanguageManager {
     void deactivate(ILanguage language);
 
     /**
+     * Activates the given languages.
+     *
+     * If the language is already active, nothing happens.
+     *
+     * @param languages The languages to activate.
+     */
+    void activateRange(Iterable<ILanguage> languages);
+
+    /**
+     * Deactivates the given languages.
+     *
+     * If the language is already inactive, nothing happens.
+     *
+     * @param languages The languages to deactivate.
+     */
+    void deactivateRange(Iterable<ILanguage> languages);
+
+    /**
      * Gets the {@link ILanguage} object that corresponds to the
      * specified {@link MetaborgIdeaLanguage} object.
      *
@@ -120,5 +150,15 @@ public interface ILanguageManager {
      * @return The associated {@link ILanguage}.
      */
     ILanguage getLanguage(MetaborgIdeaLanguage language);
+
+    /**
+     * Discovers the language components at the specified location.
+     * Pass the returned requests to {@link #loadRange} to actually
+     * load the components.
+     *
+     * @param location The location to discover language components in.
+     * @return Language discovery requests. Empty when no components can be discovered.
+     */
+    Iterable<ILanguageDiscoveryRequest> discover(FileObject location);
 
 }

@@ -40,6 +40,9 @@
     </extensions>
 
     <application-components>
+        <component>
+            <implementation-class>org.metaborg.intellij.idea.configuration.MetaborgApplicationConfigManager</implementation-class>
+        </component>
     </application-components>
 
     <project-components>

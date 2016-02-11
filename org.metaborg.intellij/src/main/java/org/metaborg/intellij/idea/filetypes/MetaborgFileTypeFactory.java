@@ -39,7 +39,7 @@ public final class MetaborgFileTypeFactory extends FileTypeFactory {
 
     /**
      * This instance is created by IntelliJ's plugin system.
-     * Do not call this method manually.
+     * Do not call this constructor manually.
      */
     public MetaborgFileTypeFactory() {
         super();

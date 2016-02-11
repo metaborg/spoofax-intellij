@@ -154,10 +154,6 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
             final IElementType root) {
         final ILanguage language =  this.languageManager.getLanguage((MetaborgIdeaLanguage)root.getLanguage());
         @Nullable final IProject project = this.projectService.get(psi);
-        if (project == null) {
-            throw LoggerUtils.exception(this.logger, IllegalStateException.class,
-                    "Could not determine the project of the PSI element: {}", psi);
-        }
 
         @Nullable final LanguageDialect dialect = this.languageProjectService.getImpl(language, project, resource);
         if (dialect == null) {

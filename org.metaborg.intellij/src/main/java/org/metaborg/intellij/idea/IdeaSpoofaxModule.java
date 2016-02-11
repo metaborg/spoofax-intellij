@@ -30,6 +30,7 @@ import org.apache.commons.vfs2.*;
 import org.metaborg.core.project.*;
 import org.metaborg.core.resource.*;
 import org.metaborg.core.syntax.*;
+import org.metaborg.intellij.idea.discovery.*;
 import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.languages.*;
@@ -57,6 +58,7 @@ import org.metaborg.spoofax.core.syntax.*;
         super.configure();
 
         bindLanguageManagement();
+        bindLanguageSources();
         bindLoggerListeners();
         bindGraphics();
         bindFileTypes();
@@ -162,9 +164,29 @@ import org.metaborg.spoofax.core.syntax.*;
         bind(ILanguageProjectService.class).to(DefaultLanguageProjectService.class).in(Singleton.class);
     }
 
+    /**
+     * Binds language management.
+     */
     protected void bindLanguageManagement() {
         bind(DefaultLanguageManager.class).in(Singleton.class);
         bind(ILanguageManager.class).to(DefaultLanguageManager.class).in(Singleton.class);
         bind(ILanguageBindingManager.class).to(DefaultLanguageManager.class).in(Singleton.class);
+    }
+
+    /**
+     * Binds language sources.
+     */
+    protected void bindLanguageSources() {
+        bind(ILanguageSource.class).to(MultiLanguageSource.class).in(Singleton.class);
+
+        bind(ResourceLanguageSource.class).in(Singleton.class);
+
+        final Multibinder<ILanguageSource> sources = Multibinder.newSetBinder(
+                binder(),
+                ILanguageSource.class,
+                Compound.class
+        );
+
+        sources.addBinding().to(ResourceLanguageSource.class);
     }
 }

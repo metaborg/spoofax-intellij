@@ -20,7 +20,9 @@
 package org.metaborg.intellij.idea.languages;
 
 import com.google.common.collect.*;
+import org.apache.commons.vfs2.*;
 import org.metaborg.core.language.*;
+import org.metaborg.intellij.*;
 
 import java.util.*;
 
@@ -45,6 +47,60 @@ public final class LanguageUtils2 {
         // For now, we test this by checking the file extensions.
         // If there are none, then it's not a language.
         return !getExtensions(language).isEmpty();
+    }
+
+    /**
+     * Gets the set of languages to which all given language components belong.
+     *
+     * @param components The components.
+     * @return The languages to which they belong.
+     */
+    public static Set<ILanguage> getLanguagesOfComponents(final Iterable<ILanguageComponent> components) {
+        return getLanguagesOfImplementations(getLanguageImplsOfComponents(components));
+    }
+
+    /**
+     * Gets the set of languages to which all given language implementations belong.
+     *
+     * @param implementations The language implementations.
+     * @return The languages to which they belong.
+     */
+    public static Set<ILanguage> getLanguagesOfImplementations(final Iterable<ILanguageImpl> implementations) {
+        final Set<ILanguage> languages = new HashSet<>();
+        for (final ILanguageImpl implementation : implementations) {
+            languages.add(implementation.belongsTo());
+        }
+        return languages;
+    }
+
+    /**
+     * Gets the set of language implementations to which all given language components belong.
+     *
+     * @param components The language components.
+     * @return The language implementations to which they belong.
+     */
+    public static Set<ILanguageImpl> getLanguageImplsOfComponents(final Iterable<ILanguageComponent> components) {
+        final Set<ILanguageImpl> languageImpls = new HashSet<>();
+        for (final ILanguageComponent component : components) {
+            languageImpls.addAll(Lists.newArrayList(component.contributesTo()));
+        }
+        return languageImpls;
+    }
+
+    /**
+     * Given an artifact file, returns the URI of the artifact file's root.
+     *
+     * @param artifact The artifact file.
+     * @return The URI of the artifact file's root.
+     */
+    public static String getArtifactUri(final FileObject artifact) {
+        final String zipUri;
+        try {
+            zipUri = "zip://" + artifact.getURL().getPath();
+        } catch (final FileSystemException e) {
+            throw new UnhandledException(e);
+        }
+        return zipUri;
     }
 
     /**

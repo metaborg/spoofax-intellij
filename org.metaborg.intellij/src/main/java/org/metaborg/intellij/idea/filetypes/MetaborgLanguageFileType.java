@@ -19,9 +19,12 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
+import com.google.inject.*;
 import com.intellij.openapi.fileTypes.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.core.language.*;
+import org.metaborg.intellij.idea.*;
+import org.metaborg.intellij.idea.discovery.*;
 import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
@@ -38,18 +41,25 @@ import javax.swing.*;
  */
 public abstract class MetaborgLanguageFileType extends LanguageFileType implements IMetaborgFileType {
 
-    private final IIconManager iconManager;
-    private final ILanguageManager languageManager;
+    private IIconManager iconManager;
+    private ILanguageManager languageManager;
     @InjectLogger
     private ILogger logger;
 
     /**
-     * Initializes a new instance of the {@link MetaborgLanguageFileType} class.
+     * This instance is created by the proxy system.
+     * Do not call this constructor manually.
      *
      * @param language The language.
      */
-    protected MetaborgLanguageFileType(final MetaborgIdeaLanguage language, final IIconManager iconManager, final ILanguageManager languageManager) {
+    protected MetaborgLanguageFileType(final MetaborgIdeaLanguage language) {
         super(language);
+        SpoofaxIdeaPlugin.injector().injectMembers(this);
+    }
+
+    @Inject
+    @SuppressWarnings("unused")
+    private void inject(final IIconManager iconManager, final ILanguageManager languageManager) {
         this.iconManager = iconManager;
         this.languageManager = languageManager;
     }

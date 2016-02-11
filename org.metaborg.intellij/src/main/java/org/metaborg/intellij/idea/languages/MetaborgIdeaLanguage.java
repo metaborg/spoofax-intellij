@@ -19,8 +19,11 @@
 
 package org.metaborg.intellij.idea.languages;
 
+import com.google.inject.*;
 import com.intellij.lang.Language;
 import org.metaborg.core.language.*;
+import org.metaborg.intellij.idea.*;
+import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
 
@@ -36,14 +39,19 @@ public abstract class MetaborgIdeaLanguage extends Language {
 //    private ILogger logger;
 
     /**
-     * Initializes a new instance of the {@link MetaborgIdeaLanguage} class.
+     * This instance is created by the proxy system.
+     * Do not call this constructor manually.
      *
      * @param language The language.
      */
     protected MetaborgIdeaLanguage(final ILanguage language) {
         super(language.name());
+        SpoofaxIdeaPlugin.injector().injectMembers(this);
+    }
 
-//        this.language = language;
+    @Inject
+    @SuppressWarnings("unused")
+    private void inject() {
     }
 
 //    // TODO: If possible, remove these getters/setters.

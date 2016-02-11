@@ -43,7 +43,7 @@ public final class LoggerUtils {
      * @param <T> The type of exception.
      * @return The exception object.
      */
-    public static <T> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg, @Nullable final Throwable t) {
+    public static <T extends Throwable> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg, @Nullable final Throwable t) {
 
         @Nullable T exception;
         {
@@ -66,6 +66,9 @@ public final class LoggerUtils {
         // Let's assert that's it's not null.
         assert exception != null;
 
+        // Clean the stack trace. Remove clutter from this utility class.
+        exception.setStackTrace(removeLoggerUtilsStackTraceElements(exception.getStackTrace()));
+
         // Log the exception.
         logger.error(msg, exception);
 
@@ -81,7 +84,7 @@ public final class LoggerUtils {
      * @param <T> The type of exception.
      * @return The exception object.
      */
-    public static <T> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg) {
+    public static <T extends Throwable> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg) {
         return exception(logger, exceptionClass, msg, (Throwable)null);
     }
 
@@ -95,7 +98,7 @@ public final class LoggerUtils {
      * @param <T> The type of exception.
      * @return The exception object.
      */
-    public static <T> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg, final Object... args) {
+    public static <T extends Throwable> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg, final Object... args) {
         return exception(logger, exceptionClass, logger.format(msg, args), (Throwable)null);
     }
 
@@ -110,7 +113,7 @@ public final class LoggerUtils {
      * @param <T> The type of exception.
      * @return The exception object.
      */
-    public static <T> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg, @Nullable final Throwable t, final Object... args) {
+    public static <T extends Throwable> T exception(final ILogger logger, final Class<T> exceptionClass, final String msg, @Nullable final Throwable t, final Object... args) {
         return exception(logger, exceptionClass, logger.format(msg, args), t);
     }
 
@@ -139,6 +142,40 @@ public final class LoggerUtils {
             // Ignore.
         }
         return obj;
+    }
+
+    /**
+     * Skips the first number of elements in an array.
+     *
+     * @param arr The input array.
+     * @param skip The number of elements to skip from the start.
+     * @return The resulting array.
+     */
+    private static StackTraceElement[] skipStackTraceElements(final StackTraceElement[] arr, final int skip) {
+        assert skip <= arr.length;
+        final int take = arr.length - skip;
+        final StackTraceElement[] newArr = new StackTraceElement[take];
+        System.arraycopy(arr, skip, newArr, 0, take);
+        return newArr;
+    }
+
+    /**
+     * Removes all stack trace elements that were introduced by this utility class.
+     *
+     * @param arr The stack trace array.
+     * @return The cleaned stack trace array.
+     */
+    private static StackTraceElement[] removeLoggerUtilsStackTraceElements(final StackTraceElement[] arr) {
+        int skip = 0;
+        // Skip all elements up to the elements introduced by this class.
+        while (!arr[skip].getClassName().equals(LoggerUtils.class.getName())) {
+            skip++;
+        }
+        // Skip all the elements introduced by this class.
+        while (arr[skip].getClassName().equals(LoggerUtils.class.getName())) {
+            skip++;
+        }
+        return skipStackTraceElements(arr, skip);
     }
 
     /**
