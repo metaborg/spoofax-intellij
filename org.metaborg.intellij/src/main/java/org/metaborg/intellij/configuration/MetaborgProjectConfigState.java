@@ -17,54 +17,51 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.configuration;
+package org.metaborg.intellij.configuration;
 
-import com.google.common.collect.*;
 import org.apache.commons.collections.*;
+import org.apache.commons.lang3.builder.*;
+import org.metaborg.intellij.idea.configuration.*;
+import org.metaborg.intellij.jps.configuration.*;
 
 import javax.annotation.*;
 import java.io.*;
 import java.util.*;
 
 /**
- * State of the application-level configuration of the plugin.
+ * State of the project-level configurations.
  *
- * Don't use this class directly. Instead use the {@link IdeaMetaborgApplicationConfig} class (in IntelliJ IDEA)
- * or the {@link IdeaMetaborgApplicationConfig} (in JPS).
+ * Don't use this class directly. Instead use the {@link IdeaMetaborgProjectConfig} class (in IntelliJ IDEA)
+ * or the {@link JpsMetaborgProjectConfig} class (in JPS).
  */
 @SuppressWarnings("PublicField")
-public final class MetaborgApplicationConfigState implements Serializable {
+public final class MetaborgProjectConfigState {
 
     // The fields must be public non-final, and use only simple types:
     //   numbers, booleans, strings, collections, maps, enums
     // Add all fields to the comparison in equals().
 
-    /**
-     * The IDs of the loaded languages.
-     */
-    public Set<String> loadedLanguages = new HashSet<>();
+    public String myName;
 
     /**
-     * Initializes a new instance of the {@link MetaborgApplicationConfigState} class.
+     * Initializes a new instance of the {@link MetaborgProjectConfigState} class.
      */
-    public MetaborgApplicationConfigState() {
+    public MetaborgProjectConfigState() {
         // Default configuration:
-        this.loadedLanguages = Sets.newHashSet(
-                "org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT"
-        );
+        this.myName = "default";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(@Nullable final Object obj) {
+    public final boolean equals(@Nullable final Object obj) {
         if (obj == this) {
             // Same instance.
             return true;
-        } if (obj instanceof MetaborgApplicationConfigState) {
+        } if (obj instanceof MetaborgProjectConfigState) {
             // Same type.
-            return equals((MetaborgApplicationConfigState)obj);
+            return equals((MetaborgProjectConfigState)obj);
         } else {
             // Different.
             return false;
@@ -78,11 +75,12 @@ public final class MetaborgApplicationConfigState implements Serializable {
      * @return <code>true</code> when the instances are equal;
      * otherwise, <code>false</code>.
      */
-    public boolean equals(@Nullable final MetaborgApplicationConfigState other) {
+    public boolean equals(@Nullable final MetaborgProjectConfigState other) {
         if (other == this) return true;
         if (other == null) return false;
 
         // Compare the fields here.
-        return CollectionUtils.isEqualCollection(this.loadedLanguages, other.loadedLanguages);
+        return Objects.equals(this.myName, other.myName);
     }
+
 }

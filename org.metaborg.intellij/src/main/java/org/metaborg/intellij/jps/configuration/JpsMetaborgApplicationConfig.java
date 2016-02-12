@@ -17,13 +17,13 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.serialization;
+package org.metaborg.intellij.jps.configuration;
 
 import com.google.inject.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.ex.*;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.configuration.*;
+import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
 
@@ -33,12 +33,14 @@ import java.util.*;
 /**
  * Global JPS configuration.
  */
-public final class SpoofaxGlobalConfig extends SpoofaxConfig<MetaborgApplicationConfigState, SpoofaxGlobalConfig>
-    implements IMetaborgApplicationConfig {
+public final class JpsMetaborgApplicationConfig
+        extends AbstractMetaborgConfig<MetaborgApplicationConfigState, JpsMetaborgApplicationConfig>
+        implements IMetaborgApplicationConfig {
 
-    public static final JpsElementChildRole<SpoofaxGlobalConfig> ROLE = JpsElementChildRoleBase.create("Metaborg");
+    public static final JpsElementChildRole<JpsMetaborgApplicationConfig> ROLE = JpsElementChildRoleBase.create("Metaborg");
 
-    // FIXME: Make this immutable.
+    // Don't initialize fields that depend on the state here. Initialize in loadState().
+    // FIXME: Make this an immutable set.
     private Set<LanguageIdentifier> loadedLanguages;
     private final IJpsMetaborgApplicationConfigFactory configFactory;
     @InjectLogger
@@ -53,12 +55,12 @@ public final class SpoofaxGlobalConfig extends SpoofaxConfig<MetaborgApplication
     }
 
     /**
-     * Initializes a new instance of the {@link SpoofaxGlobalConfig} class.
+     * Initializes a new instance of the {@link JpsMetaborgApplicationConfig} class.
      */
     @Inject
-    public SpoofaxGlobalConfig(final IJpsMetaborgApplicationConfigFactory configFactory) {
+    public JpsMetaborgApplicationConfig(final IJpsMetaborgApplicationConfigFactory configFactory) {
         super(new MetaborgApplicationConfigState());
-
+        // Don't initialize fields that depend on the state here. Initialize in loadState().
         this.configFactory = configFactory;
     }
 
@@ -66,8 +68,8 @@ public final class SpoofaxGlobalConfig extends SpoofaxConfig<MetaborgApplication
      * {@inheritDoc}
      */
     @Override
-    public final SpoofaxGlobalConfig createCopy() {
-        final SpoofaxGlobalConfig config = this.configFactory.create();// new SpoofaxGlobalConfig();
+    public final JpsMetaborgApplicationConfig createCopy() {
+        final JpsMetaborgApplicationConfig config = this.configFactory.create();// new SpoofaxGlobalConfig();
         config.applyChanges(this);
         return config;
     }

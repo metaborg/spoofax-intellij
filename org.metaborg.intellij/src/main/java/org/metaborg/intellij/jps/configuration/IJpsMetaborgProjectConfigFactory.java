@@ -17,32 +17,18 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.serialization;
-
-import org.jetbrains.jps.model.*;
-import org.jetbrains.jps.model.ex.*;
+package org.metaborg.intellij.jps.configuration;
 
 /**
- * Project-wide JPS configuration.
+ * Factory for project configurations.
  */
-public final class SpoofaxProjectConfig extends SpoofaxConfig<SpoofaxProjectState, SpoofaxProjectConfig> {
-    public static final JpsElementChildRole<SpoofaxProjectConfig> ROLE = JpsElementChildRoleBase.create("Metaborg Project");
+public interface IJpsMetaborgProjectConfigFactory {
 
     /**
-     * Initializes a new instance of the {@link SpoofaxProjectConfig} class.
+     * Creates a new project configuration.
+     *
+     * @return The created configuration.
      */
-    public SpoofaxProjectConfig() {
-        super(new SpoofaxProjectState());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final SpoofaxProjectConfig createCopy() {
-        final SpoofaxProjectConfig config = new SpoofaxProjectConfig();
-        config.applyChanges(this);
-        return config;
-    }
+    JpsMetaborgProjectConfig create();
 
 }

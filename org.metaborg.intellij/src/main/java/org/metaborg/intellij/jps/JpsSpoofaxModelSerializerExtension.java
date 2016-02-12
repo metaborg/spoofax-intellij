@@ -22,7 +22,7 @@ package org.metaborg.intellij.jps;
 import com.google.inject.*;
 import org.jetbrains.jps.model.serialization.*;
 import org.jetbrains.jps.model.serialization.module.*;
-import org.metaborg.intellij.jps.serialization.*;
+import org.metaborg.intellij.jps.configuration.*;
 
 import java.util.*;
 
@@ -32,9 +32,9 @@ import java.util.*;
 @Singleton
 public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializerExtension {
 
-    private SpoofaxGlobalSerializer applicationConfigDeserializer;
-    private SpoofaxProjectSerializer projectConfigDeserializer;
-    private SpoofaxModuleSerializer moduleConfigDeserializer;
+    private MetaborgApplicationConfigDeserializer applicationConfigDeserializer;
+    private MetaborgProjectConfigDeserializer projectConfigDeserializer;
+    private MetaborgModuleConfigDeserializer moduleConfigDeserializer;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -46,9 +46,9 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final SpoofaxGlobalSerializer applicationConfigDeserializer,
-                        final SpoofaxProjectSerializer projectConfigDeserializer,
-                        final SpoofaxModuleSerializer moduleConfigDeserializer) {
+    private void inject(final MetaborgApplicationConfigDeserializer applicationConfigDeserializer,
+                        final MetaborgProjectConfigDeserializer projectConfigDeserializer,
+                        final MetaborgModuleConfigDeserializer moduleConfigDeserializer) {
         this.applicationConfigDeserializer = applicationConfigDeserializer;
         this.projectConfigDeserializer = projectConfigDeserializer;
         this.moduleConfigDeserializer = moduleConfigDeserializer;

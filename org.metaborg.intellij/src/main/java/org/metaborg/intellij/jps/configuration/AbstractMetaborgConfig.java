@@ -17,24 +17,23 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.serialization;
+package org.metaborg.intellij.jps.configuration;
 
-import com.google.inject.*;
 import org.jetbrains.jps.model.ex.*;
 
 /**
  * JPS configuration element.
  */
-public abstract class SpoofaxConfig<TState, Self extends SpoofaxConfig<TState, Self>> extends JpsElementBase<Self> {
+public abstract class AbstractMetaborgConfig<TState, Self extends AbstractMetaborgConfig<TState, Self>> extends JpsElementBase<Self> {
 
     private TState state;
 
     /**
-     * Initializes a new instance of the {@link SpoofaxConfig} class.
+     * Initializes a new instance of the {@link AbstractMetaborgConfig} class.
      *
      * @param defaultState The default state.
      */
-    protected SpoofaxConfig(final TState defaultState) {
+    protected AbstractMetaborgConfig(final TState defaultState) {
         super();
         loadState(defaultState);
     }

@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.configuration;
+package org.metaborg.intellij.configuration;
 
 import java.util.*;
 import java.util.function.*;

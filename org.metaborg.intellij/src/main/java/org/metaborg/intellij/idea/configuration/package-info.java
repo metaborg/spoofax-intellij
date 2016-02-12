@@ -26,7 +26,7 @@
  * manager must be annotated with the {@link com.intellij.openapi.components.State} annotation, signifying
  * where the configuration must be stored.
  *
- * The state class (e.g. {@link org.metaborg.intellij.idea.configuration.MetaborgApplicationConfigState})
+ * The state class (e.g. {@link org.metaborg.intellij.configuration.MetaborgApplicationConfigState})
  * contains the numbers, booleans, strings, collections, maps and enums to serialize. To exclude a field
  * from serialization, annotate the field or getter with the {@link com.intellij.util.xmlb.annotations.Transient}
  * annotation. The state class' default constructor must initialize all fields to their default values,

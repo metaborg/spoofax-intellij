@@ -17,29 +17,29 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.serialization;
+package org.metaborg.intellij.jps.configuration;
 
 import org.jetbrains.jps.model.*;
 
 /**
- * Implementation of the {@link SpoofaxExtensionService}.
+ * Default implementation of the {@link IMetaborgConfigService} interface.
  */
-public final class SpoofaxExtensionServiceImpl extends SpoofaxExtensionService {
+public final class DefaultMetaborgConfigService implements IMetaborgConfigService {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final SpoofaxGlobalConfig getConfiguration(final JpsGlobal global) {
-        return global.getContainer().getChild(SpoofaxGlobalConfig.ROLE);
+    public final JpsMetaborgApplicationConfig getConfiguration(final JpsGlobal global) {
+        return global.getContainer().getChild(JpsMetaborgApplicationConfig.ROLE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void setConfiguration(final JpsGlobal global, final SpoofaxGlobalConfig config) {
-        global.getContainer().setChild(SpoofaxGlobalConfig.ROLE, config);
+    public final void setConfiguration(final JpsGlobal global, final JpsMetaborgApplicationConfig config) {
+        global.getContainer().setChild(JpsMetaborgApplicationConfig.ROLE, config);
     }
 
 
@@ -47,15 +47,15 @@ public final class SpoofaxExtensionServiceImpl extends SpoofaxExtensionService {
      * {@inheritDoc}
      */
     @Override
-    public final SpoofaxProjectConfig getConfiguration(final JpsProject project) {
-        return project.getContainer().getChild(SpoofaxProjectConfig.ROLE);
+    public final JpsMetaborgProjectConfig getConfiguration(final JpsProject project) {
+        return project.getContainer().getChild(JpsMetaborgProjectConfig.ROLE);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void setConfiguration(final JpsProject project, final SpoofaxProjectConfig config) {
-        project.getContainer().setChild(SpoofaxProjectConfig.ROLE, config);
+    public final void setConfiguration(final JpsProject project, final JpsMetaborgProjectConfig config) {
+        project.getContainer().setChild(JpsMetaborgProjectConfig.ROLE, config);
     }
 }

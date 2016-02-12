@@ -17,12 +17,10 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.serialization;
-
-import org.metaborg.intellij.idea.configuration.*;
+package org.metaborg.intellij.jps.configuration;
 
 /**
- * Factory for character lexers.
+ * Factory for application configurations.
  */
 public interface IJpsMetaborgApplicationConfigFactory {
 
@@ -31,6 +29,6 @@ public interface IJpsMetaborgApplicationConfigFactory {
      *
      * @return The created configuration.
      */
-    SpoofaxGlobalConfig create();
+    JpsMetaborgApplicationConfig create();
 
 }

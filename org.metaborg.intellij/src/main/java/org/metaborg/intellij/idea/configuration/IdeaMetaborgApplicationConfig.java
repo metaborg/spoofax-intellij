@@ -25,6 +25,7 @@ import com.intellij.openapi.components.*;
 import org.apache.commons.vfs2.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.core.language.*;
+import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.discovery.*;
 import org.metaborg.intellij.idea.languages.*;
@@ -43,7 +44,7 @@ import java.util.*;
 @State(
         name = IMetaborgApplicationConfig.CONFIG_NAME,
         storages = {
-                @Storage(file = StoragePathMacros.APP_CONFIG + IMetaborgApplicationConfig.CONFIG_FILE)
+                @Storage(file = StoragePathMacros.APP_CONFIG + "/" + IMetaborgApplicationConfig.CONFIG_FILE)
         }
 )
 public final class IdeaMetaborgApplicationConfig implements IMetaborgApplicationConfig, ApplicationComponent,
@@ -88,8 +89,6 @@ public final class IdeaMetaborgApplicationConfig implements IMetaborgApplication
     @Override
     public void initComponent() {
         // Occurs when the application is starting.
-
-        this.loadedLanguages.add(LanguageIdentifier.parse("org.metaborg:org.metaborg.meta.lang.template:1.5.0-SNAPSHOT"));
 
         this.logger.debug("Loading Spoofax plugin application-wide config.");
         loadAndActivateLanguages();

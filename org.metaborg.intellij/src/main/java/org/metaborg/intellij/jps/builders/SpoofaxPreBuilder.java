@@ -33,7 +33,7 @@ import org.metaborg.core.messages.*;
 import org.metaborg.core.processing.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.project.*;
-import org.metaborg.intellij.jps.serialization.*;
+import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.spoofax.core.processing.*;
 import org.metaborg.spoofax.core.project.*;
@@ -60,7 +60,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
     private final IDependencyService dependencyService;
     private final SpoofaxProcessorRunner processorRunner;
     private final BuilderMessageFormatter messageFormatter;
-    private final SpoofaxExtensionService extensionService;
+    private final IMetaborgConfigService extensionService;
     @InjectLogger
     private ILogger logger;
 
@@ -77,7 +77,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             final SpoofaxProcessorRunner processorRunner,
             final ISpoofaxLanguageSpecPathsService pathsService,
             final BuilderMessageFormatter messageFormatter,
-            final SpoofaxExtensionService extensionService) {
+            final IMetaborgConfigService extensionService) {
         super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
         this.builder = builder;
 //        this.languageManager = languageManager;
@@ -110,7 +110,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             final LanguageSpecBuildInput metaInput = getBuildInput(target.getModule());
 
 
-            final SpoofaxGlobalConfig configuration = this.extensionService.getConfiguration(context.getProjectDescriptor().getModel().getGlobal());
+            final JpsMetaborgApplicationConfig configuration = this.extensionService.getConfiguration(context.getProjectDescriptor().getModel().getGlobal());
 
             if (true) {
                 throw new RuntimeException("!!!!!!: " + configuration.getLoadedLanguages().toString());

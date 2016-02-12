@@ -17,14 +17,14 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.serialization;
+package org.metaborg.intellij.jps.configuration;
 
 import com.google.inject.*;
 import com.intellij.util.xmlb.*;
 import org.jdom.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.serialization.*;
-import org.metaborg.intellij.idea.configuration.*;
+import org.metaborg.intellij.configuration.*;
 
 import javax.annotation.*;
 
@@ -32,14 +32,14 @@ import javax.annotation.*;
 /**
  * Deserializes the application-wide configuration in JPS.
  */
-public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
+public final class MetaborgApplicationConfigDeserializer extends JpsGlobalExtensionSerializer {
 
     private final IJpsMetaborgApplicationConfigFactory configFactory;
-    private final SpoofaxExtensionService extensionService;
+    private final IMetaborgConfigService extensionService;
 
     @Inject
-    public SpoofaxGlobalSerializer(final IJpsMetaborgApplicationConfigFactory configFactory,
-                                   final SpoofaxExtensionService extensionService) {
+    public MetaborgApplicationConfigDeserializer(final IJpsMetaborgApplicationConfigFactory configFactory,
+                                                 final IMetaborgConfigService extensionService) {
         super(IMetaborgApplicationConfig.CONFIG_FILE, IMetaborgApplicationConfig.CONFIG_NAME);
         this.configFactory = configFactory;
         this.extensionService = extensionService;
@@ -73,7 +73,7 @@ public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer 
     private void loadExtensionWithState(
             final JpsGlobal global,
             @Nullable final MetaborgApplicationConfigState state) {
-        final SpoofaxGlobalConfig config = this.configFactory.create();// new SpoofaxGlobalConfig();
+        final JpsMetaborgApplicationConfig config = this.configFactory.create();
         if (state != null)
             config.loadState(state);
         this.extensionService.setConfiguration(global, config);

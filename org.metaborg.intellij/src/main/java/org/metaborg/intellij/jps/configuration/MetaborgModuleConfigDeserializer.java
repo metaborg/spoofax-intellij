@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.serialization;
+package org.metaborg.intellij.jps.configuration;
 
 import com.google.inject.*;
 import org.jdom.*;
@@ -30,12 +30,12 @@ import javax.annotation.*;
 /**
  * Deserializes module-specific configuration in JPS.
  */
-public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer<JpsDummyElement> {
+public final class MetaborgModuleConfigDeserializer extends JpsModulePropertiesSerializer<JpsDummyElement> {
 
     public static final String NAME = "SpoofaxModuleService";
 
     @Inject
-    public SpoofaxModuleSerializer() {
+    public MetaborgModuleConfigDeserializer() {
         super(JpsMetaborgModuleType.INSTANCE, "METABORG_MODULE", null);
     }
 

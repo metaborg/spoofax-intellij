@@ -17,47 +17,46 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.serialization;
+package org.metaborg.intellij.jps.configuration;
 
 
 import org.jetbrains.jps.model.*;
-import org.jetbrains.jps.service.*;
 
 // TODO: Make interface.
 /**
  * Gets or sets the configuration for JPS model objects.
  */
-public abstract class SpoofaxExtensionService {
+public interface IMetaborgConfigService {
 
     /**
-     * Gets the global configuration.
+     * Gets the Metaborg application configuration.
      *
-     * @param global The global.
+     * @param global The global JPS element.
      * @return The configuration.
      */
-    public abstract SpoofaxGlobalConfig getConfiguration(JpsGlobal global);
+    JpsMetaborgApplicationConfig getConfiguration(JpsGlobal global);
 
     /**
-     * Sets the global configuration.
+     * Sets the Metaborg application configuration.
      *
-     * @param global The global.
+     * @param global The global JPS element.
      * @param config The configuration.
      */
-    public abstract void setConfiguration(JpsGlobal global, SpoofaxGlobalConfig config);
+    void setConfiguration(JpsGlobal global, JpsMetaborgApplicationConfig config);
 
     /**
-     * Gets the project configuration.
+     * Gets the Metaborg project configuration.
      *
-     * @param project The project.
+     * @param project The project JPS element.
      * @return The configuration.
      */
-    public abstract SpoofaxProjectConfig getConfiguration(JpsProject project);
+    JpsMetaborgProjectConfig getConfiguration(JpsProject project);
 
     /**
-     * Sets the project configuration.
+     * Sets the Metaborg project configuration.
      *
-     * @param project The project.
+     * @param project The project JPS element.
      * @param config  The configuration.
      */
-    public abstract void setConfiguration(JpsProject project, SpoofaxProjectConfig config);
+    void setConfiguration(JpsProject project, JpsMetaborgProjectConfig config);
 }

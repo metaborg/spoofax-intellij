@@ -17,29 +17,30 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.serialization;
+package org.metaborg.intellij.jps.configuration;
 
 import com.google.inject.*;
 import com.intellij.util.xmlb.*;
 import org.jdom.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.serialization.*;
+import org.metaborg.intellij.configuration.*;
 
 import javax.annotation.*;
 
 /**
  * Deserializes project-wide configuration in JPS.
  */
-public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerializer {
+public final class MetaborgProjectConfigDeserializer extends JpsProjectExtensionSerializer {
 
-    public static final String NAME = "SpoofaxProjectService";
-    public static final String CONFIG_FILE = "SpoofaxProject.xml";
-
-    private final SpoofaxExtensionService extensionService;
+    private final IJpsMetaborgProjectConfigFactory configFactory;
+    private final IMetaborgConfigService extensionService;
 
     @Inject
-    public SpoofaxProjectSerializer(final SpoofaxExtensionService extensionService) {
-        super(CONFIG_FILE, NAME);
+    public MetaborgProjectConfigDeserializer(final IJpsMetaborgProjectConfigFactory configFactory,
+                                             final IMetaborgConfigService extensionService) {
+        super(IMetaborgProjectConfig.CONFIG_FILE, IMetaborgProjectConfig.CONFIG_NAME);
+        this.configFactory = configFactory;
         this.extensionService = extensionService;
     }
 
@@ -48,7 +49,7 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
      */
     @Override
     public final void loadExtension(final JpsProject project, final Element element) {
-        @Nullable final SpoofaxProjectState state = XmlSerializer.deserialize(element, SpoofaxProjectState.class);
+        @Nullable final MetaborgProjectConfigState state = XmlSerializer.deserialize(element, MetaborgProjectConfigState.class);
         loadExtensionWithState(project, state);
     }
 
@@ -70,8 +71,8 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
 
     private void loadExtensionWithState(
             final JpsProject project,
-            @Nullable final SpoofaxProjectState state) {
-        final SpoofaxProjectConfig config = new SpoofaxProjectConfig();
+            @Nullable final MetaborgProjectConfigState state) {
+        final JpsMetaborgProjectConfig config = this.configFactory.create();
         if (state != null)
             config.loadState(state);
         this.extensionService.setConfiguration(project, config);

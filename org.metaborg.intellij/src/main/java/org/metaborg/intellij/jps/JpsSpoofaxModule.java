@@ -25,10 +25,9 @@ import com.google.inject.matcher.Matchers;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.jps.project.*;
 import org.metaborg.intellij.jps.builders.*;
-import org.metaborg.intellij.jps.serialization.*;
+import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
 import org.metaborg.spoofax.core.SpoofaxModule;
@@ -91,15 +90,19 @@ import java.util.*;
      * Binds the configuration classes.
      */
     protected void bindConfig() {
-        bind(SpoofaxGlobalConfig.class).in(Singleton.class);
-        bind(SpoofaxGlobalSerializer.class).in(Singleton.class);
-        bind(SpoofaxProjectSerializer.class).in(Singleton.class);
-        bind(SpoofaxModuleSerializer.class).in(Singleton.class);
-        bind(SpoofaxExtensionService.class).to(SpoofaxExtensionServiceImpl.class).in(Singleton.class);
+        bind(JpsMetaborgApplicationConfig.class).in(Singleton.class);
+        bind(MetaborgApplicationConfigDeserializer.class).in(Singleton.class);
+        bind(MetaborgProjectConfigDeserializer.class).in(Singleton.class);
+        bind(MetaborgModuleConfigDeserializer.class).in(Singleton.class);
+        bind(IMetaborgConfigService.class).to(DefaultMetaborgConfigService.class).in(Singleton.class);
 
         install(new FactoryModuleBuilder()
-                .implement(SpoofaxGlobalConfig.class, SpoofaxGlobalConfig.class)
+                .implement(JpsMetaborgApplicationConfig.class, JpsMetaborgApplicationConfig.class)
                 .build(IJpsMetaborgApplicationConfigFactory.class));
+
+        install(new FactoryModuleBuilder()
+                .implement(JpsMetaborgProjectConfig.class, JpsMetaborgProjectConfig.class)
+                .build(IJpsMetaborgProjectConfigFactory.class));
     }
 
     @SuppressWarnings("unused")
