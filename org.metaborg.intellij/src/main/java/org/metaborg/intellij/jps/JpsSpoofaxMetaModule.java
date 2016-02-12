@@ -19,7 +19,12 @@
 
 package org.metaborg.intellij.jps;
 
+import com.google.inject.*;
+import org.jetbrains.jps.incremental.*;
+import org.metaborg.intellij.jps.targetbuilders.*;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
+
+import java.util.*;
 
 /**
  * The Guice dependency injection module for the Spoofax JPS meta plugin.
@@ -32,6 +37,25 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
     @Override
     protected void configure() {
         super.configure();
+
+        bindBuilders();
     }
 
+    /**
+     * Binds the builders.
+     */
+    protected void bindBuilders() {
+        bind(SpoofaxPreBuilder.class).in(Singleton.class);
+        bind(SpoofaxPostBuilder.class).in(Singleton.class);
+    }
+
+    @SuppressWarnings("unused")
+    @Singleton
+    @Provides
+    @Inject
+    public final Collection<TargetBuilder<?, ?>> provideTargetBuilders(
+            final SpoofaxPreBuilder preBuilder,
+            final SpoofaxPostBuilder postBuilder) {
+        return Arrays.asList(preBuilder, postBuilder);
+    }
 }

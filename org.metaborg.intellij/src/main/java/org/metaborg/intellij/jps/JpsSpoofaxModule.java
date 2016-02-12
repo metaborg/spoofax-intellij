@@ -19,10 +19,18 @@
 
 package org.metaborg.intellij.jps;
 
+import com.google.inject.*;
 import com.google.inject.matcher.Matchers;
+import org.jetbrains.jps.builders.*;
+import org.jetbrains.jps.incremental.*;
+import org.metaborg.core.project.*;
+import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.targetbuilders.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
 import org.metaborg.spoofax.core.SpoofaxModule;
+
+import java.util.*;
 
 /**
  * The Guice dependency injection module for the Spoofax JPS plugin.
@@ -35,7 +43,10 @@ import org.metaborg.spoofax.core.SpoofaxModule;
     @Override
     protected void configure() {
         super.configure();
+
         bindLoggerListeners();
+        bindTargetTypes();
+        bindMessageFormatter();
     }
 
     /**
@@ -45,5 +56,48 @@ import org.metaborg.spoofax.core.SpoofaxModule;
         // FIXME: Are these the loggers we want to use for JPS plugins?
         bindListener(Matchers.any(), new Slf4JLoggerTypeListener());
         bindListener(Matchers.any(), new MetaborgLoggerTypeListener());
+    }
+
+    /**
+     * Binds the target types.
+     */
+    protected void bindTargetTypes() {
+        bind(SpoofaxPreTargetType.class).in(Singleton.class);
+        bind(SpoofaxPostTargetType.class).in(Singleton.class);
+    }
+
+    /**
+     * Binds the message formatter.
+     */
+    protected void bindMessageFormatter() {
+        bind(BuilderMessageFormatter.class).in(Singleton.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void bindProject() {
+        bind(JpsProjectService.class).in(Singleton.class);
+        bind(IProjectService.class).to(JpsProjectService.class).in(Singleton.class);
+        bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
+    }
+
+    @SuppressWarnings("unused")
+    @Singleton
+    @Provides
+    @Inject
+    public final Collection<BuildTargetType<?>> provideTargetTypes(
+            final SpoofaxPreTargetType preTargetType,
+            final SpoofaxPostTargetType postTargetType) {
+        return Arrays.asList(preTargetType, postTargetType);
+    }
+
+    @SuppressWarnings("unused")
+    @Singleton
+    @Provides
+    @Inject
+    public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders() {
+        return Collections.emptyList();
     }
 }

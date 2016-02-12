@@ -21,9 +21,9 @@ package org.metaborg.intellij.idea;
 
 import com.google.inject.Injector;
 import com.intellij.openapi.diagnostic.Logger;
-import org.apache.commons.lang.*;
 import org.apache.commons.lang3.concurrent.*;
 import org.metaborg.core.MetaborgException;
+import org.metaborg.intellij.*;
 import org.metaborg.spoofax.core.Spoofax;
 import org.metaborg.spoofax.meta.core.SpoofaxMeta;
 
@@ -37,7 +37,7 @@ public final class SpoofaxIdeaPlugin {
 
     // Static //
 
-    private static final Logger logger;
+    private static final Logger logger = Logger.getInstance(SpoofaxIdeaPlugin.class);
     private static final LazyInitializer<SpoofaxIdeaPlugin> pluginLazy = new LazyInitializer<SpoofaxIdeaPlugin>() {
         @Override
         protected SpoofaxIdeaPlugin initialize() throws ConcurrentException {
@@ -45,9 +45,9 @@ public final class SpoofaxIdeaPlugin {
         }
     };
 
-    static {
-        logger = Logger.getInstance(SpoofaxIdeaPlugin.class);
-    }
+//    static {
+//        logger = Logger.getInstance(SpoofaxIdeaPlugin.class);
+//    }
 
     /**
      * Gets the injector.

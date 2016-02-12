@@ -130,7 +130,8 @@ public final class MetaborgModuleComponent implements ModuleComponent {
      */
     @Override
     public void moduleAdded() {
-        this.logger.info("Module {} added.", this.module);
+        this.logger.debug("Adding Metaborg module: {}", this.module);
+        this.logger.info("Added Metaborg module: {}", this.module);
     }
 
     /**
