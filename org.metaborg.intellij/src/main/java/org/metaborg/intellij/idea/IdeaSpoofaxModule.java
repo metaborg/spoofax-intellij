@@ -23,6 +23,7 @@ import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.*;
+import com.intellij.ide.util.projectWizard.*;
 import com.intellij.lang.*;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.*;
@@ -38,6 +39,7 @@ import org.metaborg.intellij.idea.parsing.*;
 import org.metaborg.intellij.idea.parsing.annotations.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
 import org.metaborg.intellij.idea.projects.*;
+import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
 import org.metaborg.intellij.resources.*;
@@ -68,6 +70,7 @@ import org.spoofax.interpreter.terms.*;
         bindElements();
         bindLanguageProject();
         bindAnnotators();
+        bindNewProjectWizard();
     }
 
     /**
@@ -158,6 +161,11 @@ import org.spoofax.interpreter.terms.*;
         );
         uriBinder.addBinding().to(IdeaProjectService.class);
         uriBinder.addBinding().to(ArtifactProjectService.class);
+        bind(MetaborgModuleBuilder.class).in(Singleton.class);
+
+        install(new FactoryModuleBuilder()
+                .implement(IdeaLanguageSpecProject.class, IdeaLanguageSpecProject.class)
+                .build(IIdeaProjectFactory.class));
     }
 
     /**
@@ -194,10 +202,19 @@ import org.spoofax.interpreter.terms.*;
     }
 
     /**
-     * Binds source annotators.
+     * Binds source annotators.INewModuleWizardStepFactory
      */
     protected void bindAnnotators() {
         bind(new TypeLiteral<MetaborgSourceAnnotator<?, ?>>() {}).in(Singleton.class);
 //        bind(new TypeLiteral<MetaborgSourceAnnotator<IStrategoTerm, IStrategoTerm>>() {}).in(Singleton.class);
+    }
+
+    /**
+     * Binds new project wizard classes.
+     */
+    protected void bindNewProjectWizard() {
+        install(new FactoryModuleBuilder()
+                .implement(MetaborgNewModuleWizardStep.class, MetaborgNewModuleWizardStep.class)
+                .build(INewModuleWizardStepFactory.class));
     }
 }

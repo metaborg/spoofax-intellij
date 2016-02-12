@@ -32,10 +32,11 @@
     ]]>
     </change-notes>
 
-    <!-- Please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <!-- See http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
     <idea-version since-build="143"/>
 
     <extensions defaultExtensionNs="com.intellij">
+        <moduleType id="METABORG_MODULE" implementationClass="org.metaborg.intellij.idea.projects.MetaborgModuleType"/>
         <fileTypeFactory implementation="org.metaborg.intellij.idea.filetypes.MetaborgFileTypeFactory"/>
     </extensions>
 
