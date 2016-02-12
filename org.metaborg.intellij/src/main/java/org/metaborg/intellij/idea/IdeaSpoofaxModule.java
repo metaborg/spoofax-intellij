@@ -23,15 +23,17 @@ import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.*;
-import com.intellij.ide.util.projectWizard.*;
 import com.intellij.lang.*;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.*;
 import org.apache.commons.vfs2.*;
+import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
 import org.metaborg.core.resource.*;
 import org.metaborg.core.syntax.*;
+import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.idea.discovery.*;
+import org.metaborg.intellij.idea.editor.*;
 import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.languages.*;
@@ -40,12 +42,12 @@ import org.metaborg.intellij.idea.parsing.annotations.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.idea.projects.newproject.*;
+import org.metaborg.intellij.idea.transformations.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
 import org.metaborg.intellij.resources.*;
 import org.metaborg.spoofax.core.SpoofaxModule;
 import org.metaborg.spoofax.core.syntax.*;
-import org.spoofax.interpreter.terms.*;
 
 /**
  * The Guice dependency injection module for the Spoofax IntelliJ IDEA plugin.
@@ -71,6 +73,7 @@ import org.spoofax.interpreter.terms.*;
         bindLanguageProject();
         bindAnnotators();
         bindNewProjectWizard();
+        bindTransformations();
     }
 
     /**
@@ -216,5 +219,39 @@ import org.spoofax.interpreter.terms.*;
         install(new FactoryModuleBuilder()
                 .implement(MetaborgNewModuleWizardStep.class, MetaborgNewModuleWizardStep.class)
                 .build(INewModuleWizardStepFactory.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void bindAction() {
+        super.bindAction();
+
+        bind(ActionUtils.class).in(Singleton.class);
+        bind(BuilderMenuBuilder.class).in(Singleton.class);
+
+        install(new FactoryModuleBuilder()
+                .implement(BuilderActionGroup.class, BuilderActionGroup.class)
+                .build(IBuilderActionGroupFactory.class));
+    }
+
+    /**
+     * Binds transformations.
+     */
+    protected void bindTransformations() {
+        bind(IResourceTransformer.class).to(new TypeLiteral<ResourceTransformer<?, ?, ?>>() {}).in(Singleton.class);
+
+        install(new FactoryModuleBuilder()
+                .implement(TransformationAction.class, TransformationAction.class)
+                .build(ITransformIdeaActionFactory.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void bindEditor() {
+        bind(IEditorRegistry.class).to(IdeaEditorRegistry.class).in(Singleton.class);
     }
 }

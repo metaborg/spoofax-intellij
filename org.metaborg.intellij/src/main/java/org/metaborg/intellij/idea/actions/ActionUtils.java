@@ -19,14 +19,48 @@
 
 package org.metaborg.intellij.idea.actions;
 
+import com.google.inject.*;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.editor.*;
+import com.intellij.openapi.fileEditor.*;
+import com.intellij.openapi.vfs.*;
+import com.intellij.psi.*;
+import org.apache.commons.vfs2.*;
+import org.metaborg.core.language.*;
+import org.metaborg.core.project.*;
+import org.metaborg.intellij.idea.projects.*;
+import org.metaborg.intellij.idea.transformations.*;
+import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.resources.*;
+import org.metaborg.util.log.*;
 
 import javax.annotation.*;
+import java.util.*;
 
 /**
  * Utility functions for working with IntelliJ IDEA actions.
  */
 public final class ActionUtils {
+
+    private final IIntelliJResourceService resourceService;
+    private final IIdeaProjectService projectService;
+    private final ILanguageSpecService languageSpecService;
+    private final ILanguageIdentifierService identifierService;
+    @InjectLogger
+    private ILogger logger;
+
+    @Inject
+    public ActionUtils(
+            final IIntelliJResourceService resourceService,
+            final IIdeaProjectService projectService,
+            final ILanguageSpecService languageSpecService,
+            final ILanguageIdentifierService identifierService) {
+        this.resourceService = resourceService;
+        this.projectService = projectService;
+        this.languageSpecService = languageSpecService;
+        this.identifierService = identifierService;
+    }
 
     /**
      * Adds an action(group) to a parent and registers all its children.
@@ -36,7 +70,8 @@ public final class ActionUtils {
      * @param relativeToActionId The ID relative to which to position this action; or <code>null</code>.
      * @param anchor The anchor indicating where to position this action; or <code>null</code> for the default.
      */
-    public static void addAndRegisterActionGroup(final AnAction action, final String parentID, @Nullable final String relativeToActionId, @Nullable final Anchor anchor) {
+    public void addAndRegisterActionGroup(final AnAction action, final String parentID,
+                                          @Nullable final String relativeToActionId, @Nullable final Anchor anchor) {
         final ActionManager manager = ActionManager.getInstance();
         final DefaultActionGroup parent = (DefaultActionGroup)manager.getAction(parentID);
         parent.add(action, getActionConstraints(relativeToActionId, anchor));
@@ -52,7 +87,7 @@ public final class ActionUtils {
      *               or <code>null</code> to position the action after or at the end.
      * @return The {@link Constraints}.
      */
-    private static Constraints getActionConstraints(@Nullable final String relativeToActionId, @Nullable final Anchor anchor) {
+    private Constraints getActionConstraints(@Nullable final String relativeToActionId, @Nullable final Anchor anchor) {
         if (relativeToActionId != null && anchor != null) {
             return new Constraints(anchor, relativeToActionId);
         } else if (relativeToActionId != null) {
@@ -69,7 +104,7 @@ public final class ActionUtils {
      *
      * @param action The action.
      */
-    private static void registerAction(final ActionManager manager, final AnAction action) {
+    private void registerAction(final ActionManager manager, final AnAction action) {
         if (action instanceof AnActionWithId) {
             manager.registerAction(((AnActionWithId)action).id(), action);
         }
@@ -83,7 +118,7 @@ public final class ActionUtils {
      *
      * @param actionGroup The action group.
      */
-    private static void registerActionGroup(final ActionManager manager, final DefaultActionGroup actionGroup) {
+    private void registerActionGroup(final ActionManager manager, final DefaultActionGroup actionGroup) {
         for (final AnAction action : actionGroup.getChildActionsOrStubs()) {
             registerAction(manager, action);
         }
@@ -95,7 +130,7 @@ public final class ActionUtils {
      * @param action   The action to remove.
      * @param parentID The parent ID.
      */
-    public static void removeAndUnregisterActionGroup(final AnAction action, final String parentID) {
+    public void removeAndUnregisterActionGroup(final AnAction action, final String parentID) {
         final ActionManager manager = ActionManager.getInstance();
         final DefaultActionGroup parent = (DefaultActionGroup)manager.getAction(parentID);
         parent.remove(action);
@@ -107,7 +142,7 @@ public final class ActionUtils {
      *
      * @param action The action.
      */
-    private static void unregisterAction(final ActionManager manager, final AnAction action) {
+    private void unregisterAction(final ActionManager manager, final AnAction action) {
         if (action instanceof AnActionWithId) {
             manager.unregisterAction(((AnActionWithId)action).id());
         }
@@ -121,7 +156,7 @@ public final class ActionUtils {
      *
      * @param actionGroup The action group.
      */
-    private static void unregisterActionGroup(
+    private void unregisterActionGroup(
             final ActionManager manager,
             final DefaultActionGroup actionGroup) {
         for (final AnAction action : actionGroup.getChildActionsOrStubs()) {
@@ -129,6 +164,97 @@ public final class ActionUtils {
         }
     }
 
-    private ActionUtils() { /* Prevent instantiation. */ }
+    /**
+     * Determines whether all active files are of the specified language.
+     *
+     * @param e        The event arguments.
+     * @param language The language implementation to check.
+     * @return <code>true</code> when all active files are of the specified language;
+     * otherwise, <code>false</code>.
+     */
+    public boolean isActiveFileLanguage(final AnActionEvent e, final ILanguageImpl language) {
+        final List<FileObject> files = getActiveFiles(e);
+        if (files.isEmpty())
+            return false;
+        for (final FileObject file : files) {
+            if (!this.identifierService.identify(file, language))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Gets a list of files currently selected.
+     *
+     * @param e The event arguments.
+     * @return A list of files.
+     */
+    public List<FileObject> getActiveFiles(final AnActionEvent e) {
+        @Nullable final VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
+        if (files == null || files.length == 0)
+            return Collections.emptyList();
+
+        final ArrayList<FileObject> result = new ArrayList<>(files.length);
+        for (final VirtualFile file : files) {
+            if (file.isDirectory())
+                continue;
+            result.add(this.resourceService.resolve(file));
+        }
+        return result;
+    }
+
+    /**
+     * Gets a list of files currently selected.
+     *
+     * @param e The event arguments.
+     * @return A list of files.
+     */
+    public List<TransformResource> getActiveResources(final AnActionEvent e) {
+//        @Nullable final VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
+        @Nullable final PsiFile[] files = getSelectedPsiFiles(e);
+        if (files == null || files.length == 0)
+            return Collections.emptyList();
+        final ArrayList<TransformResource> result = new ArrayList<>(files.length);
+        for (final PsiFile file : files) {
+            if (file.isDirectory())
+                continue;
+            final FileObject resource = this.resourceService.resolve(file.getVirtualFile());
+            @Nullable final ILanguageSpec project = this.languageSpecService.get(this.projectService.get(file));
+            @Nullable final Document document = FileDocumentManager.getInstance().getDocument(file.getVirtualFile());
+            if (project == null || document == null)
+                continue;
+            result.add(new TransformResource(resource, project, document.getText()));
+        }
+        return result;
+    }
+
+    /**
+     * Gets the {@link PsiFile} objects for each open file.
+     *
+     * @param e The event.
+     * @return The PSI files; or <code>null</code>.
+     */
+    @Nullable
+    private PsiFile[] getSelectedPsiFiles(final AnActionEvent e) {
+        @Nullable final com.intellij.openapi.project.Project project = e.getData(CommonDataKeys.PROJECT);
+        if (project == null)
+            return null;
+
+        @Nullable final VirtualFile[] files = e.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
+        if (files == null)
+            return null;
+
+        final PsiFile[] psiFiles = new PsiFile[files.length];
+        for (int i = 0; i < files.length; i++) {
+            psiFiles[i] = PsiManager.getInstance(project).findFile(files[i]);
+            if (psiFiles[i] == null) {
+                // If one of the files wasn't found in the project, it's probably a file
+                // in a different project. No support for mixing projects like that.
+                throw LoggerUtils.exception(this.logger, RuntimeException.class,
+                        "Couldn't determine PsiFile for VirtualFile: {}", files[i]);
+            }
+        }
+        return psiFiles;
+    }
 
 }

@@ -24,6 +24,7 @@ import com.google.common.collect.*;
 import com.google.inject.*;
 import com.intellij.lang.*;
 import com.intellij.lang.Language;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.psi.tree.*;
 import javassist.util.proxy.*;
 import org.apache.commons.lang.*;
@@ -33,6 +34,7 @@ import org.metaborg.core.language.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.*;
+import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.idea.extensions.*;
 import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.parsing.*;
@@ -65,6 +67,8 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
     private final IFileElementTypeFactory fileElementTypeFactory;
     private final IParserDefinitionFactory parserDefinitionFactory;
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
+    private final BuilderMenuBuilder builderMenuBuilder;
+    private final ActionUtils actionUtils;
     private final ConcurrentMap<ILanguage, LanguageBindings> loadedLanguages = new ConcurrentHashMap<>();
     private final ConcurrentMap<ILanguageImpl, LanguageImplBindings> loadedLanguageImpls = new ConcurrentHashMap<>();
     private final Cache<ILanguage, LanguageBindings> ideaLanguageCache = CacheBuilder.newBuilder().weakKeys().build();
@@ -82,13 +86,17 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
                                   final MetaborgSourceAnnotator<?, ?> metaborgSourceAnnotator,
                                   final IFileElementTypeFactory fileElementTypeFactory,
                                   final IParserDefinitionFactory parserDefinitionFactory,
-                                  final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
+                                  final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
+                                  final BuilderMenuBuilder builderMenuBuilder,
+                                  final ActionUtils actionUtils) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
         this.metaborgSourceAnnotator = metaborgSourceAnnotator;
         this.fileElementTypeFactory = fileElementTypeFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
+        this.builderMenuBuilder = builderMenuBuilder;
+        this.actionUtils = actionUtils;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -429,7 +437,10 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
      * @return The created IDEA language implementation.
      */
     private LanguageImplBindings createLanguageImplBindings(final ILanguageImpl languageImpl) {
+        final DefaultActionGroup buildActionGroup = createBuildActionGroup(languageImpl);
+
         return new LanguageImplBindings(
+                buildActionGroup
         );
     }
 
@@ -451,7 +462,8 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
      * @param languageImplBindings The bindings of the language implementation to activate.
      */
     private void activateLanguageImpl(final LanguageImplBindings languageImplBindings) {
-        // TODO: Register the builder menu action group.
+        this.actionUtils.addAndRegisterActionGroup(languageImplBindings.getBuildActionGroup(),
+                IdeActions.GROUP_MAIN_MENU, "ToolsMenu", Anchor.AFTER);
     }
 
     /**
@@ -472,7 +484,8 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
      * @param languageImplBindings The bindings of the language implementation to deactivate.
      */
     private void deactivateLanguageImpl(final LanguageImplBindings languageImplBindings) {
-        // TODO: Unregister the builder menu action group.
+        this.actionUtils.removeAndUnregisterActionGroup(languageImplBindings.getBuildActionGroup(),
+                IdeActions.GROUP_MAIN_MENU);
     }
 
     /**
@@ -579,6 +592,16 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
             final Language language,
             final SpoofaxTokenTypeManager tokenTypesManager) {
         return this.fileElementTypeFactory.create(language, tokenTypesManager);
+    }
+
+    /**
+     * Creates the builder menu action group.
+     *
+     * @param languageImpl The language implementation.
+     * @return The action group.
+     */
+    private DefaultActionGroup createBuildActionGroup(final ILanguageImpl languageImpl) {
+        return this.builderMenuBuilder.build(languageImpl);
     }
 
     /**

@@ -48,6 +48,19 @@
  * implementations of the {@link com.google.inject.spi.TypeListener} interface, which are
  * bound as listeners in the Guice module. They in turn use an implementation of the
  * {@link com.google.inject.MembersInjector} interface to inject the logger instance.
+ *
+ * By default IntelliJ IDEA prints only <code>WARN</code> and <code>ERROR</code> log messages.
+ * To also print <code>DEBUG</code> and <code>INFO</code> log messages from the Spoofax for
+ * IntelliJ IDEA plugin, go to the <code>$IDEA_ROOT$/bin/log.xml</code> file and add the following
+ * XML snippet in the root element:
+ *
+ * <pre>
+ * &lt;category name="#org.metaborg.intellij"&gt;
+ *   &lt;priority value="DEBUG"/&gt;
+ *   &lt;appender-ref ref="CONSOLE-ALL"/&gt;
+ *   &lt;appender-ref ref="FILE"/&gt;
+ * &lt;/category&gt;
+ * </pre>
  */
 @NonNullByDefault
 package org.metaborg.intellij.logging;

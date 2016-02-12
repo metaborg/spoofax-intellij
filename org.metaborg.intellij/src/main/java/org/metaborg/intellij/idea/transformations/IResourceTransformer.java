@@ -17,26 +17,28 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.languages;
+package org.metaborg.intellij.idea.transformations;
 
-import com.intellij.openapi.actionSystem.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import org.apache.commons.vfs2.*;
+import org.metaborg.core.*;
+import org.metaborg.core.action.*;
+import org.metaborg.core.language.*;
+
+import java.util.*;
 
 /**
- * IntelliJ IDEA objects bound to a language implementation.
+ * Executes a transformation action on resources.
  */
-/* package private */ final class LanguageImplBindings {
-
-    private final DefaultActionGroup buildActionGroup;
-
-    public DefaultActionGroup getBuildActionGroup() { return this.buildActionGroup; }
+public interface IResourceTransformer {
 
     /**
-     * Initializes a new instance of the {@link LanguageImplBindings} class.
+     * Executes the specified action.
      *
-     * @param buildActionGroup The build action group.
+     * @param language  The language implementation.
+     * @param resources The active resources.
+     * @param goal      The transformation goal.
      */
-    public LanguageImplBindings(final DefaultActionGroup buildActionGroup) {
-        this.buildActionGroup = buildActionGroup;
-    }
+    List<FileObject> execute(final Iterable<TransformResource> resources, final ILanguageImpl language,
+                             final ITransformGoal goal)
+            throws MetaborgException;
 }

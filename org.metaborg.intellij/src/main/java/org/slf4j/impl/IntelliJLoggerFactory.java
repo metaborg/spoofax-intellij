@@ -52,7 +52,7 @@ import java.util.concurrent.ConcurrentMap;
             // Put the new logger in the map and return it,
             // unless another logger suddenly appeared in the map, which we then return instead.
             final com.intellij.openapi.diagnostic.Logger intellijLogger =
-                    com.intellij.openapi.diagnostic.Logger.getInstance(name);
+                    com.intellij.openapi.diagnostic.Logger.getInstance("#" + name);
             final Logger newInstance = new IntelliJLoggerAdapter(intellijLogger);
             final Logger oldInstance = this.loggerMap.putIfAbsent(name, newInstance);
             return oldInstance != null ? oldInstance : newInstance;

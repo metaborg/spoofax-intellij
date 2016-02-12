@@ -17,26 +17,10 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.languages;
-
-import com.intellij.openapi.actionSystem.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
-
 /**
- * IntelliJ IDEA objects bound to a language implementation.
+ * Editor functionality.
  */
-/* package private */ final class LanguageImplBindings {
+@NonNullByDefault
+package org.metaborg.intellij.idea.editor;
 
-    private final DefaultActionGroup buildActionGroup;
-
-    public DefaultActionGroup getBuildActionGroup() { return this.buildActionGroup; }
-
-    /**
-     * Initializes a new instance of the {@link LanguageImplBindings} class.
-     *
-     * @param buildActionGroup The build action group.
-     */
-    public LanguageImplBindings(final DefaultActionGroup buildActionGroup) {
-        this.buildActionGroup = buildActionGroup;
-    }
-}
+import org.metaborg.intellij.*;

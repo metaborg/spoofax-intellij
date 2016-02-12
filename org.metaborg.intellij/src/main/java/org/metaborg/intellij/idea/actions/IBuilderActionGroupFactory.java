@@ -17,26 +17,20 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.languages;
+package org.metaborg.intellij.idea.actions;
 
-import com.intellij.openapi.actionSystem.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.core.language.*;
 
 /**
- * IntelliJ IDEA objects bound to a language implementation.
+ * Factory for builder action group.
  */
-/* package private */ final class LanguageImplBindings {
-
-    private final DefaultActionGroup buildActionGroup;
-
-    public DefaultActionGroup getBuildActionGroup() { return this.buildActionGroup; }
+public interface IBuilderActionGroupFactory {
 
     /**
-     * Initializes a new instance of the {@link LanguageImplBindings} class.
+     * Creates a builder action group.
      *
-     * @param buildActionGroup The build action group.
+     * @param language The language implementation.
+     * @return The created action group.
      */
-    public LanguageImplBindings(final DefaultActionGroup buildActionGroup) {
-        this.buildActionGroup = buildActionGroup;
-    }
+    BuilderActionGroup create(ILanguageImpl language);
 }

@@ -31,14 +31,14 @@ public abstract class AnActionWithId extends AnAction {
 
     private final String id;
 
-    /**
-     * Initializes a new instance of the {@link AnActionWithId} class.
-     *
-     * @param id The ID of the action.
-     */
-    protected AnActionWithId(final String id) {
-        this(id, null, null, null);
-    }
+//    /**
+//     * Initializes a new instance of the {@link AnActionWithId} class.
+//     *
+//     * @param id The ID of the action.
+//     */
+//    protected AnActionWithId(final String id) {
+//        this(id, null, null, null);
+//    }
 
     /**
      * Initializes a new instance of the {@link AnActionWithId} class.
@@ -57,25 +57,25 @@ public abstract class AnActionWithId extends AnAction {
         this.id = id;
     }
 
-    /**
-     * Initializes a new instance of the {@link AnActionWithId} class.
-     *
-     * @param id   The ID of the action.
-     * @param icon The icon of the action; or <code>null</code>.
-     */
-    protected AnActionWithId(final String id, final Icon icon) {
-        this(id, null, null, icon);
-    }
-
-    /**
-     * Initializes a new instance of the {@link AnActionWithId} class.
-     *
-     * @param id   The ID of the action.
-     * @param text The text of the action; or <code>null</code>.
-     */
-    protected AnActionWithId(final String id, @Nullable final String text) {
-        this(id, text, null, null);
-    }
+//    /**
+//     * Initializes a new instance of the {@link AnActionWithId} class.
+//     *
+//     * @param id   The ID of the action.
+//     * @param icon The icon of the action; or <code>null</code>.
+//     */
+//    protected AnActionWithId(final String id, final Icon icon) {
+//        this(id, null, null, icon);
+//    }
+//
+//    /**
+//     * Initializes a new instance of the {@link AnActionWithId} class.
+//     *
+//     * @param id   The ID of the action.
+//     * @param text The text of the action; or <code>null</code>.
+//     */
+//    protected AnActionWithId(final String id, @Nullable final String text) {
+//        this(id, text, null, null);
+//    }
 
     /**
      * Gets the ID of the action.

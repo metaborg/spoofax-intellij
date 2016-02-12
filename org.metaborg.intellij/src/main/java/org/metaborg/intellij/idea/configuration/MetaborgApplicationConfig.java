@@ -52,10 +52,11 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
 
     private ILanguageSource languageSource;
     private ILanguageManager languageManager;
-    private MetaborgApplicationConfigState state = new MetaborgApplicationConfigState();
+    // Don't initialize fields that depend on the state here. Initialize in loadState().
+    private MetaborgApplicationConfigState state;
+    private Set<LanguageIdentifier> loadedLanguages;
     @InjectLogger
     private ILogger logger;
-    private final Set<LanguageIdentifier> loadedLanguages;
 
     /**
      * Gets thea mutable set of identifiers of languages that should be loaded and activated.
@@ -71,10 +72,9 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
      * Do not call this constructor manually.
      */
     public MetaborgApplicationConfig() {
-        this.loadedLanguages = new AdaptingSet<>(this.state.loadedLanguages,
-                LanguageIdentifier::toString, LanguageIdentifier::parse);
-
         SpoofaxIdeaPlugin.injector().injectMembers(this);
+        // Don't initialize fields that depend on the state here. Initialize in loadState().
+        loadState(new MetaborgApplicationConfigState());
     }
 
     @Inject
@@ -91,7 +91,9 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
     public void initComponent() {
         // Occurs when the application is starting.
 
+        this.logger.debug("Loading Spoofax plugin application-wide config.");
         loadAndActivateLanguages();
+        this.logger.info("Loaded Spoofax plugin application-wide config.");
     }
 
     /**
@@ -128,6 +130,9 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
     @Override
     public void loadState(final MetaborgApplicationConfigState state) {
         this.state = state;
+        this.loadedLanguages = new AdaptingSet<>(state.loadedLanguages,
+                LanguageIdentifier::toString, LanguageIdentifier::parse);
+        this.logger.info("Restored application configuration.");
     }
 
     /**
@@ -135,11 +140,13 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
      */
     private void loadAndActivateLanguages() {
         for (final LanguageIdentifier id : this.getLoadedLanguages()) {
+            this.logger.debug("Finding language '{}'.", id);
             @Nullable final FileObject rootLocation = this.languageSource.find(id);
             if (rootLocation == null) {
                 this.logger.error("Could not find language with id '{}'.", id);
                 continue;
             }
+            this.logger.debug("Found language '{}' at: {}", id, rootLocation);
             loadAndActivateLanguage(id, rootLocation);
         }
     }
@@ -151,6 +158,7 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
      * @param rootLocation The language's root location.
      */
     private void loadAndActivateLanguage(final LanguageIdentifier id, final FileObject rootLocation) {
+        this.logger.debug("Requesting discovery of language '{}' at: {}", id, rootLocation);
         final Iterable<ILanguageDiscoveryRequest> requests = this.languageManager.discover(rootLocation);
         if (Iterables.isEmpty(requests)) {
             this.logger.error("Got no discovery requests for language '{}' at: {}", id, rootLocation);
@@ -163,6 +171,7 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
             this.logger.error("Could not load language '{}' at: {}", e, id, rootLocation);
             return;
         }
+        this.logger.debug("Discovered components language '{}': {}", id, components);
         this.languageManager.activateRange(LanguageUtils2.getLanguagesOfComponents(components));
     }
 
