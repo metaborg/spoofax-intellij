@@ -37,6 +37,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <moduleType id="METABORG_MODULE" implementationClass="org.metaborg.intellij.idea.projects.MetaborgModuleType"/>
+        <projectStructureDetector implementation="org.metaborg.intellij.idea.projects.newproject.MetaborgProjectDetector"/>
         <fileTypeFactory implementation="org.metaborg.intellij.idea.filetypes.MetaborgFileTypeFactory"/>
     </extensions>
 
