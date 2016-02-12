@@ -35,6 +35,7 @@ import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.parsing.*;
+import org.metaborg.intellij.idea.parsing.annotations.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
@@ -42,6 +43,7 @@ import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
 import org.metaborg.intellij.resources.*;
 import org.metaborg.spoofax.core.SpoofaxModule;
 import org.metaborg.spoofax.core.syntax.*;
+import org.spoofax.interpreter.terms.*;
 
 /**
  * The Guice dependency injection module for the Spoofax IntelliJ IDEA plugin.
@@ -65,6 +67,7 @@ import org.metaborg.spoofax.core.syntax.*;
         bindParsing();
         bindElements();
         bindLanguageProject();
+        bindAnnotators();
     }
 
     /**
@@ -188,5 +191,13 @@ import org.metaborg.spoofax.core.syntax.*;
         );
 
         sources.addBinding().to(ResourceLanguageSource.class);
+    }
+
+    /**
+     * Binds source annotators.
+     */
+    protected void bindAnnotators() {
+        bind(new TypeLiteral<MetaborgSourceAnnotator<?, ?>>() {}).in(Singleton.class);
+//        bind(new TypeLiteral<MetaborgSourceAnnotator<IStrategoTerm, IStrategoTerm>>() {}).in(Singleton.class);
     }
 }

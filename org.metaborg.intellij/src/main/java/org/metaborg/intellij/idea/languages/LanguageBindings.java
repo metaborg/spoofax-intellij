@@ -36,6 +36,7 @@ import org.metaborg.intellij.idea.parsing.elements.*;
     private final MetaborgLanguageFileType fileType;
     private final InstanceLanguageExtensionPoint<?> parserDefinitionExtension;
     private final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension;
+    private final InstanceLanguageExtensionPoint<?> externalAnnotatorExtension;
 
     /**
      * Gets the token type manager associated with this language.
@@ -73,26 +74,14 @@ import org.metaborg.intellij.idea.parsing.elements.*;
         return this.syntaxHighlighterFactoryExtension;
     }
 
-    // TODO: Add fields.
-//    private final IdeaLanguageAttachment languageObject;
-//    private InstanceLanguageExtensionPoint<?> parserDefinitionExtension;
-//    private InstanceLanguageExtensionPoint<?> externalAnnotatorExtension;
-//    private InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension;
-//
-//
-//    public IdeaLanguageAttachment languageObject() { return this.languageObject; }
-//
-//    public InstanceLanguageExtensionPoint<?> parserDefinitionExtension() { return this.parserDefinitionExtension; }
-//
-//    public void setParserDefinitionExtension(final InstanceLanguageExtensionPoint<?> parserDefinitionExtension) { this.parserDefinitionExtension = parserDefinitionExtension; }
-//
-//    public InstanceLanguageExtensionPoint<?> externalAnnotatorExtension() { return this.externalAnnotatorExtension; }
-//
-//    public void setExternalAnnotatorExtension(final InstanceLanguageExtensionPoint<?> externalAnnotatorExtension) { this.externalAnnotatorExtension = externalAnnotatorExtension; }
-//
-//    public InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension() { return this.syntaxHighlighterFactoryExtension; }
-//
-//    public void setSyntaxHighlighterFactoryExtension(final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension) { this.syntaxHighlighterFactoryExtension = syntaxHighlighterFactoryExtension; }
+    /**
+     * Gets the external annotator extension point value.
+     *
+     * @return The extension point value.
+     */
+    public InstanceLanguageExtensionPoint<?> getExternalAnnotatorExtension() {
+        return this.externalAnnotatorExtension;
+    }
 
     /**
      * Initializes a new instance of the {@link LanguageBindings} class.
@@ -105,11 +94,13 @@ import org.metaborg.intellij.idea.parsing.elements.*;
     public LanguageBindings(final SpoofaxTokenTypeManager tokenTypeManager,
                             final MetaborgLanguageFileType fileType,
                             final InstanceLanguageExtensionPoint<?> parserDefinitionExtension,
-                            final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension) {
+                            final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension,
+                            final InstanceLanguageExtensionPoint<?> externalAnnotatorExtension) {
         this.tokenTypeManager = tokenTypeManager;
         this.fileType = fileType;
         this.parserDefinitionExtension = parserDefinitionExtension;
         this.syntaxHighlighterFactoryExtension = syntaxHighlighterFactoryExtension;
+        this.externalAnnotatorExtension = externalAnnotatorExtension;
     }
 
 }

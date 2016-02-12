@@ -36,6 +36,7 @@ import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.extensions.*;
 import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.parsing.*;
+import org.metaborg.intellij.idea.parsing.annotations.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
@@ -60,6 +61,7 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
     private final ProxyFactory proxyFactory;
     private final ILanguageDiscoveryService discoveryService;
     private final ILanguageService languageService;
+    private final MetaborgSourceAnnotator<?, ?> metaborgSourceAnnotator;
     private final IFileElementTypeFactory fileElementTypeFactory;
     private final IParserDefinitionFactory parserDefinitionFactory;
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
@@ -77,11 +79,13 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
     @Inject
     public DefaultLanguageManager(final ILanguageService languageService,
                                   final ILanguageDiscoveryService discoveryService,
+                                  final MetaborgSourceAnnotator<?, ?> metaborgSourceAnnotator,
                                   final IFileElementTypeFactory fileElementTypeFactory,
                                   final IParserDefinitionFactory parserDefinitionFactory,
                                   final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider) {
         this.languageService = languageService;
         this.discoveryService = discoveryService;
+        this.metaborgSourceAnnotator = metaborgSourceAnnotator;
         this.fileElementTypeFactory = fileElementTypeFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
@@ -403,12 +407,18 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
                 ideaLanguage,
                 syntaxHighlighterFactory
         );
+        final InstanceLanguageExtensionPoint<?> externalAnnotatorExtension = new InstanceLanguageExtensionPoint<>(
+                ExtensionIds.ExternalAnnotator,
+                ideaLanguage,
+                this.metaborgSourceAnnotator
+        );
 
         return new LanguageBindings(
                 tokenTypeManager,
                 fileType,
                 parserDefinitionExtension,
-                syntaxHighlighterFactoryExtension
+                syntaxHighlighterFactoryExtension,
+                externalAnnotatorExtension
         );
     }
 
@@ -431,7 +441,7 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
     private void activateLanguage(final LanguageBindings languageBindings) {
         ExtensionUtils.register(languageBindings.getParserDefinitionExtension());
         ExtensionUtils.register(languageBindings.getSyntaxHighlighterFactoryExtension());
-        // TODO: Register the annotator extension point.
+        ExtensionUtils.register(languageBindings.getExternalAnnotatorExtension());
         FileTypeUtils.register(languageBindings.getFileType());
     }
 
@@ -451,7 +461,7 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
      */
     private void deactivateLanguage(final LanguageBindings languageBindings) {
         FileTypeUtils.unregister(languageBindings.getFileType());
-        // TODO: Unregister the annotator extension point.
+        ExtensionUtils.unregister(languageBindings.getExternalAnnotatorExtension());
         ExtensionUtils.unregister(languageBindings.getSyntaxHighlighterFactoryExtension());
         ExtensionUtils.unregister(languageBindings.getParserDefinitionExtension());
     }
