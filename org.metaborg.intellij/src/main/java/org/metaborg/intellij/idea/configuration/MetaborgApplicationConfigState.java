@@ -31,6 +31,7 @@ import java.util.*;
 /**
  * State of the application-level configuration of the plugin.
  */
+@SuppressWarnings("PublicField")
 /* package private */ final class MetaborgApplicationConfigState implements Serializable {
 
     // The fields must be public non-final, and use only simple types:
@@ -40,14 +41,14 @@ import java.util.*;
     /**
      * The IDs of the loaded languages.
      */
-    public Collection<String> loadedLanguages;
+    public Set<String> loadedLanguages = new HashSet<>();
 
     /**
      * Initializes a new instance of the {@link MetaborgApplicationConfigState} class.
      */
     public MetaborgApplicationConfigState() {
         // Default configuration:
-        this.loadedLanguages = Lists.newArrayList(
+        this.loadedLanguages = Sets.newHashSet(
                 "org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT"
         );
     }

@@ -36,6 +36,10 @@ import java.util.*;
 
 /**
  * Application-level configuration of the plugin.
+ *
+ * This component will perform any start-up actions (such as loading and activating configured languages)
+ * but will not respond to configuration changes (e.g. newly added languages are not loaded or activated
+ * until IntelliJ IDEA is restarted).
  */
 @State(
         name = "MetaborgApplicationConfigManager",
@@ -48,22 +52,18 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
 
     private ILanguageSource languageSource;
     private ILanguageManager languageManager;
-    private MetaborgApplicationConfigState config = new MetaborgApplicationConfigState();
+    private MetaborgApplicationConfigState state = new MetaborgApplicationConfigState();
     @InjectLogger
     private ILogger logger;
+    private final Set<LanguageIdentifier> loadedLanguages;
 
     /**
-     * Gets the set of identifiers of languages that should be loaded.
+     * Gets thea mutable set of identifiers of languages that should be loaded and activated.
      *
-     * @return A set of language identifiers.
+     * @return A mutable set of language identifiers.
      */
     public Set<LanguageIdentifier> getLoadedLanguages() {
-        final Set<LanguageIdentifier> ids = new HashSet<>(this.config.loadedLanguages.size());
-        for (final String idStr : this.config.loadedLanguages) {
-            @Nullable final LanguageIdentifier id = parseIdentifier(idStr);
-            ids.add(id);
-        }
-        return ids;
+        return this.loadedLanguages;
     }
 
     /**
@@ -71,6 +71,9 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
      * Do not call this constructor manually.
      */
     public MetaborgApplicationConfig() {
+        this.loadedLanguages = new AdaptingSet<>(this.state.loadedLanguages,
+                LanguageIdentifier::toString, LanguageIdentifier::parse);
+
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
@@ -87,9 +90,6 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
     @Override
     public void initComponent() {
         // Occurs when the application is starting.
-
-//        this.config.loadedLanguages.add("org.metaborg:org.metaborg.meta.lang.template:1.5.0-SNAPSHOT");
-        this.config.loadedLanguages.add("org.metaborg:org.metaborg.meta.lang.ts:1.5.0-SNAPSHOT");
 
         loadAndActivateLanguages();
     }
@@ -117,7 +117,7 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
     @Nullable
     @Override
     public MetaborgApplicationConfigState getState() {
-        return this.config;
+        return this.state;
     }
 
     /**
@@ -126,8 +126,8 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
      * This method is only called if the configuration has changed.
      */
     @Override
-    public void loadState(final MetaborgApplicationConfigState config) {
-        this.config = config;
+    public void loadState(final MetaborgApplicationConfigState state) {
+        this.state = state;
     }
 
     /**
@@ -166,19 +166,19 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
         this.languageManager.activateRange(LanguageUtils2.getLanguagesOfComponents(components));
     }
 
-    /**
-     * Parses the language identifier string.
-     *
-     * @param idString The language identifier string.
-     * @return The parsed identifier; or <code>null</code> when invalid.
-     */
-    @Nullable
-    private LanguageIdentifier parseIdentifier(final String idString) {
-        try {
-            return LanguageIdentifier.parse(idString);
-        } catch (final IllegalArgumentException ex) {
-            this.logger.error("Invalid language identifier: {}", idString);
-            return null;
-        }
-    }
+//    /**
+//     * Parses the language identifier string.
+//     *
+//     * @param idString The language identifier string.
+//     * @return The parsed identifier; or <code>null</code> when invalid.
+//     */
+//    @Nullable
+//    private LanguageIdentifier parseIdentifier(final String idString) {
+//        try {
+//            return LanguageIdentifier.parse(idString);
+//        } catch (final IllegalArgumentException ex) {
+//            this.logger.error("Invalid language identifier: {}", idString);
+//            return null;
+//        }
+//    }
 }
