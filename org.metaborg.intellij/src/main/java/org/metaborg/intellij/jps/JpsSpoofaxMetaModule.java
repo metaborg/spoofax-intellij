@@ -21,7 +21,7 @@ package org.metaborg.intellij.jps;
 
 import com.google.inject.*;
 import org.jetbrains.jps.incremental.*;
-import org.metaborg.intellij.jps.targetbuilders.*;
+import org.metaborg.intellij.jps.builders.*;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
 
 import java.util.*;

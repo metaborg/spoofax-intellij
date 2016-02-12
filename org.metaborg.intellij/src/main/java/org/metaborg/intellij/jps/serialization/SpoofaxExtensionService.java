@@ -23,15 +23,11 @@ package org.metaborg.intellij.jps.serialization;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.service.*;
 
+// TODO: Make interface.
 /**
  * Gets or sets the configuration for JPS model objects.
  */
 public abstract class SpoofaxExtensionService {
-
-    // TODO: Inject
-    public static SpoofaxExtensionService getInstance() {
-        return JpsServiceManager.getInstance().getService(SpoofaxExtensionService.class);
-    }
 
     /**
      * Gets the global configuration.

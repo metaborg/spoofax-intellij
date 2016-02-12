@@ -33,7 +33,7 @@ import org.metaborg.core.resource.*;
 import org.metaborg.core.syntax.*;
 import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.idea.discovery.*;
-import org.metaborg.intellij.idea.editor.*;
+import org.metaborg.intellij.idea.editors.*;
 import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.languages.*;

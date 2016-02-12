@@ -20,9 +20,7 @@
 package org.metaborg.intellij.idea.configuration;
 
 import com.google.common.collect.*;
-import com.google.common.hash.*;
 import org.apache.commons.collections.*;
-import org.metaborg.core.language.*;
 
 import javax.annotation.*;
 import java.io.*;
@@ -30,9 +28,12 @@ import java.util.*;
 
 /**
  * State of the application-level configuration of the plugin.
+ *
+ * Don't use this class directly. Instead use the {@link IdeaMetaborgApplicationConfig} class (in IntelliJ IDEA)
+ * or the {@link IdeaMetaborgApplicationConfig} (in JPS).
  */
 @SuppressWarnings("PublicField")
-/* package private */ final class MetaborgApplicationConfigState implements Serializable {
+public final class MetaborgApplicationConfigState implements Serializable {
 
     // The fields must be public non-final, and use only simple types:
     //   numbers, booleans, strings, collections, maps, enums

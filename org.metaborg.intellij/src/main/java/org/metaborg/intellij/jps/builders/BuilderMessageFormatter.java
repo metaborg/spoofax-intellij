@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.targetbuilders;
+package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
 import org.jetbrains.jps.incremental.messages.*;

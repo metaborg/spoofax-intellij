@@ -17,24 +17,30 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.targetbuilders;
+package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
 import org.metaborg.intellij.jps.project.*;
 
-public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarget> {
+
+public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTarget> {
+
+    private final SpoofaxPreTargetType preTargetType;
 
     @Inject
-    public SpoofaxPreTargetType(final IJpsProjectService projectService) {
-        super("spoofax-pre-production", projectService);
+    public SpoofaxPostTargetType(
+            final IJpsProjectService projectService,
+            final SpoofaxPreTargetType preTargetType) {
+        super("spoofax-post-production", projectService);
+        this.preTargetType = preTargetType;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final SpoofaxPreTarget createTarget(final MetaborgJpsProject project) {
-        return new SpoofaxPreTarget(project, this);
+    public final SpoofaxPostTarget createTarget(final MetaborgJpsProject project) {
+        return new SpoofaxPostTarget(project, this, this.preTargetType);
     }
 
 }

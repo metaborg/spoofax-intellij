@@ -19,20 +19,47 @@
 
 package org.metaborg.intellij.jps.serialization;
 
+import com.google.inject.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.ex.*;
+import org.metaborg.core.language.*;
+import org.metaborg.intellij.idea.configuration.*;
+import org.metaborg.intellij.logging.*;
+import org.metaborg.util.log.*;
 
+import java.util.*;
+
+// TODO: Rename to: JpsMetaborgApplicationConfig
 /**
  * Global JPS configuration.
  */
-public final class SpoofaxGlobalConfig extends SpoofaxConfig<SpoofaxGlobalState, SpoofaxGlobalConfig> {
-    public static final JpsElementChildRole<SpoofaxGlobalConfig> ROLE = JpsElementChildRoleBase.create("Spoofax");
+public final class SpoofaxGlobalConfig extends SpoofaxConfig<MetaborgApplicationConfigState, SpoofaxGlobalConfig>
+    implements IMetaborgApplicationConfig {
+
+    public static final JpsElementChildRole<SpoofaxGlobalConfig> ROLE = JpsElementChildRoleBase.create("Metaborg");
+
+    // FIXME: Make this immutable.
+    private Set<LanguageIdentifier> loadedLanguages;
+    private final IJpsMetaborgApplicationConfigFactory configFactory;
+    @InjectLogger
+    private ILogger logger;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set<LanguageIdentifier> getLoadedLanguages() {
+        return this.loadedLanguages;
+    }
 
     /**
      * Initializes a new instance of the {@link SpoofaxGlobalConfig} class.
      */
-    public SpoofaxGlobalConfig() {
-        super(new SpoofaxGlobalState());
+    @Inject
+    public SpoofaxGlobalConfig(final IJpsMetaborgApplicationConfigFactory configFactory) {
+        super(new MetaborgApplicationConfigState());
+
+        this.configFactory = configFactory;
     }
 
     /**
@@ -40,8 +67,20 @@ public final class SpoofaxGlobalConfig extends SpoofaxConfig<SpoofaxGlobalState,
      */
     @Override
     public final SpoofaxGlobalConfig createCopy() {
-        final SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();
+        final SpoofaxGlobalConfig config = this.configFactory.create();// new SpoofaxGlobalConfig();
         config.applyChanges(this);
         return config;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Don't use the logger here. It hasn't been injected yet.
+     */
+    @Override
+    public void loadState(final MetaborgApplicationConfigState state) {
+        super.loadState(state);
+        this.loadedLanguages = new AdaptingSet<>(state.loadedLanguages,
+                LanguageIdentifier::toString, LanguageIdentifier::parse);
     }
 }

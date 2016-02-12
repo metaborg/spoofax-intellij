@@ -17,11 +17,24 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * All the builder targets and builders used by the JPS plugin to
- * build Metaborg Core projects.
- */
-@NonNullByDefault
-package org.metaborg.intellij.jps.targetbuilders;
+package org.metaborg.intellij.jps.builders;
 
-import org.metaborg.intellij.*;
+import com.google.inject.*;
+import org.metaborg.intellij.jps.project.*;
+
+public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarget> {
+
+    @Inject
+    public SpoofaxPreTargetType(final IJpsProjectService projectService) {
+        super("spoofax-pre-production", projectService);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final SpoofaxPreTarget createTarget(final MetaborgJpsProject project) {
+        return new SpoofaxPreTarget(project, this);
+    }
+
+}

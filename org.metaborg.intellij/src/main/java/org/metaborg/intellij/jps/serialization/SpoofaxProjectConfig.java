@@ -26,8 +26,7 @@ import org.jetbrains.jps.model.ex.*;
  * Project-wide JPS configuration.
  */
 public final class SpoofaxProjectConfig extends SpoofaxConfig<SpoofaxProjectState, SpoofaxProjectConfig> {
-    public static final JpsElementChildRole<SpoofaxProjectConfig> ROLE = JpsElementChildRoleBase.create(
-            "Spoofax Project");
+    public static final JpsElementChildRole<SpoofaxProjectConfig> ROLE = JpsElementChildRoleBase.create("Metaborg Project");
 
     /**
      * Initializes a new instance of the {@link SpoofaxProjectConfig} class.

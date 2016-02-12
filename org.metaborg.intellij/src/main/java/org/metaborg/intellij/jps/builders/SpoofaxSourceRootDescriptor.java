@@ -17,47 +17,54 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.targetbuilders;
+package org.metaborg.intellij.jps.builders;
 
 import org.jetbrains.jps.builders.*;
-import org.metaborg.intellij.jps.project.*;
 
-import java.util.*;
+import java.io.*;
 
 /**
- * Build target for Spoofax projects pre-Java.
+ * Describes a source root for the Spoofax build target.
  */
-public final class SpoofaxPreTarget extends SpoofaxTarget {
+public final class SpoofaxSourceRootDescriptor extends BuildRootDescriptor {
 
-    // TODO: Inject!
-    public SpoofaxPreTarget(final MetaborgJpsProject project, final SpoofaxPreTargetType targetType) {
-        super(project, targetType);
+    private final File root;
+    private final BuildTarget<?> target;
+
+    /**
+     * Initializes a new instance of the {@link SpoofaxSourceRootDescriptor} class.
+     *
+     * @param root   The directory of the source root.
+     * @param target The build target to which the source root belongs.
+     */
+    public SpoofaxSourceRootDescriptor(final File root, final BuildTarget<?> target) {
+        super();
+        this.root = root;
+        this.target = target;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final boolean isCompiledBeforeModuleLevelBuilders() {
-        return true;
+    public final String getRootId() {
+        return this.root.getAbsolutePath();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final Collection<BuildTarget<?>> computeDependencies(
-            final BuildTargetRegistry buildTargetRegistry,
-            final TargetOutputIndex targetOutputIndex) {
-        return Collections.emptyList();
+    public final File getRootFile() {
+        return this.root;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final String getPresentableName() {
-        return "Spoofax PRE target 2 '" + getId() + "'";
+    public final BuildTarget<?> getTarget() {
+        return this.target;
     }
 
 }

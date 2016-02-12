@@ -19,6 +19,7 @@
 
 package org.metaborg.intellij.jps.serialization;
 
+import com.google.inject.*;
 import com.intellij.util.xmlb.*;
 import org.jdom.*;
 import org.jetbrains.jps.model.*;
@@ -34,8 +35,12 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
     public static final String NAME = "SpoofaxProjectService";
     public static final String CONFIG_FILE = "SpoofaxProject.xml";
 
-    public SpoofaxProjectSerializer() {
+    private final SpoofaxExtensionService extensionService;
+
+    @Inject
+    public SpoofaxProjectSerializer(final SpoofaxExtensionService extensionService) {
         super(CONFIG_FILE, NAME);
+        this.extensionService = extensionService;
     }
 
     /**
@@ -69,7 +74,7 @@ public final class SpoofaxProjectSerializer extends JpsProjectExtensionSerialize
         final SpoofaxProjectConfig config = new SpoofaxProjectConfig();
         if (state != null)
             config.loadState(state);
-        SpoofaxExtensionService.getInstance().setConfiguration(project, config);
+        this.extensionService.setConfiguration(project, config);
     }
 
 }

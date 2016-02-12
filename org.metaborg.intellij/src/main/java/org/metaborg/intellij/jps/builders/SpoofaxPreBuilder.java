@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.targetbuilders;
+package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
 import org.apache.commons.vfs2.*;
@@ -33,6 +33,7 @@ import org.metaborg.core.messages.*;
 import org.metaborg.core.processing.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.serialization.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.spoofax.core.processing.*;
 import org.metaborg.spoofax.core.project.*;
@@ -59,6 +60,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
     private final IDependencyService dependencyService;
     private final SpoofaxProcessorRunner processorRunner;
     private final BuilderMessageFormatter messageFormatter;
+    private final SpoofaxExtensionService extensionService;
     @InjectLogger
     private ILogger logger;
 
@@ -74,7 +76,8 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             final IDependencyService dependencyService,
             final SpoofaxProcessorRunner processorRunner,
             final ISpoofaxLanguageSpecPathsService pathsService,
-            final BuilderMessageFormatter messageFormatter) {
+            final BuilderMessageFormatter messageFormatter,
+            final SpoofaxExtensionService extensionService) {
         super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
         this.builder = builder;
 //        this.languageManager = languageManager;
@@ -82,6 +85,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
         this.dependencyService = dependencyService;
         this.processorRunner = processorRunner;
         this.messageFormatter = messageFormatter;
+        this.extensionService = extensionService;
     }
 
     /**
@@ -105,8 +109,11 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
         try {
             final LanguageSpecBuildInput metaInput = getBuildInput(target.getModule());
 
+
+            final SpoofaxGlobalConfig configuration = this.extensionService.getConfiguration(context.getProjectDescriptor().getModel().getGlobal());
+
             if (true) {
-                throw new RuntimeException("!!!!!!!!!!!!");
+                throw new RuntimeException("!!!!!!: " + configuration.getLoadedLanguages().toString());
             }
             // TODO: Load languages!
             // TODO: Get languages from application config?

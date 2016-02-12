@@ -29,7 +29,6 @@ import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.discovery.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
 
 import java.util.*;
@@ -42,12 +41,12 @@ import java.util.*;
  * until IntelliJ IDEA is restarted).
  */
 @State(
-        name = "MetaborgApplicationConfigManager",
+        name = IMetaborgApplicationConfig.CONFIG_NAME,
         storages = {
-                @Storage(file = StoragePathMacros.APP_CONFIG + "/metaborg.xml")
+                @Storage(file = StoragePathMacros.APP_CONFIG + IMetaborgApplicationConfig.CONFIG_FILE)
         }
 )
-public final class MetaborgApplicationConfig implements ApplicationComponent,
+public final class IdeaMetaborgApplicationConfig implements IMetaborgApplicationConfig, ApplicationComponent,
         PersistentStateComponent<MetaborgApplicationConfigState> {
 
     private ILanguageSource languageSource;
@@ -59,10 +58,9 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
     private ILogger logger;
 
     /**
-     * Gets thea mutable set of identifiers of languages that should be loaded and activated.
-     *
-     * @return A mutable set of language identifiers.
+     * {@inheritDoc}
      */
+    @Override
     public Set<LanguageIdentifier> getLoadedLanguages() {
         return this.loadedLanguages;
     }
@@ -71,7 +69,7 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
      * This instance is created by IntelliJ's plugin system.
      * Do not call this constructor manually.
      */
-    public MetaborgApplicationConfig() {
+    public IdeaMetaborgApplicationConfig() {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
         // Don't initialize fields that depend on the state here. Initialize in loadState().
         loadState(new MetaborgApplicationConfigState());
@@ -90,6 +88,8 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
     @Override
     public void initComponent() {
         // Occurs when the application is starting.
+
+        this.loadedLanguages.add(LanguageIdentifier.parse("org.metaborg:org.metaborg.meta.lang.template:1.5.0-SNAPSHOT"));
 
         this.logger.debug("Loading Spoofax plugin application-wide config.");
         loadAndActivateLanguages();
@@ -110,7 +110,7 @@ public final class MetaborgApplicationConfig implements ApplicationComponent,
     @NotNull
     @Override
     public String getComponentName() {
-        return MetaborgApplicationConfig.class.getName();
+        return IdeaMetaborgApplicationConfig.class.getName();
     }
 
     /**

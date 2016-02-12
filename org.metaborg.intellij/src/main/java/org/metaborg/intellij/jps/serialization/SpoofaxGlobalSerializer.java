@@ -19,24 +19,30 @@
 
 package org.metaborg.intellij.jps.serialization;
 
+import com.google.inject.*;
 import com.intellij.util.xmlb.*;
 import org.jdom.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.serialization.*;
+import org.metaborg.intellij.idea.configuration.*;
 
 import javax.annotation.*;
 
+// TODO: Rename to: MetaborgApplicationConfigDeserializer
 /**
- * Deserializes application-wide configuration in JPS.
+ * Deserializes the application-wide configuration in JPS.
  */
 public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer {
 
-    // FIXME:
-    public static final String NAME = "SpoofaxGlobalService";
-    public static final String CONFIG_FILE = "Spoofax.xml";
+    private final IJpsMetaborgApplicationConfigFactory configFactory;
+    private final SpoofaxExtensionService extensionService;
 
-    public SpoofaxGlobalSerializer() {
-        super(CONFIG_FILE, NAME);
+    @Inject
+    public SpoofaxGlobalSerializer(final IJpsMetaborgApplicationConfigFactory configFactory,
+                                   final SpoofaxExtensionService extensionService) {
+        super(IMetaborgApplicationConfig.CONFIG_FILE, IMetaborgApplicationConfig.CONFIG_NAME);
+        this.configFactory = configFactory;
+        this.extensionService = extensionService;
     }
 
     /**
@@ -44,7 +50,7 @@ public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer 
      */
     @Override
     public final void loadExtension(final JpsGlobal global, final Element element) {
-        @Nullable final SpoofaxGlobalState state = XmlSerializer.deserialize(element, SpoofaxGlobalState.class);
+        @Nullable final MetaborgApplicationConfigState state = XmlSerializer.deserialize(element, MetaborgApplicationConfigState.class);
         loadExtensionWithState(global, state);
     }
 
@@ -66,10 +72,10 @@ public final class SpoofaxGlobalSerializer extends JpsGlobalExtensionSerializer 
 
     private void loadExtensionWithState(
             final JpsGlobal global,
-            @Nullable final SpoofaxGlobalState state) {
-        final SpoofaxGlobalConfig config = new SpoofaxGlobalConfig();
+            @Nullable final MetaborgApplicationConfigState state) {
+        final SpoofaxGlobalConfig config = this.configFactory.create();// new SpoofaxGlobalConfig();
         if (state != null)
             config.loadState(state);
-        SpoofaxExtensionService.getInstance().setConfiguration(global, config);
+        this.extensionService.setConfiguration(global, config);
     }
 }

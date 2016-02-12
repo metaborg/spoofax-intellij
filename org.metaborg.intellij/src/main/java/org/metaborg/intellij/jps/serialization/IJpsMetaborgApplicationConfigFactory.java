@@ -17,30 +17,20 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.targetbuilders;
+package org.metaborg.intellij.jps.serialization;
 
-import com.google.inject.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.idea.configuration.*;
 
-
-public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTarget> {
-
-    private final SpoofaxPreTargetType preTargetType;
-
-    @Inject
-    public SpoofaxPostTargetType(
-            final IJpsProjectService projectService,
-            final SpoofaxPreTargetType preTargetType) {
-        super("spoofax-post-production", projectService);
-        this.preTargetType = preTargetType;
-    }
+/**
+ * Factory for character lexers.
+ */
+public interface IJpsMetaborgApplicationConfigFactory {
 
     /**
-     * {@inheritDoc}
+     * Creates a new application configuration.
+     *
+     * @return The created configuration.
      */
-    @Override
-    public final SpoofaxPostTarget createTarget(final MetaborgJpsProject project) {
-        return new SpoofaxPostTarget(project, this, this.preTargetType);
-    }
+    SpoofaxGlobalConfig create();
 
 }

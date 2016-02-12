@@ -18,9 +18,10 @@
  */
 
 /**
- * Editor functionality.
+ * All the builder targets and builders used by the JPS plugin to
+ * build Metaborg Core projects.
  */
 @NonNullByDefault
-package org.metaborg.intellij.idea.editor;
+package org.metaborg.intellij.jps.builders;
 
 import org.metaborg.intellij.*;

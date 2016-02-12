@@ -19,6 +19,7 @@
 
 package org.metaborg.intellij.jps.serialization;
 
+import com.google.inject.*;
 import org.jetbrains.jps.model.ex.*;
 
 /**
@@ -35,16 +36,16 @@ public abstract class SpoofaxConfig<TState, Self extends SpoofaxConfig<TState, S
      */
     protected SpoofaxConfig(final TState defaultState) {
         super();
-        this.state = defaultState;
+        loadState(defaultState);
     }
 
     /**
      * Sets the state.
      *
-     * @param value The state.
+     * @param state The state.
      */
-    public final void loadState(final TState value) {
-        this.state = value;
+    public void loadState(final TState state) {
+        this.state = state;
     }
 
     /**
@@ -61,8 +62,8 @@ public abstract class SpoofaxConfig<TState, Self extends SpoofaxConfig<TState, S
      * @param modified The other configuration.
      */
     @Override
-    public void applyChanges(final Self modified) {
-        this.state = modified.getState();
+    public final void applyChanges(final Self modified) {
+        loadState(modified.getState());
     }
 
     /**

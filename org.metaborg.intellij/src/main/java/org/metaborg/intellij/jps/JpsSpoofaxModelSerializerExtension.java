@@ -32,22 +32,26 @@ import java.util.*;
 @Singleton
 public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializerExtension {
 
+    private SpoofaxGlobalSerializer applicationConfigDeserializer;
+    private SpoofaxProjectSerializer projectConfigDeserializer;
+    private SpoofaxModuleSerializer moduleConfigDeserializer;
+
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this constructor manually.
      */
     public JpsSpoofaxModelSerializerExtension() {
-        super();
+        SpoofaxJpsPlugin.injector().injectMembers(this);
     }
 
-    /**
-     * Gets the project extension serializers.
-     *
-     * @return A list of project extension serializers.
-     */
-    @Override
-    public final List<? extends JpsProjectExtensionSerializer> getProjectExtensionSerializers() {
-        return Collections.singletonList(new SpoofaxProjectSerializer());
+    @Inject
+    @SuppressWarnings("unused")
+    private void inject(final SpoofaxGlobalSerializer applicationConfigDeserializer,
+                        final SpoofaxProjectSerializer projectConfigDeserializer,
+                        final SpoofaxModuleSerializer moduleConfigDeserializer) {
+        this.applicationConfigDeserializer = applicationConfigDeserializer;
+        this.projectConfigDeserializer = projectConfigDeserializer;
+        this.moduleConfigDeserializer = moduleConfigDeserializer;
     }
 
     /**
@@ -57,7 +61,17 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
      */
     @Override
     public final List<? extends JpsGlobalExtensionSerializer> getGlobalExtensionSerializers() {
-        return Collections.singletonList(new SpoofaxGlobalSerializer());
+        return Collections.singletonList(this.applicationConfigDeserializer);
+    }
+
+    /**
+     * Gets the project extension serializers.
+     *
+     * @return A list of project extension serializers.
+     */
+    @Override
+    public final List<? extends JpsProjectExtensionSerializer> getProjectExtensionSerializers() {
+        return Collections.singletonList(this.projectConfigDeserializer);
     }
 
     /**
@@ -67,6 +81,6 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
      */
     @Override
     public final List<? extends JpsModulePropertiesSerializer<?>> getModulePropertiesSerializers() {
-        return Collections.singletonList(new SpoofaxModuleSerializer());
+        return Collections.singletonList(this.moduleConfigDeserializer);
     }
 }

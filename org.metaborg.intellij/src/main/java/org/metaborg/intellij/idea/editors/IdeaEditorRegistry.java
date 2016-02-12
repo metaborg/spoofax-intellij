@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.editor;
+package org.metaborg.intellij.idea.editors;
 
 import com.google.inject.*;
 import com.intellij.openapi.fileEditor.*;

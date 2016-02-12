@@ -19,6 +19,7 @@
 
 package org.metaborg.intellij.jps.serialization;
 
+import com.google.inject.*;
 import org.jdom.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.serialization.module.*;
@@ -33,6 +34,7 @@ public final class SpoofaxModuleSerializer extends JpsModulePropertiesSerializer
 
     public static final String NAME = "SpoofaxModuleService";
 
+    @Inject
     public SpoofaxModuleSerializer() {
         super(JpsMetaborgModuleType.INSTANCE, "METABORG_MODULE", null);
     }
