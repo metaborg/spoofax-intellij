@@ -210,7 +210,6 @@ public final class ActionUtils {
      * @return A list of files.
      */
     public List<TransformResource> getActiveResources(final AnActionEvent e) {
-//        @Nullable final VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
         @Nullable final PsiFile[] files = getSelectedPsiFiles(e);
         if (files == null || files.length == 0)
             return Collections.emptyList();
@@ -221,8 +220,10 @@ public final class ActionUtils {
             final FileObject resource = this.resourceService.resolve(file.getVirtualFile());
             @Nullable final ILanguageSpec project = this.languageSpecService.get(this.projectService.get(file));
             @Nullable final Document document = FileDocumentManager.getInstance().getDocument(file.getVirtualFile());
-            if (project == null || document == null)
+            if (project == null || document == null) {
+                this.logger.debug("Resource ignored because it has no project or document: {}", resource);
                 continue;
+            }
             result.add(new TransformResource(resource, project, document.getText()));
         }
         return result;

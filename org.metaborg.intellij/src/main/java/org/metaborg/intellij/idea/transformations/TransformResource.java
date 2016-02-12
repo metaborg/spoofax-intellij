@@ -68,4 +68,12 @@ public final class TransformResource {
     public String text() {
         return this.text;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.resource.toString();
+    }
 }

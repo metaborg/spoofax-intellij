@@ -71,19 +71,26 @@ public final class TransformationAction extends AnActionWithId {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
 
         final List<TransformResource> resources = this.actionUtils.getActiveResources(e);
+
+        this.logger.debug("Transforming active resources: {}", resources);
+
         WriteCommandAction.runWriteCommandAction(project, () -> {
             try {
                 final List<FileObject> outputFiles = this.transformer.execute(resources, this.language, this.goal);
+                this.logger.debug("Transformation resulted in output files: {}", outputFiles);
                 for (final FileObject output : outputFiles) {
                     @Nullable final VirtualFile virtualFile = this.resourceService.unresolve(output);
                     if (virtualFile != null) {
                         virtualFile.refresh(true, false);
+                        this.logger.debug("Refreshed output file: {}", virtualFile);
                     }
                 }
             } catch (final MetaborgException ex) {
                 this.logger.error("An exception occurred: {}", ex);
             }
         });
+
+        this.logger.info("Transformed active resources: {}", resources);
     }
 
 }

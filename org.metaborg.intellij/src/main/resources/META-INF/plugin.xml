@@ -51,6 +51,9 @@
     </project-components>
 
     <module-components>
+        <component>
+            <implementation-class>org.metaborg.intellij.idea.projects.MetaborgModuleComponent</implementation-class>
+        </component>
     </module-components>
 
     <actions>
