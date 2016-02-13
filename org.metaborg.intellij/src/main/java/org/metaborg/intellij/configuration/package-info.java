@@ -20,7 +20,17 @@
 /**
  * Configuration classes that are shared between IntelliJ IDEA and JPS.
  *
- * JPS will load the configurations stored by IntelliJ IDEA.
+ * There is an application-wide configuration, multiple project configurations, and multiple module
+ * configurations.
+ *
+ * The application-wide configuration is stored by IntelliJ IDEA in the
+ * <code>%idea.config.path%/options/metaborg.xml</code> file.
+ *
+ * The project-specific configuration is stored by IntelliJ IDEA in the
+ * <code>$PROJECT_ROOT$/.idea/metaborg.xml</code> file.
+ *
+ * The module-specific configuration is stored by IntelliJ IDEA in the module's <code>.iml</code> file.
+ *
  */
 @NonNullByDefault
 package org.metaborg.intellij.configuration;

@@ -49,8 +49,9 @@ public final class MetaborgApplicationConfigDeserializer extends JpsGlobalExtens
      */
     @Override
     public final void loadExtension(final JpsGlobal global, final Element element) {
-        @Nullable final MetaborgApplicationConfigState state = XmlSerializer.deserialize(element, MetaborgApplicationConfigState.class);
-        loadExtensionWithState(global, state);
+        @Nullable final MetaborgApplicationConfigState state = XmlSerializer.deserialize(element,
+                MetaborgApplicationConfigState.class);
+        setConfig(global, buildConfig(state));
     }
 
     /**
@@ -58,25 +59,38 @@ public final class MetaborgApplicationConfigDeserializer extends JpsGlobalExtens
      */
     @Override
     public final void loadExtensionWithDefaultSettings(final JpsGlobal global) {
-        loadExtensionWithState(global, null);
+        setConfig(global, buildConfig(null));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void saveExtension(final JpsGlobal jpsGlobal, final Element element) {
-        throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
+    public final void saveExtension(final JpsGlobal global, final Element element) {
+        final JpsMetaborgApplicationConfig config = this.extensionService.getConfiguration(global);
+        XmlSerializer.serializeInto(config.getState(), element);
     }
 
-    // TODO: Rename
-    // TODO: Document
-    private void loadExtensionWithState(
-            final JpsGlobal global,
-            @Nullable final MetaborgApplicationConfigState state) {
+    /**
+     * Sets the global configuration.
+     *
+     * @param global The global element.
+     * @param config The configuration.
+     */
+    private void setConfig(final JpsGlobal global, final JpsMetaborgApplicationConfig config) {
+        this.extensionService.setConfiguration(global, config);
+    }
+
+    /**
+     * Builds the configuration object.
+     *
+     * @param state The configuration state; or <code>null</code> to use the default.
+     * @return The configuration object.
+     */
+    private JpsMetaborgApplicationConfig buildConfig(@Nullable final MetaborgApplicationConfigState state) {
         final JpsMetaborgApplicationConfig config = this.configFactory.create();
         if (state != null)
             config.loadState(state);
-        this.extensionService.setConfiguration(global, config);
+        return config;
     }
 }

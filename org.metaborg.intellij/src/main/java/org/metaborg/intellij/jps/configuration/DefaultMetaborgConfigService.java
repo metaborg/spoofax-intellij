@@ -69,4 +69,11 @@ public final class DefaultMetaborgConfigService implements IMetaborgConfigServic
         project.getContainer().setChild(JpsMetaborgProjectConfig.ROLE, config);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setConfiguration(final JpsModule module, final JpsMetaborgModuleConfig config) {
+        module.getContainer().setChild(JpsMetaborgModuleConfig.ROLE, config);
+    }
 }

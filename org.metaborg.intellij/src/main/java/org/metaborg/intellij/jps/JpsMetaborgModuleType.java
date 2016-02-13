@@ -32,10 +32,6 @@ import org.metaborg.intellij.jps.configuration.*;
 @Singleton
 public final class JpsMetaborgModuleType implements JpsModuleType<JpsMetaborgModuleConfig> {
 
-    // TODO: Remove
-    public static final JpsMetaborgModuleType INSTANCE = new JpsMetaborgModuleType();
-
-    // TODO: Inject everywhere
     /**
      * Initializes a new instance of the {@link JpsMetaborgModuleType} class.
      */

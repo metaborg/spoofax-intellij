@@ -29,15 +29,15 @@ import org.metaborg.util.log.*;
 
 import java.util.*;
 
-// TODO: Rename to: JpsMetaborgApplicationConfig
 /**
- * Global JPS configuration.
+ * Application-wide JPS configuration.
  */
 public final class JpsMetaborgApplicationConfig
         extends AbstractMetaborgConfig<MetaborgApplicationConfigState, JpsMetaborgApplicationConfig>
         implements IMetaborgApplicationConfig {
 
-    public static final JpsElementChildRole<JpsMetaborgApplicationConfig> ROLE = JpsElementChildRoleBase.create("Metaborg");
+    public static final JpsElementChildRole<JpsMetaborgApplicationConfig> ROLE
+            = JpsElementChildRoleBase.create("Metaborg");
 
     // Don't initialize fields that depend on the state here. Initialize in loadState().
     // FIXME: Make this an immutable set.
@@ -82,6 +82,7 @@ public final class JpsMetaborgApplicationConfig
     @Override
     public void loadState(final MetaborgApplicationConfigState state) {
         super.loadState(state);
+        // Initialize fields that depend on state here.
         this.loadedLanguages = new AdaptingSet<>(state.loadedLanguages,
                 LanguageIdentifier::toString, LanguageIdentifier::parse);
     }

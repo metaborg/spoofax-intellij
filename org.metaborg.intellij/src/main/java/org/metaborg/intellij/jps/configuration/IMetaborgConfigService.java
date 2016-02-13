@@ -69,4 +69,12 @@ public interface IMetaborgConfigService {
      */
     void setConfiguration(JpsProject project, JpsMetaborgProjectConfig config);
 
+    /**
+     * Sets the Metaborg module configuration.
+     *
+     * @param module The module JPS element.
+     * @param config  The configuration.
+     */
+    void setConfiguration(JpsModule module, JpsMetaborgModuleConfig config);
+
 }

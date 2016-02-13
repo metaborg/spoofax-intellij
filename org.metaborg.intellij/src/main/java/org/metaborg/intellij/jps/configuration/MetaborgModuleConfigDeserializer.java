@@ -22,8 +22,6 @@ package org.metaborg.intellij.jps.configuration;
 import com.google.inject.*;
 import com.intellij.util.xmlb.*;
 import org.jdom.*;
-import org.jetbrains.jps.model.*;
-import org.jetbrains.jps.model.module.*;
 import org.jetbrains.jps.model.serialization.module.*;
 import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.projects.*;
@@ -39,8 +37,8 @@ public final class MetaborgModuleConfigDeserializer extends JpsModulePropertiesS
     private final IJpsMetaborgModuleConfigFactory configFactory;
 
     @Inject
-    public MetaborgModuleConfigDeserializer(final IJpsMetaborgModuleConfigFactory configFactory) {
-        super(JpsMetaborgModuleType.INSTANCE, MetaborgModuleType.ID, IMetaborgModuleConfig.CONFIG_NAME);
+    public MetaborgModuleConfigDeserializer(final JpsMetaborgModuleType moduleType, final IJpsMetaborgModuleConfigFactory configFactory) {
+        super(moduleType, MetaborgModuleType.ID, IMetaborgModuleConfig.CONFIG_NAME);
         this.configFactory = configFactory;
     }
 
@@ -53,13 +51,9 @@ public final class MetaborgModuleConfigDeserializer extends JpsModulePropertiesS
         if (element != null) {
             state = XmlSerializer.deserialize(element, MetaborgModuleConfigState.class);
         } else {
-            state = new MetaborgModuleConfigState();
+            state = null;
         }
-        // TODO: Abstract
-        final JpsMetaborgModuleConfig config = this.configFactory.create();
-        if (state != null)
-            config.loadState(state);
-        return config;
+        return buildConfig(state);
     }
 
     /**
@@ -68,6 +62,19 @@ public final class MetaborgModuleConfigDeserializer extends JpsModulePropertiesS
     @Override
     public final void saveProperties(final JpsMetaborgModuleConfig config, final Element element) {
         XmlSerializer.serializeInto(config.getState(), element);
+    }
+
+    /**
+     * Builds the configuration object.
+     *
+     * @param state The configuration state; or <code>null</code> to use the default.
+     * @return The configuration object.
+     */
+    private JpsMetaborgModuleConfig buildConfig(@Nullable final MetaborgModuleConfigState state) {
+        final JpsMetaborgModuleConfig config = this.configFactory.create();
+        if (state != null)
+            config.loadState(state);
+        return config;
     }
 
 }

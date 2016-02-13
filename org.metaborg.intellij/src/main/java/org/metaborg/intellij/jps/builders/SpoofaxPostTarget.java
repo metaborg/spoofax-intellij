@@ -33,6 +33,9 @@ public final class SpoofaxPostTarget extends SpoofaxTarget {
 
     private final SpoofaxPreTargetType preTargetType;
 
+    /**
+     * Initializes a new instance of the {@link SpoofaxPostTarget} class.
+     */
     // TODO: Inject!
     public SpoofaxPostTarget(
             final MetaborgJpsProject project,

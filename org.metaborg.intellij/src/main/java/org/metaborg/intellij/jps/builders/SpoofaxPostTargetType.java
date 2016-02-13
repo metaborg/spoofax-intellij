@@ -20,18 +20,25 @@
 package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
+import org.metaborg.intellij.jps.*;
 import org.metaborg.intellij.jps.project.*;
 
-
+/**
+ * The type of a post-Java build target.
+ */
 public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTarget> {
 
     private final SpoofaxPreTargetType preTargetType;
 
+    /**
+     * Initializes a new instance of the {@link SpoofaxPostTargetType} class.
+     */
     @Inject
     public SpoofaxPostTargetType(
             final IJpsProjectService projectService,
-            final SpoofaxPreTargetType preTargetType) {
-        super("spoofax-post-production", projectService);
+            final SpoofaxPreTargetType preTargetType,
+            final JpsMetaborgModuleType moduleType) {
+        super("spoofax-post-production", projectService, moduleType);
         this.preTargetType = preTargetType;
     }
 

@@ -64,6 +64,9 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
     @InjectLogger
     private ILogger logger;
 
+    /**
+     * Initializes a new instance of the {@link SpoofaxPreBuilder} class.
+     */
     @Inject
     public SpoofaxPreBuilder(
             final SpoofaxPreTargetType targetType,

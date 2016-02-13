@@ -129,9 +129,9 @@ public final class IdeaMetaborgApplicationConfig implements IMetaborgApplication
     @Override
     public void loadState(final MetaborgApplicationConfigState state) {
         this.state = state;
+        // Initialize fields that depend on state here.
         this.loadedLanguages = new AdaptingSet<>(state.loadedLanguages,
                 LanguageIdentifier::toString, LanguageIdentifier::parse);
-        this.logger.info("Restored application configuration.");
     }
 
     /**

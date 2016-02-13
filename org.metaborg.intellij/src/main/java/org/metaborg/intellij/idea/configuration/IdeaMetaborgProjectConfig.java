@@ -125,7 +125,7 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
     @Override
     public void loadState(final MetaborgProjectConfigState state) {
         this.state = state;
-        this.logger.info("Restored project configuration.");
+        // Initialize fields that depend on state here.
     }
 
     /**

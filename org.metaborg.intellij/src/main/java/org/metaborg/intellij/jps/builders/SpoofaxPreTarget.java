@@ -29,6 +29,9 @@ import java.util.*;
  */
 public final class SpoofaxPreTarget extends SpoofaxTarget {
 
+    /**
+     * Initializes a new instance of the {@link SpoofaxPreTarget} class.
+     */
     // TODO: Inject!
     public SpoofaxPreTarget(final MetaborgJpsProject project, final SpoofaxPreTargetType targetType) {
         super(project, targetType);

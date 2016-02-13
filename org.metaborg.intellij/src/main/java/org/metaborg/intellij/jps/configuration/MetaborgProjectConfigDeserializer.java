@@ -49,8 +49,9 @@ public final class MetaborgProjectConfigDeserializer extends JpsProjectExtension
      */
     @Override
     public final void loadExtension(final JpsProject project, final Element element) {
-        @Nullable final MetaborgProjectConfigState state = XmlSerializer.deserialize(element, MetaborgProjectConfigState.class);
-        loadExtensionWithState(project, state);
+        @Nullable final MetaborgProjectConfigState state = XmlSerializer.deserialize(element,
+                MetaborgProjectConfigState.class);
+        setConfig(project, buildConfig(state));
     }
 
     /**
@@ -58,7 +59,7 @@ public final class MetaborgProjectConfigDeserializer extends JpsProjectExtension
      */
     @Override
     public final void loadExtensionWithDefaultSettings(final JpsProject project) {
-        loadExtensionWithState(project, null);
+        setConfig(project, buildConfig(null));
     }
 
     /**
@@ -66,18 +67,31 @@ public final class MetaborgProjectConfigDeserializer extends JpsProjectExtension
      */
     @Override
     public final void saveExtension(final JpsProject project, final Element element) {
-        throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
+        final JpsMetaborgProjectConfig config = this.extensionService.getConfiguration(project);
+        XmlSerializer.serializeInto(config.getState(), element);
     }
 
-    // TODO: Rename
-    // TODO: Document
-    private void loadExtensionWithState(
-            final JpsProject project,
-            @Nullable final MetaborgProjectConfigState state) {
+    /**
+     * Sets the configuration of the project.
+     *
+     * @param project The project.
+     * @param config The configuration.
+     */
+    private void setConfig(final JpsProject project, final JpsMetaborgProjectConfig config) {
+        this.extensionService.setConfiguration(project, config);
+    }
+
+    /**
+     * Builds the configuration object.
+     *
+     * @param state The configuration state; or <code>null</code> to use the default.
+     * @return The configuration object.
+     */
+    private JpsMetaborgProjectConfig buildConfig(@Nullable final MetaborgProjectConfigState state) {
         final JpsMetaborgProjectConfig config = this.configFactory.create();
         if (state != null)
             config.loadState(state);
-        this.extensionService.setConfiguration(project, config);
+        return config;
     }
 
 }

@@ -36,11 +36,14 @@ import java.util.*;
  */
 public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleBasedBuildTargetType<T> {
 
+    private final JpsMetaborgModuleType moduleType;
     private final IJpsProjectService projectService;
 
-    protected SpoofaxTargetType(final String typeId, final IJpsProjectService projectService) {
+    protected SpoofaxTargetType(final String typeId, final IJpsProjectService projectService,
+                                final JpsMetaborgModuleType moduleType) {
         super(typeId);
         this.projectService = projectService;
+        this.moduleType = moduleType;
     }
 
     /**
@@ -74,7 +77,7 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
     public final List<T> computeAllTargets(final JpsModel model) {
         // Default implementation.
         final List<T> targets = new ArrayList<>();
-        final Iterable<JpsTypedModule<JpsMetaborgModuleConfig>> modules = model.getProject().getModules(JpsMetaborgModuleType.INSTANCE);
+        final Iterable<JpsTypedModule<JpsMetaborgModuleConfig>> modules = model.getProject().getModules(this.moduleType);
         for (final JpsTypedModule<JpsMetaborgModuleConfig> module : modules) {
             targets.add(createTarget(module));
         }

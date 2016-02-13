@@ -48,6 +48,9 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
     @InjectLogger
     private ILogger logger;
 
+    /**
+     * Initializes a new instance of the {@link SpoofaxPostBuilder} class.
+     */
     @Inject
     private SpoofaxPostBuilder(
             final SpoofaxPostTargetType targetType,

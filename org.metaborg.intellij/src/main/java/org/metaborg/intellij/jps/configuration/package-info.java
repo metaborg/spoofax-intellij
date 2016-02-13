@@ -18,10 +18,11 @@
  */
 
 /**
- * All the builder targets and builders used by the JPS plugin to
- * build Metaborg Core projects.
+ * Configuration (de)serialization.
+ *
+ * There are three configurations: global (application-wide), project, and module.
  */
 @NonNullByDefault
-package org.metaborg.intellij.jps.builders;
+package org.metaborg.intellij.jps.configuration;
 
 import org.metaborg.intellij.*;
