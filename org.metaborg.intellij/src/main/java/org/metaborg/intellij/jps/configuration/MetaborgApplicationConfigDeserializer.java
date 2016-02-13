@@ -28,7 +28,6 @@ import org.metaborg.intellij.configuration.*;
 
 import javax.annotation.*;
 
-// TODO: Rename to: MetaborgApplicationConfigDeserializer
 /**
  * Deserializes the application-wide configuration in JPS.
  */
@@ -70,6 +69,8 @@ public final class MetaborgApplicationConfigDeserializer extends JpsGlobalExtens
         throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
     }
 
+    // TODO: Rename
+    // TODO: Document
     private void loadExtensionWithState(
             final JpsGlobal global,
             @Nullable final MetaborgApplicationConfigState state) {

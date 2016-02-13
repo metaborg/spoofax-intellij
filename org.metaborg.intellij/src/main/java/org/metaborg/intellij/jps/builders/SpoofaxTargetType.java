@@ -24,6 +24,7 @@ import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.module.*;
 import org.metaborg.intellij.jps.*;
+import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.jps.project.*;
 
 import java.util.*;
@@ -73,8 +74,8 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
     public final List<T> computeAllTargets(final JpsModel model) {
         // Default implementation.
         final List<T> targets = new ArrayList<>();
-        final Iterable<JpsTypedModule<JpsDummyElement>> modules = model.getProject().getModules(JpsMetaborgModuleType.INSTANCE);
-        for (final JpsTypedModule<JpsDummyElement> module : modules) {
+        final Iterable<JpsTypedModule<JpsMetaborgModuleConfig>> modules = model.getProject().getModules(JpsMetaborgModuleType.INSTANCE);
+        for (final JpsTypedModule<JpsMetaborgModuleConfig> module : modules) {
             targets.add(createTarget(module));
         }
         return targets;

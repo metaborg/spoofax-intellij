@@ -20,6 +20,7 @@
 package org.metaborg.intellij.jps.configuration;
 
 import org.jetbrains.jps.model.*;
+import org.jetbrains.jps.model.module.*;
 
 /**
  * Default implementation of the {@link IMetaborgConfigService} interface.
@@ -38,8 +39,17 @@ public final class DefaultMetaborgConfigService implements IMetaborgConfigServic
      * {@inheritDoc}
      */
     @Override
-    public final void setConfiguration(final JpsGlobal global, final JpsMetaborgApplicationConfig config) {
-        global.getContainer().setChild(JpsMetaborgApplicationConfig.ROLE, config);
+    public final JpsMetaborgProjectConfig getConfiguration(final JpsProject project) {
+        return project.getContainer().getChild(JpsMetaborgProjectConfig.ROLE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JpsMetaborgModuleConfig getConfiguration(final JpsModule module) {
+        final JpsElement result = module.getProperties();
+        return result instanceof JpsMetaborgModuleConfig ? (JpsMetaborgModuleConfig)result : null;
     }
 
 
@@ -47,8 +57,8 @@ public final class DefaultMetaborgConfigService implements IMetaborgConfigServic
      * {@inheritDoc}
      */
     @Override
-    public final JpsMetaborgProjectConfig getConfiguration(final JpsProject project) {
-        return project.getContainer().getChild(JpsMetaborgProjectConfig.ROLE);
+    public final void setConfiguration(final JpsGlobal global, final JpsMetaborgApplicationConfig config) {
+        global.getContainer().setChild(JpsMetaborgApplicationConfig.ROLE, config);
     }
 
     /**
@@ -58,4 +68,5 @@ public final class DefaultMetaborgConfigService implements IMetaborgConfigServic
     public final void setConfiguration(final JpsProject project, final JpsMetaborgProjectConfig config) {
         project.getContainer().setChild(JpsMetaborgProjectConfig.ROLE, config);
     }
+
 }

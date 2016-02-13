@@ -69,6 +69,8 @@ public final class MetaborgProjectConfigDeserializer extends JpsProjectExtension
         throw new UnsupportedOperationException("The `saveExtension()` method is not supported.");
     }
 
+    // TODO: Rename
+    // TODO: Document
     private void loadExtensionWithState(
             final JpsProject project,
             @Nullable final MetaborgProjectConfigState state) {

@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea.configuration;
 
 import com.google.inject.*;
 import com.intellij.openapi.components.*;
+import com.intellij.openapi.module.*;
 import com.intellij.openapi.project.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.intellij.configuration.*;
@@ -29,21 +30,19 @@ import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
 
 /**
- * Project-level configuration of the plugin.
+ * Module-level configuration of the plugin.
  */
 @State(
-        name = IMetaborgProjectConfig.CONFIG_NAME,
+        name = IMetaborgModuleConfig.CONFIG_NAME,
         storages = {
-                @Storage(file = StoragePathMacros.PROJECT_FILE),
-                @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/" + IMetaborgProjectConfig.CONFIG_FILE,
-                        scheme = StorageScheme.DIRECTORY_BASED)
+                @Storage(file = StoragePathMacros.MODULE_FILE)
         }
 )
-public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, ProjectComponent,
-        PersistentStateComponent<MetaborgProjectConfigState> {
+public final class IdeaMetaborgModuleConfig implements IMetaborgModuleConfig, ModuleComponent,
+        PersistentStateComponent<MetaborgModuleConfigState> {
 
     // Don't initialize fields that depend on the state here. Initialize in loadState().
-    private MetaborgProjectConfigState state;
+    private MetaborgModuleConfigState state;
     private final Project project;
     @InjectLogger
     private ILogger logger;
@@ -68,11 +67,11 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
      * This instance is created by IntelliJ's plugin system.
      * Do not call this constructor manually.
      */
-    public IdeaMetaborgProjectConfig(final Project project) {
+    public IdeaMetaborgModuleConfig(final Project project) {
         this.project = project;
         SpoofaxIdeaPlugin.injector().injectMembers(this);
         // Don't initialize fields that depend on the state here. Initialize in loadState().
-        loadState(new MetaborgProjectConfigState());
+        loadState(new MetaborgModuleConfigState());
     }
 
     @Inject
@@ -105,7 +104,7 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
     @NotNull
     @Override
     public String getComponentName() {
-        return IdeaMetaborgProjectConfig.class.getName();
+        return IdeaMetaborgModuleConfig.class.getName();
     }
 
     /**
@@ -113,7 +112,7 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
      */
     @Nullable
     @Override
-    public MetaborgProjectConfigState getState() {
+    public MetaborgModuleConfigState getState() {
         return this.state;
     }
 
@@ -123,7 +122,7 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
      * This method is only called if the configuration has changed.
      */
     @Override
-    public void loadState(final MetaborgProjectConfigState state) {
+    public void loadState(final MetaborgModuleConfigState state) {
         this.state = state;
         this.logger.info("Restored project configuration.");
     }
@@ -133,7 +132,7 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
      */
     @Override
     public void projectOpened() {
-        this.setName(this.project.getName());
+
     }
 
     /**
@@ -142,5 +141,13 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
     @Override
     public void projectClosed() {
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void moduleAdded() {
+        this.setName(this.project.getName());
     }
 }

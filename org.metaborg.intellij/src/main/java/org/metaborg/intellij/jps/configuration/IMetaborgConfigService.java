@@ -21,8 +21,8 @@ package org.metaborg.intellij.jps.configuration;
 
 
 import org.jetbrains.jps.model.*;
+import org.jetbrains.jps.model.module.*;
 
-// TODO: Make interface.
 /**
  * Gets or sets the configuration for JPS model objects.
  */
@@ -37,14 +37,6 @@ public interface IMetaborgConfigService {
     JpsMetaborgApplicationConfig getConfiguration(JpsGlobal global);
 
     /**
-     * Sets the Metaborg application configuration.
-     *
-     * @param global The global JPS element.
-     * @param config The configuration.
-     */
-    void setConfiguration(JpsGlobal global, JpsMetaborgApplicationConfig config);
-
-    /**
      * Gets the Metaborg project configuration.
      *
      * @param project The project JPS element.
@@ -53,10 +45,28 @@ public interface IMetaborgConfigService {
     JpsMetaborgProjectConfig getConfiguration(JpsProject project);
 
     /**
+     * Gets the Metaborg module configuration.
+     *
+     * @param module The module JPS element.
+     * @return The configuration.
+     */
+    JpsMetaborgModuleConfig getConfiguration(JpsModule module);
+
+
+    /**
+     * Sets the Metaborg application configuration.
+     *
+     * @param global The global JPS element.
+     * @param config The configuration.
+     */
+    void setConfiguration(JpsGlobal global, JpsMetaborgApplicationConfig config);
+
+    /**
      * Sets the Metaborg project configuration.
      *
      * @param project The project JPS element.
      * @param config  The configuration.
      */
     void setConfiguration(JpsProject project, JpsMetaborgProjectConfig config);
+
 }

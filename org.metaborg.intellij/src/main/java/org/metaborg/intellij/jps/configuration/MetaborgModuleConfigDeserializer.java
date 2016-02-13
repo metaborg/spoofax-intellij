@@ -20,9 +20,13 @@
 package org.metaborg.intellij.jps.configuration;
 
 import com.google.inject.*;
+import com.intellij.util.xmlb.*;
 import org.jdom.*;
 import org.jetbrains.jps.model.*;
+import org.jetbrains.jps.model.module.*;
 import org.jetbrains.jps.model.serialization.module.*;
+import org.metaborg.intellij.configuration.*;
+import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.jps.*;
 
 import javax.annotation.*;
@@ -30,29 +34,40 @@ import javax.annotation.*;
 /**
  * Deserializes module-specific configuration in JPS.
  */
-public final class MetaborgModuleConfigDeserializer extends JpsModulePropertiesSerializer<JpsDummyElement> {
+public final class MetaborgModuleConfigDeserializer extends JpsModulePropertiesSerializer<JpsMetaborgModuleConfig> {
 
-    public static final String NAME = "SpoofaxModuleService";
+    private final IJpsMetaborgModuleConfigFactory configFactory;
 
     @Inject
-    public MetaborgModuleConfigDeserializer() {
-        super(JpsMetaborgModuleType.INSTANCE, "METABORG_MODULE", null);
+    public MetaborgModuleConfigDeserializer(final IJpsMetaborgModuleConfigFactory configFactory) {
+        super(JpsMetaborgModuleType.INSTANCE, MetaborgModuleType.ID, IMetaborgModuleConfig.CONFIG_NAME);
+        this.configFactory = configFactory;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final JpsDummyElement loadProperties(@Nullable final Element element) {
-        return JpsElementFactory.getInstance().createDummyElement();
+    public final JpsMetaborgModuleConfig loadProperties(@Nullable final Element element) {
+        @Nullable final MetaborgModuleConfigState state;
+        if (element != null) {
+            state = XmlSerializer.deserialize(element, MetaborgModuleConfigState.class);
+        } else {
+            state = new MetaborgModuleConfigState();
+        }
+        // TODO: Abstract
+        final JpsMetaborgModuleConfig config = this.configFactory.create();
+        if (state != null)
+            config.loadState(state);
+        return config;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void saveProperties(final JpsDummyElement jpsDummyElement, final Element element) {
-        throw new UnsupportedOperationException("The `saveProperties()` method is not supported.");
+    public final void saveProperties(final JpsMetaborgModuleConfig config, final Element element) {
+        XmlSerializer.serializeInto(config.getState(), element);
     }
 
 }

@@ -50,6 +50,7 @@ import java.util.*;
         bindTargetTypes();
         bindMessageFormatter();
         bindConfig();
+        bindModuleType();
     }
 
     /**
@@ -103,6 +104,17 @@ import java.util.*;
         install(new FactoryModuleBuilder()
                 .implement(JpsMetaborgProjectConfig.class, JpsMetaborgProjectConfig.class)
                 .build(IJpsMetaborgProjectConfigFactory.class));
+
+        install(new FactoryModuleBuilder()
+                .implement(JpsMetaborgModuleConfig.class, JpsMetaborgModuleConfig.class)
+                .build(IJpsMetaborgModuleConfigFactory.class));
+    }
+
+    /**
+     * Binds the module type.
+     */
+    protected void bindModuleType() {
+        bind(JpsMetaborgModuleType.class).in(Singleton.class);
     }
 
     @SuppressWarnings("unused")

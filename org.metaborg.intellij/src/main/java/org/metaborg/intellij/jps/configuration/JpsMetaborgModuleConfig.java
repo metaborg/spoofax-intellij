@@ -17,39 +17,36 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps;
+package org.metaborg.intellij.jps.configuration;
 
-import com.google.inject.*;
-import org.jetbrains.annotations.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.ex.*;
-import org.jetbrains.jps.model.module.*;
-import org.metaborg.intellij.jps.configuration.*;
+import org.metaborg.intellij.configuration.*;
 
 /**
- * A JPS Spoofax module type, used to identify Spoofax JPS modules.
+ * Module-specific JPS configuration.
  */
-@Singleton
-public final class JpsMetaborgModuleType implements JpsModuleType<JpsMetaborgModuleConfig> {
+public final class JpsMetaborgModuleConfig
+        extends AbstractMetaborgConfig<MetaborgModuleConfigState, JpsMetaborgModuleConfig> {
 
-    // TODO: Remove
-    public static final JpsMetaborgModuleType INSTANCE = new JpsMetaborgModuleType();
+    public static final JpsElementChildRole<JpsMetaborgModuleConfig> ROLE
+            = JpsElementChildRoleBase.create("Metaborg Module");
 
-    // TODO: Inject everywhere
     /**
-     * Initializes a new instance of the {@link JpsMetaborgModuleType} class.
+     * Initializes a new instance of the {@link JpsMetaborgModuleConfig} class.
      */
-    @Inject
-    public JpsMetaborgModuleType() {
-        super();
+    public JpsMetaborgModuleConfig() {
+        super(new MetaborgModuleConfigState());
     }
 
     /**
      * {@inheritDoc}
      */
-    @NotNull
     @Override
-    public JpsElementChildRole<JpsMetaborgModuleConfig> getPropertiesRole() {
-        return JpsMetaborgModuleConfig.ROLE;
+    public final JpsMetaborgModuleConfig createCopy() {
+        final JpsMetaborgModuleConfig config = new JpsMetaborgModuleConfig();
+        config.applyChanges(this);
+        return config;
     }
+
 }
