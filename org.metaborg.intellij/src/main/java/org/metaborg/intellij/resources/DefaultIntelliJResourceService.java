@@ -43,8 +43,6 @@ public final class DefaultIntelliJResourceService extends ResourceService implem
 
     /**
      * Initializes a new instance of the {@link DefaultIntelliJResourceService} class.
-     * @param fileSystemManager
-     * @param classLoader
      */
     @Inject
     public DefaultIntelliJResourceService(
