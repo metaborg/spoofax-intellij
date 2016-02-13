@@ -17,25 +17,10 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.configuration;
-
-import org.metaborg.core.language.*;
-
-import java.util.*;
-
 /**
- * Application-level configuration of the plugin.
+ * Language discovery.
  */
-public interface IMetaborgApplicationConfig {
+@NonNullByDefault
+package org.metaborg.intellij.discovery;
 
-    String CONFIG_NAME = "MetaborgApplicationConfig";
-    String CONFIG_FILE = "metaborg.xml";
-
-    /**
-     * Gets the mutable set of identifiers of languages that should be loaded and activated.
-     *
-     * @return A mutable set of language identifiers.
-     */
-    Set<LanguageIdentifier> getLoadedLanguages();
-
-}
+import org.metaborg.intellij.*;

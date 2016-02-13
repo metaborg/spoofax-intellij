@@ -59,4 +59,12 @@ public class IdeaProject implements IProject {
     public final FileObject location() {
         return this.location;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.module.getName();
+    }
 }

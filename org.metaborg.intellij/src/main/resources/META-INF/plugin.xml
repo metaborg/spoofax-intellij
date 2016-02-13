@@ -60,9 +60,6 @@
         <component>
             <implementation-class>org.metaborg.intellij.idea.configuration.IdeaMetaborgModuleConfig</implementation-class>
         </component>
-        <component>
-            <implementation-class>org.metaborg.intellij.idea.projects.MetaborgModuleComponent</implementation-class>
-        </component>
     </module-components>
 
     <actions>

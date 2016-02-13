@@ -34,6 +34,7 @@ import org.metaborg.core.project.*;
 import org.metaborg.core.syntax.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.projects.*;
+import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
@@ -47,7 +48,7 @@ import javax.annotation.*;
  */
 public final class MetaborgFileElementType extends IFileElementType { //IStubFileElementType {
 
-    private final ILanguageManager languageManager;
+    private final IIdeaLanguageManager languageManager;
     private final IIdeaProjectService projectService;
     private final ILanguageProjectService languageProjectService;
     private final SpoofaxTokenTypeManager tokenTypesManager;
@@ -62,7 +63,7 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
     public MetaborgFileElementType(
             @Assisted final Language language,
             @Assisted final SpoofaxTokenTypeManager tokenTypesManager,
-            final ILanguageManager languageManager,
+            final IIdeaLanguageManager languageManager,
             final ILanguageProjectService languageProjectService,
             final IIntelliJResourceService resourceService,
             final ISyntaxService<IStrategoTerm> syntaxService,

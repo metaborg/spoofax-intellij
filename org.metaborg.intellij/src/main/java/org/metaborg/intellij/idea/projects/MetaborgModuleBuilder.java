@@ -197,6 +197,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     @Override
     public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
 
+        this.logger.debug("Adding content and source roots.");
         @Nullable final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
         if (contentEntry != null) {
             // TODO: Get this from the paths interface.
@@ -206,8 +207,11 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "src-gen");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
         }
+        this.logger.info("Added content and source roots.");
 
+        this.logger.debug("Setting SDK.");
         setSdk(rootModel);
+        this.logger.info("Set SDK.");
 
         // Set the module.
         final Module module = rootModel.getModule();
@@ -217,6 +221,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         runWhenInitialized(project, new DumbAwareRunnable() {
             @Override
             public void run() {
+                MetaborgModuleBuilder.this.logger.debug("Generating project files.");
                 // Generate the module structure (files and directories).
                 final FileObject location = MetaborgModuleBuilder.
                         this.resourceService.resolve(getContentEntryPath());
@@ -225,6 +230,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
                 MetaborgModuleBuilder.this.projectService.open(ideaProject);
                 WriteCommandAction.runWriteCommandAction(
                         project, "Create new Spoofax module", null, () -> generateModuleStructure(ideaProject));
+                MetaborgModuleBuilder.this.logger.info("Generated project files.");
             }
         });
 

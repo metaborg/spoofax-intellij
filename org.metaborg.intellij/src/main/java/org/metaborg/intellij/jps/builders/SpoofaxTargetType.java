@@ -25,7 +25,7 @@ import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.module.*;
 import org.metaborg.intellij.jps.*;
 import org.metaborg.intellij.jps.configuration.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.projects.*;
 
 import java.util.*;
 

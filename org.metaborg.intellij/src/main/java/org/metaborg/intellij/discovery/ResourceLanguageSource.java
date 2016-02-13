@@ -17,11 +17,12 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.discovery;
+package org.metaborg.intellij.discovery;
 
 import com.google.inject.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.language.*;
+import org.metaborg.core.resource.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.resources.*;
@@ -35,7 +36,7 @@ import java.net.*;
  */
 public final class ResourceLanguageSource implements ILanguageSource {
 
-    private final IIntelliJResourceService resourceService;
+    private final IResourceService resourceService;
     @InjectLogger
     private ILogger logger;
 
@@ -45,7 +46,7 @@ public final class ResourceLanguageSource implements ILanguageSource {
      * @param resourceService The resource service.
      */
     @Inject
-    public ResourceLanguageSource(final IIntelliJResourceService resourceService) {
+    public ResourceLanguageSource(final IResourceService resourceService) {
         this.resourceService = resourceService;
     }
 

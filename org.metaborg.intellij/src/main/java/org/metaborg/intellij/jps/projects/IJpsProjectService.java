@@ -17,35 +17,34 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.discovery;
+package org.metaborg.intellij.jps.projects;
 
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.language.*;
+import org.jetbrains.jps.model.module.*;
+import org.metaborg.core.project.*;
 
 import javax.annotation.*;
 
 /**
- * A language source.
- *
- * This is used to discover a language from its identifier. Implementations could
- * be as simple as looking into a folder, or as complex as browsing a Maven repository.
- *
- * The implementation must be thread-safe.
+ * A project service for JPS.
  */
-public interface ILanguageSource {
+public interface IJpsProjectService extends IProjectService {
 
     /**
-     * Attempts to find a language with the specified identifier.
+     * Creates and adds a new project for the specified JPS module.
      *
-     * If there are somehow multiple languages with the specified identifier,
-     * the implementation may decide which one to return.
+     * @param module The JPS module.
+     * @return The created project.
+     */
+    MetaborgJpsProject create(JpsModule module);
+
+    /**
+     * Finds the project corresponding to the specified module.
      *
-     * This method may take a while.
-     *
-     * @param id The identifier to look for.
-     * @return The file of the language; or <code>null</code> if not found.
+     * @param module The JPS module to look for.
+     * @return The project that corresponds to the JPS module;
+     * or <code>null</code> when not found.
      */
     @Nullable
-    FileObject find(LanguageIdentifier id);
+    MetaborgJpsProject get(JpsModule module);
 
 }

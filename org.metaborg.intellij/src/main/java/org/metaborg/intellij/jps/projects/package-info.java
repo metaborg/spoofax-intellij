@@ -21,6 +21,6 @@
  * JPS Metaborg Core project functionality.
  */
 @NonNullByDefault
-package org.metaborg.intellij.jps.project;
+package org.metaborg.intellij.jps.projects;
 
 import org.metaborg.intellij.*;

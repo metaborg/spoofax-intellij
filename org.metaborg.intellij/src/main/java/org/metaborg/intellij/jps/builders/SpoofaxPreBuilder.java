@@ -29,12 +29,16 @@ import org.metaborg.core.action.*;
 import org.metaborg.core.build.*;
 import org.metaborg.core.build.dependency.*;
 import org.metaborg.core.build.paths.*;
+import org.metaborg.core.language.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.processing.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.jps.configuration.*;
+import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.projects.*;
 import org.metaborg.spoofax.core.processing.*;
 import org.metaborg.spoofax.core.project.*;
 import org.metaborg.spoofax.core.project.configuration.*;
@@ -47,6 +51,7 @@ import org.spoofax.interpreter.terms.*;
 import javax.annotation.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 /**
  * Builder executed before Java compilation.
@@ -55,12 +60,13 @@ import java.net.*;
 public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
 
     private final SpoofaxMetaBuilder builder;
-//    private final LanguageManager languageManager;
+    private final ILanguageManager languageManager;
     private final ILanguagePathService languagePathService;
     private final IDependencyService dependencyService;
     private final SpoofaxProcessorRunner processorRunner;
     private final BuilderMessageFormatter messageFormatter;
     private final IMetaborgConfigService extensionService;
+    private final ProjectUtils projectUtils;
     @InjectLogger
     private ILogger logger;
 
@@ -71,24 +77,26 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
     public SpoofaxPreBuilder(
             final SpoofaxPreTargetType targetType,
             final SpoofaxMetaBuilder builder,
-            final JpsProjectService projectService,
+            final IJpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
-//            final LanguageManager languageManager,
             final ILanguagePathService languagePathService,
+            final ILanguageManager languageManager,
             final IDependencyService dependencyService,
             final SpoofaxProcessorRunner processorRunner,
             final ISpoofaxLanguageSpecPathsService pathsService,
             final BuilderMessageFormatter messageFormatter,
-            final IMetaborgConfigService extensionService) {
+            final IMetaborgConfigService extensionService,
+            final ProjectUtils projectUtils) {
         super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
         this.builder = builder;
-//        this.languageManager = languageManager;
+        this.languageManager = languageManager;
         this.languagePathService = languagePathService;
         this.dependencyService = dependencyService;
         this.processorRunner = processorRunner;
         this.messageFormatter = messageFormatter;
         this.extensionService = extensionService;
+        this.projectUtils = projectUtils;
     }
 
     /**
@@ -112,15 +120,19 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
         try {
             final LanguageSpecBuildInput metaInput = getBuildInput(target.getModule());
 
+            final JpsMetaborgApplicationConfig configuration = this.extensionService.getConfiguration(
+                    context.getProjectDescriptor().getModel().getGlobal());
 
-            final JpsMetaborgApplicationConfig configuration = this.extensionService.getConfiguration(context.getProjectDescriptor().getModel().getGlobal());
 
-            if (true) {
-                throw new RuntimeException("!!!!!!: " + configuration.getLoadedLanguages().toString());
-            }
-            // TODO: Load languages!
-            // TODO: Get languages from application config?
-//            this.languageManager.loadMetaLanguages();
+            final Set<LanguageIdentifier> appLanguages = configuration.getLoadedLanguages();
+            this.logger.debug("Loading application languages: {}", appLanguages);
+            this.languageManager.discoverRange(appLanguages);
+            this.logger.info("Loaded application languages: {}", appLanguages);
+
+            final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
+            this.logger.debug("Loading module languages: {}", languages);
+            this.languageManager.discoverRange(languages);
+            this.logger.info("Loaded module languages: {}", languages);
 
             initialize(metaInput, context);
             generateSources(metaInput, context);
@@ -242,13 +254,15 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      * @throws Exception
      * @throws ProjectBuildException
      */
+    @SuppressWarnings("UnusedParameters")
     private void compilePreJava(
             final LanguageSpecBuildInput metaInput,
             @Nullable final URL[] classpath,
             @Nullable final BuildListener listener,
             final CompileContext context) throws Exception {
         context.checkCanceled();
-        context.processMessage(this.messageFormatter.formatProgress(0f, "Building language project {}", metaInput.languageSpec));
+        context.processMessage(this.messageFormatter.formatProgress(0f, "Building language project {}",
+                metaInput.languageSpec));
         this.builder.compilePreJava(metaInput);
     }
 
@@ -271,6 +285,11 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
                     .withPardonedLanguageStrings(metaInput.config.pardonedLanguages())
                     .addTransformGoal(new CompileGoal())
                     .build(this.dependencyService, this.languagePathService);
+        } catch (final MissingDependencyException e) {
+            // FIXME: Add language ID field to MissingDependencyException,
+            // and print the missing language ID here.
+            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
+                    "Missing language dependency: {}", e, e.getMessage());
         } catch (final MetaborgException e) {
             throw new ProjectBuildException(e);
         }

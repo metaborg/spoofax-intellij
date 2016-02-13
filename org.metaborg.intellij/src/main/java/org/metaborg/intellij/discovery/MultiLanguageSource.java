@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.discovery;
+package org.metaborg.intellij.discovery;
 
 import com.google.inject.*;
 import org.apache.commons.vfs2.*;

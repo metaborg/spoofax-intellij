@@ -19,15 +19,12 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.common.collect.*;
 import com.google.inject.*;
 import com.intellij.openapi.components.*;
-import org.apache.commons.vfs2.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.discovery.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
@@ -50,8 +47,8 @@ import java.util.*;
 public final class IdeaMetaborgApplicationConfig implements IMetaborgApplicationConfig, ApplicationComponent,
         PersistentStateComponent<MetaborgApplicationConfigState> {
 
-    private ILanguageSource languageSource;
-    private ILanguageManager languageManager;
+    private IIdeaLanguageManager languageManager;
+    private ConfigurationUtils configurationUtils;
     // Don't initialize fields that depend on the state here. Initialize in loadState().
     private MetaborgApplicationConfigState state;
     private Set<LanguageIdentifier> loadedLanguages;
@@ -78,9 +75,10 @@ public final class IdeaMetaborgApplicationConfig implements IMetaborgApplication
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final ILanguageSource languageSource, final ILanguageManager languageManager) {
-        this.languageSource = languageSource;
+    private void inject(final IIdeaLanguageManager languageManager,
+                        final ConfigurationUtils configurationUtils) {
         this.languageManager = languageManager;
+        this.configurationUtils = configurationUtils;
     }
 
     /**
@@ -91,7 +89,7 @@ public final class IdeaMetaborgApplicationConfig implements IMetaborgApplication
         // Occurs when the application is starting.
 
         this.logger.debug("Loading Spoofax plugin application-wide config.");
-        loadAndActivateLanguages();
+        this.configurationUtils.loadAndActivateLanguages(null, this.getLoadedLanguages());
         this.logger.info("Loaded Spoofax plugin application-wide config.");
     }
 
@@ -134,59 +132,4 @@ public final class IdeaMetaborgApplicationConfig implements IMetaborgApplication
                 LanguageIdentifier::toString, LanguageIdentifier::parse);
     }
 
-    /**
-     * Loads the languages.
-     */
-    private void loadAndActivateLanguages() {
-        for (final LanguageIdentifier id : this.getLoadedLanguages()) {
-            this.logger.debug("Finding language '{}'.", id);
-            @Nullable final FileObject rootLocation = this.languageSource.find(id);
-            if (rootLocation == null) {
-                this.logger.error("Could not find language with id '{}'.", id);
-                continue;
-            }
-            this.logger.debug("Found language '{}' at: {}", id, rootLocation);
-            loadAndActivateLanguage(id, rootLocation);
-        }
-    }
-
-    /**
-     * Loads and activates a language from the specified source.
-     *
-     * @param id The language identifier.
-     * @param rootLocation The language's root location.
-     */
-    private void loadAndActivateLanguage(final LanguageIdentifier id, final FileObject rootLocation) {
-        this.logger.debug("Requesting discovery of language '{}' at: {}", id, rootLocation);
-        final Iterable<ILanguageDiscoveryRequest> requests = this.languageManager.discover(rootLocation);
-        if (Iterables.isEmpty(requests)) {
-            this.logger.error("Got no discovery requests for language '{}' at: {}", id, rootLocation);
-            return;
-        }
-        final Collection<ILanguageComponent> components;
-        try {
-            components = this.languageManager.loadRange(requests);
-        } catch (final LanguageLoadingFailedException e) {
-            this.logger.error("Could not load language '{}' at: {}", e, id, rootLocation);
-            return;
-        }
-        this.logger.debug("Discovered components language '{}': {}", id, components);
-        this.languageManager.activateRange(LanguageUtils2.getLanguagesOfComponents(components));
-    }
-
-//    /**
-//     * Parses the language identifier string.
-//     *
-//     * @param idString The language identifier string.
-//     * @return The parsed identifier; or <code>null</code> when invalid.
-//     */
-//    @Nullable
-//    private LanguageIdentifier parseIdentifier(final String idString) {
-//        try {
-//            return LanguageIdentifier.parse(idString);
-//        } catch (final IllegalArgumentException ex) {
-//            this.logger.error("Invalid language identifier: {}", idString);
-//            return null;
-//        }
-//    }
 }

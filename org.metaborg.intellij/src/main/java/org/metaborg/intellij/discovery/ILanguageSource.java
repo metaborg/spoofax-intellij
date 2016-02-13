@@ -17,25 +17,35 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.configuration;
+package org.metaborg.intellij.discovery;
 
+import org.apache.commons.vfs2.*;
 import org.metaborg.core.language.*;
 
-import java.util.*;
+import javax.annotation.*;
 
 /**
- * Application-level configuration of the plugin.
+ * A language source.
+ *
+ * This is used to discover a language from its identifier. Implementations could
+ * be as simple as looking into a folder, or as complex as browsing a Maven repository.
+ *
+ * The implementation must be thread-safe.
  */
-public interface IMetaborgApplicationConfig {
-
-    String CONFIG_NAME = "MetaborgApplicationConfig";
-    String CONFIG_FILE = "metaborg.xml";
+public interface ILanguageSource {
 
     /**
-     * Gets the mutable set of identifiers of languages that should be loaded and activated.
+     * Attempts to find a language with the specified identifier.
      *
-     * @return A mutable set of language identifiers.
+     * If there are somehow multiple languages with the specified identifier,
+     * the implementation may decide which one to return.
+     *
+     * This method may take a while.
+     *
+     * @param id The identifier to look for.
+     * @return The file of the language; or <code>null</code> if not found.
      */
-    Set<LanguageIdentifier> getLoadedLanguages();
+    @Nullable
+    FileObject find(LanguageIdentifier id);
 
 }

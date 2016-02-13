@@ -22,15 +22,22 @@ package org.metaborg.intellij.jps;
 import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import com.google.inject.matcher.Matchers;
+import com.google.inject.multibindings.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
+import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.discovery.*;
+import org.metaborg.intellij.idea.projects.*;
+import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.jps.builders.*;
 import org.metaborg.intellij.jps.configuration.*;
+import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
+import org.metaborg.intellij.projects.*;
 import org.metaborg.spoofax.core.SpoofaxModule;
+import org.metaborg.spoofax.core.project.*;
 
 import java.util.*;
 
@@ -51,6 +58,8 @@ import java.util.*;
         bindMessageFormatter();
         bindConfig();
         bindModuleType();
+        bindLanguageSources();
+        bindLanguageManagement();
     }
 
     /**
@@ -85,6 +94,7 @@ import java.util.*;
         bind(JpsProjectService.class).in(Singleton.class);
         bind(IProjectService.class).to(JpsProjectService.class).in(Singleton.class);
         bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
+        bind(ProjectUtils.class).in(Singleton.class);
     }
 
     /**
@@ -115,6 +125,48 @@ import java.util.*;
      */
     protected void bindModuleType() {
         bind(JpsMetaborgModuleType.class).in(Singleton.class);
+    }
+
+
+    /**
+     * Binds language sources.
+     */
+    protected void bindLanguageSources() {
+        bind(ILanguageSource.class).to(MultiLanguageSource.class).in(Singleton.class);
+
+        bind(ResourceLanguageSource.class).in(Singleton.class);
+
+        final Multibinder<ILanguageSource> sources = Multibinder.newSetBinder(
+                binder(),
+                ILanguageSource.class,
+                Compound.class
+        );
+
+        sources.addBinding().to(ResourceLanguageSource.class);
+    }
+
+    /**
+     * Binds language management.
+     */
+    protected void bindLanguageManagement() {
+        bind(DefaultLanguageManager.class).in(Singleton.class);
+        bind(ILanguageManager.class).to(DefaultLanguageManager.class).in(Singleton.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void bindMavenProject() {
+        bind(ILegacyMavenProjectService.class).to(NullLegacyMavenProjectService.class).in(Singleton.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void bindEditor() {
+        bind(IEditorRegistry.class).to(NullEditorRegistry.class).in(Singleton.class);
     }
 
     @SuppressWarnings("unused")

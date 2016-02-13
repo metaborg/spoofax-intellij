@@ -28,7 +28,7 @@ import org.jetbrains.jps.indices.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.java.*;
 import org.jetbrains.jps.model.module.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.projects.*;
 
 import java.io.*;
 import java.util.*;

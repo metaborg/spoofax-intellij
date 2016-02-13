@@ -20,7 +20,7 @@
 package org.metaborg.intellij.jps.builders;
 
 import org.jetbrains.jps.builders.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.projects.*;
 
 import java.util.*;
 

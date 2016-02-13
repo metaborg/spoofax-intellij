@@ -31,8 +31,10 @@ import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
 import org.metaborg.core.resource.*;
 import org.metaborg.core.syntax.*;
+import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.actions.*;
-import org.metaborg.intellij.idea.discovery.*;
+import org.metaborg.intellij.discovery.*;
+import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.idea.editors.*;
 import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.graphics.*;
@@ -43,10 +45,14 @@ import org.metaborg.intellij.idea.parsing.elements.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.idea.transformations.*;
+import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
+import org.metaborg.intellij.projects.*;
 import org.metaborg.intellij.resources.*;
 import org.metaborg.spoofax.core.SpoofaxModule;
+import org.metaborg.spoofax.core.project.*;
+import org.metaborg.spoofax.core.project.NullLegacyMavenProjectService;
 import org.metaborg.spoofax.core.syntax.*;
 
 /**
@@ -74,6 +80,7 @@ import org.metaborg.spoofax.core.syntax.*;
         bindAnnotators();
         bindNewProjectWizard();
         bindTransformations();
+        bindConfiguration();
     }
 
     /**
@@ -169,6 +176,8 @@ import org.metaborg.spoofax.core.syntax.*;
         install(new FactoryModuleBuilder()
                 .implement(IdeaLanguageSpecProject.class, IdeaLanguageSpecProject.class)
                 .build(IIdeaProjectFactory.class));
+
+        bind(ProjectUtils.class).in(Singleton.class);
     }
 
     /**
@@ -182,9 +191,10 @@ import org.metaborg.spoofax.core.syntax.*;
      * Binds language management.
      */
     protected void bindLanguageManagement() {
-        bind(DefaultLanguageManager.class).in(Singleton.class);
-        bind(ILanguageManager.class).to(DefaultLanguageManager.class).in(Singleton.class);
-        bind(ILanguageBindingManager.class).to(DefaultLanguageManager.class).in(Singleton.class);
+        bind(DefaultIdeaLanguageManager.class).in(Singleton.class);
+        bind(ILanguageManager.class).to(DefaultIdeaLanguageManager.class).in(Singleton.class);
+        bind(IIdeaLanguageManager.class).to(DefaultIdeaLanguageManager.class).in(Singleton.class);
+        bind(ILanguageBindingManager.class).to(DefaultIdeaLanguageManager.class).in(Singleton.class);
     }
 
     /**
@@ -251,7 +261,22 @@ import org.metaborg.spoofax.core.syntax.*;
      * {@inheritDoc}
      */
     @Override
+    protected void bindMavenProject() {
+        bind(ILegacyMavenProjectService.class).to(NullLegacyMavenProjectService.class).in(Singleton.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void bindEditor() {
         bind(IEditorRegistry.class).to(IdeaEditorRegistry.class).in(Singleton.class);
+    }
+
+    /**
+     * Binds configuration classes.
+     */
+    protected void bindConfiguration() {
+        bind(ConfigurationUtils.class).in(Singleton.class);
     }
 }

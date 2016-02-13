@@ -17,34 +17,15 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.project;
-
-import org.jetbrains.jps.model.module.*;
-import org.metaborg.core.project.*;
-
-import javax.annotation.*;
-
 /**
- * A project service for JPS.
+ * General language management functionality.
+ *
+ * Metaborg Core does most of the language management. However, since we need to execute
+ * additional steps before a language can be used in IntelliJ IDEA or JPS, we need to have control
+ * over language loading, unloading, activation and deactivation. That's done in implementations
+ * of the {@link org.metaborg.intellij.languages.ILanguageManager} interface.
  */
-public interface IJpsProjectService extends IProjectService {
+@NonNullByDefault
+package org.metaborg.intellij.languages;
 
-    /**
-     * Creates and adds a new project for the specified JPS module.
-     *
-     * @param module The JPS module.
-     * @return The created project.
-     */
-    MetaborgJpsProject create(JpsModule module);
-
-    /**
-     * Finds the project corresponding to the specified module.
-     *
-     * @param module The JPS module to look for.
-     * @return The project that corresponds to the JPS module;
-     * or <code>null</code> when not found.
-     */
-    @Nullable
-    MetaborgJpsProject get(JpsModule module);
-
-}
+import org.metaborg.intellij.*;

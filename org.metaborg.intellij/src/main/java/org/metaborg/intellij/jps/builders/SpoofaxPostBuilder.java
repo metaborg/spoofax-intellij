@@ -25,7 +25,7 @@ import org.apache.tools.ant.BuildListener;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.spoofax.core.project.*;
 import org.metaborg.spoofax.core.project.configuration.*;

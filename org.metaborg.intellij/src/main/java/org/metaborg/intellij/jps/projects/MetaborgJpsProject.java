@@ -17,7 +17,7 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps.project;
+package org.metaborg.intellij.jps.projects;
 
 import org.apache.commons.vfs2.*;
 import org.jetbrains.jps.model.*;

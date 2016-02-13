@@ -24,9 +24,9 @@ import com.intellij.openapi.fileTypes.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.discovery.*;
 import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.languages.*;
+import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
 
@@ -42,7 +42,7 @@ import javax.swing.*;
 public abstract class MetaborgLanguageFileType extends LanguageFileType implements IMetaborgFileType {
 
     private IIconManager iconManager;
-    private ILanguageManager languageManager;
+    private IIdeaLanguageManager languageManager;
     @InjectLogger
     private ILogger logger;
 
@@ -59,7 +59,7 @@ public abstract class MetaborgLanguageFileType extends LanguageFileType implemen
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final IIconManager iconManager, final ILanguageManager languageManager) {
+    private void inject(final IIconManager iconManager, final IIdeaLanguageManager languageManager) {
         this.iconManager = iconManager;
         this.languageManager = languageManager;
     }

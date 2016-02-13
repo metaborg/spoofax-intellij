@@ -22,7 +22,7 @@ package org.metaborg.intellij.jps.builders;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.builders.java.*;
 import org.jetbrains.jps.incremental.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.projects.*;
 
 import java.util.*;
 

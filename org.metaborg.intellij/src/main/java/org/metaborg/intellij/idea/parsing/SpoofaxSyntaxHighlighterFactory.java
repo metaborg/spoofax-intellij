@@ -22,7 +22,6 @@ package org.metaborg.intellij.idea.parsing;
 import com.google.inject.*;
 import com.intellij.lexer.*;
 import com.intellij.openapi.fileTypes.*;
-import com.intellij.openapi.project.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.*;
 import org.apache.commons.vfs2.*;
@@ -30,6 +29,7 @@ import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.resources.*;
 
 import javax.annotation.*;

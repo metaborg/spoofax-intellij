@@ -133,7 +133,7 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
      */
     @Override
     public void projectOpened() {
-        this.setName(this.project.getName());
+
     }
 
     /**

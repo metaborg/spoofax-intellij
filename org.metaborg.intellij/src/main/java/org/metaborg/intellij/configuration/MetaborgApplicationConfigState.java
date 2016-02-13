@@ -52,7 +52,16 @@ public final class MetaborgApplicationConfigState {
     public MetaborgApplicationConfigState() {
         // Default configuration:
         this.loadedLanguages = Sets.newHashSet(
-                "org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT"
+//                "org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT",
+//                "org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646",
+//                "org.metaborg:org.metaborg.meta.lang.esv:1.5.0-SNAPSHOT",
+//                "org.metaborg:org.metaborg.meta.lang.nabl:1.5.0-SNAPSHOT",
+//                "org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-baseline-20150917-172646",
+//                "org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT",
+//                "org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646",
+//                "org.metaborg:org.metaborg.meta.lang.template:1.5.0-SNAPSHOT",
+//                "org.metaborg:org.metaborg.meta.lang.ts:1.5.0-SNAPSHOT",
+//                "org.metaborg:org.metaborg.meta.lib.analysis:1.5.0-SNAPSHOT"
         );
     }
 

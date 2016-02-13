@@ -18,9 +18,9 @@
  */
 
 /**
- * Language discovery.
+ * Project functionality.
  */
 @NonNullByDefault
-package org.metaborg.intellij.idea.discovery;
+package org.metaborg.intellij.projects;
 
 import org.metaborg.intellij.*;

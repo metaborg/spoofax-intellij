@@ -19,12 +19,10 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.language.ILanguage;
-import org.metaborg.core.language.ILanguageComponent;
-import org.metaborg.core.language.ILanguageDiscoveryRequest;
+import org.metaborg.core.language.*;
+import org.metaborg.intellij.languages.*;
 
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Manages loaded and activated languages.
@@ -35,14 +33,7 @@ import java.util.Collection;
  *
  * The implementation must be thread-safe.
  */
-public interface ILanguageManager {
-
-    /**
-     * Gets a collection of all loaded languages.
-     *
-     * @return A collection of all loaded languages.
-     */
-    Collection<ILanguage> getAllLanguages();
+public interface IIdeaLanguageManager extends ILanguageManager {
 
     /**
      * Gets a collection of all currently activated languages.
@@ -59,52 +50,6 @@ public interface ILanguageManager {
      * otherwise, <code>false</code>.
      */
     boolean isActive(ILanguage language);
-
-//    /**
-//     * Determines whether the specified language can be activated by this manager.
-//     *
-//     * One reason why a language might not be activatable is that it's actually
-//     * a library and not a language (such as the Spoofax runtime library).
-//     *
-//     * The result of this method does not depend on whether the language is already activated.
-//     *
-//     * @param language The language to test.
-//     * @return <code>true</code> when the language can be activated;
-//     * otherwise, <code>false</code>.
-//     */
-//    boolean canActivate(ILanguage language);
-
-    /**
-     * Loads a language component from the specified language discovery request.
-     *
-     * The loaded languages are not automatically activated.
-     *
-     * @param request The request whose language component to load.
-     * @return The loaded language component.
-     */
-    ILanguageComponent load(ILanguageDiscoveryRequest request)
-            throws LanguageLoadingFailedException;
-
-    /**
-     * Loads language component from the specified language discovery requests.
-     *
-     * The loaded languages are not automatically activated.
-     *
-     * @param requests The requests whose language components to load.
-     * @return The loaded language components.
-     */
-    Collection<ILanguageComponent> loadRange(Iterable<ILanguageDiscoveryRequest> requests)
-            throws LanguageLoadingFailedException;
-
-    /**
-     * Unloads a language component.
-     *
-     * A language component can only be unloaded when the languages to which
-     * it contributes are not active.
-     *
-     * @param component The language component to unload.
-     */
-    void unload(ILanguageComponent component);
 
     /**
      * Activates a language.
@@ -150,15 +95,5 @@ public interface ILanguageManager {
      * @return The associated {@link ILanguage}.
      */
     ILanguage getLanguage(MetaborgIdeaLanguage language);
-
-    /**
-     * Discovers the language components at the specified location.
-     * Pass the returned requests to {@link #loadRange} to actually
-     * load the components.
-     *
-     * @param location The location to discover language components in.
-     * @return Language discovery requests. Empty when no components can be discovered.
-     */
-    Iterable<ILanguageDiscoveryRequest> discover(FileObject location);
 
 }

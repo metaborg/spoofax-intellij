@@ -20,26 +20,23 @@
 package org.metaborg.intellij.idea.languages;
 
 import com.google.common.cache.*;
-import com.google.common.collect.*;
 import com.google.inject.*;
 import com.intellij.lang.*;
 import com.intellij.lang.Language;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.psi.tree.*;
 import javassist.util.proxy.*;
-import org.apache.commons.lang.*;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.*;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.*;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.actions.*;
+import org.metaborg.intellij.discovery.*;
 import org.metaborg.intellij.idea.extensions.*;
 import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.parsing.*;
 import org.metaborg.intellij.idea.parsing.annotations.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
@@ -55,14 +52,13 @@ import java.util.concurrent.*;
  * This implementation is thread-safe.
  */
 @Singleton
-public final class DefaultLanguageManager implements ILanguageManager, ILanguageBindingManager {
+public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
+        implements IIdeaLanguageManager, ILanguageBindingManager {
 
     // FIXME: The ILanguageService and ILanguageDiscoveryService implementations should be thread-safe too.
 
     private final Object objectLock = new Object();
     private final ProxyFactory proxyFactory;
-    private final ILanguageDiscoveryService discoveryService;
-    private final ILanguageService languageService;
     private final MetaborgSourceAnnotator<?, ?> metaborgSourceAnnotator;
     private final IFileElementTypeFactory fileElementTypeFactory;
     private final IParserDefinitionFactory parserDefinitionFactory;
@@ -78,19 +74,19 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
     private ILogger logger;
 
     /**
-     * Initializes a new instance of the {@link DefaultLanguageManager} class.
+     * Initializes a new instance of the {@link DefaultIdeaLanguageManager} class.
      */
     @Inject
-    public DefaultLanguageManager(final ILanguageService languageService,
-                                  final ILanguageDiscoveryService discoveryService,
-                                  final MetaborgSourceAnnotator<?, ?> metaborgSourceAnnotator,
-                                  final IFileElementTypeFactory fileElementTypeFactory,
-                                  final IParserDefinitionFactory parserDefinitionFactory,
-                                  final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
-                                  final BuilderMenuBuilder builderMenuBuilder,
-                                  final ActionUtils actionUtils) {
-        this.languageService = languageService;
-        this.discoveryService = discoveryService;
+    public DefaultIdeaLanguageManager(final ILanguageService languageService,
+                                      final ILanguageSource languageSource,
+                                      final ILanguageDiscoveryService discoveryService,
+                                      final MetaborgSourceAnnotator<?, ?> metaborgSourceAnnotator,
+                                      final IFileElementTypeFactory fileElementTypeFactory,
+                                      final IParserDefinitionFactory parserDefinitionFactory,
+                                      final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
+                                      final BuilderMenuBuilder builderMenuBuilder,
+                                      final ActionUtils actionUtils) {
+        super(languageService, languageSource, discoveryService);
         this.metaborgSourceAnnotator = metaborgSourceAnnotator;
         this.fileElementTypeFactory = fileElementTypeFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
@@ -100,14 +96,6 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Collection<ILanguage> getAllLanguages() {
-        return Lists.newArrayList(this.languageService.getAllLanguages());
     }
 
     /**
@@ -126,48 +114,6 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
         return this.loadedLanguages.containsKey(language);
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public boolean canActivate(final ILanguage language) {
-//        return LanguageUtils2.isRealLanguage(language);
-//    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ILanguageComponent load(final ILanguageDiscoveryRequest request)
-            throws LanguageLoadingFailedException
-    {
-        synchronized(this.objectLock) {
-            try {
-                this.logger.debug("Loading language component from request: {}", request);
-                final ILanguageComponent component = this.discoveryService.discover(request);
-                this.logger.info("Loaded language component: {}", component);
-                return component;
-            } catch (final MetaborgException e) {
-                throw LoggerUtils.exception(this.logger, LanguageLoadingFailedException.class,
-                        "Loading language failed from request: {}", e, request);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Collection<ILanguageComponent> loadRange(final Iterable<ILanguageDiscoveryRequest> requests)
-            throws LanguageLoadingFailedException {
-        final List<ILanguageComponent> components = new ArrayList<>();
-        for (final ILanguageDiscoveryRequest request : requests) {
-            final ILanguageComponent component = load(request);
-            components.add(component);
-        }
-        return components;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -176,9 +122,7 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
         synchronized(this.objectLock) {
             assertComponentDoesNotContributeToActiveLanguages(component);
 
-            this.logger.debug("Unloading language component: {}", component);
-            this.languageService.remove(component);
-            this.logger.info("Unloaded language component: {}", component);
+            super.unload(component);
         }
     }
 
@@ -272,19 +216,6 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
                     "There is no language associated with the specified MetaborgIdeaLanguage: {}", ideaLanguage);
         }
         return language;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Iterable<ILanguageDiscoveryRequest> discover(final FileObject location) {
-        try {
-            return this.discoveryService.request(location);
-        } catch (final MetaborgException e) {
-            throw LoggerUtils.exception(this.logger, UnhandledException.class,
-                    "An unhandled exception was thrown while requesting languages at: {}", e, location);
-        }
     }
 
     /**
@@ -411,7 +342,8 @@ public final class DefaultLanguageManager implements ILanguageManager, ILanguage
                 ideaLanguage,
                 parserDefinition
         );
-        final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension = new InstanceSyntaxHighlighterFactoryExtensionPoint(
+        final InstanceSyntaxHighlighterFactoryExtensionPoint syntaxHighlighterFactoryExtension =
+                new InstanceSyntaxHighlighterFactoryExtensionPoint(
                 ideaLanguage,
                 syntaxHighlighterFactory
         );

@@ -23,7 +23,7 @@
  * Metaborg Core does most of the language management. However, since we need to execute
  * additional steps before a language can be used in IntelliJ IDEA, we need to have control
  * over language loading, unloading, activation and deactivation. That's done in implementations
- * of the {@link org.metaborg.intellij.idea.languages.ILanguageManager} interface.
+ * of the {@link org.metaborg.intellij.languages.ILanguageManager} interface.
  *
  * Loading and unloading a language ultimately calls upon Metaborg Core. Activating a language
  * will install the language in IDEA. This involves, among other things, registering the file

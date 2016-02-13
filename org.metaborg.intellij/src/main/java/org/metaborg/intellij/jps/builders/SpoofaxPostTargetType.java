@@ -21,7 +21,7 @@ package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
 import org.metaborg.intellij.jps.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.projects.*;
 
 /**
  * The type of a post-Java build target.

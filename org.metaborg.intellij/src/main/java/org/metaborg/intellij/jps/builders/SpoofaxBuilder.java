@@ -23,7 +23,7 @@ import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
 import org.jetbrains.jps.model.module.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.jps.project.*;
+import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.spoofax.core.project.*;
@@ -40,7 +40,7 @@ import java.util.*;
  */
 public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuilder<SpoofaxSourceRootDescriptor, T> {
 
-    protected final JpsProjectService projectService;
+    protected final IJpsProjectService projectService;
     protected final ILanguageSpecService languageSpecService;
     protected final ISpoofaxLanguageSpecPathsService pathsService;
     protected final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService;
@@ -62,7 +62,7 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
      */
     protected SpoofaxBuilder(
             final BuildTargetType<T> targetType,
-            final JpsProjectService projectService,
+            final IJpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
             final ISpoofaxLanguageSpecPathsService pathsService,
             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService) {
