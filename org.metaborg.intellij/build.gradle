@@ -19,7 +19,7 @@ apply plugin: 'maven'
 apply plugin: 'org.jetbrains.intellij'
 
 group 'org.metaborg'
-version '1.5.0-SNAPSHOT'
+version '2.0.0-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -124,16 +124,16 @@ task(printAllDependencies) << {
 
 dependencies {
     // Main dependencies
-    compile('org.metaborg:org.metaborg.core:1.5.0-SNAPSHOT') {
+    compile('org.metaborg:org.metaborg.core:2.0.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
     }
-    compile('org.metaborg:org.metaborg.spoofax.core:1.5.0-SNAPSHOT') {
+    compile('org.metaborg:org.metaborg.spoofax.core:2.0.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
     }
-    compile('org.metaborg:org.metaborg.spoofax.generator:1.5.0-SNAPSHOT') {
+    compile('org.metaborg:org.metaborg.spoofax.generator:2.0.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
     }
-    compile('org.metaborg:org.metaborg.spoofax.meta.core:1.5.0-SNAPSHOT') {
+    compile('org.metaborg:org.metaborg.spoofax.meta.core:2.0.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
     }
     compile 'com.google.code.findbugs:jsr305:3.0.0'
@@ -148,12 +148,12 @@ dependencies {
     
     jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
 
-    language 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.nabl:1.5.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.template:1.5.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.ts:1.5.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lib.analysis:1.5.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.esv:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.nabl:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.template:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.ts:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-SNAPSHOT@spoofax-language'
 
     languageBaseline 'org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646@spoofax-language'
     languageBaseline 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646@spoofax-language'
@@ -162,7 +162,7 @@ dependencies {
     // Test dependencies
     testCompile 'junit:junit:4.12'
 
-    testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-SNAPSHOT@spoofax-language'
+    testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT@spoofax-language'
 }
 
 uploadArchives {
