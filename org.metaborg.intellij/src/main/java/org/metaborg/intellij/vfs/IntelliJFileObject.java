@@ -242,13 +242,26 @@ public final class IntelliJFileObject extends AbstractFileObject {
     protected OutputStream doGetOutputStream(final boolean append) throws Exception {
         assert isAttached();
         assert this.file != null;
-
-        // NOTE: Because the file system has the Capability.APPEND_CONTENT capability,
-        // we need to support `append == true`.
-
-        // FIXME: We're ignoring `append`.
-        // FIXME: Or, remove the APPEND_CONTENT capability. (Easier)
+        assert !append : "The file system doesn't have the Capability.APPEND_CONTENT capability.";
 
         return this.file.getOutputStream(null);
+    }
+
+    /**
+     * Returns the associated IntelliJ virtual file.
+     *
+     * @return The associated {@link VirtualFile}.
+     */
+    public final VirtualFile asVirtualFile() throws FileSystemException {
+        synchronized(this.getFileSystem()) {
+            // HACK: This forces the file to be attached
+            // if it wasn't already.
+            getType();
+
+            assert isAttached();
+            assert this.file != null;
+
+            return this.file;
+        }
     }
 }

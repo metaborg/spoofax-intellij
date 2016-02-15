@@ -19,21 +19,52 @@
 
 package org.metaborg.intellij.vfs;
 
+import com.google.common.collect.*;
 import org.apache.commons.vfs2.*;
 import org.apache.commons.vfs2.provider.*;
 
 import java.util.*;
 
-public class IntelliJFileProvider extends AbstractFileProvider{
+/**
+ * IntelliJ file system provider.
+ */
+public class IntelliJFileProvider extends AbstractOriginatingFileProvider {
 
-    @Override
-    public FileObject findFile(final FileObject baseFile, final String uri, final FileSystemOptions fileSystemOptions)
-            throws FileSystemException {
-        return null;
+    // @formatter:off
+    public static final Collection<Capability> capabilities = ImmutableList.of(
+            Capability.CREATE,
+            Capability.DELETE,
+            Capability.RENAME,
+            Capability.GET_TYPE,
+            Capability.LIST_CHILDREN,
+            Capability.READ_CONTENT,
+            Capability.URI,
+            Capability.WRITE_CONTENT
+    );
+    // @formatter:on
+
+    /**
+     * Initializes a new instance of the {@link IntelliJFileProvider} class.
+     */
+    public IntelliJFileProvider() {
+
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Collection<Capability> getCapabilities() {
-        return null;
+    public final Collection<Capability> getCapabilities() {
+        return capabilities;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FileSystem doCreateFileSystem(final FileName rootName,
+                                            final FileSystemOptions fileSystemOptions)
+            throws FileSystemException {
+        return new IntelliJFileSystem(rootName, fileSystemOptions);
     }
 }

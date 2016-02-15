@@ -27,9 +27,11 @@ import org.metaborg.core.resource.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.vfs.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
+import java.io.*;
 import java.net.*;
 
 /**
@@ -56,7 +58,8 @@ public final class DefaultIntelliJResourceService extends ResourceService implem
      */
     @Override
     public final FileObject resolve(final VirtualFile resource) {
-        return resolve("file://" + resource.getPath());
+        return resolve(IntelliJFileSystemManagerProvider.IntelliJScheme + "://" + resource.getPath());
+//        return resolve("file://" + resource.getPath());
     }
 
     /**
@@ -64,16 +67,19 @@ public final class DefaultIntelliJResourceService extends ResourceService implem
      */
     @Override
     public final VirtualFile unresolve(final FileObject resource) {
-//        if (resource instanceof IntelliJFileObject) {
-//            final IntelliJFileObject intellijResource = (IntelliJFileObject)resource;
-//            final VirtualFile intellijFile = intellijResource.getIntelliJFile();
-//            if (intellijFile != null)
-//                return intellijFile;
-//        }
+        if (resource instanceof IntelliJFileObject) {
+            final IntelliJFileObject intellijResource = (IntelliJFileObject)resource;
+            try {
+                return intellijResource.asVirtualFile();
+            } catch (final FileSystemException e) {
+                throw LoggerUtils.exception(this.logger, UnhandledException.class,
+                        "Unexpected exception while resolving file: {}", e, resource);
+            }
+        }
 
         final URI uri = toUri(resource.getName().getURI());
-        final VirtualFileSystem fileSystem = getFileSystem(uri);
-        final String path = getPath(uri);
+        @Nullable final VirtualFileSystem fileSystem = getFileSystem(uri);
+        @Nullable final String path = getPath(uri);
         if (fileSystem == null || path == null) {
             throw LoggerUtils.exception(this.logger, IllegalStateException.class, "Can't unresolve this URI: {}", uri);
         }
@@ -109,8 +115,6 @@ public final class DefaultIntelliJResourceService extends ResourceService implem
     private String getPath(final URI uri) {
         if (uri.getPath() == null) {
             final String part = uri.getSchemeSpecificPart();
-            if (part == null)
-                return null;
             return getPath(toUri(part));
         }
         return uri.getPath();
@@ -128,5 +132,23 @@ public final class DefaultIntelliJResourceService extends ResourceService implem
         } catch (final URISyntaxException e) {
             throw LoggerUtils.exception(this.logger, UnhandledException.class, "An unexpected exception occurred.", e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Nullable
+    public File localPath(final FileObject resource) {
+        if(!(resource instanceof IntelliJFileObject)) {
+            return super.localPath(resource);
+        }
+
+        @Nullable final VirtualFile virtualFile = unresolve(resource);
+        if (virtualFile == null) {
+            throw LoggerUtils.exception(this.logger, UnhandledException.class,
+                    "Couldn't unresolve the resource: {}", resource);
+        }
+        return new File(virtualFile.getPath());
     }
 }

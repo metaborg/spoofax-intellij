@@ -50,6 +50,7 @@ import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
 import org.metaborg.intellij.projects.*;
 import org.metaborg.intellij.resources.*;
+import org.metaborg.intellij.vfs.*;
 import org.metaborg.spoofax.core.SpoofaxModule;
 import org.metaborg.spoofax.core.project.*;
 import org.metaborg.spoofax.core.project.NullLegacyMavenProjectService;
@@ -113,7 +114,12 @@ import org.metaborg.spoofax.core.syntax.*;
         bind(DefaultIntelliJResourceService.class).in(Singleton.class);
         bind(IResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
         bind(IIntelliJResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
-        bind(FileSystemManager.class).toProvider(DefaultFileSystemManagerProvider.class).in(Singleton.class);
+        bind(FileSystemManager.class).toProvider(IntelliJFileSystemManagerProvider.class).in(Singleton.class);
+//        bind(FileSystemManager.class).toProvider(DefaultFileSystemManagerProvider.class).in(Singleton.class);
+
+        install(new FactoryModuleBuilder()
+                .implement(IntelliJFileProvider.class, IntelliJFileProvider.class)
+                .build(IIntelliJFileProviderFactory.class));
     }
 
     /**

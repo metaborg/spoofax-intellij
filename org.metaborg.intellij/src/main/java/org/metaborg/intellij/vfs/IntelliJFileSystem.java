@@ -24,20 +24,34 @@ import org.apache.commons.vfs2.provider.*;
 
 import java.util.*;
 
+/**
+ * The IntelliJ IDEA file system.
+ */
 public class IntelliJFileSystem extends AbstractFileSystem {
 
-    protected IntelliJFileSystem(final FileName rootName, final FileObject parentLayer, final FileSystemOptions fileSystemOptions) {
-        super(rootName, parentLayer, fileSystemOptions);
+    /**
+     * Initializes a new instance of the {@link IntelliJFileSystem} class.
+     *
+     * @param rootName          The root name.
+     * @param fileSystemOptions The file system options.
+     */
+    public IntelliJFileSystem(final FileName rootName, final FileSystemOptions fileSystemOptions) {
+        super(rootName, null, fileSystemOptions);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected FileObject createFile(final AbstractFileName name)
-            throws Exception {
-        return null;
+    protected FileObject createFile(final AbstractFileName name) throws Exception {
+        return new IntelliJFileObject(name, this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected void addCapabilities(final Collection<Capability> caps) {
-
+    protected void addCapabilities(final Collection<Capability> capabilities) {
+        capabilities.addAll(IntelliJFileProvider.capabilities);
     }
 }
