@@ -76,6 +76,13 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private List<Pair<String, String>> sourcePaths;
 
     private String name = "Untitled";
+    private String extension = "u";
+    private LanguageIdentifier languageId = new LanguageIdentifier(
+            "org.example",
+            "untitled",
+            LanguageVersion.parse("1.0.0-SNAPSHOT")
+    );
+
 
     /**
      * Gets the name of the module.
@@ -93,8 +100,6 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     @Override
     public void setName(final String name) { this.name = name; }
 
-    private String extension = "u";
-
     /**
      * Gets the extension of the language.
      *
@@ -108,12 +113,6 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      * @param extension The language file extension.
      */
     public void setExtension(final String extension) { this.extension = extension; }
-
-    private LanguageIdentifier languageId = new LanguageIdentifier(
-            "org.example",
-            "untitled",
-            LanguageVersion.parse("1.0.0-SNAPSHOT")
-    );
 
     /**
      * Gets the language ID of the module.
@@ -217,21 +216,18 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         final Module module = rootModel.getModule();
         final Project project = module.getProject();
 
-        //noinspection Convert2Lambda
-        runWhenInitialized(project, new DumbAwareRunnable() {
-            @Override
-            public void run() {
-                MetaborgModuleBuilder.this.logger.debug("Generating project files.");
-                // Generate the module structure (files and directories).
-                final FileObject location = MetaborgModuleBuilder.
-                        this.resourceService.resolve(getContentEntryPath());
-                final IdeaLanguageSpecProject ideaProject = MetaborgModuleBuilder.
-                        this.projectFactory.create(module,location);
-                MetaborgModuleBuilder.this.projectService.open(ideaProject);
-                WriteCommandAction.runWriteCommandAction(
-                        project, "Create new Spoofax module", null, () -> generateModuleStructure(ideaProject));
-                MetaborgModuleBuilder.this.logger.info("Generated project files.");
-            }
+
+        ApplicationManager.getApplication().runWriteAction(() -> {
+            MetaborgModuleBuilder.this.logger.debug("Generating project files.");
+            // Generate the module structure (files and directories).
+            final FileObject location = MetaborgModuleBuilder.
+                    this.resourceService.resolve(getContentEntryPath());
+            final IdeaLanguageSpecProject ideaProject = MetaborgModuleBuilder.
+                    this.projectFactory.create(module,location);
+            MetaborgModuleBuilder.this.projectService.open(ideaProject);
+            WriteCommandAction.runWriteCommandAction(
+                    project, "Create new Spoofax module", null, () -> generateModuleStructure(ideaProject));
+            MetaborgModuleBuilder.this.logger.info("Generated project files.");
         });
 
     }
