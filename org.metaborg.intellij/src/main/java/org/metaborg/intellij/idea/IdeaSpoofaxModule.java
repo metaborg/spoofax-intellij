@@ -31,9 +31,9 @@ import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
 import org.metaborg.core.resource.*;
 import org.metaborg.core.syntax.*;
-import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.discovery.*;
+import org.metaborg.intellij.idea.compilation.*;
 import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.idea.editors.*;
 import org.metaborg.intellij.idea.filetypes.*;
@@ -82,6 +82,8 @@ import org.metaborg.spoofax.core.syntax.*;
         bindNewProjectWizard();
         bindTransformations();
         bindConfiguration();
+        bindBeforeCompileTasks();
+        bindAfterCompileTasks();
     }
 
     /**
@@ -284,5 +286,28 @@ import org.metaborg.spoofax.core.syntax.*;
      */
     protected void bindConfiguration() {
         bind(ConfigurationUtils.class).in(Singleton.class);
+    }
+
+    /**
+     * Binds the before compile tasks.
+     */
+    protected void bindBeforeCompileTasks() {
+        final Multibinder<IBeforeCompileTask> beforeCompileTasks = Multibinder.newSetBinder(
+                binder(),
+                IBeforeCompileTask.class
+        );
+    }
+
+    /**
+     * Binds the after compile tasks.
+     */
+    protected void bindAfterCompileTasks() {
+        final Multibinder<IAfterCompileTask> afterCompileTasks = Multibinder.newSetBinder(
+                binder(),
+                IAfterCompileTask.class
+        );
+
+        bind(ReloadLanguageCompileTask.class).in(Singleton.class);
+        afterCompileTasks.addBinding().to(ReloadLanguageCompileTask.class);
     }
 }

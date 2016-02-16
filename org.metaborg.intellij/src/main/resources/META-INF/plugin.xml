@@ -52,6 +52,9 @@
         <component>
             <implementation-class>org.metaborg.intellij.idea.configuration.IdeaMetaborgProjectConfig</implementation-class>
         </component>
+        <component>
+            <implementation-class>org.metaborg.intellij.idea.IdeaProjectComponent</implementation-class>
+        </component>
     </project-components>
 
     <module-components>

@@ -47,7 +47,6 @@ import java.util.*;
 public final class IdeaMetaborgApplicationConfig implements IMetaborgApplicationConfig, ApplicationComponent,
         PersistentStateComponent<MetaborgApplicationConfigState> {
 
-    private IIdeaLanguageManager languageManager;
     private ConfigurationUtils configurationUtils;
     // Don't initialize fields that depend on the state here. Initialize in loadState().
     private MetaborgApplicationConfigState state;
@@ -75,9 +74,7 @@ public final class IdeaMetaborgApplicationConfig implements IMetaborgApplication
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final IIdeaLanguageManager languageManager,
-                        final ConfigurationUtils configurationUtils) {
-        this.languageManager = languageManager;
+    private void inject(final ConfigurationUtils configurationUtils) {
         this.configurationUtils = configurationUtils;
     }
 
@@ -86,11 +83,9 @@ public final class IdeaMetaborgApplicationConfig implements IMetaborgApplication
      */
     @Override
     public void initComponent() {
-        // Occurs when the application is starting.
-
-        this.logger.debug("Loading Spoofax plugin application-wide config.");
+        this.logger.debug("Initializing application configuration.");
         this.configurationUtils.loadAndActivateLanguages(null, this.getLoadedLanguages());
-        this.logger.info("Loaded Spoofax plugin application-wide config.");
+        this.logger.info("Initialized application configuration.");
     }
 
     /**
@@ -98,7 +93,8 @@ public final class IdeaMetaborgApplicationConfig implements IMetaborgApplication
      */
     @Override
     public void disposeComponent() {
-        // Occurs when the application is quitting.
+        this.logger.debug("Disposing application configuration.");
+        this.logger.info("Disposed application configuration.");
     }
 
     /**

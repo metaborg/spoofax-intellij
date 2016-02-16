@@ -127,6 +127,18 @@ public class DefaultLanguageManager implements ILanguageManager {
      * {@inheritDoc}
      */
     @Override
+    public void unload(final ILanguageComponent component) {
+        synchronized(this.objectLock) {
+            this.logger.debug("Unloading language component: {}", component);
+            this.languageService.remove(component);
+            this.logger.info("Unloaded language component: {}", component);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Collection<ILanguageComponent> discoverRange(final Iterable<LanguageIdentifier> ids)
             throws LanguageLoadingFailedException {
         final List<ILanguageComponent> allComponents = new ArrayList<>();
@@ -155,11 +167,9 @@ public class DefaultLanguageManager implements ILanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public void unload(final ILanguageComponent component) {
-        synchronized(this.objectLock) {
-            this.logger.debug("Unloading language component: {}", component);
-            this.languageService.remove(component);
-            this.logger.info("Unloaded language component: {}", component);
+    public void unloadRange(final Iterable<ILanguageComponent> components) {
+        for (final ILanguageComponent component : components) {
+            unload(component);
         }
     }
 

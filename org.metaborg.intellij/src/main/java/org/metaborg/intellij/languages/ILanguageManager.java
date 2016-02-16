@@ -69,6 +69,16 @@ public interface ILanguageManager {
             throws LanguageLoadingFailedException;
 
     /**
+     * Unloads a language component.
+     *
+     * A language component can only be unloaded when the languages to which
+     * it contributes are not active.
+     *
+     * @param component The language component to unload.
+     */
+    void unload(ILanguageComponent component);
+
+    /**
      * Loads language component from the specified language discovery requests.
      *
      * This uses the installed language sources to discover the language.
@@ -92,13 +102,12 @@ public interface ILanguageManager {
             throws LanguageLoadingFailedException;
 
     /**
-     * Unloads a language component.
+     * Unloads language components.
      *
-     * A language component can only be unloaded when the languages to which
-     * it contributes are not active.
+     * The components are not automatically deactivated.
      *
-     * @param component The language component to unload.
+     * @param components The components to unload.
      */
-    void unload(ILanguageComponent component);
+    void unloadRange(Iterable<ILanguageComponent> components);
 
 }

@@ -85,10 +85,28 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
      */
     @Override
     public void initComponent() {
-        // Occurs when the application is starting.
+        this.logger.debug("Initializing project configuration for: {}", this.project);
+        this.logger.info("Initialized project configuration for: {}", this.project);
+    }
 
-        this.logger.debug("Loading Spoofax plugin project-wide config.");
-        this.logger.info("Loaded Spoofax plugin project-wide config.");
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void projectOpened() {
+        this.logger.debug("Opening project configuration for: {}", this.project);
+
+        this.logger.info("Opened project configuration for: {}", this.project);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void projectClosed() {
+        this.logger.debug("Closing project configuration for: {}", this.project);
+
+        this.logger.info("Closed project configuration for: {}", this.project);
     }
 
     /**
@@ -96,7 +114,8 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
      */
     @Override
     public void disposeComponent() {
-        // Occurs when the application is quitting.
+        this.logger.debug("Disposing project configuration for: {}", this.project);
+        this.logger.info("Disposed project configuration for: {}", this.project);
     }
 
     /**
@@ -128,19 +147,4 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
         // Initialize fields that depend on state here.
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void projectOpened() {
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void projectClosed() {
-
-    }
 }

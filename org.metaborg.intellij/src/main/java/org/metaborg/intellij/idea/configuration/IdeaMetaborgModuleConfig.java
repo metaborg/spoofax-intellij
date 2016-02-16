@@ -118,6 +118,67 @@ public final class IdeaMetaborgModuleConfig implements IMetaborgModuleConfig, Mo
     }
 
     /**
+     * Occurs when the module is initialized.
+     */
+    @Override
+    public void initComponent() {
+        this.logger.debug("Initializing module configuration for: {}", this.module);
+        this.logger.info("Initialized module configuration for: {}", this.module);
+    }
+
+    /**
+     * Occurs when the module is opened.
+     * <p>
+     * Called after {@link #initComponent()} and {@link #moduleAdded()}.
+     * <p>
+     * This method is not called when modules are created
+     * in a {@link com.intellij.ide.util.projectWizard.ModuleBuilder}.
+     */
+    @Override
+    public void projectOpened() {
+        this.logger.debug("Opening module configuration for: {}", this.module);
+
+        registerModule();
+        this.configurationUtils.loadAndActivateLanguages(this.module.getProject(), getCompileDependencies());
+
+        this.logger.info("Opened module configuration for: {}", this.module);
+    }
+
+    /**
+     * Occurs when the module has been completely loaded and added to the project.
+     * <p>
+     * Called after {@link #initComponent()}. May be called twice for a module.
+     */
+    @Override
+    public void moduleAdded() {
+        this.logger.debug("Adding module configuration for: {}", this.module);
+        this.logger.info("Added module configuration for: {}", this.module);
+    }
+
+    /**
+     * Occurs when the module is closed.
+     */
+    @Override
+    public void projectClosed() {
+        this.logger.debug("Closing module configuration for: {}", this.module);
+
+        unregisterModule();
+
+        this.logger.info("Closed module configuration for: {}", this.module);
+    }
+
+    /**
+     * Occurs when the module is disposed.
+     * <p>
+     * Called after {@link #projectClosed()}.
+     */
+    @Override
+    public void disposeComponent() {
+        this.logger.debug("Disposing module configuration for: {}", this.module);
+        this.logger.info("Disposed module configuration for: {}", this.module);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @NotNull
@@ -144,67 +205,6 @@ public final class IdeaMetaborgModuleConfig implements IMetaborgModuleConfig, Mo
     public void loadState(final MetaborgModuleConfigState state) {
         this.state = state;
         // Initialize fields that depend on state here.
-    }
-
-    /**
-     * Occurs when the module is initialized.
-     */
-    @Override
-    public void initComponent() {
-        this.logger.debug("Initializing Metaborg module: {}", this.module);
-        this.logger.info("Initialized Metaborg module: {}", this.module);
-    }
-
-    /**
-     * Occurs when the module is disposed.
-     * <p>
-     * Called after {@link #projectClosed()}.
-     */
-    @Override
-    public void disposeComponent() {
-        this.logger.debug("Disposing Metaborg module: {}", this.module);
-        this.logger.info("Disposed Metaborg module: {}", this.module);
-    }
-
-    /**
-     * Occurs when the module is opened.
-     * <p>
-     * Called after {@link #initComponent()} and {@link #moduleAdded()}.
-     * <p>
-     * This method is not called when modules are created
-     * in a {@link com.intellij.ide.util.projectWizard.ModuleBuilder}.
-     */
-    @Override
-    public void projectOpened() {
-        this.logger.debug("Opening Metaborg module: {}", this.module);
-
-        registerModule();
-        this.configurationUtils.loadAndActivateLanguages(this.module.getProject(), getCompileDependencies());
-
-        this.logger.info("Opened Metaborg module: {}", this.module);
-    }
-
-    /**
-     * Occurs when the module is closed.
-     */
-    @Override
-    public void projectClosed() {
-        this.logger.debug("Closing Metaborg module: {}", this.module);
-
-        unregisterModule();
-
-        this.logger.info("Closed Metaborg module: {}", this.module);
-    }
-
-    /**
-     * Occurs when the module has been completely loaded and added to the project.
-     * <p>
-     * Called after {@link #initComponent()}. May be called twice for a module.
-     */
-    @Override
-    public void moduleAdded() {
-        this.logger.debug("Adding Metaborg module: {}", this.module);
-        this.logger.info("Added Metaborg module: {}", this.module);
     }
 
     /**

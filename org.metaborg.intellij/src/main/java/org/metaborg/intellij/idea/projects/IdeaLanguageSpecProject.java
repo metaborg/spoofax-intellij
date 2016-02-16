@@ -23,12 +23,35 @@ import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.*;
+import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
+
+import java.util.*;
 
 /**
  * An IntelliJ IDEA language specification project.
  */
 public class IdeaLanguageSpecProject extends IdeaProject implements ILanguageSpec {
+
+    private Collection<ILanguageComponent> components = Collections.emptyList();
+
+    /**
+     * Gets the language components that are contributed by this language specification.
+     *
+     * @return The contributed language components.
+     */
+    public Collection<ILanguageComponent> getComponents() {
+        return this.components;
+    }
+
+    /**
+     * Gets the language components that are contributed by this language specification.
+     *
+     * @param components The contributed language components.
+     */
+    public void setComponents(Collection<ILanguageComponent> components) {
+        this.components = components;
+    }
 
     @Inject
     /* package private */ IdeaLanguageSpecProject(
