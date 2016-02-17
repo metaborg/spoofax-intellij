@@ -24,8 +24,11 @@ import com.google.inject.*;
 import com.intellij.lang.*;
 import com.intellij.lang.Language;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.vfs.*;
 import com.intellij.psi.tree.*;
 import javassist.util.proxy.*;
+import org.apache.commons.vfs2.*;
+import org.metaborg.core.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.*;
@@ -39,9 +42,11 @@ import org.metaborg.intellij.idea.parsing.elements.*;
 import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.resources.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
+import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -64,6 +69,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     private final IParserDefinitionFactory parserDefinitionFactory;
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
     private final BuilderMenuBuilder builderMenuBuilder;
+    private final IIntelliJResourceService resourceService;
     private final ActionUtils actionUtils;
     private final ConcurrentMap<ILanguage, LanguageBindings> loadedLanguages = new ConcurrentHashMap<>();
     private final ConcurrentMap<ILanguageImpl, LanguageImplBindings> loadedLanguageImpls = new ConcurrentHashMap<>();
@@ -80,6 +86,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     public DefaultIdeaLanguageManager(final ILanguageService languageService,
                                       final ILanguageSource languageSource,
                                       final ILanguageDiscoveryService discoveryService,
+                                      final IIntelliJResourceService resourceService,
                                       final MetaborgSourceAnnotator<?, ?> metaborgSourceAnnotator,
                                       final IFileElementTypeFactory fileElementTypeFactory,
                                       final IParserDefinitionFactory parserDefinitionFactory,
@@ -93,6 +100,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
         this.builderMenuBuilder = builderMenuBuilder;
         this.actionUtils = actionUtils;
+        this.resourceService = resourceService;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -142,15 +150,21 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
                 return;
 
             this.logger.debug("Activating language: {}", language);
+
+            // Ensure all bindings are created.
             final LanguageBindings activatedLanguage = getOrCreateIdeaLanguage(language);
-            activateLanguage(activatedLanguage);
+            this.loadedLanguages.put(language, activatedLanguage);
             for (final ILanguageImpl implementation : language.impls()) {
                 final LanguageImplBindings activatedLanguageImpl = getOrCreateIdeaLanguageImpl(implementation);
-                activateLanguageImpl(activatedLanguageImpl);
                 this.loadedLanguageImpls.put(implementation, activatedLanguageImpl);
             }
 
-            this.loadedLanguages.put(language, activatedLanguage);
+            // Activate all languages.
+            activateLanguage(getBindings(language));
+            for (final ILanguageImpl implementation : language.impls()) {
+                activateLanguageImpl(getBindings(implementation));
+            }
+
             this.logger.info("Activated language: {}", language);
         }
     }
@@ -171,6 +185,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
                 return;
 
             this.logger.debug("Deactivating language: {}", language);
+
+            // Deactivate language and remove bindings.
             final LanguageBindings activatedLanguage = this.loadedLanguages.remove(language);
             for (final ILanguageImpl implementation : language.impls()) {
                 final LanguageImplBindings activatedLanguageImpl = this.loadedLanguageImpls.remove(implementation);
@@ -579,6 +595,62 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         } catch (NoSuchMethodException | IllegalArgumentException | InstantiationException | IllegalAccessException
                 | InvocationTargetException e) {
             throw LoggerUtils.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);
+        }
+    }
+
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable<ILanguageDiscoveryRequest> requestFromArtifact(final VirtualFile artifact)
+            throws IOException {
+
+        return requestFromArtifact(this.resourceService.resolve(artifact));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable<ILanguageDiscoveryRequest> requestFromArtifact(final FileObject artifact)
+            throws IOException {
+
+        final String zipUri;
+        try {
+            zipUri = "zip://" + artifact.getURL().getPath();
+        } catch (final FileSystemException e) {
+            throw LoggerUtils.exception(this.logger, UnhandledException.class,
+                    "Unhandled exception while requesting languages from artifact: {}", e, artifact);
+        }
+
+        final FileObject file = this.resourceService.resolve(zipUri);
+        return requestFromFolder(file);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable<ILanguageDiscoveryRequest> requestFromFolder(final VirtualFile folder)
+            throws IOException {
+
+        return requestFromFolder(this.resourceService.resolve(folder));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Iterable<ILanguageDiscoveryRequest> requestFromFolder(final FileObject folder)
+            throws IOException {
+
+        try {
+            // Loading happens only after the user clicked OK or Apply in the settings dialog.
+            return this.discoveryService.request(folder);
+        } catch (final MetaborgException e) {
+            throw new UnhandledException(e);
         }
     }
 }

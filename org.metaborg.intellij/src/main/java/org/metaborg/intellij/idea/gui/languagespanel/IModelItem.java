@@ -17,39 +17,38 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.graphics;
-
-import org.metaborg.core.language.*;
+package org.metaborg.intellij.idea.gui.languagespanel;
 
 import javax.annotation.*;
-import javax.swing.*;
 
 /**
- * Manages the icons for file types and other things.
+ * An item in a model.
  */
-public interface IIconManager {
+public interface IModelItem<Item extends IModelItem<Item>> {
 
     /**
-     * Gets the default icon.
+     * Gets the value of this item in the specified column.
      *
-     * @return The default icon.
+     * @param column The column.
+     * @return The current value.
      */
-    Icon getDefaultIcon();
+    @Nullable
+    Object getValueOfColumn(ModelColumnInfo<Item> column);
 
     /**
-     * Gets the icon for a file written in a specific language.
+     * Sets the value of this item in the specified column.
      *
-     * @param language The language of the file for which to get the icon;
-     *                 or <code>null</code> to get the default language icon.
-     * @return The file icon.
+     * @param column The column.
+     * @param value  The new value.
      */
-    Icon getLanguageFileIcon(@Nullable ILanguage language);
+    void setValueOfColumn(ModelColumnInfo<Item> column, @Nullable Object value);
 
     /**
-     * Gets the icon for a language artifact.
+     * Gets whether the value of this item in the specified column can be edited.
      *
-     * @return The file icon.
+     * @param column The column.
+     * @return <code>true</code> when the value can be edited;
+     * otherwise, <code>false</code>.
      */
-    Icon getLanguageArtifactIcon();
-
+    boolean canEditValueOfColumn(ModelColumnInfo<Item> column);
 }

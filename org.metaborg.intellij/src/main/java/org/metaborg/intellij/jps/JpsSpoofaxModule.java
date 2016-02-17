@@ -23,10 +23,12 @@ import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.*;
+import org.apache.commons.vfs2.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
 import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
+import org.metaborg.core.resource.*;
 import org.metaborg.intellij.discovery.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.jps.projects.*;
@@ -36,6 +38,8 @@ import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
 import org.metaborg.intellij.projects.*;
+import org.metaborg.intellij.resources.*;
+import org.metaborg.intellij.vfs.*;
 import org.metaborg.spoofax.core.SpoofaxModule;
 import org.metaborg.spoofax.core.project.*;
 
@@ -152,6 +156,16 @@ import java.util.*;
         bind(DefaultLanguageManager.class).in(Singleton.class);
         bind(ILanguageManager.class).to(DefaultLanguageManager.class).in(Singleton.class);
     }
+
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    protected void bindResource() {
+////        bind(DefaultIntelliJResourceService.class).in(Singleton.class);
+////        bind(IResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
+////        bind(IIntelliJResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
+//    }
 
     /**
      * {@inheritDoc}

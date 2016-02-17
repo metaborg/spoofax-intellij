@@ -19,9 +19,12 @@
 
 package org.metaborg.intellij.idea.languages;
 
+import com.intellij.openapi.vfs.*;
+import org.apache.commons.vfs2.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.languages.*;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -95,5 +98,37 @@ public interface IIdeaLanguageManager extends ILanguageManager {
      * @return The associated {@link ILanguage}.
      */
     ILanguage getLanguage(MetaborgIdeaLanguage language);
+
+    /**
+     * Requests languages from a language artifact.
+     *
+     * @param artifact The artifact file.
+     * @return The language discovery requests.
+     */
+    Iterable<ILanguageDiscoveryRequest> requestFromArtifact(final VirtualFile artifact) throws IOException;
+
+    /**
+     * Requests languages from a language artifact.
+     *
+     * @param artifact The artifact file.
+     * @return The language discovery requests.
+     */
+    Iterable<ILanguageDiscoveryRequest> requestFromArtifact(final FileObject artifact) throws IOException;
+
+    /**
+     * Requests languages from a folder.
+     *
+     * @param folder The folder.
+     * @return The language discovery requests.
+     */
+    Iterable<ILanguageDiscoveryRequest> requestFromFolder(final VirtualFile folder) throws IOException;
+
+    /**
+     * Requests languages from a folder.
+     *
+     * @param folder The folder.
+     * @return The language discovery requests.
+     */
+    Iterable<ILanguageDiscoveryRequest> requestFromFolder(final FileObject folder) throws IOException;
 
 }

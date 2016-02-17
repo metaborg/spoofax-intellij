@@ -17,39 +17,12 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.graphics;
-
-import org.metaborg.core.language.*;
+package org.metaborg.intellij.idea.gui.languagespanel;
 
 import javax.annotation.*;
 import javax.swing.*;
 
-/**
- * Manages the icons for file types and other things.
- */
-public interface IIconManager {
-
-    /**
-     * Gets the default icon.
-     *
-     * @return The default icon.
-     */
-    Icon getDefaultIcon();
-
-    /**
-     * Gets the icon for a file written in a specific language.
-     *
-     * @param language The language of the file for which to get the icon;
-     *                 or <code>null</code> to get the default language icon.
-     * @return The file icon.
-     */
-    Icon getLanguageFileIcon(@Nullable ILanguage language);
-
-    /**
-     * Gets the icon for a language artifact.
-     *
-     * @return The file icon.
-     */
-    Icon getLanguageArtifactIcon();
-
+public interface ITreeNodeWithIcon {
+    @Nullable
+    Icon getIcon();
 }

@@ -24,6 +24,7 @@ import com.intellij.icons.*;
 import com.intellij.openapi.util.*;
 import org.metaborg.core.language.*;
 
+import javax.annotation.*;
 import javax.swing.*;
 
 /**
@@ -55,7 +56,7 @@ public final class DefaultIconManager implements IIconManager {
      * {@inheritDoc}
      */
     @Override
-    public Icon getLanguageFileIcon(final ILanguage language) {
+    public Icon getLanguageFileIcon(@Nullable final ILanguage language) {
         // TODO: Get icon from ILanguage facet, otherwise use default.
         return getDefaultIcon();
     }
