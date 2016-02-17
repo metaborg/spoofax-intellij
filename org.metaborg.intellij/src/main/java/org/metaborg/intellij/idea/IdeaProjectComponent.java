@@ -25,6 +25,7 @@ import com.intellij.openapi.compiler.*;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.*;
 import org.jetbrains.annotations.*;
+import org.jhades.*;
 import org.metaborg.intellij.idea.compilation.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
@@ -64,6 +65,7 @@ public final class IdeaProjectComponent implements ProjectComponent {
     @Override
     public void initComponent() {
         this.logger.debug("Initializing Metaborg project: {}", this.project);
+
         setupCompileTasks();
         this.logger.info("Initialized Metaborg project: {}", this.project);
     }
@@ -93,7 +95,8 @@ public final class IdeaProjectComponent implements ProjectComponent {
      */
     @Override
     public void disposeComponent() {
-        this.logger.debug("Disposing Metaborg project: {}", this.project);
+        this.logger.debug("Disposing Metaborg project: {}", this.project);q
+
         this.logger.info("Disposed Metaborg project: {}", this.project);
     }
 

@@ -99,8 +99,9 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
         );
 
 
-        @Nullable final FileObject resource = getResource(psi, builder);
+        final FileObject resource = getResource(psi, builder);
         final ILanguageImpl languageImpl = getLanguageImpl(resource, psi, this);
+
         final String input = builder.getOriginalText().toString();
         final ParseResult<IStrategoTerm> parseResult = parseAll(resource, languageImpl, input);
 
@@ -115,9 +116,15 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
 
         final MetaborgFile file = (MetaborgFile)psi;
         file.putUserData(MetaborgFile.PARSE_RESULT_KEY, parseResult);
+
         return rootNode;
     }
 
+    /**
+     * Gets the Metaborg IDEA language object.
+     *
+     * @return The language object.
+     */
     public MetaborgIdeaLanguage getMetaborgIdeaLanguage() {
         return (MetaborgIdeaLanguage)getLanguage();
     }
@@ -125,19 +132,21 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
     /**
      * Determines the resource being parsed.
      *
+     * @param element The PSI element.
      * @param builder The PSI builder.
      * @return The {@link FileObject} of the parsed resource;
-     * or <code>null</code> when the file exists only in memory.
+     * or <code>null</code> when the file exists only in-memory.
      */
     @Nullable
     private FileObject getResource(final PsiElement element, final PsiBuilder builder) {
         @Nullable final PsiFile file = element.getContainingFile();
-        if (file == null)
-            return null;
+        assert file != null : "Only non-file PSI elements (e.g. directories and packages) may have no PsiFile.";
 
-        @Nullable final VirtualFile virtualFile = file.getVirtualFile();
-        if (virtualFile == null)
+        @Nullable final VirtualFile virtualFile = file.getOriginalFile().getVirtualFile();
+        if (virtualFile == null) {
+            // Only in-memory (non-physical) files have no associated virtual file.
             return null;
+        }
 
         return this.resourceService.resolve(virtualFile);
     }
