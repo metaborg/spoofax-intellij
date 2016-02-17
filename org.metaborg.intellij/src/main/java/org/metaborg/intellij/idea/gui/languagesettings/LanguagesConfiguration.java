@@ -36,6 +36,8 @@ import org.metaborg.util.log.*;
 import java.util.*;
 
 /**
+ * Base class for a language configuration dialog.
+ *
  * {@see <a href="https://confluence.jetbrains.com/display/IDEADEV/Customizing+the+IDEA+Settings+Dialog">Customizing the
  * IDEA Settings Dialog</a>}
  */

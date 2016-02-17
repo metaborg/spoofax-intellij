@@ -39,6 +39,9 @@ import java.util.List;
 
 import static java.util.stream.Collectors.*;
 
+/**
+ * A languages panel.
+ */
 public final class LanguagesPanel extends JPanel {
 
     private IIconManager iconManager;
@@ -80,6 +83,8 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Adds a language, i.e. shows the popup menu.
+     *
+     * @param button The button that was clicked.
      */
     private void addLanguage(final AnActionButton button) {
         if (this.controller == null)
@@ -89,6 +94,8 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Removes a language node, and depending on the type, all its children.
+     *
+     * @param node The node to remove.
      */
     private void removeLanguage(@Nullable final ILanguageTreeNode<?> node) {
         if (this.controller == null || node == null)
@@ -108,6 +115,8 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Removes a language component.
+     *
+     * @param node The node to remove.
      */
     private void removeLanguageComponent(final LanguageComponentNode node) {
         final LanguageTreeModel model = (LanguageTreeModel)this.languagesTree.getTableModel();
@@ -120,6 +129,8 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Removes a language request.
+     *
+     * @param node The node to remove.
      */
     private void removeLanguageRequest(final LanguageRequestNode node) {
         final LanguageTreeModel model = (LanguageTreeModel)this.languagesTree.getTableModel();
@@ -132,6 +143,8 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Removes a language implementation and all language requests and components under it.
+     *
+     * @param node The node to remove.
      */
     private void removeLanguageImpl(final LanguageImplNode node) {
         for (int i = node.getChildCount() - 1; i >= 0; i--) {
@@ -146,6 +159,8 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Removes a language and all language implementations under it.
+     *
+     * @param node The node to remove.
      */
     private void removeLanguage(final LanguageNode node) {
         for (int i = node.getChildCount() - 1; i >= 0; i--) {
@@ -158,6 +173,8 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Sets the languages to display in the panel.
+     *
+     * @param languageImpls The language implementations to display.
      */
     public void setLanguages(final Iterable<ILanguageImpl> languageImpls) {
         final LanguageTreeModel model = (LanguageTreeModel)this.languagesTree.getTableModel();
@@ -202,6 +219,7 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Determines which nodes can be selected.
+     *
      * @param node The node to test.
      * @return <code>true</code> when the node can be selected;
      * otherwise, <code>false</code>.
@@ -228,6 +246,9 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Initializes the popup-menu.
+     *
+     * @param model The language tree model.
+     * @param controller The controller.
      */
     private void initPopupActions(final LanguageTreeModel model, final LanguagesConfiguration controller) {
         this.addActionPopupGroup = new DefaultActionGroup("Add", true);
@@ -244,6 +265,8 @@ public final class LanguagesPanel extends JPanel {
 
     /**
      * Shows the popup-menu.
+     *
+     * @param button The button that was pressed.
      */
     private void showPopupActions(final AnActionButton button) {
         @Nullable final ActionGroup group = this.addActionPopupGroup;

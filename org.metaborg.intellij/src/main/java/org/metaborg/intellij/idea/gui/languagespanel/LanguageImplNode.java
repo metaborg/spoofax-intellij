@@ -24,31 +24,32 @@ import org.metaborg.core.language.*;
 import javax.annotation.*;
 import javax.swing.*;
 
-public class LanguageImplNode extends TreeNodeWithValue<ILanguageImpl, LanguageImplNode>
+/**
+ * A language implementation node.
+ */
+public final class LanguageImplNode extends TreeNodeWithValue<ILanguageImpl, LanguageImplNode>
         implements ITreeNodeWithIcon, ILanguageTreeNode<ILanguageImpl> {
 
     private final LanguageIdentifier id;
 
+    /**
+     * Initializes a new instance of the {@link LanguageImplNode} class.
+     *
+     * @param languageImpl The language implementation.
+     */
     public LanguageImplNode(final ILanguageImpl languageImpl) {
         super(languageImpl);
         this.id = languageImpl.id();
     }
 
+    /**
+     * Initializes a new instance of the {@link LanguageImplNode} class.
+     *
+     * @param id The language identifier.
+     */
     public LanguageImplNode(final LanguageIdentifier id) {
         super(null);
         this.id = id;
-    }
-
-    @Nullable
-    @Override
-    public Object getValueOfColumn(final ModelColumnInfo<LanguageImplNode> column) {
-        return this.id();
-    }
-
-    @Nullable
-    @Override
-    public Icon getIcon() {
-        return null;
     }
 
     /**
@@ -60,24 +61,54 @@ public class LanguageImplNode extends TreeNodeWithValue<ILanguageImpl, LanguageI
         return this.id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public Object getValueOfColumn(final ModelColumnInfo<LanguageImplNode> column) {
+        return this.id();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public Icon getIcon() {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public String getName() {
         return this.id().id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public String getGroupId() {
         return this.id().groupId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public LanguageVersion getVersion() {
         return this.id().version;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public LanguageStatus getStatus() {

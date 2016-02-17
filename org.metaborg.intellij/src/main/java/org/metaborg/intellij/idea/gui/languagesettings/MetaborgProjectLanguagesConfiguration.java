@@ -26,6 +26,9 @@ import org.metaborg.intellij.idea.*;
 
 import javax.swing.*;
 
+/**
+ * Metaborg language configuration dialog.
+ */
 public final class MetaborgProjectLanguagesConfiguration extends LanguagesConfiguration {
 
     private MetaborgProjectLanguagesConfigurableForm form;
@@ -44,18 +47,27 @@ public final class MetaborgProjectLanguagesConfiguration extends LanguagesConfig
     protected void inject() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nls
     @Override
     public String getDisplayName() {
         return "Metaborg";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public String getHelpTopic() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public JComponent createComponent() {
@@ -86,6 +98,9 @@ public final class MetaborgProjectLanguagesConfiguration extends LanguagesConfig
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void updateLanguagesList() {
         if (this.form == null)

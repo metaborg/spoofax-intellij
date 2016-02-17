@@ -25,19 +25,35 @@ import org.metaborg.core.project.configuration.*;
 import javax.annotation.*;
 import javax.swing.*;
 
-public class LanguageRequestNode extends TreeNodeWithValue<ILanguageDiscoveryRequest, LanguageRequestNode>
+/**
+ * A language request node.
+ */
+public final class LanguageRequestNode extends TreeNodeWithValue<ILanguageDiscoveryRequest, LanguageRequestNode>
         implements ITreeNodeWithIcon, ILanguageTreeNode<ILanguageDiscoveryRequest>  {
 
+    /**
+     * Initializes a new instance of the {@link LanguageRequestNode} class.
+     *
+     * @param request The language request.
+     */
     public LanguageRequestNode(final ILanguageDiscoveryRequest request) {
         super(request);
     }
 
+    /**
+     * Gets the language request.
+     *
+     * @return The language request.
+     */
     public ILanguageDiscoveryRequest getRequest() {
         @Nullable final ILanguageDiscoveryRequest request = this.getValue();
         assert request != null;
         return request;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public Object getValueOfColumn(final ModelColumnInfo<LanguageRequestNode> column) {
@@ -51,12 +67,18 @@ public class LanguageRequestNode extends TreeNodeWithValue<ILanguageDiscoveryReq
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public Icon getIcon() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public String getName() {
@@ -70,6 +92,9 @@ public class LanguageRequestNode extends TreeNodeWithValue<ILanguageDiscoveryReq
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public String getGroupId() {
@@ -83,6 +108,9 @@ public class LanguageRequestNode extends TreeNodeWithValue<ILanguageDiscoveryReq
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public LanguageVersion getVersion() {
@@ -96,6 +124,9 @@ public class LanguageRequestNode extends TreeNodeWithValue<ILanguageDiscoveryReq
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public LanguageStatus getStatus() {

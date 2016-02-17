@@ -24,14 +24,57 @@ import org.metaborg.core.language.*;
 import javax.annotation.*;
 import javax.swing.*;
 
+/**
+ * A language tree node.
+ * @param <V>
+ */
 public interface ILanguageTreeNode<V> {
+
+    /**
+     * Gets the value of the name column.
+     *
+     * @return The value; or <code>null</code>.
+     */
     @Nullable
     String getName();
-    @Nullable String getGroupId();
+
+    /**
+     * Gets the value of the group ID column.
+     *
+     * @return The value; or <code>null</code>.
+     */
+    @Nullable
+    String getGroupId();
+
+    /**
+     * Gets the value of the version column.
+     *
+     * @return The value; or <code>null</code>.
+     */
     @Nullable
     LanguageVersion getVersion();
-    @Nullable LanguageStatus getStatus();
+
+    /**
+     * Gets the value of the status column.
+     *
+     * @return The value; or <code>null</code>.
+     */
+    @Nullable
+    LanguageStatus getStatus();
+
+    /**
+     * Gets the icon to display.
+     *
+     * @return The icon; or <code>null</code>.
+     */
     @Nullable
     Icon getIcon();
-    @Nullable V getValue();
+
+    /**
+     * Gets the underlying object.
+     *
+     * @return The underlying object; or <code>null</code>.
+     */
+    @Nullable
+    V getValue();
 }

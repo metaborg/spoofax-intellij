@@ -28,15 +28,11 @@ import org.metaborg.intellij.idea.languages.*;
 import javax.annotation.*;
 import javax.swing.*;
 
-//import org.metaborg.core.language.ILanguageDiscoveryService;
-
-
+/**
+ * A language action.
+ */
 public abstract class LanguagesAction extends AnAction {
 
-    private ILanguageService languageService;
-    private IIdeaLanguageManager languageManager;
-    private ILanguageDiscoveryService discoveryService;
-    private LanguageArtifactFileType artifactFileType;
     protected final LanguageTreeModel model;
     protected final LanguagesConfiguration controller;
 
@@ -54,9 +50,17 @@ public abstract class LanguagesAction extends AnAction {
         this.controller = controller;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract void actionPerformed(final AnActionEvent e);
 
+    /**
+     * Adds the language discovery requests to the controller.
+     *
+     * @param requests The requests to add.
+     */
     protected void addRequests(final Iterable<ILanguageDiscoveryRequest> requests) {
 
         for (final ILanguageDiscoveryRequest request : requests) {

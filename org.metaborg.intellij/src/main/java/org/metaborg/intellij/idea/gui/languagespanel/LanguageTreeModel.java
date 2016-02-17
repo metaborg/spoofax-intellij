@@ -39,6 +39,50 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
     private final IIconManager iconManager;
 
     /**
+     * The column info's.
+     */
+    private static final ColumnInfo[] columnInfo = new ColumnInfo[]{
+            new TreeKeyColumnInfo("Language"),
+            new ColumnInfo("Group ID") {
+                @org.jetbrains.annotations.Nullable
+                @Override
+                public Object valueOf(final Object obj) {
+                    if (obj instanceof ILanguageTreeNode) {
+                        final ILanguageTreeNode node =
+                                (ILanguageTreeNode)obj;
+                        return node.getGroupId();
+                    }
+                    return null;
+                }
+            },
+            new ColumnInfo("Version") {
+                @org.jetbrains.annotations.Nullable
+                @Override
+                public Object valueOf(final Object obj) {
+
+                    if (obj instanceof ILanguageTreeNode) {
+                        final ILanguageTreeNode node =
+                                (ILanguageTreeNode)obj;
+                        return node.getVersion();
+                    }
+                    return null;
+                }
+            },
+            new ColumnInfo("Status") {
+                @org.jetbrains.annotations.Nullable
+                @Override
+                public Object valueOf(final Object obj) {
+                    if (obj instanceof ILanguageTreeNode) {
+                        final ILanguageTreeNode node =
+                                (ILanguageTreeNode)obj;
+                        return node.getStatus();
+                    }
+                    return null;
+                }
+            },
+    };
+
+    /**
      * Renders the first column of the tree.
      */
     public static class LanguageTreeCellRenderer extends DefaultTreeCellRenderer {
@@ -64,54 +108,20 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
         }
     }
 
+    /**
+     * Initializes a new instance of the {@link LanguageTreeModel} class.
+     *
+     * @param iconManager The icon manager.
+     */
     public LanguageTreeModel(final IIconManager iconManager) {
-        super(
-                new DefaultMutableTreeNode(""),
-                new ColumnInfo[]{
-                        new TreeKeyColumnInfo("Language"),
-                        new ColumnInfo("Group ID") {
-                            @org.jetbrains.annotations.Nullable
-                            @Override
-                            public Object valueOf(final Object obj) {
-                                if (obj instanceof ILanguageTreeNode) {
-                                    final ILanguageTreeNode node =
-                                            (ILanguageTreeNode)obj;
-                                    return node.getGroupId();
-                                }
-                                return null;
-                            }
-                        },
-                        new ColumnInfo("Version") {
-                            @org.jetbrains.annotations.Nullable
-                            @Override
-                            public Object valueOf(final Object obj) {
-
-                                if (obj instanceof ILanguageTreeNode) {
-                                    final ILanguageTreeNode node =
-                                            (ILanguageTreeNode)obj;
-                                    return node.getVersion();
-                                }
-                                return null;
-                            }
-                        },
-                        new ColumnInfo("Status") {
-                            @org.jetbrains.annotations.Nullable
-                            @Override
-                            public Object valueOf(final Object obj) {
-                                if (obj instanceof ILanguageTreeNode) {
-                                    final ILanguageTreeNode node =
-                                            (ILanguageTreeNode)obj;
-                                    return node.getStatus();
-                                }
-                                return null;
-                            }
-                        },
-                }
-        );
+        super(new DefaultMutableTreeNode(""), columnInfo);
 
         this.iconManager = iconManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DefaultMutableTreeNode getRoot() {
         return (DefaultMutableTreeNode)super.getRoot();
@@ -126,9 +136,6 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
     public void appendNodeInto(@Nullable final MutableTreeNode newChild, final MutableTreeNode parent) {
         insertNodeInto(newChild, parent, parent.getChildCount());
     }
-
-
-
 
     /**
      * Gets the node for the specified language,
@@ -642,16 +649,5 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
                                                                      @Nullable final TreeNode parent) {
         return getLanguageTreeNode(nodeClass, (Predicate<N>)v -> Objects.equals(v.getValue(), value), parent);
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -22,7 +22,16 @@ package org.metaborg.intellij.idea.gui.languagespanel;
 import javax.annotation.*;
 import javax.swing.*;
 
+/**
+ * A tree node with an icon.
+ */
 public interface ITreeNodeWithIcon {
+
+    /**
+     * Gets the icon of the element.
+     *
+     * @return The icon; or <code>null</code>.
+     */
     @Nullable
     Icon getIcon();
 }

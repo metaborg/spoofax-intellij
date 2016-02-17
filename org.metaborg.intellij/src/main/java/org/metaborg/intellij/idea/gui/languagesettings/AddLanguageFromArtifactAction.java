@@ -38,7 +38,9 @@ import org.metaborg.util.log.*;
 import javax.annotation.*;
 import java.io.*;
 
-
+/**
+ * Action to add a language from an language artifact.
+ */
 public class AddLanguageFromArtifactAction extends LanguagesAction {
 
     private IIdeaLanguageManager languageManager;
@@ -67,6 +69,9 @@ public class AddLanguageFromArtifactAction extends LanguagesAction {
         this.languageManager = languageManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void actionPerformed(final AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);

@@ -22,32 +22,63 @@ package org.metaborg.intellij.idea.gui.languagespanel;
 import javax.annotation.*;
 import javax.swing.tree.*;
 
+/**
+ * A tree node with a value.
+ *
+ * @param <Item> The type of value.
+ * @param <Node> The type of node.
+ */
 public class TreeNodeWithValue<Item, Node extends IModelItem<Node>> extends DefaultMutableTreeNode implements IModelItem<Node> {
 
+    /**
+     * Initializes a new instance of the {@link TreeNodeWithValue} class.
+     *
+     * @param value The value; or <code>null</code>.
+     */
     public TreeNodeWithValue(@Nullable final Item value) {
         this(value, true);
     }
 
+    /**
+     * Initializes a new instance of the {@link TreeNodeWithValue} class.
+     *
+     * @param value The value; or <code>null</code>.
+     * @param allowsChildren Whether this node can have child nodes.
+     */
     public TreeNodeWithValue(@Nullable final Item value, final boolean allowsChildren) {
         super(value, allowsChildren);
     }
 
+    /**
+     * Gets the value of the node.
+     *
+     * @return The value of the node; or <code>null</code>.
+     */
     @Nullable
     public Item getValue() {
         return (Item)getUserObject();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public Object getValueOfColumn(final ModelColumnInfo<Node> column) {
         return getValue();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setValueOfColumn(final ModelColumnInfo<Node> column, @Nullable final Object value) {
-
+        // Nothing to do.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canEditValueOfColumn(final ModelColumnInfo<Node> column) {
         return false;

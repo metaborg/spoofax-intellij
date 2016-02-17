@@ -39,12 +39,18 @@ public class TreeKeyColumnInfo extends TreeColumnInfo {
         Preconditions.checkNotNull(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @org.jetbrains.annotations.Nullable
     @Override
     public final TableCellRenderer getRenderer(final Object o) {
         return super.getRenderer(o);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final TableCellRenderer getCustomizedRenderer(final Object o, final TableCellRenderer renderer) {
         return super.getCustomizedRenderer(o, renderer);

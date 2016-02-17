@@ -28,7 +28,7 @@ import javax.swing.*;
 /**
  * A language node.
  */
-public class LanguageNode extends TreeNodeWithValue<ILanguage, LanguageNode>
+public final class LanguageNode extends TreeNodeWithValue<ILanguage, LanguageNode>
         implements ITreeNodeWithIcon, ILanguageTreeNode<ILanguage> {
 
     private final IIconManager iconManager;
@@ -44,18 +44,27 @@ public class LanguageNode extends TreeNodeWithValue<ILanguage, LanguageNode>
         this.iconManager = iconManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public Object getValueOfColumn(final ModelColumnInfo<LanguageNode> column) {
         return getName();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public Icon getIcon() {
         return this.iconManager.getLanguageFileIcon(this.getValue());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Nullable
     @Override
     public String getName() {
@@ -65,18 +74,27 @@ public class LanguageNode extends TreeNodeWithValue<ILanguage, LanguageNode>
             return "Unknown";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public String getGroupId() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public LanguageVersion getVersion() {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Nullable
     public LanguageStatus getStatus() {

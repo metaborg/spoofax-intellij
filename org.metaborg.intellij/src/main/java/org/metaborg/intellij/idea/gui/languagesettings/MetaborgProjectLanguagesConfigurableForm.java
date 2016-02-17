@@ -23,13 +23,27 @@ import org.metaborg.intellij.idea.gui.languagespanel.*;
 
 import javax.swing.*;
 
+/**
+ * The language configuration form.
+ */
 public class MetaborgProjectLanguagesConfigurableForm {
+
     private JPanel mainPanel;
     private LanguagesPanel languagesPanel;
 
+    /**
+     * Gets the main panel component.
+     *
+     * @return The main panel component.
+     */
     public JPanel getComponent() {
         return this.mainPanel;
     }
 
+    /**
+     * Gets the languages panel.
+     *
+     * @return The languages panel.
+     */
     public LanguagesPanel getLanguagesPanel() { return this.languagesPanel; }
 }

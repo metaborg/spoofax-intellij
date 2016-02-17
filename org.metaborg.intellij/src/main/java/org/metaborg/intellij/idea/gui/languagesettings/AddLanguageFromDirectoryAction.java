@@ -38,7 +38,9 @@ import org.metaborg.util.log.*;
 import javax.annotation.*;
 import java.io.*;
 
-
+/**
+ * Action to add a language from an language folder.
+ */
 public class AddLanguageFromDirectoryAction extends LanguagesAction {
 
     private IIdeaLanguageManager languageManager;
@@ -65,6 +67,9 @@ public class AddLanguageFromDirectoryAction extends LanguagesAction {
         this.languageManager = languageManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void actionPerformed(final AnActionEvent e) {
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
