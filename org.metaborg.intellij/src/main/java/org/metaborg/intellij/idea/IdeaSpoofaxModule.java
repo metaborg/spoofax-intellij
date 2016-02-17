@@ -42,6 +42,7 @@ import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.parsing.*;
 import org.metaborg.intellij.idea.parsing.annotations.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.idea.parsing.references.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.idea.transformations.*;
@@ -84,6 +85,7 @@ import org.metaborg.spoofax.core.syntax.*;
         bindConfiguration();
         bindBeforeCompileTasks();
         bindAfterCompileTasks();
+        bindReferenceResolution();
     }
 
     /**
@@ -309,5 +311,14 @@ import org.metaborg.spoofax.core.syntax.*;
 
         bind(ReloadLanguageCompileTask.class).in(Singleton.class);
         afterCompileTasks.addBinding().to(ReloadLanguageCompileTask.class);
+    }
+
+    /**
+     * Binds reference resolution classes.
+     */
+    protected void bindReferenceResolution() {
+        install(new FactoryModuleBuilder()
+                .implement(MetaborgReferenceProvider.class, SpoofaxReferenceProvider.class)
+                .build(IMetaborgReferenceProviderFactory.class));
     }
 }

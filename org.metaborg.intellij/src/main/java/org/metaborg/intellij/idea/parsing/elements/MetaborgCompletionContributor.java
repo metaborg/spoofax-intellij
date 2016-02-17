@@ -19,38 +19,17 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.psi.*;
+import com.intellij.codeInsight.completion.*;
 
 /**
- * Visitor for Spoofax PSI elements.
+ * Contributes completion providers for a language.
+ * <p>
+ * This completion provider must be registered for each language.
  */
-public final class MetaborgPsiVisitor extends PsiElementVisitor {
-
-    /**
-     * Visits a property.
-     *
-     * @param property The property.
-     */
-    public void visitProperty(final MetaborgPsiElement property) {
-        visitPsiElement(property);
+public class MetaborgCompletionContributor extends CompletionContributor {
+    public MetaborgCompletionContributor() {
+        super();
+        // TODO
+        // See: https://github.com/pantsbuild/intellij-pants-plugin/blob/9e72634923841169c9df5cd683e54335d1af5835/src/com/twitter/intellij/pants/completion/PantsCompletionContributor.java
     }
-
-    /**
-     * Visits a PSI element.
-     *
-     * @param element The element.
-     */
-    public void visitPsiElement(final PsiElement element) {
-        visitElement(element);
-    }
-
-    /**
-     * Visits a property.
-     *
-     * @param property The property.
-     */
-    public void visitProperty(final SpoofaxIdentifier property) {
-        visitPsiElement(property);
-    }
-
 }

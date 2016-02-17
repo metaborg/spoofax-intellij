@@ -17,40 +17,10 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.parsing.elements;
-
-import com.intellij.psi.*;
-
 /**
- * Visitor for Spoofax PSI elements.
+ * Reference resolution.
  */
-public final class MetaborgPsiVisitor extends PsiElementVisitor {
+@NonNullByDefault
+package org.metaborg.intellij.idea.parsing.references;
 
-    /**
-     * Visits a property.
-     *
-     * @param property The property.
-     */
-    public void visitProperty(final MetaborgPsiElement property) {
-        visitPsiElement(property);
-    }
-
-    /**
-     * Visits a PSI element.
-     *
-     * @param element The element.
-     */
-    public void visitPsiElement(final PsiElement element) {
-        visitElement(element);
-    }
-
-    /**
-     * Visits a property.
-     *
-     * @param property The property.
-     */
-    public void visitProperty(final SpoofaxIdentifier property) {
-        visitPsiElement(property);
-    }
-
-}
+import org.metaborg.intellij.*;

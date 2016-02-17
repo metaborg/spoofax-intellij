@@ -27,21 +27,23 @@ import com.intellij.util.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.core.processing.analyze.*;
 import org.metaborg.core.tracing.*;
+import org.metaborg.intellij.idea.parsing.references.*;
 import org.metaborg.intellij.resources.*;
 import org.spoofax.interpreter.terms.*;
 
 /**
  * An identifier in a Metaborg language.
  */
-public class MetaborgIdentifier extends MetaborgPsiElement implements PsiNamedElement {   // TODO:, MetaborgReferenceElement, MetaborgDeclarationElement, MetaborgIdentifierElement {
+public class SpoofaxIdentifier extends MetaborgPsiElement
+        implements PsiNamedElement, MetaborgReferenceElement, MetaborgDeclarationElement, MetaborgIdentifierElement {
 
     /**
-     * Initializes a new instance of the {@link MetaborgIdentifier} class.
+     * Initializes a new instance of the {@link SpoofaxIdentifier} class.
      *
      * @param node The AST node to wrap.
      */
     @Inject
-    public MetaborgIdentifier(
+    public SpoofaxIdentifier(
             @Assisted final ASTNode node,
             final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
             final IIntelliJResourceService resourceService,

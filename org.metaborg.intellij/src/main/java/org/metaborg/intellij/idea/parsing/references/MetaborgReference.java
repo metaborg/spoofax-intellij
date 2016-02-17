@@ -17,40 +17,39 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.idea.parsing.elements;
+package org.metaborg.intellij.idea.parsing.references;
 
 import com.intellij.psi.*;
+import org.jetbrains.annotations.*;
 
 /**
- * Visitor for Spoofax PSI elements.
+ * A reference to a definition.
  */
-public final class MetaborgPsiVisitor extends PsiElementVisitor {
+public abstract class MetaborgReference extends PsiReferenceBase<MetaborgReferenceElement> {
 
     /**
-     * Visits a property.
+     * Initializes a new instance of the {@link MetaborgReference} class.
      *
-     * @param property The property.
+     * @param reference The reference.
+     * @param isSoft    Whether the reference is a soft reference.
      */
-    public void visitProperty(final MetaborgPsiElement property) {
-        visitPsiElement(property);
+    protected MetaborgReference(final MetaborgReferenceElement reference, final boolean isSoft) {
+        super(reference, isSoft);
     }
 
     /**
-     * Visits a PSI element.
-     *
-     * @param element The element.
+     * {@inheritDoc}
      */
-    public void visitPsiElement(final PsiElement element) {
-        visitElement(element);
-    }
+    @Nullable
+    @Override
+    public abstract PsiElement resolve();
 
     /**
-     * Visits a property.
-     *
-     * @param property The property.
+     * {@inheritDoc}
      */
-    public void visitProperty(final SpoofaxIdentifier property) {
-        visitPsiElement(property);
+    @Override
+    public final Object[] getVariants() {
+        return new Object[0];
     }
 
 }

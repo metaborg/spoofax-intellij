@@ -53,7 +53,7 @@ public final class DefaultMetaborgPsiElementFactory implements IMetaborgPsiEleme
     public MetaborgPsiElement create(final ASTNode node) {
         final IElementType type = node.getElementType();
         if (type instanceof MetaborgIdentifierElementType) {
-            return new MetaborgIdentifier(
+            return new SpoofaxIdentifier(
                     node,
                     this.resolverService,
                     this.resourceService,
