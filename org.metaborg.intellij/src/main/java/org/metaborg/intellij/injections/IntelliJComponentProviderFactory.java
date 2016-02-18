@@ -17,12 +17,15 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps;
+package org.metaborg.intellij.injections;
 
 import com.google.inject.*;
 
 /**
- * Factory for service loader providers.
+ * Factory for IntelliJ component providers.
+ *
+ * This provider can't be used for project-level or module-level components.
+ *
  * <p>
  * Usage:
  * <pre>
@@ -31,26 +34,26 @@ import com.google.inject.*;
  *     &#064;Override
  *     protected void configure() {
  *         // ...
- *         install(new JavaServiceProviderFactory().provide(IMyInterface.class));
+ *         install(new IntelliJComponentProviderFactory().provide(IMyInterface.class));
  *
  *     }
  *
  * }
  * </pre>
  */
-public final class JavaServiceProviderFactory {
+public final class IntelliJComponentProviderFactory {
 
     /**
-     * Creates a provider for a Java service.
+     * Creates a provider for an IntelliJ component.
      *
-     * @param serviceClass The service class.
+     * @param serviceClass The component class.
      * @return A {@link Module} that binds the provider.
      */
     public <T> Module provide(final Class<T> serviceClass) {
         return new AbstractModule() {
             @Override
             protected void configure() {
-                final Provider<T> provider = new JavaServiceProvider<>(serviceClass);
+                final Provider<T> provider = new IntelliJComponentProvider<>(serviceClass);
                 bind(serviceClass).toProvider(provider);
             }
         };

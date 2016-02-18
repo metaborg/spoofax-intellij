@@ -23,7 +23,10 @@ import com.google.inject.*;
 import com.intellij.openapi.application.*;
 import com.intellij.openapi.components.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
+
+import javax.annotation.*;
 
 /**
  * Provides an instance from the IntelliJ service manager.
@@ -45,6 +48,13 @@ import org.metaborg.util.log.*;
 
     @Override
     public T get() {
-        return ServiceManager.getService(this.service);
+        @Nullable final T service = ServiceManager.getService(this.service);
+        if (service == null) {
+            throw LoggerUtils.exception(this.logger, ProvisionException.class,
+                    "No implementations are registered for the class {}.",
+                    this.service
+            );
+        }
+        return service;
     }
 }

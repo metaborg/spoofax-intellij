@@ -21,6 +21,7 @@ package org.metaborg.intellij.injections;
 
 import com.google.inject.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
 
 import java.util.*;
@@ -48,19 +49,21 @@ import java.util.*;
         final ServiceLoader<T> loader = ServiceLoader.load(this.service);
         final Iterator<T> iterator = loader.iterator();
 
-        if (!iterator.hasNext())
-            throw new ProvisionException(this.logger.format(
+        if (!iterator.hasNext()) {
+            throw LoggerUtils.exception(this.logger, ProvisionException.class,
                     "No implementations are registered for the class {}.",
                     this.service
-            ));
+            );
+        }
 
         final T obj = iterator.next();
 
-        if (iterator.hasNext())
-            throw new ProvisionException(this.logger.format(
+        if (iterator.hasNext()) {
+            throw LoggerUtils.exception(this.logger, ProvisionException.class,
                     "Multiple implementations are registered for the class {}.",
                     this.service
-            ));
+            );
+        }
 
         return obj;
     }

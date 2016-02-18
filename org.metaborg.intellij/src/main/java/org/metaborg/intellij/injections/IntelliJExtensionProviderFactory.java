@@ -22,10 +22,7 @@ package org.metaborg.intellij.injections;
 import com.google.inject.*;
 
 /**
- * Factory for IntelliJ service providers.
- *
- * This provider can't be used for project-level or module-level services.
- *
+ * Factory for IntelliJ extension providers.
  * <p>
  * Usage:
  * <pre>
@@ -41,20 +38,21 @@ import com.google.inject.*;
  * }
  * </pre>
  */
-public final class IntelliJServiceProviderFactory {
+public final class IntelliJExtensionProviderFactory {
 
     /**
-     * Creates a provider for an IntelliJ service.
+     * Creates a provider for an extension point implementation.
      *
-     * @param serviceClass The service class.
+     * @param extensionClass     The extension class.
+     * @param extensionPointName The extension point name.
      * @return A {@link Module} that binds the provider.
      */
-    public <T> Module provide(final Class<T> serviceClass) {
+    public <T> Module provide(final Class<T> extensionClass, final String extensionPointName) {
         return new AbstractModule() {
             @Override
             protected void configure() {
-                final Provider<T> provider = new IntelliJServiceProvider<>(serviceClass);
-                bind(serviceClass).toProvider(provider);
+                final Provider<T> provider = new IntelliJExtensionProvider<>(extensionClass, extensionPointName);
+                bind(extensionClass).toProvider(provider);
             }
         };
     }

@@ -71,6 +71,9 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
             final List<DetectedProjectRoot> result) {
 
         this.logger.info("Detecting Spoofax project in {}", dir);
+
+        // FIXME: Alternatively, detect a Spoofax project if it has a metaborg.yaml root config file.
+
         if (dir.getName().equals("editor")) {
             for (final File child : children) {
                 if (child.getName().endsWith(".main.esv") && child.isFile()) {

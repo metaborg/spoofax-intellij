@@ -17,51 +17,44 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.metaborg.intellij.jps;
+package org.metaborg.intellij.injections;
 
 import com.google.inject.*;
+import com.intellij.openapi.application.*;
+import com.intellij.openapi.components.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
 
-import java.util.*;
+import javax.annotation.*;
 
 /**
- * Provides an instance from the Java {@link ServiceLoader}.
+ * Provides an instance from the IntelliJ component manager.
  */
-/* package private */ final class JavaServiceProvider<T> implements Provider<T> {
+/* package private */ final class IntelliJComponentProvider<T> implements Provider<T> {
 
     @InjectLogger
     private ILogger logger;
     private final Class<T> service;
 
     /**
-     * Initializes a new instance of the {@link JavaServiceProvider} class.
+     * Initializes a new instance of the {@link IntelliJComponentProvider} class.
      *
-     * @param service The class of the service to load.
+     * @param service The class of the component to load.
      */
-    /* package private */ JavaServiceProvider(final Class<T> service) {
+    public IntelliJComponentProvider(final Class<T> service) {
         this.service = service;
     }
 
     @Override
     public T get() {
-        final ServiceLoader<T> loader = ServiceLoader.load(this.service);
-        final Iterator<T> iterator = loader.iterator();
-
-        if (!iterator.hasNext())
-            throw new ProvisionException(this.logger.format(
+        @Nullable final T component = ApplicationManager.getApplication().getComponent(this.service);
+        if (component == null) {
+            throw LoggerUtils.exception(this.logger, ProvisionException.class,
                     "No implementations are registered for the class {}.",
                     this.service
-            ));
-
-        final T obj = iterator.next();
-
-        if (iterator.hasNext())
-            throw new ProvisionException(this.logger.format(
-                    "Multiple implementations are registered for the class {}.",
-                    this.service
-            ));
-
-        return obj;
+            );
+        }
+        return component;
     }
 }
