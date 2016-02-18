@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea;
 
 import com.google.inject.*;
 import com.intellij.openapi.application.*;
+import com.intellij.openapi.command.*;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.*;
@@ -113,12 +114,14 @@ public final class IdeaModuleComponent implements ModuleComponent {
         this.configurationUtils.loadAndActivateLanguages(this.module.getProject(),
                 this.projectUtils.getCompileDependencies(project));
 
-        if (project instanceof IdeaLanguageSpecProject) {
-            this.logger.debug("Loading languages of language specification: {}", project);
-            this.languageManager.loadLanguageSpec((IdeaLanguageSpecProject)project);
-        } else {
-            this.logger.debug("Module skipped as it's not a language specification project: {}", this.module);
-        }
+        WriteCommandAction.runWriteCommandAction(this.module.getProject(), () -> {
+            if (project instanceof IdeaLanguageSpecProject) {
+                this.logger.debug("Loading languages of language specification: {}", project);
+                this.languageManager.loadLanguageSpec((IdeaLanguageSpecProject)project);
+            } else {
+                this.logger.debug("Module skipped as it's not a language specification project: {}", this.module);
+            }
+        });
 
         this.logger.info("Opened module: {}", this.module);
     }
