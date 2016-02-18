@@ -39,12 +39,13 @@ import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.projects.*;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.spoofax.core.processing.*;
-import org.metaborg.spoofax.core.project.*;
-import org.metaborg.spoofax.core.project.configuration.*;
 import org.metaborg.spoofax.core.resource.*;
 import org.metaborg.spoofax.meta.core.*;
 import org.metaborg.spoofax.meta.core.ant.*;
+import org.metaborg.spoofax.meta.core.config.*;
+import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
 import org.spoofax.interpreter.terms.*;
 
@@ -129,7 +130,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             this.languageManager.discoverRange(appLanguages);
             this.logger.info("Loaded application languages: {}", appLanguages);
 
-            final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
+            final Collection<LanguageIdentifier> languages = metaInput.config.compileDeps();
             this.logger.debug("Loading module languages: {}", languages);
             this.languageManager.discoverRange(languages);
             this.logger.info("Loaded module languages: {}", languages);

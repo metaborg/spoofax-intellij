@@ -23,18 +23,13 @@ import com.google.inject.*;
 import com.intellij.openapi.application.*;
 import com.intellij.openapi.compiler.*;
 import com.intellij.openapi.module.Module;
-import org.metaborg.core.*;
 import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
-import java.util.*;
 
 /**
  * Reloads the project's languages after compile.

@@ -25,7 +25,6 @@ import com.intellij.lexer.*;
 import com.intellij.psi.tree.*;
 import org.apache.commons.lang3.*;
 import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
 import org.metaborg.core.*;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
@@ -39,7 +38,6 @@ import org.metaborg.util.log.*;
 import org.spoofax.interpreter.terms.*;
 import org.spoofax.jsglr.client.imploder.*;
 
-import javax.annotation.*;
 import javax.annotation.Nullable;
 import java.util.*;
 

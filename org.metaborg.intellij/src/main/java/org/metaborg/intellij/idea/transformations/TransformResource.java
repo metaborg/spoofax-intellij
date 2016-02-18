@@ -20,7 +20,7 @@
 package org.metaborg.intellij.idea.transformations;
 
 import org.apache.commons.vfs2.*;
-import org.metaborg.core.project.*;
+import org.metaborg.meta.core.project.*;
 
 /**
  * A tuple with a resource to transform, along with the (part of its) source code to transform.

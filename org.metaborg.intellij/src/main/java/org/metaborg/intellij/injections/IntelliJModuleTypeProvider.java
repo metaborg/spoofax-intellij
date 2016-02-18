@@ -20,10 +20,8 @@
 package org.metaborg.intellij.injections;
 
 import com.google.inject.*;
-import com.intellij.openapi.extensions.*;
 import com.intellij.openapi.module.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
 
 /**

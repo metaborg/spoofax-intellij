@@ -20,7 +20,7 @@
 package org.metaborg.intellij.idea.gui.languagespanel;
 
 import org.metaborg.core.language.*;
-import org.metaborg.core.project.configuration.*;
+import org.metaborg.core.project.config.*;
 
 import javax.annotation.*;
 import javax.swing.*;

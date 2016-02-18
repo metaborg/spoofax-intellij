@@ -25,7 +25,6 @@ import org.metaborg.core.language.*;
 import org.metaborg.core.resource.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.resources.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;

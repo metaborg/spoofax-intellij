@@ -28,10 +28,10 @@ import org.metaborg.core.context.*;
 import org.metaborg.core.language.*;
 import org.metaborg.core.processing.analyze.*;
 import org.metaborg.core.processing.parse.*;
-import org.metaborg.core.project.*;
 import org.metaborg.core.syntax.*;
 import org.metaborg.core.transform.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.util.concurrent.*;
 import org.metaborg.util.log.*;
 

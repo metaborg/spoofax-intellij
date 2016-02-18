@@ -21,10 +21,10 @@ package org.metaborg.intellij.projects;
 
 import com.google.inject.*;
 import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
-import org.metaborg.core.project.configuration.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.meta.core.config.*;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
@@ -65,7 +65,7 @@ public final class ProjectUtils {
             this.logger.error("Got no configuration for language specification: {}", languageSpec);
             return Collections.emptyList();
         }
-        return config.compileDependencies();
+        return config.compileDeps();
     }
 
 

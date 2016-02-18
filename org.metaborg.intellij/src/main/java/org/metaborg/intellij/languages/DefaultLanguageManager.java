@@ -19,23 +19,18 @@
 
 package org.metaborg.intellij.languages;
 
-import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.google.inject.*;
-import com.intellij.openapi.vfs.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.*;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.*;
 import org.metaborg.intellij.discovery.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.resources.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
-import java.io.*;
 import java.util.*;
 
 /**

@@ -27,10 +27,11 @@ import org.jetbrains.jps.incremental.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.spoofax.core.project.*;
-import org.metaborg.spoofax.core.project.configuration.*;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.spoofax.meta.core.*;
 import org.metaborg.spoofax.meta.core.ant.*;
+import org.metaborg.spoofax.meta.core.config.*;
+import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;

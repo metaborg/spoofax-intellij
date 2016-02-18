@@ -27,12 +27,12 @@ import com.intellij.openapi.vfs.*;
 import com.intellij.psi.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.idea.transformations.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;

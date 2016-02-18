@@ -23,6 +23,7 @@ import org.apache.commons.vfs2.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.module.*;
 import org.metaborg.core.project.*;
+import org.metaborg.meta.core.project.*;
 
 import java.util.*;
 

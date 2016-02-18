@@ -19,13 +19,10 @@
 
 package org.metaborg.intellij.configuration;
 
-import org.apache.commons.collections.*;
-import org.apache.commons.lang3.builder.*;
 import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.jps.configuration.*;
 
 import javax.annotation.*;
-import java.io.*;
 import java.util.*;
 
 /**

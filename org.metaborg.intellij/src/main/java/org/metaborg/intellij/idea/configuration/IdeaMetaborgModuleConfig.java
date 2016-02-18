@@ -21,27 +21,13 @@ package org.metaborg.intellij.idea.configuration;
 
 import com.google.inject.*;
 import com.intellij.openapi.components.*;
-import com.intellij.openapi.module.*;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
-import org.metaborg.core.project.configuration.*;
 import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.projects.*;
-import org.metaborg.intellij.resources.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
 import javax.annotation.Nullable;
-import java.io.*;
-import java.util.*;
 
 /**
  * Module-level configuration of the plugin.

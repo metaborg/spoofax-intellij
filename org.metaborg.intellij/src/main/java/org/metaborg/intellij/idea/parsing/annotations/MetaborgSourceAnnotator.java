@@ -32,7 +32,6 @@ import org.metaborg.core.context.*;
 import org.metaborg.core.language.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.processing.analyze.*;
-import org.metaborg.core.project.*;
 import org.metaborg.core.source.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.parsing.*;
@@ -40,6 +39,7 @@ import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.util.log.*;
 
 /**

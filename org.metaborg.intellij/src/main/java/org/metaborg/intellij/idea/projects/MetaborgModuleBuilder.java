@@ -46,10 +46,10 @@ import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
-import org.metaborg.spoofax.core.project.*;
-import org.metaborg.spoofax.core.project.configuration.*;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.spoofax.generator.language.*;
-import org.metaborg.spoofax.generator.project.*;
+import org.metaborg.spoofax.meta.core.config.*;
+import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
 
 import javax.swing.*;
@@ -299,7 +299,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
             // TODO: Use ISpoofaxLanguageSpecPathsService instead.
             final ISpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(languageSpec.location(), config);
-            final LanguageSpecGeneratorScope scope = new LanguageSpecGeneratorScope(config, paths);
+            final GeneratorSettings scope = new GeneratorSettings(config, paths);
 //            // TODO: Get from SDK.
 //            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
             // FIXME: Factory?

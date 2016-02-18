@@ -29,7 +29,6 @@ import com.intellij.openapi.project.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.configuration.*;
-import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;

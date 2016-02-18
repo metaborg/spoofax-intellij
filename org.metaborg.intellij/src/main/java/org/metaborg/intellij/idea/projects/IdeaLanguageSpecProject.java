@@ -24,7 +24,7 @@ import com.google.inject.assistedinject.*;
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
+import org.metaborg.meta.core.project.*;
 
 import java.util.*;
 

@@ -56,7 +56,6 @@ import org.metaborg.intellij.resources.*;
 import org.metaborg.intellij.vfs.*;
 import org.metaborg.spoofax.core.SpoofaxModule;
 import org.metaborg.spoofax.core.project.*;
-import org.metaborg.spoofax.core.project.NullLegacyMavenProjectService;
 import org.metaborg.spoofax.core.syntax.*;
 
 /**

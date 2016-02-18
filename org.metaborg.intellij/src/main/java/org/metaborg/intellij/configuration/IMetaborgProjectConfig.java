@@ -19,10 +19,6 @@
 
 package org.metaborg.intellij.configuration;
 
-import org.metaborg.core.language.*;
-
-import java.util.*;
-
 /**
  * Project-level configuration of the plugin.
  */
