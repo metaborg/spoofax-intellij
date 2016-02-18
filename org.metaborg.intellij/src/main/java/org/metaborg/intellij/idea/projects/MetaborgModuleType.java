@@ -56,17 +56,6 @@ public final class MetaborgModuleType extends ModuleType<MetaborgModuleBuilder> 
         this.iconManager = iconManager;
     }
 
-    // TODO: Remove
-
-    /**
-     * Gets the module type.
-     *
-     * @return The module type.
-     */
-    public static ModuleType getModuleType() {
-        return ModuleTypeManager.getInstance().findByID(ID);
-    }
-
     /**
      * Creates a module builder.
      *

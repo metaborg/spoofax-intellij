@@ -36,4 +36,6 @@ public interface IIdeaProjectFactory {
      */
     IdeaLanguageSpecProject create(Module ideaModule, FileObject rootFolder);
 
+    // TODO: Implement this factory and ensure the given module is of type MetaborgModuleType.
+
 }

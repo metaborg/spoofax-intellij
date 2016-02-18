@@ -20,9 +20,11 @@
 package org.metaborg.intellij.idea;
 
 import com.google.inject.*;
+import com.intellij.openapi.application.*;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.*;
+import com.intellij.openapi.vfs.*;
 import org.apache.commons.vfs2.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.core.language.*;
@@ -86,8 +88,8 @@ public final class IdeaModuleComponent implements ModuleComponent {
      */
     @Override
     public void initComponent() {
-        this.logger.debug("Initializing module configuration for: {}", this.module);
-        this.logger.info("Initialized module configuration for: {}", this.module);
+        this.logger.debug("Initializing module: {}", this.module);
+        this.logger.info("Initialized module: {}", this.module);
     }
 
     /**
@@ -100,12 +102,15 @@ public final class IdeaModuleComponent implements ModuleComponent {
      */
     @Override
     public void projectOpened() {
-        this.logger.debug("Opening module configuration for: {}", this.module);
+        this.logger.debug("Opening module: {}", this.module);
 
-        registerModule();
-        this.configurationUtils.loadAndActivateLanguages(this.module.getProject(), getCompileDependencies());
+        @Nullable final IdeaProject project = registerModule();
+        if (project == null)
+            return;
+        this.configurationUtils.loadAndActivateLanguages(this.module.getProject(),
+                this.projectUtils.getCompileDependencies(project));
 
-        this.logger.info("Opened module configuration for: {}", this.module);
+        this.logger.info("Opened module: {}", this.module);
     }
 
     /**
@@ -115,8 +120,8 @@ public final class IdeaModuleComponent implements ModuleComponent {
      */
     @Override
     public void moduleAdded() {
-        this.logger.debug("Adding module configuration for: {}", this.module);
-        this.logger.info("Added module configuration for: {}", this.module);
+        this.logger.debug("Adding module: {}", this.module);
+        this.logger.info("Added module: {}", this.module);
     }
 
     /**
@@ -124,11 +129,11 @@ public final class IdeaModuleComponent implements ModuleComponent {
      */
     @Override
     public void projectClosed() {
-        this.logger.debug("Closing module configuration for: {}", this.module);
+        this.logger.debug("Closing module: {}", this.module);
 
         unregisterModule();
 
-        this.logger.info("Closed module configuration for: {}", this.module);
+        this.logger.info("Closed module: {}", this.module);
     }
 
     /**
@@ -138,8 +143,8 @@ public final class IdeaModuleComponent implements ModuleComponent {
      */
     @Override
     public void disposeComponent() {
-        this.logger.debug("Disposing module configuration for: {}", this.module);
-        this.logger.info("Disposed module configuration for: {}", this.module);
+        this.logger.debug("Disposing module: {}", this.module);
+        this.logger.info("Disposed module: {}", this.module);
     }
 
     /**
@@ -153,13 +158,17 @@ public final class IdeaModuleComponent implements ModuleComponent {
 
     /**
      * Registers the module as opened.
+     *
+     * @return The project; or <code>null</code> when it wasn't registered.
      */
-    private void registerModule() {
+    @Nullable
+    private IdeaProject registerModule() {
         @Nullable final FileObject root = getRootDirectory(this.module);
         if (root == null)
-            return;
+            return null;
         final IdeaProject project = this.projectFactory.create(this.module, root);
         this.projectService.open(project);
+        return project;
     }
 
     /**
@@ -183,20 +192,5 @@ public final class IdeaModuleComponent implements ModuleComponent {
             this.logger.error("Unhandled exception.", e);
         }
         return null;
-    }
-
-    /**
-     * Gets the compile dependencies of the module.
-     *
-     * @return The compile dependencies.
-     */
-    private Collection<LanguageIdentifier> getCompileDependencies() {
-        @Nullable final IdeaProject project = this.projectService.get(this.module);
-        @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
-        if (languageSpec == null) {
-            this.logger.error("Can't get language specification for project: {}", project);
-            return Collections.emptyList();
-        }
-        return this.projectUtils.getCompileDependencies(languageSpec);
     }
 }

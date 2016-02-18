@@ -22,7 +22,9 @@ package org.metaborg.intellij.idea.configuration;
 import com.google.inject.*;
 import com.intellij.openapi.command.*;
 import com.intellij.openapi.project.*;
+import com.intellij.openapi.project.Project;
 import org.metaborg.core.language.*;
+import org.metaborg.core.project.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
@@ -84,5 +86,4 @@ public final class ConfigurationUtils {
         this.languageManager.activateRange(languages);
         this.logger.info("Activated module languages: {}", languages);
     }
-
 }

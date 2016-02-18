@@ -65,10 +65,10 @@ public final class IdeaProjectComponent implements ProjectComponent {
      */
     @Override
     public void initComponent() {
-        this.logger.debug("Initializing Metaborg project: {}", this.project);
+        this.logger.debug("Initializing project: {}", this.project);
 
         setupCompileTasks();
-        this.logger.info("Initialized Metaborg project: {}", this.project);
+        this.logger.info("Initialized project: {}", this.project);
     }
 
     /**
@@ -76,9 +76,9 @@ public final class IdeaProjectComponent implements ProjectComponent {
      */
     @Override
     public void projectOpened() {
-        this.logger.debug("Opening Metaborg project: {}", this.project);
+        this.logger.debug("Opening project: {}", this.project);
 
-        this.logger.info("Opened Metaborg project: {}", this.project);
+        this.logger.info("Opened project: {}", this.project);
     }
 
     /**
@@ -86,9 +86,9 @@ public final class IdeaProjectComponent implements ProjectComponent {
      */
     @Override
     public void projectClosed() {
-        this.logger.debug("Closing Metaborg project: {}", this.project);
+        this.logger.debug("Closing project: {}", this.project);
 
-        this.logger.info("Closed Metaborg project: {}", this.project);
+        this.logger.info("Closed project: {}", this.project);
     }
 
     /**
@@ -96,9 +96,9 @@ public final class IdeaProjectComponent implements ProjectComponent {
      */
     @Override
     public void disposeComponent() {
-        this.logger.debug("Disposing Metaborg project: {}", this.project);
+        this.logger.debug("Disposing project: {}", this.project);
 
-        this.logger.info("Disposed Metaborg project: {}", this.project);
+        this.logger.info("Disposed project: {}", this.project);
     }
 
     /**

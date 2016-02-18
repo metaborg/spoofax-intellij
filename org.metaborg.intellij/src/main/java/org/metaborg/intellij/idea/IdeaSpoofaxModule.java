@@ -73,6 +73,7 @@ import org.metaborg.spoofax.core.syntax.*;
     protected void configure() {
         super.configure();
 
+        bindModule();
         bindLanguageManagement();
         bindLanguageSources();
         bindLoggerListeners();
@@ -88,6 +89,13 @@ import org.metaborg.spoofax.core.syntax.*;
         bindBeforeCompileTasks();
         bindAfterCompileTasks();
         bindReferenceResolution();
+    }
+
+    /**
+     * Module classes.
+     */
+    protected void bindModule() {
+        bind(MetaborgModuleType.class).toProvider(new IntelliJModuleTypeProvider<>(MetaborgModuleType.ID));
     }
 
     /**
@@ -289,6 +297,7 @@ import org.metaborg.spoofax.core.syntax.*;
      */
     protected void bindConfiguration() {
         bind(ConfigurationUtils.class).in(Singleton.class);
+        bind(ConfigurationFileEventListener.class).in(Singleton.class);
 
         install(new IntelliJServiceProviderFactory().provide(IMetaborgApplicationConfig.class));
         install(new IntelliJServiceProviderFactory().provide(IMetaborgProjectConfig.class));

@@ -36,13 +36,16 @@ import java.util.*;
  */
 public final class ProjectUtils {
 
+    private final ILanguageSpecService languageSpecService;
     private final ILanguageSpecConfigService configService;
     @InjectLogger
     private ILogger logger;
 
     @Inject
-    public ProjectUtils(final ILanguageSpecConfigService configService) {
+    public ProjectUtils(final ILanguageSpecConfigService configService,
+                        final ILanguageSpecService languageSpecService) {
         this.configService = configService;
+        this.languageSpecService = languageSpecService;
     }
 
     /**
@@ -63,6 +66,22 @@ public final class ProjectUtils {
             return Collections.emptyList();
         }
         return config.compileDependencies();
+    }
+
+
+    /**
+     * Gets the compile dependencies of the project.
+     *
+     * @param project The project.
+     * @return The compile dependencies.
+     */
+    public Collection<LanguageIdentifier> getCompileDependencies(@Nullable final IdeaProject project) {
+        @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
+        if (languageSpec == null) {
+            this.logger.error("Can't get language specification for project: {}", project);
+            return Collections.emptyList();
+        }
+        return getCompileDependencies(languageSpec);
     }
 
 }

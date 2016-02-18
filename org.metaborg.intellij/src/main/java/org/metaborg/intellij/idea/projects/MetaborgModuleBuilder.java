@@ -69,6 +69,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private final INewModuleWizardStepFactory wizardStepFactory;
     private final ISpoofaxLanguageSpecConfigBuilder configBuilder;
     private final ISpoofaxLanguageSpecPathsService pathsService;
+    private final MetaborgModuleType moduleType;
     @InjectLogger
     private ILogger logger;
 
@@ -141,7 +142,8 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             final ISpoofaxLanguageSpecPathsService pathsService,
             final ISpoofaxLanguageSpecConfigBuilder configBuilder,
             final INewModuleWizardStepFactory wizardStepFactory,
-            final IIconManager iconManager) {
+            final IIconManager iconManager,
+            final MetaborgModuleType moduleType) {
         super();
         this.resourceService = resourceService;
         this.projectFactory = projectFactory;
@@ -150,6 +152,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         this.configBuilder = configBuilder;
         this.wizardStepFactory = wizardStepFactory;
         this.iconManager = iconManager;
+        this.moduleType = moduleType;
     }
 
     /**
@@ -177,7 +180,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     @Override
     @Nullable
     public final ModuleWizardStep modifySettingsStep(final SettingsStep settingsStep) {
-        return MetaborgModuleType.getModuleType().modifySettingsStep(settingsStep, this);
+        return getModuleType().modifySettingsStep(settingsStep, this);
     }
 
     @Override
@@ -326,7 +329,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      */
     @Override
     public final ModuleType getModuleType() {
-        return MetaborgModuleType.getModuleType();
+        return this.moduleType;
     }
 
     /**

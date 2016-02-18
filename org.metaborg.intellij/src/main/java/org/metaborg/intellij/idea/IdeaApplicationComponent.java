@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea;
 
 import com.google.inject.*;
 import com.intellij.openapi.components.*;
+import com.intellij.openapi.vfs.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.configuration.*;
@@ -39,6 +40,7 @@ public final class IdeaApplicationComponent implements ApplicationComponent {
 
     private IMetaborgApplicationConfig configuration;
     private ConfigurationUtils configurationUtils;
+    private ConfigurationFileEventListener configurationFileEventListener;
     @InjectLogger
     private ILogger logger;
 
@@ -52,9 +54,12 @@ public final class IdeaApplicationComponent implements ApplicationComponent {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final IMetaborgApplicationConfig configuration, final ConfigurationUtils configurationUtils) {
+    private void inject(final IMetaborgApplicationConfig configuration,
+                        final ConfigurationUtils configurationUtils,
+                        final ConfigurationFileEventListener configurationFileEventListener) {
         this.configuration = configuration;
         this.configurationUtils = configurationUtils;
+        this.configurationFileEventListener = configurationFileEventListener;
     }
 
     /**
@@ -62,9 +67,13 @@ public final class IdeaApplicationComponent implements ApplicationComponent {
      */
     @Override
     public void initComponent() {
-        this.logger.debug("Initializing application configuration.");
+        this.logger.debug("Initializing application.");
+
         this.configurationUtils.loadAndActivateLanguages(null, this.configuration.getLoadedLanguages());
-        this.logger.info("Initialized application configuration.");
+
+        VirtualFileManager.getInstance().addVirtualFileListener(this.configurationFileEventListener);
+
+        this.logger.info("Initialized application.");
     }
 
     /**
@@ -72,8 +81,8 @@ public final class IdeaApplicationComponent implements ApplicationComponent {
      */
     @Override
     public void disposeComponent() {
-        this.logger.debug("Disposing application configuration.");
-        this.logger.info("Disposed application configuration.");
+        this.logger.debug("Disposing application.");
+        this.logger.info("Disposed application.");
     }
 
     /**
