@@ -166,7 +166,7 @@ idea {
 
 eclipse {
     classpath {
-        plusConfigurations += configurations.provided
+        plusConfigurations += [configurations.provided]
     }
 }
 
