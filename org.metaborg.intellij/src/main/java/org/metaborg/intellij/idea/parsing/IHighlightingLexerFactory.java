@@ -41,6 +41,6 @@ public interface IHighlightingLexerFactory {
      * @param tokenTypesManager The token type manager.
      * @return The created lexer.
      */
-    Lexer create(@Nullable FileObject file, @Nullable IProject project, ILanguageImpl language,
+    Lexer create(FileObject file, @Nullable IProject project, ILanguageImpl language,
                  SpoofaxTokenTypeManager tokenTypesManager);
 }

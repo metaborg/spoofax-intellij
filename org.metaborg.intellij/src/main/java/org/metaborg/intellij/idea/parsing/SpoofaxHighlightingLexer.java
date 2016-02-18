@@ -23,6 +23,7 @@ import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import com.intellij.lexer.*;
 import com.intellij.psi.tree.*;
+import org.apache.commons.lang3.*;
 import org.apache.commons.vfs2.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.core.*;
@@ -55,6 +56,8 @@ import java.util.*;
  */
 public final class SpoofaxHighlightingLexer extends LexerBase {
 
+    private final FileObject file;
+    @Nullable private final IProject project;
     private final ILanguageImpl languageImpl;
     private final IParserConfiguration parserConfiguration;
     private final ISyntaxService<IStrategoTerm> syntaxService;
@@ -75,7 +78,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
 
     @Inject
     private SpoofaxHighlightingLexer(
-            @Assisted @Nullable final FileObject file,
+            @Assisted final FileObject file,
             @Assisted @Nullable final IProject project,
             @Assisted final ILanguageImpl languageImpl,
             @Assisted final SpoofaxTokenTypeManager tokenTypesManager,
@@ -86,6 +89,8 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
             final IResourceService resourceService) {
         super();
 
+        this.file = file;
+        this.project = project;
         this.syntaxService = syntaxService;
         this.categorizer = categorizer;
         this.styler = styler;
@@ -121,7 +126,13 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
         if (buffer.length() == 0)
             return;
 
+        this.logger.debug("Parsing ({} characters) to get requested range {} from file: {}",
+                buffer.length(), this.bufferRange, this.file);
+
         final ParseResult<IStrategoTerm> result = parseAll();
+
+        this.logger.debug("Tokenizing the parse result of file: {}", this.file);
+
         tokenizeAll(result);
     }
 
@@ -131,15 +142,15 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
      * @return The parse result.
      */
     private ParseResult<IStrategoTerm> parseAll() {
-        // Dummy location. Bug in Metaborg Core prevents it being null.
-        // TODO: Fix JSGLRI to allow null location.
-        final FileObject location = this.resourceService.resolve(
-                "file:///home/daniel/eclipse/spoofax1507/workspace/TestProject/trans/test.spoofax");
         final ParseResult<IStrategoTerm> result;
+        final String text = this.buffer.toString();
+
+        // TODO: Optimize parsing? Is there a parse cache? I think so.
         try {
+
             result = this.syntaxService.parse(
                     this.buffer.toString(),
-                    location,
+                    this.file,
                     this.languageImpl,
                     this.parserConfiguration
             );
@@ -201,14 +212,36 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
             final int tokenEnd = token.getEndOffset() + 1;
             final IntRange tokenRange = IntRange.between(tokenStart, tokenEnd);
 
-            if (tokenRange.isEmpty())
+            if (tokenRange.isEmpty()) {
+                // The tokenizer may return empty tokens. Don't know why.
+                // Let's ignore those.
+
+                this.logger.warn("Token {} is empty. Token ignored.",
+                        printToken(tokenRange));
+
                 continue;
+            }
+
+            if (tokenRange.start < offset) {
+                // Due to a bug in the tokenizer we may see another token covering the same character(s)
+                // as the previous token. Let's ignore those tokens for now.
+                // From what I've seem it's always the same token as the previous token, but I may be wrong.
+                // From that follows that the next token should start where the previous (non-ignored) token
+                // ended. If that's not the case, the next assertion will fail.
+
+                this.logger.warn("Token {} overlaps previous token {}. Token ignored.",
+                        printToken(tokenRange),
+                        printToken(getLastTokenRange()));
+
+                continue;
+            }
 
             assert offset == tokenRange.start : this.logger.format(
-                    "The current token (starting @ {}) must start where the previous token left off (@ {}).",
-                    tokenStart,
-                    offset
+                    "The current token {} must start where the previous token left off {}.",
+                    printToken(tokenRange),
+                    printToken(getLastTokenRange())
             );
+
             if (tokenRange.overlapsRange(this.bufferRange)) {
                 // ASSUME: The styled tokens are ordered by offset.
                 // ASSUME: No styled region overlaps another styled region.
@@ -218,22 +251,60 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
                     currentRegionStyle = styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
 
                 // Get the style of the token
-                @Nullable final IStyle tokenStyle = currentRegionStyle != null && currentRegionStyle.region().startOffset() <= tokenRange.start ? currentRegionStyle.style() : null;
+                @Nullable final IStyle tokenStyle = currentRegionStyle != null
+                        && currentRegionStyle.region().startOffset() <= tokenRange.start ? currentRegionStyle.style() : null;
                 final SpoofaxTokenType styledTokenType = this.tokenTypesManager.getTokenType(tokenStyle);
 
                 final SpoofaxToken spoofaxToken = new SpoofaxToken(styledTokenType, tokenRange);
                 this.tokens.add(spoofaxToken);
+
+                if (tokenStyle != null) {
+                    this.logger.trace("Token {} with style: {}",
+                            printToken(tokenRange), tokenStyle);
+                } else {
+                    this.logger.trace("Token {} with default style: {}",
+                            printToken(tokenRange), this.tokenTypesManager.getDefaultStyle());
+                }
+            } else {
+                // Token is not in the requested range. No need to style it.
+
+                this.logger.trace("Token {} outside requested range.", printToken(tokenRange));
             }
             offset = tokenRange.end;
         }
 
         assert offset == this.buffer.length() : this.logger.format(
-                "The last token ended @ {} not at the end of the buffer @ {}.",
+                "The last token {} ended at {}, which is not at the end of the buffer @ {}.",
+                printToken(getLastTokenRange()),
                 offset,
                 this.buffer.length()
         );
     }
 
+    /**
+     * Returnd a string representation of a token, for debugging and logging.
+     *
+     * @param tokenRange The token range.
+     * @return The string representation.
+     */
+    private String printToken(final IntRange tokenRange) {
+        return this.logger.format("\"{}\" @ {}",
+                StringEscapeUtils.escapeJava(this.buffer.subSequence(tokenRange.start, tokenRange.end).toString()),
+                tokenRange);
+    }
+
+    /**
+     * Gets the range of the last added token, for debugging and logging.
+     *
+     * @return The range of the last added token, or an empty range if there is none.
+     */
+    private IntRange getLastTokenRange() {
+        if (this.tokens.isEmpty()) {
+            return IntRange.EMPTY;
+        } else {
+            return this.tokens.get(this.tokens.size() - 1).range();
+        }
+    }
 
     /**
      * Gets the current state of the lexer.
