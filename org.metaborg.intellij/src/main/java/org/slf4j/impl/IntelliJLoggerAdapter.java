@@ -213,7 +213,7 @@ import java.io.Serializable;
      */
     @Override
     public boolean isWarnEnabled() {
-        return false;
+        return true;
     }
 
     /**
