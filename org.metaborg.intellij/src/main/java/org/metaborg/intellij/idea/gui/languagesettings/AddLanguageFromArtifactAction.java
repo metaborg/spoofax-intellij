@@ -53,7 +53,7 @@ public class AddLanguageFromArtifactAction extends LanguagesAction {
      * Do not call this constructor manually.
      */
     public AddLanguageFromArtifactAction(final LanguageTreeModel model,
-                                         final LanguagesConfiguration controller) {
+                                         final LanguagesSettings controller) {
         super(model, controller, "Artifact...",
                 "Add a language by specifying its artifact.", PlatformIcons.JAR_ICON);
         // TODO: Remove this and use a factory instead.

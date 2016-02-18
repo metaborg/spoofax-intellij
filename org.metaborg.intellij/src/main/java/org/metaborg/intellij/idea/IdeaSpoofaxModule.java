@@ -31,6 +31,7 @@ import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
 import org.metaborg.core.resource.*;
 import org.metaborg.core.syntax.*;
+import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.discovery.*;
 import org.metaborg.intellij.idea.compilation.*;
@@ -46,6 +47,7 @@ import org.metaborg.intellij.idea.parsing.references.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.idea.transformations.*;
+import org.metaborg.intellij.injections.*;
 import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
@@ -119,7 +121,6 @@ import org.metaborg.spoofax.core.syntax.*;
         bind(IResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
         bind(IIntelliJResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
         bind(FileSystemManager.class).toProvider(IntelliJFileSystemManagerProvider.class).in(Singleton.class);
-//        bind(FileSystemManager.class).toProvider(DefaultFileSystemManagerProvider.class).in(Singleton.class);
 
         install(new FactoryModuleBuilder()
                 .implement(IntelliJFileProvider.class, IntelliJFileProvider.class)
@@ -288,6 +289,10 @@ import org.metaborg.spoofax.core.syntax.*;
      */
     protected void bindConfiguration() {
         bind(ConfigurationUtils.class).in(Singleton.class);
+
+        install(new IntelliJServiceProviderFactory().provide(IMetaborgApplicationConfig.class));
+        install(new IntelliJServiceProviderFactory().provide(IMetaborgProjectConfig.class));
+        install(new IntelliJServiceProviderFactory().provide(IMetaborgModuleConfig.class));
     }
 
     /**

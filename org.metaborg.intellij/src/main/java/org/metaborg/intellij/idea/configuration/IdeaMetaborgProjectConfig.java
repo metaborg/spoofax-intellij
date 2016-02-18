@@ -39,8 +39,8 @@ import org.metaborg.util.log.*;
                         scheme = StorageScheme.DIRECTORY_BASED)
         }
 )
-public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, ProjectComponent,
-        PersistentStateComponent<MetaborgProjectConfigState> {
+public final class IdeaMetaborgProjectConfig
+        implements IMetaborgProjectConfig, PersistentStateComponent<MetaborgProjectConfigState> {
 
     // Don't initialize fields that depend on the state here. Initialize in loadState().
     private MetaborgProjectConfigState state;
@@ -78,53 +78,6 @@ public final class IdeaMetaborgProjectConfig implements IMetaborgProjectConfig, 
     @Inject
     @SuppressWarnings("unused")
     private void inject() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initComponent() {
-        this.logger.debug("Initializing project configuration for: {}", this.project);
-        this.logger.info("Initialized project configuration for: {}", this.project);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void projectOpened() {
-        this.logger.debug("Opening project configuration for: {}", this.project);
-
-        this.logger.info("Opened project configuration for: {}", this.project);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void projectClosed() {
-        this.logger.debug("Closing project configuration for: {}", this.project);
-
-        this.logger.info("Closed project configuration for: {}", this.project);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void disposeComponent() {
-        this.logger.debug("Disposing project configuration for: {}", this.project);
-        this.logger.info("Disposed project configuration for: {}", this.project);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return IdeaMetaborgProjectConfig.class.getName();
     }
 
     /**

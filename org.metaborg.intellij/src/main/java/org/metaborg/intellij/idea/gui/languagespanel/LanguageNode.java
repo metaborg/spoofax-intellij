@@ -35,8 +35,9 @@ public final class LanguageNode extends TreeNodeWithValue<ILanguage, LanguageNod
 
     /**
      * Initializes a new instance of the {@link LanguageNode} class.
-     * @param language
-     * @param iconManager
+     *
+     * @param language The language.
+     * @param iconManager The icon manager.
      */
     public LanguageNode(@Nullable final ILanguage language, final IIconManager iconManager) {
         super(language);

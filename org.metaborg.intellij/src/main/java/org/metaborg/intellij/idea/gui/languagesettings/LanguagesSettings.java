@@ -28,6 +28,8 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.*;
+import org.metaborg.intellij.configuration.*;
+import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
@@ -41,8 +43,9 @@ import java.util.*;
  * {@see <a href="https://confluence.jetbrains.com/display/IDEADEV/Customizing+the+IDEA+Settings+Dialog">Customizing the
  * IDEA Settings Dialog</a>}
  */
-public abstract class LanguagesConfiguration extends BaseConfigurable {
+public abstract class LanguagesSettings extends BaseConfigurable {
 
+    protected IMetaborgApplicationConfig applicationConfig;
     protected ILanguageService languageService;
     protected IIdeaLanguageManager languageManager;
     protected final Project project;
@@ -56,7 +59,7 @@ public abstract class LanguagesConfiguration extends BaseConfigurable {
      * This instance is created by IntelliJ's plugin system.
      * Do not call this constructor manually.
      */
-    protected LanguagesConfiguration(final Project project) {
+    protected LanguagesSettings(final Project project) {
         super();
         Preconditions.checkNotNull(project);
 
@@ -65,10 +68,13 @@ public abstract class LanguagesConfiguration extends BaseConfigurable {
 
     @Inject
     @SuppressWarnings("unused")
-    protected void inject(final IIdeaLanguageManager languageManager, final ILanguageService languageService) {
+    protected void inject(final IIdeaLanguageManager languageManager,
+                          final ILanguageService languageService,
+                          final IMetaborgApplicationConfig applicationConfig) {
         this.languageManager = languageManager;
         this.languageService = languageService;
         this.languageManager = languageManager;
+        this.applicationConfig = applicationConfig;
     }
 
     /**
@@ -158,6 +164,10 @@ public abstract class LanguagesConfiguration extends BaseConfigurable {
      * @param components The components to unload.
      */
     private void unloadLanguages(final Set<ILanguageComponent> components) {
+        final Set<LanguageIdentifier> ids = LanguageUtils2.getIdentifiersOfLanguageImplementations(
+                LanguageUtils2.getLanguageImplsOfComponents(components));
+        this.applicationConfig.getLoadedLanguages().removeAll(ids);
+
         WriteCommandAction.runWriteCommandAction(this.project, () -> {
             this.languageManager.deactivateRange(LanguageUtils2.getLanguagesOfComponents(components));
         });
@@ -178,6 +188,11 @@ public abstract class LanguagesConfiguration extends BaseConfigurable {
             throw LoggerUtils.exception(this.logger, UnhandledException.class,
                     "Unexpected error occurred while loading languages: {}", e, requests);
         }
+
+        final Set<LanguageIdentifier> ids = LanguageUtils2.getIdentifiersOfLanguageImplementations(
+                LanguageUtils2.getLanguageImplsOfComponents(components));
+        this.applicationConfig.getLoadedLanguages().addAll(ids);
+
         WriteCommandAction.runWriteCommandAction(this.project, () -> {
             this.languageManager.activateRange(LanguageUtils2.getLanguagesOfComponents(components));
         });

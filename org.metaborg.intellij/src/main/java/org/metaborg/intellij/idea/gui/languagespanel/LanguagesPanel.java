@@ -29,7 +29,6 @@ import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.gui.languagesettings.*;
-import org.metaborg.intellij.idea.languages.*;
 
 import javax.annotation.*;
 import javax.swing.*;
@@ -47,7 +46,7 @@ public final class LanguagesPanel extends JPanel {
     private IIconManager iconManager;
     private final TreeTableView languagesTree;
     @Nullable
-    private LanguagesConfiguration controller;
+    private LanguagesSettings controller;
     @Nullable
     private DefaultActionGroup addActionPopupGroup;
 
@@ -233,7 +232,7 @@ public final class LanguagesPanel extends JPanel {
      *
      * @param controller The controller to attach; or <code>null</code> to detach.
      */
-    public void attachController(@Nullable final LanguagesConfiguration controller) {
+    public void attachController(@Nullable final LanguagesSettings controller) {
         this.controller = controller;
 
         if (controller != null) {
@@ -250,7 +249,7 @@ public final class LanguagesPanel extends JPanel {
      * @param model The language tree model.
      * @param controller The controller.
      */
-    private void initPopupActions(final LanguageTreeModel model, final LanguagesConfiguration controller) {
+    private void initPopupActions(final LanguageTreeModel model, final LanguagesSettings controller) {
         this.addActionPopupGroup = new DefaultActionGroup("Add", true);
         this.addActionPopupGroup.add(new AddLanguageFromDirectoryAction(model, controller));
         this.addActionPopupGroup.add(new AddLanguageFromArtifactAction(model, controller));

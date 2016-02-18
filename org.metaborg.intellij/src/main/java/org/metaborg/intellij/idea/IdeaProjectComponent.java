@@ -25,6 +25,7 @@ import com.intellij.openapi.compiler.*;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.*;
 import org.jetbrains.annotations.*;
+import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.compilation.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
@@ -53,7 +54,8 @@ public final class IdeaProjectComponent implements ProjectComponent {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final Set<IBeforeCompileTask> beforeCompileTasks, final Set<IAfterCompileTask> afterCompileTasks) {
+    private void inject(final Set<IBeforeCompileTask> beforeCompileTasks,
+                        final Set<IAfterCompileTask> afterCompileTasks) {
         this.beforeCompileTasks = beforeCompileTasks;
         this.afterCompileTasks = afterCompileTasks;
     }

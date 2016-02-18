@@ -21,9 +21,7 @@ package org.metaborg.intellij.idea.gui.languagesettings;
 
 import com.intellij.openapi.actionSystem.*;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.gui.languagespanel.*;
-import org.metaborg.intellij.idea.languages.*;
 
 import javax.annotation.*;
 import javax.swing.*;
@@ -34,14 +32,14 @@ import javax.swing.*;
 public abstract class LanguagesAction extends AnAction {
 
     protected final LanguageTreeModel model;
-    protected final LanguagesConfiguration controller;
+    protected final LanguagesSettings controller;
 
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this constructor manually.
      */
     protected LanguagesAction(final LanguageTreeModel model,
-                           final LanguagesConfiguration controller,
+                           final LanguagesSettings controller,
                            @Nullable final String text,
                            @Nullable final String description,
                            @Nullable final Icon icon) {

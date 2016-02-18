@@ -28,7 +28,6 @@ import com.intellij.openapi.vfs.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.gui.languagespanel.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
@@ -52,7 +51,7 @@ public class AddLanguageFromDirectoryAction extends LanguagesAction {
      * Do not call this constructor manually.
      */
     public AddLanguageFromDirectoryAction(final LanguageTreeModel model,
-                                          final LanguagesConfiguration controller) {
+                                          final LanguagesSettings controller) {
         super(model, controller, "Directory...",
                 "Add a language by specifying its directory.", StdModuleTypes.JAVA.getIcon());
 

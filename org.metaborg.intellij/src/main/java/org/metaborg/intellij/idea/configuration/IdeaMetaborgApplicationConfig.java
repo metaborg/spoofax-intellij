@@ -44,10 +44,9 @@ import java.util.*;
                 @Storage(file = StoragePathMacros.APP_CONFIG + "/" + IMetaborgApplicationConfig.CONFIG_FILE)
         }
 )
-public final class IdeaMetaborgApplicationConfig implements IMetaborgApplicationConfig, ApplicationComponent,
-        PersistentStateComponent<MetaborgApplicationConfigState> {
+public final class IdeaMetaborgApplicationConfig
+        implements IMetaborgApplicationConfig, PersistentStateComponent<MetaborgApplicationConfigState> {
 
-    private ConfigurationUtils configurationUtils;
     // Don't initialize fields that depend on the state here. Initialize in loadState().
     private MetaborgApplicationConfigState state;
     private Set<LanguageIdentifier> loadedLanguages;
@@ -74,36 +73,8 @@ public final class IdeaMetaborgApplicationConfig implements IMetaborgApplication
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final ConfigurationUtils configurationUtils) {
-        this.configurationUtils = configurationUtils;
-    }
+    private void inject() {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initComponent() {
-        this.logger.debug("Initializing application configuration.");
-        this.configurationUtils.loadAndActivateLanguages(null, this.getLoadedLanguages());
-        this.logger.info("Initialized application configuration.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void disposeComponent() {
-        this.logger.debug("Disposing application configuration.");
-        this.logger.info("Disposed application configuration.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return IdeaMetaborgApplicationConfig.class.getName();
     }
 
     /**

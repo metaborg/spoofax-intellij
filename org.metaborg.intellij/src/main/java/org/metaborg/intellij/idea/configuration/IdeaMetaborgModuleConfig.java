@@ -52,20 +52,12 @@ import java.util.*;
                 @Storage(file = StoragePathMacros.MODULE_FILE)
         }
 )
-public final class IdeaMetaborgModuleConfig implements IMetaborgModuleConfig, ModuleComponent,
-        PersistentStateComponent<MetaborgModuleConfigState> {
+public final class IdeaMetaborgModuleConfig
+        implements IMetaborgModuleConfig, PersistentStateComponent<MetaborgModuleConfigState> {
 
     // Don't initialize fields that depend on the state here. Initialize in loadState().
     private MetaborgModuleConfigState state;
     private final Module module;
-    private IIdeaLanguageManager languageManager;
-    private ProjectUtils projectUtils;
-    private IIdeaProjectService projectService;
-    private IIdeaProjectFactory projectFactory;
-    private ILanguageSpecService languageSpecService;
-    private ILanguageSpecConfigService configService;
-    private IIntelliJResourceService resourceService;
-    private ConfigurationUtils configurationUtils;
     @InjectLogger
     private ILogger logger;
 
@@ -98,94 +90,9 @@ public final class IdeaMetaborgModuleConfig implements IMetaborgModuleConfig, Mo
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(
-            final IIdeaProjectService projectService,
-            final IIdeaProjectFactory projectFactory,
-            final IIntelliJResourceService resourceService,
-            final IIdeaLanguageManager languageManager,
-            final ILanguageSpecService languageSpecService,
-            final ILanguageSpecConfigService configService,
-            final ConfigurationUtils configurationUtils,
-            final ProjectUtils projectUtils) {
-        this.projectService = projectService;
-        this.projectFactory = projectFactory;
-        this.resourceService = resourceService;
-        this.languageManager = languageManager;
-        this.languageSpecService = languageSpecService;
-        this.configService = configService;
-        this.configurationUtils = configurationUtils;
-        this.projectUtils = projectUtils;
+    private void inject() {
     }
 
-    /**
-     * Occurs when the module is initialized.
-     */
-    @Override
-    public void initComponent() {
-        this.logger.debug("Initializing module configuration for: {}", this.module);
-        this.logger.info("Initialized module configuration for: {}", this.module);
-    }
-
-    /**
-     * Occurs when the module is opened.
-     * <p>
-     * Called after {@link #initComponent()} and {@link #moduleAdded()}.
-     * <p>
-     * This method is not called when modules are created
-     * in a {@link com.intellij.ide.util.projectWizard.ModuleBuilder}.
-     */
-    @Override
-    public void projectOpened() {
-        this.logger.debug("Opening module configuration for: {}", this.module);
-
-        registerModule();
-        this.configurationUtils.loadAndActivateLanguages(this.module.getProject(), getCompileDependencies());
-
-        this.logger.info("Opened module configuration for: {}", this.module);
-    }
-
-    /**
-     * Occurs when the module has been completely loaded and added to the project.
-     * <p>
-     * Called after {@link #initComponent()}. May be called twice for a module.
-     */
-    @Override
-    public void moduleAdded() {
-        this.logger.debug("Adding module configuration for: {}", this.module);
-        this.logger.info("Added module configuration for: {}", this.module);
-    }
-
-    /**
-     * Occurs when the module is closed.
-     */
-    @Override
-    public void projectClosed() {
-        this.logger.debug("Closing module configuration for: {}", this.module);
-
-        unregisterModule();
-
-        this.logger.info("Closed module configuration for: {}", this.module);
-    }
-
-    /**
-     * Occurs when the module is disposed.
-     * <p>
-     * Called after {@link #projectClosed()}.
-     */
-    @Override
-    public void disposeComponent() {
-        this.logger.debug("Disposing module configuration for: {}", this.module);
-        this.logger.info("Disposed module configuration for: {}", this.module);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return IdeaMetaborgModuleConfig.class.getName();
-    }
 
     /**
      * {@inheritDoc}
@@ -207,52 +114,4 @@ public final class IdeaMetaborgModuleConfig implements IMetaborgModuleConfig, Mo
         // Initialize fields that depend on state here.
     }
 
-    /**
-     * Registers the module as opened.
-     */
-    private void registerModule() {
-        @Nullable final FileObject root = getRootDirectory(this.module);
-        if (root == null)
-            return;
-        final IdeaProject project = this.projectFactory.create(this.module, root);
-        this.projectService.open(project);
-    }
-
-    /**
-     * Unregisters the module as opened.
-     */
-    private void unregisterModule() {
-        this.projectService.close(this.module);
-    }
-
-    /**
-     * Gets the root directory of the module.
-     *
-     * @param module The module.
-     * @return The root directory; or <code>null</code>.
-     */
-    @Nullable
-    private FileObject getRootDirectory(final Module module) {
-        try {
-            return this.resourceService.resolve(module.getModuleFilePath()).getParent();
-        } catch (final FileSystemException e) {
-            this.logger.error("Unhandled exception.", e);
-        }
-        return null;
-    }
-
-    /**
-     * Gets the compile dependencies of the module.
-     *
-     * @return The compile dependencies.
-     */
-    private Collection<LanguageIdentifier> getCompileDependencies() {
-        @Nullable final IdeaProject project = this.projectService.get(this.module);
-        @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
-        if (languageSpec == null) {
-            this.logger.error("Can't get language specification for project: {}", project);
-            return Collections.emptyList();
-        }
-        return this.projectUtils.getCompileDependencies(languageSpec);
-    }
 }

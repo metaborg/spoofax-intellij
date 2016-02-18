@@ -50,6 +50,20 @@ public final class LanguageUtils2 {
     }
 
     /**
+     * Gets the set of language identifiers for the given language implementations.
+     *
+     * @param languageImpls The language implementations.
+     * @return The language identifiers.
+     */
+    public static Set<LanguageIdentifier> getIdentifiersOfLanguageImplementations(final Iterable<ILanguageImpl> languageImpls) {
+        final Set<LanguageIdentifier> ids = new HashSet<>();
+        for (final ILanguageImpl languageImpl : languageImpls) {
+            ids.add(languageImpl.id());
+        }
+        return ids;
+    }
+
+    /**
      * Gets the set of languages to which all given language components belong.
      *
      * @param components The components.

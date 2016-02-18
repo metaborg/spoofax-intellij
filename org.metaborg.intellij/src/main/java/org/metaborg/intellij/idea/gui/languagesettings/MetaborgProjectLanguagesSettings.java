@@ -29,7 +29,7 @@ import javax.swing.*;
 /**
  * Metaborg language configuration dialog.
  */
-public final class MetaborgProjectLanguagesConfiguration extends LanguagesConfiguration {
+public final class MetaborgProjectLanguagesSettings extends LanguagesSettings {
 
     private MetaborgProjectLanguagesConfigurableForm form;
 
@@ -37,7 +37,7 @@ public final class MetaborgProjectLanguagesConfiguration extends LanguagesConfig
      * This instance is created by IntelliJ's plugin system.
      * Do not call this constructor manually.
      */
-    public MetaborgProjectLanguagesConfiguration(final Project project) {
+    public MetaborgProjectLanguagesSettings(final Project project) {
         super(project);
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
