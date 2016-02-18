@@ -2,13 +2,14 @@
 [![GitHub license](https://img.shields.io/github/license/metaborg/spoofax-intellij.svg)](./LICENSE.md)
 
 # Spoofax plugin for IntelliJ IDEA
-
 Develop and use languages with the [Spoofax Language Workbench](http://www.spoofax.org/) in IntelliJ IDEA.
 
 Want to learn more? [See the wiki](https://github.com/metaborg/spoofax-intellij/wiki).
 
-## Quick Start
+Want to contribute to this plugin? [More information](./CONTRIBUTE.md).
 
+
+## Quick Start
 Install the plugin.
 
 Create a new Spoofax language specification by going to the _File_
@@ -19,44 +20,18 @@ for more information.
 ![New Spoofax Project](./intellij-doc/NewProjectWizard.png)
 
 
-## Development
+## Features
+The Spoofax for IntelliJ IDEA plugin has the following features:
 
-### Run
-
-Run this plugin in a sandbox IntelliJ IDEA instance using
-
-```
-gradle runIdea
-```
-
-or run the _IntelliJ Plugin_ configuration from IntelliJ.
+* Create new Spoofax Language Specification project.
+* Import existing Spoofax Language Specification project (e.g. Eclipse project).
+* Syntax highlighting. (*)
+* Reference resolution. (*)
+* Load/unload languages on-the-fly.
+* Use your own language in the same editor.
 
 
-### Debug
+## Limitations
+The Spoofax for IntelliJ IDEA plugin has the following limitations:
 
-Debug the JPS plugin using 
-
-```
-gradle debugIdea
-```
-
-or run the _IntelliJ Plugin (Debug JPS)_ configuration from IntelliJ.
-Then connect a debugger to port 5005, or debug the _JPS Plugin_
-configuration from IntelliJ.
-
-
-### Test
-
-Run the tests using
-
-```
-gradle check
-```
-
-or run the _Unit Tests_ configuration from IntelliJ.
-
-
-### Deploy
-
-To deploy the plugin, click the _Build_ → _Prepare All Plugin Modules
-For Deployment_ menu.
+* Languages are loaded application-wide.
