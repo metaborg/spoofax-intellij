@@ -46,6 +46,7 @@ import java.util.*;
  */
 public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
 
+    private final Object objectLock = new Object();
     private final IIntelliJResourceService resourceService;
     private final IResolverService<IStrategoTerm, IStrategoTerm> resolverService;
     private final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester;
@@ -85,18 +86,20 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
         if (analysisFileResult == null)
             return Collections.emptyList();
 
-        try {
-            @Nullable final Resolution resolution = this.resolverService.resolve(
-                    element.getTextOffset(), analysisFileResult);
-            if (resolution == null) {
-                return Collections.emptyList();
+        synchronized(this.objectLock) {
+            try {
+                @Nullable final Resolution resolution = this.resolverService.resolve(
+                        element.getTextOffset(), analysisFileResult);
+
+                if (resolution == null) {
+                    return Collections.emptyList();
+                }
+
+                return getMetaborgReferences(element, resolution);
+            } catch (final MetaborgException e) {
+                throw new RuntimeException(e);
             }
-
-            return getMetaborgReferences(element, resolution);
-        } catch (final MetaborgException e) {
-            throw new RuntimeException(e);
         }
-
     }
 
     @NotNull
@@ -115,18 +118,21 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
     @Nullable
     private SpoofaxReference getMetaborgReference(final MetaborgReferenceElement element,
                                                   final ISourceLocation location) {
-        @Nullable final FileObject targetResource = location.resource();
-        if (targetResource == null)
-            return null;
-        @Nullable final VirtualFile targetVirtualFile = this.resourceService.unresolve(targetResource);
-        if (targetVirtualFile == null)
-            return null;
 
-        return new SpoofaxReference(
-                element,
-                targetVirtualFile,
-                location.region()
-        );
+        synchronized(this.objectLock) {
+            @Nullable final FileObject targetResource = location.resource();
+            if (targetResource == null)
+                return null;
+            @Nullable final VirtualFile targetVirtualFile = this.resourceService.unresolve(targetResource);
+            if (targetVirtualFile == null)
+                return null;
+
+            return new SpoofaxReference(
+                    element,
+                    targetVirtualFile,
+                    location.region()
+            );
+        }
     }
 
 }
