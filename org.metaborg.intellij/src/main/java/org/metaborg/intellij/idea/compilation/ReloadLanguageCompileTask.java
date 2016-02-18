@@ -73,7 +73,7 @@ public final class ReloadLanguageCompileTask implements IAfterCompileTask {
                 @Nullable final IdeaProject project = this.projectService.get(module);
                 if (project instanceof IdeaLanguageSpecProject) {
                     this.logger.debug("Reloading languages of language specification: {}", project);
-                    reloadLanguageSpec((IdeaLanguageSpecProject)project);
+                    this.languageManager.reloadLanguageSpec((IdeaLanguageSpecProject)project);
                 } else {
                     this.logger.debug("Module skipped as it's not a language specification project: {}", module);
                 }
@@ -83,37 +83,6 @@ public final class ReloadLanguageCompileTask implements IAfterCompileTask {
         }));
 
         return true;
-    }
-
-    /**
-     * Reloads the languages of the specified language specification project.
-     *
-     * @param project The project.
-     */
-    private void reloadLanguageSpec(final IdeaLanguageSpecProject project) {
-        final Collection<ILanguageComponent> oldComponents = project.getComponents();
-
-        this.languageManager.deactivateRange(LanguageUtils2.getLanguagesOfComponents(oldComponents));
-        this.languageManager.unloadRange(oldComponents);
-
-        final Iterable<ILanguageDiscoveryRequest> requests;
-        try {
-            requests = this.discoveryService.request(project.location());
-        } catch (final MetaborgException e) {
-            this.logger.error("Language discovery failed after compilation for project: {}", e, project);
-            return;
-        }
-
-        final Collection<ILanguageComponent> newComponents;
-        try {
-            newComponents = this.languageManager.loadRange(requests);
-        } catch (final LanguageLoadingFailedException e) {
-            this.logger.error("Language loading failed after compilation for project: {}", e, project);
-            return;
-        }
-
-        this.languageManager.activateRange(LanguageUtils2.getLanguagesOfComponents(newComponents));
-        project.setComponents(newComponents);
     }
 
 }

@@ -51,6 +51,7 @@ public final class IdeaModuleComponent implements ModuleComponent {
     private ProjectUtils projectUtils;
     private IIdeaProjectService projectService;
     private IIdeaProjectFactory projectFactory;
+    private IIdeaLanguageManager languageManager;
     private ILanguageSpecService languageSpecService;
     private IIntelliJResourceService resourceService;
     private ConfigurationUtils configurationUtils;
@@ -71,12 +72,14 @@ public final class IdeaModuleComponent implements ModuleComponent {
     private void inject(
             final IIdeaProjectService projectService,
             final IIdeaProjectFactory projectFactory,
+            final IIdeaLanguageManager languageManager,
             final IIntelliJResourceService resourceService,
             final ILanguageSpecService languageSpecService,
             final ConfigurationUtils configurationUtils,
             final ProjectUtils projectUtils) {
         this.projectService = projectService;
         this.projectFactory = projectFactory;
+        this.languageManager = languageManager;
         this.resourceService = resourceService;
         this.languageSpecService = languageSpecService;
         this.configurationUtils = configurationUtils;
@@ -109,6 +112,13 @@ public final class IdeaModuleComponent implements ModuleComponent {
             return;
         this.configurationUtils.loadAndActivateLanguages(this.module.getProject(),
                 this.projectUtils.getCompileDependencies(project));
+
+        if (project instanceof IdeaLanguageSpecProject) {
+            this.logger.debug("Loading languages of language specification: {}", project);
+            this.languageManager.loadLanguageSpec((IdeaLanguageSpecProject)project);
+        } else {
+            this.logger.debug("Module skipped as it's not a language specification project: {}", this.module);
+        }
 
         this.logger.info("Opened module: {}", this.module);
     }

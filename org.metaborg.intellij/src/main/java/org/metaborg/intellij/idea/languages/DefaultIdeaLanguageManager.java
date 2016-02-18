@@ -39,6 +39,7 @@ import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.parsing.*;
 import org.metaborg.intellij.idea.parsing.annotations.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
@@ -652,5 +653,50 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         } catch (final MetaborgException e) {
             throw new UnhandledException(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reloadLanguageSpec(final IdeaLanguageSpecProject project) {
+        unloadLanguageSpec(project);
+        loadLanguageSpec(project);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unloadLanguageSpec(final IdeaLanguageSpecProject project) {
+        final Collection<ILanguageComponent> oldComponents = project.getComponents();
+
+        deactivateRange(LanguageUtils2.getLanguagesOfComponents(oldComponents));
+        unloadRange(oldComponents);
+        project.setComponents(Collections.emptyList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void loadLanguageSpec(final IdeaLanguageSpecProject project) {
+        final Iterable<ILanguageDiscoveryRequest> requests;
+        try {
+            requests = this.discoveryService.request(project.location());
+        } catch (final MetaborgException e) {
+            this.logger.error("Language discovery failed after compilation for project: {}", e, project);
+            return;
+        }
+
+        final Collection<ILanguageComponent> newComponents;
+        try {
+            newComponents = loadRange(requests);
+        } catch (final LanguageLoadingFailedException e) {
+            this.logger.error("Language loading failed after compilation for project: {}", e, project);
+            return;
+        }
+
+        activateRange(LanguageUtils2.getLanguagesOfComponents(newComponents));
     }
 }

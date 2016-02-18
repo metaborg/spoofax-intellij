@@ -22,6 +22,7 @@ package org.metaborg.intellij.idea.languages;
 import com.intellij.openapi.vfs.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.language.*;
+import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.languages.*;
 
 import java.io.*;
@@ -130,5 +131,26 @@ public interface IIdeaLanguageManager extends ILanguageManager {
      * @return The language discovery requests.
      */
     Iterable<ILanguageDiscoveryRequest> requestFromFolder(final FileObject folder) throws IOException;
+
+    /**
+     * Reloads the languages of the specified language specification project.
+     *
+     * @param project The project.
+     */
+    void reloadLanguageSpec(final IdeaLanguageSpecProject project);
+
+    /**
+     * Unloads the languages of the specified language specification project.
+     *
+     * @param project The project.
+     */
+    void unloadLanguageSpec(final IdeaLanguageSpecProject project);
+
+    /**
+     * Loads the languages of the specified language specification project.
+     *
+     * @param project The project.
+     */
+    void loadLanguageSpec(final IdeaLanguageSpecProject project);
 
 }
