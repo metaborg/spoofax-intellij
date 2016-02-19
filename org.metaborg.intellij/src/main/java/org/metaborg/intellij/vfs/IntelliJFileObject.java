@@ -38,6 +38,9 @@ import java.util.*;
  */
 public final class IntelliJFileObject extends AbstractFileObject {
 
+    /**
+     * The attached file. This is null when the file is not attached or doesn't exist.
+     */
     @Nullable private VirtualFile file = null;
 
     /**
@@ -58,6 +61,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
         assert !isAttached();
         assert this.file == null;
 
+        // May return null when the file doesn't exist.
         this.file = LocalFileSystem.getInstance().refreshAndFindFileByPath(this.getName().getPath());
     }
 
@@ -77,9 +81,8 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected FileType doGetType() throws Exception {
         assert isAttached();
-        assert this.file != null;
 
-        if (!this.file.exists())
+        if (this.file == null || !this.file.exists())
             return FileType.IMAGINARY;
         else if (this.file.isDirectory())
             return FileType.FOLDER;

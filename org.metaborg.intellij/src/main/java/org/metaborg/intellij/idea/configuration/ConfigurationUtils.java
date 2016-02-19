@@ -72,7 +72,7 @@ public final class ConfigurationUtils {
      * @param ids The language IDs.
      */
     private void loadAndActivateLanguagesInternal(final Collection<LanguageIdentifier> ids) {
-        this.logger.debug("Loading module languages: {}", ids);
+        this.logger.debug("Loading languages: {}", ids);
         final Collection<ILanguageComponent> components;
         try {
             components = this.languageManager.discoverRange(ids);
@@ -80,10 +80,10 @@ public final class ConfigurationUtils {
             this.logger.error("Could not discover languages: {}", e, ids);
             return;
         }
-        this.logger.info("Loaded module languages: {}", components);
+        this.logger.info("Loaded languages: {}", components);
         final Set<ILanguage> languages = LanguageUtils2.getLanguagesOfComponents(components);
-        this.logger.debug("Activating module languages: {}", languages);
+        this.logger.debug("Activating languages: {}", languages);
         this.languageManager.activateRange(languages);
-        this.logger.info("Activated module languages: {}", languages);
+        this.logger.info("Activated languages: {}", languages);
     }
 }
