@@ -30,6 +30,7 @@ import org.metaborg.intellij.logging.*;
 import org.metaborg.meta.core.project.*;
 import org.metaborg.spoofax.meta.core.*;
 import org.metaborg.spoofax.meta.core.ant.*;
+import org.metaborg.spoofax.meta.core.build.LanguageSpecBuilder;
 import org.metaborg.spoofax.meta.core.config.*;
 import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
@@ -44,7 +45,7 @@ import java.net.*;
 @Singleton
 public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> {
 
-    private final SpoofaxMetaBuilder builder;
+    private final LanguageSpecBuilder builder;
     private final BuilderMessageFormatter messageFormatter;
     @InjectLogger
     private ILogger logger;
@@ -55,7 +56,7 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
     @Inject
     private SpoofaxPostBuilder(
             final SpoofaxPostTargetType targetType,
-            final SpoofaxMetaBuilder builder,
+            final LanguageSpecBuilder builder,
             final JpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
             final ISpoofaxLanguageSpecPathsService pathsService,

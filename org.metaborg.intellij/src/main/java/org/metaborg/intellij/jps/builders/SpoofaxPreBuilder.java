@@ -44,6 +44,7 @@ import org.metaborg.spoofax.core.processing.*;
 import org.metaborg.spoofax.core.resource.*;
 import org.metaborg.spoofax.meta.core.*;
 import org.metaborg.spoofax.meta.core.ant.*;
+import org.metaborg.spoofax.meta.core.build.LanguageSpecBuilder;
 import org.metaborg.spoofax.meta.core.config.*;
 import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
@@ -60,7 +61,7 @@ import java.util.*;
 @Singleton
 public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
 
-    private final SpoofaxMetaBuilder builder;
+    private final LanguageSpecBuilder builder;
     private final ILanguageManager languageManager;
     private final ILanguagePathService languagePathService;
     private final IDependencyService dependencyService;
@@ -77,7 +78,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
     @Inject
     public SpoofaxPreBuilder(
             final SpoofaxPreTargetType targetType,
-            final SpoofaxMetaBuilder builder,
+            final LanguageSpecBuilder builder,
             final IJpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
