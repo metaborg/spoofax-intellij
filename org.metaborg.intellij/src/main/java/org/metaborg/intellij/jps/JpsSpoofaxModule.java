@@ -192,12 +192,4 @@ import java.util.*;
             final SpoofaxPostTargetType postTargetType) {
         return Arrays.asList(preTargetType, postTargetType);
     }
-
-    @SuppressWarnings("unused")
-    @Singleton
-    @Provides
-    @Inject
-    public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders() {
-        return Collections.emptyList();
-    }
 }

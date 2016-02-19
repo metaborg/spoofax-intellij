@@ -53,7 +53,7 @@ public final class MetaborgProjectLanguagesSettings extends LanguagesSettings {
     @Nls
     @Override
     public String getDisplayName() {
-        return "Metaborg";
+        return "Metaborg Languages";
     }
 
     /**

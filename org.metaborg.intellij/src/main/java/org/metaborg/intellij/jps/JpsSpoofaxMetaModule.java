@@ -58,4 +58,12 @@ import java.util.*;
             final SpoofaxPostBuilder postBuilder) {
         return Arrays.asList(preBuilder, postBuilder);
     }
+
+    @SuppressWarnings("unused")
+    @Singleton
+    @Provides
+    @Inject
+    public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders() {
+        return Collections.emptyList();
+    }
 }

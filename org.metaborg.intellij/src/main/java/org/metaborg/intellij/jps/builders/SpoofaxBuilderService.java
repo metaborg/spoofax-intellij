@@ -29,7 +29,7 @@ import java.util.*;
 /**
  * The Spoofax builder service.
  * <p>
- * This service tells the JPS build system which build targetbuilders and target builders are available.
+ * This service tells the JPS build system which (module-level) target builders are available.
  */
 @Singleton
 public final class SpoofaxBuilderService extends BuilderService {
@@ -40,7 +40,7 @@ public final class SpoofaxBuilderService extends BuilderService {
 
     /**
      * This instance is created by IntelliJ's plugin system.
-     * Do not call this method manually.
+     * Do not call this constructor manually.
      */
     public SpoofaxBuilderService() {
         super();

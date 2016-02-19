@@ -23,7 +23,6 @@ import com.google.inject.*;
 import com.intellij.openapi.module.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ui.configuration.*;
-import org.jetbrains.jps.model.java.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.projects.*;
 
@@ -59,14 +58,14 @@ public final class MetaborgModuleConfigurationEditorProvider implements ModuleCo
         if (moduleType != this.metaborgModuleType) {
             return ModuleConfigurationEditor.EMPTY;
         }
+
+        final DefaultModuleConfigurationEditorFactory editorFactory
+                = DefaultModuleConfigurationEditorFactory.getInstance();
+
         return new ModuleConfigurationEditor[]{
-                new CommonContentEntriesEditor(
-                        module.getName(),
-                        state,
-                        JavaSourceRootType.SOURCE,
-                        JavaSourceRootType.TEST_SOURCE
-                ),
-                new ClasspathEditor(state),
+                editorFactory.createModuleContentRootsEditor(state),
+                editorFactory.createOutputEditor(state),
+                editorFactory.createClasspathEditor(state)
                 // Add more editors here.
         };
     }

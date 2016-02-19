@@ -86,7 +86,7 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
         try {
             final LanguageSpecBuildInput metaInput = getBuildInput(target.getModule());
 
-            compilePostJava(metaInput, null, new AntSLF4JLogger(), context);
+            compilePostJava(metaInput, context);
 
         } catch (final FileSystemException e) {
             this.logger.error("An unexpected IO exception occurred.", e);
@@ -108,17 +108,16 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
      * Executes the post-Java compile meta-build step.
      *
      * @param metaInput The meta build input.
-     * @param classpath The classpaths.
-     * @param listener  The build listener.
      * @param context   The compile context.
      * @throws Exception
      * @throws ProjectBuildException
      */
     private void compilePostJava(
             final LanguageSpecBuildInput metaInput,
-            @Nullable final URL[] classpath,
-            @Nullable final BuildListener listener,
             final CompileContext context) throws Exception {
+
+        this.logger.debug("Compiling post-Java for {}", metaInput.languageSpec);
+
         context.checkCanceled();
         context.processMessage(this.messageFormatter.formatProgress(
                 0f,
@@ -126,6 +125,8 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
                 metaInput.languageSpec
         ));
         this.builder.compilePostJava(metaInput);
+
+        this.logger.info("Compiled post-Java for {}", metaInput.languageSpec);
     }
 
 }
