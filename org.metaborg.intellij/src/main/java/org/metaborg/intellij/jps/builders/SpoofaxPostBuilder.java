@@ -19,25 +19,28 @@
 
 package org.metaborg.intellij.jps.builders;
 
-import com.google.inject.*;
-import org.apache.commons.vfs2.*;
-import org.apache.tools.ant.BuildListener;
-import org.jetbrains.jps.builders.*;
-import org.jetbrains.jps.incremental.*;
-import org.metaborg.core.project.*;
-import org.metaborg.intellij.jps.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.meta.core.project.*;
-import org.metaborg.spoofax.meta.core.*;
-import org.metaborg.spoofax.meta.core.ant.*;
-import org.metaborg.spoofax.meta.core.build.LanguageSpecBuilder;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
-import org.metaborg.util.log.*;
+import java.io.IOException;
+import java.net.URL;
 
-import javax.annotation.*;
-import java.io.*;
-import java.net.*;
+import javax.annotation.Nullable;
+
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.tools.ant.BuildListener;
+import org.jetbrains.jps.builders.BuildOutputConsumer;
+import org.jetbrains.jps.builders.DirtyFilesHolder;
+import org.jetbrains.jps.incremental.CompileContext;
+import org.jetbrains.jps.incremental.ProjectBuildException;
+import org.metaborg.core.project.ProjectException;
+import org.metaborg.intellij.jps.projects.JpsProjectService;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
+import org.metaborg.spoofax.meta.core.build.LanguageSpecBuildInput;
+import org.metaborg.spoofax.meta.core.build.LanguageSpecBuilder;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecService;
+import org.metaborg.util.log.ILogger;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Builder executed after Java compilation.
@@ -58,11 +61,9 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
             final SpoofaxPostTargetType targetType,
             final LanguageSpecBuilder builder,
             final JpsProjectService projectService,
-            final ILanguageSpecService languageSpecService,
-            final ISpoofaxLanguageSpecPathsService pathsService,
-            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
+            final ISpoofaxLanguageSpecService languageSpecService,
             final BuilderMessageFormatter messageFormatter) {
-        super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
+        super(targetType, projectService, languageSpecService);
         this.builder = builder;
         this.messageFormatter = messageFormatter;
     }

@@ -19,16 +19,26 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.common.base.*;
-import com.google.inject.*;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.project.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.resources.*;
-import org.metaborg.util.log.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+
+import org.apache.commons.vfs2.FileName;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileSystemManager;
+import org.metaborg.core.config.ConfigException;
+import org.metaborg.core.config.IProjectConfig;
+import org.metaborg.core.config.IProjectConfigService;
+import org.metaborg.core.project.IProject;
+import org.metaborg.core.project.IProjectService;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.resources.FileNameUtils;
+import org.metaborg.util.log.ILogger;
+
+import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
 
 // TODO: Move to Spoofax core?
 
@@ -38,13 +48,15 @@ import java.util.*;
 public final class ArtifactProjectService implements IProjectService {
 
     private final FileSystemManager fileSystemManager;
+    private final IProjectConfigService projectConfigService;
     private final Map<FileName, ArtifactProject> projects = new HashMap<>();
     @InjectLogger
     private ILogger logger;
 
     @Inject
-    public ArtifactProjectService(final FileSystemManager fileSystemManager) {
+    public ArtifactProjectService(final FileSystemManager fileSystemManager, IProjectConfigService projectConfigService) {
         this.fileSystemManager = fileSystemManager;
+        this.projectConfigService = projectConfigService;
     }
 
     /**
@@ -63,7 +75,13 @@ public final class ArtifactProjectService implements IProjectService {
 
         @Nullable ArtifactProject project = this.projects.get(artifactName);
         if (project == null) {
-            project = new ArtifactProject(artifactRoot);
+            IProjectConfig config;
+            try {
+                config = projectConfigService.get(artifactRoot);
+            } catch(ConfigException e) {
+                config = null;
+            }
+            project = new ArtifactProject(artifactRoot, config);
             this.projects.put(artifactName, project);
         }
         return project;

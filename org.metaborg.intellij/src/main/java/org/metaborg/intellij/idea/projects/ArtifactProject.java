@@ -19,32 +19,28 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.common.base.*;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.project.*;
+import javax.annotation.Nullable;
+
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.config.IProjectConfig;
+import org.metaborg.core.project.IProject;
+import org.metaborg.core.project.Project;
+
+import com.google.common.base.Preconditions;
 
 // TODO: Move this to Spoofax core?
 
 /**
  * A language project represented by a Spoofax artifact (*.spoofax-language).
  */
-public final class ArtifactProject implements IProject {
-
-    private final FileObject location;
-
+public final class ArtifactProject extends Project implements IProject {
     /**
      * Initializes a new instance of the {@link ArtifactProject} class.
      *
      * @param location The location of the artifact's archive.
      */
-    public ArtifactProject(final FileObject location) {
+    public ArtifactProject(final FileObject location, @Nullable IProjectConfig config) {
+        super(location, config);
         Preconditions.checkNotNull(location);
-
-        this.location = location;
-    }
-
-    @Override
-    public FileObject location() {
-        return this.location;
     }
 }

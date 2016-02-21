@@ -19,42 +19,61 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.*;
-import com.intellij.ide.util.projectWizard.*;
-import com.intellij.openapi.*;
-import com.intellij.openapi.application.*;
-import com.intellij.openapi.command.*;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.*;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.*;
-import com.intellij.openapi.roots.ui.configuration.*;
-import com.intellij.openapi.startup.*;
-import com.intellij.openapi.util.*;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.*;
-import com.intellij.util.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.idea.projects.newproject.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.resources.*;
-import org.metaborg.meta.core.project.*;
-import org.metaborg.spoofax.generator.language.*;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
-import org.metaborg.util.log.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.*;
-import java.io.*;
-import java.util.*;
+import javax.swing.Icon;
+
+import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.language.LanguageIdentifier;
+import org.metaborg.core.language.LanguageVersion;
+import org.metaborg.core.project.ProjectException;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.meta.core.project.ILanguageSpec;
+import org.metaborg.spoofax.generator.language.LanguageSpecGenerator;
+import org.metaborg.spoofax.generator.language.NewLanguageSpecGenerator;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
+import org.metaborg.spoofax.meta.core.project.GeneratorSettings;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecPaths;
+import org.metaborg.spoofax.meta.core.project.SpoofaxLanguageSpecPaths;
+import org.metaborg.util.log.ILogger;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.intellij.ide.util.projectWizard.ModuleBuilder;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.SettingsStep;
+import com.intellij.ide.util.projectWizard.SourcePathsBuilder;
+import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.module.StdModuleTypes;
+import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.project.DumbService;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ContentEntry;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
+import com.intellij.openapi.startup.StartupManager;
+import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.DisposeAwareRunnable;
 
 /**
  * Builds a new Spoofax module.
@@ -68,7 +87,6 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private final IIconManager iconManager;
     private final INewModuleWizardStepFactory wizardStepFactory;
     private final ISpoofaxLanguageSpecConfigBuilder configBuilder;
-    private final ISpoofaxLanguageSpecPathsService pathsService;
     private final MetaborgModuleType moduleType;
     @InjectLogger
     private ILogger logger;
@@ -139,7 +157,6 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             final IIntelliJResourceService resourceService,
             final IIdeaProjectFactory projectFactory,
             final IIdeaProjectService projectService,
-            final ISpoofaxLanguageSpecPathsService pathsService,
             final ISpoofaxLanguageSpecConfigBuilder configBuilder,
             final INewModuleWizardStepFactory wizardStepFactory,
             final IIconManager iconManager,
@@ -148,7 +165,6 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         this.resourceService = resourceService;
         this.projectFactory = projectFactory;
         this.projectService = projectService;
-        this.pathsService = pathsService;
         this.configBuilder = configBuilder;
         this.wizardStepFactory = wizardStepFactory;
         this.iconManager = iconManager;

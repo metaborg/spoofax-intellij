@@ -19,21 +19,27 @@
 
 package org.metaborg.intellij.jps.builders;
 
-import org.jetbrains.jps.builders.*;
-import org.jetbrains.jps.incremental.*;
-import org.jetbrains.jps.model.module.*;
-import org.metaborg.intellij.jps.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.meta.core.project.*;
-import org.metaborg.spoofax.meta.core.*;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
-import org.metaborg.util.log.*;
+import java.io.IOException;
+import java.util.Collections;
 
-import javax.annotation.*;
-import java.io.*;
-import java.util.*;
+import javax.annotation.Nullable;
+
+import org.jetbrains.jps.builders.BuildOutputConsumer;
+import org.jetbrains.jps.builders.BuildTargetType;
+import org.jetbrains.jps.builders.DirtyFilesHolder;
+import org.jetbrains.jps.incremental.CompileContext;
+import org.jetbrains.jps.incremental.ProjectBuildException;
+import org.jetbrains.jps.incremental.TargetBuilder;
+import org.jetbrains.jps.model.module.JpsModule;
+import org.metaborg.core.config.ConfigException;
+import org.metaborg.intellij.jps.projects.IJpsProjectService;
+import org.metaborg.intellij.jps.projects.MetaborgJpsProject;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.spoofax.meta.core.build.LanguageSpecBuildInput;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecService;
+import org.metaborg.util.log.ILogger;
 
 /**
  * Spoofax builder.
@@ -41,9 +47,7 @@ import java.util.*;
 public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuilder<SpoofaxSourceRootDescriptor, T> {
 
     protected final IJpsProjectService projectService;
-    protected final ILanguageSpecService languageSpecService;
-    protected final ISpoofaxLanguageSpecPathsService pathsService;
-    protected final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService;
+    protected final ISpoofaxLanguageSpecService languageSpecService;
     @InjectLogger
     private ILogger logger;
 
@@ -63,14 +67,10 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
     protected SpoofaxBuilder(
             final BuildTargetType<T> targetType,
             final IJpsProjectService projectService,
-            final ILanguageSpecService languageSpecService,
-            final ISpoofaxLanguageSpecPathsService pathsService,
-            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService) {
+            final ISpoofaxLanguageSpecService languageSpecService) {
         super(Collections.singletonList(targetType));
         this.projectService = projectService;
         this.languageSpecService = languageSpecService;
-        this.pathsService = pathsService;
-        this.spoofaxLanguageSpecConfigService = spoofaxLanguageSpecConfigService;
     }
 
     /**
@@ -107,20 +107,18 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
                     "Could not get a project for the module {}", module);
         }
 
-        @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
-        if (languageSpec == null) {
-            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                    "Could not get a language specification for the project {}", project);
-        }
+        try {
+            @Nullable final ISpoofaxLanguageSpec languageSpec = this.languageSpecService.get(project);
+            if (languageSpec == null) {
+                throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
+                        "Could not get a language specification for the project {}", project);
+            }
 
-        @Nullable final ISpoofaxLanguageSpecConfig config = this.spoofaxLanguageSpecConfigService.get(languageSpec);
-        if (config == null) {
+            return new LanguageSpecBuildInput(languageSpec);
+        } catch(ConfigException e) {
             throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                    "Could not get a configuration for language specification {}", languageSpec);
+                "Could not get a language specification for the project {}", e, project);
         }
-
-        final ISpoofaxLanguageSpecPaths paths = this.pathsService.get(languageSpec);
-        return new LanguageSpecBuildInput(languageSpec, config, paths);
     }
 
 }

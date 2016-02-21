@@ -19,26 +19,31 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
+import javax.annotation.Nullable;
+
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.config.IProjectConfig;
+import org.metaborg.core.project.IProject;
+import org.metaborg.core.project.Project;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.module.Module;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.project.*;
 
 /**
  * An IntelliJ IDEA project.
  */
-public class IdeaProject implements IProject {
+public class IdeaProject extends Project implements IProject {
 
     private final Module module;
-    private final FileObject location;
 
     @Inject
     /* package private */ IdeaProject(
             @Assisted final Module module,
-            @Assisted final FileObject location) {
+            @Assisted final FileObject location,
+            @Assisted final @Nullable IProjectConfig config) {
+        super(location, config);
         this.module = module;
-        this.location = location;
     }
 
     /**
@@ -48,16 +53,6 @@ public class IdeaProject implements IProject {
      */
     public final Module getModule() {
         return this.module;
-    }
-
-    /**
-     * Gets the location of the project.
-     *
-     * @return The project root location.
-     */
-    @Override
-    public final FileObject location() {
-        return this.location;
     }
 
     /**

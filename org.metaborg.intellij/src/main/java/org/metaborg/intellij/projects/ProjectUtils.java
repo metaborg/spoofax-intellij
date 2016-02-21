@@ -19,33 +19,34 @@
 
 package org.metaborg.intellij.projects;
 
-import com.google.inject.*;
-import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.meta.core.config.*;
-import org.metaborg.meta.core.project.*;
-import org.metaborg.util.log.*;
+import java.util.Collection;
+import java.util.Collections;
 
-import javax.annotation.*;
-import java.io.*;
-import java.util.*;
+import javax.annotation.Nullable;
+
+import org.metaborg.core.language.LanguageIdentifier;
+import org.metaborg.core.project.IProject;
+import org.metaborg.intellij.idea.projects.IIdeaProjectService;
+import org.metaborg.intellij.idea.projects.IdeaProject;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.meta.core.config.ILanguageSpecConfig;
+import org.metaborg.meta.core.project.ILanguageSpec;
+import org.metaborg.util.log.ILogger;
+
+import com.google.inject.Inject;
 
 /**
  * Project utility functions.
  */
 public final class ProjectUtils {
 
-    private final ILanguageSpecService languageSpecService;
-    private final ILanguageSpecConfigService configService;
+    private final IIdeaProjectService projectService;
     @InjectLogger
     private ILogger logger;
 
     @Inject
-    public ProjectUtils(final ILanguageSpecConfigService configService,
-                        final ILanguageSpecService languageSpecService) {
-        this.configService = configService;
-        this.languageSpecService = languageSpecService;
+    public ProjectUtils(final IIdeaProjectService projectService) {
+        this.projectService = projectService;
     }
 
     /**
@@ -55,12 +56,7 @@ public final class ProjectUtils {
      */
     public Collection<LanguageIdentifier> getCompileDependencies(@Nullable final ILanguageSpec languageSpec) {
         @Nullable final ILanguageSpecConfig config;
-        try {
-            config = this.configService.get(languageSpec);
-        } catch (final IOException e) {
-            this.logger.error("Can't get configuration for language specification: {}", e, languageSpec);
-            return Collections.emptyList();
-        }
+        config = languageSpec.config();
         if (config == null) {
             this.logger.error("Got no configuration for language specification: {}", languageSpec);
             return Collections.emptyList();
@@ -76,12 +72,12 @@ public final class ProjectUtils {
      * @return The compile dependencies.
      */
     public Collection<LanguageIdentifier> getCompileDependencies(@Nullable final IdeaProject project) {
-        @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
-        if (languageSpec == null) {
+        @Nullable final IProject metaborgProject = projectService.get(project.location());
+        if (metaborgProject == null) {
             this.logger.error("Can't get language specification for project: {}", project);
             return Collections.emptyList();
         }
-        return getCompileDependencies(languageSpec);
+        return metaborgProject.config().compileDeps();
     }
 
 }

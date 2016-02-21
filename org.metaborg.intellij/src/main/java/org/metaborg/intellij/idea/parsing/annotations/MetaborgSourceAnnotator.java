@@ -19,28 +19,36 @@
 
 package org.metaborg.intellij.idea.parsing.annotations;
 
-import com.google.common.base.*;
-import com.google.inject.*;
-import com.intellij.lang.annotation.*;
-import com.intellij.openapi.editor.*;
-import com.intellij.openapi.util.*;
-import com.intellij.psi.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.core.analysis.*;
-import org.metaborg.core.context.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.messages.*;
-import org.metaborg.core.processing.analyze.*;
-import org.metaborg.core.source.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.parsing.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
+import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.analysis.AnalysisFileResult;
+import org.metaborg.core.context.ContextException;
+import org.metaborg.core.context.IContext;
+import org.metaborg.core.context.IContextService;
+import org.metaborg.core.language.ILanguageIdentifierService;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.messages.IMessage;
+import org.metaborg.core.messages.MessageSeverity;
+import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
+import org.metaborg.core.project.IProject;
+import org.metaborg.core.source.ISourceRegion;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.parsing.SourceRegionUtil;
+import org.metaborg.intellij.idea.projects.IIdeaProjectService;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.resources.*;
-import org.metaborg.meta.core.project.*;
-import org.metaborg.util.log.*;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.util.log.ILogger;
+
+import com.google.common.base.Objects;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.lang.annotation.ExternalAnnotator;
+import com.intellij.lang.annotation.HighlightSeverity;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiFile;
 
 /**
  * Annotates metaborg source files.
@@ -54,7 +62,6 @@ public final class MetaborgSourceAnnotator<P, A>
 
     private final IContextService contextService;
     private final IIdeaProjectService projectService;
-    private final ILanguageSpecService languageSpecService;
     private final IIntelliJResourceService resourceService;
     private final ILanguageIdentifierService identifierService;
     private final IAnalysisResultRequester<P, A> analysisResultRequester;
@@ -75,7 +82,6 @@ public final class MetaborgSourceAnnotator<P, A>
     public MetaborgSourceAnnotator(
             final IContextService contextService,
             final IIdeaProjectService projectService,
-            final ILanguageSpecService languageSpecService,
             final IIntelliJResourceService resourceService,
             final ILanguageIdentifierService identifierService,
             final IAnalysisResultRequester<P, A> analysisResultRequester
@@ -83,7 +89,6 @@ public final class MetaborgSourceAnnotator<P, A>
         super();
         this.contextService = contextService;
         this.projectService = projectService;
-        this.languageSpecService = languageSpecService;
         this.resourceService = resourceService;
         this.identifierService = identifierService;
         this.analysisResultRequester = analysisResultRequester;
@@ -106,7 +111,7 @@ public final class MetaborgSourceAnnotator<P, A>
     public MetaborgSourceAnnotationInfo collectInformation(final PsiFile file, final Editor editor,
                                                            final boolean hasErrors) {
 
-        @Nullable final ILanguageSpec project = this.languageSpecService.get(this.projectService.get(file));
+        @Nullable final IProject project = this.projectService.get(file);
         if (project == null) {
             this.logger.warn("Cannot annotate source code; cannot get language specification for resource {}. " +
                     "Is the file excluded?", Objects.firstNonNull(file.getVirtualFile(), "<unknown>"));

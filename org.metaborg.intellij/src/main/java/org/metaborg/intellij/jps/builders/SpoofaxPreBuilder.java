@@ -19,41 +19,48 @@
 
 package org.metaborg.intellij.jps.builders;
 
-import com.google.inject.*;
-import org.apache.commons.vfs2.*;
-import org.apache.tools.ant.BuildListener;
-import org.jetbrains.jps.builders.*;
-import org.jetbrains.jps.incremental.*;
-import org.metaborg.core.*;
-import org.metaborg.core.action.*;
-import org.metaborg.core.build.*;
-import org.metaborg.core.build.dependency.*;
-import org.metaborg.core.build.paths.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.messages.*;
-import org.metaborg.core.processing.*;
-import org.metaborg.core.project.*;
-import org.metaborg.intellij.jps.projects.*;
-import org.metaborg.intellij.jps.configuration.*;
-import org.metaborg.intellij.languages.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.projects.*;
-import org.metaborg.meta.core.project.*;
-import org.metaborg.spoofax.core.processing.*;
-import org.metaborg.spoofax.core.resource.*;
-import org.metaborg.spoofax.meta.core.*;
-import org.metaborg.spoofax.meta.core.ant.*;
-import org.metaborg.spoofax.meta.core.build.LanguageSpecBuilder;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
-import org.metaborg.util.log.*;
-import org.spoofax.interpreter.terms.*;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Set;
 
-import javax.annotation.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import javax.annotation.Nullable;
+
+import org.apache.tools.ant.BuildListener;
+import org.jetbrains.jps.builders.BuildOutputConsumer;
+import org.jetbrains.jps.builders.DirtyFilesHolder;
+import org.jetbrains.jps.incremental.CompileContext;
+import org.jetbrains.jps.incremental.ProjectBuildException;
+import org.metaborg.core.MetaborgException;
+import org.metaborg.core.action.CompileGoal;
+import org.metaborg.core.build.BuildInput;
+import org.metaborg.core.build.BuildInputBuilder;
+import org.metaborg.core.build.IBuildOutput;
+import org.metaborg.core.build.dependency.IDependencyService;
+import org.metaborg.core.build.dependency.MissingDependencyException;
+import org.metaborg.core.build.paths.ILanguagePathService;
+import org.metaborg.core.language.LanguageIdentifier;
+import org.metaborg.core.messages.IMessage;
+import org.metaborg.core.processing.ITask;
+import org.metaborg.core.project.ProjectException;
+import org.metaborg.intellij.jps.configuration.IMetaborgConfigService;
+import org.metaborg.intellij.jps.configuration.JpsMetaborgApplicationConfig;
+import org.metaborg.intellij.jps.projects.IJpsProjectService;
+import org.metaborg.intellij.languages.ILanguageManager;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.projects.ProjectUtils;
+import org.metaborg.spoofax.core.processing.SpoofaxProcessorRunner;
+import org.metaborg.spoofax.core.resource.SpoofaxIgnoresSelector;
+import org.metaborg.spoofax.meta.core.ant.AntSLF4JLogger;
+import org.metaborg.spoofax.meta.core.build.LanguageSpecBuildInput;
+import org.metaborg.spoofax.meta.core.build.LanguageSpecBuilder;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecService;
+import org.metaborg.util.log.ILogger;
+import org.spoofax.interpreter.terms.IStrategoTerm;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * Builder executed before Java compilation.
@@ -80,17 +87,15 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             final SpoofaxPreTargetType targetType,
             final LanguageSpecBuilder builder,
             final IJpsProjectService projectService,
-            final ILanguageSpecService languageSpecService,
-            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
+            final ISpoofaxLanguageSpecService languageSpecService,
             final ILanguagePathService languagePathService,
             final ILanguageManager languageManager,
             final IDependencyService dependencyService,
             final SpoofaxProcessorRunner processorRunner,
-            final ISpoofaxLanguageSpecPathsService pathsService,
             final BuilderMessageFormatter messageFormatter,
             final IMetaborgConfigService extensionService,
             final ProjectUtils projectUtils) {
-        super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
+        super(targetType, projectService, languageSpecService);
         this.builder = builder;
         this.languageManager = languageManager;
         this.languagePathService = languagePathService;
@@ -131,7 +136,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             this.languageManager.discoverRange(appLanguages);
             this.logger.info("Loaded application languages: {}", appLanguages);
 
-            final Collection<LanguageIdentifier> languages = metaInput.config.compileDeps();
+            final Collection<LanguageIdentifier> languages = metaInput.languageSpec.config().compileDeps();
             this.logger.debug("Loading module languages: {}", languages);
             this.languageManager.discoverRange(languages);
             this.logger.info("Loaded module languages: {}", languages);
@@ -167,7 +172,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             context.processMessage(this.messageFormatter.formatProgress(0f, "Initializing {}", metaInput.languageSpec));
 
             this.builder.initialize(metaInput);
-        } catch (final FileSystemException e) {
+        } catch (final MetaborgException e) {
             throw new ProjectBuildException("Error initializing", e);
         }
     }
@@ -284,7 +289,7 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
                     .withSourcesFromDefaultSourceLocations(true)
                     .withSelector(new SpoofaxIgnoresSelector())
                     .withThrowOnErrors(false)
-                    .withPardonedLanguageStrings(metaInput.config.pardonedLanguages())
+                    .withPardonedLanguageStrings(metaInput.languageSpec.config().pardonedLanguages())
                     .addTransformGoal(new CompileGoal())
                     .build(this.dependencyService, this.languagePathService);
         } catch (final MissingDependencyException e) {
