@@ -55,7 +55,7 @@
  * XML snippet in the root element:
  *
  * <pre>
- * &lt;category name="#org.metaborg.intellij"&gt;
+ * &lt;category name="#org.metaborg.intellij" additivity="false"&gt;
  *   &lt;priority value="DEBUG"/&gt;
  *   &lt;appender-ref ref="CONSOLE-ALL"/&gt;
  *   &lt;appender-ref ref="FILE"/&gt;
