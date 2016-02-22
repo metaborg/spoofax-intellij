@@ -38,11 +38,11 @@ import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.meta.core.project.ILanguageSpec;
-import org.metaborg.spoofax.generator.language.LanguageSpecGenerator;
-import org.metaborg.spoofax.generator.language.NewLanguageSpecGenerator;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
-import org.metaborg.spoofax.meta.core.project.GeneratorSettings;
+import org.metaborg.spoofax.meta.core.generator.GeneratorSettings;
+import org.metaborg.spoofax.meta.core.generator.language.ContinuousLanguageSpecGenerator;
+import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGenerator;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecPaths;
 import org.metaborg.spoofax.meta.core.project.SpoofaxLanguageSpecPaths;
 import org.metaborg.util.log.ILogger;
@@ -319,13 +319,13 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 //            // TODO: Get from SDK.
 //            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
             // FIXME: Factory?
-            final NewLanguageSpecGenerator newGenerator = new NewLanguageSpecGenerator(
+            final LanguageSpecGenerator newGenerator = new LanguageSpecGenerator(
                     scope,
                     new String[]{getExtension()}
             );
             newGenerator.generateAll();
             // FIXME: Factory?
-            final LanguageSpecGenerator generator = new LanguageSpecGenerator(scope);
+            final ContinuousLanguageSpecGenerator generator = new ContinuousLanguageSpecGenerator(scope);
             generator.generateAll();
 
 //            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
