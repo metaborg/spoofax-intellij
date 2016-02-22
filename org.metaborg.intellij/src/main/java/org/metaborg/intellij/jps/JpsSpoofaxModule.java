@@ -19,27 +19,48 @@
 
 package org.metaborg.intellij.jps;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.google.inject.matcher.Matchers;
-import com.google.inject.multibindings.*;
-import org.jetbrains.jps.builders.*;
-import org.jetbrains.jps.incremental.*;
-import org.metaborg.core.editor.*;
-import org.metaborg.core.project.*;
-import org.metaborg.intellij.discovery.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.jps.projects.*;
-import org.metaborg.intellij.jps.builders.*;
-import org.metaborg.intellij.jps.configuration.*;
-import org.metaborg.intellij.languages.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.jetbrains.jps.builders.BuildTargetType;
+import org.jetbrains.jps.incremental.ModuleLevelBuilder;
+import org.metaborg.core.editor.IEditorRegistry;
+import org.metaborg.core.editor.NullEditorRegistry;
+import org.metaborg.core.project.IProjectService;
+import org.metaborg.intellij.discovery.ILanguageSource;
+import org.metaborg.intellij.discovery.MultiLanguageSource;
+import org.metaborg.intellij.discovery.ResourceLanguageSource;
+import org.metaborg.intellij.idea.projects.Compound;
+import org.metaborg.intellij.jps.builders.BuilderMessageFormatter;
+import org.metaborg.intellij.jps.builders.SpoofaxPostTargetType;
+import org.metaborg.intellij.jps.builders.SpoofaxPreTargetType;
+import org.metaborg.intellij.jps.configuration.DefaultMetaborgConfigService;
+import org.metaborg.intellij.jps.configuration.IJpsMetaborgApplicationConfigFactory;
+import org.metaborg.intellij.jps.configuration.IJpsMetaborgModuleConfigFactory;
+import org.metaborg.intellij.jps.configuration.IJpsMetaborgProjectConfigFactory;
+import org.metaborg.intellij.jps.configuration.IMetaborgConfigService;
+import org.metaborg.intellij.jps.configuration.JpsMetaborgApplicationConfig;
+import org.metaborg.intellij.jps.configuration.JpsMetaborgModuleConfig;
+import org.metaborg.intellij.jps.configuration.JpsMetaborgProjectConfig;
+import org.metaborg.intellij.jps.configuration.MetaborgApplicationConfigDeserializer;
+import org.metaborg.intellij.jps.configuration.MetaborgModuleConfigDeserializer;
+import org.metaborg.intellij.jps.configuration.MetaborgProjectConfigDeserializer;
+import org.metaborg.intellij.jps.projects.IJpsProjectService;
+import org.metaborg.intellij.jps.projects.JpsProjectService;
+import org.metaborg.intellij.languages.DefaultLanguageManager;
+import org.metaborg.intellij.languages.ILanguageManager;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
-import org.metaborg.intellij.projects.*;
+import org.metaborg.intellij.projects.ProjectUtils;
 import org.metaborg.spoofax.core.SpoofaxModule;
-import org.metaborg.spoofax.core.project.*;
 
-import java.util.*;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.matcher.Matchers;
+import com.google.inject.multibindings.Multibinder;
 
 /**
  * The Guice dependency injection module for the Spoofax JPS plugin.
@@ -162,14 +183,6 @@ import java.util.*;
 ////        bind(IResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
 ////        bind(IIntelliJResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
 //    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void bindMavenProject() {
-        bind(ILegacyMavenProjectService.class).to(NullLegacyMavenProjectService.class).in(Singleton.class);
-    }
 
     /**
      * {@inheritDoc}
