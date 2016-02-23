@@ -86,7 +86,7 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
         try {
             final LanguageSpecBuildInput metaInput = getBuildInput(target.getModule());
 
-            compilePostJava(metaInput, context);
+            compilePostJava(metaInput, context, holder, consumer);
 
         } catch (final FileSystemException e) {
             this.logger.error("An unexpected IO exception occurred.", e);
@@ -109,12 +109,16 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
+     * @param holder    The dirty files holder.
+     * @param consumer  The output consumer.
      * @throws Exception
      * @throws ProjectBuildException
      */
     private void compilePostJava(
             final LanguageSpecBuildInput metaInput,
-            final CompileContext context) throws Exception {
+            final CompileContext context,
+            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPostTarget> holder,
+            final BuildOutputConsumer consumer) throws Exception {
 
         this.logger.debug("Compiling post-Java for {}", metaInput.languageSpec);
 
@@ -125,6 +129,8 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
                 metaInput.languageSpec
         ));
         this.builder.compilePostJava(metaInput);
+
+        // TODO: Report created output files to `consumer`.
 
         this.logger.info("Compiled post-Java for {}", metaInput.languageSpec);
     }

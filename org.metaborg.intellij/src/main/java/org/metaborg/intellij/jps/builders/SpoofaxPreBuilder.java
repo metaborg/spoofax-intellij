@@ -20,6 +20,7 @@
 package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
+import org.apache.commons.io.*;
 import org.apache.commons.vfs2.*;
 import org.apache.tools.ant.BuildListener;
 import org.jetbrains.jps.builders.*;
@@ -135,10 +136,12 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             this.languageManager.discoverRange(languages);
             this.logger.info("Loaded module languages: {}", languages);
 
-            initialize(metaInput, context);
-            generateSources(metaInput, context);
-            regularBuild(metaInput, context);
-            compilePreJava(metaInput, context);
+            clean(metaInput, context, holder, consumer);
+            initialize(metaInput, context, holder, consumer);
+            generateSources(metaInput, context, holder, consumer);
+            regularBuild(metaInput, context, holder, consumer);
+            compilePreJava(metaInput, context, holder, consumer);
+
         } catch (final ProjectBuildException e) {
             this.logger.error("An unexpected project build exception occurred.", e);
             throw e;
@@ -157,9 +160,42 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
+     * @param holder    The dirty files holder.
+     * @param consumer  The output consumer.
      * @throws ProjectBuildException
      */
-    private void initialize(final LanguageSpecBuildInput metaInput, final CompileContext context) throws
+    private void clean(final LanguageSpecBuildInput metaInput,
+                       final CompileContext context,
+                       final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
+                       final BuildOutputConsumer consumer) throws
+            ProjectBuildException {
+        try {
+            this.logger.debug("Cleaning {}", metaInput.languageSpec);
+
+            context.checkCanceled();
+            context.processMessage(this.messageFormatter.formatProgress(0f, "Cleaning {}", metaInput.languageSpec));
+
+            this.builder.clean(metaInput);
+
+            this.logger.info("Cleaned {}", metaInput.languageSpec);
+        } catch (final IOException e) {
+            throw new ProjectBuildException("Error cleaning", e);
+        }
+    }
+
+    /**
+     * Executes the initialize meta-build step.
+     *
+     * @param metaInput The meta build input.
+     * @param context   The compile context.
+     * @param holder    The dirty files holder.
+     * @param consumer  The output consumer.
+     * @throws ProjectBuildException
+     */
+    private void initialize(final LanguageSpecBuildInput metaInput,
+                            final CompileContext context,
+                            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
+                            final BuildOutputConsumer consumer) throws
             ProjectBuildException {
         try {
             this.logger.debug("Initializing {}", metaInput.languageSpec);
@@ -168,6 +204,8 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             context.processMessage(this.messageFormatter.formatProgress(0f, "Initializing {}", metaInput.languageSpec));
 
             this.builder.initialize(metaInput);
+
+            // TODO: Report created output files to `consumer`.
 
             this.logger.info("Initialized {}", metaInput.languageSpec);
         } catch (final FileSystemException e) {
@@ -180,12 +218,16 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
+     * @param holder    The dirty files holder.
+     * @param consumer  The output consumer.
      * @throws Exception
      * @throws ProjectBuildException
      */
     private void generateSources(
             final LanguageSpecBuildInput metaInput,
-            final CompileContext context) throws Exception {
+            final CompileContext context,
+            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
+            final BuildOutputConsumer consumer) throws Exception {
         try {
             this.logger.debug("Generating sources for {}", metaInput.languageSpec);
 
@@ -198,6 +240,8 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
 
             this.builder.generateSources(metaInput, new FileAccess());
 
+            // TODO: Report created output files to `consumer`.
+
             this.logger.info("Generated sources for {}", metaInput.languageSpec);
         } catch (final Exception e) {
             throw new ProjectBuildException(e.getMessage(), e);
@@ -209,12 +253,16 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
+     * @param holder    The dirty files holder.
+     * @param consumer  The output consumer.
      * @throws Exception
      * @throws ProjectBuildException
      */
     private void regularBuild(
             final LanguageSpecBuildInput metaInput,
-            final CompileContext context) throws Exception {
+            final CompileContext context,
+            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
+            final BuildOutputConsumer consumer) throws Exception {
 
         this.logger.debug("Analyzing and transforming {}", metaInput.languageSpec);
 
@@ -232,6 +280,8 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
                     .build(input, null, null)
                     .schedule()
                     .block();
+
+            // TODO: Report created output files to `consumer`.
 
             if (!task.cancelled()) {
                 @Nullable final IBuildOutput<?, ?, ?> output = task.result();
@@ -268,12 +318,16 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
+     * @param holder    The dirty files holder.
+     * @param consumer  The output consumer.
      * @throws Exception
      * @throws ProjectBuildException
      */
     private void compilePreJava(
             final LanguageSpecBuildInput metaInput,
-            final CompileContext context) throws Exception {
+            final CompileContext context,
+            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
+            final BuildOutputConsumer consumer) throws Exception {
 
         this.logger.debug("Compile pre-Java for {}", metaInput.languageSpec);
 
@@ -281,6 +335,8 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
         context.processMessage(this.messageFormatter.formatProgress(0f, "Building language project {}",
                 metaInput.languageSpec));
         this.builder.compilePreJava(metaInput);
+
+        // TODO: Report created output files to `consumer`.
 
         this.logger.info("Compiled pre-Java for {}", metaInput.languageSpec);
     }
