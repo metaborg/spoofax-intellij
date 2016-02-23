@@ -23,6 +23,8 @@ import com.google.inject.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
 import org.metaborg.intellij.jps.*;
+import org.metaborg.intellij.logging.*;
+import org.metaborg.util.log.*;
 
 import java.util.*;
 
@@ -37,6 +39,8 @@ public final class SpoofaxBuilderService extends BuilderService {
     private List<BuildTargetType<?>> targets;
     private List<TargetBuilder<?, ?>> builders;
     private List<ModuleLevelBuilder> moduleLevelBuilders;
+    @InjectLogger
+    private ILogger logger;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -45,6 +49,9 @@ public final class SpoofaxBuilderService extends BuilderService {
     public SpoofaxBuilderService() {
         super();
         SpoofaxJpsPlugin.injector().injectMembers(this);
+
+        this.logger.debug("Builder service constructed! Classloader: {}",
+                this.getClass().getClassLoader().getClass().getName());
     }
 
     @SuppressWarnings("unused")

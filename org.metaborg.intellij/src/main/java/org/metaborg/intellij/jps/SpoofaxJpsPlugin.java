@@ -19,13 +19,15 @@
 
 package org.metaborg.intellij.jps;
 
-import com.google.inject.Injector;
-import com.intellij.openapi.diagnostic.Logger;
+import com.google.inject.*;
+import com.intellij.openapi.diagnostic.*;
 import org.apache.commons.lang3.concurrent.*;
-import org.metaborg.core.MetaborgException;
+import org.metaborg.core.*;
 import org.metaborg.intellij.*;
-import org.metaborg.spoofax.core.Spoofax;
-import org.metaborg.spoofax.meta.core.SpoofaxMeta;
+import org.metaborg.spoofax.core.*;
+import org.metaborg.spoofax.meta.core.*;
+
+import java.util.*;
 
 /**
  * JPS plugin class.
@@ -44,10 +46,6 @@ public final class SpoofaxJpsPlugin {
             return new SpoofaxJpsPlugin();
         }
     };
-
-//    static {
-//        logger = Logger.getInstance(SpoofaxJpsPlugin.class);
-//    }
 
     /**
      * Gets the injector.
@@ -90,8 +88,10 @@ public final class SpoofaxJpsPlugin {
     private final Spoofax spoofax;
     private final SpoofaxMeta spoofaxMeta;
 
-    private SpoofaxJpsPlugin() {
-        logger.debug("Loading Spoofax for JPS plugin.");
+    public SpoofaxJpsPlugin() {
+        logger.debug("Loading Spoofax for JPS plugin using classloader: ",
+                this.getClass().getClassLoader().getClass().getName());
+        logger.debug("Stack trace: " + Arrays.toString(Thread.currentThread().getStackTrace()));
         try {
             this.spoofax = new Spoofax(new JpsSpoofaxModule());
             this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new JpsSpoofaxMetaModule());
