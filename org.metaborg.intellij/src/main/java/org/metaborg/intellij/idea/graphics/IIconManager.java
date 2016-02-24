@@ -52,4 +52,24 @@ public interface IIconManager {
      */
     Icon getLanguageArtifactIcon();
 
+    /**
+     * Gets the icon for the Metaborg facet.
+     *
+     * @return The facet icon.
+     */
+    Icon getFacetIcon();
+
+    /**
+     * Gets the icon for the Metaborg SDK.
+     *
+     * @return The SDK icon.
+     */
+    Icon getSdkIcon();
+
+    /**
+     * Gets the icon for the Metaborg SDK's Add Action.
+     *
+     * @return The SDK action icon.
+     */
+    Icon getSdkIconForAddAction();
 }

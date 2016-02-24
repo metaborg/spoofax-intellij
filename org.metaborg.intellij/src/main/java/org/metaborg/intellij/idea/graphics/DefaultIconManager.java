@@ -58,7 +58,7 @@ public final class DefaultIconManager implements IIconManager {
     @Override
     public Icon getLanguageFileIcon(@Nullable final ILanguage language) {
         // TODO: Get icon from ILanguage facet, otherwise use default.
-        return getDefaultIcon();
+        return this.getDefaultIcon();
     }
 
     /**
@@ -67,5 +67,29 @@ public final class DefaultIconManager implements IIconManager {
     @Override
     public Icon getLanguageArtifactIcon() {
         return this.languageArtifactIcon;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Icon getFacetIcon() {
+        return this.getDefaultIcon();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Icon getSdkIcon() {
+        return this.getDefaultIcon();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Icon getSdkIconForAddAction() {
+        return this.getDefaultIcon();
     }
 }

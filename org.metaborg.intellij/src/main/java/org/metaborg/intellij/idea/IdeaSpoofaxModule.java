@@ -37,6 +37,7 @@ import org.metaborg.intellij.discovery.*;
 import org.metaborg.intellij.idea.compilation.*;
 import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.idea.editors.*;
+import org.metaborg.intellij.idea.facets.*;
 import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.languages.*;
@@ -89,6 +90,7 @@ import org.metaborg.spoofax.core.syntax.*;
         bindBeforeCompileTasks();
         bindAfterCompileTasks();
         bindReferenceResolution();
+        bindFacets();
     }
 
     /**
@@ -334,5 +336,12 @@ import org.metaborg.spoofax.core.syntax.*;
         install(new FactoryModuleBuilder()
                 .implement(MetaborgReferenceProvider.class, SpoofaxReferenceProvider.class)
                 .build(IMetaborgReferenceProviderFactory.class));
+    }
+
+    /**
+     * Binds facets.
+     */
+    protected void bindFacets() {
+        install(new IntelliJExtensionProviderFactory().provide(MetaborgFacetType.class, "com.intellij.facetType"));
     }
 }
