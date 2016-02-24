@@ -29,7 +29,9 @@ import com.intellij.openapi.module.*;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.*;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.*;
+import com.intellij.openapi.roots.libraries.*;
 import com.intellij.openapi.roots.ui.configuration.*;
 import com.intellij.openapi.startup.*;
 import com.intellij.openapi.util.*;
@@ -199,6 +201,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     @Override
     public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
 
+        // Set the content roots.
         this.logger.debug("Adding content and source roots.");
         @Nullable final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
         if (contentEntry != null) {
@@ -211,6 +214,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         }
         this.logger.info("Added content and source roots.");
 
+        // Set the SDK.
         this.logger.debug("Setting SDK.");
         setSdk(rootModel);
         this.logger.info("Set SDK.");
@@ -219,7 +223,27 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         final Module module = rootModel.getModule();
         final Project project = module.getProject();
 
+//        // Set the dependencies.
+//        // https://intellij-support.jetbrains.com/hc/en-us/community/posts/206116919-Using-ModifiableRootModel-addLibraryEntry-still-doesn-t-set-the-library-dependency-correctly
+//        // https://github.com/consulo/consulo-ruby/blob/5111ab5ed8b71ba208cafafa09c0bf86395e532c/src/org/jetbrains/plugins/ruby/jruby/JRubySdkTableListener.java
+//        this.logger.debug("Adding dependencies.");
+//        final LibraryTable libraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
+//        final String libName = "org.metaborg.core-2.0.0-SNAPSHOT";
+//        @Nullable Library library = libraryTable.getLibraryByName(libName);
+//        if (library == null) {
+//            library = libraryTable.createLibrary("Metaborg Core");
+//            final Library.ModifiableModel libraryModel = library.getModifiableModel();
+//            libraryModel.addJarDirectory();
+//            // TODO
+//            this.logger.info("Library was NULL.");
+//        }
+//        else {
+//            this.logger.info("Library was not NULL: {}", library);
+//            rootModel.addLibraryEntry(library);
+//        }
+//        this.logger.info("Added dependencies.");
 
+        // Generate the project files.
         ApplicationManager.getApplication().runWriteAction(() -> {
             MetaborgModuleBuilder.this.logger.debug("Generating project files.");
             // Generate the module structure (files and directories).
