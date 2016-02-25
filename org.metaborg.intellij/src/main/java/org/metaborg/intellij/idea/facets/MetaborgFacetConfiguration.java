@@ -34,7 +34,9 @@ public class MetaborgFacetConfiguration implements FacetConfiguration {
      */
     @Override
     public FacetEditorTab[] createEditorTabs(final FacetEditorContext editorContext, final FacetValidatorsManager validatorsManager) {
-        return new FacetEditorTab[0];
+        return new FacetEditorTab[] {
+                new MetaborgFacetEditorTab(editorContext, validatorsManager)
+        };
     }
 
     /**

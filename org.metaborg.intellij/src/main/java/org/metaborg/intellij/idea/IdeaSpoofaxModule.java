@@ -90,6 +90,7 @@ import org.metaborg.spoofax.core.syntax.*;
         bindBeforeCompileTasks();
         bindAfterCompileTasks();
         bindReferenceResolution();
+        bindLibraryService();
         bindFacets();
     }
 
@@ -336,6 +337,13 @@ import org.metaborg.spoofax.core.syntax.*;
         install(new FactoryModuleBuilder()
                 .implement(MetaborgReferenceProvider.class, SpoofaxReferenceProvider.class)
                 .build(IMetaborgReferenceProviderFactory.class));
+    }
+
+    /**
+     * Binds the library service.
+     */
+    protected void bindLibraryService() {
+        bind(LibraryService.class).in(Singleton.class);
     }
 
     /**
