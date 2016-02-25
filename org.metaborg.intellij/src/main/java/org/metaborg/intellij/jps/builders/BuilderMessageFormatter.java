@@ -20,6 +20,8 @@
 package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
+
+import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.jps.incremental.messages.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.source.*;
@@ -118,7 +120,13 @@ public final class BuilderMessageFormatter {
             exception = exception.getCause();
         }
 
-        final String sourcePath = message.source().getName().getPath();
+        final FileObject source = message.source();
+        final String sourcePath;
+        if(source != null) {
+            sourcePath = source.getName().getPath();
+        } else {
+            sourcePath = null;
+        }
         long problemBeginOffset = -1L;
         long problemEndOffset = -1L;
         long problemLocationOffset = -1L;

@@ -28,7 +28,10 @@ import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.jps.model.JpsUrlList;
 import org.jetbrains.jps.model.module.JpsModule;
+import org.metaborg.core.config.ConfigRequest;
+import org.metaborg.core.messages.StreamMessagePrinter;
 import org.metaborg.core.resource.IResourceService;
+import org.metaborg.core.source.ISourceTextService;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigService;
@@ -48,13 +51,15 @@ import com.google.inject.Singleton;
 public final class JpsProjectService implements IJpsProjectService {
 
     private final List<MetaborgJpsProject> projects = new ArrayList<>();
+    private final ISourceTextService sourceTextService;
     private final IResourceService resourceService;
     private final ISpoofaxLanguageSpecConfigService languageSpecConfigService;
     @InjectLogger
     private ILogger logger;
 
     @Inject
-    public JpsProjectService(final IResourceService resourceService, ISpoofaxLanguageSpecConfigService languageSpecConfigService) {
+    public JpsProjectService(ISourceTextService sourceTextService, final IResourceService resourceService, ISpoofaxLanguageSpecConfigService languageSpecConfigService) {
+        this.sourceTextService = sourceTextService;
         this.resourceService = resourceService;
         this.languageSpecConfigService = languageSpecConfigService;
     }
@@ -65,7 +70,17 @@ public final class JpsProjectService implements IJpsProjectService {
     @Override
     public MetaborgJpsProject create(final JpsModule module) {
         final FileObject location = this.resourceService.resolve(module.getContentRootsList().getUrls().get(0));
-        final ISpoofaxLanguageSpecConfig config = languageSpecConfigService.get(location);
+        final ConfigRequest<ISpoofaxLanguageSpecConfig> configRequest = languageSpecConfigService.get(location);
+        if(!configRequest.valid()) {
+            logger.error("Errors occurred when retrieving language specification configuration from project location {}",
+                location);
+            configRequest.reportErrors(new StreamMessagePrinter(sourceTextService, false, false, logger));
+            // TODO: what to return/throw?
+        }
+        final ISpoofaxLanguageSpecConfig config = configRequest.config();
+        if(config == null) {
+            // TODO: what to return/throw?            
+        }
         final ISpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(location, config);
         final MetaborgJpsProject project = new MetaborgJpsProject(module, location, config, paths);
         this.projects.add(project);
