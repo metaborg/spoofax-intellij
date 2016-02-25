@@ -32,6 +32,7 @@ import com.intellij.openapi.vfs.*;
 import com.intellij.util.*;
 import org.jdom.*;
 import org.jetbrains.annotations.*;
+import org.jetbrains.jps.incremental.java.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.graphics.*;
@@ -86,9 +87,9 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      */
     @Nullable
     @Override
-    public String getVersionString(final String sdkHome) {
-        // TODO: Add version string to Metaborg Core?
-        return "2.0.0-SNAPSHOT";
+    public String getVersionString(final Sdk sdk) {
+        @Nullable final Sdk jdk = getJdk(sdk);
+        return jdk != null ? jdk.getVersionString() : null;
     }
 
     /**
@@ -96,7 +97,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      */
     @Override
     public String suggestSdkName(final String currentSdkName, final String sdkHome) {
-        return "Metaborg " + getVersionString(sdkHome) + " SDK";
+        return "Metaborg SDK";
     }
 
     /**
@@ -241,7 +242,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     public String getBinPath(final Sdk sdk) {
         @Nullable final Sdk jdk = getJdk(sdk);
         if (jdk == null) return null;
-        return ((JavaSdk)jdk.getSdkType()).getBinPath(sdk);
+        return ((JavaSdk)jdk.getSdkType()).getBinPath(jdk);
     }
 
     /**
@@ -252,7 +253,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     public String getToolsPath(final Sdk sdk) {
         @Nullable final Sdk jdk = getJdk(sdk);
         if (jdk == null || jdk.getVersionString() == null) return null;
-        return ((JavaSdk)jdk.getSdkType()).getToolsPath(sdk);
+        return ((JavaSdk)jdk.getSdkType()).getToolsPath(jdk);
     }
 
     /**
@@ -263,7 +264,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     public String getVMExecutablePath(final Sdk sdk) {
         @Nullable final Sdk jdk = getJdk(sdk);
         if (jdk == null) return null;
-        return ((JavaSdk)jdk.getSdkType()).getVMExecutablePath(sdk);
+        return ((JavaSdk)jdk.getSdkType()).getVMExecutablePath(jdk);
     }
 
     /**

@@ -45,6 +45,7 @@ import org.metaborg.core.project.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.projects.newproject.*;
+import org.metaborg.intellij.idea.sdks.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
@@ -290,6 +291,14 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSuitableSdkType(final SdkTypeId sdkType) {
+        return sdkType instanceof MetaborgSdkType;
+    }
+
+    /**
      * Sets the SDK.
      *
      * @param rootModel The root model.
@@ -487,5 +496,23 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         }
 
         return contentEntry;
+    }
+
+    @Nullable
+    @Override
+    public List<Module> commit(@NotNull final Project project,
+                               final ModifiableModuleModel model,
+                               final ModulesProvider modulesProvider) {
+        final LanguageLevelProjectExtension extension = LanguageLevelProjectExtension.getInstance(ProjectManager.getInstance().getDefaultProject());
+        @Nullable final Boolean aDefault = extension.getDefault();
+        final LanguageLevelProjectExtension instance = LanguageLevelProjectExtension.getInstance(project);
+        if(aDefault != null && !aDefault) {
+            instance.setLanguageLevel(extension.getLanguageLevel());
+            instance.setDefault(false);
+        } else {
+            instance.setDefault(true);
+        }
+
+        return super.commit(project, model, modulesProvider);
     }
 }
