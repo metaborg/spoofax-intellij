@@ -29,6 +29,7 @@ import com.intellij.openapi.roots.*;
 import com.intellij.openapi.ui.*;
 import com.intellij.openapi.util.io.*;
 import com.intellij.openapi.vfs.*;
+import com.intellij.openapi.vfs.impl.jar.*;
 import com.intellij.util.*;
 import org.jdom.*;
 import org.jetbrains.annotations.*;
@@ -88,6 +89,10 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     @Nullable
     @Override
     public String getVersionString(final Sdk sdk) {
+        // The returned version string must be the JDK's version string,
+        // as this is used to determine the build target Java version.
+        // Anything else and you'll get errors about having the wrong
+        // build target version.
         @Nullable final Sdk jdk = getJdk(sdk);
         return jdk != null ? jdk.getVersionString() : null;
     }
@@ -123,7 +128,6 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     @Override
     public String suggestHomePath() {
         return this.libraryService.getPluginLibPath();
-//        return PathManager.getJarPathForClass(MetaborgSdkType.class);
     }
 
     /**
@@ -132,13 +136,14 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     @Override
     public boolean isValidSdkHome(final String path) {
 
-        final List<VirtualFile> sdkFiles = getSdkFiles(path);
+        final List<VirtualFile> sdkFiles = getSdkJars(path);
 
         if (sdkFiles.isEmpty()) {
             // Apparently the SDK has no files, so any home is valid.
             return true;
         }
 
+        // We simply test whether the first file exists.
         return sdkFiles.get(0) != null && sdkFiles.get(0).exists();
     }
 
@@ -355,11 +360,11 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     /**
      * Gets the minimum required JDK version.
      *
-     * @param sdk The SDK.
+     * @param sdk The SDK; or <code>null</code>.
      * @return The minimum required JDK version; or <code>null</code>.
      */
     @Nullable
-    public static JavaSdkVersion getMinimumJdkVersion(final Sdk sdk) {
+    public static JavaSdkVersion getMinimumJdkVersion(@Nullable final Sdk sdk) {
         // TODO: Determine the minimum JDK version based on the SDK.
         return JavaSdkVersion.JDK_1_7;
     }
@@ -373,6 +378,8 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     private void addJdkPaths(final SdkModificator sdkModificator,
                              final Sdk jdk) {
 
+        // This adds the JDK jars to the SDK. Without them, you get
+        // errors when compiling.
         for (final String url : jdk.getRootProvider().getUrls(OrderRootType.CLASSES)) {
             @Nullable final VirtualFile virtualFile = VirtualFileManager.getInstance().findFileByUrl(url);
             if (virtualFile != null) {
@@ -395,7 +402,10 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
             return;
         }
 
-        for (final VirtualFile file : getSdkFiles(sdkHomePath)) {
+        // The added SDK files must be in the jar:// file system.
+        // Adding normal file:// files works when creating the SDK,
+        // but they are lost when the SDK is reloaded (e.g. after restart).
+        for (final VirtualFile file : getSdkJars(sdkHomePath)) {
             sdkModificator.addRoot(file, OrderRootType.CLASSES);
         }
     }
@@ -404,11 +414,19 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      * Returns a list of SDK files.
      *
      * @param sdkHomePath The SDK home path.
-     * @return A list of SDK files. A file can be <code>null</code> if it doesn't exist.
+     * @return A list of SDK jars. A file can be <code>null</code> if it doesn't exist.
      * Otherwise, a file's {@link VirtualFile#exists()} may return <code>false</code>.
      */
-    private List<VirtualFile> getSdkFiles(final String sdkHomePath) {
+    private List<VirtualFile> getSdkJars(final String sdkHomePath) {
+
+        // Specify the Metaborg SDK dependencies in this file.
         final URL url = Resources.getResource(SpoofaxIdeaPlugin.class, "/sdk_libraries.txt");
+
+        // The JARs mentioned must be in the plugin's lib folder (plugins/org.metaborg.intellij/lib)
+        // at runtime. To get them there, the JAR must either be a dependency of this plugin (as plugin
+        // dependencies are automatically copied to the lib folder), or it must be copied or
+        // downloaded to the lib folder at runtime (e.g. from a Maven repository). The LibraryService
+        // can help you download stuff to the lib folder.
 
         final String text;
         try {
@@ -420,14 +438,23 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
 
         final String[] filenames = text.split("\\r?\\n");
 
-        final LocalFileSystem fileSystem = (LocalFileSystem)VirtualFileManager.getInstance()
-                .getFileSystem(LocalFileSystem.PROTOCOL);
-
         final List<VirtualFile> files = new ArrayList<>(filenames.length);
         for (final String filename : filenames) {
             final File file = new File(sdkHomePath, filename);
-            @Nullable final VirtualFile virtualFile = fileSystem.findFileByIoFile(file);
-            files.add(virtualFile);
+
+            @Nullable final VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
+            if (virtualFile == null) {
+                files.add(null);
+                continue;
+            }
+
+            @Nullable final VirtualFile jarFile = JarFileSystemImpl.getInstance().getJarRootForLocalFile(virtualFile);
+            if (jarFile == null) {
+                files.add(null);
+                continue;
+            }
+
+            files.add(jarFile);
         }
 
         return files;
