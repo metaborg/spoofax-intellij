@@ -45,6 +45,8 @@ import java.util.*;
      * Binds the builders.
      */
     protected void bindBuilders() {
+        bind(JpsSpoofaxMetaBuilder.class).in(Singleton.class);
+
         bind(SpoofaxPreBuilder.class).in(Singleton.class);
         bind(SpoofaxPostBuilder.class).in(Singleton.class);
     }

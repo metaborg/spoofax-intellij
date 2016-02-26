@@ -42,7 +42,7 @@ import java.io.*;
  * Builder executed after Java compilation.
  */
 @Singleton
-public final class SpoofaxPostBuilder extends SpoofaxMetaBuilder2<SpoofaxPostTarget> {
+public final class SpoofaxPostBuilder extends MetaborgMetaBuilder2<SpoofaxPostTarget> {
 
     @InjectLogger
     private ILogger logger;
@@ -53,19 +53,13 @@ public final class SpoofaxPostBuilder extends SpoofaxMetaBuilder2<SpoofaxPostTar
     @Inject
     private SpoofaxPostBuilder(
             final SpoofaxPostTargetType targetType,
-            final SpoofaxMetaBuilder builder,
             final IJpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
-            final ILanguagePathService languagePathService,
-            final IDependencyService dependencyService,
-            final SpoofaxProcessorRunner processorRunner,
             final ISpoofaxLanguageSpecPathsService pathsService,
-            final BuilderMessageFormatter messageFormatter) {
-        super(targetType, builder, projectService, languageSpecService, spoofaxLanguageSpecConfigService,
-                languagePathService, dependencyService, processorRunner,
-                pathsService, messageFormatter);
-
+            final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder) {
+        super(targetType, jpsSpoofaxMetaBuilder, projectService, languageSpecService, pathsService,
+                spoofaxLanguageSpecConfigService);
     }
 
     /**
@@ -87,7 +81,7 @@ public final class SpoofaxPostBuilder extends SpoofaxMetaBuilder2<SpoofaxPostTar
             final BuildOutputConsumer consumer,
             final CompileContext context) throws Exception {
 
-        compilePostJava(metaInput, context, holder, consumer);
+        this.jpsSpoofaxMetaBuilder.compilePostJava(metaInput, context);
 
     }
 

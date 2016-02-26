@@ -44,6 +44,7 @@ public abstract class MetaborgMetaBuilder2<T extends SpoofaxTarget> extends Targ
     protected final ILanguageSpecService languageSpecService;
     protected final ISpoofaxLanguageSpecPathsService pathsService;
     protected final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService;
+    protected final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder;
     @InjectLogger
     private ILogger logger;
 
@@ -62,11 +63,13 @@ public abstract class MetaborgMetaBuilder2<T extends SpoofaxTarget> extends Targ
      */
     protected MetaborgMetaBuilder2(
             final BuildTargetType<T> targetType,
+            final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder,
             final IJpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
             final ISpoofaxLanguageSpecPathsService pathsService,
             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService) {
         super(Collections.singletonList(targetType));
+        this.jpsSpoofaxMetaBuilder = jpsSpoofaxMetaBuilder;
         this.projectService = projectService;
         this.languageSpecService = languageSpecService;
         this.pathsService = pathsService;
@@ -91,7 +94,8 @@ public abstract class MetaborgMetaBuilder2<T extends SpoofaxTarget> extends Targ
             final CompileContext context) throws ProjectBuildException, IOException {
 
         try {
-            final LanguageSpecBuildInput metaInput = getLanguageSpecBuildInput(target.getModule());
+            final LanguageSpecBuildInput metaInput = this.jpsSpoofaxMetaBuilder
+                    .getLanguageSpecBuildInput(target.getModule());
 
             doBuild(metaInput, target, holder, consumer, context);
 
@@ -121,37 +125,6 @@ public abstract class MetaborgMetaBuilder2<T extends SpoofaxTarget> extends Targ
             final CompileContext context) throws Exception;
 
 
-    /**
-     * Gets the build input.
-     *
-     * @param module The JPS module.
-     * @return The build input.
-     * @throws ProjectBuildException
-     * @throws IOException
-     */
-    protected LanguageSpecBuildInput getLanguageSpecBuildInput(final JpsModule module)
-            throws ProjectBuildException, IOException {
 
-        @Nullable final MetaborgJpsProject project = this.projectService.get(module);
-        if (project == null) {
-            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                    "Could not get a project for the module {}", module);
-        }
-
-        @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
-        if (languageSpec == null) {
-            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                    "Could not get a language specification for the project {}", project);
-        }
-
-        @Nullable final ISpoofaxLanguageSpecConfig config = this.spoofaxLanguageSpecConfigService.get(languageSpec);
-        if (config == null) {
-            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                    "Could not get a configuration for language specification {}", languageSpec);
-        }
-
-        final ISpoofaxLanguageSpecPaths paths = this.pathsService.get(languageSpec);
-        return new LanguageSpecBuildInput(languageSpec, config, paths);
-    }
 
 }

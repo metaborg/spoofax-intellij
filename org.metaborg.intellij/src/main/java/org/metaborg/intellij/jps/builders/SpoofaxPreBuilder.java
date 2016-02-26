@@ -44,7 +44,7 @@ import java.util.*;
  * Builder executed before Java compilation.
  */
 @Singleton
-public final class SpoofaxPreBuilder extends SpoofaxMetaBuilder2<SpoofaxPreTarget> {
+public final class SpoofaxPreBuilder extends MetaborgMetaBuilder2<SpoofaxPreTarget> {
 
     private final ILanguageManager languageManager;
     private final IMetaborgConfigService extensionService;
@@ -57,20 +57,14 @@ public final class SpoofaxPreBuilder extends SpoofaxMetaBuilder2<SpoofaxPreTarge
     @Inject
     public SpoofaxPreBuilder(
             final SpoofaxPreTargetType targetType,
-            final SpoofaxMetaBuilder builder,
             final IJpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
-            final ILanguagePathService languagePathService,
             final ILanguageManager languageManager,
-            final IDependencyService dependencyService,
-            final SpoofaxProcessorRunner processorRunner,
             final ISpoofaxLanguageSpecPathsService pathsService,
-            final BuilderMessageFormatter messageFormatter,
-            final IMetaborgConfigService extensionService) {
-        super(targetType, builder, projectService, languageSpecService, spoofaxLanguageSpecConfigService,
-                languagePathService, dependencyService, processorRunner,
-                pathsService, messageFormatter);
+            final IMetaborgConfigService extensionService,
+            final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder) {
+        super(targetType, jpsSpoofaxMetaBuilder, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
 
         this.languageManager = languageManager;
         this.extensionService = extensionService;
@@ -112,11 +106,11 @@ public final class SpoofaxPreBuilder extends SpoofaxMetaBuilder2<SpoofaxPreTarge
         this.languageManager.discoverRange(languages);
         this.logger.info("Loaded module languages: {}", languages);
 
-        clean(metaInput, context, holder, consumer);
-        initialize(metaInput, context, holder, consumer);
-        generateSources(metaInput, context, holder, consumer);
-        regularBuild(metaInput, context, holder, consumer);
-        compilePreJava(metaInput, context, holder, consumer);
+        this.jpsSpoofaxMetaBuilder.clean(metaInput, context);
+        this.jpsSpoofaxMetaBuilder.initialize(metaInput, context);
+        this.jpsSpoofaxMetaBuilder.generateSources(metaInput, context);
+        this.jpsSpoofaxMetaBuilder.regularBuild(metaInput, context);
+        this.jpsSpoofaxMetaBuilder.compilePreJava(metaInput, context);
     }
 
 }

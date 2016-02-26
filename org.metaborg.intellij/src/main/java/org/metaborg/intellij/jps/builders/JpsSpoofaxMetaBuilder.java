@@ -19,9 +19,11 @@
 
 package org.metaborg.intellij.jps.builders;
 
+import com.google.inject.*;
 import org.apache.commons.vfs2.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
+import org.jetbrains.jps.model.module.*;
 import org.metaborg.core.*;
 import org.metaborg.core.action.*;
 import org.metaborg.core.build.*;
@@ -30,12 +32,9 @@ import org.metaborg.core.build.paths.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.processing.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.jps.projects.*;
-import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.projects.*;
 import org.metaborg.spoofax.core.processing.*;
 import org.metaborg.spoofax.core.project.*;
 import org.metaborg.spoofax.core.project.configuration.*;
@@ -48,39 +47,41 @@ import org.spoofax.interpreter.terms.*;
 import javax.annotation.*;
 import java.io.*;
 
-/**
- * Spoofax meta-builder.
- */
-public abstract class SpoofaxMetaBuilder2<T extends SpoofaxTarget> extends MetaborgMetaBuilder2<T> {
+public final class JpsSpoofaxMetaBuilder {
 
     private final SpoofaxMetaBuilder builder;
     private final ILanguagePathService languagePathService;
     private final IDependencyService dependencyService;
     private final SpoofaxProcessorRunner processorRunner;
     private final BuilderMessageFormatter messageFormatter;
+    private final IJpsProjectService projectService;
+    private final ILanguageSpecService languageSpecService;
+    private final ISpoofaxLanguageSpecPathsService pathsService;
+    private final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService;
     @InjectLogger
     private ILogger logger;
 
-    /**
-     * Initializes a new instance of the {@link SpoofaxMetaBuilder2} class.
-     */
-    protected SpoofaxMetaBuilder2(
-            final BuildTargetType<T> targetType,
+    @Inject
+    public JpsSpoofaxMetaBuilder(
             final SpoofaxMetaBuilder builder,
-            final IJpsProjectService projectService,
-            final ILanguageSpecService languageSpecService,
-            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
             final ILanguagePathService languagePathService,
             final IDependencyService dependencyService,
             final SpoofaxProcessorRunner processorRunner,
+            final BuilderMessageFormatter messageFormatter,
+            final IJpsProjectService projectService,
+            final ILanguageSpecService languageSpecService,
             final ISpoofaxLanguageSpecPathsService pathsService,
-            final BuilderMessageFormatter messageFormatter) {
-        super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
+            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService
+    ) {
         this.builder = builder;
         this.languagePathService = languagePathService;
         this.dependencyService = dependencyService;
         this.processorRunner = processorRunner;
         this.messageFormatter = messageFormatter;
+        this.projectService = projectService;
+        this.languageSpecService = languageSpecService;
+        this.pathsService = pathsService;
+        this.spoofaxLanguageSpecConfigService = spoofaxLanguageSpecConfigService;
     }
 
     /**
@@ -88,14 +89,10 @@ public abstract class SpoofaxMetaBuilder2<T extends SpoofaxTarget> extends Metab
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
      * @throws ProjectBuildException
      */
     protected void clean(final LanguageSpecBuildInput metaInput,
-                       final CompileContext context,
-                       final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-                       final BuildOutputConsumer consumer) throws
+                         final CompileContext context) throws
             ProjectBuildException {
         try {
             this.logger.debug("Cleaning {}", metaInput.languageSpec);
@@ -116,14 +113,10 @@ public abstract class SpoofaxMetaBuilder2<T extends SpoofaxTarget> extends Metab
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
      * @throws ProjectBuildException
      */
     protected void initialize(final LanguageSpecBuildInput metaInput,
-                            final CompileContext context,
-                            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-                            final BuildOutputConsumer consumer) throws
+                              final CompileContext context) throws
             ProjectBuildException {
         try {
             this.logger.debug("Initializing {}", metaInput.languageSpec);
@@ -146,16 +139,12 @@ public abstract class SpoofaxMetaBuilder2<T extends SpoofaxTarget> extends Metab
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
      * @throws Exception
      * @throws ProjectBuildException
      */
     protected void generateSources(
             final LanguageSpecBuildInput metaInput,
-            final CompileContext context,
-            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-            final BuildOutputConsumer consumer) throws Exception {
+            final CompileContext context) throws Exception {
         try {
             this.logger.debug("Generating sources for {}", metaInput.languageSpec);
 
@@ -181,16 +170,12 @@ public abstract class SpoofaxMetaBuilder2<T extends SpoofaxTarget> extends Metab
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
      * @throws Exception
      * @throws ProjectBuildException
      */
     protected void regularBuild(
             final LanguageSpecBuildInput metaInput,
-            final CompileContext context,
-            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-            final BuildOutputConsumer consumer) throws Exception {
+            final CompileContext context) throws Exception {
 
         this.logger.debug("Analyzing and transforming {}", metaInput.languageSpec);
 
@@ -246,16 +231,12 @@ public abstract class SpoofaxMetaBuilder2<T extends SpoofaxTarget> extends Metab
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
      * @throws Exception
      * @throws ProjectBuildException
      */
     protected void compilePreJava(
             final LanguageSpecBuildInput metaInput,
-            final CompileContext context,
-            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-            final BuildOutputConsumer consumer) throws Exception {
+            final CompileContext context) throws Exception {
 
         this.logger.debug("Compile pre-Java for {}", metaInput.languageSpec);
 
@@ -274,16 +255,12 @@ public abstract class SpoofaxMetaBuilder2<T extends SpoofaxTarget> extends Metab
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
      * @throws Exception
      * @throws ProjectBuildException
      */
     protected void compilePostJava(
             final LanguageSpecBuildInput metaInput,
-            final CompileContext context,
-            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPostTarget> holder,
-            final BuildOutputConsumer consumer) throws Exception {
+            final CompileContext context) throws Exception {
 
         this.logger.debug("Compiling post-Java for {}", metaInput.languageSpec);
 
@@ -328,6 +305,39 @@ public abstract class SpoofaxMetaBuilder2<T extends SpoofaxTarget> extends Metab
             throw new ProjectBuildException(e);
         }
         return input;
+    }
+
+    /**
+     * Gets the build input.
+     *
+     * @param module The JPS module.
+     * @return The build input.
+     * @throws ProjectBuildException
+     * @throws IOException
+     */
+    public LanguageSpecBuildInput getLanguageSpecBuildInput(final JpsModule module)
+            throws ProjectBuildException, IOException {
+
+        @Nullable final MetaborgJpsProject project = this.projectService.get(module);
+        if (project == null) {
+            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
+                    "Could not get a project for the module {}", module);
+        }
+
+        @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
+        if (languageSpec == null) {
+            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
+                    "Could not get a language specification for the project {}", project);
+        }
+
+        @Nullable final ISpoofaxLanguageSpecConfig config = this.spoofaxLanguageSpecConfigService.get(languageSpec);
+        if (config == null) {
+            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
+                    "Could not get a configuration for language specification {}", languageSpec);
+        }
+
+        final ISpoofaxLanguageSpecPaths paths = this.pathsService.get(languageSpec);
+        return new LanguageSpecBuildInput(languageSpec, config, paths);
     }
 
 }

@@ -47,9 +47,9 @@ import java.util.*;
 
 public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
 
-//    private final MetaborgMetaBuilder2 builder;
     private final ILanguageManager languageManager;
     private final IMetaborgConfigService extensionService;
+    private final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder;
     @InjectLogger
     private ILogger logger;
 
@@ -58,13 +58,13 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
      */
     @Inject
     public MetaborgLanguageBuilder(final IMetaborgConfigService extensionService,
-//                                   final MetaborgMetaBuilder2 builder,
-                                   final ILanguageManager languageManager) {
+                                   final ILanguageManager languageManager,
+                                   final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder) {
         super(BuilderCategory.SOURCE_GENERATOR);
 
         this.extensionService = extensionService;
-//        this.builder = builder;
         this.languageManager = languageManager;
+        this.jpsSpoofaxMetaBuilder = jpsSpoofaxMetaBuilder;
     }
 
     @Override
@@ -73,6 +73,36 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
                           final OutputConsumer outputConsumer)
             throws ProjectBuildException, IOException {
 
+        final List<JpsModule> modules = getModulesToBuild(chunk);
+        if (modules.isEmpty()) {
+            this.logger.info("No modules with the Metaborg facet found in: {}", chunk.getModules());
+            return ExitCode.NOTHING_DONE;
+        }
+
+        ExitCode exitCode = ExitCode.NOTHING_DONE;
+        try {
+
+            for (final JpsModule module : modules) {
+                exitCode = buildModule(module, context);
+                if (exitCode == ExitCode.ABORT)
+                    return exitCode;
+            }
+
+        } catch (final ProjectBuildException e) {
+            this.logger.error("An unexpected project build exception occurred.", e);
+            throw e;
+        } catch (final ProjectException e) {
+            this.logger.error("An unexpected project exception occurred.", e);
+            throw new ProjectBuildException(e);
+        } catch (final Exception e) {
+            this.logger.error("An unexpected exception occurred.", e);
+            throw new ProjectBuildException(e);
+        }
+
+        return exitCode;
+    }
+
+    private List<JpsModule> getModulesToBuild(final ModuleChunk chunk) {
         final List<JpsModule> modules = new ArrayList<>();
         for (final JpsModule module : chunk.getModules()) {
 
@@ -92,49 +122,34 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
 
             modules.add(module);
         }
+        return modules;
+    }
 
-        if (modules.isEmpty()) {
-            this.logger.info("No modules with the Metaborg facet found in: {}", chunk.getModules());
-            return ExitCode.NOTHING_DONE;
+    private ExitCode buildModule(final JpsModule module, final CompileContext context) throws Exception {
+        final LanguageSpecBuildInput metaInput = this.jpsSpoofaxMetaBuilder.getLanguageSpecBuildInput(module);
+
+        @Nullable final JpsMetaborgApplicationConfig configuration
+                = this.extensionService.getGlobalConfiguration(context.getProjectDescriptor().getModel().getGlobal());
+
+        if (configuration != null) {
+            final Set<LanguageIdentifier> appLanguages = configuration.getLoadedLanguages();
+            this.logger.debug("Loading application languages: {}", appLanguages);
+            this.languageManager.discoverRange(appLanguages);
+            this.logger.info("Loaded application languages: {}", appLanguages);
+        } else {
+            this.logger.warn("No application configuration found.");
         }
 
+        final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
+        this.logger.debug("Loading module languages: {}", languages);
+        this.languageManager.discoverRange(languages);
+        this.logger.info("Loaded module languages: {}", languages);
+
+        this.jpsSpoofaxMetaBuilder.regularBuild(metaInput, context);
+
+        this.logger.info("MetaborgLanguageBuilder invoked.");
         return ExitCode.OK;
 
-//        try {
-//
-//            final LanguageSpecBuildInput metaInput = getBuildInput(target.getModule());
-//
-//            @javax.annotation.Nullable final JpsMetaborgApplicationConfig configuration = this.extensionService.getGlobalConfiguration(
-//                    context.getProjectDescriptor().getModel().getGlobal());
-//
-//            if (configuration != null) {
-//                final Set<LanguageIdentifier> appLanguages = configuration.getLoadedLanguages();
-//                this.logger.debug("Loading application languages: {}", appLanguages);
-//                this.languageManager.discoverRange(appLanguages);
-//                this.logger.info("Loaded application languages: {}", appLanguages);
-//            } else {
-//                this.logger.warn("No application configuration found.");
-//            }
-//
-//            final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
-//            this.logger.debug("Loading module languages: {}", languages);
-//            this.languageManager.discoverRange(languages);
-//            this.logger.info("Loaded module languages: {}", languages);
-//
-//
-//            this.logger.info("MetaborgLanguageBuilder invoked.");
-//            return ExitCode.OK;
-//
-//        } catch (final ProjectBuildException e) {
-//            this.logger.error("An unexpected project build exception occurred.", e);
-//            throw e;
-//        } catch (final ProjectException e) {
-//            this.logger.error("An unexpected project exception occurred.", e);
-//            throw new ProjectBuildException(e);
-//        } catch (final Exception e) {
-//            this.logger.error("An unexpected exception occurred.", e);
-//            throw new ProjectBuildException(e);
-//        }
     }
 
     @NotNull
@@ -149,33 +164,4 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
         return Lists.newArrayList("str");
     }
 
-//    /**
-//     * Creates the {@link BuildInput} for the project.
-//     *
-//     * @param metaInput The meta input.
-//     * @return The created {@link BuildInput}.
-//     * @throws ProjectBuildException
-//     */
-//    private BuildInput getBuildInput(final LanguageSpecBuildInput metaInput) throws
-//            ProjectBuildException {
-//        final BuildInput input;
-//        try {
-//            input = new BuildInputBuilder(metaInput.languageSpec)
-//                    .withDefaultIncludePaths(true)
-//                    .withSourcesFromDefaultSourceLocations(true)
-//                    .withSelector(new SpoofaxIgnoresSelector())
-//                    .withThrowOnErrors(false)
-//                    .withPardonedLanguageStrings(metaInput.config.pardonedLanguages())
-//                    .addTransformGoal(new CompileGoal())
-//                    .build(this.dependencyService, this.languagePathService);
-//        } catch (final MissingDependencyException e) {
-//            // FIXME: Add language ID field to MissingDependencyException,
-//            // and print the missing language ID here.
-//            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-//                    "Missing language dependency: {}", e, e.getMessage());
-//        } catch (final MetaborgException e) {
-//            throw new ProjectBuildException(e);
-//        }
-//        return input;
-//    }
 }
