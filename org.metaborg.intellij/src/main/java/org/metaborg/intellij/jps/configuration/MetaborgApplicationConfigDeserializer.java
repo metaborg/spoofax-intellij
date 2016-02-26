@@ -67,7 +67,8 @@ public final class MetaborgApplicationConfigDeserializer extends JpsGlobalExtens
      */
     @Override
     public final void saveExtension(final JpsGlobal global, final Element element) {
-        final JpsMetaborgApplicationConfig config = this.extensionService.getConfiguration(global);
+        @Nullable final JpsMetaborgApplicationConfig config = this.extensionService.getGlobalConfiguration(global);
+        if (config == null) return;
         XmlSerializer.serializeInto(config.getState(), element);
     }
 
@@ -78,7 +79,7 @@ public final class MetaborgApplicationConfigDeserializer extends JpsGlobalExtens
      * @param config The configuration.
      */
     private void setConfig(final JpsGlobal global, final JpsMetaborgApplicationConfig config) {
-        this.extensionService.setConfiguration(global, config);
+        this.extensionService.setGlobalConfiguration(global, config);
     }
 
     /**

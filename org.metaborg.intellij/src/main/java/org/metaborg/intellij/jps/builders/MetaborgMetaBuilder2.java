@@ -36,9 +36,9 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Spoofax builder.
+ * Metaborg meta-builder.
  */
-public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuilder<SpoofaxSourceRootDescriptor, T> {
+public abstract class MetaborgMetaBuilder2<T extends SpoofaxTarget> extends TargetBuilder<SpoofaxSourceRootDescriptor, T> {
 
     protected final IJpsProjectService projectService;
     protected final ILanguageSpecService languageSpecService;
@@ -56,11 +56,11 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
     public abstract String getPresentableName();
 
     /**
-     * Initializes a new instance of the {@link SpoofaxBuilder} class.
+     * Initializes a new instance of the {@link MetaborgMetaBuilder2} class.
      *
      * @param targetType The target type.
      */
-    protected SpoofaxBuilder(
+    protected MetaborgMetaBuilder2(
             final BuildTargetType<T> targetType,
             final IJpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
@@ -84,11 +84,42 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
      * @throws IOException
      */
     @Override
-    public abstract void build(
+    public final void build(
             final T target,
             final DirtyFilesHolder<SpoofaxSourceRootDescriptor, T> holder,
             final BuildOutputConsumer consumer,
-            final CompileContext context) throws ProjectBuildException, IOException;
+            final CompileContext context) throws ProjectBuildException, IOException {
+
+        try {
+            final LanguageSpecBuildInput metaInput = getLanguageSpecBuildInput(target.getModule());
+
+            doBuild(metaInput, target, holder, consumer, context);
+
+        } catch (final ProjectBuildException e) {
+            this.logger.error("An unexpected project build exception occurred.", e);
+            throw e;
+        } catch (final ProjectException e) {
+            this.logger.error("An unexpected project exception occurred.", e);
+            throw new ProjectBuildException(e);
+        } catch (final Exception e) {
+            this.logger.error("An unexpected exception occurred.", e);
+            throw new ProjectBuildException(e);
+        }
+    }
+
+    /**
+     * Executes the build.
+     *
+     * @throws ProjectBuildException
+     * @throws IOException
+     */
+    public abstract void doBuild(
+            final LanguageSpecBuildInput metaInput,
+            final T target,
+            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, T> holder,
+            final BuildOutputConsumer consumer,
+            final CompileContext context) throws Exception;
+
 
     /**
      * Gets the build input.
@@ -98,7 +129,7 @@ public abstract class SpoofaxBuilder<T extends SpoofaxTarget> extends TargetBuil
      * @throws ProjectBuildException
      * @throws IOException
      */
-    protected LanguageSpecBuildInput getBuildInput(final JpsModule module)
+    protected LanguageSpecBuildInput getLanguageSpecBuildInput(final JpsModule module)
             throws ProjectBuildException, IOException {
 
         @Nullable final MetaborgJpsProject project = this.projectService.get(module);

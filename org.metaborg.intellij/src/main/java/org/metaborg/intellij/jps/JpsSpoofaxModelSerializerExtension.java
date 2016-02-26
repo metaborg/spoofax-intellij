@@ -20,7 +20,9 @@
 package org.metaborg.intellij.jps;
 
 import com.google.inject.*;
+import org.jetbrains.annotations.*;
 import org.jetbrains.jps.model.serialization.*;
+import org.jetbrains.jps.model.serialization.facet.*;
 import org.jetbrains.jps.model.serialization.module.*;
 import org.metaborg.intellij.jps.configuration.*;
 
@@ -35,6 +37,7 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
     private MetaborgApplicationConfigDeserializer applicationConfigDeserializer;
     private MetaborgProjectConfigDeserializer projectConfigDeserializer;
     private MetaborgModuleConfigDeserializer moduleConfigDeserializer;
+    private MetaborgFacetConfigDeserializer facetConfigDeserializer;
 
     /**
      * This instance is created by IntelliJ's plugin system.
@@ -48,10 +51,12 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
     @SuppressWarnings("unused")
     private void inject(final MetaborgApplicationConfigDeserializer applicationConfigDeserializer,
                         final MetaborgProjectConfigDeserializer projectConfigDeserializer,
-                        final MetaborgModuleConfigDeserializer moduleConfigDeserializer) {
+                        final MetaborgModuleConfigDeserializer moduleConfigDeserializer,
+                        final MetaborgFacetConfigDeserializer facetConfigDeserializer) {
         this.applicationConfigDeserializer = applicationConfigDeserializer;
         this.projectConfigDeserializer = projectConfigDeserializer;
         this.moduleConfigDeserializer = moduleConfigDeserializer;
+        this.facetConfigDeserializer = facetConfigDeserializer;
     }
 
     /**
@@ -82,5 +87,16 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
     @Override
     public final List<? extends JpsModulePropertiesSerializer<?>> getModulePropertiesSerializers() {
         return Collections.singletonList(this.moduleConfigDeserializer);
+    }
+
+    /**
+     * Gets the facet configuration serializers.
+     *
+     * @return A list of facet configuration serializers.
+     */
+    @NotNull
+    @Override
+    public List<? extends JpsFacetConfigurationSerializer<?>> getFacetConfigurationSerializers() {
+        return Collections.singletonList(this.facetConfigDeserializer);
     }
 }

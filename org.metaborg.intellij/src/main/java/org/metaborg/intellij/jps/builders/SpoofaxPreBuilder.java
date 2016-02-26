@@ -20,55 +20,34 @@
 package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
-import org.apache.commons.io.*;
-import org.apache.commons.vfs2.*;
-import org.apache.tools.ant.BuildListener;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
-import org.metaborg.core.*;
-import org.metaborg.core.action.*;
-import org.metaborg.core.build.*;
 import org.metaborg.core.build.dependency.*;
 import org.metaborg.core.build.paths.*;
 import org.metaborg.core.language.*;
-import org.metaborg.core.messages.*;
-import org.metaborg.core.processing.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.projects.*;
 import org.metaborg.spoofax.core.processing.*;
 import org.metaborg.spoofax.core.project.*;
 import org.metaborg.spoofax.core.project.configuration.*;
-import org.metaborg.spoofax.core.resource.*;
 import org.metaborg.spoofax.meta.core.*;
-import org.metaborg.spoofax.meta.core.ant.*;
-import org.metaborg.util.file.*;
 import org.metaborg.util.log.*;
-import org.spoofax.interpreter.terms.*;
 
 import javax.annotation.*;
-import java.io.*;
-import java.net.*;
 import java.util.*;
 
 /**
  * Builder executed before Java compilation.
  */
 @Singleton
-public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
+public final class SpoofaxPreBuilder extends SpoofaxMetaBuilder2<SpoofaxPreTarget> {
 
-    private final SpoofaxMetaBuilder builder;
     private final ILanguageManager languageManager;
-    private final ILanguagePathService languagePathService;
-    private final IDependencyService dependencyService;
-    private final SpoofaxProcessorRunner processorRunner;
-    private final BuilderMessageFormatter messageFormatter;
     private final IMetaborgConfigService extensionService;
-    private final ProjectUtils projectUtils;
     @InjectLogger
     private ILogger logger;
 
@@ -88,17 +67,13 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
             final SpoofaxProcessorRunner processorRunner,
             final ISpoofaxLanguageSpecPathsService pathsService,
             final BuilderMessageFormatter messageFormatter,
-            final IMetaborgConfigService extensionService,
-            final ProjectUtils projectUtils) {
-        super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
-        this.builder = builder;
+            final IMetaborgConfigService extensionService) {
+        super(targetType, builder, projectService, languageSpecService, spoofaxLanguageSpecConfigService,
+                languagePathService, dependencyService, processorRunner,
+                pathsService, messageFormatter);
+
         this.languageManager = languageManager;
-        this.languagePathService = languagePathService;
-        this.dependencyService = dependencyService;
-        this.processorRunner = processorRunner;
-        this.messageFormatter = messageFormatter;
         this.extensionService = extensionService;
-        this.projectUtils = projectUtils;
     }
 
     /**
@@ -113,262 +88,35 @@ public final class SpoofaxPreBuilder extends SpoofaxBuilder<SpoofaxPreTarget> {
      * {@inheritDoc}
      */
     @Override
-    public final void build(
+    public final void doBuild(
+            final LanguageSpecBuildInput metaInput,
             final SpoofaxPreTarget target,
             final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
             final BuildOutputConsumer consumer,
-            final CompileContext context) throws ProjectBuildException, IOException {
+            final CompileContext context) throws Exception {
 
-        try {
-            final LanguageSpecBuildInput metaInput = getBuildInput(target.getModule());
+        @Nullable final JpsMetaborgApplicationConfig configuration = this.extensionService.getGlobalConfiguration(
+                context.getProjectDescriptor().getModel().getGlobal());
 
-            final JpsMetaborgApplicationConfig configuration = this.extensionService.getConfiguration(
-                    context.getProjectDescriptor().getModel().getGlobal());
-
-
+        if (configuration != null) {
             final Set<LanguageIdentifier> appLanguages = configuration.getLoadedLanguages();
             this.logger.debug("Loading application languages: {}", appLanguages);
             this.languageManager.discoverRange(appLanguages);
             this.logger.info("Loaded application languages: {}", appLanguages);
-
-            final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
-            this.logger.debug("Loading module languages: {}", languages);
-            this.languageManager.discoverRange(languages);
-            this.logger.info("Loaded module languages: {}", languages);
-
-            clean(metaInput, context, holder, consumer);
-            initialize(metaInput, context, holder, consumer);
-            generateSources(metaInput, context, holder, consumer);
-            regularBuild(metaInput, context, holder, consumer);
-            compilePreJava(metaInput, context, holder, consumer);
-
-        } catch (final ProjectBuildException e) {
-            this.logger.error("An unexpected project build exception occurred.", e);
-            throw e;
-        } catch (final ProjectException e) {
-            this.logger.error("An unexpected project exception occurred.", e);
-            throw new ProjectBuildException(e);
-        } catch (final Exception e) {
-            this.logger.error("An unexpected exception occurred.", e);
-            throw new ProjectBuildException(e);
+        } else {
+            this.logger.warn("No application configuration found.");
         }
 
-    }
+        final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
+        this.logger.debug("Loading module languages: {}", languages);
+        this.languageManager.discoverRange(languages);
+        this.logger.info("Loaded module languages: {}", languages);
 
-    /**
-     * Executes the initialize meta-build step.
-     *
-     * @param metaInput The meta build input.
-     * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
-     * @throws ProjectBuildException
-     */
-    private void clean(final LanguageSpecBuildInput metaInput,
-                       final CompileContext context,
-                       final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-                       final BuildOutputConsumer consumer) throws
-            ProjectBuildException {
-        try {
-            this.logger.debug("Cleaning {}", metaInput.languageSpec);
-
-            context.checkCanceled();
-            context.processMessage(this.messageFormatter.formatProgress(0f, "Cleaning {}", metaInput.languageSpec));
-
-            this.builder.clean(metaInput);
-
-            this.logger.info("Cleaned {}", metaInput.languageSpec);
-        } catch (final IOException e) {
-            throw new ProjectBuildException("Error cleaning", e);
-        }
-    }
-
-    /**
-     * Executes the initialize meta-build step.
-     *
-     * @param metaInput The meta build input.
-     * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
-     * @throws ProjectBuildException
-     */
-    private void initialize(final LanguageSpecBuildInput metaInput,
-                            final CompileContext context,
-                            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-                            final BuildOutputConsumer consumer) throws
-            ProjectBuildException {
-        try {
-            this.logger.debug("Initializing {}", metaInput.languageSpec);
-
-            context.checkCanceled();
-            context.processMessage(this.messageFormatter.formatProgress(0f, "Initializing {}", metaInput.languageSpec));
-
-            this.builder.initialize(metaInput);
-
-            // TODO: Report created output files to `consumer`.
-
-            this.logger.info("Initialized {}", metaInput.languageSpec);
-        } catch (final FileSystemException e) {
-            throw new ProjectBuildException("Error initializing", e);
-        }
-    }
-
-    /**
-     * Executes the generate-sources meta-build step.
-     *
-     * @param metaInput The meta build input.
-     * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
-     * @throws Exception
-     * @throws ProjectBuildException
-     */
-    private void generateSources(
-            final LanguageSpecBuildInput metaInput,
-            final CompileContext context,
-            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-            final BuildOutputConsumer consumer) throws Exception {
-        try {
-            this.logger.debug("Generating sources for {}", metaInput.languageSpec);
-
-            context.checkCanceled();
-            context.processMessage(this.messageFormatter.formatProgress(
-                    0f,
-                    "Generating sources for {}",
-                    metaInput.languageSpec
-            ));
-
-            this.builder.generateSources(metaInput, new FileAccess());
-
-            // TODO: Report created output files to `consumer`.
-
-            this.logger.info("Generated sources for {}", metaInput.languageSpec);
-        } catch (final Exception e) {
-            throw new ProjectBuildException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Executes the regular build meta-build step.
-     *
-     * @param metaInput The meta build input.
-     * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
-     * @throws Exception
-     * @throws ProjectBuildException
-     */
-    private void regularBuild(
-            final LanguageSpecBuildInput metaInput,
-            final CompileContext context,
-            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-            final BuildOutputConsumer consumer) throws Exception {
-
-        this.logger.debug("Analyzing and transforming {}", metaInput.languageSpec);
-
-        context.processMessage(this.messageFormatter.formatProgress(
-                0f,
-                "Analyzing and transforming {}",
-                metaInput.languageSpec
-        ));
-        context.checkCanceled();
-
-        final BuildInput input = getBuildInput(metaInput);
-
-        try {
-            final ITask<IBuildOutput<IStrategoTerm, IStrategoTerm, IStrategoTerm>> task = this.processorRunner
-                    .build(input, null, null)
-                    .schedule()
-                    .block();
-
-            // TODO: Report created output files to `consumer`.
-
-            if (!task.cancelled()) {
-                @Nullable final IBuildOutput<?, ?, ?> output = task.result();
-                if (output != null) {
-                    for (final IMessage msg : output.allMessages()) {
-                        context.processMessage(this.messageFormatter.formatMessage("Metaborg", msg));
-                    }
-                    for (final IMessage msg : output.extraMessages()) {
-                        context.processMessage(this.messageFormatter.formatMessage("Metaborg", msg));
-                    }
-                    // TODO:
-                    if (!output.success()) {
-                        throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                                "Compilation finished but failed.");
-                    }
-                } else {
-                    throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                            "Compilation finished with no output.");
-                }
-            } else {
-                throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                        "Compilation cancelled.");
-            }
-        } catch (final InterruptedException e) {
-            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                    "Interrupted!", e);
-        }
-
-        this.logger.info("Analyzed and transformed {}", metaInput.languageSpec);
-    }
-
-    /**
-     * Executes the pre-Java compile meta-build step.
-     *
-     * @param metaInput The meta build input.
-     * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
-     * @throws Exception
-     * @throws ProjectBuildException
-     */
-    private void compilePreJava(
-            final LanguageSpecBuildInput metaInput,
-            final CompileContext context,
-            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPreTarget> holder,
-            final BuildOutputConsumer consumer) throws Exception {
-
-        this.logger.debug("Compile pre-Java for {}", metaInput.languageSpec);
-
-        context.checkCanceled();
-        context.processMessage(this.messageFormatter.formatProgress(0f, "Building language project {}",
-                metaInput.languageSpec));
-        this.builder.compilePreJava(metaInput);
-
-        // TODO: Report created output files to `consumer`.
-
-        this.logger.info("Compiled pre-Java for {}", metaInput.languageSpec);
-    }
-
-    /**
-     * Creates the {@link BuildInput} for the project.
-     *
-     * @param metaInput The meta input.
-     * @return The created {@link BuildInput}.
-     * @throws ProjectBuildException
-     */
-    private BuildInput getBuildInput(final LanguageSpecBuildInput metaInput) throws
-            ProjectBuildException {
-        final BuildInput input;
-        try {
-            input = new BuildInputBuilder(metaInput.languageSpec)
-                    .withDefaultIncludePaths(true)
-                    .withSourcesFromDefaultSourceLocations(true)
-                    .withSelector(new SpoofaxIgnoresSelector())
-                    .withThrowOnErrors(false)
-                    .withPardonedLanguageStrings(metaInput.config.pardonedLanguages())
-                    .addTransformGoal(new CompileGoal())
-                    .build(this.dependencyService, this.languagePathService);
-        } catch (final MissingDependencyException e) {
-            // FIXME: Add language ID field to MissingDependencyException,
-            // and print the missing language ID here.
-            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
-                    "Missing language dependency: {}", e, e.getMessage());
-        } catch (final MetaborgException e) {
-            throw new ProjectBuildException(e);
-        }
-        return input;
+        clean(metaInput, context, holder, consumer);
+        initialize(metaInput, context, holder, consumer);
+        generateSources(metaInput, context, holder, consumer);
+        regularBuild(metaInput, context, holder, consumer);
+        compilePreJava(metaInput, context, holder, consumer);
     }
 
 }

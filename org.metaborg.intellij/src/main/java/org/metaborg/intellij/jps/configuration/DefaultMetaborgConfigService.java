@@ -22,6 +22,8 @@ package org.metaborg.intellij.jps.configuration;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.module.*;
 
+import javax.annotation.*;
+
 /**
  * Default implementation of the {@link IMetaborgConfigService} interface.
  */
@@ -30,26 +32,38 @@ public final class DefaultMetaborgConfigService implements IMetaborgConfigServic
     /**
      * {@inheritDoc}
      */
+    @Nullable
     @Override
-    public final JpsMetaborgApplicationConfig getConfiguration(final JpsGlobal global) {
+    public final JpsMetaborgApplicationConfig getGlobalConfiguration(final JpsGlobal global) {
         return global.getContainer().getChild(JpsMetaborgApplicationConfig.ROLE);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Nullable
     @Override
-    public final JpsMetaborgProjectConfig getConfiguration(final JpsProject project) {
+    public final JpsMetaborgProjectConfig getProjectConfiguration(final JpsProject project) {
         return project.getContainer().getChild(JpsMetaborgProjectConfig.ROLE);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Nullable
     @Override
-    public JpsMetaborgModuleConfig getConfiguration(final JpsModule module) {
+    public JpsMetaborgModuleConfig getModuleConfiguration(final JpsModule module) {
         final JpsElement result = module.getProperties();
         return result instanceof JpsMetaborgModuleConfig ? (JpsMetaborgModuleConfig)result : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Nullable
+    @Override
+    public JpsMetaborgModuleFacetConfig getFacetConfiguration(final JpsModule module) {
+        return module.getContainer().getChild(JpsMetaborgModuleFacetConfig.ROLE);
     }
 
 
@@ -57,7 +71,7 @@ public final class DefaultMetaborgConfigService implements IMetaborgConfigServic
      * {@inheritDoc}
      */
     @Override
-    public final void setConfiguration(final JpsGlobal global, final JpsMetaborgApplicationConfig config) {
+    public final void setGlobalConfiguration(final JpsGlobal global, @Nullable final JpsMetaborgApplicationConfig config) {
         global.getContainer().setChild(JpsMetaborgApplicationConfig.ROLE, config);
     }
 
@@ -65,7 +79,7 @@ public final class DefaultMetaborgConfigService implements IMetaborgConfigServic
      * {@inheritDoc}
      */
     @Override
-    public final void setConfiguration(final JpsProject project, final JpsMetaborgProjectConfig config) {
+    public final void setProjectConfiguration(final JpsProject project, @Nullable final JpsMetaborgProjectConfig config) {
         project.getContainer().setChild(JpsMetaborgProjectConfig.ROLE, config);
     }
 
@@ -73,7 +87,47 @@ public final class DefaultMetaborgConfigService implements IMetaborgConfigServic
      * {@inheritDoc}
      */
     @Override
-    public final void setConfiguration(final JpsModule module, final JpsMetaborgModuleConfig config) {
+    public final void setModuleConfiguration(final JpsModule module, @Nullable final JpsMetaborgModuleConfig config) {
         module.getContainer().setChild(JpsMetaborgModuleConfig.ROLE, config);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setFacetConfiguration(final JpsModule module, @Nullable final JpsMetaborgModuleFacetConfig config) {
+        module.getContainer().setChild(JpsMetaborgModuleFacetConfig.ROLE, config);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasGlobalConfiguration(final JpsGlobal global) {
+        return getGlobalConfiguration(global) != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasProjectConfiguration(final JpsProject project) {
+        return getProjectConfiguration(project) != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasModuleConfiguration(final JpsModule module) {
+        return getModuleConfiguration(module) != null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasFacetConfiguration(final JpsModule module) {
+        return getFacetConfiguration(module) != null;
     }
 }

@@ -21,30 +21,29 @@ package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
 import org.apache.commons.vfs2.*;
-import org.apache.tools.ant.BuildListener;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
+import org.metaborg.core.build.dependency.*;
+import org.metaborg.core.build.paths.*;
 import org.metaborg.core.project.*;
+import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.jps.projects.*;
+import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.spoofax.core.processing.*;
 import org.metaborg.spoofax.core.project.*;
 import org.metaborg.spoofax.core.project.configuration.*;
 import org.metaborg.spoofax.meta.core.*;
-import org.metaborg.spoofax.meta.core.ant.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
 import java.io.*;
-import java.net.*;
 
 /**
  * Builder executed after Java compilation.
  */
 @Singleton
-public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> {
+public final class SpoofaxPostBuilder extends SpoofaxMetaBuilder2<SpoofaxPostTarget> {
 
-    private final SpoofaxMetaBuilder builder;
-    private final BuilderMessageFormatter messageFormatter;
     @InjectLogger
     private ILogger logger;
 
@@ -55,14 +54,18 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
     private SpoofaxPostBuilder(
             final SpoofaxPostTargetType targetType,
             final SpoofaxMetaBuilder builder,
-            final JpsProjectService projectService,
+            final IJpsProjectService projectService,
             final ILanguageSpecService languageSpecService,
-            final ISpoofaxLanguageSpecPathsService pathsService,
             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
+            final ILanguagePathService languagePathService,
+            final IDependencyService dependencyService,
+            final SpoofaxProcessorRunner processorRunner,
+            final ISpoofaxLanguageSpecPathsService pathsService,
             final BuilderMessageFormatter messageFormatter) {
-        super(targetType, projectService, languageSpecService, pathsService, spoofaxLanguageSpecConfigService);
-        this.builder = builder;
-        this.messageFormatter = messageFormatter;
+        super(targetType, builder, projectService, languageSpecService, spoofaxLanguageSpecConfigService,
+                languagePathService, dependencyService, processorRunner,
+                pathsService, messageFormatter);
+
     }
 
     /**
@@ -77,62 +80,15 @@ public final class SpoofaxPostBuilder extends SpoofaxBuilder<SpoofaxPostTarget> 
      * {@inheritDoc}
      */
     @Override
-    public void build(
+    public void doBuild(
+            final LanguageSpecBuildInput metaInput,
             final SpoofaxPostTarget target,
             final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPostTarget> holder,
             final BuildOutputConsumer consumer,
-            final CompileContext context) throws ProjectBuildException, IOException {
+            final CompileContext context) throws Exception {
 
-        try {
-            final LanguageSpecBuildInput metaInput = getBuildInput(target.getModule());
+        compilePostJava(metaInput, context, holder, consumer);
 
-            compilePostJava(metaInput, context, holder, consumer);
-
-        } catch (final FileSystemException e) {
-            this.logger.error("An unexpected IO exception occurred.", e);
-            throw e;
-        } catch (final ProjectBuildException e) {
-            this.logger.error("An unexpected project build exception occurred.", e);
-            throw e;
-        } catch (final ProjectException e) {
-            this.logger.error("An unexpected project exception occurred.", e);
-            throw new ProjectBuildException(e);
-        } catch (final Exception e) {
-            this.logger.error("An unexpected exception occurred.", e);
-            throw new ProjectBuildException(e);
-        }
-
-    }
-
-    /**
-     * Executes the post-Java compile meta-build step.
-     *
-     * @param metaInput The meta build input.
-     * @param context   The compile context.
-     * @param holder    The dirty files holder.
-     * @param consumer  The output consumer.
-     * @throws Exception
-     * @throws ProjectBuildException
-     */
-    private void compilePostJava(
-            final LanguageSpecBuildInput metaInput,
-            final CompileContext context,
-            final DirtyFilesHolder<SpoofaxSourceRootDescriptor, SpoofaxPostTarget> holder,
-            final BuildOutputConsumer consumer) throws Exception {
-
-        this.logger.debug("Compiling post-Java for {}", metaInput.languageSpec);
-
-        context.checkCanceled();
-        context.processMessage(this.messageFormatter.formatProgress(
-                0f,
-                "Packaging language project {}",
-                metaInput.languageSpec
-        ));
-        this.builder.compilePostJava(metaInput);
-
-        // TODO: Report created output files to `consumer`.
-
-        this.logger.info("Compiled post-Java for {}", metaInput.languageSpec);
     }
 
 }

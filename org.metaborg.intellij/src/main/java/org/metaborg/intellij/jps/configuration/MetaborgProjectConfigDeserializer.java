@@ -67,7 +67,8 @@ public final class MetaborgProjectConfigDeserializer extends JpsProjectExtension
      */
     @Override
     public final void saveExtension(final JpsProject project, final Element element) {
-        final JpsMetaborgProjectConfig config = this.extensionService.getConfiguration(project);
+        @Nullable final JpsMetaborgProjectConfig config = this.extensionService.getProjectConfiguration(project);
+        if (config == null) return;
         XmlSerializer.serializeInto(config.getState(), element);
     }
 
@@ -78,7 +79,7 @@ public final class MetaborgProjectConfigDeserializer extends JpsProjectExtension
      * @param config The configuration.
      */
     private void setConfig(final JpsProject project, final JpsMetaborgProjectConfig config) {
-        this.extensionService.setConfiguration(project, config);
+        this.extensionService.setProjectConfiguration(project, config);
     }
 
     /**

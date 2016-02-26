@@ -39,9 +39,10 @@ import javax.swing.*;
  *
  * This type of facet on a module indicates that the module uses files written in a Metaborg language.
  */
-public final class MetaborgFacetType extends FacetType<MetaborgFacet, MetaborgFacetConfiguration> {
+public final class MetaborgFacetType extends FacetType<MetaborgFacet, IdeaMetaborgModuleFacetConfig> {
 
-    /* package private */ static final String ID = "Metaborg";
+    public static final String ID = "Metaborg";
+    public static final String NAME = "Metaborg";
 
     private IIconManager iconManager;
     @InjectLogger
@@ -52,7 +53,7 @@ public final class MetaborgFacetType extends FacetType<MetaborgFacet, MetaborgFa
      * Do not call this constructor manually.
      */
     public MetaborgFacetType() {
-        super(MetaborgFacet.ID, MetaborgFacetType.ID, "Metaborg", null);
+        super(MetaborgFacet.ID, MetaborgFacetType.ID, MetaborgFacetType.NAME, null);
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
@@ -66,8 +67,8 @@ public final class MetaborgFacetType extends FacetType<MetaborgFacet, MetaborgFa
      * {@inheritDoc}
      */
     @Override
-    public MetaborgFacetConfiguration createDefaultConfiguration() {
-        return new MetaborgFacetConfiguration();
+    public IdeaMetaborgModuleFacetConfig createDefaultConfiguration() {
+        return new IdeaMetaborgModuleFacetConfig();
     }
 
     /**
@@ -76,7 +77,7 @@ public final class MetaborgFacetType extends FacetType<MetaborgFacet, MetaborgFa
     @Override
     public MetaborgFacet createFacet(final Module module,
                                      final String name,
-                                     final MetaborgFacetConfiguration configuration,
+                                     final IdeaMetaborgModuleFacetConfig configuration,
                                      @Nullable final Facet underlyingFacet) {
         return new MetaborgFacet(this, module, name, configuration, underlyingFacet);
     }

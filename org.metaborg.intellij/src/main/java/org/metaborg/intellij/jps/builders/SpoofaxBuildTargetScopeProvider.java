@@ -21,10 +21,14 @@ package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
 import com.intellij.compiler.impl.*;
+import com.intellij.facet.*;
 import com.intellij.openapi.compiler.*;
+import com.intellij.openapi.module.*;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.*;
 import org.jetbrains.jps.api.*;
 import org.metaborg.intellij.idea.*;
+import org.metaborg.intellij.idea.facets.*;
 import org.metaborg.intellij.jps.*;
 import org.jetbrains.jps.api.CmdlineRemoteProto.Message.ControllerMessage.ParametersMessage.TargetTypeBuildScope;
 
@@ -33,7 +37,6 @@ import java.util.*;
 /**
  * Controls the list of build target builders when Make is invoked for a particular scope.
  */
-@Deprecated
 public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvider {
 
     private SpoofaxPostTargetType postTargetType;
@@ -63,6 +66,25 @@ public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvi
             @SuppressWarnings("deprecation") final CompilerFilter filter,
             final Project project,
             final boolean forceBuild) {
-        return Collections.singletonList(CmdlineProtoUtil.createAllTargetsScope(this.postTargetType, forceBuild));
+
+        // Does any of the modules in the project have the Metaborg facet?
+        if (!ProjectFacetManager.getInstance(project).hasFacets(MetaborgFacet.ID)) {
+            // No, therefore we will not mess with the build.
+            return Collections.emptyList();
+        }
+
+        // Gather the target IDs (module names) of the target modules.
+        final List<String> targetIds = new ArrayList<>();
+        for (final Module module : baseScope.getAffectedModules()) {
+            final MetaborgFacet facet = MetaborgFacet.getInstance(module);
+            if (facet == null) continue;
+
+            targetIds.add(module.getName());
+        }
+
+        // Create a new TargetTypeBuildScope that uses the specified target type to build the target modules.
+        return Collections.singletonList(
+                CmdlineProtoUtil.createTargetsScope(this.postTargetType.getTypeId(), targetIds, forceBuild)
+        );
     }
 }

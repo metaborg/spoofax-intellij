@@ -36,7 +36,7 @@
     <idea-version since-build="143"/>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!--<compiler.buildTargetScopeProvider implementation="org.metaborg.intellij.jps.builders.SpoofaxBuildTargetScopeProvider"/>-->
+        <compiler.buildTargetScopeProvider implementation="org.metaborg.intellij.jps.builders.SpoofaxBuildTargetScopeProvider" />
         <facetType implementation="org.metaborg.intellij.idea.facets.MetaborgFacetType" />
         <sdkType implementation="org.metaborg.intellij.idea.sdks.MetaborgSdkType"/>
         <moduleType id="METABORG_MODULE" implementationClass="org.metaborg.intellij.idea.projects.MetaborgModuleType"/>

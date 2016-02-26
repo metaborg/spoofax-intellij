@@ -33,6 +33,17 @@ public class MetaborgFacet extends Facet {
     public static final FacetTypeId<MetaborgFacet> ID = new FacetTypeId<>(MetaborgFacetType.ID);
 
     /**
+     * Gets the {@link MetaborgFacet} that corresponds to the specified module.
+     *
+     * @param module The module.
+     * @return The facet; or <code>null</code> when the facet is not applied to the specified module.
+     */
+    @Nullable
+    public static MetaborgFacet getInstance(final Module module) {
+        return FacetManager.getInstance(module).getFacetByType(ID);
+    }
+
+    /**
      * Initializes a new instance of the {@link MetaborgFacet} class.
      *
      * @param facetType The facet type.

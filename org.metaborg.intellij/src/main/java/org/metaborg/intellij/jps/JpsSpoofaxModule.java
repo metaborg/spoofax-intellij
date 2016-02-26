@@ -64,6 +64,7 @@ import java.util.*;
         bindModuleType();
         bindLanguageSources();
         bindLanguageManagement();
+        bindBuilders();
     }
 
     /**
@@ -109,6 +110,7 @@ import java.util.*;
         bind(MetaborgApplicationConfigDeserializer.class).in(Singleton.class);
         bind(MetaborgProjectConfigDeserializer.class).in(Singleton.class);
         bind(MetaborgModuleConfigDeserializer.class).in(Singleton.class);
+        bind(MetaborgFacetConfigDeserializer.class).in(Singleton.class);
         bind(IMetaborgConfigService.class).to(DefaultMetaborgConfigService.class).in(Singleton.class);
 
         install(new FactoryModuleBuilder()
@@ -122,6 +124,10 @@ import java.util.*;
         install(new FactoryModuleBuilder()
                 .implement(JpsMetaborgModuleConfig.class, JpsMetaborgModuleConfig.class)
                 .build(IJpsMetaborgModuleConfigFactory.class));
+
+        install(new FactoryModuleBuilder()
+                .implement(JpsMetaborgModuleFacetConfig.class, JpsMetaborgModuleFacetConfig.class)
+                .build(IJpsMetaborgModuleFacetConfigFactory.class));
     }
 
     /**
@@ -183,6 +189,13 @@ import java.util.*;
         bind(IEditorRegistry.class).to(NullEditorRegistry.class).in(Singleton.class);
     }
 
+    /**
+     * Binds the builders.
+     */
+    protected void bindBuilders() {
+        bind(MetaborgLanguageBuilder.class).in(Singleton.class);
+    }
+
     @SuppressWarnings("unused")
     @Singleton
     @Provides
@@ -191,5 +204,14 @@ import java.util.*;
             final SpoofaxPreTargetType preTargetType,
             final SpoofaxPostTargetType postTargetType) {
         return Arrays.asList(preTargetType, postTargetType);
+    }
+
+    @SuppressWarnings("unused")
+    @Singleton
+    @Provides
+    @Inject
+    public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders(
+            final MetaborgLanguageBuilder languageBuilder) {
+        return Collections.singletonList(languageBuilder);
     }
 }
