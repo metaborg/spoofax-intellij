@@ -113,6 +113,23 @@ public interface ILanguageManager {
      *
      * @param components The components to unload.
      */
-    void unloadRange(Iterable<ILanguageComponent> components);
+    void unloadComponentRange(Iterable<ILanguageComponent> components);
 
+    /**
+     * Unloads language implementations.
+     *
+     * The implementations are not automatically deactivated.
+     *
+     * @param implementations The implementations to unload.
+     */
+    void unloadImplRange(Iterable<? extends ILanguageImpl> implementations);
+
+    /**
+     * Unloads languages.
+     *
+     * The languages are not automatically deactivated.
+     *
+     * @param languages The languages to unload.
+     */
+    void unloadRange(Iterable<ILanguage> languages);
 }

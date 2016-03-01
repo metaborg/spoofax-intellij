@@ -67,6 +67,14 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
         this.jpsSpoofaxMetaBuilder = jpsSpoofaxMetaBuilder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void buildStarted(final CompileContext context) {
+        this.logger.info("Build started!");
+    }
+
     @Override
     public ExitCode build(final CompileContext context, final ModuleChunk chunk,
                           final DirtyFilesHolder<JavaSourceRootDescriptor, ModuleBuildTarget> dirtyFilesHolder,
@@ -126,28 +134,30 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
     }
 
     private ExitCode buildModule(final JpsModule module, final CompileContext context) throws Exception {
-        final LanguageSpecBuildInput metaInput = this.jpsSpoofaxMetaBuilder.getLanguageSpecBuildInput(module);
+        final LanguageSpecBuildInput metaInput = this.jpsSpoofaxMetaBuilder.getProjectBuildInput(module);
 
-        @Nullable final JpsMetaborgApplicationConfig configuration
-                = this.extensionService.getGlobalConfiguration(context.getProjectDescriptor().getModel().getGlobal());
+//        @Nullable final JpsMetaborgApplicationConfig configuration
+//                = this.extensionService.getGlobalConfiguration(context.getProjectDescriptor().getModel().getGlobal());
+//
+//        if (configuration != null) {
+//            final Set<LanguageIdentifier> appLanguages = configuration.getLoadedLanguages();
+//            this.logger.debug("Loading application languages: {}", appLanguages);
+//            this.languageManager.discoverRange(appLanguages);
+//            this.logger.info("Loaded application languages: {}", appLanguages);
+//        } else {
+//            this.logger.warn("No application configuration found.");
+//        }
+//
+//        final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
+//        this.logger.debug("Loading module languages: {}", languages);
+//        this.languageManager.discoverRange(languages);
+//        this.logger.info("Loaded module languages: {}", languages);
 
-        if (configuration != null) {
-            final Set<LanguageIdentifier> appLanguages = configuration.getLoadedLanguages();
-            this.logger.debug("Loading application languages: {}", appLanguages);
-            this.languageManager.discoverRange(appLanguages);
-            this.logger.info("Loaded application languages: {}", appLanguages);
-        } else {
-            this.logger.warn("No application configuration found.");
-        }
-
-        final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
-        this.logger.debug("Loading module languages: {}", languages);
-        this.languageManager.discoverRange(languages);
-        this.logger.info("Loaded module languages: {}", languages);
-
+        this.jpsSpoofaxMetaBuilder.beforeBuild(metaInput, context);
         this.jpsSpoofaxMetaBuilder.regularBuild(metaInput, context);
+        this.jpsSpoofaxMetaBuilder.afterBuild(metaInput, context);
 
-        this.logger.info("MetaborgLanguageBuilder invoked.");
+//        this.logger.info("MetaborgLanguageBuilder invoked.");
         return ExitCode.OK;
 
     }
@@ -160,8 +170,8 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
 
     @Override
     public List<String> getCompilableFileExtensions() {
-        // TODO: Return list of all language extensions.
-        return Lists.newArrayList("str");
+        // We want all files.
+        return null;
     }
 
 }

@@ -89,23 +89,25 @@ public final class SpoofaxPreBuilder extends MetaborgMetaBuilder2<SpoofaxPreTarg
             final BuildOutputConsumer consumer,
             final CompileContext context) throws Exception {
 
-        @Nullable final JpsMetaborgApplicationConfig configuration = this.extensionService.getGlobalConfiguration(
-                context.getProjectDescriptor().getModel().getGlobal());
+//
+//        @Nullable final JpsMetaborgApplicationConfig configuration = this.extensionService.getGlobalConfiguration(
+//                context.getProjectDescriptor().getModel().getGlobal());
+//
+//        if (configuration != null) {
+//            final Set<LanguageIdentifier> appLanguages = configuration.getLoadedLanguages();
+//            this.logger.debug("Loading application languages: {}", appLanguages);
+//            this.languageManager.discoverRange(appLanguages);
+//            this.logger.info("Loaded application languages: {}", appLanguages);
+//        } else {
+//            this.logger.warn("No application configuration found.");
+//        }
+//
+//        final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
+//        this.logger.debug("Loading module languages: {}", languages);
+//        this.languageManager.discoverRange(languages);
+//        this.logger.info("Loaded module languages: {}", languages);
 
-        if (configuration != null) {
-            final Set<LanguageIdentifier> appLanguages = configuration.getLoadedLanguages();
-            this.logger.debug("Loading application languages: {}", appLanguages);
-            this.languageManager.discoverRange(appLanguages);
-            this.logger.info("Loaded application languages: {}", appLanguages);
-        } else {
-            this.logger.warn("No application configuration found.");
-        }
-
-        final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
-        this.logger.debug("Loading module languages: {}", languages);
-        this.languageManager.discoverRange(languages);
-        this.logger.info("Loaded module languages: {}", languages);
-
+        this.jpsSpoofaxMetaBuilder.beforeBuild(metaInput, context);
         this.jpsSpoofaxMetaBuilder.clean(metaInput, context);
         this.jpsSpoofaxMetaBuilder.initialize(metaInput, context);
         this.jpsSpoofaxMetaBuilder.generateSources(metaInput, context);

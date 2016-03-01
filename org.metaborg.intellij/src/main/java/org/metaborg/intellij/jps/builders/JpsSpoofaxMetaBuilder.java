@@ -20,7 +20,9 @@
 package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
+import org.apache.commons.lang3.*;
 import org.apache.commons.vfs2.*;
+import org.jetbrains.annotations.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
 import org.jetbrains.jps.model.module.*;
@@ -29,10 +31,14 @@ import org.metaborg.core.action.*;
 import org.metaborg.core.build.*;
 import org.metaborg.core.build.dependency.*;
 import org.metaborg.core.build.paths.*;
+import org.metaborg.core.language.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.processing.*;
 import org.metaborg.core.project.*;
+import org.metaborg.intellij.idea.languages.*;
+import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.jps.projects.*;
+import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.spoofax.core.processing.*;
@@ -45,11 +51,15 @@ import org.metaborg.util.log.*;
 import org.spoofax.interpreter.terms.*;
 
 import javax.annotation.*;
+import javax.annotation.Nullable;
 import java.io.*;
+import java.util.*;
 
 public final class JpsSpoofaxMetaBuilder {
 
     private final SpoofaxMetaBuilder builder;
+    private final ILanguageManager languageManager;
+    private final IMetaborgConfigService extensionService;
     private final ILanguagePathService languagePathService;
     private final IDependencyService dependencyService;
     private final SpoofaxProcessorRunner processorRunner;
@@ -64,6 +74,8 @@ public final class JpsSpoofaxMetaBuilder {
     @Inject
     public JpsSpoofaxMetaBuilder(
             final SpoofaxMetaBuilder builder,
+            final ILanguageManager languageManager,
+            final IMetaborgConfigService extensionService,
             final ILanguagePathService languagePathService,
             final IDependencyService dependencyService,
             final SpoofaxProcessorRunner processorRunner,
@@ -74,6 +86,8 @@ public final class JpsSpoofaxMetaBuilder {
             final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService
     ) {
         this.builder = builder;
+        this.languageManager = languageManager;
+        this.extensionService = extensionService;
         this.languagePathService = languagePathService;
         this.dependencyService = dependencyService;
         this.processorRunner = processorRunner;
@@ -85,13 +99,63 @@ public final class JpsSpoofaxMetaBuilder {
     }
 
     /**
+     * Executes any before-build tasks.
+     *
+     * @param metaInput The meta build input.
+     * @param context   The compile context.
+     * @throws ProjectBuildException
+     */
+    public void beforeBuild(final LanguageSpecBuildInput metaInput,
+                            final CompileContext context)
+            throws ProjectBuildException {
+
+        try {
+
+            @Nullable final JpsMetaborgApplicationConfig configuration
+                    = this.extensionService.getGlobalConfiguration(context.getProjectDescriptor().getModel().getGlobal());
+
+            if (configuration != null) {
+                final Set<LanguageIdentifier> appLanguages = configuration.getLoadedLanguages();
+                this.logger.debug("Loading application languages: {}", appLanguages);
+                this.languageManager.discoverRange(appLanguages);
+                this.logger.info("Loaded application languages: {}", appLanguages);
+            } else {
+                this.logger.warn("No application configuration found.");
+            }
+
+            final Collection<LanguageIdentifier> languages = metaInput.config.compileDependencies();
+            this.logger.debug("Loading module languages: {}", languages);
+            this.languageManager.discoverRange(languages);
+            this.logger.info("Loaded module languages: {}", languages);
+
+        } catch (final LanguageLoadingFailedException e) {
+            throw new ProjectBuildException("Loading languages failed.", e);
+        }
+    }
+
+    /**
+     * Executes any after-build tasks.
+     *
+     * @param metaInput The meta build input.
+     * @param context   The compile context.
+     * @throws ProjectBuildException
+     */
+    public void afterBuild(final LanguageSpecBuildInput metaInput,
+                           final CompileContext context)
+            throws ProjectBuildException {
+
+        this.languageManager.unloadRange(this.languageManager.getLoadedLanguages());
+
+    }
+
+    /**
      * Executes the initialize meta-build step.
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
      * @throws ProjectBuildException
      */
-    protected void clean(final LanguageSpecBuildInput metaInput,
+    public void clean(final LanguageSpecBuildInput metaInput,
                          final CompileContext context) throws
             ProjectBuildException {
         try {
@@ -115,7 +179,7 @@ public final class JpsSpoofaxMetaBuilder {
      * @param context   The compile context.
      * @throws ProjectBuildException
      */
-    protected void initialize(final LanguageSpecBuildInput metaInput,
+    public void initialize(final LanguageSpecBuildInput metaInput,
                               final CompileContext context) throws
             ProjectBuildException {
         try {
@@ -142,7 +206,7 @@ public final class JpsSpoofaxMetaBuilder {
      * @throws Exception
      * @throws ProjectBuildException
      */
-    protected void generateSources(
+    public void generateSources(
             final LanguageSpecBuildInput metaInput,
             final CompileContext context) throws Exception {
         try {
@@ -173,7 +237,7 @@ public final class JpsSpoofaxMetaBuilder {
      * @throws Exception
      * @throws ProjectBuildException
      */
-    protected void regularBuild(
+    public void regularBuild(
             final LanguageSpecBuildInput metaInput,
             final CompileContext context) throws Exception {
 
@@ -234,7 +298,7 @@ public final class JpsSpoofaxMetaBuilder {
      * @throws Exception
      * @throws ProjectBuildException
      */
-    protected void compilePreJava(
+    public void compilePreJava(
             final LanguageSpecBuildInput metaInput,
             final CompileContext context) throws Exception {
 
@@ -258,7 +322,7 @@ public final class JpsSpoofaxMetaBuilder {
      * @throws Exception
      * @throws ProjectBuildException
      */
-    protected void compilePostJava(
+    public void compilePostJava(
             final LanguageSpecBuildInput metaInput,
             final CompileContext context) throws Exception {
 
@@ -308,7 +372,23 @@ public final class JpsSpoofaxMetaBuilder {
     }
 
     /**
-     * Gets the build input.
+     * Gets the build input for a normal project.
+     *
+     * @param module The JPS module.
+     * @return The build input.
+     * @throws ProjectBuildException
+     * @throws IOException
+     */
+    public LanguageSpecBuildInput getProjectBuildInput(final JpsModule module)
+            throws ProjectBuildException, IOException {
+
+        // TODO: Return ProjectBuildInput or something.
+
+        throw LoggerUtils.exception(this.logger, NotImplementedException.class);
+    }
+
+    /**
+     * Gets the build input for a language specification.
      *
      * @param module The JPS module.
      * @return The build input.

@@ -672,7 +672,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         final Collection<ILanguageComponent> oldComponents = project.getComponents();
 
         deactivateRange(LanguageUtils2.getLanguagesOfComponents(oldComponents));
-        unloadRange(oldComponents);
+        unloadComponentRange(oldComponents);
         project.setComponents(Collections.emptyList());
     }
 

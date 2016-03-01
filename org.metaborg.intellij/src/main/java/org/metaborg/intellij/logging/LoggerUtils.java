@@ -80,6 +80,32 @@ public final class LoggerUtils {
      *
      * @param logger The logger to use.
      * @param exceptionClass The class of exception to create.
+     * @param <T> The type of exception.
+     * @return The exception object.
+     */
+    public static <T extends Throwable> T exception(final ILogger logger, final Class<T> exceptionClass) {
+        return exception(logger, exceptionClass, "An exception occurred.", (Throwable)null);
+    }
+
+    /**
+     * Creates an exception and logs it as an error.
+     *
+     * @param logger The logger to use.
+     * @param exceptionClass The class of exception to create.
+     * @param t The throwable that caused the exception.
+     * @param <T> The type of exception.
+     * @return The exception object.
+     */
+    public static <T extends Throwable> T exception(final ILogger logger, final Class<T> exceptionClass,
+                                                    @Nullable final Throwable t) {
+        return exception(logger, exceptionClass, "An exception occurred.", t);
+    }
+
+    /**
+     * Creates an exception and logs it as an error.
+     *
+     * @param logger The logger to use.
+     * @param exceptionClass The class of exception to create.
      * @param msg The exception message.
      * @param <T> The type of exception.
      * @return The exception object.

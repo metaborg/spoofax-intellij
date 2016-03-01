@@ -47,6 +47,8 @@ import java.util.*;
     protected void bindBuilders() {
         bind(JpsSpoofaxMetaBuilder.class).in(Singleton.class);
 
+        bind(MetaborgLanguageBuilder.class).in(Singleton.class);
+
         bind(SpoofaxPreBuilder.class).in(Singleton.class);
         bind(SpoofaxPostBuilder.class).in(Singleton.class);
     }
@@ -59,5 +61,15 @@ import java.util.*;
             final SpoofaxPreBuilder preBuilder,
             final SpoofaxPostBuilder postBuilder) {
         return Arrays.asList(preBuilder, postBuilder);
+    }
+
+
+    @SuppressWarnings("unused")
+    @Singleton
+    @Provides
+    @Inject
+    public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders(
+            final MetaborgLanguageBuilder languageBuilder) {
+        return Collections.singletonList(languageBuilder);
     }
 }

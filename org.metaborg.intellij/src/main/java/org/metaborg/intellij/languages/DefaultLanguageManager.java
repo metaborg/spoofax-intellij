@@ -172,9 +172,29 @@ public class DefaultLanguageManager implements ILanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public void unloadRange(final Iterable<ILanguageComponent> components) {
+    public void unloadComponentRange(final Iterable<ILanguageComponent> components) {
         for (final ILanguageComponent component : components) {
             unload(component);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unloadImplRange(final Iterable<? extends ILanguageImpl> impls) {
+        for (final ILanguageImpl impl : impls) {
+            unloadComponentRange(impl.components());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unloadRange(final Iterable<ILanguage> languages) {
+        for (final ILanguage language : languages) {
+            unloadImplRange(language.impls());
         }
     }
 

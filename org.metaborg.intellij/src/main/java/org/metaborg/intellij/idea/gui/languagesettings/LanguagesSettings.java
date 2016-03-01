@@ -171,7 +171,7 @@ public abstract class LanguagesSettings extends BaseConfigurable {
         WriteCommandAction.runWriteCommandAction(this.project, () -> {
             this.languageManager.deactivateRange(LanguageUtils2.getLanguagesOfComponents(components));
         });
-        this.languageManager.unloadRange(components);
+        this.languageManager.unloadComponentRange(components);
     }
 
     /**

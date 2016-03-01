@@ -74,6 +74,14 @@ public final class SpoofaxPostBuilder extends MetaborgMetaBuilder2<SpoofaxPostTa
      * {@inheritDoc}
      */
     @Override
+    public void buildStarted(final CompileContext context) {
+        this.logger.info("Build started!");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void doBuild(
             final LanguageSpecBuildInput metaInput,
             final SpoofaxPostTarget target,
@@ -82,6 +90,7 @@ public final class SpoofaxPostBuilder extends MetaborgMetaBuilder2<SpoofaxPostTa
             final CompileContext context) throws Exception {
 
         this.jpsSpoofaxMetaBuilder.compilePostJava(metaInput, context);
+        this.jpsSpoofaxMetaBuilder.afterBuild(metaInput, context);
 
     }
 

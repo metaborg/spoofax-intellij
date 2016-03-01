@@ -193,7 +193,6 @@ import java.util.*;
      * Binds the builders.
      */
     protected void bindBuilders() {
-        bind(MetaborgLanguageBuilder.class).in(Singleton.class);
     }
 
     @SuppressWarnings("unused")
@@ -204,14 +203,5 @@ import java.util.*;
             final SpoofaxPreTargetType preTargetType,
             final SpoofaxPostTargetType postTargetType) {
         return Arrays.asList(preTargetType, postTargetType);
-    }
-
-    @SuppressWarnings("unused")
-    @Singleton
-    @Provides
-    @Inject
-    public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders(
-            final MetaborgLanguageBuilder languageBuilder) {
-        return Collections.singletonList(languageBuilder);
     }
 }
