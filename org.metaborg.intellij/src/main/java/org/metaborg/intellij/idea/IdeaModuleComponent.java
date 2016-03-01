@@ -20,28 +20,23 @@
 package org.metaborg.intellij.idea;
 
 import com.google.inject.*;
-import com.intellij.openapi.application.*;
 import com.intellij.openapi.command.*;
-import com.intellij.openapi.components.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.*;
-import com.intellij.openapi.vfs.*;
 import org.apache.commons.vfs2.*;
 import org.jetbrains.annotations.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
-import org.metaborg.core.project.configuration.*;
-import org.metaborg.intellij.configuration.*;
+import org.metaborg.core.source.*;
 import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.projects.*;
 import org.metaborg.intellij.resources.*;
+import org.metaborg.meta.core.project.*;
+import org.metaborg.spoofax.meta.core.config.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.Nullable;
-import java.util.*;
 
 /**
  * Module-level component.
@@ -53,9 +48,11 @@ public final class IdeaModuleComponent implements ModuleComponent {
     private IIdeaProjectService projectService;
     private IIdeaProjectFactory projectFactory;
     private IIdeaLanguageManager languageManager;
+    private ISourceTextService sourceTextService;
     private ILanguageSpecService languageSpecService;
     private IIntelliJResourceService resourceService;
     private ConfigurationUtils configurationUtils;
+    private ISpoofaxLanguageSpecConfigService configService;
     @InjectLogger
     private ILogger logger;
 
@@ -77,7 +74,9 @@ public final class IdeaModuleComponent implements ModuleComponent {
             final IIntelliJResourceService resourceService,
             final ILanguageSpecService languageSpecService,
             final ConfigurationUtils configurationUtils,
-            final ProjectUtils projectUtils) {
+            final ProjectUtils projectUtils,
+            final ISourceTextService sourceTextService,
+            final ISpoofaxLanguageSpecConfigService configService) {
         this.projectService = projectService;
         this.projectFactory = projectFactory;
         this.languageManager = languageManager;
@@ -85,6 +84,8 @@ public final class IdeaModuleComponent implements ModuleComponent {
         this.languageSpecService = languageSpecService;
         this.configurationUtils = configurationUtils;
         this.projectUtils = projectUtils;
+        this.sourceTextService = sourceTextService;
+        this.configService = configService;
     }
 
     /**
@@ -115,9 +116,9 @@ public final class IdeaModuleComponent implements ModuleComponent {
                 this.projectUtils.getCompileDependencies(project));
 
         WriteCommandAction.runWriteCommandAction(this.module.getProject(), () -> {
-            if (project instanceof IdeaLanguageSpecProject) {
+            if (project instanceof IdeaLanguageSpec) {
                 this.logger.debug("Loading languages of language specification: {}", project);
-                this.languageManager.loadLanguageSpec((IdeaLanguageSpecProject)project);
+                this.languageManager.loadLanguageSpec((IdeaLanguageSpec)project);
             } else {
                 this.logger.debug("Module skipped as it's not a language specification project: {}", this.module);
             }
@@ -176,12 +177,11 @@ public final class IdeaModuleComponent implements ModuleComponent {
      */
     @Nullable
     private IdeaProject registerModule() {
-        @Nullable final FileObject root = getRootDirectory(this.module);
-        if (root == null)
+        @Nullable final FileObject rootFolder = getRootDirectory(this.module);
+        if (rootFolder == null)
             return null;
-        final IdeaProject project = this.projectFactory.create(this.module, root);
-        this.projectService.open(project);
-        return project;
+
+        return this.projectService.open(this.module, rootFolder);
     }
 
     /**

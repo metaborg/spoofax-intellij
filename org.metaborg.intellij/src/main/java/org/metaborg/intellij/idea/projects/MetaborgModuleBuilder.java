@@ -24,14 +24,13 @@ import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.*;
 import com.intellij.openapi.application.*;
 import com.intellij.openapi.command.*;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.*;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.*;
-import com.intellij.openapi.roots.libraries.*;
 import com.intellij.openapi.roots.ui.configuration.*;
 import com.intellij.openapi.startup.*;
 import com.intellij.openapi.util.*;
@@ -49,10 +48,10 @@ import org.metaborg.intellij.idea.sdks.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
-import org.metaborg.spoofax.core.project.*;
-import org.metaborg.spoofax.core.project.configuration.*;
-import org.metaborg.spoofax.generator.language.*;
-import org.metaborg.spoofax.generator.project.*;
+import org.metaborg.spoofax.meta.core.config.*;
+import org.metaborg.spoofax.meta.core.generator.*;
+import org.metaborg.spoofax.meta.core.generator.language.*;
+import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
 
 import javax.swing.*;
@@ -65,13 +64,14 @@ import java.util.*;
 @Singleton
 public final class MetaborgModuleBuilder extends ModuleBuilder implements SourcePathsBuilder {
 
-    private final IIntelliJResourceService resourceService;
     private final IIdeaProjectFactory projectFactory;
+    private final IIdeaLanguageSpecFactory languageSpecFactory;
+    private final IdeaLanguageSpecService languageSpecService;
+    private final IIntelliJResourceService resourceService;
     private final IIdeaProjectService projectService;
     private final IIconManager iconManager;
     private final INewModuleWizardStepFactory wizardStepFactory;
     private final ISpoofaxLanguageSpecConfigBuilder configBuilder;
-    private final ISpoofaxLanguageSpecPathsService pathsService;
     private final MetaborgModuleType moduleType;
     @InjectLogger
     private ILogger logger;
@@ -139,19 +139,21 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
     @Inject
     private MetaborgModuleBuilder(
-            final IIntelliJResourceService resourceService,
             final IIdeaProjectFactory projectFactory,
+            final IIdeaLanguageSpecFactory languageSpecFactory,
+            final IdeaLanguageSpecService languageSpecService,
+            final IIntelliJResourceService resourceService,
             final IIdeaProjectService projectService,
-            final ISpoofaxLanguageSpecPathsService pathsService,
             final ISpoofaxLanguageSpecConfigBuilder configBuilder,
             final INewModuleWizardStepFactory wizardStepFactory,
             final IIconManager iconManager,
             final MetaborgModuleType moduleType) {
         super();
-        this.resourceService = resourceService;
         this.projectFactory = projectFactory;
+        this.languageSpecFactory = languageSpecFactory;
+        this.languageSpecService = languageSpecService;
+        this.resourceService = resourceService;
         this.projectService = projectService;
-        this.pathsService = pathsService;
         this.configBuilder = configBuilder;
         this.wizardStepFactory = wizardStepFactory;
         this.iconManager = iconManager;
@@ -250,11 +252,37 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             // Generate the module structure (files and directories).
             final FileObject location = MetaborgModuleBuilder.
                     this.resourceService.resolve(getContentEntryPath());
-            final IdeaLanguageSpecProject ideaProject = MetaborgModuleBuilder.
-                    this.projectFactory.create(module,location);
-            MetaborgModuleBuilder.this.projectService.open(ideaProject);
+
+            final String name = getName();
+            final LanguageIdentifier identifier = getLanguageIdentifier();
+
+            final ISpoofaxLanguageSpecConfig config = this.configBuilder
+                    .reset()
+                    .withIdentifier(identifier)
+                    .withName(name)
+                    .build(location);
+
+            final SpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(location, config);
+
+//            // TODO: Use ISpoofaxLanguageSpecPathsService instead.
+//            final ISpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(location, config);
+
+//            final IdeaProject ideaProject = this.projectFactory.create(module, location, config);
+//            final IdeaProject ideaProject = this.projectService.create(module, location);
+
+//            @Nullable final ISpoofaxLanguageSpec languageSpec;
+//            try {
+//                languageSpec = this.languageSpecService.get(ideaProject);
+//            } catch (final ConfigException ex) {
+//                throw new UnhandledException(ex);
+//            }
+//            assert languageSpec != null;
+
+            final IdeaLanguageSpec languageSpec = this.languageSpecFactory.create(module, location, config, paths);
+
+            MetaborgModuleBuilder.this.projectService.open(languageSpec);
             WriteCommandAction.runWriteCommandAction(
-                    project, "Create new Spoofax module", null, () -> generateModuleStructure(ideaProject));
+                    project, "Create new Spoofax module", null, () -> generateModuleStructure(languageSpec));
             MetaborgModuleBuilder.this.logger.info("Generated project files.");
         });
 
@@ -319,30 +347,20 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      * @param languageSpec The language specification.
      */
     private void generateModuleStructure(
-            final ILanguageSpec languageSpec) {
-        final String name = getName();
-        final LanguageIdentifier identifier = getLanguageIdentifier();
+            final ISpoofaxLanguageSpec languageSpec) {
 
         try {
-            final ISpoofaxLanguageSpecConfig config = this.configBuilder
-                    .reset()
-                    .withIdentifier(identifier)
-                    .withName(name)
-                    .build(languageSpec.location());
-
-            // TODO: Use ISpoofaxLanguageSpecPathsService instead.
-            final ISpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(languageSpec.location(), config);
-            final LanguageSpecGeneratorScope scope = new LanguageSpecGeneratorScope(config, paths);
+            final GeneratorSettings settings = new GeneratorSettings(languageSpec.config(), languageSpec.paths());
 //            // TODO: Get from SDK.
 //            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
             // FIXME: Factory?
-            final NewLanguageSpecGenerator newGenerator = new NewLanguageSpecGenerator(
-                    scope,
+            final LanguageSpecGenerator newGenerator = new LanguageSpecGenerator(
+                    settings,
                     new String[]{getExtension()}
             );
             newGenerator.generateAll();
             // FIXME: Factory?
-            final LanguageSpecGenerator generator = new LanguageSpecGenerator(scope);
+            final ContinuousLanguageSpecGenerator generator = new ContinuousLanguageSpecGenerator(settings);
             generator.generateAll();
 
 //            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.

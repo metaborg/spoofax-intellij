@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea.projects;
 
 import com.intellij.openapi.module.*;
 import com.intellij.psi.*;
+import org.apache.commons.vfs2.*;
 import org.metaborg.core.project.*;
 
 import javax.annotation.*;
@@ -29,6 +30,24 @@ import javax.annotation.*;
  * Project service for IntelliJ IDEA.
  */
 public interface IIdeaProjectService extends IProjectService {
+
+//    /**
+//     * Creates a new project.
+//     *
+//     * The project is not opened.
+//     *
+//     * @return The project.
+//     */
+//    IdeaProject create(Module module, final FileObject rootFolder);
+
+    /**
+     * Indicates to the project service that a Spoofax project was opened.
+     *
+     * @param module The module.
+     * @param rootFolder The root folder of the project.
+     * @return The project that was opened.
+     */
+    IdeaProject open(Module module, FileObject rootFolder);
 
     /**
      * Indicates to the project service that a Spoofax project was opened.

@@ -20,23 +20,13 @@
 package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
-import org.apache.commons.vfs2.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
-import org.metaborg.core.build.dependency.*;
-import org.metaborg.core.build.paths.*;
-import org.metaborg.core.project.*;
-import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.jps.projects.*;
-import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.spoofax.core.processing.*;
-import org.metaborg.spoofax.core.project.*;
-import org.metaborg.spoofax.core.project.configuration.*;
-import org.metaborg.spoofax.meta.core.*;
+import org.metaborg.spoofax.meta.core.build.*;
+import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
-
-import java.io.*;
 
 /**
  * Builder executed after Java compilation.
@@ -54,12 +44,9 @@ public final class SpoofaxPostBuilder extends MetaborgMetaBuilder2<SpoofaxPostTa
     private SpoofaxPostBuilder(
             final SpoofaxPostTargetType targetType,
             final IJpsProjectService projectService,
-            final ILanguageSpecService languageSpecService,
-            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService,
-            final ISpoofaxLanguageSpecPathsService pathsService,
+            final ISpoofaxLanguageSpecService languageSpecService,
             final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder) {
-        super(targetType, jpsSpoofaxMetaBuilder, projectService, languageSpecService, pathsService,
-                spoofaxLanguageSpecConfigService);
+        super(targetType, jpsSpoofaxMetaBuilder, projectService, languageSpecService);
     }
 
     /**
@@ -91,7 +78,6 @@ public final class SpoofaxPostBuilder extends MetaborgMetaBuilder2<SpoofaxPostTa
 
         this.jpsSpoofaxMetaBuilder.compilePostJava(metaInput, context);
         this.jpsSpoofaxMetaBuilder.afterBuild(metaInput, context);
-
     }
 
 }

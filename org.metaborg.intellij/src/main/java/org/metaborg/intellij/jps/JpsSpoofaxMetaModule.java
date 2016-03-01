@@ -20,8 +20,12 @@
 package org.metaborg.intellij.jps;
 
 import com.google.inject.*;
+import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
+import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.builders.*;
+import org.metaborg.intellij.jps.projects.*;
+import org.metaborg.intellij.projects.*;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
 
 import java.util.*;
@@ -39,6 +43,7 @@ import java.util.*;
         super.configure();
 
         bindBuilders();
+        bindMetaProject();
     }
 
     /**
@@ -51,6 +56,16 @@ import java.util.*;
 
         bind(SpoofaxPreBuilder.class).in(Singleton.class);
         bind(SpoofaxPostBuilder.class).in(Singleton.class);
+    }
+
+    /**
+     * Bind meta project classes.
+     */
+    protected void bindMetaProject() {
+        bind(JpsProjectService.class).in(Singleton.class);
+        bind(IProjectService.class).to(JpsProjectService.class).in(Singleton.class);
+        bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
+        bind(ProjectUtils.class).in(Singleton.class);
     }
 
     @SuppressWarnings("unused")
@@ -71,5 +86,15 @@ import java.util.*;
     public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders(
             final MetaborgLanguageBuilder languageBuilder) {
         return Collections.singletonList(languageBuilder);
+    }
+
+    @SuppressWarnings("unused")
+    @Singleton
+    @Provides
+    @Inject
+    public final Collection<BuildTargetType<?>> provideTargetTypes(
+            final SpoofaxPreTargetType preTargetType,
+            final SpoofaxPostTargetType postTargetType) {
+        return Arrays.asList(preTargetType, postTargetType);
     }
 }

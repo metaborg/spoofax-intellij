@@ -19,17 +19,9 @@
 
 package org.metaborg.intellij.languages;
 
-import com.google.common.collect.*;
-import com.intellij.openapi.vfs.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.core.*;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.logging.*;
 
-import java.io.*;
 import java.util.Collection;
 
 /**

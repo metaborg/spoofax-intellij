@@ -19,11 +19,12 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import org.metaborg.core.language.*;
-import org.metaborg.core.project.configuration.*;
+import javax.annotation.Nullable;
+import javax.swing.Icon;
 
-import javax.annotation.*;
-import javax.swing.*;
+import org.metaborg.core.config.ILanguageComponentConfig;
+import org.metaborg.core.language.ILanguageDiscoveryRequest;
+import org.metaborg.core.language.LanguageVersion;
 
 /**
  * A language request node.

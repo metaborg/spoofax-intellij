@@ -118,10 +118,6 @@ dependencies {
         exclude group: 'org.slf4j'
         exclude group: 'com.google.guava'
     }
-    compile('org.metaborg:org.metaborg.spoofax.generator:2.0.0-SNAPSHOT') {
-        exclude group: 'org.slf4j'
-        exclude group: 'com.google.guava'
-    }
     compile('org.metaborg:org.metaborg.spoofax.meta.core:2.0.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
         exclude group: 'com.google.guava'

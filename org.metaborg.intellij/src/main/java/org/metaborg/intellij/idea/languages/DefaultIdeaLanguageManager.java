@@ -659,7 +659,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      * {@inheritDoc}
      */
     @Override
-    public void reloadLanguageSpec(final IdeaLanguageSpecProject project) {
+    public void reloadLanguageSpec(final IdeaLanguageSpec project) {
         unloadLanguageSpec(project);
         loadLanguageSpec(project);
     }
@@ -668,7 +668,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      * {@inheritDoc}
      */
     @Override
-    public void unloadLanguageSpec(final IdeaLanguageSpecProject project) {
+    public void unloadLanguageSpec(final IdeaLanguageSpec project) {
         final Collection<ILanguageComponent> oldComponents = project.getComponents();
 
         deactivateRange(LanguageUtils2.getLanguagesOfComponents(oldComponents));
@@ -680,7 +680,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      * {@inheritDoc}
      */
     @Override
-    public void loadLanguageSpec(final IdeaLanguageSpecProject project) {
+    public void loadLanguageSpec(final IdeaLanguageSpec project) {
         final Iterable<ILanguageDiscoveryRequest> requests;
         try {
             requests = this.discoveryService.request(project.location());

@@ -137,20 +137,20 @@ public interface IIdeaLanguageManager extends ILanguageManager {
      *
      * @param project The project.
      */
-    void reloadLanguageSpec(final IdeaLanguageSpecProject project);
+    void reloadLanguageSpec(final IdeaLanguageSpec project);
 
     /**
      * Unloads the languages of the specified language specification project.
      *
      * @param project The project.
      */
-    void unloadLanguageSpec(final IdeaLanguageSpecProject project);
+    void unloadLanguageSpec(final IdeaLanguageSpec project);
 
     /**
      * Loads the languages of the specified language specification project.
      *
      * @param project The project.
      */
-    void loadLanguageSpec(final IdeaLanguageSpecProject project);
+    void loadLanguageSpec(final IdeaLanguageSpec project);
 
 }

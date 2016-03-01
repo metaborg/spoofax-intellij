@@ -19,13 +19,11 @@
 
 package org.metaborg.intellij.idea;
 
-import com.google.common.collect.*;
 import com.google.inject.*;
 import com.intellij.openapi.compiler.*;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.*;
 import org.jetbrains.annotations.*;
-import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.compilation.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;

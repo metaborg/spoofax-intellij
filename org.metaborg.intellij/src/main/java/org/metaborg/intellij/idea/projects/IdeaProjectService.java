@@ -26,6 +26,9 @@ import com.intellij.openapi.project.*;
 import com.intellij.openapi.vfs.*;
 import com.intellij.psi.*;
 import org.apache.commons.vfs2.*;
+import org.metaborg.core.config.*;
+import org.metaborg.core.messages.*;
+import org.metaborg.core.source.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.resources.*;
 import org.metaborg.util.log.*;
@@ -38,14 +41,53 @@ import java.util.*;
  */
 public final class IdeaProjectService implements IIdeaProjectService {
 
+    private final IProjectConfigService projectConfigService;
+    private final ISourceTextService sourceTextService;
+    private final IIdeaProjectFactory projectFactory;
     private final IIntelliJResourceService resourceService;
     private final Map<Module, IdeaProject> modules = new HashMap<>();
     @InjectLogger
     private ILogger logger;
 
     @Inject
-    private IdeaProjectService(final IIntelliJResourceService resourceService) {
+    private IdeaProjectService(final IProjectConfigService projectConfigService,
+                               final ISourceTextService sourceTextService,
+                               final IIdeaProjectFactory projectFactory,
+                               final IIntelliJResourceService resourceService) {
+        this.projectConfigService = projectConfigService;
+        this.sourceTextService = sourceTextService;
+        this.projectFactory = projectFactory;
         this.resourceService = resourceService;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IdeaProject open(final Module module, final FileObject rootFolder) {
+
+        final ConfigRequest<IProjectConfig> configRequest = this.projectConfigService.get(rootFolder);
+        if(!configRequest.valid()) {
+            this.logger.error(
+                    "Errors occurred when retrieving project configuration from project directory {}", rootFolder);
+            configRequest.reportErrors(new StreamMessagePrinter(this.sourceTextService, false, false, this.logger));
+            return null;
+        }
+
+        @Nullable final IProjectConfig config = configRequest.config();
+        if(config == null) {
+            // Configuration should never be null if it is available, but sanity check anyway.
+            this.logger.error(
+                    "Could not get the configuration of the project {}",
+                    rootFolder);
+            return null;
+        }
+
+        final IdeaProject ideaProject = this.projectFactory.create(module, rootFolder, config);
+
+        open(ideaProject);
+
+        return ideaProject;
     }
 
     /**

@@ -23,18 +23,13 @@ import com.google.inject.*;
 import com.intellij.openapi.application.*;
 import com.intellij.openapi.compiler.*;
 import com.intellij.openapi.module.Module;
-import org.metaborg.core.*;
 import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
-import java.util.*;
 
 /**
  * Reloads the project's languages after compile.
@@ -71,9 +66,9 @@ public final class ReloadLanguageCompileTask implements IAfterCompileTask {
 
             for (final Module module : affectedModules) {
                 @Nullable final IdeaProject project = this.projectService.get(module);
-                if (project instanceof IdeaLanguageSpecProject) {
+                if (project instanceof IdeaLanguageSpec) {
                     this.logger.debug("Reloading languages of language specification: {}", project);
-                    this.languageManager.reloadLanguageSpec((IdeaLanguageSpecProject)project);
+                    this.languageManager.reloadLanguageSpec((IdeaLanguageSpec)project);
                 } else {
                     this.logger.debug("Module skipped as it's not a language specification project: {}", module);
                 }

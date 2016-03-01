@@ -25,7 +25,6 @@ import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.jps.configuration.*;
 
 import javax.annotation.*;
-import java.io.*;
 import java.util.*;
 
 /**

@@ -19,20 +19,28 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.intellij.openapi.module.Module;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
+import java.util.Collection;
+import java.util.Collections;
 
-import java.util.*;
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.language.ILanguageComponent;
+import org.metaborg.meta.core.config.ILanguageSpecConfig;
+import org.metaborg.meta.core.project.ILanguageSpecPaths;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecPaths;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.openapi.module.Module;
 
 /**
  * An IntelliJ IDEA language specification project.
  */
-public class IdeaLanguageSpecProject extends IdeaProject implements ILanguageSpec {
-
+public class IdeaLanguageSpec extends IdeaProject implements ISpoofaxLanguageSpec {
+    private final ISpoofaxLanguageSpecConfig config;
+    private final ISpoofaxLanguageSpecPaths paths;
+    
     private Collection<ILanguageComponent> components = Collections.emptyList();
 
     /**
@@ -49,14 +57,27 @@ public class IdeaLanguageSpecProject extends IdeaProject implements ILanguageSpe
      *
      * @param components The contributed language components.
      */
-    public void setComponents(Collection<ILanguageComponent> components) {
+    public void setComponents(final Collection<ILanguageComponent> components) {
         this.components = components;
     }
 
     @Inject
-    /* package private */ IdeaLanguageSpecProject(
+    /* package private */ IdeaLanguageSpec(
             @Assisted final Module module,
-            @Assisted final FileObject location) {
-        super(module, location);
+            @Assisted final FileObject location,
+            @Assisted final ISpoofaxLanguageSpecConfig config,
+            @Assisted final ISpoofaxLanguageSpecPaths paths) {
+        super(module, location, config);
+        this.config = config;
+        this.paths = paths;
     }
+
+    @Override public ISpoofaxLanguageSpecConfig config() {
+        return this.config;
+    }
+
+    @Override public ISpoofaxLanguageSpecPaths paths() {
+        return this.paths;
+    }
+
 }

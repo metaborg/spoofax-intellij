@@ -19,24 +19,37 @@
 
 package org.metaborg.intellij.idea.actions;
 
-import com.google.inject.*;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.editor.*;
-import com.intellij.openapi.fileEditor.*;
-import com.intellij.openapi.vfs.*;
-import com.intellij.psi.*;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.idea.transformations.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.resources.*;
-import org.metaborg.util.log.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.language.ILanguageIdentifierService;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.project.IProject;
+import org.metaborg.intellij.idea.projects.IIdeaProjectService;
+import org.metaborg.intellij.idea.transformations.TransformResource;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.util.log.ILogger;
+
+import com.google.inject.Inject;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.Anchor;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.Constraints;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 
 /**
  * Utility functions for working with IntelliJ IDEA actions.
@@ -45,7 +58,6 @@ public final class ActionUtils {
 
     private final IIntelliJResourceService resourceService;
     private final IIdeaProjectService projectService;
-    private final ILanguageSpecService languageSpecService;
     private final ILanguageIdentifierService identifierService;
     @InjectLogger
     private ILogger logger;
@@ -54,11 +66,9 @@ public final class ActionUtils {
     public ActionUtils(
             final IIntelliJResourceService resourceService,
             final IIdeaProjectService projectService,
-            final ILanguageSpecService languageSpecService,
             final ILanguageIdentifierService identifierService) {
         this.resourceService = resourceService;
         this.projectService = projectService;
-        this.languageSpecService = languageSpecService;
         this.identifierService = identifierService;
     }
 
@@ -218,7 +228,7 @@ public final class ActionUtils {
             if (file.isDirectory())
                 continue;
             final FileObject resource = this.resourceService.resolve(file.getVirtualFile());
-            @Nullable final ILanguageSpec project = this.languageSpecService.get(this.projectService.get(file));
+            @Nullable final IProject project = this.projectService.get(file);
             @Nullable final Document document = FileDocumentManager.getInstance().getDocument(file.getVirtualFile());
             if (project == null || document == null) {
                 this.logger.debug("Resource ignored because it has no project or document: {}", resource);

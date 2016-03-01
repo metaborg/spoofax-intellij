@@ -34,7 +34,6 @@ import org.metaborg.core.project.*;
 import org.metaborg.core.syntax.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;

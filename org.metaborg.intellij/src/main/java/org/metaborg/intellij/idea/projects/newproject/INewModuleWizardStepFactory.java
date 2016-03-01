@@ -19,10 +19,7 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
-import com.google.inject.assistedinject.*;
 import com.intellij.ide.util.projectWizard.*;
-import com.intellij.openapi.module.*;
-import org.apache.commons.vfs2.*;
 import org.metaborg.intellij.idea.projects.*;
 
 /**

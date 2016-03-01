@@ -20,17 +20,13 @@
 package org.metaborg.intellij.vfs;
 
 import com.intellij.openapi.application.*;
-import com.intellij.openapi.editor.*;
-import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.vfs.*;
 import org.apache.commons.vfs2.*;
 import org.apache.commons.vfs2.provider.*;
-import org.apache.commons.vfs2.util.*;
 import org.metaborg.intellij.*;
 
 import javax.annotation.*;
 import java.io.*;
-import java.security.cert.*;
 import java.util.*;
 
 /**

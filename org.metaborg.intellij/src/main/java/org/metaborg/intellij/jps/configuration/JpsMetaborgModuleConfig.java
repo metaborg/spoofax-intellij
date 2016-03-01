@@ -22,7 +22,6 @@ package org.metaborg.intellij.jps.configuration;
 import com.google.inject.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.ex.*;
-import org.metaborg.core.language.*;
 import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;

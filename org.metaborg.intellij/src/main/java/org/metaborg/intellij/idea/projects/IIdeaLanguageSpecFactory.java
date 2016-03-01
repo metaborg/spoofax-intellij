@@ -19,19 +19,15 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.assistedinject.*;
 import com.intellij.openapi.module.*;
 import org.apache.commons.vfs2.*;
-import org.metaborg.core.config.*;
 import org.metaborg.spoofax.meta.core.config.*;
 import org.metaborg.spoofax.meta.core.project.*;
 
-import javax.annotation.*;
-
 /**
- * Factory for IntelliJ IDEA projects.
+ * Factory for IntelliJ IDEA language specification projects.
  */
-public interface IIdeaProjectFactory {
+public interface IIdeaLanguageSpecFactory {
 
     /**
      * Creates a new project.
@@ -39,11 +35,13 @@ public interface IIdeaProjectFactory {
      * @param ideaModule The IntelliJ IDEA module.
      * @param rootFolder Root folder of the module.
      * @param config The configuration of the project.
+     * @param paths The paths of the project.
      * @return The created project.
      */
-    IdeaProject create(Module ideaModule,
-                       FileObject rootFolder,
-                       @Nullable IProjectConfig config);
+    IdeaLanguageSpec create(Module ideaModule,
+                            FileObject rootFolder,
+                            ISpoofaxLanguageSpecConfig config,
+                            ISpoofaxLanguageSpecPaths paths);
 
     // TODO: Implement this factory and ensure the given module is of type MetaborgModuleType.
 

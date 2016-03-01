@@ -20,7 +20,6 @@
 package org.metaborg.intellij.idea.languages;
 
 import com.intellij.openapi.actionSystem.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
 
 /**
  * IntelliJ IDEA objects bound to a language implementation.

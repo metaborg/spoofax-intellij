@@ -19,8 +19,8 @@
 
 package org.metaborg.intellij.idea.transformations;
 
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.project.*;
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.project.IProject;
 
 /**
  * A tuple with a resource to transform, along with the (part of its) source code to transform.
@@ -28,7 +28,7 @@ import org.metaborg.core.project.*;
 public final class TransformResource {
 
     private final FileObject resource;
-    private final ILanguageSpec project;
+    private final IProject project;
     private final String text;
 
     /**
@@ -38,7 +38,7 @@ public final class TransformResource {
      * @param project  The project to which the resource belongs.
      * @param text     The text to transform.
      */
-    public TransformResource(final FileObject resource, final ILanguageSpec project, final String text) {
+    public TransformResource(final FileObject resource, final IProject project, final String text) {
         this.resource = resource;
         this.project = project;
         this.text = text;
@@ -58,7 +58,7 @@ public final class TransformResource {
      *
      * @return The project of the resource.
      */
-    public ILanguageSpec project() { return this.project; }
+    public IProject project() { return this.project; }
 
     /**
      * Gets the text to transform.

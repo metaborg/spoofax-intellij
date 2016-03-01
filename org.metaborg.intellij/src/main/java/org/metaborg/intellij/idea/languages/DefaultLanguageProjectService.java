@@ -28,6 +28,7 @@ import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
@@ -68,7 +69,7 @@ public final class DefaultLanguageProjectService implements ILanguageProjectServ
         try {
             @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
             // FIXME: Do something when languageSpec == null.
-            final Iterable<ILanguageComponent> dependencies = this.dependencyService.compileDependencies(languageSpec);
+            final Iterable<ILanguageComponent> dependencies = this.dependencyService.compileDeps(languageSpec);
             return LanguageUtils.toImpls(dependencies);
         } catch (final MetaborgException e) {
             // There is nothing we can do about this exception.

@@ -21,17 +21,13 @@ package org.metaborg.intellij.jps.builders;
 
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
-import org.jetbrains.jps.model.module.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.spoofax.core.project.*;
-import org.metaborg.spoofax.core.project.configuration.*;
-import org.metaborg.spoofax.meta.core.*;
+import org.metaborg.spoofax.meta.core.build.*;
+import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
 import java.io.*;
 import java.util.*;
 
@@ -41,9 +37,7 @@ import java.util.*;
 public abstract class MetaborgMetaBuilder2<T extends SpoofaxTarget> extends TargetBuilder<SpoofaxSourceRootDescriptor, T> {
 
     protected final IJpsProjectService projectService;
-    protected final ILanguageSpecService languageSpecService;
-    protected final ISpoofaxLanguageSpecPathsService pathsService;
-    protected final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService;
+    protected final ISpoofaxLanguageSpecService languageSpecService;
     protected final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder;
     @InjectLogger
     private ILogger logger;
@@ -65,15 +59,11 @@ public abstract class MetaborgMetaBuilder2<T extends SpoofaxTarget> extends Targ
             final BuildTargetType<T> targetType,
             final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder,
             final IJpsProjectService projectService,
-            final ILanguageSpecService languageSpecService,
-            final ISpoofaxLanguageSpecPathsService pathsService,
-            final ISpoofaxLanguageSpecConfigService spoofaxLanguageSpecConfigService) {
+            final ISpoofaxLanguageSpecService languageSpecService) {
         super(Collections.singletonList(targetType));
         this.jpsSpoofaxMetaBuilder = jpsSpoofaxMetaBuilder;
         this.projectService = projectService;
         this.languageSpecService = languageSpecService;
-        this.pathsService = pathsService;
-        this.spoofaxLanguageSpecConfigService = spoofaxLanguageSpecConfigService;
     }
 
     /**

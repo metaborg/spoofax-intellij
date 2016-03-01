@@ -23,13 +23,10 @@ import com.google.inject.*;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.vfs.*;
 import org.jetbrains.annotations.*;
-import org.metaborg.core.language.*;
 import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
-
-import java.util.*;
 
 /**
  * Application-level component.

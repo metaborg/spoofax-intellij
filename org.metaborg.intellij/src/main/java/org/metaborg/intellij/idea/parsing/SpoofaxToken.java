@@ -19,7 +19,6 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import org.metaborg.core.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
 

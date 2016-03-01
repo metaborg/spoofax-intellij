@@ -21,7 +21,6 @@ package org.metaborg.intellij.injections;
 
 import com.google.inject.*;
 import com.intellij.openapi.application.*;
-import com.intellij.openapi.components.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;

@@ -23,9 +23,6 @@ import com.google.inject.*;
 import com.intellij.lang.Language;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.util.log.*;
 
 /**
  * A Metaborg language used in IntelliJ IDEA.

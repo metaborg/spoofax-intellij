@@ -21,7 +21,7 @@ package org.metaborg.intellij.idea;
 
 import com.google.inject.*;
 import com.google.inject.assistedinject.*;
-import com.google.inject.matcher.Matchers;
+import com.google.inject.matcher.*;
 import com.google.inject.multibindings.*;
 import com.intellij.lang.*;
 import com.intellij.lexer.*;
@@ -32,8 +32,8 @@ import org.metaborg.core.project.*;
 import org.metaborg.core.resource.*;
 import org.metaborg.core.syntax.*;
 import org.metaborg.intellij.configuration.*;
-import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.discovery.*;
+import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.idea.compilation.*;
 import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.idea.editors.*;
@@ -50,14 +50,11 @@ import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.idea.transformations.*;
 import org.metaborg.intellij.injections.*;
 import org.metaborg.intellij.languages.*;
-import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
-import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
+import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.projects.*;
 import org.metaborg.intellij.resources.*;
 import org.metaborg.intellij.vfs.*;
-import org.metaborg.spoofax.core.SpoofaxModule;
-import org.metaborg.spoofax.core.project.*;
-import org.metaborg.spoofax.core.project.NullLegacyMavenProjectService;
+import org.metaborg.spoofax.core.*;
 import org.metaborg.spoofax.core.syntax.*;
 
 /**
@@ -75,21 +72,14 @@ import org.metaborg.spoofax.core.syntax.*;
         super.configure();
 
         bindModule();
-        bindLanguageManagement();
         bindLanguageSources();
         bindLoggerListeners();
         bindGraphics();
         bindFileTypes();
-        bindParsing();
-        bindElements();
-        bindLanguageProject();
         bindAnnotators();
         bindNewProjectWizard();
         bindTransformations();
         bindConfiguration();
-        bindBeforeCompileTasks();
-        bindAfterCompileTasks();
-        bindReferenceResolution();
         bindLibraryService();
         bindFacets();
     }
@@ -138,42 +128,7 @@ import org.metaborg.spoofax.core.syntax.*;
                 .build(IIntelliJFileProviderFactory.class));
     }
 
-    /**
-     * Binds lexing and parsing.
-     */
-    protected void bindParsing() {
-        bind(SpoofaxSyntaxHighlighterFactory.class);
 
-        install(new FactoryModuleBuilder()
-                .implement(Lexer.class, SpoofaxHighlightingLexer.class)
-                .build(IHighlightingLexerFactory.class));
-        install(new FactoryModuleBuilder()
-                .implement(Lexer.class, CharacterLexer.class)
-                .build(ICharacterLexerFactory.class));
-        install(new FactoryModuleBuilder()
-                .implement(ParserDefinition.class, MetaborgParserDefinition.class)
-                .build(IParserDefinitionFactory.class));
-
-        bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
-            /* implode    */ true,
-            /* recovery   */ true,
-            /* completion */ false,
-            /* timeout    */ 30000
-        ));
-    }
-
-    /**
-     * Binds token and PSI elements and related classes.
-     */
-    protected void bindElements() {
-        bind(IMetaborgPsiElementFactory.class).to(DefaultMetaborgPsiElementFactory.class).in(Singleton.class);
-        install(new FactoryModuleBuilder()
-                .implement(IFileElementType.class, MetaborgFileElementType.class)
-                .build(IFileElementTypeFactory.class));
-        install(new FactoryModuleBuilder()
-                .implement(ATermAstElementTypeProvider.class, ATermAstElementTypeProvider.class)
-                .build(IATermAstElementTypeProviderFactory.class));
-    }
 
     /**
      * {@inheritDoc}
@@ -181,10 +136,14 @@ import org.metaborg.spoofax.core.syntax.*;
     @Override
     protected void bindProject() {
         bind(IdeaProjectService.class).in(Singleton.class);
-        bind(IProjectService.class).to(CompoundProjectService.class).in(Singleton.class);
         bind(IIdeaProjectService.class).to(IdeaProjectService.class).in(Singleton.class);
+        bind(IProjectService.class).to(CompoundProjectService.class).in(Singleton.class);
         bind(ArtifactProjectService.class).in(Singleton.class);
         bind(CompoundProjectService.class).in(Singleton.class);
+
+        install(new FactoryModuleBuilder()
+                .implement(IdeaProject.class, IdeaProject.class)
+                .build(IIdeaProjectFactory.class));
 
         final Multibinder<IProjectService> uriBinder = Multibinder.newSetBinder(
                 binder(),
@@ -193,30 +152,9 @@ import org.metaborg.spoofax.core.syntax.*;
         );
         uriBinder.addBinding().to(IdeaProjectService.class);
         uriBinder.addBinding().to(ArtifactProjectService.class);
-        bind(MetaborgModuleBuilder.class).in(Singleton.class);
 
-        install(new FactoryModuleBuilder()
-                .implement(IdeaLanguageSpecProject.class, IdeaLanguageSpecProject.class)
-                .build(IIdeaProjectFactory.class));
 
         bind(ProjectUtils.class).in(Singleton.class);
-    }
-
-    /**
-     * Binds language project services.
-     */
-    protected void bindLanguageProject() {
-        bind(ILanguageProjectService.class).to(DefaultLanguageProjectService.class).in(Singleton.class);
-    }
-
-    /**
-     * Binds language management.
-     */
-    protected void bindLanguageManagement() {
-        bind(DefaultIdeaLanguageManager.class).in(Singleton.class);
-        bind(ILanguageManager.class).to(DefaultIdeaLanguageManager.class).in(Singleton.class);
-        bind(IIdeaLanguageManager.class).to(DefaultIdeaLanguageManager.class).in(Singleton.class);
-        bind(ILanguageBindingManager.class).to(DefaultIdeaLanguageManager.class).in(Singleton.class);
     }
 
     /**
@@ -283,14 +221,6 @@ import org.metaborg.spoofax.core.syntax.*;
      * {@inheritDoc}
      */
     @Override
-    protected void bindMavenProject() {
-        bind(ILegacyMavenProjectService.class).to(NullLegacyMavenProjectService.class).in(Singleton.class);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected void bindEditor() {
         bind(IEditorRegistry.class).to(IdeaEditorRegistry.class).in(Singleton.class);
     }
@@ -299,45 +229,11 @@ import org.metaborg.spoofax.core.syntax.*;
      * Binds configuration classes.
      */
     protected void bindConfiguration() {
-        bind(ConfigurationUtils.class).in(Singleton.class);
-        bind(ConfigurationFileEventListener.class).in(Singleton.class);
-
         install(new IntelliJServiceProviderFactory().provide(IMetaborgApplicationConfig.class));
         install(new IntelliJServiceProviderFactory().provide(IMetaborgProjectConfig.class));
         install(new IntelliJServiceProviderFactory().provide(IMetaborgModuleConfig.class));
     }
 
-    /**
-     * Binds the before compile tasks.
-     */
-    protected void bindBeforeCompileTasks() {
-        final Multibinder<IBeforeCompileTask> beforeCompileTasks = Multibinder.newSetBinder(
-                binder(),
-                IBeforeCompileTask.class
-        );
-    }
-
-    /**
-     * Binds the after compile tasks.
-     */
-    protected void bindAfterCompileTasks() {
-        final Multibinder<IAfterCompileTask> afterCompileTasks = Multibinder.newSetBinder(
-                binder(),
-                IAfterCompileTask.class
-        );
-
-        bind(ReloadLanguageCompileTask.class).in(Singleton.class);
-        afterCompileTasks.addBinding().to(ReloadLanguageCompileTask.class);
-    }
-
-    /**
-     * Binds reference resolution classes.
-     */
-    protected void bindReferenceResolution() {
-        install(new FactoryModuleBuilder()
-                .implement(MetaborgReferenceProvider.class, SpoofaxReferenceProvider.class)
-                .build(IMetaborgReferenceProviderFactory.class));
-    }
 
     /**
      * Binds the library service.

@@ -19,11 +19,6 @@
 
 package org.metaborg.intellij.idea.editors;
 
-import com.intellij.openapi.actionSystem.*;
-import org.metaborg.intellij.idea.actions.*;
-
-import javax.annotation.*;
-
 /**
  * Utility functions for working with IntelliJ IDEA editors.
  */

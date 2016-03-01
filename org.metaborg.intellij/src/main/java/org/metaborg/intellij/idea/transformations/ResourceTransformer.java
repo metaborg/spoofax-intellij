@@ -19,23 +19,30 @@
 
 package org.metaborg.intellij.idea.transformations;
 
-import com.google.inject.*;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.*;
-import org.metaborg.core.action.*;
-import org.metaborg.core.analysis.*;
-import org.metaborg.core.context.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.processing.analyze.*;
-import org.metaborg.core.processing.parse.*;
-import org.metaborg.core.project.*;
-import org.metaborg.core.syntax.*;
-import org.metaborg.core.transform.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.util.concurrent.*;
-import org.metaborg.util.log.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.*;
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.MetaborgException;
+import org.metaborg.core.action.ITransformGoal;
+import org.metaborg.core.analysis.AnalysisFileResult;
+import org.metaborg.core.context.ContextException;
+import org.metaborg.core.context.IContext;
+import org.metaborg.core.context.IContextService;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
+import org.metaborg.core.processing.parse.IParseResultRequester;
+import org.metaborg.core.project.IProject;
+import org.metaborg.core.syntax.ParseResult;
+import org.metaborg.core.transform.ITransformService;
+import org.metaborg.core.transform.TransformException;
+import org.metaborg.core.transform.TransformResult;
+import org.metaborg.core.transform.TransformResults;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.util.concurrent.IClosableLock;
+import org.metaborg.util.log.ILogger;
+
+import com.google.inject.Inject;
 
 /**
  * Executes a transformation action on resources.
@@ -113,7 +120,7 @@ public final class ResourceTransformer<P, A, T> implements IResourceTransformer 
      */
     private TransformResults<?, T> transform(
             final FileObject resource,
-            final ILanguageSpec project,
+            final IProject project,
             final ILanguageImpl language,
             final String text,
             final ITransformGoal goal)

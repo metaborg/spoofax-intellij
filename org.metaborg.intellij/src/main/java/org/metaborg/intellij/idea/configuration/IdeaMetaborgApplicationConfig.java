@@ -25,7 +25,6 @@ import org.jetbrains.annotations.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
 

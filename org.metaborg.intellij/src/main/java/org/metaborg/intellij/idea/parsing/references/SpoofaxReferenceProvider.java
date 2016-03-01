@@ -36,7 +36,6 @@ import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.resources.*;
 import org.spoofax.interpreter.terms.*;
 
-import javax.annotation.*;
 import javax.annotation.Nullable;
 import java.util.*;
 

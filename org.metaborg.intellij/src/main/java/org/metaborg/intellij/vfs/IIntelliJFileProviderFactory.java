@@ -19,9 +19,6 @@
 
 package org.metaborg.intellij.vfs;
 
-import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.actions.*;
-
 /**
  * Factory for file (system) providers.
  */
