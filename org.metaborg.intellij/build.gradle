@@ -29,6 +29,9 @@ repositories {
     maven {
         url "http://artifacts.metaborg.org/content/repositories/releases/"
     }
+    maven {
+        url "http://artifacts.metaborg.org/content/repositories/snapshots/"
+    }
 }
 
 // FIX: Circular dependency due to adding test class dependencies
