@@ -29,7 +29,7 @@ Tests are in the `src/test/` folder. Almost all tests extend the
 Run this plugin in a sandbox IntelliJ IDEA instance using
 
 ```
-gradle runIdea
+./gradlew runIdea
 ```
 
 or run the _IntelliJ Plugin_ configuration from IntelliJ.
@@ -39,7 +39,7 @@ or run the _IntelliJ Plugin_ configuration from IntelliJ.
 Debug the JPS plugin using 
 
 ```
-gradle debugIdea
+./gradlew debugJps
 ```
 
 or run the _IntelliJ Plugin (Debug JPS)_ configuration from IntelliJ.
@@ -51,7 +51,7 @@ configuration from IntelliJ.
 Run the tests using
 
 ```
-gradle check
+./gradlew check
 ```
 
 or run the _Unit Tests_ configuration from IntelliJ.

@@ -2,11 +2,12 @@
 [![GitHub license](https://img.shields.io/github/license/metaborg/spoofax-intellij.svg)](./LICENSE.md)
 
 # Spoofax plugin for IntelliJ IDEA
-Develop and use languages with the [Spoofax Language Workbench](http://www.spoofax.org/) in IntelliJ IDEA.
+Develop and use languages with the [Spoofax Language Workbench][1]
+in IntelliJ IDEA.
 
-Want to learn more? [See the wiki](https://github.com/metaborg/spoofax-intellij/wiki).
+Want to learn more? [See the wiki][2].
 
-Want to contribute to this plugin? [More information](./CONTRIBUTE.md).
+Want to contribute to this plugin? [More information][3].
 
 
 ## Quick Start
@@ -14,8 +15,7 @@ Install the plugin.
 
 Create a new Spoofax language specification by going to the _File_
 → _New_ → _Project_ menu, and selecting _Spoofax Language_.
-Finish the wizard. Go to [the Spoofax website](http://www.spoofax.org/)
-for more information.
+Finish the wizard. Go to [the Spoofax website][4] for more information.
 
 ![New Spoofax Project](./intellij-doc/NewProjectWizard.png)
 
@@ -35,3 +35,11 @@ The Spoofax for IntelliJ IDEA plugin has the following features:
 The Spoofax for IntelliJ IDEA plugin has the following limitations:
 
 * Languages are loaded application-wide.
+
+
+
+
+[1]: http://www.spoofax.org/
+[2]: https://github.com/metaborg/spoofax-intellij/wiki
+[3]: ./CONTRIBUTE.md
+[4]: http://www.spoofax.org/
