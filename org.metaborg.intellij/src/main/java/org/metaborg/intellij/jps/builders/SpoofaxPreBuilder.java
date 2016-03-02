@@ -69,8 +69,16 @@ public final class SpoofaxPreBuilder extends MetaborgMetaBuilder2<SpoofaxPreTarg
             final BuildOutputConsumer consumer,
             final CompileContext context) throws Exception {
 
+        final boolean buildForced = context.getScope().isBuildForced(target);
+
         this.jpsSpoofaxMetaBuilder.beforeBuild(metaInput, context);
-        this.jpsSpoofaxMetaBuilder.clean(metaInput, context);
+
+        if (buildForced) {
+            this.logger.info("Forced build; cleaning.");
+            this.jpsSpoofaxMetaBuilder.clean(metaInput, context);
+        } else {
+            this.logger.info("Regular build; not cleaning.");
+        }
         this.jpsSpoofaxMetaBuilder.initialize(metaInput, context);
         this.jpsSpoofaxMetaBuilder.generateSources(metaInput, context);
         this.jpsSpoofaxMetaBuilder.regularBuild(metaInput, context);
