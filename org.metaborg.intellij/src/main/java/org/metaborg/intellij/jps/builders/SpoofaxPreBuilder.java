@@ -73,7 +73,13 @@ public final class SpoofaxPreBuilder extends MetaborgMetaBuilder2<SpoofaxPreTarg
 
         this.jpsSpoofaxMetaBuilder.beforeBuild(metaInput, context);
 
-        if (buildForced) {
+        // FIXME: An issue with the IntelliJ VFS causes a non-forced rebuild to fail:
+        // warning: directory specified with -I does not exist: "/home/daniel/repos/spoofax-intellij/
+        //     org.metaborg.intellij/build/idea-sandbox/system/compile-server/_temp_/vfs_cache/tmp_26008_trans"
+        // error: No matching subdirectory found in includes for wildcard 'runtime/refactoring/*'!
+        // RequiredBuilderFailed: Required builder failed. Error occurred in build step "Compile Stratego code":
+        //     java.lang.Error: Builder failed
+        if (true && buildForced) {
             this.logger.info("Forced build; cleaning.");
             this.jpsSpoofaxMetaBuilder.clean(metaInput, context);
         } else {
