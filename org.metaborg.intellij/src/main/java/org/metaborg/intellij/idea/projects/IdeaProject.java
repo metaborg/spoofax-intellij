@@ -33,7 +33,7 @@ import com.intellij.openapi.module.Module;
 /**
  * An IntelliJ IDEA project.
  */
-public class IdeaProject extends Project implements IProject {
+public class IdeaProject extends Project {
 
     private final Module module;
 

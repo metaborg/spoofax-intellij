@@ -28,7 +28,7 @@ import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.jps.model.JpsUrlList;
 import org.jetbrains.jps.model.module.JpsModule;
-import org.metaborg.core.config.ConfigRequest;
+import org.metaborg.core.config.*;
 import org.metaborg.core.messages.StreamMessagePrinter;
 import org.metaborg.core.resource.IResourceService;
 import org.metaborg.core.source.ISourceTextService;
@@ -53,38 +53,66 @@ public final class JpsProjectService implements IJpsProjectService {
     private final List<MetaborgJpsProject> projects = new ArrayList<>();
     private final ISourceTextService sourceTextService;
     private final IResourceService resourceService;
-    private final ISpoofaxLanguageSpecConfigService languageSpecConfigService;
+    private final IProjectConfigService projectConfigService;
     @InjectLogger
     private ILogger logger;
 
     @Inject
-    public JpsProjectService(ISourceTextService sourceTextService, final IResourceService resourceService, ISpoofaxLanguageSpecConfigService languageSpecConfigService) {
+    public JpsProjectService(final ISourceTextService sourceTextService,
+                             final IResourceService resourceService,
+                             final IProjectConfigService projectConfigService) {
         this.sourceTextService = sourceTextService;
         this.resourceService = resourceService;
-        this.languageSpecConfigService = languageSpecConfigService;
+        this.projectConfigService = projectConfigService;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Nullable
     public MetaborgJpsProject create(final JpsModule module) {
-        final FileObject location = this.resourceService.resolve(module.getContentRootsList().getUrls().get(0));
-        final ConfigRequest<ISpoofaxLanguageSpecConfig> configRequest = languageSpecConfigService.get(location);
+        final FileObject rootFolder = this.resourceService.resolve(module.getContentRootsList().getUrls().get(0));
+        final ConfigRequest<IProjectConfig> configRequest = this.projectConfigService.get(rootFolder);
         if(!configRequest.valid()) {
-            logger.error("Errors occurred when retrieving language specification configuration from project location {}",
+            this.logger.error(
+                    "An error occurred while retrieving the configuration for the project at {}", rootFolder);
+            configRequest.reportErrors(new StreamMessagePrinter(this.sourceTextService, false, false, this.logger));
+            return null;
+        }
+
+        @Nullable final IProjectConfig config = configRequest.config();
+        if(config == null) {
+            // Configuration should never be null if it is available, but sanity check anyway.
+            this.logger.error(
+                    "Could not get the configuration of the project {}",
+                    rootFolder);
+            return null;
+        }
+
+        final MetaborgJpsProject project = new MetaborgJpsProject(module, rootFolder, config);
+        this.projects.add(project);
+        return project;
+
+        /*
+        final FileObject location = this.resourceService.resolve(module.getContentRootsList().getUrls().get(0));
+        final ConfigRequest<ISpoofaxLanguageSpecConfig> configRequest = this.languageSpecConfigService.get(location);
+        if(!configRequest.valid()) {
+            this.logger.error("Errors occurred when retrieving language specification configuration from project "+
+            "location {}",
                 location);
-            configRequest.reportErrors(new StreamMessagePrinter(sourceTextService, false, false, logger));
+            configRequest.reportErrors(new StreamMessagePrinter(this.sourceTextService, false, false, this.logger));
             // TODO: what to return/throw?
         }
         final ISpoofaxLanguageSpecConfig config = configRequest.config();
         if(config == null) {
-            // TODO: what to return/throw?            
+            // TODO: what to return/throw?
         }
         final ISpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(location, config);
         final MetaborgJpsProject project = new MetaborgJpsProject(module, location, config, paths);
         this.projects.add(project);
         return project;
+         */
     }
 
     /**
@@ -94,7 +122,7 @@ public final class JpsProjectService implements IJpsProjectService {
     @Nullable
     public MetaborgJpsProject get(final JpsModule module) {
         for (final MetaborgJpsProject project : this.projects) {
-            if (project.module().equals(module))
+            if (project.getModule().equals(module))
                 return project;
         }
         return null;
@@ -107,7 +135,7 @@ public final class JpsProjectService implements IJpsProjectService {
     @Override
     public MetaborgJpsProject get(final FileObject resource) {
         for (final MetaborgJpsProject project : this.projects) {
-            final JpsModule module = project.module();
+            final JpsModule module = project.getModule();
             if (isInContentRoot(module, resource))
                 return project;
         }

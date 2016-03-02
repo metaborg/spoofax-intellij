@@ -23,9 +23,15 @@ import org.jetbrains.annotations.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.module.*;
+import org.metaborg.core.config.*;
+import org.metaborg.intellij.*;
 import org.metaborg.intellij.jps.*;
 import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.jps.projects.*;
+import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.spoofax.meta.core.project.*;
+import org.metaborg.util.log.*;
 
 import java.util.*;
 
@@ -38,12 +44,17 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
 
     private final JpsMetaborgModuleType moduleType;
     private final IJpsProjectService projectService;
+    private final ISpoofaxLanguageSpecService languageSpecService;
+    @InjectLogger
+    private ILogger logger;
 
     protected SpoofaxTargetType(final String typeId, final IJpsProjectService projectService,
-                                final JpsMetaborgModuleType moduleType) {
+                                final JpsMetaborgModuleType moduleType,
+                                final ISpoofaxLanguageSpecService languageSpecService) {
         super(typeId);
         this.projectService = projectService;
         this.moduleType = moduleType;
+        this.languageSpecService = languageSpecService;
     }
 
     /**
@@ -64,6 +75,18 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
         @Nullable MetaborgJpsProject project = this.projectService.get(module);
         if (project == null)
             project = this.projectService.create(module);
+        @Nullable ISpoofaxLanguageSpec languageSpec = null;
+        try {
+            languageSpec = this.languageSpecService.get(project);
+
+            if (languageSpec == null) {
+                throw LoggerUtils.exception(this.logger, RuntimeException.class,
+                        "The project is not a language specification.");
+            }
+        } catch (final ConfigException e) {
+            throw LoggerUtils.exception(this.logger, UnhandledException.class,
+                    "Unexpected exception while retrieving configuration for project {}", e, project);
+        }
         return createTarget(project);
     }
 

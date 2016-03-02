@@ -51,7 +51,6 @@ import java.util.*;
         super.configure();
 
         bindLoggerListeners();
-        bindTargetTypes();
         bindMessageFormatter();
         bindConfig();
         bindModuleType();
@@ -67,14 +66,6 @@ import java.util.*;
         // FIXME: Are these the loggers we want to use for JPS plugins?
         bindListener(Matchers.any(), new Slf4JLoggerTypeListener());
         bindListener(Matchers.any(), new MetaborgLoggerTypeListener());
-    }
-
-    /**
-     * Binds the target types.
-     */
-    protected void bindTargetTypes() {
-        bind(SpoofaxPreTargetType.class).in(Singleton.class);
-        bind(SpoofaxPostTargetType.class).in(Singleton.class);
     }
 
     /**
@@ -143,6 +134,16 @@ import java.util.*;
     protected void bindLanguageManagement() {
         bind(DefaultLanguageManager.class).in(Singleton.class);
         bind(ILanguageManager.class).to(DefaultLanguageManager.class).in(Singleton.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void bindProject() {
+        bind(JpsProjectService.class).in(Singleton.class);
+        bind(IProjectService.class).to(JpsProjectService.class).in(Singleton.class);
+        bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
     }
 
     /**

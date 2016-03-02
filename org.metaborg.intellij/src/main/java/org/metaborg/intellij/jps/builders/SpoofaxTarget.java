@@ -49,7 +49,7 @@ public abstract class SpoofaxTarget extends ModuleBasedTarget<SpoofaxSourceRootD
     protected SpoofaxTarget(
             final MetaborgJpsProject project,
             final ModuleBasedBuildTargetType<?> targetType) {
-        super(targetType, project.module());
+        super(targetType, project.getModule());
         this.project = project;
     }
 

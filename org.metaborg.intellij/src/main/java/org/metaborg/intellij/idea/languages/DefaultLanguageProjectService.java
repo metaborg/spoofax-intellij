@@ -67,9 +67,9 @@ public final class DefaultLanguageProjectService implements ILanguageProjectServ
     @Override
     public Iterable<ILanguageImpl> activeImpls(@Nullable final IProject project) {
         try {
-            @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
-            // FIXME: Do something when languageSpec == null.
-            final Iterable<ILanguageComponent> dependencies = this.dependencyService.compileDeps(languageSpec);
+//            @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
+//            // FIXME: Do something when languageSpec == null.
+            final Iterable<ILanguageComponent> dependencies = this.dependencyService.compileDeps(project);
             return LanguageUtils.toImpls(dependencies);
         } catch (final MetaborgException e) {
             // There is nothing we can do about this exception.

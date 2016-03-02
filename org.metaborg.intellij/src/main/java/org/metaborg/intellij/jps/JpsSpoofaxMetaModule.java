@@ -44,6 +44,7 @@ import java.util.*;
 
         bindBuilders();
         bindMetaProject();
+        bindTargetTypes();
     }
 
     /**
@@ -62,10 +63,15 @@ import java.util.*;
      * Bind meta project classes.
      */
     protected void bindMetaProject() {
-        bind(JpsProjectService.class).in(Singleton.class);
-        bind(IProjectService.class).to(JpsProjectService.class).in(Singleton.class);
-        bind(IJpsProjectService.class).to(JpsProjectService.class).in(Singleton.class);
         bind(ProjectUtils.class).in(Singleton.class);
+    }
+
+    /**
+     * Binds the target types.
+     */
+    protected void bindTargetTypes() {
+        bind(SpoofaxPreTargetType.class).in(Singleton.class);
+        bind(SpoofaxPostTargetType.class).in(Singleton.class);
     }
 
     @SuppressWarnings("unused")

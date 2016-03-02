@@ -19,19 +19,24 @@ package org.metaborg.intellij.jps.projects;
 
 import java.util.List;
 
+import com.google.inject.*;
+import com.google.inject.assistedinject.*;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.jps.model.JpsUrlList;
 import org.jetbrains.jps.model.module.JpsModule;
-import org.metaborg.core.project.IProject;
+import org.metaborg.core.config.*;
+import org.metaborg.core.project.*;
 import org.metaborg.meta.core.config.ILanguageSpecConfig;
 import org.metaborg.meta.core.project.ILanguageSpec;
 import org.metaborg.meta.core.project.ILanguageSpecPaths;
 import org.metaborg.meta.core.project.LanguageSpec;
 
+import javax.annotation.*;
+
 /**
  * A Spoofax project used in JPS.
  */
-public final class MetaborgJpsProject extends LanguageSpec implements IProject, ILanguageSpec {
+public class MetaborgJpsProject extends Project {
 
     private final JpsModule module;
 
@@ -41,9 +46,12 @@ public final class MetaborgJpsProject extends LanguageSpec implements IProject, 
      * @param location
      *            The location of the project root.
      */
-    public MetaborgJpsProject(final JpsModule module, final FileObject location, ILanguageSpecConfig config,
-        ILanguageSpecPaths paths) {
-        super(location, config, paths);
+    @Inject
+    public MetaborgJpsProject(
+            @Assisted final JpsModule module,
+            @Assisted final FileObject location,
+            @Assisted @Nullable final IProjectConfig config) {
+        super(location, config);
         this.module = module;
         // TODO: Get location from JpsModule?
         // NOTE: A module can have multiple content roots, or none at all.
@@ -61,7 +69,7 @@ public final class MetaborgJpsProject extends LanguageSpec implements IProject, 
     /**
      * Gets the JPS module of this project.
      */
-    public JpsModule module() {
+    public JpsModule getModule() {
         return this.module;
     }
 

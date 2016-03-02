@@ -38,6 +38,7 @@ import com.intellij.openapi.module.Module;
  * An IntelliJ IDEA language specification project.
  */
 public class IdeaLanguageSpec extends IdeaProject implements ISpoofaxLanguageSpec {
+
     private final ISpoofaxLanguageSpecConfig config;
     private final ISpoofaxLanguageSpecPaths paths;
     
@@ -72,11 +73,19 @@ public class IdeaLanguageSpec extends IdeaProject implements ISpoofaxLanguageSpe
         this.paths = paths;
     }
 
-    @Override public ISpoofaxLanguageSpecConfig config() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ISpoofaxLanguageSpecConfig config() {
         return this.config;
     }
 
-    @Override public ISpoofaxLanguageSpecPaths paths() {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ISpoofaxLanguageSpecPaths paths() {
         return this.paths;
     }
 

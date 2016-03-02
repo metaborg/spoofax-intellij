@@ -45,8 +45,9 @@ public interface IIdeaProjectService extends IProjectService {
      *
      * @param module The module.
      * @param rootFolder The root folder of the project.
-     * @return The project that was opened.
+     * @return The project that was opened; or <code>null</code>.
      */
+    @Nullable
     IdeaProject open(Module module, FileObject rootFolder);
 
     /**

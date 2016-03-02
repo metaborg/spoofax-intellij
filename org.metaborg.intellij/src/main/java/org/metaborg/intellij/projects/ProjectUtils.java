@@ -54,7 +54,7 @@ public final class ProjectUtils {
      *
      * @return The compile dependencies.
      */
-    public Collection<LanguageIdentifier> getCompileDependencies(@Nullable final ILanguageSpec languageSpec) {
+    public Collection<LanguageIdentifier> getCompileDeps(@Nullable final ILanguageSpec languageSpec) {
         @Nullable final ILanguageSpecConfig config = languageSpec.config();
         if (config == null) {
             this.logger.error("Got no configuration for language specification: {}", languageSpec);
@@ -70,7 +70,7 @@ public final class ProjectUtils {
      * @param project The project.
      * @return The compile dependencies.
      */
-    public Collection<LanguageIdentifier> getCompileDependencies(@Nullable final IdeaProject project) {
+    public Collection<LanguageIdentifier> getCompileDeps(@Nullable final IdeaProject project) {
         @Nullable final IProject metaborgProject = this.projectService.get(project.location());
         if (metaborgProject == null) {
             this.logger.error("Can't get language specification for project: {}", project);

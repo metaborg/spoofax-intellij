@@ -113,7 +113,7 @@ public final class IdeaModuleComponent implements ModuleComponent {
         if (project == null)
             return;
         this.configurationUtils.loadAndActivateLanguages(this.module.getProject(),
-                this.projectUtils.getCompileDependencies(project));
+                this.projectUtils.getCompileDeps(project));
 
         WriteCommandAction.runWriteCommandAction(this.module.getProject(), () -> {
             if (project instanceof IdeaLanguageSpec) {

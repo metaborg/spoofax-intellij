@@ -64,12 +64,13 @@ public final class IdeaProjectService implements IIdeaProjectService {
      * {@inheritDoc}
      */
     @Override
+    @Nullable
     public IdeaProject open(final Module module, final FileObject rootFolder) {
 
         final ConfigRequest<IProjectConfig> configRequest = this.projectConfigService.get(rootFolder);
         if(!configRequest.valid()) {
             this.logger.error(
-                    "Errors occurred when retrieving project configuration from project directory {}", rootFolder);
+                    "An error occurred while retrieving the configuration for the project at {}", rootFolder);
             configRequest.reportErrors(new StreamMessagePrinter(this.sourceTextService, false, false, this.logger));
             return null;
         }

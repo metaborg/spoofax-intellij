@@ -33,8 +33,9 @@ public interface IJpsProjectService extends IProjectService {
      * Creates and adds a new project for the specified JPS module.
      *
      * @param module The JPS module.
-     * @return The created project.
+     * @return The created project; or <code>null</code>.
      */
+    @Nullable
     MetaborgJpsProject create(JpsModule module);
 
     /**
