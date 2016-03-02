@@ -112,10 +112,15 @@ public final class JpsSpoofaxMetaBuilder {
                 this.logger.warn("No application configuration found.");
             }
 
-            final Collection<LanguageIdentifier> languages = metaInput.languageSpec.config().compileDeps();
-            this.logger.debug("Loading module languages: {}", languages);
-            this.languageManager.discoverRange(languages);
-            this.logger.info("Loaded module languages: {}", languages);
+            final Collection<LanguageIdentifier> compileDeps = metaInput.languageSpec.config().compileDeps();
+            this.logger.debug("Loading module compile dependencies: {}", compileDeps);
+            this.languageManager.discoverRange(compileDeps);
+            this.logger.info("Loaded module compile dependencies: {}", compileDeps);
+
+            final Collection<LanguageIdentifier> sourceDeps = metaInput.languageSpec.config().sourceDeps();
+            this.logger.debug("Loading module source dependencies: {}", sourceDeps);
+            this.languageManager.discoverRange(sourceDeps);
+            this.logger.info("Loaded module source dependencies: {}", sourceDeps);
 
         } catch (final LanguageLoadingFailedException e) {
             throw new ProjectBuildException("Loading languages failed.", e);
