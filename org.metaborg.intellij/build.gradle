@@ -26,11 +26,16 @@ targetCompatibility = 1.8
 repositories {
     mavenLocal()
     mavenCentral()
+    // This list must match the repositories listed in spoofax-releng/parent/pom.xml and
+    // http://www.metaborg.org/dev/maven/#local-settings-file
     maven {
         url "http://artifacts.metaborg.org/content/repositories/releases/"
     }
     maven {
         url "http://artifacts.metaborg.org/content/repositories/snapshots/"
+    }
+    maven {
+        url "https://raw.githubusercontent.com/pluto-build/pluto-build.github.io/master/mvnrepository/"
     }
 }
 
