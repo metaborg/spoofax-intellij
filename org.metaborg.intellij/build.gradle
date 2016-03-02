@@ -37,6 +37,9 @@ repositories {
     maven {
         url "https://raw.githubusercontent.com/pluto-build/pluto-build.github.io/master/mvnrepository/"
     }
+    maven {
+		url "http://sugar-lang.github.io/mvnrepository/"
+    }
 }
 
 // FIX: Circular dependency due to adding test class dependencies
