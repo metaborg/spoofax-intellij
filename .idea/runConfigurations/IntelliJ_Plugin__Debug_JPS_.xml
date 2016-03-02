@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="debugIdea" />
+          <option value="debugJps" />
         </list>
       </option>
       <option name="vmOptions" value="" />
