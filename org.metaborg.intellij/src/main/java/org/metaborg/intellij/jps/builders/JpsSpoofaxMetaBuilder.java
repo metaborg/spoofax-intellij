@@ -21,6 +21,7 @@ package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
 import org.apache.commons.lang3.*;
+import org.jetbrains.annotations.*;
 import org.jetbrains.jps.incremental.*;
 import org.jetbrains.jps.model.module.*;
 import org.metaborg.core.*;
@@ -32,12 +33,14 @@ import org.metaborg.core.config.*;
 import org.metaborg.core.language.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.processing.*;
+import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.spoofax.core.processing.*;
 import org.metaborg.spoofax.core.resource.*;
 import org.metaborg.spoofax.meta.core.build.*;
@@ -47,6 +50,7 @@ import org.metaborg.util.log.*;
 import org.spoofax.interpreter.terms.*;
 
 import javax.annotation.*;
+import javax.annotation.Nullable;
 import java.io.*;
 import java.util.*;
 
@@ -88,13 +92,49 @@ public final class JpsSpoofaxMetaBuilder {
     }
 
     /**
+     * Gets or creates a Metaborg project.
+     *
+     * @param module The module.
+     * @return The Metaborg project.
+     */
+    public MetaborgJpsProject getOrCreateProject(final JpsModule module) {
+        @Nullable MetaborgJpsProject project = this.projectService.get(module);
+        if (project == null)
+            project = this.projectService.create(module);
+        return project;
+    }
+
+    /**
+     * Gets or creates a language specification.
+     *
+     * @param module The module.
+     * @return The language specification project.
+     */
+    public JpsLanguageSpec getOrCreateLanguageSpec(final JpsModule module) {
+        @Nullable final MetaborgJpsProject project = getOrCreateProject(module);
+        @Nullable final ISpoofaxLanguageSpec languageSpec;
+        try {
+            languageSpec = this.languageSpecService.get(project);
+
+            if (languageSpec == null) {
+                throw LoggerUtils.exception(this.logger, RuntimeException.class,
+                        "The project is not a language specification.");
+            }
+        } catch (final ConfigException e) {
+            throw LoggerUtils.exception(this.logger, UnhandledException.class,
+                    "Unexpected exception while retrieving configuration for project {}", e, project);
+        }
+        return (JpsLanguageSpec)languageSpec;
+    }
+
+    /**
      * Executes any before-build tasks.
      *
      * @param metaInput The meta build input.
      * @param context   The compile context.
      * @throws ProjectBuildException
      */
-    public void beforeBuild(final LanguageSpecBuildInput metaInput,
+    public void beforeBuild(final ProjectBuildInput metaInput,
                             final CompileContext context)
             throws ProjectBuildException {
 
@@ -112,12 +152,12 @@ public final class JpsSpoofaxMetaBuilder {
                 this.logger.warn("No application configuration found.");
             }
 
-            final Collection<LanguageIdentifier> compileDeps = metaInput.languageSpec.config().compileDeps();
+            final Collection<LanguageIdentifier> compileDeps = metaInput.project().config().compileDeps();
             this.logger.debug("Loading module compile dependencies: {}", compileDeps);
             this.languageManager.discoverRange(compileDeps);
             this.logger.info("Loaded module compile dependencies: {}", compileDeps);
 
-            final Collection<LanguageIdentifier> sourceDeps = metaInput.languageSpec.config().sourceDeps();
+            final Collection<LanguageIdentifier> sourceDeps = metaInput.project().config().sourceDeps();
             this.logger.debug("Loading module source dependencies: {}", sourceDeps);
             this.languageManager.discoverRange(sourceDeps);
             this.logger.info("Loaded module source dependencies: {}", sourceDeps);
@@ -134,7 +174,7 @@ public final class JpsSpoofaxMetaBuilder {
      * @param context   The compile context.
      * @throws ProjectBuildException
      */
-    public void afterBuild(final LanguageSpecBuildInput metaInput,
+    public void afterBuild(final ProjectBuildInput metaInput,
                            final CompileContext context)
             throws ProjectBuildException {
 
@@ -153,14 +193,14 @@ public final class JpsSpoofaxMetaBuilder {
                          final CompileContext context) throws
             ProjectBuildException {
         try {
-            this.logger.debug("Cleaning {}", metaInput.languageSpec);
+            this.logger.debug("Cleaning {}", metaInput.languageSpec());
 
             context.checkCanceled();
-            context.processMessage(this.messageFormatter.formatProgress(0f, "Cleaning {}", metaInput.languageSpec));
+            context.processMessage(this.messageFormatter.formatProgress(0f, "Cleaning {}", metaInput.languageSpec()));
 
             this.builder.clean(metaInput);
 
-            this.logger.info("Cleaned {}", metaInput.languageSpec);
+            this.logger.info("Cleaned {}", metaInput.languageSpec());
         } catch (final MetaborgException e) {
             throw new ProjectBuildException("Error cleaning", e);
         }
@@ -177,16 +217,16 @@ public final class JpsSpoofaxMetaBuilder {
                               final CompileContext context) throws
             ProjectBuildException {
         try {
-            this.logger.debug("Initializing {}", metaInput.languageSpec);
+            this.logger.debug("Initializing {}", metaInput.languageSpec());
 
             context.checkCanceled();
-            context.processMessage(this.messageFormatter.formatProgress(0f, "Initializing {}", metaInput.languageSpec));
+            context.processMessage(this.messageFormatter.formatProgress(0f, "Initializing {}", metaInput.languageSpec()));
 
             this.builder.initialize(metaInput);
 
             // TODO: Report created output files to `consumer`.
 
-            this.logger.info("Initialized {}", metaInput.languageSpec);
+            this.logger.info("Initialized {}", metaInput.languageSpec());
         } catch (final MetaborgException e) {
             throw new ProjectBuildException("Error initializing", e);
         }
@@ -204,20 +244,20 @@ public final class JpsSpoofaxMetaBuilder {
             final LanguageSpecBuildInput metaInput,
             final CompileContext context) throws Exception {
         try {
-            this.logger.debug("Generating sources for {}", metaInput.languageSpec);
+            this.logger.debug("Generating sources for {}", metaInput.languageSpec());
 
             context.checkCanceled();
             context.processMessage(this.messageFormatter.formatProgress(
                     0f,
                     "Generating sources for {}",
-                    metaInput.languageSpec
+                    metaInput.languageSpec()
             ));
 
             this.builder.generateSources(metaInput, new FileAccess());
 
             // TODO: Report created output files to `consumer`.
 
-            this.logger.info("Generated sources for {}", metaInput.languageSpec);
+            this.logger.info("Generated sources for {}", metaInput.languageSpec());
         } catch (final Exception e) {
             throw new ProjectBuildException(e.getMessage(), e);
         }
@@ -232,15 +272,15 @@ public final class JpsSpoofaxMetaBuilder {
      * @throws ProjectBuildException
      */
     public void regularBuild(
-            final LanguageSpecBuildInput metaInput,
+            final ProjectBuildInput metaInput,
             final CompileContext context) throws Exception {
 
-        this.logger.debug("Analyzing and transforming {}", metaInput.languageSpec);
+        this.logger.debug("Analyzing and transforming {}", metaInput.project());
 
         context.processMessage(this.messageFormatter.formatProgress(
                 0f,
                 "Analyzing and transforming {}",
-                metaInput.languageSpec
+                metaInput.project()
         ));
         context.checkCanceled();
 
@@ -281,7 +321,7 @@ public final class JpsSpoofaxMetaBuilder {
                     "Interrupted!", e);
         }
 
-        this.logger.info("Analyzed and transformed {}", metaInput.languageSpec);
+        this.logger.info("Analyzed and transformed {}", metaInput.project());
     }
 
     /**
@@ -296,16 +336,16 @@ public final class JpsSpoofaxMetaBuilder {
             final LanguageSpecBuildInput metaInput,
             final CompileContext context) throws Exception {
 
-        this.logger.debug("Compile pre-Java for {}", metaInput.languageSpec);
+        this.logger.debug("Compile pre-Java for {}", metaInput.languageSpec());
 
         context.checkCanceled();
         context.processMessage(this.messageFormatter.formatProgress(0f, "Building language project {}",
-                metaInput.languageSpec));
+                metaInput.languageSpec()));
         this.builder.compilePreJava(metaInput);
 
         // TODO: Report created output files to `consumer`.
 
-        this.logger.info("Compiled pre-Java for {}", metaInput.languageSpec);
+        this.logger.info("Compiled pre-Java for {}", metaInput.languageSpec());
     }
 
     /**
@@ -320,19 +360,19 @@ public final class JpsSpoofaxMetaBuilder {
             final LanguageSpecBuildInput metaInput,
             final CompileContext context) throws Exception {
 
-        this.logger.debug("Compiling post-Java for {}", metaInput.languageSpec);
+        this.logger.debug("Compiling post-Java for {}", metaInput.languageSpec());
 
         context.checkCanceled();
         context.processMessage(this.messageFormatter.formatProgress(
                 0f,
                 "Packaging language project {}",
-                metaInput.languageSpec
+                metaInput.languageSpec()
         ));
         this.builder.compilePostJava(metaInput);
 
         // TODO: Report created output files to `consumer`.
 
-        this.logger.info("Compiled post-Java for {}", metaInput.languageSpec);
+        this.logger.info("Compiled post-Java for {}", metaInput.languageSpec());
     }
 
     /**
@@ -342,18 +382,24 @@ public final class JpsSpoofaxMetaBuilder {
      * @return The created {@link BuildInput}.
      * @throws ProjectBuildException
      */
-    private BuildInput getBuildInput(final LanguageSpecBuildInput metaInput) throws
+    private BuildInput getBuildInput(final ProjectBuildInput metaInput) throws
             ProjectBuildException {
         final BuildInput input;
         try {
-            input = new BuildInputBuilder(metaInput.languageSpec)
+            BuildInputBuilder builder = new BuildInputBuilder(metaInput.project())
                     .withDefaultIncludePaths(true)
                     .withSourcesFromDefaultSourceLocations(true)
                     .withSelector(new SpoofaxIgnoresSelector())
                     .withThrowOnErrors(false)
-                    .withPardonedLanguageStrings(metaInput.languageSpec.config().pardonedLanguages())
-                    .addTransformGoal(new CompileGoal())
-                    .build(this.dependencyService, this.languagePathService);
+                    .addTransformGoal(new CompileGoal());
+
+            if (metaInput instanceof LanguageSpecBuildInput) {
+                final ISpoofaxLanguageSpec languageSpec = ((LanguageSpecBuildInput)metaInput).languageSpec();
+                builder
+                    .withPardonedLanguageStrings(languageSpec.config().pardonedLanguages());
+            }
+
+            input = builder.build(this.dependencyService, this.languagePathService);
         } catch (final MissingDependencyException e) {
             // FIXME: Add language ID field to MissingDependencyException,
             // and print the missing language ID here.
@@ -373,12 +419,16 @@ public final class JpsSpoofaxMetaBuilder {
      * @throws ProjectBuildException
      * @throws IOException
      */
-    public LanguageSpecBuildInput getProjectBuildInput(final JpsModule module)
+    public ProjectBuildInput getProjectBuildInput(final JpsModule module)
             throws ProjectBuildException, IOException {
 
-        // TODO: Return ProjectBuildInput or something.
+        @Nullable final MetaborgJpsProject project = this.projectService.get(module);
+        if (project == null) {
+            throw LoggerUtils.exception(this.logger, ProjectBuildException.class,
+                    "Could not get a project for the module {}", module);
+        }
 
-        throw LoggerUtils.exception(this.logger, NotImplementedException.class);
+        return new ProjectBuildInput(project);
     }
 
     /**

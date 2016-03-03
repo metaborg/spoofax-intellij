@@ -39,8 +39,9 @@ public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTa
             final IJpsProjectService projectService,
             final SpoofaxPreTargetType preTargetType,
             final JpsMetaborgModuleType moduleType,
+            final JpsSpoofaxMetaBuilder metaBuilder,
             final ISpoofaxLanguageSpecService languageSpecService) {
-        super("spoofax-post-production", projectService, moduleType, languageSpecService);
+        super("spoofax-post-production", projectService, moduleType, metaBuilder, languageSpecService);
         this.preTargetType = preTargetType;
     }
 

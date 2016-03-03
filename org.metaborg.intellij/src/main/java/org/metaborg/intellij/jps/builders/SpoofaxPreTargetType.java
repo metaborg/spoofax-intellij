@@ -35,8 +35,9 @@ public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarg
     @Inject
     public SpoofaxPreTargetType(final IJpsProjectService projectService,
                                 final JpsMetaborgModuleType moduleType,
+                                final JpsSpoofaxMetaBuilder metaBuilder,
                                 final ISpoofaxLanguageSpecService languageSpecService) {
-        super("spoofax-pre-production", projectService, moduleType, languageSpecService);
+        super("spoofax-pre-production", projectService, moduleType, metaBuilder, languageSpecService);
     }
 
     /**

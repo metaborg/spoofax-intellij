@@ -42,6 +42,7 @@ import java.util.*;
  */
 public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleBasedBuildTargetType<T> {
 
+    private final JpsSpoofaxMetaBuilder metaBuilder;
     private final JpsMetaborgModuleType moduleType;
     private final IJpsProjectService projectService;
     private final ISpoofaxLanguageSpecService languageSpecService;
@@ -50,10 +51,12 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
 
     protected SpoofaxTargetType(final String typeId, final IJpsProjectService projectService,
                                 final JpsMetaborgModuleType moduleType,
+                                final JpsSpoofaxMetaBuilder metaBuilder,
                                 final ISpoofaxLanguageSpecService languageSpecService) {
         super(typeId);
         this.projectService = projectService;
         this.moduleType = moduleType;
+        this.metaBuilder = metaBuilder;
         this.languageSpecService = languageSpecService;
     }
 
@@ -72,22 +75,8 @@ public abstract class SpoofaxTargetType<T extends SpoofaxTarget> extends ModuleB
      * @return The created build target.
      */
     public final T createTarget(final JpsModule module) {
-        @Nullable MetaborgJpsProject project = this.projectService.get(module);
-        if (project == null)
-            project = this.projectService.create(module);
-        @Nullable ISpoofaxLanguageSpec languageSpec = null;
-        try {
-            languageSpec = this.languageSpecService.get(project);
-
-            if (languageSpec == null) {
-                throw LoggerUtils.exception(this.logger, RuntimeException.class,
-                        "The project is not a language specification.");
-            }
-        } catch (final ConfigException e) {
-            throw LoggerUtils.exception(this.logger, UnhandledException.class,
-                    "Unexpected exception while retrieving configuration for project {}", e, project);
-        }
-        return createTarget(project);
+        final JpsLanguageSpec languageSpec = this.metaBuilder.getOrCreateLanguageSpec(module);
+        return createTarget(languageSpec);
     }
 
     /**

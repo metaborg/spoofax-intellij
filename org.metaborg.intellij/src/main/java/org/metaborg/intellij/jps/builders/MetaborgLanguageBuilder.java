@@ -35,6 +35,7 @@ import org.metaborg.core.build.dependency.*;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.configuration.*;
+import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
@@ -92,6 +93,8 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
         try {
 
             for (final JpsModule module : modules) {
+                this.jpsSpoofaxMetaBuilder.getOrCreateProject(module);
+
                 exitCode = buildModule(module, context);
                 if (exitCode == ExitCode.ABORT)
                     return exitCode;
@@ -135,7 +138,7 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
     }
 
     private ExitCode buildModule(final JpsModule module, final CompileContext context) throws Exception {
-        final LanguageSpecBuildInput metaInput = this.jpsSpoofaxMetaBuilder.getProjectBuildInput(module);
+        final ProjectBuildInput metaInput = this.jpsSpoofaxMetaBuilder.getProjectBuildInput(module);
 
         this.jpsSpoofaxMetaBuilder.beforeBuild(metaInput, context);
         this.jpsSpoofaxMetaBuilder.regularBuild(metaInput, context);

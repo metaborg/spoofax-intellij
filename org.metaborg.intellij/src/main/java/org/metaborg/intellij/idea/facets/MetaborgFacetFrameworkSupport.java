@@ -36,7 +36,10 @@ import org.metaborg.util.log.*;
  *
  * This class is only called for newly created modules/projects.
  * When adding a facet to an existing project, see the {@link MetaborgFacetEditorTab} class.
+ *
+ * @deprecated To remove.
  */
+@Deprecated
 public class MetaborgFacetFrameworkSupport extends FacetBasedFrameworkSupportProvider<MetaborgFacet> {
 
     @InjectLogger

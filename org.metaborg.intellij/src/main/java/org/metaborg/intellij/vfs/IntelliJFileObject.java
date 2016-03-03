@@ -240,8 +240,11 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected OutputStream doGetOutputStream(final boolean append) throws Exception {
         assert isAttached();
-        assert this.file != null;
         assert !append : "The file system doesn't have the Capability.APPEND_CONTENT capability.";
+
+        ensureExists();
+
+        assert this.file != null;
 
         return this.file.getOutputStream(null);
     }
@@ -262,5 +265,23 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
             return this.file;
         }
+    }
+
+    private void ensureExists()
+            throws FileSystemException {
+        if (this.file != null) return;
+
+        try {
+            new File(this.getName().getPath()).createNewFile();
+        } catch (final IOException e) {
+            throw new FileSystemException(e);
+        }
+
+        refresh();
+        // HACK: This forces the file to be attached
+        // if it wasn't already.
+        getType();
+
+        assert this.file != null;
     }
 }

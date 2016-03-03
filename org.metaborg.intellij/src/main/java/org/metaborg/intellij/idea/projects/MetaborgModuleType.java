@@ -34,6 +34,10 @@ import javax.swing.*;
  */
 public final class MetaborgModuleType extends ModuleType<MetaborgModuleBuilder> {
 
+    public static ModuleType getModuleType() {
+        return ModuleTypeManager.getInstance().findByID(ID);
+    }
+
     // The module ID. This is displayed to the user when the ModuleType cannot be found.
     public static final String ID = "METABORG_MODULE"; // This is also used in plugin.xml.
     private static final String NAME = "Spoofax";

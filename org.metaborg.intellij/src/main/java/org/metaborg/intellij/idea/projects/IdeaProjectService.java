@@ -30,6 +30,7 @@ import org.metaborg.core.config.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.source.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
 import org.metaborg.util.log.*;
 
@@ -42,22 +43,22 @@ import java.util.*;
 public final class IdeaProjectService implements IIdeaProjectService {
 
     private final IProjectConfigService projectConfigService;
-    private final ISourceTextService sourceTextService;
     private final IIdeaProjectFactory projectFactory;
     private final IIntelliJResourceService resourceService;
+    private final ISourceTextService sourceTextService;
     private final Map<Module, IdeaProject> modules = new HashMap<>();
     @InjectLogger
     private ILogger logger;
 
     @Inject
     private IdeaProjectService(final IProjectConfigService projectConfigService,
-                               final ISourceTextService sourceTextService,
                                final IIdeaProjectFactory projectFactory,
-                               final IIntelliJResourceService resourceService) {
+                               final IIntelliJResourceService resourceService,
+                               final ISourceTextService sourceTextService) {
         this.projectConfigService = projectConfigService;
-        this.sourceTextService = sourceTextService;
         this.projectFactory = projectFactory;
         this.resourceService = resourceService;
+        this.sourceTextService = sourceTextService;
     }
 
     /**
@@ -66,6 +67,40 @@ public final class IdeaProjectService implements IIdeaProjectService {
     @Override
     @Nullable
     public IdeaProject open(final Module module, final FileObject rootFolder) {
+
+        @Nullable final IdeaProject ideaProject = createProject(module, rootFolder);
+
+        if (ideaProject == null) {
+
+            final ModuleType moduleType = ModuleType.get(module);
+            if (moduleType == MetaborgModuleType.getModuleType()) {
+                throw LoggerUtils.exception(this.logger, RuntimeException.class, "Metaborg Language Specification " +
+                        "project has no associated Metaborg Project.");
+            }
+
+            return null;
+        }
+
+        open(ideaProject);
+
+        return ideaProject;
+    }
+
+    /**
+     * Creates a new IDEA project for the specified module.
+     *
+     * @param module The module.
+     * @param rootFolder The module's root folder.
+     * @return The IDEA project; or <code>null</code>.
+     */
+    @Nullable
+    private IdeaProject createProject(final Module module, final FileObject rootFolder) {
+
+        final ModuleType moduleType = ModuleType.get(module);
+        if (moduleType != MetaborgModuleType.getModuleType() && moduleType != JavaModuleType.getModuleType()) {
+            this.logger.info("Project is not a Language Specification or Java project {}", module);
+            return null;
+        }
 
         final ConfigRequest<IProjectConfig> configRequest = this.projectConfigService.get(rootFolder);
         if(!configRequest.valid()) {
@@ -77,18 +112,11 @@ public final class IdeaProjectService implements IIdeaProjectService {
 
         @Nullable final IProjectConfig config = configRequest.config();
         if(config == null) {
-            // Configuration should never be null if it is available, but sanity check anyway.
-            this.logger.error(
-                    "Could not get the configuration of the project {}",
-                    rootFolder);
+            this.logger.info("Project has no Metaborg configuration {}", rootFolder);
             return null;
         }
 
-        final IdeaProject ideaProject = this.projectFactory.create(module, rootFolder, config);
-
-        open(ideaProject);
-
-        return ideaProject;
+        return this.projectFactory.create(module, rootFolder, config);
     }
 
     /**
