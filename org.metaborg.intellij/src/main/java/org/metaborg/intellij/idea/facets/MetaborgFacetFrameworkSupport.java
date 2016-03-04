@@ -25,9 +25,11 @@ import com.intellij.facet.frameworks.*;
 import com.intellij.facet.ui.*;
 import com.intellij.facet.ui.libraries.*;
 import com.intellij.ide.util.frameworkSupport.*;
+import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.graphics.*;
+import org.metaborg.intellij.idea.sdks.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
 
@@ -36,10 +38,7 @@ import org.metaborg.util.log.*;
  *
  * This class is only called for newly created modules/projects.
  * When adding a facet to an existing project, see the {@link MetaborgFacetEditorTab} class.
- *
- * @deprecated To remove.
  */
-@Deprecated
 public class MetaborgFacetFrameworkSupport extends FacetBasedFrameworkSupportProvider<MetaborgFacet> {
 
     @InjectLogger
@@ -64,15 +63,23 @@ public class MetaborgFacetFrameworkSupport extends FacetBasedFrameworkSupportPro
     protected void setupConfiguration(final MetaborgFacet facet,
                                       final ModifiableRootModel rootModel,
                                       final FrameworkVersion version) {
+        this.logger.debug("Setting up facet configuration.");
+
         // Nothing to do.
-        logger.info("Facet setupConfiguration()");
+
+        this.logger.info("Set up facet configuration.");
     }
 
     @Override
-    protected void onFacetCreated(final MetaborgFacet facet, final ModifiableRootModel rootModel, final FrameworkVersion version) {
+    protected void onFacetCreated(final MetaborgFacet facet,
+                                  final ModifiableRootModel rootModel,
+                                  final FrameworkVersion version) {
 
-        logger.info("Facet onFacetCreated()");
+        this.logger.debug("Applying facet.");
+
+        facet.applyFacet(rootModel);
+
+        this.logger.info("Applied facet.");
     }
-
 
 }
