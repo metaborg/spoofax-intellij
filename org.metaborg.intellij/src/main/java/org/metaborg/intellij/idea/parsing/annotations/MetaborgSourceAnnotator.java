@@ -73,7 +73,6 @@ public final class MetaborgSourceAnnotator<P, A>
      *
      * @param contextService The context service.
      * @param projectService The project service.
-     * @param languageSpecService The language specification service.
      * @param resourceService The resource service.
      * @param identifierService The identifier service.
      * @param analysisResultRequester The analysis result requester.
