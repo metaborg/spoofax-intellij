@@ -28,6 +28,7 @@ import org.metaborg.intellij.discovery.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.utils.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
@@ -94,8 +95,7 @@ public class DefaultLanguageManager implements ILanguageManager {
                     return Collections.emptyList();
                 }
             } catch (final MetaborgException e) {
-                throw LoggerUtils.exception(this.logger, LanguageLoadingFailedException.class,
-                        "Could not load language '{}' at: {}", e, id, rootLocation);
+                throw new LanguageLoadingFailedException("Could not load language '{}' at: {}", e, id, rootLocation);
             }
             final Collection<ILanguageComponent> components = loadRange(requests);
             this.logger.debug("Discovered components language '{}': {}", id, components);
@@ -117,7 +117,7 @@ public class DefaultLanguageManager implements ILanguageManager {
                 this.logger.info("Loaded language component: {}", component);
                 return component;
             } catch (final MetaborgException e) {
-                throw LoggerUtils.exception(this.logger, LanguageLoadingFailedException.class,
+                throw ExceptionUtils.exception(LanguageLoadingFailedException.class,
                         "Loading language failed from request: {}", e, request);
             }
         }
@@ -155,11 +155,17 @@ public class DefaultLanguageManager implements ILanguageManager {
     @Override
     public Collection<ILanguageComponent> loadRange(final Iterable<ILanguageDiscoveryRequest> requests)
             throws LanguageLoadingFailedException {
+
         final List<ILanguageComponent> components = new ArrayList<>();
         for (final ILanguageDiscoveryRequest request : requests) {
-            final ILanguageComponent component = load(request);
-            components.add(component);
+            try {
+                final ILanguageComponent component = load(request);
+                components.add(component);
+            } catch (final LanguageLoadingFailedException e) {
+                this.logger.error("Failed to load language from request: {}", e, request);
+            }
         }
+
         return components;
     }
 

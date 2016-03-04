@@ -150,11 +150,12 @@ dependencies {
     language 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.template:2.0.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.ts:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.stratego:2.0.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-SNAPSHOT@spoofax-language'
 
-    languageBaseline 'org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646@spoofax-language'
-    languageBaseline 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646@spoofax-language'
-    languageBaseline 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-baseline-20150917-172646@spoofax-language'
+    // languageBaseline 'org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646@spoofax-language'
+    // languageBaseline 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646@spoofax-language'
+    // languageBaseline 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-baseline-20150917-172646@spoofax-language'
 
     // Test dependencies
     testCompile 'junit:junit:4.12'

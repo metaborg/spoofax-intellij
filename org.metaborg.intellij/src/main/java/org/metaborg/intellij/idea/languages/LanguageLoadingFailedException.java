@@ -20,6 +20,7 @@
 package org.metaborg.intellij.idea.languages;
 
 import org.metaborg.core.*;
+import org.metaborg.intellij.utils.*;
 
 import javax.annotation.*;
 
@@ -34,9 +35,13 @@ public class LanguageLoadingFailedException extends MetaborgException {
      * Initializes a new instance of the {@link LanguageLoadingFailedException} class.
      *
      * @param message The message; or <code>null</code>.
+     * @param cause   The cause; or <code>null</code>.
+     * @param args    The exception arguments.
      */
-    public LanguageLoadingFailedException(@Nullable final String message) {
-        this(message, null);
+    public LanguageLoadingFailedException(@Nullable final String message,
+                                          @Nullable final Throwable cause,
+                                          final Object... args) {
+        this(ExceptionUtils.format(message, args), cause);
     }
 
     /**
@@ -46,7 +51,27 @@ public class LanguageLoadingFailedException extends MetaborgException {
      * @param cause   The cause; or <code>null</code>.
      */
     public LanguageLoadingFailedException(@Nullable final String message, @Nullable final Throwable cause) {
-        super(message != null ? message : DEFAULT_MESSAGE);
+        super(message != null ? message : DEFAULT_MESSAGE, cause);
+    }
+
+    /**
+     * Initializes a new instance of the {@link LanguageLoadingFailedException} class.
+     *
+     * @param message The message; or <code>null</code>.
+     * @param args    The exception arguments.
+     */
+    public LanguageLoadingFailedException(@Nullable final String message,
+                                          final Object... args) {
+        this(ExceptionUtils.format(message, args));
+    }
+
+    /**
+     * Initializes a new instance of the {@link LanguageLoadingFailedException} class.
+     *
+     * @param message The message; or <code>null</code>.
+     */
+    public LanguageLoadingFailedException(@Nullable final String message) {
+        this(message, (Throwable)null);
     }
 
     /**
@@ -62,6 +87,6 @@ public class LanguageLoadingFailedException extends MetaborgException {
      * Initializes a new instance of the {@link LanguageLoadingFailedException} class.
      */
     public LanguageLoadingFailedException() {
-        this(null, null);
+        this(null, (Throwable)null);
     }
 }
