@@ -100,4 +100,12 @@ public final class SpoofaxJpsPlugin {
         }
         logger.info("Spoofax for JPS plugin loaded.");
     }
+
+    /**
+     * Cleans up the plugin.
+     */
+    public void close() {
+        this.spoofaxMeta.close();
+        this.spoofax.close();
+    }
 }

@@ -79,6 +79,9 @@ public final class IdeaApplicationComponent implements ApplicationComponent {
     @Override
     public void disposeComponent() {
         this.logger.debug("Disposing application.");
+
+        SpoofaxIdeaPlugin.plugin().close();
+
         this.logger.info("Disposed application.");
     }
 

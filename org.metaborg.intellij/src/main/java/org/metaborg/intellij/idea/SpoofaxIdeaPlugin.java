@@ -101,4 +101,12 @@ public final class SpoofaxIdeaPlugin {
         logger.info("Spoofax for IDEA plugin loaded.");
     }
 
+    /**
+     * Cleans up the plugin.
+     */
+    public void close() {
+        this.spoofaxMeta.close();
+        this.spoofax.close();
+    }
+
 }
