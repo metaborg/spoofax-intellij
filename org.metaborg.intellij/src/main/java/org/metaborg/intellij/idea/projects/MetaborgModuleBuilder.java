@@ -204,6 +204,43 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     @Override
     public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
 
+        final FileObject location = MetaborgModuleBuilder.
+                this.resourceService.resolve(getContentEntryPath());
+
+        final ISpoofaxLanguageSpecConfig config = this.configBuilder
+                .reset()
+                .withIdentifier(getLanguageIdentifier())
+                .withName(getName())
+                .build(location);
+
+        // TODO: Use ISpoofaxLanguageSpecPathsService instead.
+        final ISpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(location, config);
+        final IdeaLanguageSpec languageSpec = this.languageSpecFactory.create(rootModel.getModule(),
+                location, config, paths);
+
+        setContentRoots(rootModel);
+        setCompilerOutputPath(rootModel, paths);
+        setSdk(rootModel);
+
+        // Set the module.
+        final Module module = rootModel.getModule();
+        final Project project = module.getProject();
+
+        // Generate the project files.
+        ApplicationManager.getApplication().runWriteAction(() -> {
+            MetaborgModuleBuilder.this.logger.debug("Generating project files.");
+
+            // Generate the module structure (files and directories).
+            MetaborgModuleBuilder.this.projectService.open(languageSpec);
+            WriteCommandAction.runWriteCommandAction(
+                    project, "Create new Spoofax module", null, () -> generateModuleStructure(languageSpec));
+            MetaborgModuleBuilder.this.logger.info("Generated project files.");
+        });
+
+    }
+
+    private void setContentRoots(final ModifiableRootModel rootModel)
+            throws ConfigurationException {
         // Set the content roots.
         this.logger.debug("Adding content and source roots.");
         @Nullable final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
@@ -216,76 +253,32 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
         }
         this.logger.info("Added content and source roots.");
+    }
 
-        // Set the SDK.
-        this.logger.debug("Setting SDK.");
-        setSdk(rootModel);
-        this.logger.info("Set SDK.");
+    private void setCompilerOutputPath(final ModifiableRootModel rootModel, final ISpoofaxLanguageSpecPaths paths) {
+        // Set the compiler output path.
+        this.logger.debug("Setting compiler output path.");
 
-        // Set the module.
-        final Module module = rootModel.getModule();
-        final Project project = module.getProject();
+        final String outputFolder;
+        try {
+            outputFolder = paths.outputClassesFolder().getURL().toString();
+        } catch (final FileSystemException e) {
+            throw new UnhandledException(e);
+        }
 
-//        // Set the dependencies.
-//        // https://intellij-support.jetbrains.com/hc/en-us/community/posts/206116919-Using-ModifiableRootModel-addLibraryEntry-still-doesn-t-set-the-library-dependency-correctly
-//        // https://github.com/consulo/consulo-ruby/blob/5111ab5ed8b71ba208cafafa09c0bf86395e532c/src/org/jetbrains/plugins/ruby/jruby/JRubySdkTableListener.java
-//        this.logger.debug("Adding dependencies.");
-//        final LibraryTable libraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
-//        final String libName = "org.metaborg.core-2.0.0-SNAPSHOT";
-//        @Nullable Library library = libraryTable.getLibraryByName(libName);
-//        if (library == null) {
-//            library = libraryTable.createLibrary("Metaborg Core");
-//            final Library.ModifiableModel libraryModel = library.getModifiableModel();
-//            libraryModel.addJarDirectory();
-//            // TODO
-//            this.logger.info("Library was NULL.");
-//        }
-//        else {
-//            this.logger.info("Library was not NULL: {}", library);
-//            rootModel.addLibraryEntry(library);
-//        }
-//        this.logger.info("Added dependencies.");
+        final String testOutputFolder;
+        try {
+            testOutputFolder = paths.outputTestClassesFolder().getURL().toString();
+        } catch (final FileSystemException e) {
+            throw new UnhandledException(e);
+        }
 
-        // Generate the project files.
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            MetaborgModuleBuilder.this.logger.debug("Generating project files.");
-            // Generate the module structure (files and directories).
-            final FileObject location = MetaborgModuleBuilder.
-                    this.resourceService.resolve(getContentEntryPath());
-
-            final String name = getName();
-            final LanguageIdentifier identifier = getLanguageIdentifier();
-
-            final ISpoofaxLanguageSpecConfig config = this.configBuilder
-                    .reset()
-                    .withIdentifier(identifier)
-                    .withName(name)
-                    .build(location);
-
-            final SpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(location, config);
-
-//            // TODO: Use ISpoofaxLanguageSpecPathsService instead.
-//            final ISpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(location, config);
-
-//            final IdeaProject ideaProject = this.projectFactory.create(module, location, config);
-//            final IdeaProject ideaProject = this.projectService.create(module, location);
-
-//            @Nullable final ISpoofaxLanguageSpec languageSpec;
-//            try {
-//                languageSpec = this.languageSpecService.get(ideaProject);
-//            } catch (final ConfigException ex) {
-//                throw new UnhandledException(ex);
-//            }
-//            assert languageSpec != null;
-
-            final IdeaLanguageSpec languageSpec = this.languageSpecFactory.create(module, location, config, paths);
-
-            MetaborgModuleBuilder.this.projectService.open(languageSpec);
-            WriteCommandAction.runWriteCommandAction(
-                    project, "Create new Spoofax module", null, () -> generateModuleStructure(languageSpec));
-            MetaborgModuleBuilder.this.logger.info("Generated project files.");
-        });
-
+        final CompilerModuleExtension compilerModuleExtension =
+                rootModel.getModuleExtension(CompilerModuleExtension.class);
+        compilerModuleExtension.setCompilerOutputPath(outputFolder);
+        compilerModuleExtension.setCompilerOutputPathForTests(testOutputFolder);
+        compilerModuleExtension.inheritCompilerOutputPath(false);
+        this.logger.info("Set compiler output path.");
     }
 
     /**
@@ -332,6 +325,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      * @param rootModel The root model.
      */
     private void setSdk(final ModifiableRootModel rootModel) {
+
+        // Set the SDK.
+        this.logger.debug("Setting SDK.");
         if (this.myJdk != null) {
             // An SDK was selected in the wizard.
             rootModel.setSdk(this.myJdk);
@@ -339,6 +335,8 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             // No SDK was selected in the wizard.
             rootModel.inheritSdk();
         }
+
+        this.logger.info("Set SDK.");
     }
 
     /**
