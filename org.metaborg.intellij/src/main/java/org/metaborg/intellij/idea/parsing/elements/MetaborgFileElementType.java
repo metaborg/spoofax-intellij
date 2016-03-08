@@ -30,6 +30,7 @@ import com.intellij.psi.tree.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.*;
 import org.metaborg.core.language.*;
+import org.metaborg.core.processing.parse.*;
 import org.metaborg.core.project.*;
 import org.metaborg.core.syntax.*;
 import org.metaborg.intellij.idea.languages.*;
@@ -52,6 +53,7 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
     private final ILanguageProjectService languageProjectService;
     private final SpoofaxTokenTypeManager tokenTypesManager;
     private final IIntelliJResourceService resourceService;
+    private final IParseResultProcessor<IStrategoTerm> parseResultProcessor;
     private final ISyntaxService<IStrategoTerm> syntaxService;
     private final IParserConfiguration parserConfiguration;
     private final IATermAstElementTypeProviderFactory elementTypeProviderFactory;
@@ -65,6 +67,7 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
             final IIdeaLanguageManager languageManager,
             final ILanguageProjectService languageProjectService,
             final IIntelliJResourceService resourceService,
+            final IParseResultProcessor<IStrategoTerm> parseResultProcessor,
             final ISyntaxService<IStrategoTerm> syntaxService,
             final IParserConfiguration parserConfiguration,
             final IIdeaProjectService projectService,
@@ -77,6 +80,7 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
         this.languageProjectService = languageProjectService;
         this.tokenTypesManager = tokenTypesManager;
         this.resourceService = resourceService;
+        this.parseResultProcessor = parseResultProcessor;
         this.syntaxService = syntaxService;
         this.parserConfiguration = parserConfiguration;
         this.projectService = projectService;
@@ -98,7 +102,7 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
         );
 
 
-        final FileObject resource = getResource(psi, builder);
+        @Nullable final FileObject resource = getResource(psi, builder);
         final ILanguageImpl languageImpl = getLanguageImpl(resource, psi, this);
 
         final String input = builder.getOriginalText().toString();
@@ -181,15 +185,26 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
     private ParseResult<IStrategoTerm> parseAll(
             @Nullable final FileObject resource,
             final ILanguageImpl languageImpl,
-            final String input) {
-        final ParseResult<IStrategoTerm> result;
+            final String text) {
+        final ParseResult<IStrategoTerm> parseResult;
         try {
+            if (resource != null) {
+                this.parseResultProcessor.invalidate(resource);
+            }
+            
             // FIXME: Syntax service must allow null resource.
-            result = this.syntaxService.parse(input, resource, languageImpl, this.parserConfiguration);
+            parseResult = this.syntaxService.parse(text, resource, languageImpl, this.parserConfiguration);
+
+            if (resource != null) {
+                this.parseResultProcessor.update(resource, parseResult);
+            }
         } catch (final ParseException e) {
+            if (resource != null) {
+                this.parseResultProcessor.error(resource, e);
+            }
             throw new MetaborgRuntimeException("Unhandled exception", e);
         }
-        return result;
+        return parseResult;
     }
 
 }

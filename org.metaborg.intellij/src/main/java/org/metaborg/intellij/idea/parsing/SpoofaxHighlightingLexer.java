@@ -168,7 +168,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
         if (result.result == null) {
             // A null parse result might occur when the input contains an error,
             // and recovery fails or is disabled.
-            this.logger.error("Cannot categorize input of {}, parse result is empty", this.languageImpl);
+            this.logger.info("Cannot categorize input of {}, parse result is empty", this.languageImpl);
 
             // Return a single token covering all input.
             final IntRange tokenRange = IntRange.between(0, this.buffer.length());
@@ -196,7 +196,8 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
         );
         final Iterator<IRegionStyle<IStrategoTerm>> styledTokenIterator = styledTokens.iterator();
 
-        @Nullable IRegionStyle<IStrategoTerm> currentRegionStyle = styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
+        @Nullable IRegionStyle<IStrategoTerm> currentRegionStyle =
+                styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
 
         final int tokenCount = tokenizer.getTokenCount();
         int offset = 0;
@@ -214,7 +215,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
                 // The tokenizer may return empty tokens. Don't know why.
                 // Let's ignore those.
 
-                this.logger.warn("Token {} is empty. Token ignored.",
+                this.logger.info("Token {} is empty. Token ignored.",
                         printToken(tokenRange));
 
                 continue;
@@ -227,7 +228,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
                 // From that follows that the next token should start where the previous (non-ignored) token
                 // ended. If that's not the case, the next assertion will fail.
 
-                this.logger.warn("Token {} overlaps previous token {}. Token ignored.",
+                this.logger.info("Token {} overlaps previous token {}. Token ignored.",
                         printToken(tokenRange),
                         printToken(getLastTokenRange()));
 
