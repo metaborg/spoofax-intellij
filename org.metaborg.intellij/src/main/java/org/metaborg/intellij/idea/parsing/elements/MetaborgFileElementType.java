@@ -191,7 +191,7 @@ public final class MetaborgFileElementType extends IFileElementType { //IStubFil
             if (resource != null) {
                 this.parseResultProcessor.invalidate(resource);
             }
-            
+
             // FIXME: Syntax service must allow null resource.
             parseResult = this.syntaxService.parse(text, resource, languageImpl, this.parserConfiguration);
 

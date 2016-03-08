@@ -139,11 +139,12 @@ public final class MetaborgSourceAnnotator<P, A>
     @Nullable
     @Override
     public AnalysisFileResult<P, A> doAnnotate(final MetaborgSourceAnnotationInfo info) {
-        return this.analysisResultRequester.request(
-                info.resource(),
-                info.context(),
-                info.text()
-        ).toBlocking().single();
+        return this.analysisResultRequester.get(info.resource());
+//        return this.analysisResultRequester.request(
+//                info.resource(),
+//                info.context(),
+//                info.text()
+//        ).toBlocking().single();
     }
 
     /**
