@@ -21,11 +21,15 @@ package org.metaborg.intellij.jps;
 
 import com.google.inject.*;
 import com.intellij.openapi.diagnostic.*;
+import com.intellij.openapi.diagnostic.Logger;
+import com.virtlink.tartarus.*;
 import org.apache.commons.lang3.concurrent.*;
+import org.jhades.*;
 import org.metaborg.core.*;
 import org.metaborg.intellij.*;
 import org.metaborg.spoofax.core.*;
 import org.metaborg.spoofax.meta.core.*;
+import org.slf4j.*;
 
 import java.util.*;
 
@@ -92,6 +96,7 @@ public final class SpoofaxJpsPlugin {
         logger.debug("Loading Spoofax for JPS plugin using classloader: ",
                 this.getClass().getClassLoader().getClass().getName());
         logger.debug("Stack trace: " + Arrays.toString(Thread.currentThread().getStackTrace()));
+
         try {
             this.spoofax = new Spoofax(new JpsSpoofaxModule());
             this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new JpsSpoofaxMetaModule());

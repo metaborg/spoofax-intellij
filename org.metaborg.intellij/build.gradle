@@ -142,6 +142,7 @@ dependencies {
     compile 'com.google.inject.extensions:guice-multibindings:4.0'
     compile 'org.javassist:javassist:3.20.0-GA'
     compile 'org.slf4j:slf4j-api:1.7.10'
+    compile 'org.jhades:jhades:1.0.4'
     
     jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
 

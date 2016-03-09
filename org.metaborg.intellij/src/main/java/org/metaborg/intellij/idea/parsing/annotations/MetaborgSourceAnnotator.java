@@ -19,9 +19,10 @@
 
 package org.metaborg.intellij.idea.parsing.annotations;
 
+import com.intellij.openapi.fileTypes.*;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.core.analysis.AnalysisFileResult;
+import org.metaborg.core.analysis.*;
 import org.metaborg.core.context.ContextException;
 import org.metaborg.core.context.IContext;
 import org.metaborg.core.context.IContextService;
@@ -29,15 +30,20 @@ import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.messages.IMessage;
 import org.metaborg.core.messages.MessageSeverity;
-import org.metaborg.core.processing.analyze.IAnalysisResultRequester;
+import org.metaborg.core.processing.analyze.*;
+import org.metaborg.core.processing.parse.*;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.source.ISourceRegion;
+import org.metaborg.core.syntax.*;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.parsing.SourceRegionUtil;
+import org.metaborg.intellij.idea.parsing.elements.*;
 import org.metaborg.intellij.idea.projects.IIdeaProjectService;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.util.concurrent.*;
+import org.metaborg.util.iterators.*;
 import org.metaborg.util.log.ILogger;
 
 import com.google.common.base.Objects;
@@ -49,6 +55,7 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiFile;
+import rx.*;
 
 /**
  * Annotates metaborg source files.
@@ -64,7 +71,10 @@ public final class MetaborgSourceAnnotator<P, A>
     private final IIdeaProjectService projectService;
     private final IIntelliJResourceService resourceService;
     private final ILanguageIdentifierService identifierService;
+    private final IParseResultRequester<P> parseResultRequester;
     private final IAnalysisResultRequester<P, A> analysisResultRequester;
+    private final IAnalysisResultUpdater<P, A> analysisResultProcessor;
+    private final IAnalysisService<P, A> analyzer;
     @InjectLogger
     private ILogger logger;
 
@@ -83,14 +93,20 @@ public final class MetaborgSourceAnnotator<P, A>
             final IIdeaProjectService projectService,
             final IIntelliJResourceService resourceService,
             final ILanguageIdentifierService identifierService,
-            final IAnalysisResultRequester<P, A> analysisResultRequester
+            final IParseResultRequester<P> parseResultRequester,
+            final IAnalysisResultRequester<P, A> analysisResultRequester,
+            final IAnalysisService<P, A> analyzer,
+            final IAnalysisResultUpdater<P, A> analysisResultProcessor
     ) {
         super();
         this.contextService = contextService;
         this.projectService = projectService;
         this.resourceService = resourceService;
         this.identifierService = identifierService;
+        this.parseResultRequester = parseResultRequester;
         this.analysisResultRequester = analysisResultRequester;
+        this.analyzer = analyzer;
+        this.analysisResultProcessor = analysisResultProcessor;
     }
 
     /**
@@ -110,6 +126,9 @@ public final class MetaborgSourceAnnotator<P, A>
     public MetaborgSourceAnnotationInfo collectInformation(final PsiFile file, final Editor editor,
                                                            final boolean hasErrors) {
 
+        this.logger.debug("Collecting annotation information for file: {}", file);
+
+        final MetaborgSourceAnnotationInfo info;
         @Nullable final IProject project = this.projectService.get(file);
         if (project == null) {
             this.logger.warn("Cannot annotate source code; cannot get language specification for resource {}. " +
@@ -126,11 +145,15 @@ public final class MetaborgSourceAnnotator<P, A>
             }
             final IContext context = this.contextService.get(resource, project, language);
             final String text = editor.getDocument().getImmutableCharSequence().toString();
-            return new MetaborgSourceAnnotationInfo(resource, text, context);
+            info = new MetaborgSourceAnnotationInfo(resource, text, context);
         } catch (final ContextException e) {
             throw LoggerUtils.exception(this.logger, UnhandledException.class,
                     "Unexpected unhandled exception.", e);
         }
+
+        this.logger.info("Collected annotation information for file: {}", file);
+
+        return info;
     }
 
     /**
@@ -139,12 +162,41 @@ public final class MetaborgSourceAnnotator<P, A>
     @Nullable
     @Override
     public AnalysisFileResult<P, A> doAnnotate(final MetaborgSourceAnnotationInfo info) {
-        return this.analysisResultRequester.get(info.resource());
-//        return this.analysisResultRequester.request(
-//                info.resource(),
-//                info.context(),
-//                info.text()
-//        ).toBlocking().single();
+//        return this.analysisResultRequester.get(info.resource());
+
+        this.logger.debug("Requesting analysis result for file: {}", info.resource());
+
+        final AnalysisFileResult<P, A> result = this.analysisResultRequester.request(
+                info.resource(),
+                info.context(),
+                info.text()
+        ).toBlocking().single();
+
+        this.logger.info("Requested analysis result for file: {}", info.resource());
+
+        return result;
+
+//        final IContext context = info.context();
+//
+//        final ParseResult<P> parseResult =
+//                this.parseResultRequester.request(info.resource(), context.language(), info.text())
+//                        .toBlocking().single();
+//
+//        final AnalysisResult<P, A> analysisResult;
+//        try(IClosableLock lock = context.write()) {
+//            this.analysisResultProcessor.invalidate(parseResult.source);
+//            try {
+//                analysisResult = this.analyzer.analyze(Iterables2.singleton(parseResult), context);
+//            } catch(final AnalysisException e) {
+//                this.analysisResultProcessor.error(info.resource(), e);
+//                throw new RuntimeException(e);
+//            }
+//            this.analysisResultProcessor.update(analysisResult);
+//        }
+//
+//
+//        analysisResult.fileResults.iterator().next().
+//        return analysisResult;
     }
 
     /**
@@ -155,9 +207,14 @@ public final class MetaborgSourceAnnotator<P, A>
             final PsiFile file,
             final AnalysisFileResult<P, A> analysisResult,
             final AnnotationHolder holder) {
+
+        this.logger.debug("Applying analysis result to file: {}", file);
+
         for (final IMessage message : analysisResult.messages) {
             addAnnotation(message, file, holder);
         }
+
+        this.logger.info("Applied analysis result to file: {}", file);
     }
 
     /**

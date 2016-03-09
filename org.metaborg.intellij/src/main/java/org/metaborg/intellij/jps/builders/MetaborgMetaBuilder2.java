@@ -19,14 +19,17 @@
 
 package org.metaborg.intellij.jps.builders;
 
+import com.virtlink.tartarus.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.incremental.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.utils.*;
 import org.metaborg.spoofax.meta.core.build.*;
 import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
+import org.slf4j.*;
 
 import java.io.*;
 import java.util.*;

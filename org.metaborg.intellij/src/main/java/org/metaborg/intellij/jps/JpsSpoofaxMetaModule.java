@@ -26,7 +26,9 @@ import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.builders.*;
 import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.projects.*;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
+import org.metaborg.spoofax.meta.core.project.*;
 
 import java.util.*;
 
@@ -57,6 +59,16 @@ import java.util.*;
 
         bind(SpoofaxPreBuilder.class).in(Singleton.class);
         bind(SpoofaxPostBuilder.class).in(Singleton.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void bindLanguageSpec() {
+        bind(JpsLanguageSpecService.class).in(Singleton.class);
+        bind(ILanguageSpecService.class).to(JpsLanguageSpecService.class);
+        bind(ISpoofaxLanguageSpecService.class).to(JpsLanguageSpecService.class);
     }
 
     /**

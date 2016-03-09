@@ -177,5 +177,6 @@
     <orderEntry type="library" name="Gradle: org.sugarj:common:1.7.0" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.plexus:plexus-utils:1.5.6" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jhades:jhades:1.0.4" level="project" />
   </component>
 </module>
