@@ -24,7 +24,6 @@ import com.intellij.openapi.diagnostic.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.virtlink.tartarus.*;
 import org.apache.commons.lang3.concurrent.*;
-import org.jhades.*;
 import org.metaborg.core.*;
 import org.metaborg.intellij.*;
 import org.metaborg.spoofax.core.*;

@@ -1,13 +1,1 @@
-org.metaborg.core-2.0.0-SNAPSHOT.jar
-org.metaborg.spoofax.core-2.0.0-SNAPSHOT.jar
-org.metaborg.meta.interpreter.framework-2.0.0-SNAPSHOT.jar
-org.metaborg.runtime.task-2.0.0-SNAPSHOT.jar
-org.metaborg.util-2.0.0-SNAPSHOT.jar
-org.spoofax.interpreter.core-2.0.0-SNAPSHOT.jar
-org.spoofax.interpreter.library.index-2.0.0-SNAPSHOT.jar
-org.spoofax.interpreter.library.java-2.0.0-SNAPSHOT.jar
-org.spoofax.interpreter.library.jsglr-2.0.0-SNAPSHOT.jar
-org.spoofax.interpreter.library.xml-2.0.0-SNAPSHOT.jar
-org.spoofax.jsglr-2.0.0-SNAPSHOT.jar
-org.spoofax.terms-2.0.0-SNAPSHOT.jar
-org.strategoxt.strj-2.0.0-SNAPSHOT.jar
+org.metaborg.intellij.deps-2.0.0-SNAPSHOT.jar

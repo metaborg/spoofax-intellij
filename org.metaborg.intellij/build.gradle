@@ -56,7 +56,7 @@ configurations {
     testLanguageBaseline
 
     jpsRuntime {
-        extendsFrom runtime
+        //extendsFrom runtime
         exclude group: 'com.jetbrains'
     }
 }
@@ -72,7 +72,6 @@ afterEvaluate {
         jvmArgs += ["-Dcompiler.process.debug.port=5005"]
     }
 }
-
 
 task copyJpsLibraries(type: Copy, description: 'Copies the JPS libraries to the resources.') {
     into "src/main/resources/jpslib/"
@@ -103,46 +102,10 @@ processResources.dependsOn copyLanguageBaselineDependencies
 processResources.dependsOn copyJpsLibraries
 processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
-// Prints the list of JPS plugin dependencies.
-task(printJpsDependencies, description: 'Prints a semi-colon-separated list of dependencies for the JPS plugin.') << {
-    def jars = configurations.jpsRuntime.resolve().collect { it.name }.findAll { !it.startsWith('slf4j') }
-    def result = [ './classes/' ] + jars + [
-            '../classes/jpslib/slf4j-api-1.7.12.jar'
-    ]
-    println result.sort().join(';')
-}
-
-task(printAllDependencies, description: 'Prints all runtime dependencies.') << {
-    def r = configurations.jpsRuntime.resolve()	// + configurations.runtime.resolve()
-    r.collect { it.name }.sort().each { dep ->
-        println "      ${dep}"
-    }
-}
-
 dependencies {
-    // Main dependencies
-    compile('org.metaborg:org.metaborg.core:2.0.0-SNAPSHOT') {
-        exclude group: 'org.slf4j'
-        exclude group: 'com.google.guava'
-    }
-    compile('org.metaborg:org.metaborg.spoofax.core:2.0.0-SNAPSHOT') {
-        exclude group: 'org.slf4j'
-        exclude group: 'com.google.guava'
-    }
-    compile('org.metaborg:org.metaborg.spoofax.meta.core:2.0.0-SNAPSHOT') {
-        exclude group: 'org.slf4j'
-        exclude group: 'com.google.guava'
-    }
-    provided 'com.google.guava:guava:17.0'
-    compile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile 'org.apache.commons:commons-lang3:3.4'
-    compile 'org.apache.commons:commons-vfs2:2.0'
-    compile 'com.google.inject:guice:4.0'
-    compile 'com.google.inject.extensions:guice-assistedinject:4.0'
-    compile 'com.google.inject.extensions:guice-multibindings:4.0'
-    compile 'org.javassist:javassist:3.20.0-GA'
+	compile 'org.metaborg:org.metaborg.intellij.deps:2.0.0-SNAPSHOT'
     compile 'org.slf4j:slf4j-api:1.7.10'
-    compile 'org.jhades:jhades:1.0.4'
+    provided 'com.google.guava:guava:17.0'
     
     jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
 
@@ -154,11 +117,6 @@ dependencies {
     language 'org.metaborg:org.metaborg.meta.lang.stratego:2.0.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-SNAPSHOT@spoofax-language'
 
-    // languageBaseline 'org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646@spoofax-language'
-    // languageBaseline 'org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646@spoofax-language'
-    // languageBaseline 'org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-baseline-20150917-172646@spoofax-language'
-
-    // Test dependencies
     testCompile 'junit:junit:4.12'
 
     testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT@spoofax-language'
