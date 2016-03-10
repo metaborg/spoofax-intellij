@@ -94,6 +94,8 @@ shadowJar {
     baseName = 'org.metaborg.intellij.deps'
     classifier = ''
     zip64 = true
+    
+    relocate 'org.apache.commons.io', 'intellij.org.apache.commons.io'
 }
 
 sourceSets.main.compileClasspath += configurations.provided

@@ -26,7 +26,7 @@ import com.intellij.openapi.application.*;
 import com.intellij.openapi.vfs.*;
 import com.intellij.util.containers.*;
 import com.intellij.util.download.*;
-import org.apache.commons.io.*;
+import intellij.org.apache.commons.io.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.logging.*;
