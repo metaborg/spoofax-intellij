@@ -72,9 +72,7 @@ public final class MetaborgSourceAnnotator<P, A>
     private final IIntelliJResourceService resourceService;
     private final ILanguageIdentifierService identifierService;
     private final IParseResultRequester<P> parseResultRequester;
-    private final IAnalysisResultRequester<P, A> analysisResultRequester;
-    private final IAnalysisResultUpdater<P, A> analysisResultProcessor;
-    private final IAnalysisService<P, A> analyzer;
+    private final IAnalysisResultProcessor<P, A> analysisResultProcessor;
     @InjectLogger
     private ILogger logger;
 
@@ -85,7 +83,8 @@ public final class MetaborgSourceAnnotator<P, A>
      * @param projectService The project service.
      * @param resourceService The resource service.
      * @param identifierService The identifier service.
-     * @param analysisResultRequester The analysis result requester.
+     * @param parseResultRequester The parse result requester.
+     * @param analysisResultProcessor The analysis result processor.
      */
     @Inject
     public MetaborgSourceAnnotator(
@@ -94,9 +93,7 @@ public final class MetaborgSourceAnnotator<P, A>
             final IIntelliJResourceService resourceService,
             final ILanguageIdentifierService identifierService,
             final IParseResultRequester<P> parseResultRequester,
-            final IAnalysisResultRequester<P, A> analysisResultRequester,
-            final IAnalysisService<P, A> analyzer,
-            final IAnalysisResultUpdater<P, A> analysisResultProcessor
+            final IAnalysisResultProcessor<P, A> analysisResultProcessor
     ) {
         super();
         this.contextService = contextService;
@@ -104,8 +101,6 @@ public final class MetaborgSourceAnnotator<P, A>
         this.resourceService = resourceService;
         this.identifierService = identifierService;
         this.parseResultRequester = parseResultRequester;
-        this.analysisResultRequester = analysisResultRequester;
-        this.analyzer = analyzer;
         this.analysisResultProcessor = analysisResultProcessor;
     }
 
@@ -162,19 +157,24 @@ public final class MetaborgSourceAnnotator<P, A>
     @Nullable
     @Override
     public AnalysisFileResult<P, A> doAnnotate(final MetaborgSourceAnnotationInfo info) {
-//        return this.analysisResultRequester.get(info.resource());
-
         this.logger.debug("Requesting analysis result for file: {}", info.resource());
 
-        final AnalysisFileResult<P, A> result = this.analysisResultRequester.request(
-                info.resource(),
-                info.context(),
-                info.text()
-        ).toBlocking().single();
-
-        this.logger.info("Requested analysis result for file: {}", info.resource());
-
-        return result;
+        @Nullable AnalysisFileResult<P, A> analysisResult = null;
+        try {
+            analysisResult = this.analysisResultProcessor.request(
+                    info.resource(),
+                    info.context(),
+                    info.text()
+            ).toBlocking().single();
+        } catch (final RuntimeException ex) {
+            // FIXME: Dedicated exception!
+            if (ex.getCause() instanceof AnalysisException && ex.getCause().getMessage().equals("No analysis results."))
+            {
+                this.logger.info("No analysis results for file: {}", info.resource());
+            } else {
+                this.logger.error("Runtime exception while annotating file: {}", ex, info.resource());
+            }
+        }
 
 //        final IContext context = info.context();
 //
@@ -182,21 +182,26 @@ public final class MetaborgSourceAnnotator<P, A>
 //                this.parseResultRequester.request(info.resource(), context.language(), info.text())
 //                        .toBlocking().single();
 //
-//        final AnalysisResult<P, A> analysisResult;
+//        final AnalysisFileResult<P, A> analysisResult;
 //        try(IClosableLock lock = context.write()) {
 //            this.analysisResultProcessor.invalidate(parseResult.source);
-//            try {
-//                analysisResult = this.analyzer.analyze(Iterables2.singleton(parseResult), context);
-//            } catch(final AnalysisException e) {
-//                this.analysisResultProcessor.error(info.resource(), e);
-//                throw new RuntimeException(e);
-//            }
+////            try {
+//                analysisResult = this.analysisResultProcessor.request(
+//                        info.resource(),
+//                        info.context(),
+//                        info.text()
+//                ).toBlocking().single();
+////                analysisResult = this.analyzer.analyze(Iterables2.singleton(parseResult), context);
+////            } catch(final AnalysisException e) {
+////                this.analysisResultProcessor.error(info.resource(), e);
+////                throw new RuntimeException(e);
+////            }
 //            this.analysisResultProcessor.update(analysisResult);
 //        }
-//
-//
-//        analysisResult.fileResults.iterator().next().
-//        return analysisResult;
+
+        this.logger.info("Requested analysis result for file: {}", info.resource());
+
+        return analysisResult;
     }
 
     /**
