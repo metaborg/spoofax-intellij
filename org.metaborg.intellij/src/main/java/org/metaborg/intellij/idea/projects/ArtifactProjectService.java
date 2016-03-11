@@ -27,14 +27,8 @@ import javax.annotation.Nullable;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
-import org.apache.commons.vfs2.FileSystemManager;
-import org.metaborg.core.config.ConfigRequest;
-import org.metaborg.core.config.IProjectConfig;
-import org.metaborg.core.config.IProjectConfigService;
-import org.metaborg.core.messages.StreamMessagePrinter;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.IProjectService;
-import org.metaborg.core.source.ISourceTextService;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.resources.FileNameUtils;
 import org.metaborg.util.log.ILogger;
@@ -49,18 +43,14 @@ import com.google.inject.Inject;
  */
 public final class ArtifactProjectService implements IProjectService {
 
-    private final ISourceTextService sourceTextService;
-    private final FileSystemManager fileSystemManager;
-    private final IProjectConfigService projectConfigService;
+    private final IArtifactProjectFactory artifactProjectFactory;
     private final Map<FileName, ArtifactProject> projects = new HashMap<>();
     @InjectLogger
     private ILogger logger;
 
     @Inject
-    public ArtifactProjectService(ISourceTextService sourceTextService, final FileSystemManager fileSystemManager, IProjectConfigService projectConfigService) {
-        this.sourceTextService = sourceTextService;
-        this.fileSystemManager = fileSystemManager;
-        this.projectConfigService = projectConfigService;
+    public ArtifactProjectService(final IArtifactProjectFactory artifactProjectFactory) {
+        this.artifactProjectFactory = artifactProjectFactory;
     }
 
     /**
@@ -79,14 +69,7 @@ public final class ArtifactProjectService implements IProjectService {
 
         @Nullable ArtifactProject project = this.projects.get(artifactName);
         if (project == null) {
-            final ConfigRequest<IProjectConfig> configRequest = projectConfigService.get(artifactRoot);
-            if(!configRequest.valid()) {
-                logger.error("Errors occurred when retrieving project configuration from project directory {}", artifactRoot);
-                configRequest.reportErrors(new StreamMessagePrinter(sourceTextService, false, false, logger));
-                return null;
-            }
-            final IProjectConfig config = configRequest.config();
-            project = new ArtifactProject(artifactRoot, config);
+            project = this.artifactProjectFactory.create(artifactRoot, null);
             this.projects.put(artifactName, project);
         }
         return project;

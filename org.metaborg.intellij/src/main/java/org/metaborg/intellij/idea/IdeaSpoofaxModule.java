@@ -23,39 +23,27 @@ import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import com.google.inject.matcher.*;
 import com.google.inject.multibindings.*;
-import com.intellij.lang.*;
-import com.intellij.lexer.*;
-import com.intellij.psi.tree.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
 import org.metaborg.core.resource.*;
-import org.metaborg.core.syntax.*;
 import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.discovery.*;
 import org.metaborg.intellij.idea.actions.*;
-import org.metaborg.intellij.idea.compilation.*;
-import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.idea.editors.*;
 import org.metaborg.intellij.idea.facets.*;
 import org.metaborg.intellij.idea.filetypes.*;
 import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.idea.parsing.*;
 import org.metaborg.intellij.idea.parsing.annotations.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
-import org.metaborg.intellij.idea.parsing.references.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.idea.transformations.*;
 import org.metaborg.intellij.injections.*;
-import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.projects.*;
 import org.metaborg.intellij.resources.*;
 import org.metaborg.intellij.vfs.*;
 import org.metaborg.spoofax.core.*;
-import org.metaborg.spoofax.core.syntax.*;
 
 /**
  * The Guice dependency injection module for the Spoofax IntelliJ IDEA plugin.
@@ -135,15 +123,14 @@ import org.metaborg.spoofax.core.syntax.*;
      */
     @Override
     protected void bindProject() {
+        this.bind(IIdeaProjectFactory.class).to(IdeaProjectFactory.class).in(Singleton.class);
+        this.bind(IArtifactProjectFactory.class).to(ArtifactProjectFactory.class).in(Singleton.class);
+
         bind(IdeaProjectService.class).in(Singleton.class);
         bind(IIdeaProjectService.class).to(IdeaProjectService.class).in(Singleton.class);
         bind(IProjectService.class).to(CompoundProjectService.class).in(Singleton.class);
         bind(ArtifactProjectService.class).in(Singleton.class);
         bind(CompoundProjectService.class).in(Singleton.class);
-
-        install(new FactoryModuleBuilder()
-                .implement(IdeaProject.class, IdeaProject.class)
-                .build(IIdeaProjectFactory.class));
 
         final Multibinder<IProjectService> uriBinder = Multibinder.newSetBinder(
                 binder(),
@@ -179,7 +166,6 @@ import org.metaborg.spoofax.core.syntax.*;
      */
     protected void bindAnnotators() {
         bind(new TypeLiteral<MetaborgSourceAnnotator<?, ?>>() {}).in(Singleton.class);
-//        bind(new TypeLiteral<MetaborgSourceAnnotator<IStrategoTerm, IStrategoTerm>>() {}).in(Singleton.class);
     }
 
     /**

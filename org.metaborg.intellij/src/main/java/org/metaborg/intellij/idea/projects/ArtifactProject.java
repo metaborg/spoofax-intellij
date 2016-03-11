@@ -39,7 +39,7 @@ public final class ArtifactProject extends Project implements IProject {
      *
      * @param location The location of the artifact's archive.
      */
-    public ArtifactProject(final FileObject location, @Nullable IProjectConfig config) {
+    public ArtifactProject(final FileObject location, @Nullable final IProjectConfig config) {
         super(location, config);
         Preconditions.checkNotNull(location);
     }

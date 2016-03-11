@@ -64,9 +64,9 @@ import java.util.*;
 @Singleton
 public final class MetaborgModuleBuilder extends ModuleBuilder implements SourcePathsBuilder {
 
-    private final IIdeaProjectFactory projectFactory;
+//    private final IIdeaProjectFactory projectFactory;
     private final IIdeaLanguageSpecFactory languageSpecFactory;
-    private final IdeaLanguageSpecService languageSpecService;
+//    private final IdeaLanguageSpecService languageSpecService;
     private final IIntelliJResourceService resourceService;
     private final IIdeaProjectService projectService;
     private final IIconManager iconManager;
@@ -139,9 +139,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
     @Inject
     private MetaborgModuleBuilder(
-            final IIdeaProjectFactory projectFactory,
+//            final IIdeaProjectFactory projectFactory,
             final IIdeaLanguageSpecFactory languageSpecFactory,
-            final IdeaLanguageSpecService languageSpecService,
+//            final IdeaLanguageSpecService languageSpecService,
             final IIntelliJResourceService resourceService,
             final IIdeaProjectService projectService,
             final ISpoofaxLanguageSpecConfigBuilder configBuilder,
@@ -149,9 +149,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             final IIconManager iconManager,
             final MetaborgModuleType moduleType) {
         super();
-        this.projectFactory = projectFactory;
+//        this.projectFactory = projectFactory;
         this.languageSpecFactory = languageSpecFactory;
-        this.languageSpecService = languageSpecService;
+//        this.languageSpecService = languageSpecService;
         this.resourceService = resourceService;
         this.projectService = projectService;
         this.configBuilder = configBuilder;
@@ -213,13 +213,13 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
                 .withName(getName())
                 .build(location);
 
-        // TODO: Use ISpoofaxLanguageSpecPathsService instead.
-        final ISpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(location, config);
-        final IdeaLanguageSpec languageSpec = this.languageSpecFactory.create(rootModel.getModule(),
-                location, config, paths);
+        @Nullable final IdeaLanguageSpec languageSpec = this.languageSpecFactory.create(
+                rootModel.getModule(), location, config);
+
+        assert languageSpec != null;
 
         setContentRoots(rootModel);
-        setCompilerOutputPath(rootModel, paths);
+        setCompilerOutputPath(rootModel, languageSpec.paths());
         setSdk(rootModel);
 
         // Set the module.

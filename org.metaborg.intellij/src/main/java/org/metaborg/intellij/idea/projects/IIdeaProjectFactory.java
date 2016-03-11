@@ -19,12 +19,9 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.assistedinject.*;
 import com.intellij.openapi.module.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.config.*;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
 
 import javax.annotation.*;
 
@@ -36,15 +33,15 @@ public interface IIdeaProjectFactory {
     /**
      * Creates a new project.
      *
-     * @param ideaModule The IntelliJ IDEA module.
+     * @param module The IntelliJ IDEA module.
      * @param rootFolder Root folder of the module.
-     * @param config The configuration of the project.
-     * @return The created project.
+     * @param config The configuration of the project;
+     *               or <code>null</code> to get it from the root folder.
+     * @return The created project; or <code>null</code> when no project
+     * could be created for the specified module.
      */
-    IdeaProject create(Module ideaModule,
+    @Nullable IdeaProject create(Module module,
                        FileObject rootFolder,
                        @Nullable IProjectConfig config);
-
-    // TODO: Implement this factory and ensure the given module is of type MetaborgModuleType.
 
 }

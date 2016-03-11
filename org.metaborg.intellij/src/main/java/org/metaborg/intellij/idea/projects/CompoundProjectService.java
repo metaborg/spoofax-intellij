@@ -42,7 +42,7 @@ public final class CompoundProjectService implements IProjectService {
     private final Set<IProjectService> services;
 
     @Inject
-    /* package private */ CompoundProjectService(@Compound final Set<IProjectService> services) {
+    public CompoundProjectService(@Compound final Set<IProjectService> services) {
         this.services = services;
     }
 

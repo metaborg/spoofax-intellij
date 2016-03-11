@@ -32,7 +32,6 @@ import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.projects.*;
 import org.metaborg.intellij.resources.*;
-import org.metaborg.meta.core.project.*;
 import org.metaborg.spoofax.meta.core.config.*;
 import org.metaborg.util.log.*;
 
@@ -45,14 +44,12 @@ public final class IdeaModuleComponent implements ModuleComponent {
 
     private final Module module;
     private ProjectUtils projectUtils;
-    private IIdeaProjectService projectService;
     private IIdeaProjectFactory projectFactory;
+    private IIdeaLanguageSpecFactory languageSpecFactory;
+    private IIdeaProjectService projectService;
     private IIdeaLanguageManager languageManager;
-    private ISourceTextService sourceTextService;
-    private ILanguageSpecService languageSpecService;
     private IIntelliJResourceService resourceService;
     private ConfigurationUtils configurationUtils;
-    private ISpoofaxLanguageSpecConfigService configService;
     @InjectLogger
     private ILogger logger;
 
@@ -70,22 +67,20 @@ public final class IdeaModuleComponent implements ModuleComponent {
     private void inject(
             final IIdeaProjectService projectService,
             final IIdeaProjectFactory projectFactory,
+            final IIdeaLanguageSpecFactory languageSpecFactory,
             final IIdeaLanguageManager languageManager,
             final IIntelliJResourceService resourceService,
-            final ILanguageSpecService languageSpecService,
             final ConfigurationUtils configurationUtils,
             final ProjectUtils projectUtils,
             final ISourceTextService sourceTextService,
             final ISpoofaxLanguageSpecConfigService configService) {
         this.projectService = projectService;
         this.projectFactory = projectFactory;
+        this.languageSpecFactory = languageSpecFactory;
         this.languageManager = languageManager;
         this.resourceService = resourceService;
-        this.languageSpecService = languageSpecService;
         this.configurationUtils = configurationUtils;
         this.projectUtils = projectUtils;
-        this.sourceTextService = sourceTextService;
-        this.configService = configService;
     }
 
     /**
@@ -181,7 +176,17 @@ public final class IdeaModuleComponent implements ModuleComponent {
         if (rootFolder == null)
             return null;
 
-        return this.projectService.open(this.module, rootFolder);
+        @Nullable IdeaProject project;
+        project = this.languageSpecFactory.create(this.module, rootFolder, null);
+        if (project == null) {
+            project = this.projectFactory.create(this.module, rootFolder, null);
+        }
+
+        if (project != null) {
+            this.projectService.open(project);
+        }
+
+        return project;
     }
 
     /**

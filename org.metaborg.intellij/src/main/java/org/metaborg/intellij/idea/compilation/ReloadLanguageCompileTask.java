@@ -27,6 +27,7 @@ import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.meta.core.project.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;
@@ -66,7 +67,7 @@ public final class ReloadLanguageCompileTask implements IAfterCompileTask {
 
             for (final Module module : affectedModules) {
                 @Nullable final IdeaProject project = this.projectService.get(module);
-                if (project instanceof IdeaLanguageSpec) {
+                if (project instanceof ILanguageSpec) {
                     this.logger.debug("Reloading languages of language specification: {}", project);
                     this.languageManager.reloadLanguageSpec((IdeaLanguageSpec)project);
                 } else {

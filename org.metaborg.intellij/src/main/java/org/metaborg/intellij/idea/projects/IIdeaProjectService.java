@@ -30,16 +30,6 @@ import javax.annotation.*;
  * Project service for IntelliJ IDEA.
  */
 public interface IIdeaProjectService extends IProjectService {
-    /**
-     * Indicates to the project service that a Spoofax project was opened.
-     *
-     * @param module The module.
-     * @param rootFolder The root folder of the project.
-     * @return The project that was opened; or <code>null</code>
-     * if it wasn't a Metaborg (Language Specification) project.
-     */
-    @Nullable
-    IdeaProject open(Module module, FileObject rootFolder);
 
     /**
      * Indicates to the project service that a Spoofax project was opened.

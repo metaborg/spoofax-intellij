@@ -19,32 +19,26 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.intellij.openapi.module.*;
 import org.apache.commons.vfs2.*;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
+import org.metaborg.core.config.*;
 
 import javax.annotation.*;
 
 /**
  * Factory for IntelliJ IDEA language specification projects.
  */
-public interface IIdeaLanguageSpecFactory {
+public interface IArtifactProjectFactory {
 
     /**
-     * Creates a new project.
+     * Creates a new artifact project.
      *
-     * @param module The IntelliJ IDEA module.
-     * @param rootFolder Root folder of the module.
-     * @param config The configuration of the project;
+     * @param artifactRoot The artifact root.
+     * @param config The configuration of the artifact;
      *               or <code>null</code> to get it from the root folder.
      * @return The created project; or <code>null</code> when no project
-     * could be created for the specified module.
+     * could be created for the specified artifact.
      */
-    @Nullable IdeaLanguageSpec create(Module module,
-                            FileObject rootFolder,
-                            @Nullable ISpoofaxLanguageSpecConfig config);
-
-    // TODO: Implement this factory and ensure the given module is of type MetaborgModuleType.
+    @Nullable ArtifactProject create(FileObject artifactRoot,
+                            @Nullable IProjectConfig config);
 
 }

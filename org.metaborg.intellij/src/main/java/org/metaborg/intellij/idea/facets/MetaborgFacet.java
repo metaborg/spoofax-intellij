@@ -22,12 +22,10 @@ package org.metaborg.intellij.idea.facets;
 import com.google.inject.*;
 import com.intellij.facet.*;
 import com.intellij.openapi.command.*;
-import com.intellij.openapi.module.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.*;
 import com.intellij.openapi.vfs.*;
 import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.config.*;
 import org.metaborg.core.messages.*;
@@ -40,8 +38,6 @@ import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
-
 /**
  * A Metaborg facet.
  *
@@ -51,7 +47,6 @@ public class MetaborgFacet extends Facet {
 
     public static final FacetTypeId<MetaborgFacet> ID = new FacetTypeId<>(MetaborgFacetType.ID);
 
-    private LibraryService libraryService;
     private IProjectConfigBuilder configBuilder;
     private IProjectConfigWriter configWriter;
     private IProjectConfigService configService;
@@ -93,15 +88,13 @@ public class MetaborgFacet extends Facet {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final LibraryService libraryService,
-                        final IProjectConfigBuilder configBuilder,
+    private void inject(final IProjectConfigBuilder configBuilder,
                         final IProjectConfigWriter configWriter,
                         final IProjectConfigService configService,
                         final IIdeaProjectService projectService,
                         final IIdeaProjectFactory projectFactory,
                         final ISourceTextService sourceTextService,
                         final IIntelliJResourceService resourceService) {
-        this.libraryService = libraryService;
         this.configBuilder = configBuilder;
         this.configWriter = configWriter;
         this.configService = configService;
@@ -156,7 +149,7 @@ public class MetaborgFacet extends Facet {
             }
 
             // Try to get the configuration.
-            @javax.annotation.Nullable IProjectConfig config = configRequest.config();
+            @Nullable IProjectConfig config = configRequest.config();
             if (config == null) {
                 this.logger.info("Project has no Metaborg configuration {}", rootFolder);
 
@@ -165,6 +158,8 @@ public class MetaborgFacet extends Facet {
                         .build(rootFolder);
 
                 ideaProject = this.projectFactory.create(module, rootFolder, config);
+
+                assert ideaProject != null;
 
                 final IdeaProject finalProject = ideaProject;
                 final IProjectConfig finalConfig = config;
@@ -183,6 +178,8 @@ public class MetaborgFacet extends Facet {
             } else {
                 ideaProject = this.projectFactory.create(module, rootFolder, config);
             }
+
+            assert ideaProject != null;
 
             this.projectService.open(ideaProject);
         }

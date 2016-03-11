@@ -45,10 +45,6 @@ public final class SpoofaxIdeaPlugin {
         }
     };
 
-//    static {
-//        logger = Logger.getInstance(SpoofaxIdeaPlugin.class);
-//    }
-
     /**
      * Gets the injector.
      *

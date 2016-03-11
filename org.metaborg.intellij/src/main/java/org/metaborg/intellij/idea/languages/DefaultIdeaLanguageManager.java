@@ -697,6 +697,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
             return;
         }
 
+        project.setComponents(newComponents);
         activateRange(LanguageUtils2.getLanguagesOfComponents(newComponents));
     }
 }

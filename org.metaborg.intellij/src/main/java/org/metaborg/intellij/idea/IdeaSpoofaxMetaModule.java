@@ -60,6 +60,12 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
         bindParsing();
     }
 
+    @Override
+    protected void bindLanguageSpec() {
+        super.bindLanguageSpec();
+
+        this.bind(IIdeaLanguageSpecFactory.class).to(IdeaLanguageSpecFactory.class).in(Singleton.class);
+    }
 
     /**
      * Binds language project services.
@@ -73,10 +79,6 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
      */
     protected void bindMetaProject() {
         bind(MetaborgModuleBuilder.class).in(Singleton.class);
-
-        install(new FactoryModuleBuilder()
-                .implement(IdeaLanguageSpec.class, IdeaLanguageSpec.class)
-                .build(IIdeaLanguageSpecFactory.class));
     }
 
     /**

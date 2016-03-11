@@ -61,14 +61,6 @@ import java.util.*;
 public class MetaborgFacetEditorTab extends FacetEditorTab {
 
     private JPanel mainPanel;
-    private LibraryService libraryService;
-    private IProjectConfigBuilder configBuilder;
-    private IProjectConfigWriter configWriter;
-    private IProjectConfigService configService;
-    private IIdeaProjectService projectService;
-    private IIdeaProjectFactory projectFactory;
-    private ISourceTextService sourceTextService;
-    private IIntelliJResourceService resourceService;
     private final FacetEditorContext editorContext;
     @InjectLogger
     private ILogger logger;
@@ -86,22 +78,7 @@ public class MetaborgFacetEditorTab extends FacetEditorTab {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final LibraryService libraryService,
-                        final IProjectConfigBuilder configBuilder,
-                        final IProjectConfigWriter configWriter,
-                        final IProjectConfigService configService,
-                        final IIdeaProjectService projectService,
-                        final IIdeaProjectFactory projectFactory,
-                        final ISourceTextService sourceTextService,
-                        final IIntelliJResourceService resourceService) {
-        this.libraryService = libraryService;
-        this.configBuilder = configBuilder;
-        this.configWriter = configWriter;
-        this.configService = configService;
-        this.projectService = projectService;
-        this.projectFactory = projectFactory;
-        this.sourceTextService = sourceTextService;
-        this.resourceService = resourceService;
+    private void inject() {
     }
 
     @Nls

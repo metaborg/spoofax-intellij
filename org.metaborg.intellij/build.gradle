@@ -103,6 +103,7 @@ dependencies {
     language 'org.metaborg:org.metaborg.meta.lang.template:2.0.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.ts:2.0.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lang.stratego:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.analysis:2.0.0-SNAPSHOT@spoofax-language'
     language 'org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-SNAPSHOT@spoofax-language'
 
     testCompile 'junit:junit:4.12'
