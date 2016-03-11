@@ -17,10 +17,10 @@
   -->
 
 <idea-plugin version="2">
-    <id>org.metaborg.spoofax.intellij.idea</id>
+    <id>org.metaborg.intellij</id>
     <name>Spoofax</name>
-    <version>1.5.0-SNAPSHOT</version>
-    <vendor email="info@metaborg.org" url="http://www.metaborg.org/intellij/">Metaborg</vendor>
+    <version>2.0.0-SNAPSHOT</version>
+    <vendor email="info@metaborg.org" url="https://spoofax.readthedocs.org/">Metaborg</vendor>
 
     <description><![CDATA[
       Spoofax plugin for IntelliJ IDEA.
