@@ -1,8 +1,5 @@
 # Contribute
 
-## Versioning
-This project adheres to [Semantic Versioning](http://semver.org/).
-
 
 ## Git
 This project uses the Git layout described in the article [A successful
@@ -36,7 +33,7 @@ or run the _IntelliJ Plugin_ configuration from IntelliJ.
 
 
 ### Debug
-Debug the JPS plugin using 
+Debug the JPS plugin using
 
 ```
 ./gradlew debugJps
