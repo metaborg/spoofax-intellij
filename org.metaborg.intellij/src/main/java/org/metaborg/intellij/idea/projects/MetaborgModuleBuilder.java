@@ -63,9 +63,7 @@ import java.util.*;
 @Singleton
 public final class MetaborgModuleBuilder extends ModuleBuilder implements SourcePathsBuilder {
 
-//    private final IIdeaProjectFactory projectFactory;
     private final IIdeaLanguageSpecFactory languageSpecFactory;
-//    private final IdeaLanguageSpecService languageSpecService;
     private final IIntelliJResourceService resourceService;
     private final IIdeaProjectService projectService;
     private final IIconManager iconManager;
@@ -78,13 +76,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     @Nullable
     private List<Pair<String, String>> sourcePaths;
 
-    private String name = "Untitled";
-    private String extension = "u";
-    private LanguageIdentifier languageId = new LanguageIdentifier(
-            "org.example",
-            "untitled",
-            LanguageVersion.parse("1.0.0-SNAPSHOT")
-    );
+    private String name;
+    private String extension;
+    private LanguageIdentifier languageId;
 
 
     /**
@@ -138,9 +132,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
     @Inject
     private MetaborgModuleBuilder(
-//            final IIdeaProjectFactory projectFactory,
             final IIdeaLanguageSpecFactory languageSpecFactory,
-//            final IdeaLanguageSpecService languageSpecService,
             final IIntelliJResourceService resourceService,
             final IIdeaProjectService projectService,
             final ISpoofaxLanguageSpecConfigBuilder configBuilder,
@@ -148,15 +140,30 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             final IIconManager iconManager,
             final MetaborgModuleType moduleType) {
         super();
-//        this.projectFactory = projectFactory;
         this.languageSpecFactory = languageSpecFactory;
-//        this.languageSpecService = languageSpecService;
         this.resourceService = resourceService;
         this.projectService = projectService;
         this.configBuilder = configBuilder;
         this.wizardStepFactory = wizardStepFactory;
         this.iconManager = iconManager;
         this.moduleType = moduleType;
+
+        setDefaultValues();
+    }
+
+    /**
+     * Sets the default values.
+     */
+    private void setDefaultValues() {
+        final String uuid = UUID.randomUUID().toString().substring(0, 8).toLowerCase();
+
+        this.name = "Untitled-" + uuid;
+        this.extension = "u";
+        this.languageId = new LanguageIdentifier(
+                "org.example",
+                "untitled-" + uuid,
+                LanguageVersion.parse("1.0.0-SNAPSHOT")
+        );
     }
 
     /**

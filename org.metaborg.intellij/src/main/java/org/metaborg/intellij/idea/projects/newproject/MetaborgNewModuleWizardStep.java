@@ -339,7 +339,7 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
         if (input.isEmpty())
             return "";
         // NOTE: We keep the first alphanumeric character, even if it's lowercase.
-        String ext = input.substring(0, 1) + input.substring(1).replaceAll("[^A-Z0-9]", "");
+        String ext = input.substring(0, 1) + input.substring(1).replaceAll("[^A-Z]", "");
         ext = ext.toLowerCase();
         if (ext.length() > 8)
             ext = ext.substring(0, 8);

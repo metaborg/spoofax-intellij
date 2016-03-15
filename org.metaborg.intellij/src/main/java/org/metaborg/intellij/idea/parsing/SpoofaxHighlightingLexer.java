@@ -53,6 +53,9 @@ import java.util.*;
  */
 public final class SpoofaxHighlightingLexer extends LexerBase {
 
+    // Whether to show debug info from the lexer.
+    private static final boolean DEBUG_INFO = false;
+
     private final FileObject file;
     @Nullable private final IProject project;
     private final ILanguageImpl languageImpl;
@@ -214,8 +217,10 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
                 // The tokenizer may return empty tokens. Don't know why.
                 // Let's ignore those.
 
-                this.logger.info("Token {} is empty. Token ignored.",
-                        printToken(tokenRange));
+                if (DEBUG_INFO) {
+                    this.logger.info("Token {} is empty. Token ignored.",
+                            printToken(tokenRange));
+                }
 
                 continue;
             }
@@ -227,9 +232,11 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
                 // From that follows that the next token should start where the previous (non-ignored) token
                 // ended. If that's not the case, the next assertion will fail.
 
-                this.logger.info("Token {} overlaps previous token {}. Token ignored.",
-                        printToken(tokenRange),
-                        printToken(getLastTokenRange()));
+                if (DEBUG_INFO) {
+                    this.logger.info("Token {} overlaps previous token {}. Token ignored.",
+                            printToken(tokenRange),
+                            printToken(getLastTokenRange()));
+                }
 
                 continue;
             }
@@ -256,17 +263,21 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
                 final SpoofaxToken spoofaxToken = new SpoofaxToken(styledTokenType, tokenRange);
                 this.tokens.add(spoofaxToken);
 
-                if (tokenStyle != null) {
-                    this.logger.trace("Token {} with style: {}",
-                            printToken(tokenRange), tokenStyle);
-                } else {
-                    this.logger.trace("Token {} with default style: {}",
-                            printToken(tokenRange), this.tokenTypesManager.getDefaultStyle());
+                if (DEBUG_INFO) {
+                    if (tokenStyle != null) {
+                        this.logger.trace("Token {} with style: {}",
+                                printToken(tokenRange), tokenStyle);
+                    } else {
+                        this.logger.trace("Token {} with default style: {}",
+                                printToken(tokenRange), this.tokenTypesManager.getDefaultStyle());
+                    }
                 }
             } else {
                 // Token is not in the requested range. No need to style it.
 
-                this.logger.trace("Token {} outside requested range.", printToken(tokenRange));
+                if (DEBUG_INFO) {
+                    this.logger.trace("Token {} outside requested range.", printToken(tokenRange));
+                }
             }
             offset = tokenRange.end;
         }

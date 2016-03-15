@@ -69,8 +69,8 @@ public final class IdeaProjectService implements IIdeaProjectService {
      * {@inheritDoc}
      */
     @Override
-    public void close(final Module module) {
-        this.modules.remove(module);
+    public IdeaProject close(final Module module) {
+        return this.modules.remove(module);
     }
 
     /**

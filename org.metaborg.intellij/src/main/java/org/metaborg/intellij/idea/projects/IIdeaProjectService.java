@@ -41,8 +41,11 @@ public interface IIdeaProjectService extends IProjectService {
      * Indicates to the project service that a Spoofax project was closed.
      *
      * @param module The IntelliJ module of the project.
+     * @return The Spoofax project that is closed;
+     * or <code>null</code> if no project could be found.
      */
-    void close(Module module);
+    @Nullable
+    IdeaProject close(Module module);
 
     /**
      * Retrieves the Spoofax project of a given IntelliJ module.

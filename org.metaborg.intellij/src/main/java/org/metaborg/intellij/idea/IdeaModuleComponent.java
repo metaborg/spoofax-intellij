@@ -19,6 +19,7 @@
 package org.metaborg.intellij.idea;
 
 import com.google.inject.*;
+import com.intellij.openapi.application.*;
 import com.intellij.openapi.command.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.*;
@@ -114,7 +115,8 @@ public final class IdeaModuleComponent implements ModuleComponent {
                 this.logger.debug("Loading languages of language specification: {}", project);
                 this.languageManager.loadLanguageSpec((IdeaLanguageSpec)project);
             } else {
-                this.logger.debug("Module skipped as it's not a language specification project: {}", this.module);
+                this.logger.debug("Module loading skipped as it's not a language specification project: {}",
+                        this.module);
             }
         });
 
@@ -139,7 +141,20 @@ public final class IdeaModuleComponent implements ModuleComponent {
     public void projectClosed() {
         this.logger.debug("Closing module: {}", this.module);
 
-        unregisterModule();
+        @Nullable final IdeaProject project = unregisterModule();
+
+        if (project == null)
+            return;
+
+        ApplicationManager.getApplication().invokeLater(() -> ApplicationManager.getApplication().runWriteAction(() -> {
+            if (project instanceof IdeaLanguageSpec) {
+                this.logger.debug("Unloading languages of language specification: {}", project);
+                this.languageManager.unloadLanguageSpec((IdeaLanguageSpec)project);
+            } else {
+                this.logger.debug("Module unloading skipped as it's not a language specification project: {}",
+                        this.module);
+            }
+        }));
 
         this.logger.info("Closed module: {}", this.module);
     }
@@ -191,8 +206,9 @@ public final class IdeaModuleComponent implements ModuleComponent {
     /**
      * Unregisters the module as opened.
      */
-    private void unregisterModule() {
-        this.projectService.close(this.module);
+    @Nullable
+    private IdeaProject unregisterModule() {
+        return this.projectService.close(this.module);
     }
 
     /**
