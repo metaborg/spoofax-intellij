@@ -16,7 +16,7 @@ Install the plugin.
 To create a new Spoofax language specification, go to the _File_
 → _New_ → _Project_ menu, and select _Spoofax Language_. Finish the wizard.
 
-![New Spoofax Project](https://spoofax.readthedocs.org/en/latest/_images/newprojectform_checkmetaborgframework.png)
+![New Spoofax Project](https://spoofax.readthedocs.org/en/latest/_images/newprojectform_langspec_selectmetaborgsdk.png)
 
 Or to create a Java project in which you can use Spoofax languages, go to the
 _File_ → _New_ → _Project_ menu, and select _Java_. Check the _Metaborg_
