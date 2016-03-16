@@ -18,44 +18,17 @@
 
 package org.metaborg.intellij.idea.facets;
 
-import com.google.common.collect.*;
 import com.google.inject.*;
 import com.intellij.facet.*;
-import com.intellij.facet.frameworks.*;
-import com.intellij.facet.frameworks.beans.*;
 import com.intellij.facet.ui.*;
-import com.intellij.facet.ui.libraries.*;
-import com.intellij.ide.util.frameworkSupport.*;
-import com.intellij.openapi.application.*;
-import com.intellij.openapi.command.*;
-import com.intellij.openapi.module.*;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.options.*;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.roots.*;
-import com.intellij.openapi.util.*;
-import com.intellij.openapi.vfs.*;
-import com.intellij.util.download.*;
-import org.apache.commons.vfs2.*;
 import org.jetbrains.annotations.*;
-import org.metaborg.core.config.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.messages.*;
-import org.metaborg.core.source.*;
-import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.resources.*;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
-import javax.annotation.Nullable;
 import javax.swing.*;
-import java.util.*;
 
 public class MetaborgFacetEditorTab extends FacetEditorTab {
 

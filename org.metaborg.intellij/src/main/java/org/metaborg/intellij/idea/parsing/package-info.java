@@ -35,12 +35,12 @@
  * to describe things other than syntax, such as the source files themselves
  * ({@link com.intellij.psi.PsiFile}).
  *
- * For Spoofax languages we use the {@link CharacterLexer} class as the lexer. It simply
- * returns each character in the source as a token, as the SGLR parser works on characters
- * and has no actual lexer. There is no actual parser implemented for Spoofax languages,
- * as the IntelliJ IDEA framework for parsers is too limited. Instead, we override the
- * {@link com.intellij.psi.tree.IFileElementType#doParseContents} method and do the
- * parsing ourselves.
+ * For Spoofax languages we use the {@link org.metaborg.intellij.idea.parsing.CharacterLexer}
+ * class as the lexer. It simply returns each character in the source as a token, as the SGLR
+ * parser works on characters and has no actual lexer. There is no actual parser implemented
+ * for Spoofax languages, as the IntelliJ IDEA framework for parsers is too limited. Instead,
+ * we override the {@link com.intellij.psi.tree.IFileElementType#doParseContents} method and
+ * do the parsing ourselves.
  *
  *
  */

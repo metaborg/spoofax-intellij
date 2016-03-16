@@ -23,8 +23,6 @@ import java.util.Collections;
 
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.ILanguageComponent;
-import org.metaborg.meta.core.config.ILanguageSpecConfig;
-import org.metaborg.meta.core.project.ILanguageSpecPaths;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecPaths;

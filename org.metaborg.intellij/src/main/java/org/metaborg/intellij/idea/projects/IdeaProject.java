@@ -22,7 +22,6 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.IProjectConfig;
-import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.Project;
 
 import com.google.inject.Inject;

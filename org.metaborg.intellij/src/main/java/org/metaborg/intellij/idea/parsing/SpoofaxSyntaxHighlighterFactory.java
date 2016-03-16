@@ -46,10 +46,6 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
 
     /**
      * Initializes a new instance of the {@link SpoofaxSyntaxHighlighterFactory} class.
-     *
-     * @param resourceService
-     * @param identifierService
-     * @param highlightingLexerFactory
      */
     @Inject
     public SpoofaxSyntaxHighlighterFactory(

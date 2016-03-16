@@ -18,13 +18,11 @@
 
 package org.metaborg.intellij.utils;
 
-import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
 import org.metaborg.util.log.LoggerUtils;
 
 import javax.annotation.*;
 import java.lang.reflect.*;
-import java.util.*;
 
 // TODO: Move this to Metaborg Core?
 // TODO: Add special static functions/constructors to Metaborg exceptions that uses these functions?

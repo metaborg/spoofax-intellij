@@ -19,16 +19,10 @@
 package org.metaborg.intellij.idea.facets;
 
 import com.google.inject.*;
-import com.intellij.facet.*;
-import com.intellij.facet.frameworks.*;
 import com.intellij.facet.ui.*;
-import com.intellij.facet.ui.libraries.*;
 import com.intellij.ide.util.frameworkSupport.*;
-import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.roots.*;
 import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.idea.sdks.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.util.log.*;
 

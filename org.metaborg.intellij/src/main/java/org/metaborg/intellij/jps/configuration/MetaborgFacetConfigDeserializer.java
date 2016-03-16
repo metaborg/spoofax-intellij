@@ -21,14 +21,12 @@ package org.metaborg.intellij.jps.configuration;
 import com.google.inject.*;
 import com.intellij.util.xmlb.*;
 import org.jdom.*;
-import org.jetbrains.annotations.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.module.*;
 import org.jetbrains.jps.model.serialization.facet.*;
 import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.facets.*;
 
-import javax.annotation.*;
 import javax.annotation.Nullable;
 
 /**

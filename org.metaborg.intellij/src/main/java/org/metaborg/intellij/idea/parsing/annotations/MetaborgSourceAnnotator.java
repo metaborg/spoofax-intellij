@@ -18,7 +18,6 @@
 
 package org.metaborg.intellij.idea.parsing.annotations;
 
-import com.intellij.openapi.fileTypes.*;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.analysis.*;
@@ -33,16 +32,12 @@ import org.metaborg.core.processing.analyze.*;
 import org.metaborg.core.processing.parse.*;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.source.ISourceRegion;
-import org.metaborg.core.syntax.*;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.parsing.SourceRegionUtil;
-import org.metaborg.intellij.idea.parsing.elements.*;
 import org.metaborg.intellij.idea.projects.IIdeaProjectService;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
-import org.metaborg.util.concurrent.*;
-import org.metaborg.util.iterators.*;
 import org.metaborg.util.log.ILogger;
 
 import com.google.common.base.Objects;
@@ -54,7 +49,6 @@ import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiFile;
-import rx.*;
 
 /**
  * Annotates metaborg source files.

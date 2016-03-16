@@ -33,7 +33,8 @@
  * the instance using Guice.
  *
  * Our own extension classes extend the original extension class, and additionally implement
- * the {@link org.metaborg.intellij.idea.extensions.IExtensionPointValue} interface. The functions in {@link ExtensionUtils} are used
+ * the {@link org.metaborg.intellij.idea.extensions.IExtensionPointValue} interface. The functions in
+ * {@link org.metaborg.intellij.idea.extensions.ExtensionUtils} are used
  * to register or unregister an extension point.
  *
  * Apart from the IntelliJ IDEA pre-defined extension points, you can define your own. This

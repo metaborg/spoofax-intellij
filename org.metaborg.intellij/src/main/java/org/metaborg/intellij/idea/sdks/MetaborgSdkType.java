@@ -19,20 +19,17 @@
 package org.metaborg.intellij.idea.sdks;
 
 import com.google.common.base.*;
-import com.google.common.collect.*;
 import com.google.common.io.*;
 import com.google.inject.*;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.projectRoots.impl.*;
 import com.intellij.openapi.roots.*;
 import com.intellij.openapi.ui.*;
-import com.intellij.openapi.util.io.*;
 import com.intellij.openapi.vfs.*;
 import com.intellij.openapi.vfs.impl.jar.*;
 import com.intellij.util.*;
 import org.jdom.*;
 import org.jetbrains.annotations.*;
-import org.jetbrains.jps.incremental.java.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.graphics.*;

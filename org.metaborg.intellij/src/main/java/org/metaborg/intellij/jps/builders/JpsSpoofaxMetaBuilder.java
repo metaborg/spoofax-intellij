@@ -19,8 +19,6 @@
 package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
-import org.apache.commons.lang3.*;
-import org.jetbrains.annotations.*;
 import org.jetbrains.jps.incremental.*;
 import org.jetbrains.jps.model.module.*;
 import org.metaborg.core.*;
@@ -39,7 +37,6 @@ import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.meta.core.project.*;
 import org.metaborg.spoofax.core.processing.*;
 import org.metaborg.spoofax.core.resource.*;
 import org.metaborg.spoofax.meta.core.build.*;
@@ -48,7 +45,6 @@ import org.metaborg.util.file.*;
 import org.metaborg.util.log.*;
 import org.spoofax.interpreter.terms.*;
 
-import javax.annotation.*;
 import javax.annotation.Nullable;
 import java.io.*;
 import java.util.*;
@@ -385,7 +381,7 @@ public final class JpsSpoofaxMetaBuilder {
             ProjectBuildException {
         final BuildInput input;
         try {
-            BuildInputBuilder builder = new BuildInputBuilder(metaInput.project())
+            final BuildInputBuilder builder = new BuildInputBuilder(metaInput.project())
                     .withDefaultIncludePaths(true)
                     .withSourcesFromDefaultSourceLocations(true)
                     .withSelector(new SpoofaxIgnoresSelector())

@@ -20,7 +20,6 @@ package org.metaborg.intellij.idea.projects;
 
 import com.intellij.openapi.module.*;
 import com.intellij.psi.*;
-import org.apache.commons.vfs2.*;
 import org.metaborg.core.project.*;
 
 import javax.annotation.*;

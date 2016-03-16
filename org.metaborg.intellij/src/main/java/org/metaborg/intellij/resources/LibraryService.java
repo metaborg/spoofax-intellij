@@ -18,16 +18,13 @@
 
 package org.metaborg.intellij.resources;
 
-import com.google.common.collect.*;
 import com.google.inject.*;
-import com.intellij.facet.ui.*;
 import com.intellij.openapi.application.*;
 import com.intellij.openapi.vfs.*;
 import com.intellij.util.containers.*;
 import com.intellij.util.download.*;
 import intellij.org.apache.commons.io.*;
 import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.util.log.*;

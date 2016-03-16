@@ -25,15 +25,8 @@ import com.intellij.openapi.project.*;
 import com.intellij.openapi.vfs.*;
 import com.intellij.psi.*;
 import org.apache.commons.vfs2.*;
-import org.metaborg.core.config.*;
-import org.metaborg.core.messages.*;
-import org.metaborg.core.source.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
-import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;

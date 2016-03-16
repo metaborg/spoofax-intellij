@@ -18,28 +18,17 @@
 
 package org.metaborg.intellij.jps.builders;
 
-import com.google.common.collect.*;
 import com.google.inject.*;
 import org.jetbrains.annotations.*;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jps.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.builders.java.*;
 import org.jetbrains.jps.incremental.*;
 import org.jetbrains.jps.model.module.*;
-import org.metaborg.core.*;
-import org.metaborg.core.action.*;
-import org.metaborg.core.build.*;
-import org.metaborg.core.build.dependency.*;
-import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.jps.configuration.*;
-import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.spoofax.core.resource.*;
-import org.metaborg.spoofax.meta.core.*;
 import org.metaborg.spoofax.meta.core.build.*;
 import org.metaborg.util.log.*;
 

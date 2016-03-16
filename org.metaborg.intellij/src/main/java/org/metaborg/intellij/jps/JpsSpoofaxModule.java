@@ -22,7 +22,6 @@ import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import com.google.inject.matcher.*;
 import com.google.inject.multibindings.*;
-import org.jetbrains.jps.builders.*;
 import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.discovery.*;
@@ -32,10 +31,7 @@ import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.projects.*;
 import org.metaborg.spoofax.core.*;
-
-import java.util.*;
 
 /**
  * The Guice dependency injection module for the Spoofax JPS plugin.

@@ -27,10 +27,6 @@ import org.jetbrains.jps.model.JpsUrlList;
 import org.jetbrains.jps.model.module.JpsModule;
 import org.metaborg.core.config.*;
 import org.metaborg.core.project.*;
-import org.metaborg.meta.core.config.ILanguageSpecConfig;
-import org.metaborg.meta.core.project.ILanguageSpec;
-import org.metaborg.meta.core.project.ILanguageSpecPaths;
-import org.metaborg.meta.core.project.LanguageSpec;
 
 import javax.annotation.*;
 
