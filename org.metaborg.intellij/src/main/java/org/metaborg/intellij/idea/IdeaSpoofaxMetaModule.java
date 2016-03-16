@@ -161,10 +161,11 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
                 .build(IParserDefinitionFactory.class));
 
         bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
-            /* implode    */ true,
-            /* recovery   */ true,
-            /* completion */ false,
-            /* timeout    */ 30000
+            /* implode        */ true,
+            /* recovery       */ true,
+            /* completion     */ false,
+            /* timeout        */ 30000,
+            /* cursorPosition */ 2147483647
         ));
     }
 }

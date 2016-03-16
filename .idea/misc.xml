@@ -3,10 +3,10 @@
   <component name="EclipseCodeFormatter">
     <option name="defaultSettings" value="true" />
     <option name="id" value="1455626451978" />
-    <option name="importOrderConfigFilePath" value="$PROJECT_DIR$/../releng/releng/style/eclipse/java.importorder" />
+    <option name="importOrderConfigFilePath" value="$PROJECT_DIR$/../releng/style/eclipse/java.importorder" />
     <option name="importOrderFromFile" value="true" />
     <option name="name" value="default" />
-    <option name="pathToConfigFileJava" value="$PROJECT_DIR$/../releng/releng/style/eclipse/java-formatter.xml" />
+    <option name="pathToConfigFileJava" value="$PROJECT_DIR$/../releng/style/eclipse/java-formatter.xml" />
     <option name="selectedJavaProfile" value="Spoofax" />
   </component>
   <component name="EntryPointsManager">
