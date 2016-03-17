@@ -1,0 +1,3 @@
+<plugins>
+  <plugin id="Spoofax" url="http://download.spoofax.org/update/nightly-intellij/spoofax-intellij.zip" />
+</plugins>
