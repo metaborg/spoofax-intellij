@@ -21,15 +21,9 @@ package org.metaborg.intellij.jps.projects;
 import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import org.apache.commons.vfs2.*;
-import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.module.*;
-import org.metaborg.core.project.*;
-import org.metaborg.meta.core.config.*;
-import org.metaborg.meta.core.project.*;
 import org.metaborg.spoofax.meta.core.config.*;
 import org.metaborg.spoofax.meta.core.project.*;
-
-import java.util.*;
 
 /**
  * A Spoofax project used in JPS.

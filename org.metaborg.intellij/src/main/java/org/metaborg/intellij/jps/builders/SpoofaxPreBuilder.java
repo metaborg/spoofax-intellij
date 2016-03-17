@@ -78,7 +78,7 @@ public final class SpoofaxPreBuilder extends MetaborgMetaBuilder2<SpoofaxPreTarg
         // error: No matching subdirectory found in includes for wildcard 'runtime/refactoring/*'!
         // RequiredBuilderFailed: Required builder failed. Error occurred in build step "Compile Stratego code":
         //     java.lang.Error: Builder failed
-        if (true && buildForced) {
+        if (true || buildForced) {
             this.logger.info("Forced build; cleaning.");
             this.jpsSpoofaxMetaBuilder.clean(metaInput, context);
         } else {

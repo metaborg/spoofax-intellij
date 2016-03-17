@@ -20,8 +20,6 @@ package org.metaborg.intellij.jps.projects;
 
 import com.google.inject.*;
 import org.apache.commons.vfs2.*;
-import org.jetbrains.jps.model.*;
-import org.jetbrains.jps.model.module.*;
 import org.metaborg.core.config.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.project.*;

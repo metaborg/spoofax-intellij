@@ -26,7 +26,6 @@ import org.metaborg.core.language.*;
 import org.metaborg.intellij.discovery.*;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.utils.*;
 import org.metaborg.util.log.*;
 

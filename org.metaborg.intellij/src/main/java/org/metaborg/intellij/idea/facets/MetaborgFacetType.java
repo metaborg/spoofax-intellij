@@ -23,7 +23,6 @@ import com.intellij.facet.*;
 import com.intellij.openapi.module.*;
 import com.intellij.openapi.module.Module;
 import org.jetbrains.annotations.*;
-import org.metaborg.intellij.configuration.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.idea.graphics.*;

@@ -36,7 +36,7 @@ import org.metaborg.util.log.*;
  */
 public final class IntRange {
 
-    private ILogger logger = LoggerUtils.logger(IntRange.class);
+    private final ILogger logger = LoggerUtils.logger(IntRange.class);
 
     /**
      * An empty range at zero.

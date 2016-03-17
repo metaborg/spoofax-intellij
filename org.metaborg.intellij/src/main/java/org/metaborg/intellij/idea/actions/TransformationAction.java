@@ -18,12 +18,10 @@
 
 package org.metaborg.intellij.idea.actions;
 
-import com.google.common.collect.*;
 import com.google.inject.*;
 import com.google.inject.assistedinject.*;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.command.*;
-import com.intellij.openapi.project.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.*;
 import org.apache.commons.vfs2.*;
@@ -125,7 +123,7 @@ public final class TransformationAction extends AnActionWithId {
             final FileObject resource = transformResource.resource();
             final TransformResults<IStrategoTerm, IStrategoTerm> transformResults =
                 transform(resource, transformResource.project(), this.language, transformResource.text());
-            for (TransformResult<IStrategoTerm, IStrategoTerm> result : transformResults.results) {
+            for (final TransformResult<IStrategoTerm, IStrategoTerm> result : transformResults.results) {
                 outputFiles.add(result.output);
             }
         }

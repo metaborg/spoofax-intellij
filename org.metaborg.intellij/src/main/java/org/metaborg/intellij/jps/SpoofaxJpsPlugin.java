@@ -19,15 +19,12 @@
 package org.metaborg.intellij.jps;
 
 import com.google.inject.*;
-import com.intellij.openapi.diagnostic.*;
 import com.intellij.openapi.diagnostic.Logger;
-import com.virtlink.tartarus.*;
 import org.apache.commons.lang3.concurrent.*;
 import org.metaborg.core.*;
 import org.metaborg.intellij.*;
 import org.metaborg.spoofax.core.*;
 import org.metaborg.spoofax.meta.core.*;
-import org.slf4j.*;
 
 import java.util.*;
 

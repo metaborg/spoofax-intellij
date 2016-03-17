@@ -22,13 +22,10 @@ import org.jetbrains.annotations.*;
 import org.jetbrains.jps.builders.*;
 import org.jetbrains.jps.model.*;
 import org.jetbrains.jps.model.module.*;
-import org.metaborg.core.config.*;
-import org.metaborg.intellij.*;
 import org.metaborg.intellij.jps.*;
 import org.metaborg.intellij.jps.configuration.*;
 import org.metaborg.intellij.jps.projects.*;
 import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.spoofax.meta.core.project.*;
 import org.metaborg.util.log.*;
 

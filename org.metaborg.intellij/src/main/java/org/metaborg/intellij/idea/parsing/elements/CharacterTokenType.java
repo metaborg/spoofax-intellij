@@ -24,7 +24,7 @@ import org.metaborg.intellij.idea.languages.*;
 /**
  * Token type for a single character.
  * <p>
- * This is used by the character lexer, see {@link org.metaborg.spoofax.intellij.factories.ICharacterLexerFactory}.
+ * This is used by the character lexer.
  */
 public final class CharacterTokenType extends IElementType {
 

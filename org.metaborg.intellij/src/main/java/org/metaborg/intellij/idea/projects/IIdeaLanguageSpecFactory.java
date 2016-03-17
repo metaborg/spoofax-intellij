@@ -21,7 +21,6 @@ package org.metaborg.intellij.idea.projects;
 import com.intellij.openapi.module.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
 
 import javax.annotation.*;
 

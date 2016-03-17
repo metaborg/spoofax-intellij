@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
 
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.idea.projects.IIdeaProjectService;
 import org.metaborg.intellij.idea.projects.IdeaProject;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.meta.core.config.ILanguageSpecConfig;
