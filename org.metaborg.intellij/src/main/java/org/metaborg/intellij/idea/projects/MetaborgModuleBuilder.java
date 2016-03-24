@@ -18,44 +18,69 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.*;
-import com.intellij.ide.util.projectWizard.*;
-import com.intellij.openapi.*;
-import com.intellij.openapi.application.*;
-import com.intellij.openapi.command.*;
-import com.intellij.openapi.module.*;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.projectRoots.*;
-import com.intellij.openapi.roots.*;
-import com.intellij.openapi.roots.ui.configuration.*;
-import com.intellij.openapi.startup.*;
-import com.intellij.openapi.util.*;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.*;
-import com.intellij.util.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.project.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.idea.projects.newproject.*;
-import org.metaborg.intellij.idea.sdks.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.resources.*;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.generator.*;
-import org.metaborg.spoofax.meta.core.generator.language.*;
-import org.metaborg.spoofax.meta.core.project.*;
-import org.metaborg.util.log.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-import javax.swing.*;
-import java.io.*;
-import java.util.*;
+import javax.swing.Icon;
+
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.language.LanguageIdentifier;
+import org.metaborg.core.language.LanguageVersion;
+import org.metaborg.core.project.ProjectException;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
+import org.metaborg.intellij.idea.sdks.MetaborgSdkType;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.spoofax.meta.core.build.CommonPaths;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
+import org.metaborg.spoofax.meta.core.generator.GeneratorSettings;
+import org.metaborg.spoofax.meta.core.generator.language.ContinuousLanguageSpecGenerator;
+import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGenerator;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
+import org.metaborg.util.log.ILogger;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.intellij.ide.util.projectWizard.ModuleBuilder;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.SettingsStep;
+import com.intellij.ide.util.projectWizard.SourcePathsBuilder;
+import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.module.ModifiableModuleModel;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.module.StdModuleTypes;
+import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.project.DumbService;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.projectRoots.SdkTypeId;
+import com.intellij.openapi.roots.CompilerModuleExtension;
+import com.intellij.openapi.roots.ContentEntry;
+import com.intellij.openapi.roots.LanguageLevelProjectExtension;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
+import com.intellij.openapi.startup.StartupManager;
+import com.intellij.openapi.util.Pair;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.DisposeAwareRunnable;
 
 /**
  * Builds a new Spoofax module.
@@ -225,7 +250,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         assert languageSpec != null;
 
         setContentRoots(rootModel);
-        setCompilerOutputPath(rootModel, languageSpec.paths());
+        setCompilerOutputPath(rootModel, new CommonPaths(languageSpec.location()));
         setSdk(rootModel);
 
         // Set the module.
@@ -261,20 +286,20 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         this.logger.info("Added content and source roots.");
     }
 
-    private void setCompilerOutputPath(final ModifiableRootModel rootModel, final ISpoofaxLanguageSpecPaths paths) {
+    private void setCompilerOutputPath(final ModifiableRootModel rootModel, final CommonPaths paths) {
         // Set the compiler output path.
         this.logger.debug("Setting compiler output path.");
 
         final String outputFolder;
         try {
-            outputFolder = paths.outputClassesFolder().getURL().toString();
+            outputFolder = paths.targetClassesDir().getURL().toString();
         } catch (final FileSystemException e) {
             throw new UnhandledException(e);
         }
 
         final String testOutputFolder;
         try {
-            testOutputFolder = paths.outputTestClassesFolder().getURL().toString();
+            testOutputFolder = paths.targetTestClassesDir().getURL().toString();
         } catch (final FileSystemException e) {
             throw new UnhandledException(e);
         }
@@ -354,7 +379,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             final ISpoofaxLanguageSpec languageSpec) {
 
         try {
-            final GeneratorSettings settings = new GeneratorSettings(languageSpec.config(), languageSpec.paths());
+            final GeneratorSettings settings = new GeneratorSettings(languageSpec.location(), languageSpec.config());
 //            // TODO: Get from SDK.
 //            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
             // FIXME: Factory?
