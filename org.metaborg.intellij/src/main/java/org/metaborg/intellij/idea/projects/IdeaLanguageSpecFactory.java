@@ -18,19 +18,20 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.*;
-import com.intellij.openapi.module.*;
-import com.intellij.openapi.module.Module;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.config.*;
-import org.metaborg.core.messages.*;
-import org.metaborg.core.source.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
-import org.metaborg.util.log.*;
+import javax.annotation.Nullable;
 
-import javax.annotation.*;
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.config.ConfigRequest;
+import org.metaborg.core.messages.StreamMessagePrinter;
+import org.metaborg.core.source.ISourceTextService;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigService;
+import org.metaborg.util.log.ILogger;
+
+import com.google.inject.Inject;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleType;
 
 public final class IdeaLanguageSpecFactory implements IIdeaLanguageSpecFactory {
 
@@ -86,9 +87,6 @@ public final class IdeaLanguageSpecFactory implements IIdeaLanguageSpecFactory {
             return null;
         }
 
-        // TODO: Use ISpoofaxLanguageSpecPathsService instead.
-        final SpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(rootFolder, config);
-
-        return new IdeaLanguageSpec(module, rootFolder, config, paths);
+        return new IdeaLanguageSpec(module, rootFolder, config);
     }
 }

@@ -18,12 +18,13 @@
 
 package org.metaborg.intellij.jps.projects;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.jps.model.module.*;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
+import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.jps.model.module.JpsModule;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 /**
  * A Spoofax project used in JPS.
@@ -31,7 +32,6 @@ import org.metaborg.spoofax.meta.core.project.*;
 public final class JpsLanguageSpec extends MetaborgJpsProject implements ISpoofaxLanguageSpec {
 
     private final ISpoofaxLanguageSpecConfig config;
-    private final ISpoofaxLanguageSpecPaths paths;
 
     /**
      * Initializes a new instance of the {@link JpsLanguageSpec} class.
@@ -42,11 +42,9 @@ public final class JpsLanguageSpec extends MetaborgJpsProject implements ISpoofa
     @Inject
     public JpsLanguageSpec(@Assisted final JpsModule module,
                            @Assisted final FileObject location,
-                           @Assisted final ISpoofaxLanguageSpecConfig config,
-                           @Assisted final ISpoofaxLanguageSpecPaths paths) {
+                           @Assisted final ISpoofaxLanguageSpecConfig config) {
         super(module, location, config);
         this.config = config;
-        this.paths = paths;
     }
 
     /**
@@ -55,13 +53,5 @@ public final class JpsLanguageSpec extends MetaborgJpsProject implements ISpoofa
     @Override
     public ISpoofaxLanguageSpecConfig config() {
         return this.config;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ISpoofaxLanguageSpecPaths paths() {
-        return this.paths;
     }
 }
