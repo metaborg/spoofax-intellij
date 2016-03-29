@@ -17,8 +17,22 @@
  * along with Spoofax for IntelliJ.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package org.metaborg.intellij.test;
+
+import com.intellij.testFramework.fixtures.*;
+
+import java.io.*;
+
 /**
- * The Spoofax for IntelliJ plugin's root test package.
+ * Base class for tests.
  */
-@NonNullByDefault
-package org.metaborg.intellij;
+public abstract class SpoofaxCodeInsightFixtureTestCase extends LightPlatformCodeInsightFixtureTestCase {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getTestDataPath() {
+        return new File("testdata/" + getBasePath()).getAbsolutePath();
+    }
+}
