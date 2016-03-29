@@ -47,6 +47,8 @@ import org.metaborg.intellij.idea.sdks.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.*;
+import org.metaborg.meta.core.project.ILanguageSpec;
+import org.metaborg.spoofax.meta.core.build.CommonPaths;
 import org.metaborg.spoofax.meta.core.config.*;
 import org.metaborg.spoofax.meta.core.generator.*;
 import org.metaborg.spoofax.meta.core.generator.language.*;
@@ -225,7 +227,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         assert languageSpec != null;
 
         setContentRoots(rootModel);
-        setCompilerOutputPath(rootModel, languageSpec.paths());
+        setCompilerOutputPath(rootModel, languageSpec);
         setSdk(rootModel);
 
         // Set the module.
@@ -261,20 +263,21 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         this.logger.info("Added content and source roots.");
     }
 
-    private void setCompilerOutputPath(final ModifiableRootModel rootModel, final ISpoofaxLanguageSpecPaths paths) {
+    private void setCompilerOutputPath(final ModifiableRootModel rootModel, ILanguageSpec languageSpec) {
         // Set the compiler output path.
         this.logger.debug("Setting compiler output path.");
 
+        final CommonPaths paths = new CommonPaths(languageSpec.location());
         final String outputFolder;
         try {
-            outputFolder = paths.outputClassesFolder().getURL().toString();
+            outputFolder = paths.targetClassesDir().getURL().toString();
         } catch (final FileSystemException e) {
             throw new UnhandledException(e);
         }
 
         final String testOutputFolder;
         try {
-            testOutputFolder = paths.outputTestClassesFolder().getURL().toString();
+            testOutputFolder = paths.targetTestClassesDir().getURL().toString();
         } catch (final FileSystemException e) {
             throw new UnhandledException(e);
         }
@@ -354,7 +357,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             final ISpoofaxLanguageSpec languageSpec) {
 
         try {
-            final GeneratorSettings settings = new GeneratorSettings(languageSpec.config(), languageSpec.paths());
+            final GeneratorSettings settings = new GeneratorSettings(languageSpec.location(), languageSpec.config());
 //            // TODO: Get from SDK.
 //            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
             // FIXME: Factory?

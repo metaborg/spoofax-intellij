@@ -25,7 +25,6 @@ import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
-import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecPaths;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -37,7 +36,6 @@ import com.intellij.openapi.module.Module;
 public class IdeaLanguageSpec extends IdeaProject implements ISpoofaxLanguageSpec {
 
     private final ISpoofaxLanguageSpecConfig config;
-    private final ISpoofaxLanguageSpecPaths paths;
     
     private Collection<ILanguageComponent> components = Collections.emptyList();
 
@@ -63,11 +61,9 @@ public class IdeaLanguageSpec extends IdeaProject implements ISpoofaxLanguageSpe
     /* package private */ IdeaLanguageSpec(
             @Assisted final Module module,
             @Assisted final FileObject location,
-            @Assisted final ISpoofaxLanguageSpecConfig config,
-            @Assisted final ISpoofaxLanguageSpecPaths paths) {
+            @Assisted final ISpoofaxLanguageSpecConfig config) {
         super(module, location, config);
         this.config = config;
-        this.paths = paths;
     }
 
     /**
@@ -77,13 +73,4 @@ public class IdeaLanguageSpec extends IdeaProject implements ISpoofaxLanguageSpe
     public ISpoofaxLanguageSpecConfig config() {
         return this.config;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ISpoofaxLanguageSpecPaths paths() {
-        return this.paths;
-    }
-
 }

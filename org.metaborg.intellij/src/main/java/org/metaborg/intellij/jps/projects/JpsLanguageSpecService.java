@@ -18,21 +18,29 @@
 
 package org.metaborg.intellij.jps.projects;
 
-import com.google.inject.*;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.config.*;
-import org.metaborg.core.messages.*;
-import org.metaborg.core.project.*;
-import org.metaborg.core.resource.*;
-import org.metaborg.core.source.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.spoofax.meta.core.config.*;
-import org.metaborg.spoofax.meta.core.project.*;
-import org.metaborg.util.log.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.core.config.ConfigException;
+import org.metaborg.core.config.ConfigRequest;
+import org.metaborg.core.messages.StreamMessagePrinter;
+import org.metaborg.core.project.IProject;
+import org.metaborg.core.resource.IResourceService;
+import org.metaborg.core.source.ISourceTextService;
+import org.metaborg.intellij.idea.projects.IdeaLanguageSpec;
+import org.metaborg.intellij.idea.projects.IdeaProject;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigService;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecService;
+import org.metaborg.util.log.ILogger;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * A language specification service for JPS.
@@ -124,8 +132,6 @@ public final class JpsLanguageSpecService implements ISpoofaxLanguageSpecService
             return null;
         }
 
-        final SpoofaxLanguageSpecPaths paths = new SpoofaxLanguageSpecPaths(rootFolder, config);
-
-        return new JpsLanguageSpec(ideaProject.getModule(), rootFolder, config, paths);
+        return new JpsLanguageSpec(ideaProject.getModule(), rootFolder, config);
     }
 }
