@@ -160,7 +160,7 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
                 .implement(ParserDefinition.class, MetaborgParserDefinition.class)
                 .build(IParserDefinitionFactory.class));
 
-        bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
+        bind(JSGLRParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
             /* implode        */ true,
             /* recovery       */ true,
             /* completion     */ false,

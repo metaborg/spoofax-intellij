@@ -18,31 +18,31 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.inject.*;
-import com.intellij.lang.*;
-import com.intellij.psi.tree.*;
-import org.metaborg.core.processing.analyze.*;
-import org.metaborg.core.tracing.*;
-import org.metaborg.intellij.resources.*;
-import org.spoofax.interpreter.terms.*;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
+import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
+
+import com.google.inject.Inject;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * Default implementation of the {@link IMetaborgPsiElementFactory} interface.
  */
 public final class DefaultMetaborgPsiElementFactory implements IMetaborgPsiElementFactory {
 
-    private final IResolverService<IStrategoTerm, IStrategoTerm> resolverService;
+    private final ISpoofaxResolverService resolverService;
     private final IIntelliJResourceService resourceService;
-    private final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester;
+    private final ISpoofaxAnalysisResultRequester analysisResultRequester;
 
     /**
      * Initializes a new instance of the {@link DefaultMetaborgPsiElementFactory} class.
      */
     @Inject
     public DefaultMetaborgPsiElementFactory(
-            final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
+            final ISpoofaxResolverService resolverService,
             final IIntelliJResourceService resourceService,
-            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
+            final ISpoofaxAnalysisResultRequester analysisResultRequester) {
         this.resolverService = resolverService;
         this.resourceService = resourceService;
         this.analysisResultRequester = analysisResultRequester;

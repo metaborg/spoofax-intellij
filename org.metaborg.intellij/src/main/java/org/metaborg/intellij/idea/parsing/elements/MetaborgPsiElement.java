@@ -18,16 +18,18 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.intellij.extapi.psi.*;
-import com.intellij.lang.*;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.resolve.reference.*;
-import org.metaborg.core.processing.analyze.*;
-import org.metaborg.core.tracing.*;
-import org.metaborg.intellij.resources.*;
-import org.spoofax.interpreter.terms.*;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
+import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 
 /**
  * A Spoofax PSI element.
@@ -37,9 +39,9 @@ import org.spoofax.interpreter.terms.*;
  */
 public class MetaborgPsiElement extends ASTWrapperPsiElement implements PsiElement {
 
-    private final IResolverService<IStrategoTerm, IStrategoTerm> resolverService;
+    private final ISpoofaxResolverService resolverService;
     private final IIntelliJResourceService resourceService;
-    private final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester;
+    private final ISpoofaxAnalysisResultRequester analysisResultRequester;
 
     /**
      * Initializes a new instance of the {@link MetaborgPsiElement} class.
@@ -49,9 +51,9 @@ public class MetaborgPsiElement extends ASTWrapperPsiElement implements PsiEleme
     @Inject
     public MetaborgPsiElement(
             @Assisted final ASTNode node,
-            final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
+            final ISpoofaxResolverService resolverService,
             final IIntelliJResourceService resourceService,
-            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
+            final ISpoofaxAnalysisResultRequester analysisResultRequester) {
         super(node);
         this.resolverService = resolverService;
         this.resourceService = resourceService;

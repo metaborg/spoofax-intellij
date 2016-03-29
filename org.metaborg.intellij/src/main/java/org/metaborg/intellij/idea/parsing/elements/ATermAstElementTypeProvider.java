@@ -18,34 +18,38 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.intellij.psi.tree.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.source.*;
-import org.metaborg.core.style.*;
-import org.metaborg.core.syntax.*;
-import org.metaborg.spoofax.core.style.*;
-import org.metaborg.spoofax.core.syntax.*;
-import org.spoofax.interpreter.terms.*;
-import org.spoofax.jsglr.client.imploder.*;
+import javax.annotation.Nullable;
 
-import javax.annotation.*;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.source.ISourceRegion;
+import org.metaborg.core.style.ICategory;
+import org.metaborg.core.style.IRegionCategory;
+import org.metaborg.spoofax.core.style.ISpoofaxCategorizerService;
+import org.metaborg.spoofax.core.style.TokenCategory;
+import org.metaborg.spoofax.core.syntax.JSGLRSourceRegionFactory;
+import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
+import org.spoofax.interpreter.terms.IStrategoTerm;
+import org.spoofax.jsglr.client.imploder.IToken;
+import org.spoofax.jsglr.client.imploder.ImploderAttachment;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.psi.tree.IElementType;
 
 public final class ATermAstElementTypeProvider implements IAstElementTypeProvider<IStrategoTerm> {
 
-    private final ParseResult<IStrategoTerm> parseResult;
+    private final ISpoofaxParseUnit parseResult;
     private final ILanguageImpl language;
     private final SpoofaxTokenTypeManager tokenTypesManager;
-    private final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizerService;
+    private final ISpoofaxCategorizerService categorizerService;
     private final Iterable<IRegionCategory<IStrategoTerm>> categories;
 
     @Inject
     public ATermAstElementTypeProvider(
             @Assisted final ILanguageImpl language,
-            @Assisted final ParseResult<IStrategoTerm> parseResult,
+            @Assisted final ISpoofaxParseUnit parseResult,
             @Assisted final SpoofaxTokenTypeManager tokenTypesManager,
-            final ICategorizerService<IStrategoTerm, IStrategoTerm> categorizerService) {
+            final ISpoofaxCategorizerService categorizerService) {
         this.language = language;
         this.parseResult = parseResult;
         this.tokenTypesManager = tokenTypesManager;

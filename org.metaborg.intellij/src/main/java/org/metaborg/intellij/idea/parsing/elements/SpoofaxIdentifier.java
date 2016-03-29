@@ -18,17 +18,18 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.intellij.lang.*;
-import com.intellij.psi.*;
-import com.intellij.util.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.core.processing.analyze.*;
-import org.metaborg.core.tracing.*;
-import org.metaborg.intellij.idea.parsing.references.*;
-import org.metaborg.intellij.resources.*;
-import org.spoofax.interpreter.terms.*;
+import org.jetbrains.annotations.NonNls;
+import org.metaborg.intellij.idea.parsing.references.MetaborgReferenceElement;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
+import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
+import com.intellij.util.IncorrectOperationException;
 
 /**
  * An identifier in a Metaborg language.
@@ -44,9 +45,9 @@ public class SpoofaxIdentifier extends MetaborgPsiElement
     @Inject
     public SpoofaxIdentifier(
             @Assisted final ASTNode node,
-            final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
+            final ISpoofaxResolverService resolverService,
             final IIntelliJResourceService resourceService,
-            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
+            final ISpoofaxAnalysisResultRequester analysisResultRequester) {
         super(node, resolverService, resourceService, analysisResultRequester);
     }
 
