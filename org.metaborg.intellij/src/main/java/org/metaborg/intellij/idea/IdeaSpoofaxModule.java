@@ -3,46 +3,77 @@
  *
  * This file is part of Spoofax for IntelliJ.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 
 package org.metaborg.intellij.idea;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.google.inject.matcher.*;
-import com.google.inject.multibindings.*;
-import org.apache.commons.vfs2.*;
-import org.metaborg.core.editor.*;
-import org.metaborg.core.project.*;
-import org.metaborg.core.resource.*;
-import org.metaborg.intellij.configuration.*;
-import org.metaborg.intellij.discovery.*;
-import org.metaborg.intellij.idea.actions.*;
-import org.metaborg.intellij.idea.editors.*;
-import org.metaborg.intellij.idea.facets.*;
-import org.metaborg.intellij.idea.filetypes.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.idea.parsing.annotations.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.idea.projects.newproject.*;
-import org.metaborg.intellij.idea.transformations.*;
-import org.metaborg.intellij.injections.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.projects.*;
-import org.metaborg.intellij.resources.*;
-import org.metaborg.intellij.vfs.*;
-import org.metaborg.spoofax.core.*;
+import org.apache.commons.vfs2.FileSystemManager;
+import org.metaborg.core.editor.IEditorRegistry;
+import org.metaborg.core.project.IProjectService;
+import org.metaborg.core.resource.IResourceService;
+import org.metaborg.intellij.configuration.IMetaborgApplicationConfig;
+import org.metaborg.intellij.configuration.IMetaborgModuleConfig;
+import org.metaborg.intellij.configuration.IMetaborgProjectConfig;
+import org.metaborg.intellij.discovery.ILanguageSource;
+import org.metaborg.intellij.discovery.MultiLanguageSource;
+import org.metaborg.intellij.discovery.ResourceLanguageSource;
+import org.metaborg.intellij.idea.actions.ActionUtils;
+import org.metaborg.intellij.idea.actions.BuilderActionGroup;
+import org.metaborg.intellij.idea.actions.BuilderMenuBuilder;
+import org.metaborg.intellij.idea.actions.IBuilderActionGroupFactory;
+import org.metaborg.intellij.idea.actions.ITransformIdeaActionFactory;
+import org.metaborg.intellij.idea.actions.TransformationAction;
+import org.metaborg.intellij.idea.editors.IdeaEditorRegistry;
+import org.metaborg.intellij.idea.facets.MetaborgFacetType;
+import org.metaborg.intellij.idea.filetypes.LanguageArtifactFileType;
+import org.metaborg.intellij.idea.graphics.DefaultIconManager;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.parsing.annotations.MetaborgSourceAnnotator;
+import org.metaborg.intellij.idea.projects.ArtifactProjectFactory;
+import org.metaborg.intellij.idea.projects.ArtifactProjectService;
+import org.metaborg.intellij.idea.projects.Compound;
+import org.metaborg.intellij.idea.projects.CompoundProjectService;
+import org.metaborg.intellij.idea.projects.IArtifactProjectFactory;
+import org.metaborg.intellij.idea.projects.IIdeaProjectFactory;
+import org.metaborg.intellij.idea.projects.IIdeaProjectService;
+import org.metaborg.intellij.idea.projects.IdeaProjectFactory;
+import org.metaborg.intellij.idea.projects.IdeaProjectService;
+import org.metaborg.intellij.idea.projects.MetaborgModuleType;
+import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
+import org.metaborg.intellij.idea.projects.newproject.MetaborgNewModuleWizardStep;
+import org.metaborg.intellij.idea.transformations.IResourceTransformer;
+import org.metaborg.intellij.idea.transformations.ResourceTransformer;
+import org.metaborg.intellij.injections.IntelliJExtensionProviderFactory;
+import org.metaborg.intellij.injections.IntelliJModuleTypeProvider;
+import org.metaborg.intellij.injections.IntelliJServiceProviderFactory;
+import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
+import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
+import org.metaborg.intellij.projects.ProjectUtils;
+import org.metaborg.intellij.resources.DefaultIntelliJResourceService;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.intellij.resources.LibraryService;
+import org.metaborg.intellij.vfs.IIntelliJFileProviderFactory;
+import org.metaborg.intellij.vfs.IntelliJFileProvider;
+import org.metaborg.intellij.vfs.IntelliJFileSystemManagerProvider;
+import org.metaborg.spoofax.core.SpoofaxModule;
+import org.metaborg.spoofax.core.unit.ISpoofaxAnalyzeUnit;
+import org.metaborg.spoofax.core.unit.ISpoofaxInputUnit;
+import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
+import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
+
+import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.matcher.Matchers;
+import com.google.inject.multibindings.Multibinder;
 
 /**
  * The Guice dependency injection module for the Spoofax IntelliJ IDEA plugin.
@@ -54,8 +85,7 @@ import org.metaborg.spoofax.core.*;
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void configure() {
+    @Override protected void configure() {
         super.configure();
 
         bindModule();
@@ -103,16 +133,14 @@ import org.metaborg.spoofax.core.*;
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void bindResource() {
+    @Override protected void bindResource() {
         bind(DefaultIntelliJResourceService.class).in(Singleton.class);
         bind(IResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
         bind(IIntelliJResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
         bind(FileSystemManager.class).toProvider(IntelliJFileSystemManagerProvider.class).in(Singleton.class);
 
-        install(new FactoryModuleBuilder()
-                .implement(IntelliJFileProvider.class, IntelliJFileProvider.class)
-                .build(IIntelliJFileProviderFactory.class));
+        install(new FactoryModuleBuilder().implement(IntelliJFileProvider.class, IntelliJFileProvider.class)
+            .build(IIntelliJFileProviderFactory.class));
     }
 
 
@@ -120,8 +148,7 @@ import org.metaborg.spoofax.core.*;
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void bindProject() {
+    @Override protected void bindProject() {
         this.bind(IIdeaProjectFactory.class).to(IdeaProjectFactory.class).in(Singleton.class);
         this.bind(IArtifactProjectFactory.class).to(ArtifactProjectFactory.class).in(Singleton.class);
 
@@ -131,11 +158,8 @@ import org.metaborg.spoofax.core.*;
         bind(ArtifactProjectService.class).in(Singleton.class);
         bind(CompoundProjectService.class).in(Singleton.class);
 
-        final Multibinder<IProjectService> uriBinder = Multibinder.newSetBinder(
-                binder(),
-                IProjectService.class,
-                Compound.class
-        );
+        final Multibinder<IProjectService> uriBinder =
+            Multibinder.newSetBinder(binder(), IProjectService.class, Compound.class);
         uriBinder.addBinding().to(IdeaProjectService.class);
         uriBinder.addBinding().to(ArtifactProjectService.class);
 
@@ -151,11 +175,8 @@ import org.metaborg.spoofax.core.*;
 
         bind(ResourceLanguageSource.class).in(Singleton.class);
 
-        final Multibinder<ILanguageSource> sources = Multibinder.newSetBinder(
-                binder(),
-                ILanguageSource.class,
-                Compound.class
-        );
+        final Multibinder<ILanguageSource> sources =
+            Multibinder.newSetBinder(binder(), ILanguageSource.class, Compound.class);
 
         sources.addBinding().to(ResourceLanguageSource.class);
     }
@@ -164,49 +185,47 @@ import org.metaborg.spoofax.core.*;
      * Binds source annotators.INewModuleWizardStepFactory
      */
     protected void bindAnnotators() {
-        bind(new TypeLiteral<MetaborgSourceAnnotator<?, ?>>() {}).in(Singleton.class);
+        bind(MetaborgSourceAnnotator.class).in(Singleton.class);
     }
 
     /**
      * Binds new project wizard classes.
      */
     protected void bindNewProjectWizard() {
-        install(new FactoryModuleBuilder()
-                .implement(MetaborgNewModuleWizardStep.class, MetaborgNewModuleWizardStep.class)
+        install(
+            new FactoryModuleBuilder().implement(MetaborgNewModuleWizardStep.class, MetaborgNewModuleWizardStep.class)
                 .build(INewModuleWizardStepFactory.class));
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void bindAction() {
+    @Override protected void bindAction() {
         super.bindAction();
 
         bind(ActionUtils.class).in(Singleton.class);
         bind(BuilderMenuBuilder.class).in(Singleton.class);
 
-        install(new FactoryModuleBuilder()
-                .implement(BuilderActionGroup.class, BuilderActionGroup.class)
-                .build(IBuilderActionGroupFactory.class));
+        install(new FactoryModuleBuilder().implement(BuilderActionGroup.class, BuilderActionGroup.class)
+            .build(IBuilderActionGroupFactory.class));
     }
 
     /**
      * Binds transformations.
      */
     protected void bindTransformations() {
-        bind(IResourceTransformer.class).to(new TypeLiteral<ResourceTransformer<?, ?, ?>>() {}).in(Singleton.class);
+        bind(IResourceTransformer.class)
+            .to(new TypeLiteral<ResourceTransformer<ISpoofaxInputUnit, ISpoofaxParseUnit, ISpoofaxAnalyzeUnit, ISpoofaxTransformUnit<?>, ISpoofaxTransformUnit<ISpoofaxParseUnit>, ISpoofaxTransformUnit<ISpoofaxAnalyzeUnit>>>() {})
+            .in(Singleton.class);
 
-        install(new FactoryModuleBuilder()
-                .implement(TransformationAction.class, TransformationAction.class)
-                .build(ITransformIdeaActionFactory.class));
+        install(new FactoryModuleBuilder().implement(TransformationAction.class, TransformationAction.class)
+            .build(ITransformIdeaActionFactory.class));
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void bindEditor() {
+    @Override protected void bindEditor() {
         bind(IEditorRegistry.class).to(IdeaEditorRegistry.class).in(Singleton.class);
     }
 

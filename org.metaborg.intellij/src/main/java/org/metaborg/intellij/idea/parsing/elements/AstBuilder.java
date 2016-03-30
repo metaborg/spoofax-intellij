@@ -3,31 +3,31 @@
  *
  * This file is part of Spoofax for IntelliJ.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.common.base.*;
-import com.intellij.lang.*;
-import com.intellij.psi.tree.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.syntax.*;
-import org.spoofax.interpreter.terms.*;
-import org.spoofax.jsglr.client.imploder.*;
+import java.util.Stack;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
+import org.spoofax.interpreter.terms.IStrategoTerm;
+import org.spoofax.jsglr.client.imploder.ImploderAttachment;
+
+import com.google.common.base.Preconditions;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.PsiBuilder;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * Builds an IntelliJ AST from a ATerm AST.
@@ -41,12 +41,12 @@ public final class AstBuilder {
     /**
      * Initializes a new instance of the {@link AstBuilder} class.
      *
-     * @param tokenTypesManager The token types manager.
+     * @param tokenTypesManager
+     *            The token types manager.
      */
-    public AstBuilder(
-            final ILanguageImpl language,
-            final IATermAstElementTypeProviderFactory elementTypeProviderFactory,
-            final SpoofaxTokenTypeManager tokenTypesManager) {
+    public AstBuilder(final ILanguageImpl language,
+        final IATermAstElementTypeProviderFactory elementTypeProviderFactory,
+        final SpoofaxTokenTypeManager tokenTypesManager) {
         Preconditions.checkNotNull(language);
         Preconditions.checkNotNull(elementTypeProviderFactory);
         Preconditions.checkNotNull(tokenTypesManager);
@@ -59,30 +59,27 @@ public final class AstBuilder {
     /**
      * Builds the PSI AST from the parse result.
      *
-     * @param parseResult The parse result.
-     * @param root        The root element type.
-     * @param builder     The PSI builder.
+     * @param parseResult
+     *            The parse result.
+     * @param root
+     *            The root element type.
+     * @param builder
+     *            The PSI builder.
      * @return The PSI AST tree root.
      */
-    public ASTNode build(
-            final ParseResult<IStrategoTerm> parseResult,
-            final IElementType root,
-            final PsiBuilder builder) {
+    public ASTNode build(final ISpoofaxParseUnit parseResult, final IElementType root, final PsiBuilder builder) {
 
-        final ATermAstElementTypeProvider elementTypeProvider = this.elementTypeProviderFactory.create(
-                this.language,
-                parseResult,
-                this.tokenTypesManager
-        );
+        final ATermAstElementTypeProvider elementTypeProvider =
+            this.elementTypeProviderFactory.create(this.language, parseResult, this.tokenTypesManager);
 
         final PsiBuilder.Marker m = builder.mark();
-        if (parseResult.result != null) {
-            buildTermIterative(builder, parseResult.result, elementTypeProvider);
+        if(parseResult.valid()) {
+            buildTermIterative(builder, parseResult.ast(), elementTypeProvider);
         } else {
             // We have no parse result. Therefore,
             // parse a single element for all tokens.
             final PsiBuilder.Marker m2 = builder.mark();
-            while (!builder.eof()) {
+            while(!builder.eof()) {
                 builder.advanceLexer();
             }
             m2.done(this.tokenTypesManager.getElementType());
@@ -95,27 +92,25 @@ public final class AstBuilder {
     /**
      * Builds the AST for the specified term, iteratively.
      *
-     * @param root The root term.
+     * @param root
+     *            The root term.
      */
-    @SuppressWarnings("unused")
-    private void buildTermIterative(
-            final PsiBuilder builder,
-            final IStrategoTerm root,
-            final ATermAstElementTypeProvider elementTypeProvider) {
+    private void buildTermIterative(final PsiBuilder builder, final IStrategoTerm root,
+        final ATermAstElementTypeProvider elementTypeProvider) {
         final Stack<TermTask> tasks = new Stack<>();
         tasks.push(new TermTask(root));
 
-        while (!tasks.empty()) {
+        while(!tasks.empty()) {
             final TermTask task = tasks.pop();
             final IStrategoTerm term = task.term();
             @Nullable PsiBuilder.Marker marker = task.marker();
-            if (marker == null) {
+            if(marker == null) {
                 // Start
                 marker = buildTermStart(builder, term);
                 tasks.push(new TermTask(term, marker));
 
                 final IStrategoTerm[] subterms = term.getAllSubterms();
-                for (int i = subterms.length - 1; i >= 0; i--) {
+                for(int i = subterms.length - 1; i >= 0; i--) {
                     tasks.push(new TermTask(subterms[i]));
                 }
             } else {
@@ -128,7 +123,8 @@ public final class AstBuilder {
     /**
      * Builds the start of a term.
      *
-     * @param term The term.
+     * @param term
+     *            The term.
      * @return The resulting marker.
      */
     private PsiBuilder.Marker buildTermStart(final PsiBuilder builder, final IStrategoTerm term) {
@@ -139,14 +135,13 @@ public final class AstBuilder {
     /**
      * Builds the end of a term.
      *
-     * @param term   The term.
-     * @param marker The marker.
+     * @param term
+     *            The term.
+     * @param marker
+     *            The marker.
      */
-    private void buildTermEnd(
-            final PsiBuilder builder,
-            final IStrategoTerm term,
-            final PsiBuilder.Marker marker,
-            final ATermAstElementTypeProvider elementTypeProvider) {
+    private void buildTermEnd(final PsiBuilder builder, final IStrategoTerm term, final PsiBuilder.Marker marker,
+        final ATermAstElementTypeProvider elementTypeProvider) {
         final IElementType elementType = elementTypeProvider.getElementType(term);
 
         moveToEnd(builder, term);
@@ -156,7 +151,8 @@ public final class AstBuilder {
     /**
      * Moves to the start of a term.
      *
-     * @param term The term.
+     * @param term
+     *            The term.
      */
     private void moveToStart(final PsiBuilder builder, final IStrategoTerm term) {
         final ImploderAttachment imploderAttachment = ImploderAttachment.get(term);
@@ -167,7 +163,8 @@ public final class AstBuilder {
     /**
      * Moves to the end of a term.
      *
-     * @param term The term.
+     * @param term
+     *            The term.
      */
     private void moveToEnd(final PsiBuilder builder, final IStrategoTerm term) {
         final ImploderAttachment imploderAttachment = ImploderAttachment.get(term);
@@ -178,11 +175,12 @@ public final class AstBuilder {
     /**
      * Move the builder to the specified offset.
      *
-     * @param offset The target offset.
+     * @param offset
+     *            The target offset.
      */
     private void moveTo(final PsiBuilder builder, final int offset) {
         // We assume the builder to be _before_ the target offset.
-        while (builder.getCurrentOffset() < offset) {
+        while(builder.getCurrentOffset() < offset) {
             builder.advanceLexer();
         }
         // We assume the lexer to have a 1 character step increments,
@@ -193,17 +191,15 @@ public final class AstBuilder {
     /**
      * Builds the AST for the specified term, recursively.
      *
-     * @param term The term.
+     * @param term
+     *            The term.
      */
-    @SuppressWarnings("unused")
-    private void buildTermRecursive(
-            final PsiBuilder builder,
-            final IStrategoTerm term,
-            final ATermAstElementTypeProvider elementTypeProvider) {
+    @SuppressWarnings("unused") private void buildTermRecursive(final PsiBuilder builder, final IStrategoTerm term,
+        final ATermAstElementTypeProvider elementTypeProvider) {
         final PsiBuilder.Marker marker = buildTermStart(builder, term);
 
         final IStrategoTerm[] subterms = term.getAllSubterms();
-        for (final IStrategoTerm subterm : subterms) {
+        for(final IStrategoTerm subterm : subterms) {
             // Recurse
             buildTermRecursive(builder, subterm, elementTypeProvider);
         }
@@ -213,13 +209,15 @@ public final class AstBuilder {
 
     private static class TermTask {
         private final IStrategoTerm term;
-        @Nullable
-        private final PsiBuilder.Marker marker;
+        @Nullable private final PsiBuilder.Marker marker;
 
-        public IStrategoTerm term() { return this.term;}
+        public IStrategoTerm term() {
+            return this.term;
+        }
 
-        @Nullable
-        public PsiBuilder.Marker marker() { return this.marker;}
+        @Nullable public PsiBuilder.Marker marker() {
+            return this.marker;
+        }
 
         public TermTask(final IStrategoTerm term) {
             this(term, null);

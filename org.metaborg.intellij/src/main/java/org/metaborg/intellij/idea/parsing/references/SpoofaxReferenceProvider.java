@@ -18,25 +18,29 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import com.google.inject.*;
-import com.intellij.openapi.vfs.*;
-import com.intellij.util.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.core.*;
-import org.metaborg.core.analysis.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.processing.analyze.*;
-import org.metaborg.core.project.*;
-import org.metaborg.core.source.*;
-import org.metaborg.core.tracing.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.resources.*;
-import org.spoofax.interpreter.terms.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.*;
+
+import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.NotNull;
+import org.metaborg.core.MetaborgException;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.core.project.IProject;
+import org.metaborg.core.source.ISourceLocation;
+import org.metaborg.core.tracing.Resolution;
+import org.metaborg.intellij.idea.languages.ILanguageProjectService;
+import org.metaborg.intellij.idea.projects.IIdeaProjectService;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
+import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
+import org.metaborg.spoofax.core.unit.ISpoofaxAnalyzeUnit;
+
+import com.google.inject.Inject;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.ProcessingContext;
 
 // TODO: Remove IStrategoTerm type arguments to make it generic, then rename to Metaborg (and the Reference too).
 /**
@@ -46,8 +50,8 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
 
     private final Object objectLock = new Object();
     private final IIntelliJResourceService resourceService;
-    private final IResolverService<IStrategoTerm, IStrategoTerm> resolverService;
-    private final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester;
+    private final ISpoofaxResolverService resolverService;
+    private final ISpoofaxAnalysisResultRequester analysisResultRequester;
 
     /**
      * Initializes a new instance of the {@link MetaborgReferenceProvider} class.
@@ -61,8 +65,8 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
             final IIdeaProjectService projectService,
             final IIntelliJResourceService resourceService,
             final ILanguageProjectService languageProjectService,
-            final IResolverService<IStrategoTerm, IStrategoTerm> resolverService,
-            final IAnalysisResultRequester<IStrategoTerm, IStrategoTerm> analysisResultRequester) {
+            final ISpoofaxResolverService resolverService,
+            final ISpoofaxAnalysisResultRequester analysisResultRequester) {
         super(projectService, resourceService, languageProjectService);
         this.resourceService = resourceService;
         this.resolverService = resolverService;
@@ -79,7 +83,7 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
             final FileObject resource,
             final MetaborgReferenceElement element,
             final ProcessingContext context) {
-        @Nullable final AnalysisFileResult<IStrategoTerm, IStrategoTerm> analysisFileResult
+        @Nullable final ISpoofaxAnalyzeUnit analysisFileResult
                 = this.analysisResultRequester.get(resource);
         if (analysisFileResult == null)
             return Collections.emptyList();

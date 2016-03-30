@@ -18,9 +18,8 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import org.metaborg.core.language.*;
-import org.metaborg.core.syntax.*;
-import org.spoofax.interpreter.terms.*;
+import org.metaborg.core.language.ILanguageImpl;
+import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
 
 /**
  * Factory for ATerm AST element type providers.
@@ -37,7 +36,7 @@ public interface IATermAstElementTypeProviderFactory {
      */
     ATermAstElementTypeProvider create(
             ILanguageImpl language,
-            ParseResult<IStrategoTerm> parseResult,
+            ISpoofaxParseUnit parseResult,
             SpoofaxTokenTypeManager tokenTypeManager);
 
 }

@@ -18,36 +18,48 @@
 
 package org.metaborg.intellij.jps.builders;
 
-import com.google.inject.*;
-import org.jetbrains.jps.incremental.*;
-import org.jetbrains.jps.model.module.*;
-import org.metaborg.core.*;
-import org.metaborg.core.action.*;
-import org.metaborg.core.build.*;
-import org.metaborg.core.build.dependency.*;
-import org.metaborg.core.build.paths.*;
-import org.metaborg.core.config.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.messages.*;
-import org.metaborg.core.processing.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.jps.configuration.*;
-import org.metaborg.intellij.jps.projects.*;
-import org.metaborg.intellij.languages.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.spoofax.core.processing.*;
-import org.metaborg.spoofax.core.resource.*;
-import org.metaborg.spoofax.meta.core.build.*;
-import org.metaborg.spoofax.meta.core.project.*;
-import org.metaborg.util.file.*;
-import org.metaborg.util.log.*;
-import org.spoofax.interpreter.terms.*;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Set;
 
 import javax.annotation.Nullable;
-import java.io.*;
-import java.util.*;
+
+import org.jetbrains.jps.incremental.CompileContext;
+import org.jetbrains.jps.incremental.ProjectBuildException;
+import org.jetbrains.jps.model.module.JpsModule;
+import org.metaborg.core.MetaborgException;
+import org.metaborg.core.action.CompileGoal;
+import org.metaborg.core.build.BuildInput;
+import org.metaborg.core.build.BuildInputBuilder;
+import org.metaborg.core.build.dependency.IDependencyService;
+import org.metaborg.core.build.dependency.MissingDependencyException;
+import org.metaborg.core.build.paths.ILanguagePathService;
+import org.metaborg.core.config.ConfigException;
+import org.metaborg.core.language.LanguageIdentifier;
+import org.metaborg.core.messages.IMessage;
+import org.metaborg.core.processing.ITask;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.languages.LanguageLoadingFailedException;
+import org.metaborg.intellij.jps.configuration.IMetaborgConfigService;
+import org.metaborg.intellij.jps.configuration.JpsMetaborgApplicationConfig;
+import org.metaborg.intellij.jps.projects.IJpsProjectService;
+import org.metaborg.intellij.jps.projects.JpsLanguageSpec;
+import org.metaborg.intellij.jps.projects.MetaborgJpsProject;
+import org.metaborg.intellij.languages.ILanguageManager;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.spoofax.core.build.ISpoofaxBuildOutput;
+import org.metaborg.spoofax.core.processing.SpoofaxProcessorRunner;
+import org.metaborg.spoofax.core.resource.SpoofaxIgnoresSelector;
+import org.metaborg.spoofax.meta.core.build.LanguageSpecBuildInput;
+import org.metaborg.spoofax.meta.core.build.LanguageSpecBuilder;
+import org.metaborg.spoofax.meta.core.build.ProjectBuildInput;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecService;
+import org.metaborg.util.file.FileAccess;
+import org.metaborg.util.log.ILogger;
+
+import com.google.inject.Inject;
 
 public final class JpsSpoofaxMetaBuilder {
 
@@ -282,7 +294,7 @@ public final class JpsSpoofaxMetaBuilder {
         final BuildInput input = getBuildInput(metaInput);
 
         try {
-            final ITask<IBuildOutput<IStrategoTerm, IStrategoTerm, IStrategoTerm>> task = this.processorRunner
+            final ITask<ISpoofaxBuildOutput> task = this.processorRunner
                     .build(input, null, null)
                     .schedule()
                     .block();
@@ -290,7 +302,7 @@ public final class JpsSpoofaxMetaBuilder {
             // TODO: Report created output files to `consumer`.
 
             if (!task.cancelled()) {
-                @Nullable final IBuildOutput<?, ?, ?> output = task.result();
+                @Nullable final ISpoofaxBuildOutput output = task.result();
                 if (output != null) {
                     for (final IMessage msg : output.allMessages()) {
                         context.processMessage(this.messageFormatter.formatMessage("Metaborg", msg));

@@ -159,13 +159,5 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
         install(new FactoryModuleBuilder()
                 .implement(ParserDefinition.class, MetaborgParserDefinition.class)
                 .build(IParserDefinitionFactory.class));
-
-        bind(IParserConfiguration.class).toInstance(new JSGLRParserConfiguration(
-            /* implode        */ true,
-            /* recovery       */ true,
-            /* completion     */ false,
-            /* timeout        */ 30000,
-            /* cursorPosition */ 2147483647
-        ));
     }
 }
