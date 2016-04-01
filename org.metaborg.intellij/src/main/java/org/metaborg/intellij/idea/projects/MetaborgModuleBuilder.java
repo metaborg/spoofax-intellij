@@ -3,17 +3,14 @@
  *
  * This file is part of Spoofax for IntelliJ.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 
 package org.metaborg.intellij.idea.projects;
@@ -43,9 +40,10 @@ import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.meta.core.build.CommonPaths;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
-import org.metaborg.spoofax.meta.core.generator.GeneratorSettings;
 import org.metaborg.spoofax.meta.core.generator.language.ContinuousLanguageSpecGenerator;
 import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGenerator;
+import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGeneratorSettings;
+import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGeneratorSettingsBuilder;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 import org.metaborg.util.log.ILogger;
 
@@ -95,11 +93,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private final INewModuleWizardStepFactory wizardStepFactory;
     private final ISpoofaxLanguageSpecConfigBuilder configBuilder;
     private final MetaborgModuleType moduleType;
-    @InjectLogger
-    private ILogger logger;
+    @InjectLogger private ILogger logger;
 
-    @Nullable
-    private List<Pair<String, String>> sourcePaths;
+    @Nullable private List<Pair<String, String>> sourcePaths;
 
     private String name;
     private String extension;
@@ -111,30 +107,38 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      *
      * @return The name.
      */
-    @Override
-    public String getName() { return this.name; }
+    @Override public String getName() {
+        return this.name;
+    }
 
     /**
      * Sets the name of the module.
      *
-     * @param name The name.
+     * @param name
+     *            The name.
      */
-    @Override
-    public void setName(final String name) { this.name = name; }
+    @Override public void setName(final String name) {
+        this.name = name;
+    }
 
     /**
      * Gets the extension of the language.
      *
      * @return The language file extension.
      */
-    public String getExtension() { return this.extension; }
+    public String getExtension() {
+        return this.extension;
+    }
 
     /**
      * Sets the extension of the language.
      *
-     * @param extension The language file extension.
+     * @param extension
+     *            The language file extension.
      */
-    public void setExtension(final String extension) { this.extension = extension; }
+    public void setExtension(final String extension) {
+        this.extension = extension;
+    }
 
     /**
      * Gets the language ID of the module.
@@ -148,22 +152,18 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     /**
      * Sets the language ID of the module.
      *
-     * @param languageId The language identifier; or <code>null</code>.
+     * @param languageId
+     *            The language identifier; or <code>null</code>.
      */
     public void setLanguageIdentifier(final LanguageIdentifier languageId) {
         this.languageId = languageId;
     }
 
 
-    @Inject
-    private MetaborgModuleBuilder(
-            final IIdeaLanguageSpecFactory languageSpecFactory,
-            final IIntelliJResourceService resourceService,
-            final IIdeaProjectService projectService,
-            final ISpoofaxLanguageSpecConfigBuilder configBuilder,
-            final INewModuleWizardStepFactory wizardStepFactory,
-            final IIconManager iconManager,
-            final MetaborgModuleType moduleType) {
+    @Inject private MetaborgModuleBuilder(final IIdeaLanguageSpecFactory languageSpecFactory,
+        final IIntelliJResourceService resourceService, final IIdeaProjectService projectService,
+        final ISpoofaxLanguageSpecConfigBuilder configBuilder, final INewModuleWizardStepFactory wizardStepFactory,
+        final IIconManager iconManager, final MetaborgModuleType moduleType) {
         super();
         this.languageSpecFactory = languageSpecFactory;
         this.resourceService = resourceService;
@@ -184,43 +184,35 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
         this.name = "Untitled-" + uuid;
         this.extension = "u";
-        this.languageId = new LanguageIdentifier(
-                "org.example",
-                "untitled-" + uuid,
-                LanguageVersion.parse("1.0.0-SNAPSHOT")
-        );
+        this.languageId =
+            new LanguageIdentifier("org.example", "untitled-" + uuid, LanguageVersion.parse("1.0.0-SNAPSHOT"));
     }
 
     /**
      * Gets the wizard step shown under the SDK selection.
      *
-     * @param context          The wizard context.
-     * @param parentDisposable The parent disposable.
+     * @param context
+     *            The wizard context.
+     * @param parentDisposable
+     *            The parent disposable.
      * @return The wizard step.
      */
-    @Override
-    @Nullable
-    public final ModuleWizardStep getCustomOptionsStep(
-            final WizardContext context,
-            final Disposable parentDisposable) {
+    @Override @Nullable public final ModuleWizardStep getCustomOptionsStep(final WizardContext context,
+        final Disposable parentDisposable) {
 
         return this.wizardStepFactory.create(this, context);
     }
 
-    @Override
-    public ModuleWizardStep[] createWizardSteps(
-            final WizardContext wizardContext, final ModulesProvider modulesProvider) {
+    @Override public ModuleWizardStep[] createWizardSteps(final WizardContext wizardContext,
+        final ModulesProvider modulesProvider) {
         return ModuleWizardStep.EMPTY_ARRAY;
     }
 
-    @Override
-    @Nullable
-    public final ModuleWizardStep modifySettingsStep(final SettingsStep settingsStep) {
+    @Override @Nullable public final ModuleWizardStep modifySettingsStep(final SettingsStep settingsStep) {
         return getModuleType().modifySettingsStep(settingsStep, this);
     }
 
-    @Override
-    public final ModuleWizardStep modifyProjectTypeStep(final SettingsStep settingsStep) {
+    @Override public final ModuleWizardStep modifyProjectTypeStep(final SettingsStep settingsStep) {
         @Nullable final ModuleWizardStep wizardStep = StdModuleTypes.JAVA.modifyProjectTypeStep(settingsStep, this);
         assert wizardStep != null;
         return wizardStep;
@@ -229,23 +221,19 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     /**
      * Setups the root model.
      *
-     * @param rootModel The root model.
+     * @param rootModel
+     *            The root model.
      * @throws ConfigurationException
      */
-    @Override
-    public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
+    @Override public void setupRootModel(final ModifiableRootModel rootModel) throws ConfigurationException {
 
-        final FileObject location = MetaborgModuleBuilder.
-                this.resourceService.resolve(getContentEntryPath());
+        final FileObject location = MetaborgModuleBuilder.this.resourceService.resolve(getContentEntryPath());
 
-        final ISpoofaxLanguageSpecConfig config = this.configBuilder
-                .reset()
-                .withIdentifier(getLanguageIdentifier())
-                .withName(getName())
-                .build(location);
+        final ISpoofaxLanguageSpecConfig config =
+            this.configBuilder.reset().withIdentifier(getLanguageIdentifier()).withName(getName()).build(location);
 
-        @Nullable final IdeaLanguageSpec languageSpec = this.languageSpecFactory.create(
-                rootModel.getModule(), location, config);
+        @Nullable final IdeaLanguageSpec languageSpec =
+            this.languageSpecFactory.create(rootModel.getModule(), location, config);
 
         assert languageSpec != null;
 
@@ -263,19 +251,18 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
             // Generate the module structure (files and directories).
             MetaborgModuleBuilder.this.projectService.open(languageSpec);
-            WriteCommandAction.runWriteCommandAction(
-                    project, "Create new Spoofax module", null, () -> generateModuleStructure(languageSpec));
+            WriteCommandAction.runWriteCommandAction(project, "Create new Spoofax module", null,
+                () -> generateModuleStructure(languageSpec));
             MetaborgModuleBuilder.this.logger.info("Generated project files.");
         });
 
     }
 
-    private void setContentRoots(final ModifiableRootModel rootModel)
-            throws ConfigurationException {
+    private void setContentRoots(final ModifiableRootModel rootModel) throws ConfigurationException {
         // Set the content roots.
         this.logger.debug("Adding content and source roots.");
         @Nullable final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
-        if (contentEntry != null) {
+        if(contentEntry != null) {
             // TODO: Get this from the paths interface.
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".cache");
@@ -293,19 +280,19 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         final String outputFolder;
         try {
             outputFolder = paths.targetClassesDir().getURL().toString();
-        } catch (final FileSystemException e) {
+        } catch(final FileSystemException e) {
             throw new UnhandledException(e);
         }
 
         final String testOutputFolder;
         try {
             testOutputFolder = paths.targetTestClassesDir().getURL().toString();
-        } catch (final FileSystemException e) {
+        } catch(final FileSystemException e) {
             throw new UnhandledException(e);
         }
 
         final CompilerModuleExtension compilerModuleExtension =
-                rootModel.getModuleExtension(CompilerModuleExtension.class);
+            rootModel.getModuleExtension(CompilerModuleExtension.class);
         compilerModuleExtension.setCompilerOutputPath(outputFolder);
         compilerModuleExtension.setCompilerOutputPathForTests(testOutputFolder);
         compilerModuleExtension.inheritCompilerOutputPath(false);
@@ -315,25 +302,25 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     /**
      * Runs a runnable once the specified project has been initialized.
      *
-     * @param project  The project.
-     * @param runnable The runnable.
+     * @param project
+     *            The project.
+     * @param runnable
+     *            The runnable.
      */
     private static void runWhenInitialized(final Project project, final Runnable runnable) {
-        if (project.isDisposed())
+        if(project.isDisposed())
             // Project is disposed. Nothing to do.
             return;
 
         final Application application = ApplicationManager.getApplication();
-        if (application.isHeadlessEnvironment() || application.isUnitTestMode()) {
+        if(application.isHeadlessEnvironment() || application.isUnitTestMode()) {
             // Runnable cannot be run in background. Just run it.
             runnable.run();
-        } else if (!project.isInitialized()) {
+        } else if(!project.isInitialized()) {
             // Run runnable once project has initialized.
-            StartupManager.getInstance(project).registerPostStartupActivity(DisposeAwareRunnable.create(
-                    runnable,
-                    project
-            ));
-        } else if (DumbService.isDumbAware(runnable)) {
+            StartupManager.getInstance(project)
+                .registerPostStartupActivity(DisposeAwareRunnable.create(runnable, project));
+        } else if(DumbService.isDumbAware(runnable)) {
             // The runnable is dumb aware. Just run it.
             runnable.run();
         } else {
@@ -345,21 +332,21 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     /**
      * {@inheritDoc}
      */
-    @Override
-    public boolean isSuitableSdkType(final SdkTypeId sdkType) {
+    @Override public boolean isSuitableSdkType(final SdkTypeId sdkType) {
         return sdkType instanceof MetaborgSdkType;
     }
 
     /**
      * Sets the SDK.
      *
-     * @param rootModel The root model.
+     * @param rootModel
+     *            The root model.
      */
     private void setSdk(final ModifiableRootModel rootModel) {
 
         // Set the SDK.
         this.logger.debug("Setting SDK.");
-        if (this.myJdk != null) {
+        if(this.myJdk != null) {
             // An SDK was selected in the wizard.
             rootModel.setSdk(this.myJdk);
         } else {
@@ -373,31 +360,26 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     /**
      * Generates the module directory structure and files.
      *
-     * @param languageSpec The language specification.
+     * @param languageSpec
+     *            The language specification.
      */
-    private void generateModuleStructure(
-            final ISpoofaxLanguageSpec languageSpec) {
-
+    private void generateModuleStructure(final ISpoofaxLanguageSpec languageSpec) {
         try {
-            final GeneratorSettings settings = new GeneratorSettings(languageSpec.location(), languageSpec.config());
-//            // TODO: Get from SDK.
-//            generatorSettings.setMetaborgVersion("1.5.0-SNAPSHOT");
-            // FIXME: Factory?
-            final LanguageSpecGenerator newGenerator = new LanguageSpecGenerator(
-                    settings,
-                    new String[]{getExtension()}
-            );
+            final LanguageSpecGeneratorSettingsBuilder settingsBuilder = new LanguageSpecGeneratorSettingsBuilder();
+            // @formatter:off
+            final LanguageSpecGeneratorSettings settings = settingsBuilder
+                .withConfig(languageSpec.config())
+                .withoutExtensions()
+                .build(languageSpec.location(), configBuilder)
+                ;
+            // @formatter:on        
+
+            final LanguageSpecGenerator newGenerator = new LanguageSpecGenerator(settings);
             newGenerator.generateAll();
-            // FIXME: Factory?
-            final ContinuousLanguageSpecGenerator generator = new ContinuousLanguageSpecGenerator(settings);
+            final ContinuousLanguageSpecGenerator generator =
+                new ContinuousLanguageSpecGenerator(settings.generatorSettings);
             generator.generateAll();
-
-//            // TODO: Get the source folders and exclude folders from the generator, and add them to the `contentEntry`.
-//            final VirtualFile f = resourceService.unresolve(project.location().resolveFile("editor/java/"));
-//            contentEntry.addSourceFolder(f, false, "");
-
-
-        } catch (ProjectException | IOException e) {
+        } catch(ProjectException | IOException e) {
             throw LoggerUtils.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);
         }
     }
@@ -407,8 +389,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      *
      * @return The module type.
      */
-    @Override
-    public final ModuleType getModuleType() {
+    @Override public final ModuleType getModuleType() {
         return this.moduleType;
     }
 
@@ -418,8 +399,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      * @return The big icon.
      */
     // TODO: Use project's ILanguage facet defined icon.
-    @Override
-    public final Icon getBigIcon() {
+    @Override public final Icon getBigIcon() {
         return this.iconManager.getDefaultIcon();
     }
 
@@ -429,8 +409,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      * @return The normal icon.
      */
     // TODO: Use project's ILanguage facet defined icon.
-    @Override
-    public final Icon getNodeIcon() {
+    @Override public final Icon getNodeIcon() {
         return this.iconManager.getDefaultIcon();
     }
 
@@ -439,10 +418,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      *
      * @return The module builder's description.
      */
-    @Override
-    public final String getDescription() {
-        return "Creates a new <b>Spoofax Language</b> module, used for developing domain-specific languages " +
-                "using the <b>Spoofax Language Workbench</b>.";
+    @Override public final String getDescription() {
+        return "Creates a new <b>Spoofax Language</b> module, used for developing domain-specific languages "
+            + "using the <b>Spoofax Language Workbench</b>.";
     }
 
     /**
@@ -452,21 +430,19 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      *
      * @return The module builder's presentable name.
      */
-    @Override
-    public final String getPresentableName() {
+    @Override public final String getPresentableName() {
         return "Spoofax Language";
     }
 
     /**
      * Gets the module builder's group name.
      * <p>
-     * I suspect module builders with the same group name are grouped
-     * in the <em>New Project</em> and <em>New Module</em> wizards.
+     * I suspect module builders with the same group name are grouped in the <em>New Project</em> and
+     * <em>New Module</em> wizards.
      *
      * @return The group name.
      */
-    @Override
-    public final String getGroupName() {
+    @Override public final String getGroupName() {
         return "Spoofax";
     }
 
@@ -476,14 +452,12 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      * @return A list of (path, packagePrefix) pairs.
      * @throws ConfigurationException
      */
-    @Override
-    @Nullable
-    public List<Pair<String, String>> getSourcePaths() throws ConfigurationException {
-        if (this.sourcePaths == null) {
+    @Override @Nullable public List<Pair<String, String>> getSourcePaths() throws ConfigurationException {
+        if(this.sourcePaths == null) {
             final List<Pair<String, String>> paths = new ArrayList<>();
             final String path = getContentEntryPath() + File.separator + "editor" + File.separator + "java";
             final boolean foldersCreated = new File(path).mkdirs();
-            if (!foldersCreated) {
+            if(!foldersCreated) {
                 this.logger.error("Failed to create some folders in path: {}", path);
             }
             paths.add(Pair.create(path, ""));
@@ -495,49 +469,48 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     /**
      * Sets the list of source paths.
      *
-     * @param sourcePaths A list of (path, packagePrefix) pairs.
+     * @param sourcePaths
+     *            A list of (path, packagePrefix) pairs.
      */
-    @Override
-    public void setSourcePaths(@Nullable final List<Pair<String, String>> sourcePaths) {
+    @Override public void setSourcePaths(@Nullable final List<Pair<String, String>> sourcePaths) {
         this.sourcePaths = sourcePaths != null ? new ArrayList<>(sourcePaths) : null;
     }
 
     /**
      * Adds a source path.
      *
-     * @param sourcePathInfo A (path, packagePrefix) pair.
+     * @param sourcePathInfo
+     *            A (path, packagePrefix) pair.
      */
-    @Override
-    public void addSourcePath(final Pair<String, String> sourcePathInfo) {
-        if (this.sourcePaths == null) {
+    @Override public void addSourcePath(final Pair<String, String> sourcePathInfo) {
+        if(this.sourcePaths == null) {
             this.sourcePaths = new ArrayList<>();
         }
         this.sourcePaths.add(sourcePathInfo);
     }
 
-    @Nullable
-    protected ContentEntry doAddContentEntryAndSourceRoots(final ModifiableRootModel rootModel) throws
-            ConfigurationException {
+    @Nullable protected ContentEntry doAddContentEntryAndSourceRoots(final ModifiableRootModel rootModel)
+        throws ConfigurationException {
         // Add the content entry path as a content root.
         @Nullable final ContentEntry contentEntry = doAddContentEntry(rootModel);
-        if (contentEntry == null)
+        if(contentEntry == null)
             return null;
 
         @Nullable final List<Pair<String, String>> sourcePaths = getSourcePaths();
 
-        if (sourcePaths == null)
+        if(sourcePaths == null)
             return null;
 
-        for (final Pair<String, String> sourcePath : sourcePaths) {
+        for(final Pair<String, String> sourcePath : sourcePaths) {
             final String first = sourcePath.first;
             try {
                 VfsUtil.createDirectories(first);
-            } catch (final IOException e) {
+            } catch(final IOException e) {
                 throw new UnhandledException(e);
             }
-            @Nullable final VirtualFile sourceRoot = LocalFileSystem.getInstance()
-                    .refreshAndFindFileByPath(FileUtil.toSystemIndependentName(first));
-            if (sourceRoot != null) {
+            @Nullable final VirtualFile sourceRoot =
+                LocalFileSystem.getInstance().refreshAndFindFileByPath(FileUtil.toSystemIndependentName(first));
+            if(sourceRoot != null) {
                 contentEntry.addSourceFolder(sourceRoot, false, sourcePath.second);
             }
         }
@@ -545,12 +518,10 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         return contentEntry;
     }
 
-    @Nullable
-    @Override
-    public List<Module> commit(@NotNull final Project project,
-                               final ModifiableModuleModel model,
-                               final ModulesProvider modulesProvider) {
-        final LanguageLevelProjectExtension extension = LanguageLevelProjectExtension.getInstance(ProjectManager.getInstance().getDefaultProject());
+    @Nullable @Override public List<Module> commit(@NotNull final Project project, final ModifiableModuleModel model,
+        final ModulesProvider modulesProvider) {
+        final LanguageLevelProjectExtension extension =
+            LanguageLevelProjectExtension.getInstance(ProjectManager.getInstance().getDefaultProject());
         @Nullable final Boolean aDefault = extension.getDefault();
         final LanguageLevelProjectExtension instance = LanguageLevelProjectExtension.getInstance(project);
         if(aDefault != null && !aDefault) {
