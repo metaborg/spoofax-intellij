@@ -37,7 +37,7 @@ import org.metaborg.intellij.idea.sdks.MetaborgSdkType;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
-import org.metaborg.spoofax.meta.core.build.CommonPaths;
+import org.metaborg.spoofax.meta.core.build.LangSpecCommonPaths;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
 import org.metaborg.spoofax.meta.core.generator.language.ContinuousLanguageSpecGenerator;
@@ -238,7 +238,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         assert languageSpec != null;
 
         setContentRoots(rootModel);
-        setCompilerOutputPath(rootModel, new CommonPaths(languageSpec.location()));
+        setCompilerOutputPath(rootModel, new LangSpecCommonPaths(languageSpec.location()));
         setSdk(rootModel);
 
         // Set the module.
@@ -273,7 +273,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         this.logger.info("Added content and source roots.");
     }
 
-    private void setCompilerOutputPath(final ModifiableRootModel rootModel, final CommonPaths paths) {
+    private void setCompilerOutputPath(final ModifiableRootModel rootModel, final LangSpecCommonPaths paths) {
         // Set the compiler output path.
         this.logger.debug("Setting compiler output path.");
 
