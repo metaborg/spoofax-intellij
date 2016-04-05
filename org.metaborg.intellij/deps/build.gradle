@@ -16,7 +16,7 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 group 'org.metaborg'
-version '2.0.0-SNAPSHOT'
+version '2.0.0-beta1'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -66,15 +66,15 @@ task artifacts {
 
 dependencies {
     // Main dependencies
-    compile('org.metaborg:org.metaborg.core:2.0.0-SNAPSHOT') {
+    compile('org.metaborg:org.metaborg.core:2.0.0-beta1') {
         exclude group: 'org.slf4j'
         exclude group: 'com.google.guava'
     }
-    compile('org.metaborg:org.metaborg.spoofax.core:2.0.0-SNAPSHOT') {
+    compile('org.metaborg:org.metaborg.spoofax.core:2.0.0-beta1') {
         exclude group: 'org.slf4j'
         exclude group: 'com.google.guava'
     }
-    compile('org.metaborg:org.metaborg.spoofax.meta.core:2.0.0-SNAPSHOT') {
+    compile('org.metaborg:org.metaborg.spoofax.meta.core:2.0.0-beta1') {
         exclude group: 'org.slf4j'
         exclude group: 'com.google.guava'
     }

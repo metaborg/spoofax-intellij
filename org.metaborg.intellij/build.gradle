@@ -91,24 +91,24 @@ processResources.dependsOn copyJpsLibraries
 processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
 dependencies {
-	compile 'org.metaborg:org.metaborg.intellij.deps:2.0.0-SNAPSHOT'
+	compile 'org.metaborg:org.metaborg.intellij.deps:2.0.0-beta1'
     compile 'org.slf4j:slf4j-api:1.7.10'
     provided 'com.google.guava:guava:17.0'
     
     jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
 
-    language 'org.metaborg:org.metaborg.meta.lang.esv:2.0.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.nabl:2.0.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.template:2.0.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.ts:2.0.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.stratego:2.0.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.analysis:2.0.0-SNAPSHOT@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.esv:2.0.0-beta1@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.nabl:2.0.0-beta1@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-beta1@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.template:2.0.0-beta1@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.ts:2.0.0-beta1@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.stratego:2.0.0-beta1@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.analysis:2.0.0-beta1@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-beta1@spoofax-language'
 
     testCompile 'junit:junit:4.12'
 
-    testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT@spoofax-language'
+    testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-beta1@spoofax-language'
 }
 
 sourceSets.main.compileClasspath += configurations.provided
