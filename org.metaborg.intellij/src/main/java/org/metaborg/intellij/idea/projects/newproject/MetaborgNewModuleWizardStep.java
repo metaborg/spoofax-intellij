@@ -31,6 +31,8 @@ import org.metaborg.intellij.idea.graphics.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.meta.core.wizard.*;
+import org.metaborg.spoofax.meta.core.wizard.*;
 import org.metaborg.util.log.*;
 
 import javax.swing.*;
@@ -225,7 +227,6 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
      */
     @Override
     public void updateDataModel() {
-
         this.builder.setName(this.txtName.getText());
         this.builder.setLanguageIdentifier(new LanguageIdentifier(
                 this.txtGroupId.getText(),
@@ -298,31 +299,13 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
     }
 
     /**
-     * Turns any string into a valid identifier.
-     *
-     * @param input The input string.
-     * @return The identifier.
-     */
-    private static String toIdentifier(final String input) {
-        String id = input
-                .trim()
-                .replaceAll("[^A-Za-z0-9]", "-")
-                .replaceAll("-+", "-");
-        if (id.startsWith("-"))
-            id = id.substring(1, id.length() - 1);
-        if (id.endsWith("-"))
-            id = id.substring(0, id.length() - 1);
-        return id;
-    }
-
-    /**
      * Turns any string into a valid artifact ID.
      *
      * @param input The input string.
      * @return The artifact ID.
      */
     private static String toArtifactId(final String input) {
-        return toIdentifier(input).toLowerCase();
+        return CreateLanguageSpecWizard.toId(input);
     }
 
     /**
@@ -332,18 +315,7 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
      * @return The extension, max 8 characters.
      */
     private static String toExtension(@Nullable String input) {
-        if (input == null)
-            return "";
-        input = input.trim();
-        input = input.replaceAll("[^A-Za-z0-9]", "");
-        if (input.isEmpty())
-            return "";
-        // NOTE: We keep the first alphanumeric character, even if it's lowercase.
-        String ext = input.substring(0, 1) + input.substring(1).replaceAll("[^A-Z]", "");
-        ext = ext.toLowerCase();
-        if (ext.length() > 8)
-            ext = ext.substring(0, 8);
-        return ext;
+        return CreateLanguageSpecWizard.toExtension(input);
     }
 
     /**
