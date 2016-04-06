@@ -27,6 +27,7 @@ import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.build.*;
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.language.LanguageVersion;
 import org.metaborg.core.project.ProjectException;
@@ -261,14 +262,20 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private void setContentRoots(final ModifiableRootModel rootModel) throws ConfigurationException {
         // Set the content roots.
         this.logger.debug("Adding content and source roots.");
-        @Nullable final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
+
+        // Add the content entry path as a content root.
+        @Nullable final ContentEntry contentEntry = doAddContentEntry(rootModel);
         if(contentEntry != null) {
-            // TODO: Get this from the paths interface.
+            doAddSourceRoots(contentEntry);
+            final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
+            // TODO: Remove unnecessary folders:
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
+            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".mvn");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".cache");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "lib");
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "src-gen");
             contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
+            contentEntry.addExcludeFolder(paths.strCacheDir().toString());
+            contentEntry.addExcludeFolder(paths.srcGenDir().toString());
         }
         this.logger.info("Added content and source roots.");
     }
@@ -453,17 +460,15 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      * @throws ConfigurationException
      */
     @Override @Nullable public List<Pair<String, String>> getSourcePaths() throws ConfigurationException {
-        if(this.sourcePaths == null) {
-            final List<Pair<String, String>> paths = new ArrayList<>();
-            final String path = getContentEntryPath() + File.separator + "editor" + File.separator + "java";
-            final boolean foldersCreated = new File(path).mkdirs();
-            if(!foldersCreated) {
-                this.logger.error("Failed to create some folders in path: {}", path);
-            }
-            paths.add(Pair.create(path, ""));
-            return paths;
+        if(this.sourcePaths != null)
+            return this.sourcePaths;
+
+        final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
+        final List<Pair<String, String>> sourcePaths = new ArrayList<>();
+        for (final FileObject javaSrcDir : paths.javaSrcDirs()) {
+            sourcePaths.add(Pair.create(javaSrcDir.toString(), ""));
         }
-        return this.sourcePaths;
+        return sourcePaths;
     }
 
     /**
@@ -489,12 +494,8 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         this.sourcePaths.add(sourcePathInfo);
     }
 
-    @Nullable protected ContentEntry doAddContentEntryAndSourceRoots(final ModifiableRootModel rootModel)
-        throws ConfigurationException {
-        // Add the content entry path as a content root.
-        @Nullable final ContentEntry contentEntry = doAddContentEntry(rootModel);
-        if(contentEntry == null)
-            return null;
+    @Nullable protected ContentEntry doAddSourceRoots(final ContentEntry contentEntry)
+            throws ConfigurationException {
 
         @Nullable final List<Pair<String, String>> sourcePaths = getSourcePaths();
 
@@ -503,16 +504,8 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
         for(final Pair<String, String> sourcePath : sourcePaths) {
             final String first = sourcePath.first;
-            try {
-                VfsUtil.createDirectories(first);
-            } catch(final IOException e) {
-                throw new UnhandledException(e);
-            }
-            @Nullable final VirtualFile sourceRoot =
-                LocalFileSystem.getInstance().refreshAndFindFileByPath(FileUtil.toSystemIndependentName(first));
-            if(sourceRoot != null) {
-                contentEntry.addSourceFolder(sourceRoot, false, sourcePath.second);
-            }
+            assert sourcePath.second.equals("") : "Package prefixes are not supported here.";
+            contentEntry.addSourceFolder(first, false);
         }
 
         return contentEntry;
