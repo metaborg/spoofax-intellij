@@ -22,6 +22,10 @@ import com.google.inject.*;
 import com.intellij.ide.util.importProject.*;
 import com.intellij.ide.util.projectWizard.*;
 import com.intellij.ide.util.projectWizard.importSources.*;
+import org.apache.commons.vfs2.*;
+import org.metaborg.core.build.*;
+import org.metaborg.core.resource.*;
+import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
@@ -38,6 +42,7 @@ import java.util.*;
 @Singleton
 public final class MetaborgProjectDetector extends ProjectStructureDetector {
 
+    private IResourceService resourceService;
     @InjectLogger
     private ILogger logger;
     private MetaborgModuleType moduleType;
@@ -52,8 +57,9 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final MetaborgModuleType moduleType) {
+    private void inject(final MetaborgModuleType moduleType, final IResourceService resourceService) {
         this.moduleType = moduleType;
+        this.resourceService = resourceService;
     }
 
     /**
@@ -69,18 +75,21 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
             final File base,
             final List<DetectedProjectRoot> result) {
 
-        this.logger.info("Detecting Spoofax project in {}", dir);
+        this.logger.info("Detecting Spoofax project in subdirectory {} of base {}", dir, base);
 
-        // FIXME: Alternatively, detect a Spoofax project if it has a metaborg.yaml root config file.
-
-        if (dir.getName().equals("editor")) {
-            for (final File child : children) {
-                if (child.getName().endsWith(".main.esv") && child.isFile()) {
-                    this.logger.info("Detected Spoofax project in {}", dir);
-                    result.add(new MetaborgProjectRoot(dir.getParentFile()));
-                    return DirectoryProcessingResult.SKIP_CHILDREN;
+        final CommonPaths paths = new CommonPaths(this.resourceService.resolve(base));
+        try {
+            if (this.resourceService.resolve(dir).equals(paths.esvMainFile().getParent())) {
+                for (final File child : children) {
+                    if (child.isFile() && this.resourceService.resolve(child).equals(paths.esvMainFile())) {
+                        this.logger.info("Detected Spoofax project in {}", base);
+                        result.add(new MetaborgProjectRoot(base));
+                        return DirectoryProcessingResult.SKIP_CHILDREN;
+                    }
                 }
             }
+        } catch (final FileSystemException e) {
+            throw new UnhandledException(e);
         }
 
         return DirectoryProcessingResult.PROCESS_CHILDREN;
