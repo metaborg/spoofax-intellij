@@ -18,12 +18,16 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
+import com.google.common.collect.*;
 import com.google.inject.*;
+import com.google.inject.ConfigurationException;
 import com.google.inject.assistedinject.*;
 import com.intellij.ide.util.projectWizard.*;
-import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.options.*;
 import com.intellij.openapi.util.text.*;
 import com.intellij.ui.*;
+import com.intellij.ui.border.*;
+import com.intellij.uiDesigner.core.*;
 import org.jetbrains.annotations.*;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.*;
@@ -32,25 +36,30 @@ import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.meta.core.wizard.*;
-import org.metaborg.spoofax.meta.core.wizard.*;
+import org.metaborg.spoofax.meta.core.generator.language.*;
 import org.metaborg.util.log.*;
 
+import javax.annotation.*;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
+import java.awt.*;
 import java.util.regex.*;
 
-/**
- * Wizard step for creating a Metaborg language project.
- */
-public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
-
+public class NewModuleWizardStep extends ModuleWizardStep {
     private JPanel mainPanel;
     private JTextField txtName;
-    private JTextField txtGroupId;
-    private JTextField txtArtifactId;
+    private JTextField txtExtensions;
+    private JTextField txtGroupID;
+    private JTextField txtID;
     private JTextField txtVersion;
-    private JTextField txtExtension;
+    private JPanel pnlLanguageOptions;
+    private JPanel pnlLanguageIdentification;
+
+    private JComboBox cmbSyntaxType;
+    private JComboBox cmbAnalysisType;
+
 
     private final IIconManager iconManager;
     private final MetaborgModuleBuilder builder;
@@ -86,14 +95,14 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
     }
 
     /**
-     * Initializes a new instance of the {@link MetaborgNewModuleWizardStep} class.
+     * Initializes a new instance of the {@link NewModuleWizardStep} class.
      *
      * @param builder The {@link ModuleBuilder}.
      * @param context The {@link WizardContext}.
      * @param iconManager The icon manager.
      */
     @Inject
-    public MetaborgNewModuleWizardStep(
+    public NewModuleWizardStep(
             @Assisted final MetaborgModuleBuilder builder,
             @Assisted final WizardContext context,
             final IIconManager iconManager) {
@@ -109,12 +118,12 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
      * {@inheritDoc}
      */
     @Override
-    public boolean validate() throws ConfigurationException {
-        validateLanguageIdentifier("Name", this.txtName.getText());
-        validateExtension("File Extension", this.txtExtension.getText());
-        validateLanguageIdentifier("Group ID", this.txtGroupId.getText());
-        validateLanguageIdentifier("Artifact ID", this.txtArtifactId.getText());
-        validateLanguageVersion("Version", this.txtVersion.getText());
+    public boolean validate() throws com.intellij.openapi.options.ConfigurationException {
+        validateLanguageIdentifier("name", this.txtName.getText());
+        validateExtension("file extension", this.txtExtensions.getText());
+        validateLanguageIdentifier("group identifier", this.txtGroupID.getText());
+        validateLanguageIdentifier("artifact identifier", this.txtID.getText());
+        validateLanguageVersion("version", this.txtVersion.getText());
 
         return super.validate();
     }
@@ -125,15 +134,15 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
      * @param fieldName The human-readable name of the field. Usually the label.
      * @param text      The text to validate.
      * @return Always <code>true</code>.
-     * @throws ConfigurationException Validation failed.
+     * @throws com.intellij.openapi.options.ConfigurationException Validation failed.
      */
     private boolean validateLanguageIdentifier(final String fieldName, final String text) throws
-            ConfigurationException {
+            com.intellij.openapi.options.ConfigurationException {
         if (StringUtil.isEmptyOrSpaces(text))
-            throw new ConfigurationException("Please specify a " + fieldName + ".");
+            throw new com.intellij.openapi.options.ConfigurationException("Please specify a " + fieldName + ".");
         if (!LanguageIdentifier.validId(text))
-            throw new ConfigurationException("Please specify a valid " + fieldName + "; " +
-                                                     LanguageIdentifier.errorDescription);
+            throw new com.intellij.openapi.options.ConfigurationException("Please specify a valid " + fieldName + "; " +
+                    LanguageIdentifier.errorDescription);
         return true;
     }
 
@@ -143,14 +152,14 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
      * @param fieldName The human-readable name of the field. Usually the label.
      * @param text      The text to validate.
      * @return Always <code>true</code>.
-     * @throws ConfigurationException Validation failed.
+     * @throws com.intellij.openapi.options.ConfigurationException Validation failed.
      */
-    private boolean validateLanguageVersion(final String fieldName, final String text) throws ConfigurationException {
+    private boolean validateLanguageVersion(final String fieldName, final String text) throws com.intellij.openapi.options.ConfigurationException {
         if (StringUtil.isEmptyOrSpaces(text))
-            throw new ConfigurationException("Please specify a " + fieldName + ".");
+            throw new com.intellij.openapi.options.ConfigurationException("Please specify a " + fieldName + ".");
         if (!LanguageVersion.valid(text))
-            throw new ConfigurationException("Please specify a valid " + fieldName + "; " +
-                                                     LanguageVersion.errorDescription);
+            throw new com.intellij.openapi.options.ConfigurationException("Please specify a valid " + fieldName + "; " +
+                    LanguageVersion.errorDescription);
         return true;
     }
 
@@ -160,14 +169,14 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
      * @param fieldName The human-readable name of the field. Usually the label.
      * @param text      The text to validate.
      * @return Always <code>true</code>.
-     * @throws ConfigurationException Validation failed.
+     * @throws com.intellij.openapi.options.ConfigurationException Validation failed.
      */
-    private boolean validateExtension(final String fieldName, final String text) throws ConfigurationException {
+    private boolean validateExtension(final String fieldName, final String text) throws com.intellij.openapi.options.ConfigurationException {
         if (StringUtil.isEmptyOrSpaces(text))
-            throw new ConfigurationException("Please specify a " + fieldName + ".");
+            throw new com.intellij.openapi.options.ConfigurationException("Please specify a " + fieldName + ".");
         if (!isValidExtension(text))
-            throw new ConfigurationException("Please specify a valid " + fieldName +
-                                                     "; only alphanumeric characters and dot.");
+            throw new com.intellij.openapi.options.ConfigurationException("Please specify a valid " + fieldName +
+                    "; only alphanumeric characters and dot.");
         return true;
     }
 
@@ -229,11 +238,13 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
     public void updateDataModel() {
         this.builder.setName(this.txtName.getText());
         this.builder.setLanguageIdentifier(new LanguageIdentifier(
-                this.txtGroupId.getText(),
-                this.txtArtifactId.getText(),
+                this.txtGroupID.getText(),
+                this.txtID.getText(),
                 LanguageVersion.parse(this.txtVersion.getText())
         ));
-        this.builder.setExtension(cleanupExtension(this.txtExtension.getText()));
+        this.builder.setExtensions(CreateLanguageSpecWizard.splitExtensions(cleanupExtension(this.txtExtensions.getText())));
+        this.builder.setSyntaxType(SyntaxType.mapping().get((String)this.cmbSyntaxType.getSelectedItem()));
+        this.builder.setAnalysisType(AnalysisType.mapping().get((String)this.cmbAnalysisType.getSelectedItem()));
         this.context.setProjectName(this.builder.getName());
     }
 
@@ -245,42 +256,57 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
 
     }
 
-    /**
-     * Initializes the components.
-     */
-    private void initComponents() {
+    public void initComponents() {
         this.txtName.getDocument().addDocumentListener(new DocumentAdapter() {
             @Override
             protected void textChanged(final DocumentEvent e) {
-                if (!MetaborgNewModuleWizardStep.this.isArtifactIdChangedByUser) {
-                    MetaborgNewModuleWizardStep.this.txtArtifactId
+                if (!NewModuleWizardStep.this.isArtifactIdChangedByUser) {
+                    NewModuleWizardStep.this.txtID
                             .setText(toArtifactId(getDocumentText(e.getDocument())));
                 }
-                if (!MetaborgNewModuleWizardStep.this.isExtensionChangedByUser) {
-                    MetaborgNewModuleWizardStep.this.txtExtension
+                if (!NewModuleWizardStep.this.isExtensionChangedByUser) {
+                    NewModuleWizardStep.this.txtExtensions
                             .setText(toExtension(getDocumentText(e.getDocument())));
                 }
             }
         });
 
-        this.txtArtifactId.getDocument().addDocumentListener(new DocumentAdapter() {
+        this.txtID.getDocument().addDocumentListener(new DocumentAdapter() {
             @Override
             protected void textChanged(final DocumentEvent e) {
-                MetaborgNewModuleWizardStep.this.isArtifactIdChangedByUser =
+                NewModuleWizardStep.this.isArtifactIdChangedByUser =
                         !getDocumentText(e.getDocument()).equals(
-                                toArtifactId(MetaborgNewModuleWizardStep.this.txtName.getText()));
+                                toArtifactId(NewModuleWizardStep.this.txtName.getText()));
             }
         });
 
-        this.txtExtension.getDocument().addDocumentListener(new DocumentAdapter() {
+        this.txtExtensions.getDocument().addDocumentListener(new DocumentAdapter() {
             @Override
             protected void textChanged(final DocumentEvent e) {
-                MetaborgNewModuleWizardStep.this.isExtensionChangedByUser =
+                NewModuleWizardStep.this.isExtensionChangedByUser =
                         !getDocumentText(e.getDocument()).equals(
-                                toExtension(MetaborgNewModuleWizardStep.this.txtName.getText()));
+                                toExtension(NewModuleWizardStep.this.txtName.getText()));
             }
         });
 
+        addLanguageOptions();
+    }
+
+    public void addLanguageOptions() {
+        final int rows = 2;
+        this.pnlLanguageOptions.setLayout(new GridLayoutManager(rows, 2));
+
+        this.cmbSyntaxType = new JComboBox(Lists.newArrayList(SyntaxType.mapping().keySet()).toArray());
+        this.cmbAnalysisType = new JComboBox(Lists.newArrayList(AnalysisType.mapping().keySet()).toArray());
+
+        addLanguageOption(0, "Syntax type:", this.cmbSyntaxType);
+        addLanguageOption(1, "Analysis type:", this.cmbAnalysisType);
+    }
+
+    private void addLanguageOption(final int row, final String label, @Nullable final Component component) {
+        this.pnlLanguageOptions.add(new JLabel(label), new GridConstraints(row, 0, 1, 1, 8, 0, 0, 0, null, null, null, 0, false));
+        if (component != null)
+            this.pnlLanguageOptions.add(component, new GridConstraints(row, 1, 1, 1, 8, 1, 2, 0, null, null, null, 0, false));
     }
 
     /**
@@ -314,7 +340,7 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
      * @param input The input string.
      * @return The extension, max 8 characters.
      */
-    private static String toExtension(@Nullable String input) {
+    private static String toExtension(@Nullable final String input) {
         return CreateLanguageSpecWizard.toExtension(input);
     }
 
@@ -326,10 +352,11 @@ public final class MetaborgNewModuleWizardStep extends ModuleWizardStep {
         final String name = this.context.getProjectName() != null ?
                 this.context.getProjectName() : this.builder.getName();
         this.txtName.setText(name);
-        this.txtExtension.setText(toExtension(name));
-        this.txtGroupId.setText(this.builder.getLanguageIdentifier().groupId);
-        this.txtArtifactId.setText(toArtifactId(name));
+        this.txtExtensions.setText(toExtension(name));
+        this.txtGroupID.setText(this.builder.getLanguageIdentifier().groupId);
+        this.txtID.setText(toArtifactId(name));
         this.txtVersion.setText(this.builder.getLanguageIdentifier().version.toString());
+        this.cmbSyntaxType.setSelectedItem(this.builder.getSyntaxType().name);
+        this.cmbAnalysisType.setSelectedItem(this.builder.getAnalysisType().name);
     }
-
 }

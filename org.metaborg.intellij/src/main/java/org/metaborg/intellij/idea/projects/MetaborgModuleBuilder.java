@@ -17,12 +17,11 @@ package org.metaborg.intellij.idea.projects;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import javax.swing.Icon;
 
+import com.google.common.collect.*;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +32,7 @@ import org.metaborg.core.language.LanguageVersion;
 import org.metaborg.core.project.ProjectException;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.graphics.IIconManager;
-import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
+import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.idea.sdks.MetaborgSdkType;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils;
@@ -41,10 +40,7 @@ import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.meta.core.build.LangSpecCommonPaths;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
-import org.metaborg.spoofax.meta.core.generator.language.ContinuousLanguageSpecGenerator;
-import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGenerator;
-import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGeneratorSettings;
-import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGeneratorSettingsBuilder;
+import org.metaborg.spoofax.meta.core.generator.language.*;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 import org.metaborg.util.log.ILogger;
 
@@ -99,8 +95,10 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     @Nullable private List<Pair<String, String>> sourcePaths;
 
     private String name;
-    private String extension;
+    private Collection<String> extensions;
     private LanguageIdentifier languageId;
+    private SyntaxType syntaxType;
+    private AnalysisType analysisType;
 
 
     /**
@@ -123,22 +121,22 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     }
 
     /**
-     * Gets the extension of the language.
+     * Gets the extensions of the language.
      *
-     * @return The language file extension.
+     * @return The language file extensions.
      */
-    public String getExtension() {
-        return this.extension;
+    public Collection<String> getExtensions() {
+        return this.extensions;
     }
 
     /**
      * Sets the extension of the language.
      *
-     * @param extension
-     *            The language file extension.
+     * @param extensions
+     *            The language file extensions, separated by commas.
      */
-    public void setExtension(final String extension) {
-        this.extension = extension;
+    public void setExtensions(final Collection<String> extensions) {
+        this.extensions = extensions;
     }
 
     /**
@@ -158,6 +156,38 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      */
     public void setLanguageIdentifier(final LanguageIdentifier languageId) {
         this.languageId = languageId;
+    }
+
+    /**
+     * Gets the syntax type.
+     *
+     * @return The syntax type.
+     */
+    public SyntaxType getSyntaxType() { return this.syntaxType;}
+
+    /**
+     * Sets the syntax type.
+     *
+     * @param syntaxType The syntax type.
+     */
+    public void setSyntaxType(final SyntaxType syntaxType) {
+        this.syntaxType = syntaxType;
+    }
+
+    /**
+     * Gets the analysis type.
+     *
+     * @return The analysis type.
+     */
+    public AnalysisType getAnalysisType() { return this.analysisType;}
+
+    /**
+     * Sets the analysis type.
+     *
+     * @param analysisType The analysis type.
+     */
+    public void setAnalysisType(final AnalysisType analysisType) {
+        this.analysisType = analysisType;
     }
 
 
@@ -183,10 +213,13 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private void setDefaultValues() {
         final String uuid = UUID.randomUUID().toString().substring(0, 8).toLowerCase();
 
+        // Pick sensible defaults here.
         this.name = "Untitled-" + uuid;
-        this.extension = "u";
+        this.extensions = Lists.newArrayList("u");
         this.languageId =
             new LanguageIdentifier("org.example", "untitled-" + uuid, LanguageVersion.parse("1.0.0-SNAPSHOT"));
+        this.syntaxType = SyntaxType.SDF3;
+        this.analysisType = AnalysisType.NaBL_TS;
     }
 
     /**
@@ -231,7 +264,10 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         final FileObject location = MetaborgModuleBuilder.this.resourceService.resolve(getContentEntryPath());
 
         final ISpoofaxLanguageSpecConfig config =
-            this.configBuilder.reset().withIdentifier(getLanguageIdentifier()).withName(getName()).build(location);
+            this.configBuilder.reset()
+                    .withIdentifier(getLanguageIdentifier())
+                    .withName(getName())
+                    .build(location);
 
         @Nullable final IdeaLanguageSpec languageSpec =
             this.languageSpecFactory.create(rootModel.getModule(), location, config);
@@ -376,7 +412,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             // @formatter:off
             final LanguageSpecGeneratorSettings settings = settingsBuilder
                 .withConfig(languageSpec.config())
-                .withoutExtensions()
+                .withExtensions(this.extensions)
+                .withSyntaxType(this.syntaxType)
+                .withAnalysisType(this.analysisType)
                 .build(languageSpec.location(), configBuilder)
                 ;
             // @formatter:on        
