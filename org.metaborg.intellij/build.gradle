@@ -50,7 +50,7 @@ configurations {
 }
 
 intellij {
-    version 'IC-15.0.3'
+    //version 'IC-15.0.3'
 }
 
 // Task to allow a debugger to be attached to port 5005 for debugging the JPS plugin.
