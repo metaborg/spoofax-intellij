@@ -59,6 +59,11 @@ public final class ReloadLanguageCompileTask implements IAfterCompileTask {
      */
     @Override
     public boolean execute(final CompileContext context) {
+        if (context.getMessageCount(CompilerMessageCategory.ERROR) > 0) {
+            this.logger.info("Skipped reloading language specification languages, compilation contained errors.");
+            return true;
+        }
+
         final Module[] affectedModules = context.getCompileScope().getAffectedModules();
 
         ApplicationManager.getApplication().invokeLater(() -> ApplicationManager.getApplication().runWriteAction(() -> {
