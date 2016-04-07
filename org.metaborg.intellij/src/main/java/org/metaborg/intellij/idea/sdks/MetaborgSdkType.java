@@ -123,7 +123,9 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     @Nullable
     @Override
     public String suggestHomePath() {
-        return this.libraryService.getPluginLibPath();
+        final String path = this.libraryService.getPluginLibPath();
+        this.logger.debug("Suggested Metaborg SDK home path: {}", path);
+        return path;
     }
 
     /**
