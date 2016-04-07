@@ -50,16 +50,14 @@ public final class MetaborgApplicationConfigState {
     public MetaborgApplicationConfigState() {
         // Default configuration:
         this.loadedLanguages = Sets.newHashSet(
-//                "org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT",
-//                "org.metaborg:org.metaborg.meta.lang.esv:1.5.0-baseline-20150917-172646",
-//                "org.metaborg:org.metaborg.meta.lang.esv:2.0.0-SNAPSHOT",
-//                "org.metaborg:org.metaborg.meta.lang.nabl:2.0.0-SNAPSHOT",
-//                "org.metaborg:org.metaborg.meta.lang.sdf:1.5.0-baseline-20150917-172646",
-//                "org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT",
-//                "org.metaborg:org.metaborg.meta.lang.stratego:1.5.0-baseline-20150917-172646",
-//                "org.metaborg:org.metaborg.meta.lang.template:2.0.0-SNAPSHOT",
-//                "org.metaborg:org.metaborg.meta.lang.ts:2.0.0-SNAPSHOT",
-//                "org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-SNAPSHOT"
+                "org.metaborg:org.metaborg.meta.lang.analysis:2.0.0-SNAPSHOT",
+                "org.metaborg:org.metaborg.meta.lang.esv:2.0.0-SNAPSHOT",
+                "org.metaborg:org.metaborg.meta.lang.nabl:2.0.0-SNAPSHOT",
+                "org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT",
+                "org.metaborg:org.metaborg.meta.lang.stratego:2.0.0-SNAPSHOT",
+                "org.metaborg:org.metaborg.meta.lang.template:2.0.0-SNAPSHOT",
+                "org.metaborg:org.metaborg.meta.lang.ts:2.0.0-SNAPSHOT",
+                "org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-SNAPSHOT"
         );
     }
 
