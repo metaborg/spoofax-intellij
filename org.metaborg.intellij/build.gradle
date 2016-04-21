@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.0.39"
+    id "org.jetbrains.intellij" version "0.0.43"
 }
 
 apply plugin: 'java'
@@ -15,7 +15,7 @@ apply plugin: 'maven'
 apply plugin: 'org.jetbrains.intellij'
 
 group 'org.metaborg'
-version '0.1.0-SNAPSHOT'
+version '2.0.0-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -51,6 +51,10 @@ configurations {
 
 intellij {
     //version 'IC-15.0.3'
+
+    // FIXME: hack to support both IDEA 15 and IDEA 16.
+    // See https://github.com/intellij-rust/intellij-rust/issues/243
+    updateSinceUntilBuild = false
 }
 
 // Task to allow a debugger to be attached to port 5005 for debugging the JPS plugin.
