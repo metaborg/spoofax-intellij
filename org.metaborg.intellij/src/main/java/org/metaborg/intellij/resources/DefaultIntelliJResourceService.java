@@ -21,6 +21,8 @@ package org.metaborg.intellij.resources;
 import com.google.inject.*;
 import com.google.inject.name.*;
 import com.intellij.openapi.vfs.*;
+import com.intellij.psi.*;
+import com.intellij.testFramework.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.resource.*;
 import org.metaborg.intellij.*;
@@ -56,9 +58,31 @@ public final class DefaultIntelliJResourceService extends ResourceService implem
      * {@inheritDoc}
      */
     @Override
+    @Nullable
     public final FileObject resolve(final VirtualFile resource) {
+        @Nullable VirtualFile file = resource;
+        if (file instanceof LightVirtualFile) {
+            file = ((LightVirtualFile)resource).getOriginalFile();
+            if (file == null) {
+                // Only in-memory (non-physical) files have no associated virtual file.
+                return null;
+            }
+        }
         return resolve(IntelliJFileSystemManagerProvider.IntelliJScheme + "://" + resource.getPath());
-//        return resolve("file://" + resource.getPath());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Nullable
+    public final FileObject resolve(final PsiFile file) {
+        @Nullable final VirtualFile virtualFile = file.getOriginalFile().getVirtualFile();
+        if(virtualFile == null) {
+            // Only in-memory (non-physical) files have no associated virtual file.
+            return null;
+        }
+        return resolve(virtualFile);
     }
 
     /**

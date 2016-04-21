@@ -19,10 +19,12 @@
 package org.metaborg.intellij.idea.parsing;
 
 import com.google.inject.*;
+import com.intellij.lang.*;
 import com.intellij.lexer.*;
 import com.intellij.openapi.fileTypes.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.*;
+import com.intellij.testFramework.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
@@ -41,7 +43,7 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
     private final IIntelliJResourceService resourceService;
     private final ILanguageIdentifierService identifierService;
     private final IHighlightingLexerFactory highlightingLexerFactory;
-    private final ILanguageManager languageManager;
+    private final IIdeaLanguageManager languageManager;
     private final ILanguageBindingManager bindingManager;
 
     /**
@@ -52,7 +54,7 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
             final IIntelliJResourceService resourceService,
             final ILanguageIdentifierService identifierService,
             final IHighlightingLexerFactory highlightingLexerFactory,
-            final ILanguageManager languageManager,
+            final IIdeaLanguageManager languageManager,
             final ILanguageBindingManager bindingManager) {
         super();
         this.resourceService = resourceService;
@@ -73,15 +75,27 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
     public SyntaxHighlighter getSyntaxHighlighter(
             final Project project,
             final VirtualFile virtualFile) {
-        final FileObject file = this.resourceService.resolve(virtualFile);
-        @Nullable final ILanguageImpl implementation = this.identifierService.identify(file);
 
-        if (implementation == null) {
+        @Nullable ILanguageImpl implementation = null;
+        @Nullable final FileObject file = this.resourceService.resolve(virtualFile);
+
+        if (file != null) {
+            implementation = this.identifierService.identify(file);
+        }
+        else if (virtualFile instanceof LightVirtualFile) {
+            final com.intellij.lang.Language ideaLanguage = ((LightVirtualFile)virtualFile).getLanguage();
+            if (ideaLanguage instanceof MetaborgIdeaLanguage) {
+                final ILanguage language = this.languageManager.getLanguage((MetaborgIdeaLanguage)ideaLanguage);
+                implementation = language.activeImpl();
+            }
+        }
+
+        if (implementation == null){
             // FIXME: What to do? Can I return null to get the default highlighting?
             return null;
         }
 
-        final IProject metaborgProject = null;  // FIXME: Get IProject from Project
+        @Nullable final IProject metaborgProject = null;  // FIXME: Get IProject from Project
         final SpoofaxTokenTypeManager tokenTypesManager =
                 this.bindingManager.getTokenTypeManager(implementation.belongsTo());
         final Lexer lexer = this.highlightingLexerFactory

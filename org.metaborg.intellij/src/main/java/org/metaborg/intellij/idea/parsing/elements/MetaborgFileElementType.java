@@ -137,13 +137,7 @@ public final class MetaborgFileElementType extends IFileElementType { // IStubFi
         @Nullable final PsiFile file = element.getContainingFile();
         assert file != null : "Only non-file PSI elements (e.g. directories and packages) may have no PsiFile.";
 
-        @Nullable final VirtualFile virtualFile = file.getOriginalFile().getVirtualFile();
-        if(virtualFile == null) {
-            // Only in-memory (non-physical) files have no associated virtual file.
-            return null;
-        }
-
-        return this.resourceService.resolve(virtualFile);
+        return this.resourceService.resolve(file);
     }
 
     /**
