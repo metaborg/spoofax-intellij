@@ -20,7 +20,7 @@
     <id>org.metaborg.intellij</id>
     <name>Spoofax</name>
     <version>2.0.0-SNAPSHOT</version>
-    <vendor email="info@metaborg.org" url="https://spoofax.readthedocs.org/">Metaborg</vendor>
+    <vendor email="info@metaborg.org" url="https://spoofax.readthedocs.io/">Metaborg</vendor>
 
     <description><![CDATA[
       Spoofax plugin for IntelliJ IDEA.
