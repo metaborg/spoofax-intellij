@@ -57,7 +57,8 @@ intellij {
     updateSinceUntilBuild = false
 }
 
-// Task to allow a debugger to be attached to port 5005 for debugging the JPS plugin.
+// To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
+// (Ctrl+Shift+A), then start a build and attach a remote debugger to port 5005.
 // https://github.com/JetBrains/gradle-intellij-plugin/issues/23
 afterEvaluate {
     task("debugJps", type: org.jetbrains.intellij.RunIdeaTask, group: 'intellij', dependsOn: 'prepareSandbox', description: 'Runs Intellij IDEA with installed plugin and debugger support for JPS on port 5005.') {

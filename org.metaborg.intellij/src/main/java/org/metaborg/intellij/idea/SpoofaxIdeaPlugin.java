@@ -23,6 +23,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import org.apache.commons.lang3.concurrent.*;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.intellij.*;
+import org.metaborg.intellij.idea.extensions.*;
 import org.metaborg.spoofax.core.Spoofax;
 import org.metaborg.spoofax.meta.core.SpoofaxMeta;
 
@@ -88,8 +89,8 @@ public final class SpoofaxIdeaPlugin {
     private SpoofaxIdeaPlugin() {
         logger.debug("Loading Spoofax for IDEA plugin.");
         try {
-            this.spoofax = new Spoofax(new IdeaSpoofaxModule());
-            this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new IdeaSpoofaxMetaModule());
+            this.spoofax = new Spoofax(new IntelliJSpoofaxPluginLoader(), new IdeaSpoofaxModule());
+            this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new IntelliJSpoofaxMetaPluginLoader(), new IdeaSpoofaxMetaModule());
         } catch (final MetaborgException e) {
             throw new RuntimeException(e);
         }

@@ -149,10 +149,15 @@ public final class MetaborgFileElementType extends IFileElementType { // IStubFi
      *            The root element.
      * @return The language implementation to use.
      */
-    private ILanguageImpl getLanguageImpl(@Nullable final FileObject resource, final PsiElement psi,
-        final IElementType root) {
+    private ILanguageImpl getLanguageImpl(@Nullable final FileObject resource,
+                                          final PsiElement psi,
+                                          final IElementType root) {
         final ILanguage language = this.languageManager.getLanguage((MetaborgIdeaLanguage) root.getLanguage());
-        @Nullable final IProject project = this.projectService.get(psi);
+        @Nullable final IProject project;
+        if (resource != null)
+            project = this.projectService.get(resource);
+        else
+            project = this.projectService.get(psi);
 
         @Nullable final LanguageDialect dialect = this.languageProjectService.getImpl(language, project, resource);
         if(dialect == null) {
@@ -168,7 +173,7 @@ public final class MetaborgFileElementType extends IFileElementType { // IStubFi
      *
      * @return The parse result.
      */
-    private ISpoofaxParseUnit parseAll(ISpoofaxInputUnit input) {
+    private ISpoofaxParseUnit parseAll(final ISpoofaxInputUnit input) {
         final ISpoofaxParseUnit parseResult;
         final FileObject resource = input.source();
         try {

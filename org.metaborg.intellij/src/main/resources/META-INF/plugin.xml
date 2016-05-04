@@ -52,6 +52,15 @@
         <compileServer.plugin classpath="./classes/;../classes/jpslib/slf4j-api-1.7.12.jar;org.metaborg.intellij.deps-2.0.0-SNAPSHOT.jar"/>
     </extensions>
 
+    <extensionPoints>
+        <extensionPoint name="spoofaxPlugin" interface="org.metaborg.core.plugin.IServiceModulePlugin" />
+        <extensionPoint name="spoofaxMetaPlugin" interface="org.metaborg.meta.core.plugin.IServiceMetaModulePlugin" />
+    </extensionPoints>
+
+    <extensions defaultExtensionNs="org.metaborg.intellij">
+        <spoofaxPlugin implementation="org.metaborg.spoofax.meta.core.SpoofaxExtensionModulePlugin" />
+    </extensions>
+
     <application-components>
         <component>
             <implementation-class>org.metaborg.intellij.idea.IdeaApplicationComponent</implementation-class>
