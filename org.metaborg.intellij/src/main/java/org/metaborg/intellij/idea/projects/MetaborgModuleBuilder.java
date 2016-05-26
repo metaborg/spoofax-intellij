@@ -503,7 +503,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
         final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
         final List<Pair<String, String>> sourcePaths = new ArrayList<>();
-        for (final FileObject javaSrcDir : paths.javaSrcDirs()) {
+        for (final FileObject javaSrcDir : paths.javaSrcDirs(languageId.id)) {
             sourcePaths.add(Pair.create(javaSrcDir.toString(), ""));
         }
         return sourcePaths;
