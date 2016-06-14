@@ -22,13 +22,24 @@ import com.google.inject.*;
 import com.intellij.ide.util.importProject.*;
 import com.intellij.ide.util.projectWizard.*;
 import com.intellij.ide.util.projectWizard.importSources.*;
+import com.intellij.openapi.module.*;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.options.*;
+import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.roots.*;
+import com.intellij.openapi.util.*;
+import com.intellij.openapi.vfs.*;
 import org.apache.commons.vfs2.*;
+import org.jetbrains.annotations.*;
 import org.metaborg.core.build.*;
+import org.metaborg.core.config.*;
+import org.metaborg.core.language.*;
 import org.metaborg.core.resource.*;
 import org.metaborg.intellij.*;
 import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.resources.*;
 import org.metaborg.util.log.*;
 
 import javax.swing.*;
@@ -42,7 +53,8 @@ import java.util.*;
 @Singleton
 public final class MetaborgProjectDetector extends ProjectStructureDetector {
 
-    private IResourceService resourceService;
+    private IIntelliJResourceService resourceService;
+    private ILanguageComponentConfigService configService;
     @InjectLogger
     private ILogger logger;
     private MetaborgModuleType moduleType;
@@ -57,9 +69,11 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final MetaborgModuleType moduleType, final IResourceService resourceService) {
+    private void inject(final MetaborgModuleType moduleType, final IIntelliJResourceService resourceService,
+                        final ILanguageComponentConfigService configService) {
         this.moduleType = moduleType;
         this.resourceService = resourceService;
+        this.configService = configService;
     }
 
     /**
@@ -83,6 +97,7 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
                 for (final File child : children) {
                     if (child.isFile() && this.resourceService.resolve(child).equals(paths.esvMainFile())) {
                         this.logger.info("Detected Spoofax project in {}", base);
+//                        result.add(new DetectedContentRoot(base, "Spoofax", this.moduleType, JavaModuleType.getModuleType()));
                         result.add(new MetaborgProjectRoot(base));
                         return DirectoryProcessingResult.SKIP_CHILDREN;
                     }
@@ -114,6 +129,7 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
             final Collection<DetectedProjectRoot> roots,
             final ProjectDescriptor projectDescriptor,
             final ProjectFromSourcesBuilder builder) {
+
         if (roots.isEmpty() || builder.hasRootsFromOtherDetectors(this))
             return;
 
@@ -123,14 +139,30 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
         modules = new ArrayList<>();
         for (final DetectedProjectRoot root : roots) {
 
-            final File directory = new File(root.getDirectory(), "editor/java");
-            final DetectedSourceRoot javaFolder = new JavaModuleSourceRoot(directory, "", "Spoofax");
             final File rootDir = root.getDirectory();
             final ModuleDescriptor descriptor = new ModuleDescriptor(
                     rootDir,
                     this.moduleType,
-                    Collections.singletonList(javaFolder)
+                    Collections.emptyList()
             );
+
+            final ConfigRequest<ILanguageComponentConfig> request = this.configService.get(this.resourceService.resolve(rootDir));
+            final LanguageIdentifier languageId = request.config().identifier();
+
+            descriptor.addConfigurationUpdater(new ModuleBuilder.ModuleConfigurationUpdater() {
+                @Override
+                public void update(@NotNull final Module module, @NotNull final ModifiableRootModel rootModel) {
+                    final ContentEntry contentEntry = rootModel.getContentEntries()[0];
+                    final FileObject contentEntryFile = MetaborgProjectDetector.this.resourceService.resolve(contentEntry.getUrl());
+                    try {
+                        final List<Pair<String, String>> sourcePaths = ModuleBuilderUtils.getSourcePaths(languageId, contentEntryFile);
+                        ModuleBuilderUtils.addSourceRoots(contentEntry, sourcePaths);
+                        ModuleBuilderUtils.excludeRoots(contentEntry, contentEntryFile);
+                    } catch (ConfigurationException e) {
+                        throw new UnhandledException(e);
+                    }
+                }
+            });
 
             modules.add(descriptor);
         }

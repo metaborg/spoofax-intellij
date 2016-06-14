@@ -302,16 +302,18 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         // Add the content entry path as a content root.
         @Nullable final ContentEntry contentEntry = doAddContentEntry(rootModel);
         if(contentEntry != null) {
-            doAddSourceRoots(contentEntry);
-            final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
-            // TODO: Remove unnecessary folders:
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".mvn");
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".cache");
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "lib");
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
-            contentEntry.addExcludeFolder(paths.strCacheDir().toString());
-            contentEntry.addExcludeFolder(paths.srcGenDir().toString());
+            ModuleBuilderUtils.addSourceRoots(contentEntry, getSourcePaths());
+            final FileObject root = this.resourceService.resolve(getContentEntryPath());
+            ModuleBuilderUtils.excludeRoots(contentEntry, root);
+//            final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
+//            // TODO: Remove unnecessary folders:
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".mvn");
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".cache");
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "lib");
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
+//            contentEntry.addExcludeFolder(paths.strCacheDir().toString());
+//            contentEntry.addExcludeFolder(paths.srcGenDir().toString());
         }
         this.logger.info("Added content and source roots.");
     }
@@ -501,12 +503,15 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         if(this.sourcePaths != null)
             return this.sourcePaths;
 
-        final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
-        final List<Pair<String, String>> sourcePaths = new ArrayList<>();
-        for (final FileObject javaSrcDir : paths.javaSrcDirs(languageId.id)) {
-            sourcePaths.add(Pair.create(javaSrcDir.toString(), ""));
-        }
-        return sourcePaths;
+        final FileObject contentEntry = this.resourceService.resolve(getContentEntryPath());
+        return ModuleBuilderUtils.getSourcePaths(languageId, contentEntry);
+
+//        final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
+//        final List<Pair<String, String>> sourcePaths = new ArrayList<>();
+//        for (final FileObject javaSrcDir : paths.javaSrcDirs(languageId.id)) {
+//            sourcePaths.add(Pair.create(javaSrcDir.toString(), ""));
+//        }
+//        return sourcePaths;
     }
 
     /**
@@ -532,22 +537,22 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         this.sourcePaths.add(sourcePathInfo);
     }
 
-    @Nullable protected ContentEntry doAddSourceRoots(final ContentEntry contentEntry)
-            throws ConfigurationException {
-
-        @Nullable final List<Pair<String, String>> sourcePaths = getSourcePaths();
-
-        if(sourcePaths == null)
-            return null;
-
-        for(final Pair<String, String> sourcePath : sourcePaths) {
-            final String first = sourcePath.first;
-            assert sourcePath.second.equals("") : "Package prefixes are not supported here.";
-            contentEntry.addSourceFolder(first, false);
-        }
-
-        return contentEntry;
-    }
+//    @Nullable protected static ContentEntry doAddSourceRoots(final ContentEntry contentEntry, @Nullable final List<Pair<String, String>> sourcePaths)
+//            throws ConfigurationException {
+//
+////        @Nullable final List<Pair<String, String>> sourcePaths = getSourcePaths();
+//
+//        if(sourcePaths == null)
+//            return null;
+//
+//        for(final Pair<String, String> sourcePath : sourcePaths) {
+//            final String first = sourcePath.first;
+//            assert sourcePath.second.equals("") : "Package prefixes are not supported here.";
+//            contentEntry.addSourceFolder(first, false);
+//        }
+//
+//        return contentEntry;
+//    }
 
     @Nullable @Override public List<Module> commit(@NotNull final Project project, final ModifiableModuleModel model,
         final ModulesProvider modulesProvider) {
