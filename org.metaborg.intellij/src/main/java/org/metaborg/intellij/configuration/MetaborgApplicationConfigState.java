@@ -19,7 +19,6 @@
 package org.metaborg.intellij.configuration;
 
 import com.google.common.collect.*;
-import org.apache.commons.collections.*;
 import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.jps.configuration.*;
 
@@ -90,6 +89,6 @@ public final class MetaborgApplicationConfigState {
         if (other == null) return false;
 
         // Compare the fields here.
-        return CollectionUtils.isEqualCollection(this.loadedLanguages, other.loadedLanguages);
+        return Iterables.elementsEqual(this.loadedLanguages, other.loadedLanguages);
     }
 }
