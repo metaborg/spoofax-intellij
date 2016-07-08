@@ -93,7 +93,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
         }
 
         try {
-            final FileObject resource = this.resourceService.resolve(file.getVirtualFile());
+            final FileObject resource = this.resourceService.resolve(file);
             final ILanguageImpl language = this.identifierService.identify(resource, project);
             if(language == null) {
                 this.logger.warn("Skipping annotation. Could not identify the language of resource: {}", resource);

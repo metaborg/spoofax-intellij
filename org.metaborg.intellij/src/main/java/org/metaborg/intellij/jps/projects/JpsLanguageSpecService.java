@@ -80,11 +80,11 @@ public final class JpsLanguageSpecService implements ISpoofaxLanguageSpecService
     @Override
     public boolean available(final IProject project) {
 
-        if(project instanceof IdeaLanguageSpec) {
+        if(project instanceof JpsLanguageSpec) {
             return true;
         }
 
-        if(project instanceof IdeaProject) {
+        if(project instanceof MetaborgJpsProject) {
             return this.configService.available(project.location());
         }
 

@@ -66,7 +66,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     // Whether to show debug info from the lexer.
     private static final boolean DEBUG_INFO = false;
 
-    private final FileObject file;
+    private final @Nullable FileObject file;
     private final @Nullable IProject project;
     private final ILanguageImpl languageImpl;
     private final JSGLRParserConfiguration parserConfiguration;
@@ -87,7 +87,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     private int tokenIndex;
 
 
-    @Inject private SpoofaxHighlightingLexer(@Assisted FileObject file, @Assisted @Nullable IProject project,
+    @Inject private SpoofaxHighlightingLexer(@Assisted @Nullable FileObject file, @Assisted @Nullable IProject project,
         @Assisted ILanguageImpl languageImpl, @Assisted SpoofaxTokenTypeManager tokenTypesManager,
         ISpoofaxInputUnitService unitService, ISpoofaxSyntaxService syntaxService,
         ISpoofaxCategorizerService categorizer, ISpoofaxStylerService styler,
@@ -130,12 +130,12 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
         if(inputBuffer.length() == 0)
             return;
 
-        logger.debug("Parsing ({} characters) to get requested range {} from file: {}", inputBuffer.length(),
-            bufferRange, file);
+        this.logger.debug("Parsing ({} characters) to get requested range {} from file: {}", inputBuffer.length(),
+                this.bufferRange, this.file);
 
         final ISpoofaxParseUnit result = parseAll();
 
-        logger.debug("Tokenizing the parse result of file: {}", file);
+        this.logger.debug("Tokenizing the parse result of file: {}", this.file);
 
         tokenizeAll(result);
     }

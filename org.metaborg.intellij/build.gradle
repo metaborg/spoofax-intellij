@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.0.39"
+    id "org.jetbrains.intellij" version "0.0.43"
 }
 
 apply plugin: 'java'
@@ -15,7 +15,7 @@ apply plugin: 'maven'
 apply plugin: 'org.jetbrains.intellij'
 
 group 'org.metaborg'
-version '0.1.0-SNAPSHOT'
+version '2.0.0-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -50,10 +50,15 @@ configurations {
 }
 
 intellij {
-    version 'IC-15.0.3'
+    //version 'IC-15.0.3'
+
+    // FIXME: hack to support both IDEA 15 and IDEA 16.
+    // See https://github.com/intellij-rust/intellij-rust/issues/243
+    updateSinceUntilBuild = false
 }
 
-// Task to allow a debugger to be attached to port 5005 for debugging the JPS plugin.
+// To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
+// (Ctrl+Shift+A), then start a build and attach a remote debugger to port 5005.
 // https://github.com/JetBrains/gradle-intellij-plugin/issues/23
 afterEvaluate {
     task("debugJps", type: org.jetbrains.intellij.RunIdeaTask, group: 'intellij', dependsOn: 'prepareSandbox', description: 'Runs Intellij IDEA with installed plugin and debugger support for JPS on port 5005.') {
@@ -91,24 +96,25 @@ processResources.dependsOn copyJpsLibraries
 processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
 dependencies {
-	compile 'org.metaborg:org.metaborg.intellij.deps:2.0.0-beta1'
+	compile 'org.metaborg:org.metaborg.intellij.deps:2.0.0-SNAPSHOT'
     compile 'org.slf4j:slf4j-api:1.7.10'
     provided 'com.google.guava:guava:17.0'
+    provided 'com.google.code.findbugs:jsr305:3.0.0'
     
     jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
 
-    language 'org.metaborg:org.metaborg.meta.lang.esv:2.0.0-beta1@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.nabl:2.0.0-beta1@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-beta1@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.template:2.0.0-beta1@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.ts:2.0.0-beta1@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.stratego:2.0.0-beta1@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.analysis:2.0.0-beta1@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-beta1@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.esv:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.nabl:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.template:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.ts:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.stratego:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lang.analysis:2.0.0-SNAPSHOT@spoofax-language'
+    language 'org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-SNAPSHOT@spoofax-language'
 
     testCompile 'junit:junit:4.12'
 
-    testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-beta1@spoofax-language'
+    testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT@spoofax-language'
 }
 
 sourceSets.main.compileClasspath += configurations.provided

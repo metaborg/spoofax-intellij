@@ -17,22 +17,22 @@ package org.metaborg.intellij.idea.projects;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import javax.swing.Icon;
 
+import com.google.common.collect.*;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.build.*;
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.language.LanguageVersion;
 import org.metaborg.core.project.ProjectException;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.graphics.IIconManager;
-import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
+import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.idea.sdks.MetaborgSdkType;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils;
@@ -40,10 +40,7 @@ import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.meta.core.build.LangSpecCommonPaths;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
-import org.metaborg.spoofax.meta.core.generator.language.ContinuousLanguageSpecGenerator;
-import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGenerator;
-import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGeneratorSettings;
-import org.metaborg.spoofax.meta.core.generator.language.LanguageSpecGeneratorSettingsBuilder;
+import org.metaborg.spoofax.meta.core.generator.language.*;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 import org.metaborg.util.log.ILogger;
 
@@ -98,8 +95,10 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     @Nullable private List<Pair<String, String>> sourcePaths;
 
     private String name;
-    private String extension;
+    private Collection<String> extensions;
     private LanguageIdentifier languageId;
+    private SyntaxType syntaxType;
+    private AnalysisType analysisType;
 
 
     /**
@@ -122,22 +121,22 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     }
 
     /**
-     * Gets the extension of the language.
+     * Gets the extensions of the language.
      *
-     * @return The language file extension.
+     * @return The language file extensions.
      */
-    public String getExtension() {
-        return this.extension;
+    public Collection<String> getExtensions() {
+        return this.extensions;
     }
 
     /**
      * Sets the extension of the language.
      *
-     * @param extension
-     *            The language file extension.
+     * @param extensions
+     *            The language file extensions, separated by commas.
      */
-    public void setExtension(final String extension) {
-        this.extension = extension;
+    public void setExtensions(final Collection<String> extensions) {
+        this.extensions = extensions;
     }
 
     /**
@@ -157,6 +156,38 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      */
     public void setLanguageIdentifier(final LanguageIdentifier languageId) {
         this.languageId = languageId;
+    }
+
+    /**
+     * Gets the syntax type.
+     *
+     * @return The syntax type.
+     */
+    public SyntaxType getSyntaxType() { return this.syntaxType;}
+
+    /**
+     * Sets the syntax type.
+     *
+     * @param syntaxType The syntax type.
+     */
+    public void setSyntaxType(final SyntaxType syntaxType) {
+        this.syntaxType = syntaxType;
+    }
+
+    /**
+     * Gets the analysis type.
+     *
+     * @return The analysis type.
+     */
+    public AnalysisType getAnalysisType() { return this.analysisType;}
+
+    /**
+     * Sets the analysis type.
+     *
+     * @param analysisType The analysis type.
+     */
+    public void setAnalysisType(final AnalysisType analysisType) {
+        this.analysisType = analysisType;
     }
 
 
@@ -182,10 +213,13 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private void setDefaultValues() {
         final String uuid = UUID.randomUUID().toString().substring(0, 8).toLowerCase();
 
+        // Pick sensible defaults here.
         this.name = "Untitled-" + uuid;
-        this.extension = "u";
+        this.extensions = Lists.newArrayList("u");
         this.languageId =
             new LanguageIdentifier("org.example", "untitled-" + uuid, LanguageVersion.parse("1.0.0-SNAPSHOT"));
+        this.syntaxType = SyntaxType.SDF3;
+        this.analysisType = AnalysisType.NaBL_TS;
     }
 
     /**
@@ -230,7 +264,10 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         final FileObject location = MetaborgModuleBuilder.this.resourceService.resolve(getContentEntryPath());
 
         final ISpoofaxLanguageSpecConfig config =
-            this.configBuilder.reset().withIdentifier(getLanguageIdentifier()).withName(getName()).build(location);
+            this.configBuilder.reset()
+                    .withIdentifier(getLanguageIdentifier())
+                    .withName(getName())
+                    .build(location);
 
         @Nullable final IdeaLanguageSpec languageSpec =
             this.languageSpecFactory.create(rootModel.getModule(), location, config);
@@ -261,14 +298,22 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private void setContentRoots(final ModifiableRootModel rootModel) throws ConfigurationException {
         // Set the content roots.
         this.logger.debug("Adding content and source roots.");
-        @Nullable final ContentEntry contentEntry = doAddContentEntryAndSourceRoots(rootModel);
+
+        // Add the content entry path as a content root.
+        @Nullable final ContentEntry contentEntry = doAddContentEntry(rootModel);
         if(contentEntry != null) {
-            // TODO: Get this from the paths interface.
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".cache");
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "lib");
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "src-gen");
-            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
+            ModuleBuilderUtils.addSourceRoots(contentEntry, getSourcePaths());
+            final FileObject root = this.resourceService.resolve(getContentEntryPath());
+            ModuleBuilderUtils.excludeRoots(contentEntry, root);
+//            final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
+//            // TODO: Remove unnecessary folders:
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".mvn");
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".cache");
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "lib");
+//            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
+//            contentEntry.addExcludeFolder(paths.strCacheDir().toString());
+//            contentEntry.addExcludeFolder(paths.srcGenDir().toString());
         }
         this.logger.info("Added content and source roots.");
     }
@@ -369,7 +414,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             // @formatter:off
             final LanguageSpecGeneratorSettings settings = settingsBuilder
                 .withConfig(languageSpec.config())
-                .withoutExtensions()
+                .withExtensions(this.extensions)
+                .withSyntaxType(this.syntaxType)
+                .withAnalysisType(this.analysisType)
                 .build(languageSpec.location(), configBuilder)
                 ;
             // @formatter:on        
@@ -453,17 +500,18 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      * @throws ConfigurationException
      */
     @Override @Nullable public List<Pair<String, String>> getSourcePaths() throws ConfigurationException {
-        if(this.sourcePaths == null) {
-            final List<Pair<String, String>> paths = new ArrayList<>();
-            final String path = getContentEntryPath() + File.separator + "editor" + File.separator + "java";
-            final boolean foldersCreated = new File(path).mkdirs();
-            if(!foldersCreated) {
-                this.logger.error("Failed to create some folders in path: {}", path);
-            }
-            paths.add(Pair.create(path, ""));
-            return paths;
-        }
-        return this.sourcePaths;
+        if(this.sourcePaths != null)
+            return this.sourcePaths;
+
+        final FileObject contentEntry = this.resourceService.resolve(getContentEntryPath());
+        return ModuleBuilderUtils.getSourcePaths(languageId, contentEntry);
+
+//        final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
+//        final List<Pair<String, String>> sourcePaths = new ArrayList<>();
+//        for (final FileObject javaSrcDir : paths.javaSrcDirs(languageId.id)) {
+//            sourcePaths.add(Pair.create(javaSrcDir.toString(), ""));
+//        }
+//        return sourcePaths;
     }
 
     /**
@@ -489,34 +537,22 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         this.sourcePaths.add(sourcePathInfo);
     }
 
-    @Nullable protected ContentEntry doAddContentEntryAndSourceRoots(final ModifiableRootModel rootModel)
-        throws ConfigurationException {
-        // Add the content entry path as a content root.
-        @Nullable final ContentEntry contentEntry = doAddContentEntry(rootModel);
-        if(contentEntry == null)
-            return null;
-
-        @Nullable final List<Pair<String, String>> sourcePaths = getSourcePaths();
-
-        if(sourcePaths == null)
-            return null;
-
-        for(final Pair<String, String> sourcePath : sourcePaths) {
-            final String first = sourcePath.first;
-            try {
-                VfsUtil.createDirectories(first);
-            } catch(final IOException e) {
-                throw new UnhandledException(e);
-            }
-            @Nullable final VirtualFile sourceRoot =
-                LocalFileSystem.getInstance().refreshAndFindFileByPath(FileUtil.toSystemIndependentName(first));
-            if(sourceRoot != null) {
-                contentEntry.addSourceFolder(sourceRoot, false, sourcePath.second);
-            }
-        }
-
-        return contentEntry;
-    }
+//    @Nullable protected static ContentEntry doAddSourceRoots(final ContentEntry contentEntry, @Nullable final List<Pair<String, String>> sourcePaths)
+//            throws ConfigurationException {
+//
+////        @Nullable final List<Pair<String, String>> sourcePaths = getSourcePaths();
+//
+//        if(sourcePaths == null)
+//            return null;
+//
+//        for(final Pair<String, String> sourcePath : sourcePaths) {
+//            final String first = sourcePath.first;
+//            assert sourcePath.second.equals("") : "Package prefixes are not supported here.";
+//            contentEntry.addSourceFolder(first, false);
+//        }
+//
+//        return contentEntry;
+//    }
 
     @Nullable @Override public List<Module> commit(@NotNull final Project project, final ModifiableModuleModel model,
         final ModulesProvider modulesProvider) {

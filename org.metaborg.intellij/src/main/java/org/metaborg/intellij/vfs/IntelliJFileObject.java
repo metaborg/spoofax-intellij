@@ -91,7 +91,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected boolean doIsHidden() throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            return false;
 
         return this.file.is(VFileProperty.HIDDEN);
     }
@@ -102,7 +104,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected boolean doIsReadable() throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            return false;
 
         // There is no property for this?
         return true;
@@ -114,7 +118,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected boolean doIsWriteable() throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            return false;
 
         return this.file.isWritable();
     }
@@ -125,7 +131,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected final String[] doListChildren() throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            return new String[0];
 
         return Arrays.stream(doListChildrenResolved())
                 .map((c) -> c.getName().getBaseName())
@@ -138,7 +146,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected final FileObject[] doListChildrenResolved() throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            return new FileObject[0];
 
         return Arrays.stream(this.file.getChildren())
                 .map(this::fileSystemResolve)
@@ -166,7 +176,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected void doDelete() throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            throw new RuntimeException("No file attached.");
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
@@ -183,7 +195,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected void doRename(final FileObject newFile) throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            throw new RuntimeException("No file attached.");
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
@@ -200,7 +214,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected void doCreateFolder() throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            throw new RuntimeException("No file attached.");
 
         ApplicationManager.getApplication().runWriteAction(() -> {
             try {
@@ -217,7 +233,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected long doGetContentSize() throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            return 0;
 
         return this.file.getLength();
     }
@@ -228,7 +246,9 @@ public final class IntelliJFileObject extends AbstractFileObject {
     @Override
     protected InputStream doGetInputStream() throws Exception {
         assert isAttached();
-        assert this.file != null;
+
+        if (this.file == null)
+            throw new RuntimeException("No file attached.");
 
         return this.file.getInputStream();
     }
@@ -243,8 +263,6 @@ public final class IntelliJFileObject extends AbstractFileObject {
 
         ensureExists();
 
-        assert this.file != null;
-
         return this.file.getOutputStream(null);
     }
 
@@ -253,6 +271,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
      *
      * @return The associated {@link VirtualFile}.
      */
+    @Nullable
     public final VirtualFile asVirtualFile() throws FileSystemException {
         synchronized(this.getFileSystem()) {
             // HACK: This forces the file to be attached
@@ -260,8 +279,8 @@ public final class IntelliJFileObject extends AbstractFileObject {
             getType();
 
             assert isAttached();
-            assert this.file != null;
 
+            // Can return null.
             return this.file;
         }
     }
@@ -281,6 +300,7 @@ public final class IntelliJFileObject extends AbstractFileObject {
         // if it wasn't already.
         getType();
 
-        assert this.file != null;
+        if (this.file == null)
+            throw new RuntimeException("No file attached.");
     }
 }

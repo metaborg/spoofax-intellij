@@ -56,7 +56,7 @@ import org.metaborg.spoofax.meta.core.build.LanguageSpecBuilder;
 import org.metaborg.spoofax.meta.core.build.ProjectBuildInput;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecService;
-import org.metaborg.util.file.FileAccess;
+import org.metaborg.util.file.CollectionFileAccess;
 import org.metaborg.util.log.ILogger;
 
 import com.google.inject.Inject;
@@ -260,7 +260,7 @@ public final class JpsSpoofaxMetaBuilder {
                     metaInput.languageSpec()
             ));
 
-            this.builder.generateSources(metaInput, new FileAccess());
+            this.builder.generateSources(metaInput, new CollectionFileAccess());
 
             // TODO: Report created output files to `consumer`.
 
@@ -348,7 +348,7 @@ public final class JpsSpoofaxMetaBuilder {
         context.checkCanceled();
         context.processMessage(this.messageFormatter.formatProgress(0f, "Building language project {}",
                 metaInput.languageSpec()));
-        this.builder.compilePreJava(metaInput);
+        this.builder.compile(metaInput);
 
         // TODO: Report created output files to `consumer`.
 
@@ -375,7 +375,7 @@ public final class JpsSpoofaxMetaBuilder {
                 "Packaging language project {}",
                 metaInput.languageSpec()
         ));
-        this.builder.compilePostJava(metaInput);
+        this.builder.pkg(metaInput);
 
         // TODO: Report created output files to `consumer`.
 

@@ -19,6 +19,7 @@
 package org.metaborg.intellij.resources;
 
 import com.intellij.openapi.vfs.*;
+import com.intellij.psi.*;
 import org.apache.commons.vfs2.*;
 import org.metaborg.core.resource.*;
 
@@ -35,7 +36,15 @@ public interface IIntelliJResourceService extends IResourceService {
      * @param resource The IntelliJ resource to convert.
      * @return The corresponding VFS resource.
      */
-    FileObject resolve(VirtualFile resource);
+    @Nullable FileObject resolve(VirtualFile resource);
+
+    /**
+     * Converts an IntelliJ PSI file into a VFS resource.
+     *
+     * @param file The PSI file.
+     * @return The corresponding VFS resource; or <code>null</code>.
+     */
+    @Nullable FileObject resolve(PsiFile file);
 
     /**
      * Converts a VFS resource into an IntelliJ resource, if possible.

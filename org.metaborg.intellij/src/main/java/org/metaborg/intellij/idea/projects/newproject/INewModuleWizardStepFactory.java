@@ -33,6 +33,6 @@ public interface INewModuleWizardStepFactory {
      * @param context The wizard context.
      * @return The wizard step.
      */
-    MetaborgNewModuleWizardStep create(MetaborgModuleBuilder builder, WizardContext context);
+    NewModuleWizardStep create(MetaborgModuleBuilder builder, WizardContext context);
 
 }

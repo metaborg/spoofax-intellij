@@ -47,5 +47,5 @@ The Spoofax for IntelliJ IDEA plugin has the following limitations:
 
 
 [1]: http://www.spoofax.org/
-[2]: https://spoofax.readthedocs.org/en/latest/source/langdev/manual/env/intellij/index.html
+[2]: https://spoofax.readthedocs.io/en/latest/source/langdev/manual/env/intellij/index.html
 [3]: ./CONTRIBUTE.md

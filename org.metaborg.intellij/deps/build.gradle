@@ -16,7 +16,7 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 group 'org.metaborg'
-version '2.0.0-beta1'
+version '2.0.0-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -66,15 +66,15 @@ task artifacts {
 
 dependencies {
     // Main dependencies
-    compile('org.metaborg:org.metaborg.core:2.0.0-beta1') {
+    compile('org.metaborg:org.metaborg.core:2.0.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
         exclude group: 'com.google.guava'
     }
-    compile('org.metaborg:org.metaborg.spoofax.core:2.0.0-beta1') {
+    compile('org.metaborg:org.metaborg.spoofax.core:2.0.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
         exclude group: 'com.google.guava'
     }
-    compile('org.metaborg:org.metaborg.spoofax.meta.core:2.0.0-beta1') {
+    compile('org.metaborg:org.metaborg.spoofax.meta.core:2.0.0-SNAPSHOT') {
         exclude group: 'org.slf4j'
         exclude group: 'com.google.guava'
     }
@@ -83,7 +83,7 @@ dependencies {
     
     compile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'org.apache.commons:commons-lang3:3.4'
-    compile 'org.apache.commons:commons-vfs2:2.0'
+    compile 'org.apache.commons:commons-vfs2:2.1'
     compile 'com.google.inject:guice:4.0'
     compile 'com.google.inject.extensions:guice-assistedinject:4.0'
     compile 'com.google.inject.extensions:guice-multibindings:4.0'

@@ -47,8 +47,7 @@ import org.metaborg.intellij.idea.projects.IIdeaProjectService;
 import org.metaborg.intellij.idea.projects.IdeaProjectFactory;
 import org.metaborg.intellij.idea.projects.IdeaProjectService;
 import org.metaborg.intellij.idea.projects.MetaborgModuleType;
-import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
-import org.metaborg.intellij.idea.projects.newproject.MetaborgNewModuleWizardStep;
+import org.metaborg.intellij.idea.projects.newproject.*;
 import org.metaborg.intellij.idea.transformations.IResourceTransformer;
 import org.metaborg.intellij.idea.transformations.ResourceTransformer;
 import org.metaborg.intellij.injections.IntelliJExtensionProviderFactory;
@@ -193,7 +192,7 @@ import com.google.inject.multibindings.Multibinder;
      */
     protected void bindNewProjectWizard() {
         install(
-            new FactoryModuleBuilder().implement(MetaborgNewModuleWizardStep.class, MetaborgNewModuleWizardStep.class)
+            new FactoryModuleBuilder().implement(NewModuleWizardStep.class, NewModuleWizardStep.class)
                 .build(INewModuleWizardStepFactory.class));
     }
 
