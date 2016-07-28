@@ -36,7 +36,7 @@ import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.logging.*;
 import org.metaborg.intellij.logging.LoggerUtils;
 import org.metaborg.meta.core.wizard.*;
-import org.metaborg.spoofax.meta.core.generator.language.*;
+import org.metaborg.spoofax.meta.core.generator.general.*;
 import org.metaborg.util.log.*;
 
 import javax.annotation.*;

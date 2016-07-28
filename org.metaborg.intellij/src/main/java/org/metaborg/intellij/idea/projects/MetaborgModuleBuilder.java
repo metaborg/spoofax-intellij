@@ -40,7 +40,7 @@ import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.meta.core.build.LangSpecCommonPaths;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
-import org.metaborg.spoofax.meta.core.generator.language.*;
+import org.metaborg.spoofax.meta.core.generator.general.*;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 import org.metaborg.util.log.ILogger;
 
@@ -410,9 +410,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      */
     private void generateModuleStructure(final ISpoofaxLanguageSpec languageSpec) {
         try {
-            final LanguageSpecGeneratorSettingsBuilder settingsBuilder = new LanguageSpecGeneratorSettingsBuilder();
+            final LangSpecGeneratorSettingsBuilder settingsBuilder = new LangSpecGeneratorSettingsBuilder();
             // @formatter:off
-            final LanguageSpecGeneratorSettings settings = settingsBuilder
+            final LangSpecGeneratorSettings settings = settingsBuilder
                 .withConfig(languageSpec.config())
                 .withExtensions(this.extensions)
                 .withSyntaxType(this.syntaxType)
@@ -421,7 +421,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
                 ;
             // @formatter:on        
 
-            final LanguageSpecGenerator newGenerator = new LanguageSpecGenerator(settings);
+            final LangSpecGenerator newGenerator = new LangSpecGenerator(settings);
             newGenerator.generateAll();
             final ContinuousLanguageSpecGenerator generator =
                 new ContinuousLanguageSpecGenerator(settings.generatorSettings);
