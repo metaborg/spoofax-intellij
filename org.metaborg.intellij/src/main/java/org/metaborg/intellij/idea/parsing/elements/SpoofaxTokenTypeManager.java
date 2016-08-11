@@ -100,6 +100,6 @@ public final class SpoofaxTokenTypeManager {
      */
     public IStyle getDefaultStyle() {
         // FIXME: Get this from the IStylerService?
-        return new Style(Color.black, Color.white, false, false, false);
+        return new Style(Color.black, Color.white, false, false, false, false);
     }
 }
