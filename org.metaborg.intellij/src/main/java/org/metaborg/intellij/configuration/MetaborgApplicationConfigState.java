@@ -18,11 +18,19 @@
 
 package org.metaborg.intellij.configuration;
 
+import com.google.common.base.*;
 import com.google.common.collect.*;
+import com.google.common.io.*;
+import org.metaborg.intellij.*;
+import org.metaborg.intellij.idea.*;
 import org.metaborg.intellij.idea.configuration.*;
 import org.metaborg.intellij.jps.configuration.*;
+import org.metaborg.intellij.logging.*;
 
 import javax.annotation.*;
+import javax.annotation.Resources;
+import java.io.*;
+import java.net.*;
 import java.util.*;
 
 /**
@@ -48,16 +56,28 @@ public final class MetaborgApplicationConfigState {
      */
     public MetaborgApplicationConfigState() {
         // Default configuration:
-        this.loadedLanguages = Sets.newHashSet(
-                "org.metaborg:org.metaborg.meta.lang.analysis:2.0.0-SNAPSHOT",
-                "org.metaborg:org.metaborg.meta.lang.esv:2.0.0-SNAPSHOT",
-                "org.metaborg:org.metaborg.meta.lang.nabl:2.0.0-SNAPSHOT",
-                "org.metaborg:org.metaborg.meta.lang.sdf:2.0.0-SNAPSHOT",
-                "org.metaborg:org.metaborg.meta.lang.stratego:2.0.0-SNAPSHOT",
-                "org.metaborg:org.metaborg.meta.lang.template:2.0.0-SNAPSHOT",
-                "org.metaborg:org.metaborg.meta.lang.ts:2.0.0-SNAPSHOT",
-                "org.metaborg:org.metaborg.meta.lib.analysis:2.0.0-SNAPSHOT"
-        );
+        this.loadedLanguages = getDefaultLoadedLanguages();
+    }
+
+    /**
+     * Reads the list of language IDs from the default_languages.txt resource file.
+     *
+     * @return A set of language IDs.
+     */
+    private static Set<String> getDefaultLoadedLanguages() {
+        // Specify the default loaded languages in this file as a list of language IDs, one on each line.
+        final URL url = com.google.common.io.Resources.getResource(SpoofaxIdeaPlugin.class, "/default_languages.txt");
+
+        final String text;
+        try {
+            text = com.google.common.io.Resources.toString(url, Charsets.UTF_8);
+        } catch (final IOException e) {
+            throw new UnhandledException("Cannot get resource content of resource: " + url, e);
+        }
+
+        final String[] ids = text.split("\\r?\\n");
+
+        return Sets.newHashSet(ids);
     }
 
     /**
