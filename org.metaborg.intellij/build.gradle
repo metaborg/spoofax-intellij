@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-		maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
         mavenCentral()
     }
 }
@@ -13,7 +13,6 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
-//apply plugin: 'org.jetbrains.intellij'
 
 group 'org.metaborg'
 version '2.1.0-SNAPSHOT'
@@ -97,7 +96,7 @@ processResources.dependsOn copyJpsLibraries
 processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
 dependencies {
-	compile 'org.metaborg:org.metaborg.intellij.deps:2.1.0-SNAPSHOT'
+    compile 'org.metaborg:org.metaborg.intellij.deps:2.1.0-SNAPSHOT'
     compile 'org.slf4j:slf4j-api:1.7.10'
     provided 'com.google.guava:guava:17.0'
     provided 'com.google.code.findbugs:jsr305:3.0.0'
