@@ -39,7 +39,7 @@ public final class SpoofaxJavaBuilderExtension extends JavaBuilderExtension {
      */
     public SpoofaxJavaBuilderExtension() {
         super();
-        SpoofaxJpsPlugin.injector().injectMembers(this);
+        SpoofaxJpsPlugin.plugin().injectMembers(this);
     }
 
     @SuppressWarnings("unused")

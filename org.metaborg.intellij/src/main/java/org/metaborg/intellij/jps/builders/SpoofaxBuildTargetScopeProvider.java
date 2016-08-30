@@ -45,7 +45,7 @@ public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvi
     public SpoofaxBuildTargetScopeProvider() {
         super();
 //        SpoofaxIdeaPlugin.injector().injectMembers(this);
-        SpoofaxJpsPlugin.injector().injectMembers(this);
+        SpoofaxJpsPlugin.plugin().injectMembers(this);
     }
 
     @SuppressWarnings("unused")

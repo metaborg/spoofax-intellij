@@ -35,7 +35,7 @@
  * <pre>
  * public MyService() {
  *     super();
- *     SpoofaxJpsPlugin.injector().injectMembers(this);
+ *     SpoofaxJpsPlugin.plugin().injectMembers(this);
  * }
  *
  * &#064;SuppressWarnings("unused")

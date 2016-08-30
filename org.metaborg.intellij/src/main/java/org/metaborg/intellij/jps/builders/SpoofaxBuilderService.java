@@ -47,7 +47,7 @@ public final class SpoofaxBuilderService extends BuilderService {
      */
     public SpoofaxBuilderService() {
         super();
-        SpoofaxJpsPlugin.injector().injectMembers(this);
+        SpoofaxJpsPlugin.plugin().injector().injectMembers(this);
 
         this.logger.debug("Builder service constructed! Classloader: {}",
                 this.getClass().getClassLoader().getClass().getName());

@@ -43,7 +43,7 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
      * Do not call this constructor manually.
      */
     public JpsSpoofaxModelSerializerExtension() {
-        SpoofaxJpsPlugin.injector().injectMembers(this);
+        SpoofaxJpsPlugin.plugin().injectMembers(this);
     }
 
     @Inject
