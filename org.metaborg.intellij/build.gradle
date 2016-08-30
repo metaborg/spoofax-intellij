@@ -1,18 +1,19 @@
 buildscript {
     repositories {
+		maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
         mavenCentral()
     }
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.0.43"
+    id "org.jetbrains.intellij" version "0.1.10"
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
-apply plugin: 'org.jetbrains.intellij'
+//apply plugin: 'org.jetbrains.intellij'
 
 group 'org.metaborg'
 version '2.1.0-SNAPSHOT'
