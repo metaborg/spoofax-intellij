@@ -32,7 +32,7 @@
     </change-notes>
 
     <!-- See http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
-    <idea-version since-build="143.381.42" until-build="162.9999"/>
+    <idea-version since-build="143.381.42" until-build="171.*"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <compiler.buildTargetScopeProvider implementation="org.metaborg.intellij.jps.builders.SpoofaxBuildTargetScopeProvider" />
