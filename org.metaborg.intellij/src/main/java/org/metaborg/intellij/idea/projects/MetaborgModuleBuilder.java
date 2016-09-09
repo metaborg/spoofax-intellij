@@ -40,6 +40,7 @@ import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.meta.core.build.LangSpecCommonPaths;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
+import org.metaborg.spoofax.meta.core.config.SdfVersion;
 import org.metaborg.spoofax.meta.core.generator.general.*;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 import org.metaborg.util.log.ILogger;
@@ -423,8 +424,15 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
             final LangSpecGenerator newGenerator = new LangSpecGenerator(settings);
             newGenerator.generateAll();
+            SdfVersion version;
+            if(settings.syntaxType == SyntaxType.SDF2) {
+                version = SdfVersion.sdf2;
+            } else {
+                version = SdfVersion.sdf3;
+            }            
+            
             final ContinuousLanguageSpecGenerator generator =
-                new ContinuousLanguageSpecGenerator(settings.generatorSettings);
+                new ContinuousLanguageSpecGenerator(settings.generatorSettings, version);
             generator.generateAll();
         } catch(ProjectException | IOException e) {
             throw LoggerUtils.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);
