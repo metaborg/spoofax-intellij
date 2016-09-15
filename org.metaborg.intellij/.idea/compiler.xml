@@ -23,6 +23,8 @@
       <module name="org.metaborg.intellij-common_test" target="1.8" />
       <module name="org.metaborg.intellij_main" target="1.8" />
       <module name="org.metaborg.intellij_test" target="1.8" />
+      <module name="org.metaborg.jps-deps_main" target="1.8" />
+      <module name="org.metaborg.jps-deps_test" target="1.8" />
       <module name="org.metaborg.jps_main" target="1.8" />
       <module name="org.metaborg.jps_test" target="1.8" />
     </bytecodeTargetLevel>
