@@ -18,12 +18,16 @@
 
 package org.metaborg.intellij.idea.gui.modulesettings;
 
-import com.google.inject.*;
-import com.intellij.openapi.module.*;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.roots.ui.configuration.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.projects.*;
+import com.intellij.openapi.module.ModuleConfigurationEditor;
+import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.roots.ui.configuration.DefaultModuleConfigurationEditorFactory;
+import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationEditorProvider;
+import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.projects.MetaborgModuleType;
 
 /**
  * Provides editors for the module's settings in the <em>Project Structure</em> dialog.

@@ -18,22 +18,23 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.google.inject.*;
-import com.intellij.lang.*;
-import com.intellij.lexer.*;
-import com.intellij.openapi.fileTypes.*;
+import com.google.inject.Inject;
+import com.intellij.lexer.Lexer;
+import com.intellij.openapi.fileTypes.SyntaxHighlighter;
+import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.*;
-import com.intellij.testFramework.*;
-import org.apache.commons.vfs2.*;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.testFramework.LightVirtualFile;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
-import org.metaborg.intellij.languages.*;
-import org.metaborg.intellij.resources.*;
+import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.intellij.idea.languages.ILanguageBindingManager;
+import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * Factory for the {@link SpoofaxSyntaxHighlighter} class.

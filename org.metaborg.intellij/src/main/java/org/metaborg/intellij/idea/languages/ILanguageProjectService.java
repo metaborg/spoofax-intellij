@@ -20,12 +20,12 @@ package org.metaborg.intellij.idea.languages;
 
 // TODO: Add to Metaborg Core
 
-import org.apache.commons.vfs2.*;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.Set;
 
 /**
  * Retrieves the languages for files in projects.

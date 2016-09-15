@@ -15,8 +15,17 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import javax.annotation.Nullable;
-
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.Language;
+import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.PsiBuilderFactory;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.IFileElementType;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.language.ILanguage;
@@ -29,7 +38,7 @@ import org.metaborg.intellij.idea.languages.LanguageDialect;
 import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
 import org.metaborg.intellij.idea.projects.IIdeaProjectService;
 import org.metaborg.intellij.logging.InjectLogger;
-import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.core.processing.parse.ISpoofaxParseResultProcessor;
 import org.metaborg.spoofax.core.syntax.ISpoofaxSyntaxService;
@@ -38,18 +47,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxInputUnitService;
 import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
 import org.metaborg.util.log.ILogger;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiBuilderFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.IFileElementType;
+import javax.annotation.Nullable;
 
 /**
  * Metaborg source file PSI element type.
@@ -64,15 +62,17 @@ public final class MetaborgFileElementType extends IFileElementType { // IStubFi
     private final ISpoofaxInputUnitService unitService;
     private final ISpoofaxSyntaxService syntaxService;
     private final IATermAstElementTypeProviderFactory elementTypeProviderFactory;
-    @InjectLogger private ILogger logger;
+    @InjectLogger
+    private ILogger logger;
 
 
-    @Inject public MetaborgFileElementType(@Assisted final Language language,
-        @Assisted final SpoofaxTokenTypeManager tokenTypesManager, final IIdeaLanguageManager languageManager,
-        final ILanguageProjectService languageProjectService, final IIntelliJResourceService resourceService,
-        final ISpoofaxParseResultProcessor parseResultProcessor, ISpoofaxInputUnitService unitService,
-        final ISpoofaxSyntaxService syntaxService, final IIdeaProjectService projectService,
-        final IATermAstElementTypeProviderFactory elementTypeProviderFactory) {
+    @Inject
+    public MetaborgFileElementType(@Assisted final Language language,
+                                   @Assisted final SpoofaxTokenTypeManager tokenTypesManager, final IIdeaLanguageManager languageManager,
+                                   final ILanguageProjectService languageProjectService, final IIntelliJResourceService resourceService,
+                                   final ISpoofaxParseResultProcessor parseResultProcessor, ISpoofaxInputUnitService unitService,
+                                   final ISpoofaxSyntaxService syntaxService, final IIdeaProjectService projectService,
+                                   final IATermAstElementTypeProviderFactory elementTypeProviderFactory) {
         super(language);
         assert language instanceof MetaborgIdeaLanguage;
 
@@ -161,7 +161,7 @@ public final class MetaborgFileElementType extends IFileElementType { // IStubFi
 
         @Nullable final LanguageDialect dialect = this.languageProjectService.getImpl(language, project, resource);
         if(dialect == null) {
-            throw LoggerUtils.exception(this.logger, IllegalStateException.class,
+            throw LoggerUtils2.exception(this.logger, IllegalStateException.class,
                 "Could not determine the language dialect of the resource: {}", resource);
         }
 

@@ -18,8 +18,9 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import javax.annotation.Nullable;
-
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.psi.tree.IElementType;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.source.ISourceRegion;
 import org.metaborg.core.style.ICategory;
@@ -32,9 +33,7 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.IToken;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.intellij.psi.tree.IElementType;
+import javax.annotation.Nullable;
 
 public final class ATermAstElementTypeProvider implements IAstElementTypeProvider<IStrategoTerm> {
 

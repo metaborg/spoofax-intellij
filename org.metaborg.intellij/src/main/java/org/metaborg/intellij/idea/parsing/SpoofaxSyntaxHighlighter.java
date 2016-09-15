@@ -18,19 +18,21 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.intellij.lexer.*;
-import com.intellij.openapi.editor.colors.*;
-import com.intellij.openapi.editor.markup.*;
-import com.intellij.openapi.fileTypes.*;
-import com.intellij.psi.tree.*;
+import com.intellij.lexer.Lexer;
+import com.intellij.openapi.editor.colors.TextAttributesKey;
+import com.intellij.openapi.editor.markup.EffectType;
+import com.intellij.openapi.editor.markup.TextAttributes;
+import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
+import com.intellij.psi.tree.IElementType;
 import org.metaborg.core.style.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenType;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import static com.intellij.openapi.editor.colors.TextAttributesKey.*;
+import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
 /**
  * Highlighter for Spoofax languages.

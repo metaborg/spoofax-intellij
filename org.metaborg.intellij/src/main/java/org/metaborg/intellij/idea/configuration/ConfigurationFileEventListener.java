@@ -18,19 +18,27 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.*;
-import com.intellij.openapi.module.*;
+import com.google.inject.Inject;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.*;
-import com.intellij.openapi.vfs.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.projects.*;
+import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.module.ModuleUtil;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileAdapter;
+import com.intellij.openapi.vfs.VirtualFileEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.idea.projects.IdeaProject;
+import org.metaborg.intellij.idea.projects.IdeaProjectService;
+import org.metaborg.intellij.idea.projects.MetaborgModuleType;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils2;
+import org.metaborg.intellij.idea.projects.ProjectUtils;
 import org.metaborg.util.log.*;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Listens to events that occur for the project's configuration file.
@@ -96,7 +104,7 @@ public final class ConfigurationFileEventListener extends VirtualFileAdapter {
 
             @Nullable final IdeaProject metaborgProject = this.projectService.get(module);
             if (metaborgProject == null) {
-                throw LoggerUtils.exception(this.logger, IllegalStateException.class,
+                throw LoggerUtils2.exception(this.logger, IllegalStateException.class,
                         "No associated Metaborg IProject found for Metaborg module: {}",
                         module);
             }

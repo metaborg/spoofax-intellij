@@ -18,8 +18,9 @@
 
 package org.metaborg.intellij.idea.extensions;
 
-import com.intellij.lang.*;
-import com.intellij.openapi.fileTypes.*;
+import com.intellij.lang.Language;
+import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
+import com.intellij.openapi.fileTypes.SyntaxHighlighterFactoryEP;
 
 /**
  * Syntax highlighter factory extension point value wrapper.

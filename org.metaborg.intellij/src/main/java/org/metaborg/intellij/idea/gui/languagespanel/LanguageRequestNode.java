@@ -18,18 +18,18 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import javax.annotation.Nullable;
-import javax.swing.Icon;
-
 import org.metaborg.core.config.ILanguageComponentConfig;
 import org.metaborg.core.language.ILanguageDiscoveryRequest;
 import org.metaborg.core.language.LanguageVersion;
+
+import javax.annotation.Nullable;
+import javax.swing.*;
 
 /**
  * A language request node.
  */
 public final class LanguageRequestNode extends TreeNodeWithValue<ILanguageDiscoveryRequest, LanguageRequestNode>
-        implements ITreeNodeWithIcon, ILanguageTreeNode<ILanguageDiscoveryRequest>  {
+        implements ITreeNodeWithIcon, ILanguageTreeNode<ILanguageDiscoveryRequest> {
 
     /**
      * Initializes a new instance of the {@link LanguageRequestNode} class.

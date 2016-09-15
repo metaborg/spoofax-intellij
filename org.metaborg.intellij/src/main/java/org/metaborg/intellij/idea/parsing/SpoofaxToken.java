@@ -18,8 +18,8 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.IntRange;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenType;
 
 /**
  * Represents a Spoofax token. This class contains enough information

@@ -18,14 +18,13 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import javax.annotation.Nullable;
-
+import com.google.common.base.Preconditions;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.IProjectConfig;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.Project;
 
-import com.google.common.base.Preconditions;
+import javax.annotation.Nullable;
 
 // TODO: Move this to Spoofax core?
 

@@ -18,13 +18,13 @@
 
 package org.metaborg.intellij.idea.extensions;
 
-import com.google.common.collect.*;
-import com.google.inject.*;
-import com.intellij.openapi.extensions.*;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.inject.Module;
 import org.metaborg.core.*;
 import org.metaborg.core.plugin.*;
 
-import java.util.*;
+import java.util.Collection;
 
 public abstract class IntelliJPluginLoader<T extends IServiceModulePlugin> implements IModulePluginLoader {
 

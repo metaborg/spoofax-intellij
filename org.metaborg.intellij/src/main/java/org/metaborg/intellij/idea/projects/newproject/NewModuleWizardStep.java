@@ -18,34 +18,33 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
-import com.google.common.collect.*;
-import com.google.inject.*;
-import com.google.inject.ConfigurationException;
-import com.google.inject.assistedinject.*;
-import com.intellij.ide.util.projectWizard.*;
-import com.intellij.openapi.options.*;
-import com.intellij.openapi.util.text.*;
-import com.intellij.ui.*;
-import com.intellij.ui.border.*;
-import com.intellij.uiDesigner.core.*;
-import org.jetbrains.annotations.*;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.ide.util.projectWizard.ModuleBuilder;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.ui.DocumentAdapter;
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.projects.MetaborgModuleBuilder;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.meta.core.wizard.*;
 import org.metaborg.spoofax.meta.core.generator.general.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import java.awt.*;
-import java.util.regex.*;
+import java.util.regex.Pattern;
 
 public class NewModuleWizardStep extends ModuleWizardStep {
     private JPanel mainPanel;
@@ -319,7 +318,7 @@ public class NewModuleWizardStep extends ModuleWizardStep {
         try {
             return doc.getText(0, doc.getLength());
         } catch (final BadLocationException ex) {
-            throw LoggerUtils.exception(this.logger, UnhandledException.class,
+            throw LoggerUtils2.exception(this.logger, UnhandledException.class,
                     "An unexpected unhandled exception.", ex);
         }
     }

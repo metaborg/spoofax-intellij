@@ -18,11 +18,11 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.intellij.openapi.module.*;
-import org.apache.commons.vfs2.*;
+import com.intellij.openapi.module.Module;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * Factory for IntelliJ IDEA projects.
@@ -40,7 +40,7 @@ public interface IIdeaProjectFactory {
      * could be created for the specified module.
      */
     @Nullable IdeaProject create(Module module,
-                       FileObject rootFolder,
-                       @Nullable IProjectConfig config);
+                                 FileObject rootFolder,
+                                 @Nullable IProjectConfig config);
 
 }

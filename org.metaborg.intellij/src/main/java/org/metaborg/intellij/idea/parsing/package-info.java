@@ -47,4 +47,4 @@
 @NonNullByDefault
 package org.metaborg.intellij.idea.parsing;
 
-import org.metaborg.intellij.*;
+import org.metaborg.intellij.NonNullByDefault;

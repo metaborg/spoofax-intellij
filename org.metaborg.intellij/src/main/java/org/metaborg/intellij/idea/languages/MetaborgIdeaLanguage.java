@@ -18,10 +18,10 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.google.inject.*;
+import com.google.inject.Inject;
 import com.intellij.lang.Language;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.*;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
 
 /**
  * A Metaborg language used in IntelliJ IDEA.

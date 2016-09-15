@@ -18,17 +18,16 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import java.util.Collection;
-import java.util.Collections;
-
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.intellij.openapi.module.Module;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * An IntelliJ IDEA language specification project.

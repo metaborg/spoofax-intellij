@@ -18,13 +18,13 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.google.inject.*;
-import com.intellij.ide.highlighter.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.graphics.*;
+import com.google.inject.Inject;
+import com.intellij.ide.highlighter.ArchiveFileType;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.idea.graphics.IIconManager;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.Collections;
 
 /**
  * The file type for Spoofax artifacts.

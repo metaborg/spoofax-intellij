@@ -18,21 +18,29 @@
 
 package org.metaborg.intellij.idea;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.google.inject.multibindings.*;
-import com.intellij.lang.*;
-import com.intellij.lexer.*;
-import com.intellij.psi.tree.*;
+import com.google.inject.Singleton;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.multibindings.Multibinder;
+import com.intellij.lang.ParserDefinition;
+import com.intellij.lexer.Lexer;
+import com.intellij.psi.tree.IFileElementType;
 import org.metaborg.core.syntax.*;
-import org.metaborg.intellij.idea.compilation.*;
-import org.metaborg.intellij.idea.configuration.*;
+import org.metaborg.intellij.idea.compilation.IAfterCompileTask;
+import org.metaborg.intellij.idea.compilation.IBeforeCompileTask;
+import org.metaborg.intellij.idea.compilation.ReloadLanguageCompileTask;
+import org.metaborg.intellij.idea.configuration.ConfigurationFileEventListener;
+import org.metaborg.intellij.idea.configuration.ConfigurationUtils;
 import org.metaborg.intellij.idea.languages.*;
 import org.metaborg.intellij.idea.parsing.*;
 import org.metaborg.intellij.idea.parsing.elements.*;
-import org.metaborg.intellij.idea.parsing.references.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.languages.*;
+import org.metaborg.intellij.idea.parsing.references.IMetaborgReferenceProviderFactory;
+import org.metaborg.intellij.idea.parsing.references.MetaborgReferenceProvider;
+import org.metaborg.intellij.idea.parsing.references.SpoofaxReferenceProvider;
+import org.metaborg.intellij.idea.projects.IIdeaLanguageSpecFactory;
+import org.metaborg.intellij.idea.projects.IdeaLanguageSpecFactory;
+import org.metaborg.intellij.idea.projects.MetaborgModuleBuilder;
+import org.metaborg.intellij.idea.projects.ProjectUtils;
+import org.metaborg.intellij.languages.ILanguageManager;
 import org.metaborg.spoofax.core.syntax.*;
 import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
 

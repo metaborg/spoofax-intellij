@@ -18,12 +18,12 @@
 
 package org.metaborg.intellij.idea.facets;
 
-import com.google.inject.*;
-import com.intellij.facet.ui.*;
-import com.intellij.ide.util.frameworkSupport.*;
-import com.intellij.openapi.roots.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.logging.*;
+import com.google.inject.Inject;
+import com.intellij.facet.ui.FacetBasedFrameworkSupportProvider;
+import com.intellij.ide.util.frameworkSupport.FrameworkVersion;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
 /**

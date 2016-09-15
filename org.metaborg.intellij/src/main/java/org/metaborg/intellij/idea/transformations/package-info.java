@@ -22,4 +22,4 @@
 @NonNullByDefault
 package org.metaborg.intellij.idea.transformations;
 
-import org.metaborg.intellij.*;
+import org.metaborg.intellij.NonNullByDefault;

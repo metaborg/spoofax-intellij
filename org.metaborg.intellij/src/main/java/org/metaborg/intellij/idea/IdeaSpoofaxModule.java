@@ -15,39 +15,32 @@
 
 package org.metaborg.intellij.idea;
 
+import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.matcher.Matchers;
+import com.google.inject.multibindings.Multibinder;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.metaborg.core.editor.IEditorRegistry;
 import org.metaborg.core.project.IProjectService;
 import org.metaborg.core.resource.IResourceService;
+import org.metaborg.intellij.Compound;
 import org.metaborg.intellij.configuration.IMetaborgApplicationConfig;
 import org.metaborg.intellij.configuration.IMetaborgModuleConfig;
 import org.metaborg.intellij.configuration.IMetaborgProjectConfig;
 import org.metaborg.intellij.discovery.ILanguageSource;
 import org.metaborg.intellij.discovery.MultiLanguageSource;
 import org.metaborg.intellij.discovery.ResourceLanguageSource;
-import org.metaborg.intellij.idea.actions.ActionUtils;
-import org.metaborg.intellij.idea.actions.BuilderActionGroup;
-import org.metaborg.intellij.idea.actions.BuilderMenuBuilder;
-import org.metaborg.intellij.idea.actions.IBuilderActionGroupFactory;
-import org.metaborg.intellij.idea.actions.ITransformIdeaActionFactory;
-import org.metaborg.intellij.idea.actions.TransformationAction;
+import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.idea.editors.IdeaEditorRegistry;
 import org.metaborg.intellij.idea.facets.MetaborgFacetType;
 import org.metaborg.intellij.idea.filetypes.LanguageArtifactFileType;
 import org.metaborg.intellij.idea.graphics.DefaultIconManager;
 import org.metaborg.intellij.idea.graphics.IIconManager;
 import org.metaborg.intellij.idea.parsing.annotations.MetaborgSourceAnnotator;
-import org.metaborg.intellij.idea.projects.ArtifactProjectFactory;
-import org.metaborg.intellij.idea.projects.ArtifactProjectService;
-import org.metaborg.intellij.idea.projects.Compound;
-import org.metaborg.intellij.idea.projects.CompoundProjectService;
-import org.metaborg.intellij.idea.projects.IArtifactProjectFactory;
-import org.metaborg.intellij.idea.projects.IIdeaProjectFactory;
-import org.metaborg.intellij.idea.projects.IIdeaProjectService;
-import org.metaborg.intellij.idea.projects.IdeaProjectFactory;
-import org.metaborg.intellij.idea.projects.IdeaProjectService;
-import org.metaborg.intellij.idea.projects.MetaborgModuleType;
-import org.metaborg.intellij.idea.projects.newproject.*;
+import org.metaborg.intellij.idea.projects.*;
+import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
+import org.metaborg.intellij.idea.projects.newproject.NewModuleWizardStep;
 import org.metaborg.intellij.idea.transformations.IResourceTransformer;
 import org.metaborg.intellij.idea.transformations.ResourceTransformer;
 import org.metaborg.intellij.injections.IntelliJExtensionProviderFactory;
@@ -55,7 +48,7 @@ import org.metaborg.intellij.injections.IntelliJModuleTypeProvider;
 import org.metaborg.intellij.injections.IntelliJServiceProviderFactory;
 import org.metaborg.intellij.logging.MetaborgLoggerTypeListener;
 import org.metaborg.intellij.logging.Slf4JLoggerTypeListener;
-import org.metaborg.intellij.projects.ProjectUtils;
+import org.metaborg.intellij.idea.projects.ProjectUtils;
 import org.metaborg.intellij.resources.DefaultIntelliJResourceService;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.intellij.resources.LibraryService;
@@ -67,12 +60,6 @@ import org.metaborg.spoofax.core.unit.ISpoofaxAnalyzeUnit;
 import org.metaborg.spoofax.core.unit.ISpoofaxInputUnit;
 import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
 import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
-
-import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.matcher.Matchers;
-import com.google.inject.multibindings.Multibinder;
 
 /**
  * The Guice dependency injection module for the Spoofax IntelliJ IDEA plugin.

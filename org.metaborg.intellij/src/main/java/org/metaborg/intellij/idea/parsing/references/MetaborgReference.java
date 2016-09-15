@@ -18,8 +18,9 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import com.intellij.psi.*;
-import org.jetbrains.annotations.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReferenceBase;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A reference to a definition.

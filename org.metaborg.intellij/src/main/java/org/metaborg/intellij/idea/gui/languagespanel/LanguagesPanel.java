@@ -18,24 +18,30 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import com.google.inject.*;
-import com.intellij.ide.*;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.ui.popup.*;
-import com.intellij.ui.*;
-import com.intellij.ui.dualView.*;
+import com.google.inject.Inject;
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.ActionGroup;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.ui.AnActionButton;
+import com.intellij.ui.IdeBorderFactory;
+import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.dualView.TreeTableView;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.idea.gui.languagesettings.*;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.gui.languagesettings.AddLanguageFromArtifactAction;
+import org.metaborg.intellij.idea.gui.languagesettings.AddLanguageFromDirectoryAction;
+import org.metaborg.intellij.idea.gui.languagesettings.LanguagesSettings;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.util.List;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 /**
  * A languages panel.

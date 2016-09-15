@@ -18,19 +18,23 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.*;
+import com.google.inject.Inject;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.*;
-import com.intellij.openapi.project.*;
-import com.intellij.openapi.vfs.*;
-import com.intellij.psi.*;
-import org.apache.commons.vfs2.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.resources.*;
+import com.intellij.openapi.module.ModuleUtil;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
+import org.apache.commons.vfs2.FileObject;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Project service for IntelliJ IDEA.

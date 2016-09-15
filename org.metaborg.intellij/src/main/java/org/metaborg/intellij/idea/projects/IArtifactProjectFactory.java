@@ -18,10 +18,10 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import org.apache.commons.vfs2.*;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * Factory for IntelliJ IDEA language specification projects.
@@ -38,6 +38,6 @@ public interface IArtifactProjectFactory {
      * could be created for the specified artifact.
      */
     @Nullable ArtifactProject create(FileObject artifactRoot,
-                            @Nullable IProjectConfig config);
+                                     @Nullable IProjectConfig config);
 
 }

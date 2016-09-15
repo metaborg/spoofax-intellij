@@ -18,10 +18,13 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.google.common.base.*;
-import com.google.common.collect.*;
-import com.intellij.openapi.fileTypes.*;
-import org.jetbrains.annotations.*;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
+import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
+import com.intellij.openapi.fileTypes.FileNameMatcher;
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import org.jetbrains.annotations.NonNls;
 
 /**
  * Consumer for file types implementing the {@link IMetaborgFileType} interface.

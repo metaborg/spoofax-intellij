@@ -18,13 +18,13 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.intellij.lexer.*;
-import org.apache.commons.vfs2.*;
+import com.intellij.lexer.Lexer;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * Factory for highlighting lexers.

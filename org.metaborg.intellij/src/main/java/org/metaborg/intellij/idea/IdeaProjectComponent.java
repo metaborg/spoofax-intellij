@@ -18,16 +18,17 @@
 
 package org.metaborg.intellij.idea;
 
-import com.google.inject.*;
-import com.intellij.openapi.compiler.*;
-import com.intellij.openapi.components.*;
-import com.intellij.openapi.project.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.compilation.*;
-import org.metaborg.intellij.logging.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.compiler.CompilerManager;
+import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
+import org.metaborg.intellij.idea.compilation.IAfterCompileTask;
+import org.metaborg.intellij.idea.compilation.IBeforeCompileTask;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import java.util.*;
+import java.util.Set;
 
 /**
  * IntelliJ IDEA project service.

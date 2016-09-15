@@ -18,14 +18,14 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.intellij.openapi.vfs.*;
-import org.apache.commons.vfs2.*;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.languages.*;
+import org.metaborg.intellij.idea.projects.IdeaLanguageSpec;
+import org.metaborg.intellij.languages.ILanguageManager;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Manages loaded and activated languages.

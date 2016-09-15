@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.annotations;
 
-import org.apache.commons.vfs2.*;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.context.*;
 
 /**

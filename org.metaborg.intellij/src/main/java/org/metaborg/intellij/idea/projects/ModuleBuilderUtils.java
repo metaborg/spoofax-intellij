@@ -18,16 +18,17 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.intellij.openapi.options.*;
-import com.intellij.openapi.roots.*;
-import com.intellij.openapi.util.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
+import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.roots.ContentEntry;
+import com.intellij.openapi.util.Pair;
+import org.apache.commons.vfs2.FileObject;
+import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.*;
 import org.metaborg.spoofax.meta.core.build.*;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility functions.
@@ -40,8 +41,9 @@ public class ModuleBuilderUtils {
      * @return A list of (path, packagePrefix) pairs.
      * @throws ConfigurationException
      */
-    @Nullable public static List<Pair<String, String>> getSourcePaths(final LanguageIdentifier languageIdentifier,
-                                                               final FileObject contentEntry)
+    @Nullable
+    public static List<Pair<String, String>> getSourcePaths(final LanguageIdentifier languageIdentifier,
+                                                            final FileObject contentEntry)
             throws ConfigurationException {
         final LangSpecCommonPaths paths = new LangSpecCommonPaths(contentEntry);
         final List<Pair<String, String>> sourcePaths = new ArrayList<>();
@@ -74,8 +76,9 @@ public class ModuleBuilderUtils {
         contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".cache");
         contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "lib");
         contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
+        contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "target");
         contentEntry.addExcludeFolder(paths.strCacheDir().toString());
-        contentEntry.addExcludeFolder(paths.srcGenDir().toString());
+//        contentEntry.addExcludeFolder(paths.srcGenDir().toString());
     }
 
 }

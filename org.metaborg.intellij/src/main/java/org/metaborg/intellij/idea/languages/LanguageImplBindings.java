@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 
 /**
  * IntelliJ IDEA objects bound to a language implementation.

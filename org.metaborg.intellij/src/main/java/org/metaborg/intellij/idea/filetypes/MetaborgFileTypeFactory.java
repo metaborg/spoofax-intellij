@@ -18,14 +18,15 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.google.common.collect.*;
-import com.google.inject.*;
-import com.intellij.openapi.fileTypes.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.logging.*;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import com.intellij.openapi.fileTypes.FileTypeFactory;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * File type factory for file types implementing the {@link IMetaborgFileType} interface.

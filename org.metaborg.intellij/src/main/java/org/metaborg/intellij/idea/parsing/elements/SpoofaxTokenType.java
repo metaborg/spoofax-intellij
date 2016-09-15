@@ -18,9 +18,9 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.psi.tree.*;
+import com.intellij.psi.tree.IElementType;
 import org.metaborg.core.style.*;
-import org.metaborg.intellij.idea.languages.*;
+import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
 
 /**
  * The type of a Spoofax token.

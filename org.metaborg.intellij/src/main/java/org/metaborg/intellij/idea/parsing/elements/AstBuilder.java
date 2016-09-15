@@ -15,19 +15,17 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import java.util.Stack;
-
-import javax.annotation.Nullable;
-
+import com.google.common.base.Preconditions;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.PsiBuilder;
+import com.intellij.psi.tree.IElementType;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 
-import com.google.common.base.Preconditions;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.IElementType;
+import javax.annotation.Nullable;
+import java.util.Stack;
 
 /**
  * Builds an IntelliJ AST from a ATerm AST.
@@ -96,7 +94,7 @@ public final class AstBuilder {
      *            The root term.
      */
     private void buildTermIterative(final PsiBuilder builder, final IStrategoTerm root,
-        final ATermAstElementTypeProvider elementTypeProvider) {
+                                    final ATermAstElementTypeProvider elementTypeProvider) {
         final Stack<TermTask> tasks = new Stack<>();
         tasks.push(new TermTask(root));
 
@@ -141,7 +139,7 @@ public final class AstBuilder {
      *            The marker.
      */
     private void buildTermEnd(final PsiBuilder builder, final IStrategoTerm term, final PsiBuilder.Marker marker,
-        final ATermAstElementTypeProvider elementTypeProvider) {
+                              final ATermAstElementTypeProvider elementTypeProvider) {
         final IElementType elementType = elementTypeProvider.getElementType(term);
 
         moveToEnd(builder, term);
@@ -195,7 +193,7 @@ public final class AstBuilder {
      *            The term.
      */
     @SuppressWarnings("unused") private void buildTermRecursive(final PsiBuilder builder, final IStrategoTerm term,
-        final ATermAstElementTypeProvider elementTypeProvider) {
+                                                                final ATermAstElementTypeProvider elementTypeProvider) {
         final PsiBuilder.Marker marker = buildTermStart(builder, term);
 
         final IStrategoTerm[] subterms = term.getAllSubterms();

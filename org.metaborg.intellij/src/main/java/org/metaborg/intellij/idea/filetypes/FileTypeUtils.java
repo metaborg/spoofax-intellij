@@ -18,8 +18,10 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.intellij.openapi.fileTypes.*;
-import com.intellij.openapi.fileTypes.ex.*;
+import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
+import com.intellij.openapi.fileTypes.FileNameMatcher;
+import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
 
 /**
  * Utility functions for working with IntelliJ IDEA file types.

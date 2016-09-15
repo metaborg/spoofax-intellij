@@ -18,8 +18,8 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import com.intellij.util.ui.*;
-import org.jetbrains.annotations.*;
+import com.intellij.util.ui.ColumnInfo;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Column info for nodes that implement the {@link IModelItem} interface.

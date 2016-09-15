@@ -18,12 +18,9 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
+import com.google.inject.Inject;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.ProcessingContext;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.MetaborgException;
@@ -38,11 +35,13 @@ import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultReques
 import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
 import org.metaborg.spoofax.core.unit.ISpoofaxAnalyzeUnit;
 
-import com.google.inject.Inject;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ProcessingContext;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 // TODO: Remove IStrategoTerm type arguments to make it generic, then rename to Metaborg (and the Reference too).
+
 /**
  * Provides reference resolution for Spoofax languages.
  */

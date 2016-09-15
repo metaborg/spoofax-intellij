@@ -18,14 +18,13 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
+import com.intellij.extapi.psi.PsiFileBase;
+import com.intellij.openapi.util.Key;
+import com.intellij.psi.FileViewProvider;
 import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType;
 import org.metaborg.spoofax.core.unit.ISpoofaxAnalyzeUnit;
 import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
 import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
-
-import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.openapi.util.Key;
-import com.intellij.psi.FileViewProvider;
 
 /**
  * Metaborg source file PSI element.
