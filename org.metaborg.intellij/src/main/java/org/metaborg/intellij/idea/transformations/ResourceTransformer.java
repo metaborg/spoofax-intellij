@@ -30,9 +30,7 @@ import org.metaborg.core.processing.parse.IParseResultRequester;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.syntax.IInputUnit;
 import org.metaborg.core.syntax.IParseUnit;
-import org.metaborg.core.transform.ITransformService;
-import org.metaborg.core.transform.ITransformUnit;
-import org.metaborg.core.transform.TransformException;
+import org.metaborg.core.transform.*;
 import org.metaborg.core.unit.IInputUnitService;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.concurrent.IClosableLock;
@@ -41,6 +39,8 @@ import org.metaborg.util.log.ILogger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import javax.annotation.*;
 
 /**
  * Executes a transformation action on resources.
@@ -92,7 +92,11 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
                 final Collection<T> results =
                     transform(resource, transformResource.project(), language, transformResource.text(), goal);
                 for(final T r : results) {
-                    outputFiles.add(r.output());
+                    for (final ITransformOutput o : r.outputs()) {
+                        @Nullable final FileObject output = o.output();
+                        if (output != null)
+                            outputFiles.add(output);
+                    }
                 }
             } catch(ContextException | TransformException e) {
                 this.logger.error("Transformation failed for {}", e, resource);

@@ -31,8 +31,7 @@ import org.metaborg.core.context.IContext;
 import org.metaborg.core.context.IContextService;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.project.IProject;
-import org.metaborg.core.transform.ITransformUnit;
-import org.metaborg.core.transform.TransformException;
+import org.metaborg.core.transform.*;
 import org.metaborg.intellij.idea.transformations.TransformResource;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
@@ -115,8 +114,12 @@ public final class TransformationAction extends AnActionWithId {
             final FileObject resource = transformResource.resource();
             final Collection<? extends ITransformUnit<?>> transformResults =
                 transform(resource, transformResource.project(), language, transformResource.text());
-            for(ITransformUnit<?> result : transformResults) {
-                outputFiles.add(result.output());
+            for(final ITransformUnit<?> r : transformResults) {
+                for (final ITransformOutput o : r.outputs()) {
+                    @Nullable final FileObject output = o.output();
+                    if (output != null)
+                        outputFiles.add(output);
+                }
             }
         }
 
