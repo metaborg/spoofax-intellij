@@ -86,4 +86,13 @@ public final class IdeaEditorRegistry implements IEditorRegistry {
 
         FileEditorManager.getInstance(ideaProject).openFile(virtualFile, true);
     }
+
+    @Override
+    public void open(final Iterable<FileObject> iterable, final IProject project) {
+        // TODO: Ask user if they really want to open many files.
+
+        for(final FileObject fo : iterable) {
+            open(fo, project);
+        }
+    }
 }

@@ -22,12 +22,12 @@ targetCompatibility = 1.8
 repositories {
     mavenLocal()
     mavenCentral()
-    maven {
-        url "http://artifacts.metaborg.org/content/repositories/releases/"
-    }
-    maven {
-        url "http://artifacts.metaborg.org/content/repositories/snapshots/"
-    }
+//    maven {
+//        url "http://artifacts.metaborg.org/content/repositories/releases/"
+//    }
+//    maven {
+//        url "http://artifacts.metaborg.org/content/repositories/snapshots/"
+//    }
 }
 
 // FIX: Circular dependency due to adding test class dependencies
