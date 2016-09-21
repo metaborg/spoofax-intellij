@@ -18,13 +18,12 @@
 
 package org.metaborg.intellij.idea.extensions;
 
-import com.google.common.collect.*;
-import com.google.inject.*;
-import com.intellij.openapi.extensions.*;
+import com.intellij.openapi.extensions.ExtensionPointName;
 import org.metaborg.core.*;
 import org.metaborg.core.plugin.*;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
 
 public final class IntelliJSpoofaxPluginLoader extends IntelliJPluginLoader<IServiceModulePlugin> {
 

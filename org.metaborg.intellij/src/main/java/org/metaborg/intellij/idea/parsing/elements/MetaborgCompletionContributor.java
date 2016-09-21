@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.codeInsight.completion.*;
+import com.intellij.codeInsight.completion.CompletionContributor;
 
 /**
  * Contributes completion providers for a language.

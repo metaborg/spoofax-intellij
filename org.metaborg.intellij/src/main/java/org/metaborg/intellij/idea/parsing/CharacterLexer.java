@@ -18,13 +18,13 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.intellij.lexer.*;
-import com.intellij.psi.tree.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
-import org.metaborg.intellij.logging.*;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.lexer.LexerBase;
+import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
 /**

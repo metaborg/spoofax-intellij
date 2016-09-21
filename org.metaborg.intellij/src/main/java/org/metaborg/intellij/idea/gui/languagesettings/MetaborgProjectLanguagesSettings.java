@@ -18,10 +18,11 @@
 
 package org.metaborg.intellij.idea.gui.languagesettings;
 
-import com.google.inject.*;
-import com.intellij.openapi.project.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
 
 import javax.swing.*;
 

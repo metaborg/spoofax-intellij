@@ -18,8 +18,8 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.idea.parsing.elements.MetaborgDeclarationElement;
 
 /**
  * A reference to a definition.

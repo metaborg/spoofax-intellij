@@ -20,7 +20,7 @@ package org.metaborg.intellij.idea.graphics;
 
 import org.metaborg.core.language.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**

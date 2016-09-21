@@ -15,11 +15,11 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import java.util.Iterator;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.lexer.LexerBase;
+import com.intellij.psi.tree.IElementType;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgRuntimeException;
@@ -46,11 +46,9 @@ import org.spoofax.jsglr.client.imploder.IToken;
 import org.spoofax.jsglr.client.imploder.ITokenizer;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.intellij.lexer.LexerBase;
-import com.intellij.psi.tree.IElementType;
+import javax.annotation.Nullable;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Adapts the Spoofax SGLR parser to allow it to be used as an IntelliJ IDEA highlighting lexer.
@@ -66,7 +64,8 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     // Whether to show debug info from the lexer.
     private static final boolean DEBUG_INFO = false;
 
-    private final @Nullable FileObject file;
+    private final @Nullable
+    FileObject file;
     private final @Nullable IProject project;
     private final ILanguageImpl languageImpl;
     private final JSGLRParserConfiguration parserConfiguration;
@@ -75,7 +74,8 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     private final ISpoofaxSyntaxService syntaxService;
     private final ISpoofaxCategorizerService categorizer;
     private final ISpoofaxStylerService styler;
-    @InjectLogger private ILogger logger;
+    @InjectLogger
+    private ILogger logger;
 
     // The character buffer.
     private CharSequence buffer;
@@ -87,11 +87,12 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     private int tokenIndex;
 
 
-    @Inject private SpoofaxHighlightingLexer(@Assisted @Nullable FileObject file, @Assisted @Nullable IProject project,
-        @Assisted ILanguageImpl languageImpl, @Assisted SpoofaxTokenTypeManager tokenTypesManager,
-        ISpoofaxInputUnitService unitService, ISpoofaxSyntaxService syntaxService,
-        ISpoofaxCategorizerService categorizer, ISpoofaxStylerService styler,
-        JSGLRParserConfiguration parserConfiguration) {
+    @Inject
+    private SpoofaxHighlightingLexer(@Assisted @Nullable FileObject file, @Assisted @Nullable IProject project,
+                                     @Assisted ILanguageImpl languageImpl, @Assisted SpoofaxTokenTypeManager tokenTypesManager,
+                                     ISpoofaxInputUnitService unitService, ISpoofaxSyntaxService syntaxService,
+                                     ISpoofaxCategorizerService categorizer, ISpoofaxStylerService styler,
+                                     JSGLRParserConfiguration parserConfiguration) {
         this.file = file;
         this.project = project;
         this.languageImpl = languageImpl;

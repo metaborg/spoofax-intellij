@@ -19,7 +19,7 @@
 package org.metaborg.intellij.idea.parsing.elements;
 
 
-import org.metaborg.intellij.idea.languages.*;
+import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
 
 /**
  * Element type for an identifier in a Metaborg language.

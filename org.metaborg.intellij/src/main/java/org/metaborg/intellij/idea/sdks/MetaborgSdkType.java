@@ -18,30 +18,37 @@
 
 package org.metaborg.intellij.idea.sdks;
 
-import com.google.common.base.*;
-import com.google.common.io.*;
-import com.google.inject.*;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import com.google.inject.Inject;
 import com.intellij.openapi.projectRoots.*;
-import com.intellij.openapi.projectRoots.impl.*;
-import com.intellij.openapi.roots.*;
-import com.intellij.openapi.ui.*;
-import com.intellij.openapi.vfs.*;
-import com.intellij.openapi.vfs.impl.jar.*;
-import com.intellij.util.*;
-import org.jdom.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.resources.*;
+import com.intellij.openapi.projectRoots.impl.JavaDependentSdkType;
+import com.intellij.openapi.roots.OrderRootType;
+import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.openapi.vfs.impl.jar.JarFileSystemImpl;
+import com.intellij.util.ArrayUtil;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jdom.Element;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils2;
+import org.metaborg.intellij.resources.LibraryService;
 import org.metaborg.util.log.*;
 
 import javax.swing.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Metaborg SDK type.
@@ -133,8 +140,10 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      */
     @Override
     public boolean isValidSdkHome(final String path) {
+        if (StringUtil.isEmpty(path))
+            return false;
 
-        final List<VirtualFile> sdkFiles = getSdkJars(path);
+        final List<Pair<String, VirtualFile>> sdkFiles = getSdkJars(path);
 
         if (sdkFiles.isEmpty()) {
             // Apparently the SDK has no files, so any home is valid.
@@ -142,7 +151,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
         }
 
         // We simply test whether the first file exists.
-        return sdkFiles.get(0) != null && sdkFiles.get(0).exists();
+        return sdkFiles.get(0).getValue() != null && sdkFiles.get(0).getValue().exists();
     }
 
     /**
@@ -245,7 +254,8 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     public String getBinPath(final Sdk sdk) {
         @Nullable final Sdk jdk = getJdk(sdk);
         if (jdk == null) return null;
-        return ((JavaSdk)jdk.getSdkType()).getBinPath(jdk);
+        return JavaSdk.getInstance().getBinPath(jdk);
+//        return ((JavaSdk)jdk.getSdkType()).getBinPath(jdk);
     }
 
     /**
@@ -256,7 +266,8 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     public String getToolsPath(final Sdk sdk) {
         @Nullable final Sdk jdk = getJdk(sdk);
         if (jdk == null || jdk.getVersionString() == null) return null;
-        return ((JavaSdk)jdk.getSdkType()).getToolsPath(jdk);
+        return JavaSdk.getInstance().getToolsPath(jdk);
+//        return ((JavaSdk)jdk.getSdkType()).getToolsPath(jdk);
     }
 
     /**
@@ -267,7 +278,8 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     public String getVMExecutablePath(final Sdk sdk) {
         @Nullable final Sdk jdk = getJdk(sdk);
         if (jdk == null) return null;
-        return ((JavaSdk)jdk.getSdkType()).getVMExecutablePath(jdk);
+        return JavaSdk.getInstance().getVMExecutablePath(jdk);
+//        return ((JavaSdk)jdk.getSdkType()).getVMExecutablePath(jdk);
     }
 
     /**
@@ -403,8 +415,17 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
         // The added SDK files must be in the jar:// file system.
         // Adding normal file:// files works when creating the SDK,
         // but they are lost when the SDK is reloaded (e.g. after restart).
-        for (final VirtualFile file : getSdkJars(sdkHomePath)) {
-            sdkModificator.addRoot(file, OrderRootType.CLASSES);
+        for (final Pair<String, VirtualFile> pair : getSdkJars(sdkHomePath)) {
+            String filename = pair.getKey();
+            @Nullable VirtualFile file = pair.getValue();
+            if (file == null) {
+                this.logger.error("SDK file not found: {}", filename);
+            } else {
+                if (!file.exists()) {
+                    this.logger.warn("SDK file may not exist: {}", filename);
+                }
+                sdkModificator.addRoot(file, OrderRootType.CLASSES);
+            }
         }
     }
 
@@ -412,10 +433,10 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      * Returns a list of SDK files.
      *
      * @param sdkHomePath The SDK home path.
-     * @return A list of SDK jars. A file can be <code>null</code> if it doesn't exist.
+     * @return A list of pairs of SDK jar filenames and files. A file can be <code>null</code> if it doesn't exist.
      * Otherwise, a file's {@link VirtualFile#exists()} may return <code>false</code>.
      */
-    private List<VirtualFile> getSdkJars(final String sdkHomePath) {
+    private List<Pair<String, VirtualFile>> getSdkJars(final String sdkHomePath) {
 
         // Specify the Metaborg SDK dependencies in this file.
         final URL url = Resources.getResource(SpoofaxIdeaPlugin.class, "/sdk_libraries.txt");
@@ -430,29 +451,29 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
         try {
             text = Resources.toString(url, Charsets.UTF_8);
         } catch (final IOException e) {
-            throw LoggerUtils.exception(this.logger, UnhandledException.class,
+            throw LoggerUtils2.exception(this.logger, UnhandledException.class,
                     "Cannot get resource content of resource: {}", e, url);
         }
 
         final String[] filenames = text.split("\\r?\\n");
 
-        final List<VirtualFile> files = new ArrayList<>(filenames.length);
+        final List<Pair<String, VirtualFile>> files = new ArrayList<>(filenames.length);
         for (final String filename : filenames) {
             final File file = new File(sdkHomePath, filename);
 
             @Nullable final VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
-            if (virtualFile == null) {
-                files.add(null);
-                continue;
-            }
+//            if (virtualFile == null) {
+//                files.add(null);
+//                continue;
+//            }
 
-            @Nullable final VirtualFile jarFile = JarFileSystemImpl.getInstance().getJarRootForLocalFile(virtualFile);
-            if (jarFile == null) {
-                files.add(null);
-                continue;
-            }
+            @Nullable final VirtualFile jarFile = virtualFile != null ? JarFileSystemImpl.getInstance().getJarRootForLocalFile(virtualFile) : null;
+//            if (jarFile == null) {
+//                files.add(null);
+//                continue;
+//            }
 
-            files.add(jarFile);
+            files.add(Pair.of(filename, jarFile));
         }
 
         return files;

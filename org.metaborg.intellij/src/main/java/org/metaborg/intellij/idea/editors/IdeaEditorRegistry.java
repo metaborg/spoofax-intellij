@@ -18,20 +18,20 @@
 
 package org.metaborg.intellij.idea.editors;
 
-import com.google.inject.*;
-import com.intellij.openapi.fileEditor.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.*;
-import org.apache.commons.vfs2.*;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.resources.*;
+import org.metaborg.intellij.idea.projects.IdeaProject;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.Collections;
 
 /**
  * Editor registry for IntelliJ IDEA.

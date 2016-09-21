@@ -18,11 +18,12 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import com.intellij.openapi.util.*;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.tree.*;
-import com.intellij.util.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.AbstractElementManipulator;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
+import com.intellij.util.IncorrectOperationException;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxIdentifier;
 
 public final class SpoofaxIdentifierManipulator extends AbstractElementManipulator<SpoofaxIdentifier> {
     @Override

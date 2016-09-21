@@ -18,9 +18,9 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.intellij.lang.*;
-import com.intellij.psi.tree.*;
-import org.metaborg.intellij.idea.filetypes.*;
+import com.intellij.lang.ParserDefinition;
+import com.intellij.psi.tree.IFileElementType;
+import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType;
 
 /**
  * Factory for parser definitions.

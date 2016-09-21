@@ -18,7 +18,8 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
 
 /**
  * Visitor for Spoofax PSI elements.

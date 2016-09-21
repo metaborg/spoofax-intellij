@@ -18,17 +18,20 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import com.intellij.ui.treeStructure.treetable.*;
-import com.intellij.util.ui.*;
+import com.intellij.ui.treeStructure.treetable.ListTreeTableModelOnColumns;
+import com.intellij.util.ui.ColumnInfo;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.graphics.*;
+import org.metaborg.intellij.idea.graphics.IIconManager;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
-import java.util.*;
-import java.util.function.*;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Tree model for languages and their implementation.
@@ -645,7 +648,7 @@ public final class LanguageTreeModel extends ListTreeTableModelOnColumns {
      */
     @Nullable
     private <N extends ILanguageTreeNode<V>, V> N getLanguageTreeNode(final Class<N> nodeClass, @Nullable final V value,
-                                                                     @Nullable final TreeNode parent) {
+                                                                      @Nullable final TreeNode parent) {
         return getLanguageTreeNode(nodeClass, (Predicate<N>)v -> Objects.equals(v.getValue(), value), parent);
     }
 

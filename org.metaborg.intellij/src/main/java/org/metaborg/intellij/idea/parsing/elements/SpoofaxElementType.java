@@ -18,9 +18,10 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.psi.tree.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.languages.*;
+import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
 
 /**
  * A Spoofax element type.

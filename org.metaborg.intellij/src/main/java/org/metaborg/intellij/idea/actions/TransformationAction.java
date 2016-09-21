@@ -15,12 +15,13 @@
 
 package org.metaborg.intellij.idea.actions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.action.ITransformAction;
@@ -37,21 +38,14 @@ import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
 import org.metaborg.spoofax.core.processing.parse.ISpoofaxParseResultRequester;
 import org.metaborg.spoofax.core.transform.ISpoofaxTransformService;
-import org.metaborg.spoofax.core.unit.ISpoofaxAnalyzeUnit;
-import org.metaborg.spoofax.core.unit.ISpoofaxInputUnit;
-import org.metaborg.spoofax.core.unit.ISpoofaxInputUnitService;
-import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
-import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
+import org.metaborg.spoofax.core.unit.*;
 import org.metaborg.util.concurrent.IClosableLock;
 import org.metaborg.util.log.ILogger;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * A transformation action from a builder menu.
@@ -66,15 +60,17 @@ public final class TransformationAction extends AnActionWithId {
     private final ISpoofaxTransformService transformService;
     private final ISpoofaxParseResultRequester parseResultRequester;
     private final ISpoofaxAnalysisResultRequester analysisResultRequester;
-    @InjectLogger private ILogger logger;
+    @InjectLogger
+    private ILogger logger;
 
 
-    @Inject private TransformationAction(@Assisted final String id, @Assisted final ITransformAction action,
-        @Assisted final ILanguageImpl language, final ActionUtils actionUtils,
-        final IIntelliJResourceService resourceService, final IContextService contextService,
-        final ISpoofaxInputUnitService unitService, final ISpoofaxTransformService transformService,
-        final ISpoofaxParseResultRequester parseResultRequester,
-        final ISpoofaxAnalysisResultRequester analysisResultRequester) {
+    @Inject
+    private TransformationAction(@Assisted final String id, @Assisted final ITransformAction action,
+                                 @Assisted final ILanguageImpl language, final ActionUtils actionUtils,
+                                 final IIntelliJResourceService resourceService, final IContextService contextService,
+                                 final ISpoofaxInputUnitService unitService, final ISpoofaxTransformService transformService,
+                                 final ISpoofaxParseResultRequester parseResultRequester,
+                                 final ISpoofaxAnalysisResultRequester analysisResultRequester) {
         super(id, action.name(), null, null);
         this.language = language;
         this.goal = action.goal();
@@ -131,7 +127,7 @@ public final class TransformationAction extends AnActionWithId {
     }
 
     private Collection<? extends ITransformUnit<?>> transform(final FileObject resource, final IProject project,
-        final ILanguageImpl language, final String text) throws ContextException, TransformException {
+                                                              final ILanguageImpl language, final String text) throws ContextException, TransformException {
         final Collection<? extends ISpoofaxTransformUnit<?>> transformResults;
         final IContext context = contextService.get(resource, project, language);
         final ISpoofaxInputUnit input = unitService.inputUnit(resource, text, language, null);

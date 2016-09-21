@@ -1,0 +1,109 @@
+buildscript {
+    repositories {
+        maven { url "http://dl.bintray.com/jetbrains/intellij-plugin-service" }
+    }
+}
+
+plugins {
+    id "java"
+    id "idea"
+    id "eclipse"
+    id "maven"
+    id "org.jetbrains.intellij" version "0.1.10"
+    id "com.github.johnrengelman.shadow" version "1.2.3"
+}
+
+allprojects {
+    group "org.metaborg"
+    version "2.1.0-SNAPSHOT"
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+ext {
+    metaborgVersion = "2.1.0-SNAPSHOT"
+    guiceVersion = "4.0"
+}
+
+intellij {
+    version = "2016.2.3"
+    type = "IC"
+
+    // FIXME: hack to support both IDEA 15 and IDEA 16.
+    // See https://github.com/intellij-rust/intellij-rust/issues/243
+    updateSinceUntilBuild = false
+}
+
+configurations {
+    provided
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "http://artifacts.metaborg.org/content/repositories/releases/"
+    }
+    maven {
+        url "http://artifacts.metaborg.org/content/repositories/snapshots/"
+    }
+}
+
+task(printAllDependencies, description: 'Prints all runtime dependencies.') << {
+    def jars = configurations.runtime.resolve().collect { it.name }//.findAll { !it.startsWith('slf4j') }
+    def result = [ 'org.metaborg.jps-2.1.0-SNAPSHOT.jar' ] + jars.sort()
+    println result.join(';')
+}
+
+dependencies {
+    compile     project(":org.metaborg.intellij-common")
+    compile     "org.metaborg:org.metaborg.jps-deps:$metaborgVersion"
+    // Main dependencies
+    compile     ("org.metaborg:org.metaborg.core:$metaborgVersion") {
+        exclude group: "org.slf4j"
+        exclude group: "com.google.guava"
+    }
+    compile     ("org.metaborg:org.metaborg.spoofax.core:$metaborgVersion") {
+        exclude group: "org.slf4j"
+        exclude group: "com.google.guava"
+    }
+    compile     ("org.metaborg:org.metaborg.spoofax.meta.core:$metaborgVersion") {
+        exclude group: "org.slf4j"
+        exclude group: "com.google.guava"
+    }
+    compile     "com.google.guava:guava:17.0"
+    compile     "org.slf4j:slf4j-api:1.7.10"
+
+    compile     "com.google.code.findbugs:jsr305:3.0.0"
+    compile     "org.apache.commons:commons-lang3:3.4"
+    compile     "org.apache.commons:commons-vfs2:2.1"
+    compile     "com.google.inject:guice:$guiceVersion"
+    compile     "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
+    compile     "com.google.inject.extensions:guice-multibindings:$guiceVersion"
+    compile     "org.javassist:javassist:3.20.0-GA"
+
+    testCompile "junit:junit:4.12"
+}
+
+sourceSets.main.compileClasspath += configurations.provided
+
+idea {
+    module {
+        inheritOutputDirs = true
+        scopes.PROVIDED.plus += [configurations.provided]
+    }
+}
+
+eclipse {
+    classpath {
+        plusConfigurations += [configurations.provided]
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            mavenLocal()
+        }
+    }
+}

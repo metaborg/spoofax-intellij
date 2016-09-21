@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.intellij.openapi.util.*;
+import com.intellij.openapi.util.TextRange;
 import org.metaborg.core.source.*;
 
 public final class SourceRegionUtil {

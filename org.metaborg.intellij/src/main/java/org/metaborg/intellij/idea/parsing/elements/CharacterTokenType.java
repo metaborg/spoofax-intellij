@@ -18,8 +18,8 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.psi.tree.*;
-import org.metaborg.intellij.idea.languages.*;
+import com.intellij.psi.tree.IElementType;
+import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
 
 /**
  * Token type for a single character.

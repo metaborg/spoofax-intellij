@@ -18,8 +18,8 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
-import com.intellij.ide.util.projectWizard.*;
-import org.metaborg.intellij.idea.projects.*;
+import com.intellij.ide.util.projectWizard.WizardContext;
+import org.metaborg.intellij.idea.projects.MetaborgModuleBuilder;
 
 /**
  * Factory for new module wizard steps.

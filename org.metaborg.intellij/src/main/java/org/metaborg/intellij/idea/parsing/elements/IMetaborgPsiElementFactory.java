@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.lang.*;
+import com.intellij.lang.ASTNode;
 
 /**
  * Factory for PSI elements.

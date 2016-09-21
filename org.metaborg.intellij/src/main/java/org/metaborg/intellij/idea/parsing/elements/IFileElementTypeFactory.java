@@ -18,8 +18,8 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.lang.*;
-import com.intellij.psi.tree.*;
+import com.intellij.lang.Language;
+import com.intellij.psi.tree.IFileElementType;
 
 /**
  * Factory for file element types.

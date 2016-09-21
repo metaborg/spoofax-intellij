@@ -18,10 +18,11 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import com.google.inject.*;
-import com.intellij.patterns.*;
-import com.intellij.psi.*;
-import org.metaborg.intellij.idea.*;
+import com.google.inject.Inject;
+import com.intellij.patterns.PlatformPatterns;
+import com.intellij.psi.PsiReferenceContributor;
+import com.intellij.psi.PsiReferenceRegistrar;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
 
 /**
  * Contributes reference providers for PSI elements that match a certain pattern.

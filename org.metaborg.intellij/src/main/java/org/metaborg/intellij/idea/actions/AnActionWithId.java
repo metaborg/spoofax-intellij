@@ -18,8 +18,9 @@
 
 package org.metaborg.intellij.idea.actions;
 
-import com.intellij.openapi.actionSystem.*;
-import org.jetbrains.annotations.*;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 

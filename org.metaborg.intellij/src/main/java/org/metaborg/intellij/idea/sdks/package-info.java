@@ -22,4 +22,4 @@
 @NonNullByDefault
 package org.metaborg.intellij.idea.sdks;
 
-import org.metaborg.intellij.*;
+import org.metaborg.intellij.NonNullByDefault;

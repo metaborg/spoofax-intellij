@@ -1,0 +1,62 @@
+plugins {
+    id "java"
+    id "idea"
+    id "eclipse"
+    id "maven-publish"
+    id "com.github.johnrengelman.shadow" version "1.2.3"
+}
+
+allprojects {
+    group "org.metaborg"
+    version "2.1.0-SNAPSHOT"
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+assemble.dependsOn shadowJar
+jar.enabled = false
+
+task(printShadowDependencies, description: 'Prints all included shadow dependencies.') << {
+	def r = shadowJar.getIncludedDependencies()
+	r.collect { it.name }.sort().each { dep ->
+        println "      ${dep}"
+    }
+}
+
+task artifacts {
+    group = "Help"
+    description = "Displays the artifacts associated with each configuration of " + project
+    doFirst {
+        configurations.findAll().each { config ->
+            println "${config}:"
+            config.allArtifacts.getFiles().each { file -> println "" + file}
+            println ' '
+        }
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'commons-io:commons-io:2.4'
+}
+
+shadowJar {
+    baseName = 'org.metaborg.jps-deps'
+    classifier = null
+    zip64 = true
+    
+    relocate 'org.apache.commons.io', 'intellij.org.apache.commons.io'
+}
+
+publishing {
+    publications {
+        shadow(MavenPublication) {
+            from components.shadow
+            artifactId = 'org.metaborg.jps-deps'
+        }
+    }
+}

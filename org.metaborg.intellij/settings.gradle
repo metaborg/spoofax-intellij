@@ -1,1 +1,3 @@
+rootProject.name = 'org.metaborg.intellij'
+includeFlat 'org.metaborg.intellij-common'
 

@@ -20,10 +20,12 @@ package org.metaborg.intellij.idea;
 
 import com.google.inject.Injector;
 import com.intellij.openapi.diagnostic.Logger;
-import org.apache.commons.lang3.concurrent.*;
+import org.apache.commons.lang3.concurrent.ConcurrentException;
+import org.apache.commons.lang3.concurrent.LazyInitializer;
 import org.metaborg.core.MetaborgException;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.extensions.*;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.extensions.IntelliJSpoofaxMetaPluginLoader;
+import org.metaborg.intellij.idea.extensions.IntelliJSpoofaxPluginLoader;
 import org.metaborg.spoofax.core.Spoofax;
 import org.metaborg.spoofax.meta.core.SpoofaxMeta;
 

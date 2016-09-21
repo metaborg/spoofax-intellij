@@ -18,12 +18,12 @@
 
 package org.metaborg.intellij.idea.transformations;
 
-import org.apache.commons.vfs2.*;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.*;
 import org.metaborg.core.action.*;
 import org.metaborg.core.language.*;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * Executes a transformation action on resources.

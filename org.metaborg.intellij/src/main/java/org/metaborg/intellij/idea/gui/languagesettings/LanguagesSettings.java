@@ -18,22 +18,26 @@
 
 package org.metaborg.intellij.idea.gui.languagesettings;
 
-import com.google.common.base.*;
-import com.google.common.collect.*;
-import com.google.inject.*;
-import com.intellij.openapi.command.*;
-import com.intellij.openapi.options.*;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
+import com.google.inject.Inject;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.*;
+import com.intellij.openapi.project.Project;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.configuration.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.configuration.IMetaborgApplicationConfig;
+import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.intellij.languages.LanguageLoadingFailedException;
+import org.metaborg.intellij.languages.LanguageUtils2;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.util.log.*;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Base class for a language configuration dialog.
@@ -183,7 +187,7 @@ public abstract class LanguagesSettings extends BaseConfigurable {
             components = this.languageManager.loadRange(requests);
 
         } catch (final LanguageLoadingFailedException e) {
-            throw LoggerUtils.exception(this.logger, UnhandledException.class,
+            throw LoggerUtils2.exception(this.logger, UnhandledException.class,
                     "Unexpected error occurred while loading languages: {}", e, requests);
         }
 

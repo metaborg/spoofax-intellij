@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.compilation;
 
-import com.intellij.openapi.compiler.*;
+import com.intellij.openapi.compiler.CompileTask;
 
 /**
  * A compile task that's executed after a project is built.

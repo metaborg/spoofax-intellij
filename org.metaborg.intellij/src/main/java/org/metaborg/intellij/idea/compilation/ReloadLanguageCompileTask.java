@@ -18,18 +18,21 @@
 
 package org.metaborg.intellij.idea.compilation;
 
-import com.google.inject.*;
-import com.intellij.openapi.application.*;
-import com.intellij.openapi.compiler.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.compiler.CompileContext;
+import com.intellij.openapi.compiler.CompilerMessageCategory;
 import com.intellij.openapi.module.Module;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.intellij.idea.projects.IIdeaProjectService;
+import org.metaborg.intellij.idea.projects.IdeaLanguageSpec;
+import org.metaborg.intellij.idea.projects.IdeaProject;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.meta.core.project.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * Reloads the project's languages after compile.

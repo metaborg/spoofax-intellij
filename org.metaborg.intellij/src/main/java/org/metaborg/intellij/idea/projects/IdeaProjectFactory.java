@@ -18,17 +18,18 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.*;
-import com.intellij.openapi.module.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.module.JavaModuleType;
 import com.intellij.openapi.module.Module;
-import org.apache.commons.vfs2.*;
+import com.intellij.openapi.module.ModuleType;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.source.*;
-import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 public final class IdeaProjectFactory implements IIdeaProjectFactory {
 

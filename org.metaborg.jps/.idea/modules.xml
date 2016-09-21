@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1299388181/org.metaborg.intellij-common.iml" filepath="$PROJECT_DIR$/.idea/modules/-1299388181/org.metaborg.intellij-common.iml" group="org.metaborg.intellij-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1299388181/org.metaborg.intellij-common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-1299388181/org.metaborg.intellij-common_main.iml" group="org.metaborg.intellij-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1299388181/org.metaborg.intellij-common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/-1299388181/org.metaborg.intellij-common_test.iml" group="org.metaborg.intellij-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.jps.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.jps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.jps_main.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.jps_main.iml" group="org.metaborg.jps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.jps_test.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.jps_test.iml" group="org.metaborg.jps" />
+    </modules>
+  </component>
+</project>

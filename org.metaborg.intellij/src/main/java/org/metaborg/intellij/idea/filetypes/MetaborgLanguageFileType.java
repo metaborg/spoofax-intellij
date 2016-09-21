@@ -18,14 +18,16 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.google.inject.*;
-import com.intellij.openapi.fileTypes.*;
-import org.jetbrains.annotations.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.fileTypes.LanguageFileType;
+import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.intellij.languages.LanguageUtils2;
+import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
 import javax.swing.*;

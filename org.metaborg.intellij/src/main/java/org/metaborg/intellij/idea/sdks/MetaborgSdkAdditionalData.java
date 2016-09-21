@@ -18,11 +18,14 @@
 
 package org.metaborg.intellij.idea.sdks;
 
-import com.intellij.openapi.options.*;
-import com.intellij.openapi.projectRoots.*;
-import org.jdom.*;
+import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.projectRoots.ProjectJdkTable;
+import com.intellij.openapi.projectRoots.Sdk;
+import com.intellij.openapi.projectRoots.SdkModel;
+import com.intellij.openapi.projectRoots.ValidatableSdkAdditionalData;
+import org.jdom.Element;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 public final class MetaborgSdkAdditionalData implements ValidatableSdkAdditionalData {
 

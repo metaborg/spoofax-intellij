@@ -15,43 +15,10 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-
-import javax.swing.Icon;
-
-import com.google.common.collect.*;
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.metaborg.core.build.*;
-import org.metaborg.core.language.LanguageIdentifier;
-import org.metaborg.core.language.LanguageVersion;
-import org.metaborg.core.project.ProjectException;
-import org.metaborg.intellij.UnhandledException;
-import org.metaborg.intellij.idea.graphics.IIconManager;
-import org.metaborg.intellij.idea.projects.newproject.*;
-import org.metaborg.intellij.idea.sdks.MetaborgSdkType;
-import org.metaborg.intellij.logging.InjectLogger;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.resources.IIntelliJResourceService;
-import org.metaborg.spoofax.meta.core.build.LangSpecCommonPaths;
-import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
-import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
-import org.metaborg.spoofax.meta.core.config.SdfVersion;
-import org.metaborg.spoofax.meta.core.generator.general.*;
-import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
-import org.metaborg.util.log.ILogger;
-
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.intellij.ide.util.projectWizard.ModuleBuilder;
-import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ide.util.projectWizard.SettingsStep;
-import com.intellij.ide.util.projectWizard.SourcePathsBuilder;
-import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
@@ -72,11 +39,35 @@ import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.DisposeAwareRunnable;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.core.language.LanguageIdentifier;
+import org.metaborg.core.language.LanguageVersion;
+import org.metaborg.core.project.ProjectException;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
+import org.metaborg.intellij.idea.sdks.MetaborgSdkType;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils2;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.spoofax.meta.core.build.LangSpecCommonPaths;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
+import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
+import org.metaborg.spoofax.meta.core.config.SdfVersion;
+import org.metaborg.spoofax.meta.core.generator.general.*;
+import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
+import org.metaborg.util.log.ILogger;
+
+import javax.swing.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Builds a new Spoofax module.
@@ -91,9 +82,11 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private final INewModuleWizardStepFactory wizardStepFactory;
     private final ISpoofaxLanguageSpecConfigBuilder configBuilder;
     private final MetaborgModuleType moduleType;
-    @InjectLogger private ILogger logger;
+    @InjectLogger
+    private ILogger logger;
 
-    @Nullable private List<Pair<String, String>> sourcePaths;
+    @Nullable
+    private List<Pair<String, String>> sourcePaths;
 
     private String name;
     private Collection<String> extensions;
@@ -192,10 +185,11 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     }
 
 
-    @Inject private MetaborgModuleBuilder(final IIdeaLanguageSpecFactory languageSpecFactory,
-        final IIntelliJResourceService resourceService, final IIdeaProjectService projectService,
-        final ISpoofaxLanguageSpecConfigBuilder configBuilder, final INewModuleWizardStepFactory wizardStepFactory,
-        final IIconManager iconManager, final MetaborgModuleType moduleType) {
+    @Inject
+    private MetaborgModuleBuilder(final IIdeaLanguageSpecFactory languageSpecFactory,
+                                  final IIntelliJResourceService resourceService, final IIdeaProjectService projectService,
+                                  final ISpoofaxLanguageSpecConfigBuilder configBuilder, final INewModuleWizardStepFactory wizardStepFactory,
+                                  final IIconManager iconManager, final MetaborgModuleType moduleType) {
         super();
         this.languageSpecFactory = languageSpecFactory;
         this.resourceService = resourceService;
@@ -232,18 +226,20 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      *            The parent disposable.
      * @return The wizard step.
      */
-    @Override @Nullable public final ModuleWizardStep getCustomOptionsStep(final WizardContext context,
-        final Disposable parentDisposable) {
+    @Override @Nullable
+    public final ModuleWizardStep getCustomOptionsStep(final WizardContext context,
+                                                       final Disposable parentDisposable) {
 
         return this.wizardStepFactory.create(this, context);
     }
 
     @Override public ModuleWizardStep[] createWizardSteps(final WizardContext wizardContext,
-        final ModulesProvider modulesProvider) {
+                                                          final ModulesProvider modulesProvider) {
         return ModuleWizardStep.EMPTY_ARRAY;
     }
 
-    @Override @Nullable public final ModuleWizardStep modifySettingsStep(final SettingsStep settingsStep) {
+    @Override @Nullable
+    public final ModuleWizardStep modifySettingsStep(final SettingsStep settingsStep) {
         return getModuleType().modifySettingsStep(settingsStep, this);
     }
 
@@ -435,7 +431,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
                 new ContinuousLanguageSpecGenerator(settings.generatorSettings, version);
             generator.generateAll();
         } catch(ProjectException | IOException e) {
-            throw LoggerUtils.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);
+            throw LoggerUtils2.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);
         }
     }
 
@@ -507,7 +503,8 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      * @return A list of (path, packagePrefix) pairs.
      * @throws ConfigurationException
      */
-    @Override @Nullable public List<Pair<String, String>> getSourcePaths() throws ConfigurationException {
+    @Override @Nullable
+    public List<Pair<String, String>> getSourcePaths() throws ConfigurationException {
         if(this.sourcePaths != null)
             return this.sourcePaths;
 
@@ -562,8 +559,9 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 //        return contentEntry;
 //    }
 
-    @Nullable @Override public List<Module> commit(@NotNull final Project project, final ModifiableModuleModel model,
-        final ModulesProvider modulesProvider) {
+    @Nullable
+    @Override public List<Module> commit(@NotNull final Project project, final ModifiableModuleModel model,
+                                         final ModulesProvider modulesProvider) {
         final LanguageLevelProjectExtension extension =
             LanguageLevelProjectExtension.getInstance(ProjectManager.getInstance().getDefaultProject());
         @Nullable final Boolean aDefault = extension.getDefault();

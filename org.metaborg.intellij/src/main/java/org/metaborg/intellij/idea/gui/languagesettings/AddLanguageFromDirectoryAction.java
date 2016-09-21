@@ -18,23 +18,26 @@
 
 package org.metaborg.intellij.idea.gui.languagesettings;
 
-import com.google.inject.*;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.fileChooser.*;
-import com.intellij.openapi.module.*;
-import com.intellij.openapi.project.*;
-import com.intellij.openapi.vfs.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.fileChooser.FileChooser;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.module.StdModuleTypes;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.gui.languagespanel.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.gui.languagespanel.LanguageTreeModel;
+import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
-import java.io.*;
+import javax.annotation.Nullable;
+import java.io.IOException;
 
 /**
  * Action to add a language from an language folder.
@@ -82,7 +85,7 @@ public class AddLanguageFromDirectoryAction extends LanguagesAction {
             final Iterable<ILanguageDiscoveryRequest> requests = this.languageManager.requestFromFolder(folder);
             addRequests(requests);
         } catch (final IOException ex) {
-            throw LoggerUtils.exception(this.logger, UnhandledException.class,
+            throw LoggerUtils2.exception(this.logger, UnhandledException.class,
                     "Unhandled exception while requesting languages from folder: {}", ex, folder);
         }
     }

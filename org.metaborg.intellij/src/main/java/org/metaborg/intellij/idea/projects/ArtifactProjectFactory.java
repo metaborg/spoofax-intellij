@@ -18,15 +18,15 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.*;
-import org.apache.commons.vfs2.*;
+import com.google.inject.Inject;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.source.*;
-import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 public final class ArtifactProjectFactory implements IArtifactProjectFactory {
 

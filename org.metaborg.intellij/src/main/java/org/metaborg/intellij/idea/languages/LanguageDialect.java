@@ -18,10 +18,10 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.google.common.base.*;
+import com.google.common.base.Preconditions;
 import org.metaborg.core.language.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * A language implementation/dialect tuple.

@@ -18,15 +18,14 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import javax.annotation.Nullable;
-
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.IProjectConfig;
 import org.metaborg.core.project.Project;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.intellij.openapi.module.Module;
+import javax.annotation.Nullable;
 
 /**
  * An IntelliJ IDEA project.

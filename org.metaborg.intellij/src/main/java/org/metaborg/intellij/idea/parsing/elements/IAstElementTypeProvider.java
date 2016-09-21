@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.psi.tree.*;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * Retrieves the element type for an AST node.

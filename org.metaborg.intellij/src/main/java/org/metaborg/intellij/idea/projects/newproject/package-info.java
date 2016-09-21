@@ -22,4 +22,4 @@
 @NonNullByDefault
 package org.metaborg.intellij.idea.projects.newproject;
 
-import org.metaborg.intellij.*;
+import org.metaborg.intellij.NonNullByDefault;

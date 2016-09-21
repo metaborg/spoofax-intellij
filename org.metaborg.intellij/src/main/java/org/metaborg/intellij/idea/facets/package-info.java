@@ -27,4 +27,4 @@
 @NonNullByDefault
 package org.metaborg.intellij.idea.facets;
 
-import org.metaborg.intellij.*;
+import org.metaborg.intellij.NonNullByDefault;

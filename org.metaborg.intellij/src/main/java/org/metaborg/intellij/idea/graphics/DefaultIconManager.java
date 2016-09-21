@@ -18,12 +18,12 @@
 
 package org.metaborg.intellij.idea.graphics;
 
-import com.google.inject.*;
-import com.intellij.icons.*;
-import com.intellij.openapi.util.*;
+import com.google.inject.Singleton;
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.util.IconLoader;
 import org.metaborg.core.language.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**

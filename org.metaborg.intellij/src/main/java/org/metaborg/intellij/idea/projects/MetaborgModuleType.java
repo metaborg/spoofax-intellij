@@ -19,12 +19,14 @@
 package org.metaborg.intellij.idea.projects;
 
 
-import com.google.inject.*;
+import com.google.inject.Inject;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.*;
-import com.intellij.openapi.projectRoots.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.graphics.*;
+import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.module.ModuleTypeManager;
+import com.intellij.openapi.projectRoots.Sdk;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.projects.MetaborgModuleConstants;
 
 import javax.swing.*;
 
@@ -38,7 +40,7 @@ public final class MetaborgModuleType extends ModuleType<MetaborgModuleBuilder> 
     }
 
     // The module ID. This is displayed to the user when the ModuleType cannot be found.
-    public static final String ID = "METABORG_MODULE"; // This is also used in plugin.xml.
+    public static final String ID = MetaborgModuleConstants.ModuleID;
     private static final String NAME = "Spoofax";
     private static final String DESCRIPTION = "Spoofax Module";
 

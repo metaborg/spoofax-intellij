@@ -18,14 +18,16 @@
 
 package org.metaborg.intellij.idea.actions;
 
-import com.google.inject.*;
-import com.intellij.openapi.actionSystem.*;
-import org.apache.commons.lang3.*;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import org.apache.commons.lang3.StringUtils;
 import org.metaborg.core.*;
 import org.metaborg.core.language.*;
 import org.metaborg.core.menu.*;
+import org.metaborg.intellij.IdentifierUtils;
 import org.metaborg.core.menu.Separator;
-import org.metaborg.intellij.*;
 
 /**
  * Creates the builder menu for a language.
