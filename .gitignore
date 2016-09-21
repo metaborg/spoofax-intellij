@@ -58,6 +58,9 @@ crashlytics-build.properties
 
 
 ### Eclipse ###
+#.project
+#.classpath
+.settings/
 .metadata
 bin/
 tmp/
@@ -66,11 +69,8 @@ tmp/
 *.swp
 *~.nib
 local.properties
-.settings/
 .loadpath
-.project
 .externalToolBuilders/
-.classpath
 .factorypath
 .buildpath
 .target
