@@ -60,7 +60,7 @@ crashlytics-build.properties
 ### Eclipse ###
 #.project
 #.classpath
-.settings/
+#.settings/
 .metadata
 bin/
 tmp/
