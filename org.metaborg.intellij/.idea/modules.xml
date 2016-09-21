@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.intellij.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.intellij.iml" group="org.metaborg.intellij" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.intellij.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.intellij.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/175670402/org.metaborg.intellij-common.iml" filepath="$PROJECT_DIR$/.idea/modules/175670402/org.metaborg.intellij-common.iml" group="org.metaborg.intellij-common" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/175670402/org.metaborg.intellij-common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/175670402/org.metaborg.intellij-common_main.iml" group="org.metaborg.intellij-common" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/175670402/org.metaborg.intellij-common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/175670402/org.metaborg.intellij-common_test.iml" group="org.metaborg.intellij-common" />
