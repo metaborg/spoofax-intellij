@@ -9,6 +9,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="org.metaborg.intellij_main" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.slf4j:slf4j-api:1.7.10" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -143,12 +144,20 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.12" level="project" />
     <orderEntry type="library" name="Gradle: org.yaml:snakeyaml:1.17" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.xodus:xodus-utils:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.tukaani:xz:1.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.xodus:xodus-openAPI:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-compress:1.8" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.xodus:xodus-compress:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.ant:ant-launcher:1.9.6" level="project" />
     <orderEntry type="library" name="Gradle: org.eclipse.tycho:org.eclipse.jdt.core:3.10.0.v20140604-1726" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.xodus:xodus-environment:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.objenesis:objenesis:2.2" level="project" />
     <orderEntry type="library" name="Gradle: com.cedarsoftware:java-util-pluto-fixes:1.19.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.sugarj:common:1.7.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.sugarj:common:1.7.1" level="project" />
     <orderEntry type="library" name="Gradle: org.metaborg:org.spoofax.interpreter.library.jsglr:2.1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.metaborg:org.spoofax.interpreter.library.java:2.1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.metaborg:org.spoofax.interpreter.library.xml:2.1.0-SNAPSHOT" level="project" />
@@ -160,8 +169,8 @@
     <orderEntry type="library" name="Gradle: ant-contrib:ant-contrib:1.0b3" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.ant:ant:1.9.6" level="project" />
     <orderEntry type="library" name="Gradle: com.github.spullara.mustache.java:compiler:0.9.2" level="project" />
-    <orderEntry type="library" name="Gradle: build.pluto:build-java:1.5.1" level="project" />
-    <orderEntry type="library" name="Gradle: build.pluto:pluto:1.9.1" level="project" />
+    <orderEntry type="library" name="Gradle: build.pluto:build-java:1.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: build.pluto:pluto:1.10.0" level="project" />
     <orderEntry type="library" name="Gradle: org.metaborg:sdf2table.core:2.1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.metaborg:make-permissive:2.1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.metaborg:strategoxt-min-jar:2.1.0-SNAPSHOT" level="project" />
@@ -184,8 +193,8 @@
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-configuration2:2.0" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="library" name="Gradle: org.metaborg:org.metaborg.util:2.1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: org.metaborg:org.metaborg.jps-deps:2.1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.findbugs:jsr305:3.0.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.slf4j:slf4j-api:1.7.10" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.guava:guava:17.0" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
   </component>

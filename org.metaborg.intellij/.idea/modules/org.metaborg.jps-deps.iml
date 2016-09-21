@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="org.metaborg.jps-deps" external.linked.project.path="$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps" external.root.project.path="$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps" external.system.id="GRADLE" external.system.module.group="org.metaborg" external.system.module.version="2.1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="org.metaborg.jps-deps" external.linked.project.path="$MODULE_DIR$/../../../org.metaborg.jps-deps" external.root.project.path="$MODULE_DIR$/../../../org.metaborg.jps-deps" external.system.id="GRADLE" external.system.module.group="org.metaborg" external.system.module.version="2.1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps">
-      <excludeFolder url="file://$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps/.gradle" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps/build" />
+    <content url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps">
+      <excludeFolder url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps/.settings" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps/gradle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

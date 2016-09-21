@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="org.metaborg.jps-deps:test" external.linked.project.path="$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps" external.root.project.path="$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps" external.system.id="GRADLE" external.system.module.group="org.metaborg" external.system.module.type="sourceSet" external.system.module.version="2.1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="org.metaborg.jps-deps:test" external.linked.project.path="$MODULE_DIR$/../../../org.metaborg.jps-deps" external.root.project.path="$MODULE_DIR$/../../../org.metaborg.jps-deps" external.system.id="GRADLE" external.system.module.group="org.metaborg" external.system.module.type="sourceSet" external.system.module.version="2.1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
-    <output-test url="file://$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps/build/classes/test" />
+    <output-test url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps/build/classes/test" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps/src/test">
-      <sourceFolder url="file://$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../../spoofax-intellij-v2/org.metaborg.jps-deps/src/test/resources" type="java-test-resource" />
+    <content url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps/src/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../org.metaborg.jps-deps/src/test/resources" type="java-test-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="org.metaborg.jps-deps_main" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/commons-io/commons-io/2.4/commons-io-2.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="org.metaborg.jps-deps_main" />
 </module>

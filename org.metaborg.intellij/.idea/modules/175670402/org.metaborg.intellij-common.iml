@@ -4,6 +4,8 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../../org.metaborg.intellij-common">
       <excludeFolder url="file://$MODULE_DIR$/../../../../org.metaborg.intellij-common/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../org.metaborg.intellij-common/.settings" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../org.metaborg.intellij-common/bin" />
       <excludeFolder url="file://$MODULE_DIR$/../../../../org.metaborg.intellij-common/build" />
     </content>
     <orderEntry type="inheritedJdk" />
