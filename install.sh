@@ -21,18 +21,24 @@
 # and installs then in the current directory or a specified directory.
 # Optionally it can install Oracle JDK8 if no JDK was detected.
 
-# This script is inspired by https://github.com/rust-lang-nursery/rustup.rs/blob/master/rustup-init.sh
+# This script is inspired by:
+# https://github.com/rust-lang-nursery/rustup.rs/blob/master/rustup-init.sh
+
+# EXECUTION
+# Linux:
+#   curl https://raw.githubusercontent.com/metaborg/spoofax-intellij/master/install.sh -sSLf | bash
+# MacOS:
+#   N/A
+# Windows
+#   N/A
 
 set -o errexit
 set -o pipefail
-set -o nounset
-#set -o xtrace
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
-__base="$(basename ${__file} .sh)"
-#__user=$(who | head -n1 | awk '{print $1}')
 #arg1="${1:-}"
+
+set -o nounset
 
 INTELLIJ_IDEA_LINUX="https://download.jetbrains.com/idea/ideaIC-2016.2.4.tar.gz"
 INTELLIJ_IDEA_MACOS="https://download.jetbrains.com/idea/ideaIC-2016.2.4.dmg"
@@ -71,7 +77,7 @@ main() {
 		ensure tar --strip 1 -xzf "$_ideafile"
 		
 		# Download Spoofax for IntelliJ IDEA
-		say "Downloading Spoofac for IntelliJ..."
+		say "Downloading Spoofax for IntelliJ..."
 		ensure curl -SfL "$_spoofaxurl" -o "$_spoofaxfile"
 		# Extract it into the plugins directory
 		ensure unzip -q "$_spoofaxfile" -d "$_installdir/plugins/"
