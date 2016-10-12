@@ -1,4 +1,4 @@
-[![Jenkins](https://img.shields.io/jenkins/s/http/buildfarm.metaborg.org/spoofax-master.svg)](http://buildfarm.metaborg.org/job/spoofax-master/)
+[![Jenkins](https://img.shields.io/jenkins/s/http/buildfarm.metaborg.org/spoofax-master.svg)](http://buildfarm.metaborg.org/job/metaborg/job/spoofax-releng/job/master/)
 [![GitHub license](https://img.shields.io/github/license/metaborg/spoofax-intellij.svg)](./LICENSE.md)
 
 # Spoofax plugin for IntelliJ IDEA
