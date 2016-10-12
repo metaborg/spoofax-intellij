@@ -50,6 +50,12 @@ repositories {
     maven {
         url "http://artifacts.metaborg.org/content/repositories/snapshots/"
     }
+    maven {
+        url "https://raw.githubusercontent.com/pluto-build/pluto-build.github.io/master/mvnrepository/"
+    }
+    maven {
+        url "http://sugar-lang.github.io/mvnrepository/"
+    }
 }
 
 // To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
