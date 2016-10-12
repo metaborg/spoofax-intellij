@@ -13,9 +13,17 @@ Want to contribute to this plugin? [More information][3].
 Install the plugin:
 
 * clone this repository, then execute `make run` from the repository's root to start an instance of IntelliJ IDEA with the Spoofax plugin loaded; or
+* ensure you have Git and a JDK installed, then execute this from the command line; or
+
+  ```
+  curl https://raw.githubusercontent.com/metaborg/spoofax-intellij/master/repository/install.sh -sSLf | bash
+  ```
+
 * download [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) and install the Spoofax plugin from this plugin repository:
 
-      http://download.spoofax.org/update/nightly/updatePlugins.xml
+  ```
+  http://download.spoofax.org/update/nightly/updatePlugins.xml
+  ```
 
 ---
 
