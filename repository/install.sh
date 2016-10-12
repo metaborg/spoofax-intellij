@@ -42,7 +42,9 @@ main() {
 	ensure make
 
 	say "Ensure you have a JDK installed."
-	say "To start IntelliJ IDEA: make run"
+	say "To start IntelliJ IDEA:"
+	say "  cd spoofax-intellij"
+	say "  make run"
 
 	return 0
 }
