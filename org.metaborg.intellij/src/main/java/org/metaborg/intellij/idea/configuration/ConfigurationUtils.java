@@ -19,6 +19,7 @@
 package org.metaborg.intellij.idea.configuration;
 
 import com.google.inject.Inject;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import org.metaborg.core.language.*;
@@ -58,7 +59,9 @@ public final class ConfigurationUtils {
                 loadAndActivateLanguagesInternal(ids);
             });
         } else {
-            loadAndActivateLanguagesInternal(ids);
+            ApplicationManager.getApplication().invokeLater(() -> {
+                loadAndActivateLanguagesInternal(ids);
+            });
         }
     }
 
