@@ -12,7 +12,7 @@ Want to contribute to this plugin? [More information][3].
 ## Quick Start
 To install the plugin, either:
 
-* clone this repository, then execute `make run` from the repository's root to start an instance of IntelliJ IDEA with the Spoofax plugin loaded; or
+* clone this repository, then execute `./gradlew run` from the repository's root to start an instance of IntelliJ IDEA with the Spoofax plugin loaded; or
 * ensure you have Git and a JDK installed, then execute this from the command line; or
 
   ```

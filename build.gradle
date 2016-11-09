@@ -1,0 +1,27 @@
+apply plugin: 'idea'
+
+defaultTasks 'run'
+
+task build {
+	dependsOn gradle.includedBuild('org.metaborg.jps-deps').task(':publishToMavenLocal')
+    dependsOn gradle.includedBuild('org.metaborg.jps').task(':install')
+    dependsOn gradle.includedBuild('org.metaborg.intellij').task(':build')
+}
+
+task run {
+	dependsOn gradle.includedBuild('org.metaborg.jps-deps').task(':publishToMavenLocal')
+    dependsOn gradle.includedBuild('org.metaborg.jps').task(':install')
+    dependsOn gradle.includedBuild('org.metaborg.intellij').task(':runIdea')
+}
+
+task clean {
+    dependsOn gradle.includedBuild('org.metaborg.intellij').task(':clean')
+    dependsOn gradle.includedBuild('org.metaborg.jps').task(':clean')
+	dependsOn gradle.includedBuild('org.metaborg.jps-deps').task(':clean')
+}
+
+task check {
+	dependsOn gradle.includedBuild('org.metaborg.jps-deps').task(':check')
+    dependsOn gradle.includedBuild('org.metaborg.jps').task(':check')
+    dependsOn gradle.includedBuild('org.metaborg.intellij').task(':check')
+}
