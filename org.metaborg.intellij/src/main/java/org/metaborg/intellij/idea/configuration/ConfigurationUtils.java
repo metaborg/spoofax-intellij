@@ -59,7 +59,7 @@ public final class ConfigurationUtils {
                 loadAndActivateLanguagesInternal(ids);
             });
         } else {
-            ApplicationManager.getApplication().invokeLater(() -> {
+            ApplicationManager.getApplication().runWriteAction(() -> {
                 loadAndActivateLanguagesInternal(ids);
             });
         }
