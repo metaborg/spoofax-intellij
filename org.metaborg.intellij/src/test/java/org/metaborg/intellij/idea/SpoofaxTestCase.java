@@ -14,15 +14,16 @@ import javax.annotation.Nullable;
 
 public abstract class SpoofaxTestCase {
 
-    protected IdeaProjectTestFixture fixture;
+    protected CodeInsightTestFixture fixture;
     protected Project project;
 
     @Before
     public void setUp() throws Exception {
         final IdeaTestFixtureFactory factory = IdeaTestFixtureFactory.getFixtureFactory();
         final TestFixtureBuilder<IdeaProjectTestFixture> builder = factory.createFixtureBuilder(this.getClass().getName());
+        this.fixture = factory.createCodeInsightFixture(builder.getFixture());
 
-        fixture = builder.getFixture();
+
         fixture.setUp();
 
         project = fixture.getProject();

@@ -18,21 +18,29 @@
 
 package org.metaborg.intellij.idea.extensions;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import org.metaborg.core.plugin.*;
 import org.metaborg.meta.core.plugin.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public final class IntelliJSpoofaxMetaPluginLoader extends IntelliJPluginLoader<IServiceMetaModulePlugin> {
 
+    private static final Logger logger = Logger.getInstance(IntelliJSpoofaxMetaPluginLoader.class);
     private static final ExtensionPointName<IServiceMetaModulePlugin> EP_NAME
             = ExtensionPointName.create("org.metaborg.intellij.spoofaxMetaPlugin");
 
     @Override
     protected Collection<IServiceMetaModulePlugin> getPlugins() {
-        return Arrays.asList(EP_NAME.getExtensions());
+        try {
+            return Arrays.asList(EP_NAME.getExtensions());
+        } catch (IllegalArgumentException ex) {
+            logger.warn("Getting meta plugins failed: " + ex.getMessage());
+            return Collections.emptyList();
+        }
     }
 
 }
