@@ -24,7 +24,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.download.DownloadableFileDescription;
 import com.intellij.util.download.DownloadableFileService;
-import org.apache.commons.io.*;
+import intellij.org.apache.commons.io.*;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils2;
