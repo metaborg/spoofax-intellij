@@ -15,14 +15,14 @@ plugins {
 apply from: '../org.metaborg.intellij-common/common.gradle'
 
 task(printAllDependencies, description: 'Prints all runtime dependencies.') << {
-    def jars = configurations.runtime.resolve().collect { it.name }//.findAll { !it.startsWith('slf4j') }
-    def result = [ 'org.metaborg.jps-2.1.0-SNAPSHOT.jar' ] + jars.sort()
+    def deps = configurations.runtime.exclude group: "com.jetbrains", module: "idea"
+    def jars = deps.resolve().collect { it.name }.findAll { !it.startsWith('tools.jar') }
+    def result = [ "org.metaborg.jps-${metaborgVersion}.jar" ] + jars.sort()
     println result.join(';')
 }
 
 dependencies {
     compile     project(":org.metaborg.intellij-common")
-    compile     "org.metaborg:org.metaborg.jps-deps:$metaborgVersion"
 }
 
 uploadArchives {

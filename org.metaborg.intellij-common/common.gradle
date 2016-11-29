@@ -56,19 +56,8 @@ eclipse {
 }
 
 dependencies {
-    // Main dependencies
-    compile     ("org.metaborg:org.metaborg.core:$metaborgVersion") {
-        exclude group: "org.slf4j"
-        exclude group: "com.google.guava"
-    }
-    compile     ("org.metaborg:org.metaborg.spoofax.core:$metaborgVersion") {
-        exclude group: "org.slf4j"
-        exclude group: "com.google.guava"
-    }
-    compile     ("org.metaborg:org.metaborg.spoofax.meta.core:$metaborgVersion") {
-        exclude group: "org.slf4j"
-        exclude group: "com.google.guava"
-    }
+    compile     "org.metaborg:org.metaborg.jps-deps:$metaborgVersion"
+
     compile     "com.google.guava:guava:17.0"
     compile     "org.slf4j:slf4j-api:1.7.10"
 

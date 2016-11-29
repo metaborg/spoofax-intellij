@@ -14,8 +14,8 @@ import javax.annotation.Nullable;
 
 public abstract class SpoofaxTestCase {
 
-    protected IdeaProjectTestFixture fixture;
-    protected Project project;
+    protected static IdeaProjectTestFixture fixture;
+    protected static Project project;
 
     @Before
     public void setUp() throws Exception {
@@ -30,7 +30,6 @@ public abstract class SpoofaxTestCase {
 
     @After
     public void tearDown() throws Exception {
-//        fixture.tearDown();
         UIUtil.invokeAndWaitIfNeeded(new Runnable() {
             @Override
             public void run() {
