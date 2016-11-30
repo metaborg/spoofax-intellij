@@ -11,7 +11,7 @@ plugins {
     id "maven"
     id "org.jetbrains.intellij" version "0.1.10"
 }
-apply from: '../org.metaborg.intellij-common/common.gradle'
+apply from: '../org.metaborg.spoofax-common/common.gradle'
 
 configurations {
     language
@@ -55,7 +55,7 @@ processTestResources.dependsOn copyTestLanguageBaselineDependencies
 dependencies {
     // compile     project(":org.metaborg.intellij-common")
     // Main dependencies
-    compile     project(":org.metaborg.intellij-common")
+    compile     project(":org.metaborg.spoofax-common")
     compile     ("org.metaborg:org.metaborg.jps:$metaborgVersion") {
         // Fixes an issue where the IntelliJ sources cause class loading to fail.
         //   ClassNotFoundException: org.jetbrains.jps.intellilang.model.impl.JpsIntelliLangModelSerializerExtension

@@ -1,4 +1,3 @@
 rootProject.name = 'Spoofax for Intellij'
-// includeBuild 'org.metaborg.jps-deps'
 includeBuild 'org.metaborg.jps'
 includeBuild 'org.metaborg.intellij'

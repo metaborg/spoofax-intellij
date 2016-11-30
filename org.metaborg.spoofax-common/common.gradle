@@ -56,16 +56,4 @@ eclipse {
 }
 
 dependencies {
-    // compile     "com.google.guava:guava:17.0"
-    // compile     "org.slf4j:slf4j-api:1.7.10"
-    //
-    // compile     "com.google.code.findbugs:jsr305:3.0.0"
-    // compile     "org.apache.commons:commons-lang3:3.4"
-    // compile     "org.apache.commons:commons-vfs2:2.1"
-    // compile     "com.google.inject:guice:$guiceVersion"
-    // compile     "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
-    // compile     "com.google.inject.extensions:guice-multibindings:$guiceVersion"
-    // compile     "org.javassist:javassist:3.20.0-GA"
-    //
-    // testCompile "junit:junit:4.12"
 }

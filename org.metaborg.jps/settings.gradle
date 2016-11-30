@@ -1,6 +1,3 @@
 rootProject.name = 'org.metaborg.jps'
-includeFlat 'org.metaborg.intellij-common'
-includeFlat 'org.metaborg.jps-deps'
-
-// include ':org.metaborg.jps-deps'
-// include ':org.metaborg.intellij-common'
+includeFlat 'org.metaborg.spoofax-common'
+includeFlat 'org.metaborg.spoofax-deps'
