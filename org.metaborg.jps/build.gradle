@@ -13,11 +13,13 @@ plugins {
 }
 apply from: '../org.metaborg.spoofax-common/common.gradle'
 
-task(printAllDependencies, description: 'Prints all runtime dependencies.') << {
-    def deps = configurations.runtime.exclude group: "com.jetbrains", module: "idea"
-    def jars = deps.resolve().collect { it.name }.findAll { !it.startsWith('tools.jar') }
-    def result = [ "org.metaborg.jps-${metaborgVersion}.jar" ] + jars.sort()
-    println result.join(';')
+task(printAllDependencies, description: 'Prints all runtime dependencies.') {
+    doLast {
+        def deps = configurations.runtime.exclude group: "com.jetbrains", module: "idea"
+        def jars = deps.resolve().collect { it.name }.findAll { !it.startsWith('tools.jar') }
+        def result = [ "org.metaborg.jps-${metaborgVersion}.jar" ] + jars.sort()
+        println result.join(';')
+    }
 }
 
 dependencies {

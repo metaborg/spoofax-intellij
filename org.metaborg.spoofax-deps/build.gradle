@@ -20,10 +20,12 @@ ext {
 assemble.dependsOn shadowJar
 jar.enabled = false
 
-task(printShadowDependencies, description: 'Prints all included shadow dependencies.') << {
-	def r = shadowJar.getIncludedDependencies()
-	r.collect { it.name }.sort().each { dep ->
-        println "      ${dep}"
+task(printShadowDependencies, description: 'Prints all included shadow dependencies.') {
+    doLast {
+    	  def r = shadowJar.getIncludedDependencies()
+    	  r.collect { it.name }.sort().each { dep ->
+            println "      ${dep}"
+        }
     }
 }
 
