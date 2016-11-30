@@ -53,8 +53,9 @@ processResources.dependsOn copyLanguageBaselineDependencies
 processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
 dependencies {
-    compile     project(":org.metaborg.intellij-common")
+    // compile     project(":org.metaborg.intellij-common")
     // Main dependencies
+    compile     project(":org.metaborg.intellij-common")
     compile     ("org.metaborg:org.metaborg.jps:$metaborgVersion") {
         // Fixes an issue where the IntelliJ sources cause class loading to fail.
         //   ClassNotFoundException: org.jetbrains.jps.intellilang.model.impl.JpsIntelliLangModelSerializerExtension

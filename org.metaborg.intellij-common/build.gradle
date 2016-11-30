@@ -3,9 +3,85 @@ plugins {
     id "idea"
     id "eclipse"
     id "maven"
+    // id "org.jetbrains.intellij" version "0.1.10"
 }
 apply plugin: "org.jetbrains.intellij"
 apply from: '../org.metaborg.intellij-common/common.gradle'
 
+// dependencies {
+//
+// }
+//
+// repositories {
+//     mavenLocal()
+//     mavenCentral()
+//     maven {
+//         url "http://artifacts.metaborg.org/content/repositories/releases/"
+//     }
+//     maven {
+//         url "http://artifacts.metaborg.org/content/repositories/snapshots/"
+//     }
+//     maven {
+//         url "https://raw.githubusercontent.com/pluto-build/pluto-build.github.io/master/mvnrepository/"
+//     }
+//     maven {
+//         url "http://sugar-lang.github.io/mvnrepository/"
+//     }
+// }
+//
+// allprojects {
+//     group "org.metaborg"
+//     version "2.1.0-SNAPSHOT"
+//     sourceCompatibility = 1.8
+//     targetCompatibility = 1.8
+// }
+//
+// ext {
+//     metaborgVersion = "2.1.0-SNAPSHOT"
+//     guiceVersion = "4.0"
+// }
+//
+// intellij {
+//     version = "2016.2.3"
+//     type = "IC"
+//
+//     // FIXME: hack to support both IDEA 15 and IDEA 16.
+//     // See https://github.com/intellij-rust/intellij-rust/issues/243
+//     updateSinceUntilBuild = false
+// }
+//
+// configurations {
+//     provided
+// }
+//
+// sourceSets.main.compileClasspath += configurations.provided
+//
+// idea {
+//     module {
+//         inheritOutputDirs = true
+//         scopes.PROVIDED.plus += [configurations.provided]
+//     }
+// }
+//
+// eclipse {
+//     classpath {
+//         plusConfigurations += [configurations.provided]
+//     }
+// }
+
 dependencies {
+    compile     project(path: ":org.metaborg.jps-deps", configuration: "shadow")
+
+    compile     "com.google.guava:guava:17.0"
+    compile     "org.slf4j:slf4j-api:1.7.10"
+
+    compile     "com.google.code.findbugs:jsr305:3.0.0"
+    compile     "org.apache.commons:commons-lang3:3.4"
+    compile     "org.apache.commons:commons-vfs2:2.1"
+    compile     "com.google.inject:guice:$guiceVersion"
+    compile     "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
+    compile     "com.google.inject.extensions:guice-multibindings:$guiceVersion"
+    compile     "org.javassist:javassist:3.20.0-GA"
+
+    testCompile "junit:junit:4.12"
 }
