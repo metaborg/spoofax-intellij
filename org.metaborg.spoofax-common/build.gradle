@@ -1,3 +1,8 @@
+
+intellij {
+    type = "JPS"
+}
+
 dependencies {
     compile     project(path: ":org.metaborg.spoofax-deps", configuration: "shadow")
 

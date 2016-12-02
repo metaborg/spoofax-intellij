@@ -78,13 +78,16 @@ configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
   apply plugin: 'org.jetbrains.intellij'
 
   intellij {
-      version = "2016.2.3"
-      type = "IC"
+      version = "2016.3"
 
       // FIXME: hack to support both IDEA 15 and IDEA 16.
       // See https://github.com/intellij-rust/intellij-rust/issues/243
       updateSinceUntilBuild = false
   }
+}
+
+intellij {
+    type = "IC"
 }
 
 configurations {
