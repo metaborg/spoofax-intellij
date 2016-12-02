@@ -39,12 +39,12 @@ main() {
 
 	ensure git clone https://github.com/metaborg/spoofax-intellij.git
 	ensure cd spoofax-intellij
-	ensure make
+	ensure ./gradlew install
 
 	say "Ensure you have a JDK installed."
 	say "To start IntelliJ IDEA:"
 	say "  cd spoofax-intellij"
-	say "  make run"
+	say "  ./gradlew run"
 
 	return 0
 }

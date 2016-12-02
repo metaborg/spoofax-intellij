@@ -1,18 +1,3 @@
-buildscript {
-    repositories {
-        maven { url "http://dl.bintray.com/jetbrains/intellij-plugin-service" }
-    }
-}
-
-plugins {
-    id "java"
-    id "idea"
-    id "eclipse"
-    id "maven"
-    id "org.jetbrains.intellij" version "0.1.10"
-}
-apply from: '../org.metaborg.spoofax-common/common.gradle'
-
 task(printAllDependencies, description: 'Prints all runtime dependencies.') {
     doLast {
         def deps = configurations.runtime.exclude group: "com.jetbrains", module: "idea"
@@ -24,12 +9,4 @@ task(printAllDependencies, description: 'Prints all runtime dependencies.') {
 
 dependencies {
     compile     project(":org.metaborg.spoofax-common")
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            mavenLocal()
-        }
-    }
 }

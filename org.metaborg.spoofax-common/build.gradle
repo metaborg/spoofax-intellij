@@ -1,12 +1,3 @@
-plugins {
-    id "java"
-    id "idea"
-    id "eclipse"
-    id "maven"
-}
-apply plugin: "org.jetbrains.intellij"
-apply from: '../org.metaborg.spoofax-common/common.gradle'
-
 dependencies {
     compile     project(path: ":org.metaborg.spoofax-deps", configuration: "shadow")
 

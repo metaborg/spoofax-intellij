@@ -1,17 +1,91 @@
 buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+    maven {
+      url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
+    }
+
+  }
+  dependencies {
+    classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
+  }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+    apply plugin: 'maven'
+
+    ext {
+        metaborgVersion = "2.1.0-SNAPSHOT"
+        guiceVersion = "4.0"
+    }
+
+    group "org.metaborg"
+    version "$metaborgVersion"
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
     repositories {
-        maven { url "http://dl.bintray.com/jetbrains/intellij-plugin-service" }
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url "http://artifacts.metaborg.org/content/repositories/releases/"
+        }
+        maven {
+            url "http://artifacts.metaborg.org/content/repositories/snapshots/"
+        }
+        maven {
+            url "https://raw.githubusercontent.com/pluto-build/pluto-build.github.io/master/mvnrepository/"
+        }
+        maven {
+            url "http://sugar-lang.github.io/mvnrepository/"
+        }
+    }
+
+    configurations {
+        provided
+    }
+
+    sourceSets.main.compileClasspath += configurations.provided
+
+    idea {
+        module {
+            inheritOutputDirs = true
+            scopes.PROVIDED.plus += [configurations.provided]
+        }
+    }
+
+    eclipse {
+        classpath {
+            plusConfigurations += [configurations.provided]
+        }
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                mavenLocal()
+            }
+        }
     }
 }
 
-plugins {
-    id "java"
-    id "idea"
-    id "eclipse"
-    id "maven"
-    id "org.jetbrains.intellij" version "0.1.10"
+configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
+  apply plugin: 'org.jetbrains.intellij'
+
+  intellij {
+      version = "2016.2.3"
+      type = "IC"
+
+      // FIXME: hack to support both IDEA 15 and IDEA 16.
+      // See https://github.com/intellij-rust/intellij-rust/issues/243
+      updateSinceUntilBuild = false
+  }
 }
-apply from: '../org.metaborg.spoofax-common/common.gradle'
 
 configurations {
     language
@@ -53,10 +127,9 @@ processResources.dependsOn copyLanguageBaselineDependencies
 processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
 dependencies {
-    // compile     project(":org.metaborg.intellij-common")
     // Main dependencies
     compile     project(":org.metaborg.spoofax-common")
-    compile     ("org.metaborg:org.metaborg.jps:$metaborgVersion") {
+    compile     (project(":org.metaborg.jps")) {
         // Fixes an issue where the IntelliJ sources cause class loading to fail.
         //   ClassNotFoundException: org.jetbrains.jps.intellilang.model.impl.JpsIntelliLangModelSerializerExtension
         exclude module: "idea"
@@ -74,12 +147,4 @@ dependencies {
     testCompile "junit:junit:4.12"
 
     testLanguage "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            mavenLocal()
-        }
-    }
 }

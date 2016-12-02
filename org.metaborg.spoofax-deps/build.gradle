@@ -1,20 +1,5 @@
 plugins {
-    id "java"
-    id "idea"
-    id "eclipse"
-    id "maven-publish"
-    id "com.github.johnrengelman.shadow" version "1.2.3"
-}
-
-allprojects {
-    group "org.metaborg"
-    version "2.1.0-SNAPSHOT"
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-}
-
-ext {
-    metaborgVersion = "2.1.0-SNAPSHOT"
+    id "com.github.johnrengelman.shadow" version "1.2.4"
 }
 
 assemble.dependsOn shadowJar
@@ -41,11 +26,6 @@ task artifacts {
     }
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
 dependencies {
     // Main dependencies
     compile     ("org.metaborg:org.metaborg.core:$metaborgVersion") {
@@ -60,7 +40,6 @@ dependencies {
         exclude group: "org.slf4j"
         exclude group: "com.google.guava"
     }
-
     compile 'commons-io:commons-io:2.4'
 }
 
@@ -70,13 +49,11 @@ shadowJar {
     zip64 = true
 
     relocate 'org.apache.commons.io', 'intellij.org.apache.commons.io'
-}
 
-publishing {
-    publications {
-        shadow(MavenPublication) {
-            from components.shadow
-            artifactId = 'org.metaborg.spoofax-deps'
-        }
+    dependencies {
+    //     include(dependency('org.metaborg::'))
+    //     include(dependency('build.pluto:.*'))
+    //     include(dependency('org.sugarj:common:.*'))
+    //     include(dependency('commons-io:commons-io'))
     }
 }

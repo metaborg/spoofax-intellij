@@ -1,2 +1,0 @@
-rootProject.name = 'org.metaborg.spoofax-common'
-includeFlat 'org.metaborg.spoofax-deps'

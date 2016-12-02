@@ -1,27 +1,23 @@
-apply plugin: 'idea'
-
-defaultTasks 'run'
-
-task build {
-    dependsOn gradle.includedBuild('org.metaborg.jps').task(':install')
-    dependsOn gradle.includedBuild('org.metaborg.intellij').task(':build')
+ext {
+  mainBuildFile = "org.metaborg.intellij/build.gradle"
 }
 
-task run {
-    dependsOn gradle.includedBuild('org.metaborg.jps').task(':install')
-    dependsOn gradle.includedBuild('org.metaborg.intellij').task(':runIdea')
+task build(type: GradleBuild) {
+    buildFile = mainBuildFile
+    tasks = ['build']
 }
 
-task clean {
-		dependsOn gradle.includedBuild('org.metaborg.intellij').task(':clean')
-	  dependsOn gradle.includedBuild('org.metaborg.intellij').task(':org.metaborg.spoofax-common:clean')
-	  dependsOn gradle.includedBuild('org.metaborg.intellij').task(':org.metaborg.spoofax-deps:clean')
-    dependsOn gradle.includedBuild('org.metaborg.jps').task(':clean')
-	  dependsOn gradle.includedBuild('org.metaborg.jps').task(':org.metaborg.spoofax-common:clean')
-		dependsOn gradle.includedBuild('org.metaborg.jps').task(':org.metaborg.spoofax-deps:clean')
+task install(type: GradleBuild) {
+    buildFile = mainBuildFile
+    tasks = ['install']
 }
 
-task check {
-    dependsOn gradle.includedBuild('org.metaborg.jps').task(':check')
-    dependsOn gradle.includedBuild('org.metaborg.intellij').task(':check')
+task run(type: GradleBuild) {
+    buildFile = mainBuildFile
+    tasks = ['run']
+}
+
+task clean(type: GradleBuild) {
+    buildFile = mainBuildFile
+    tasks = ['clean']
 }
