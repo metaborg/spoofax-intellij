@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="org.metaborg.intellij_main" target="1.8" />
+      <module name="org.metaborg.intellij_test" target="1.8" />
+      <module name="org.metaborg.jps_main" target="1.8" />
+      <module name="org.metaborg.jps_test" target="1.8" />
+      <module name="org.metaborg.spoofax-common_main" target="1.8" />
+      <module name="org.metaborg.spoofax-common_test" target="1.8" />
+      <module name="org.metaborg.spoofax-deps_main" target="1.8" />
+      <module name="org.metaborg.spoofax-deps_test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
