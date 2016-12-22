@@ -18,16 +18,23 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.intellij.lang.*;
-import com.intellij.lexer.*;
-import com.intellij.openapi.project.*;
-import com.intellij.psi.*;
-import com.intellij.psi.tree.*;
-import org.metaborg.intellij.idea.filetypes.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.ParserDefinition;
+import com.intellij.lang.PsiParser;
+import com.intellij.lexer.Lexer;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.FileViewProvider;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.TokenSet;
+import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType;
+import org.metaborg.intellij.idea.languages.ILanguageBindingManager;
+import org.metaborg.intellij.idea.parsing.elements.IMetaborgPsiElementFactory;
+import org.metaborg.intellij.idea.parsing.elements.MetaborgFile;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 
 /**
  * A Spoofax parser definition.

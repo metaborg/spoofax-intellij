@@ -18,23 +18,28 @@
 
 package org.metaborg.intellij.idea.facets;
 
-import com.google.inject.*;
-import com.intellij.facet.*;
-import com.intellij.openapi.command.*;
+import com.google.inject.Inject;
+import com.intellij.facet.Facet;
+import com.intellij.facet.FacetConfiguration;
+import com.intellij.facet.FacetManager;
+import com.intellij.facet.FacetTypeId;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.roots.*;
-import com.intellij.openapi.vfs.*;
-import org.apache.commons.vfs2.*;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.config.*;
 import org.metaborg.core.messages.*;
 import org.metaborg.core.source.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
-import org.metaborg.intellij.resources.*;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.projects.IIdeaProjectFactory;
+import org.metaborg.intellij.idea.projects.IIdeaProjectService;
+import org.metaborg.intellij.idea.projects.IdeaProject;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils2;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.*;
 
 /**
@@ -126,7 +131,7 @@ public class MetaborgFacet extends Facet {
         final VirtualFile[] contentRoots = model.getContentRoots();
 
         if (contentRoots.length == 0) {
-            throw LoggerUtils.exception(this.logger, RuntimeException.class,
+            throw LoggerUtils2.exception(this.logger, RuntimeException.class,
                     "The module {} has no content roots.", module);
         }
 
@@ -167,7 +172,7 @@ public class MetaborgFacet extends Facet {
                             try {
                                 this.configWriter.write(finalProject, finalConfig, null);
                             } catch (final ConfigException e) {
-                                throw LoggerUtils.exception(this.logger, UnhandledException.class,
+                                throw LoggerUtils2.exception(this.logger, UnhandledException.class,
                                         "An unexpected exception occurred while writing the configuration for project {}",
                                         finalProject);
                             }

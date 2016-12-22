@@ -38,4 +38,4 @@
 @NonNullByDefault
 package org.metaborg.intellij.idea.parsing.annotations;
 
-import org.metaborg.intellij.*;
+import org.metaborg.intellij.NonNullByDefault;

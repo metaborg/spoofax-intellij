@@ -18,20 +18,21 @@
 
 package org.metaborg.intellij.idea;
 
-import com.google.inject.*;
-import com.intellij.openapi.application.*;
-import com.intellij.openapi.command.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
+import com.intellij.openapi.module.ModuleComponent;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.source.*;
-import org.metaborg.intellij.idea.configuration.*;
-import org.metaborg.intellij.idea.languages.*;
+import org.metaborg.intellij.idea.configuration.ConfigurationUtils;
+import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.projects.*;
-import org.metaborg.intellij.resources.*;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.idea.projects.ProjectUtils;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.meta.core.config.*;
 import org.metaborg.util.log.*;
 

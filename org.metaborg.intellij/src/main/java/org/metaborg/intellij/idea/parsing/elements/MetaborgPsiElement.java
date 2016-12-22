@@ -18,10 +18,6 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import org.metaborg.intellij.resources.IIntelliJResourceService;
-import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
-import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
@@ -30,6 +26,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
+import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
 
 /**
  * A Spoofax PSI element.

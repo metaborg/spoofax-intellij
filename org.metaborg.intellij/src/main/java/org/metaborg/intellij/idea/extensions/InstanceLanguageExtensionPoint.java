@@ -18,7 +18,8 @@
 
 package org.metaborg.intellij.idea.extensions;
 
-import com.intellij.lang.*;
+import com.intellij.lang.Language;
+import com.intellij.lang.LanguageExtensionPoint;
 
 /**
  * Language extension point value wrapper.

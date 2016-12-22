@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * An item in a model.

@@ -18,8 +18,9 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import javax.annotation.Nullable;
-
+import com.google.inject.Inject;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleType;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.ConfigRequest;
 import org.metaborg.core.messages.StreamMessagePrinter;
@@ -29,9 +30,7 @@ import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigService;
 import org.metaborg.util.log.ILogger;
 
-import com.google.inject.Inject;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleType;
+import javax.annotation.Nullable;
 
 public final class IdeaLanguageSpecFactory implements IIdeaLanguageSpecFactory {
 

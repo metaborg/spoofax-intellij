@@ -18,8 +18,8 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.intellij.lexer.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import com.intellij.lexer.Lexer;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 
 /**
  * Factory for character lexers.

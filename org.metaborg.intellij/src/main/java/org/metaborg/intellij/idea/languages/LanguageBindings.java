@@ -18,9 +18,10 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import org.metaborg.intellij.idea.extensions.*;
-import org.metaborg.intellij.idea.filetypes.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.idea.extensions.InstanceLanguageExtensionPoint;
+import org.metaborg.intellij.idea.extensions.InstanceSyntaxHighlighterFactoryExtensionPoint;
+import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 
 /**
  * IntelliJ IDEA objects bound to a language.

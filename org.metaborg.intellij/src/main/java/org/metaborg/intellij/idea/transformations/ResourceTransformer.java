@@ -15,10 +15,8 @@
 
 package org.metaborg.intellij.idea.transformations;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.action.ITransformGoal;
@@ -32,16 +30,17 @@ import org.metaborg.core.processing.parse.IParseResultRequester;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.syntax.IInputUnit;
 import org.metaborg.core.syntax.IParseUnit;
-import org.metaborg.core.transform.ITransformService;
-import org.metaborg.core.transform.ITransformUnit;
-import org.metaborg.core.transform.TransformException;
+import org.metaborg.core.transform.*;
 import org.metaborg.core.unit.IInputUnitService;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.concurrent.IClosableLock;
 import org.metaborg.util.log.ILogger;
 
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.annotation.*;
 
 /**
  * Executes a transformation action on resources.
@@ -53,15 +52,17 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
     private final IParseResultRequester<I, P> parseResultRequester;
     private final IAnalysisResultRequester<I, A> analysisResultRequester;
     private final ITransformService<P, A, TP, TA> transformService;
-    @InjectLogger private ILogger logger;
+    @InjectLogger
+    private ILogger logger;
 
 
     /**
      * Initializes a new instance of the {@link ResourceTransformer} class.
      */
-    @Inject public ResourceTransformer(IContextService contextService, IInputUnitService<I> unitService,
-        IParseResultRequester<I, P> parseResultRequester, IAnalysisResultRequester<I, A> analysisResultRequester,
-        ITransformService<P, A, TP, TA> transformService) {
+    @Inject
+    public ResourceTransformer(IContextService contextService, IInputUnitService<I> unitService,
+                               IParseResultRequester<I, P> parseResultRequester, IAnalysisResultRequester<I, A> analysisResultRequester,
+                               ITransformService<P, A, TP, TA> transformService) {
         this.contextService = contextService;
         this.unitService = unitService;
         this.parseResultRequester = parseResultRequester;
@@ -81,7 +82,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
      *            The transformation goal.
      */
     @Override public List<FileObject> execute(final Iterable<TransformResource> resources, final ILanguageImpl language,
-        final ITransformGoal goal) throws MetaborgException {
+                                              final ITransformGoal goal) throws MetaborgException {
 
         final List<FileObject> outputFiles = new ArrayList<>();
         for(final TransformResource transformResource : resources) {
@@ -91,7 +92,11 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
                 final Collection<T> results =
                     transform(resource, transformResource.project(), language, transformResource.text(), goal);
                 for(final T r : results) {
-                    outputFiles.add(r.output());
+                    for (final ITransformOutput o : r.outputs()) {
+                        @Nullable final FileObject output = o.output();
+                        if (output != null)
+                            outputFiles.add(output);
+                    }
                 }
             } catch(ContextException | TransformException e) {
                 this.logger.error("Transformation failed for {}", e, resource);
@@ -118,7 +123,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
      * @throws TransformException
      */
     private Collection<T> transform(final FileObject resource, final IProject project, final ILanguageImpl language,
-        final String text, final ITransformGoal goal) throws ContextException, TransformException {
+                                    final String text, final ITransformGoal goal) throws ContextException, TransformException {
         final IContext context = this.contextService.get(resource, project, language);
         final I input = unitService.inputUnit(resource, text, language, null);
         final Collection<T> results = Lists.newArrayList();

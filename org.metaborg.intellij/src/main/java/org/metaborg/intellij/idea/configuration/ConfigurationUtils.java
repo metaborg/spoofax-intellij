@@ -18,16 +18,20 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.*;
-import com.intellij.openapi.command.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.intellij.languages.LanguageLoadingFailedException;
+import org.metaborg.intellij.languages.LanguageUtils2;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Configuration utility functions.
@@ -55,7 +59,9 @@ public final class ConfigurationUtils {
                 loadAndActivateLanguagesInternal(ids);
             });
         } else {
-            loadAndActivateLanguagesInternal(ids);
+            ApplicationManager.getApplication().runWriteAction(() -> {
+                loadAndActivateLanguagesInternal(ids);
+            });
         }
     }
 

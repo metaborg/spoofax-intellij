@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.intellij.openapi.fileTypes.*;
+import com.intellij.openapi.fileTypes.FileType;
 
 /**
  * An interface for file types of Metaborg languages.

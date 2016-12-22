@@ -18,8 +18,8 @@
 
 package org.metaborg.intellij.idea.extensions;
 
-import com.intellij.lang.*;
-import com.intellij.util.*;
+import com.intellij.lang.Language;
+import com.intellij.util.KeyedLazyInstanceEP;
 
 /**
  * Language extension point value wrapper.

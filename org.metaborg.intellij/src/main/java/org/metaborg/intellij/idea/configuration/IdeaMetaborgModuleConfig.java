@@ -18,12 +18,16 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.*;
-import com.intellij.openapi.components.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.module.Module;
-import org.metaborg.intellij.configuration.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.configuration.IMetaborgModuleConfig;
+import org.metaborg.intellij.configuration.MetaborgModuleConfigState;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
 import javax.annotation.Nullable;

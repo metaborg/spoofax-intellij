@@ -18,16 +18,21 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.*;
-import com.intellij.openapi.components.*;
-import org.jetbrains.annotations.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
+import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.configuration.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.logging.*;
+import org.metaborg.intellij.configuration.AdaptingSet;
+import org.metaborg.intellij.configuration.IMetaborgApplicationConfig;
+import org.metaborg.intellij.configuration.MetaborgApplicationConfigState;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import java.util.*;
+import java.util.Set;
 
 /**
  * Application-level configuration of the plugin.

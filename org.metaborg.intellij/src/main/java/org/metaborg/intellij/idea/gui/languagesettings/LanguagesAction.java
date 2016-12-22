@@ -18,11 +18,12 @@
 
 package org.metaborg.intellij.idea.gui.languagesettings;
 
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.gui.languagespanel.*;
+import org.metaborg.intellij.idea.gui.languagespanel.LanguageTreeModel;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**

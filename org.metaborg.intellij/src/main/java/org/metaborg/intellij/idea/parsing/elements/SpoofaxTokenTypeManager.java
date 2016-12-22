@@ -18,11 +18,13 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.common.cache.*;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import org.metaborg.core.style.*;
-import org.metaborg.intellij.idea.languages.*;
+import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 import java.awt.*;
 
 /**
@@ -100,6 +102,6 @@ public final class SpoofaxTokenTypeManager {
      */
     public IStyle getDefaultStyle() {
         // FIXME: Get this from the IStylerService?
-        return new Style(Color.black, Color.white, false, false, false);
+        return new Style(Color.black, Color.white, false, false, false, false);
     }
 }

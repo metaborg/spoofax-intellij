@@ -18,8 +18,8 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import javax.annotation.*;
-import javax.swing.tree.*;
+import javax.annotation.Nullable;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * A tree node with a value.

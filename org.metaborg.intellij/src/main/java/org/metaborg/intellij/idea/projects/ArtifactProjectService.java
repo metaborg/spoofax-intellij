@@ -18,11 +18,8 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-
+import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
@@ -32,8 +29,9 @@ import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.resources.FileNameUtils;
 import org.metaborg.util.log.ILogger;
 
-import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 // TODO: Move to Spoofax core?
 

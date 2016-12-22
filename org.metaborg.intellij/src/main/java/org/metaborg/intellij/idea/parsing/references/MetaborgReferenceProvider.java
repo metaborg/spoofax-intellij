@@ -18,20 +18,25 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import com.google.common.base.*;
-import com.intellij.openapi.vfs.*;
-import com.intellij.psi.*;
-import com.intellij.util.*;
-import org.apache.commons.vfs2.*;
+import com.google.common.base.Preconditions;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiReferenceProvider;
+import com.intellij.util.ProcessingContext;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.idea.languages.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.resources.*;
-import org.metaborg.intellij.utils.*;
+import org.metaborg.intellij.idea.languages.ILanguageProjectService;
+import org.metaborg.intellij.idea.languages.LanguageDialect;
+import org.metaborg.intellij.idea.parsing.elements.MetaborgFile;
+import org.metaborg.intellij.idea.projects.IIdeaProjectService;
+import org.metaborg.intellij.idea.projects.IdeaProject;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.intellij.utils.CollectionUtils;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * Provides the references for a certain PSI element in a certain context.

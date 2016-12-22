@@ -18,18 +18,25 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.*;
-import com.intellij.facet.*;
-import com.intellij.facet.ui.*;
-import com.intellij.openapi.components.*;
-import com.intellij.openapi.util.*;
-import org.jdom.*;
-import org.metaborg.intellij.configuration.*;
-import org.metaborg.intellij.idea.facets.*;
-import org.metaborg.intellij.logging.*;
+import com.google.inject.Inject;
+import com.intellij.facet.FacetConfiguration;
+import com.intellij.facet.ui.FacetEditorContext;
+import com.intellij.facet.ui.FacetEditorTab;
+import com.intellij.facet.ui.FacetValidatorsManager;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.components.StoragePathMacros;
+import com.intellij.openapi.util.InvalidDataException;
+import com.intellij.openapi.util.WriteExternalException;
+import org.jdom.Element;
+import org.metaborg.intellij.configuration.IMetaborgModuleFacetConfig;
+import org.metaborg.intellij.configuration.MetaborgModuleFacetConfigState;
+import org.metaborg.intellij.idea.facets.MetaborgFacetEditorTab;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * Module-level facet configuration of the plugin.
@@ -107,6 +114,7 @@ public final class IdeaMetaborgModuleFacetConfig
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void readExternal(final Element element)
             throws InvalidDataException {
@@ -116,6 +124,7 @@ public final class IdeaMetaborgModuleFacetConfig
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void writeExternal(final Element element)
             throws WriteExternalException {

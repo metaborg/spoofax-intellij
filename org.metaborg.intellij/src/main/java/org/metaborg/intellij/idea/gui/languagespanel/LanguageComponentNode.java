@@ -20,14 +20,14 @@ package org.metaborg.intellij.idea.gui.languagespanel;
 
 import org.metaborg.core.language.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
 /**
  * A language component node.
  */
 public final class LanguageComponentNode extends TreeNodeWithValue<ILanguageComponent, LanguageComponentNode>
-        implements ITreeNodeWithIcon, ILanguageTreeNode<ILanguageComponent>  {
+        implements ITreeNodeWithIcon, ILanguageTreeNode<ILanguageComponent> {
 
     /**
      * Initializes a new instance of this node.

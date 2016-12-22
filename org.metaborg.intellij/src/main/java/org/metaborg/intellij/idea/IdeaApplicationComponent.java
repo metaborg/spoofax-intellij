@@ -18,13 +18,15 @@
 
 package org.metaborg.intellij.idea;
 
-import com.google.inject.*;
-import com.intellij.openapi.components.*;
-import com.intellij.openapi.vfs.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.configuration.*;
-import org.metaborg.intellij.idea.configuration.*;
-import org.metaborg.intellij.logging.*;
+import com.google.inject.Inject;
+import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import org.jetbrains.annotations.NotNull;
+import org.metaborg.intellij.configuration.IMetaborgApplicationConfig;
+import org.metaborg.intellij.idea.configuration.ConfigurationFileEventListener;
+import org.metaborg.intellij.idea.configuration.ConfigurationUtils;
+import org.metaborg.intellij.idea.configuration.IdeaMetaborgApplicationConfig;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
 /**

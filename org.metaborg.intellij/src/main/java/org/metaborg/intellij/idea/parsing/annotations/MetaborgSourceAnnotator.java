@@ -15,6 +15,15 @@
 
 package org.metaborg.intellij.idea.parsing.annotations;
 
+import com.google.common.base.Objects;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.lang.annotation.ExternalAnnotator;
+import com.intellij.lang.annotation.HighlightSeverity;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiFile;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.analysis.AnalysisException;
@@ -31,23 +40,13 @@ import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.parsing.SourceRegionUtil;
 import org.metaborg.intellij.idea.projects.IIdeaProjectService;
 import org.metaborg.intellij.logging.InjectLogger;
-import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
 import org.metaborg.spoofax.core.unit.ISpoofaxAnalyzeUnit;
 import org.metaborg.spoofax.core.unit.ISpoofaxInputUnit;
 import org.metaborg.spoofax.core.unit.ISpoofaxInputUnitService;
 import org.metaborg.util.log.ILogger;
-
-import com.google.common.base.Objects;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.intellij.lang.annotation.AnnotationHolder;
-import com.intellij.lang.annotation.ExternalAnnotator;
-import com.intellij.lang.annotation.HighlightSeverity;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiFile;
 
 /**
  * Annotates metaborg source files.
@@ -60,12 +59,14 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
     private final ILanguageIdentifierService identifierService;
     private final ISpoofaxInputUnitService unitSerivce;
     private final ISpoofaxAnalysisResultRequester analysisResultProcessor;
-    @InjectLogger private ILogger logger;
+    @InjectLogger
+    private ILogger logger;
 
 
-    @Inject public MetaborgSourceAnnotator(IContextService contextService, IIdeaProjectService projectService,
-        IIntelliJResourceService resourceService, ILanguageIdentifierService identifierService,
-        ISpoofaxInputUnitService unitSerivce, ISpoofaxAnalysisResultRequester analysisResultProcessor) {
+    @Inject
+    public MetaborgSourceAnnotator(IContextService contextService, IIdeaProjectService projectService,
+                                   IIntelliJResourceService resourceService, ILanguageIdentifierService identifierService,
+                                   ISpoofaxInputUnitService unitSerivce, ISpoofaxAnalysisResultRequester analysisResultProcessor) {
         this.contextService = contextService;
         this.projectService = projectService;
         this.resourceService = resourceService;
@@ -75,17 +76,19 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
     }
 
 
-    @Override public @Nullable MetaborgSourceAnnotationInfo collectInformation(final PsiFile file) {
+    @Override public @Nullable
+    MetaborgSourceAnnotationInfo collectInformation(final PsiFile file) {
         throw new UnsupportedOperationException("This method is not expected to be called, ever.");
     }
 
-    @Override public @Nullable MetaborgSourceAnnotationInfo collectInformation(final PsiFile file, final Editor editor,
-        final boolean hasErrors) {
+    @Override public @Nullable
+    MetaborgSourceAnnotationInfo collectInformation(final PsiFile file, final Editor editor,
+                                                    final boolean hasErrors) {
 
         this.logger.debug("Collecting annotation information for file: {}", file);
 
         final MetaborgSourceAnnotationInfo info;
-        final IProject project = this.projectService.get(file);
+        @Nullable final IProject project = this.projectService.get(file);
         if(project == null) {
             this.logger.warn("Cannot annotate source code; cannot get language specification for resource {}. "
                 + "Is the file excluded?", Objects.firstNonNull(file.getVirtualFile(), "<unknown>"));
@@ -93,8 +96,8 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
         }
 
         try {
-            final FileObject resource = this.resourceService.resolve(file);
-            final ILanguageImpl language = this.identifierService.identify(resource, project);
+            @Nullable final FileObject resource = this.resourceService.resolve(file);
+            @Nullable final ILanguageImpl language = this.identifierService.identify(resource, project);
             if(language == null) {
                 this.logger.warn("Skipping annotation. Could not identify the language of resource: {}", resource);
                 return null;
@@ -103,7 +106,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
             final String text = editor.getDocument().getImmutableCharSequence().toString();
             info = new MetaborgSourceAnnotationInfo(resource, text, context);
         } catch(final ContextException e) {
-            throw LoggerUtils.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);
+            throw LoggerUtils2.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);
         }
 
         this.logger.info("Collected annotation information for file: {}", file);
@@ -111,10 +114,12 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
         return info;
     }
 
-    @Override public @Nullable ISpoofaxAnalyzeUnit doAnnotate(final MetaborgSourceAnnotationInfo info) {
+    @Nullable
+    @Override
+    public ISpoofaxAnalyzeUnit doAnnotate(final MetaborgSourceAnnotationInfo info) {
         this.logger.debug("Requesting analysis result for file: {}", info.resource());
 
-        ISpoofaxAnalyzeUnit analysisResult = null;
+        @Nullable ISpoofaxAnalyzeUnit analysisResult = null;
         try {
             final IContext context = info.context();
             final ISpoofaxInputUnit input =
@@ -136,7 +141,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
     }
 
     @Override public void apply(final PsiFile file, final ISpoofaxAnalyzeUnit analysisResult,
-        final AnnotationHolder holder) {
+                                final AnnotationHolder holder) {
 
         this.logger.debug("Applying analysis result to file: {}", file);
 

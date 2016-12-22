@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * Exception thrown when a compound service has multiple services responding.

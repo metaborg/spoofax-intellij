@@ -18,7 +18,8 @@
 
 package org.metaborg.intellij.idea.extensions;
 
-import com.intellij.openapi.extensions.*;
+import com.intellij.openapi.extensions.ExtensionPoint;
+import com.intellij.openapi.extensions.Extensions;
 
 /**
  * Utility functions for working with IntelliJ IDEA extension points.

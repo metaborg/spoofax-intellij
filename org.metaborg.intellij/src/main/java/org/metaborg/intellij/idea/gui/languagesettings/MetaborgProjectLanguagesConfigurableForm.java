@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.gui.languagesettings;
 
-import org.metaborg.intellij.idea.gui.languagespanel.*;
+import org.metaborg.intellij.idea.gui.languagespanel.LanguagesPanel;
 
 import javax.swing.*;
 

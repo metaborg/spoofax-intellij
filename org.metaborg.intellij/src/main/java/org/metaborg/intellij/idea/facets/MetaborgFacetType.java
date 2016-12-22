@@ -18,16 +18,18 @@
 
 package org.metaborg.intellij.idea.facets;
 
-import com.google.inject.*;
-import com.intellij.facet.*;
-import com.intellij.openapi.module.*;
+import com.google.inject.Inject;
+import com.intellij.facet.Facet;
+import com.intellij.facet.FacetType;
 import com.intellij.openapi.module.Module;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.configuration.*;
-import org.metaborg.intellij.idea.graphics.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
+import com.intellij.openapi.module.ModuleType;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.facets.MetaborgFacetConstants;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.configuration.IdeaMetaborgModuleFacetConfig;
+import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.projects.MetaborgModuleType;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
 import javax.swing.*;
@@ -39,8 +41,8 @@ import javax.swing.*;
  */
 public final class MetaborgFacetType extends FacetType<MetaborgFacet, IdeaMetaborgModuleFacetConfig> {
 
-    public static final String ID = "Metaborg";
-    public static final String NAME = "Metaborg";
+    public static final String ID = MetaborgFacetConstants.ID;
+    public static final String NAME = MetaborgFacetConstants.NAME;
 
     private IIconManager iconManager;
     @InjectLogger

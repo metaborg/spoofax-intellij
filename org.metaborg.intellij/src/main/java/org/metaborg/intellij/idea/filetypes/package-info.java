@@ -34,4 +34,4 @@
 @NonNullByDefault
 package org.metaborg.intellij.idea.filetypes;
 
-import org.metaborg.intellij.*;
+import org.metaborg.intellij.NonNullByDefault;

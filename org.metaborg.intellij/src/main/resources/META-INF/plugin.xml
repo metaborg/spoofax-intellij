@@ -1,25 +1,7 @@
-<!--
-  ~ Copyright © 2015-2016
-  ~
-  ~ This file is part of Spoofax for IntelliJ.
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-
 <idea-plugin version="2">
     <id>org.metaborg.intellij</id>
     <name>Spoofax</name>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.1.0-SNAPSHOT</version>
     <vendor email="info@metaborg.org" url="https://spoofax.readthedocs.io/">Metaborg</vendor>
 
     <description><![CDATA[
@@ -32,10 +14,10 @@
     </change-notes>
 
     <!-- See http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
-    <idea-version since-build="143.381.42" until-build="162.9999"/>
+    <idea-version since-build="143.381.42" until-build="171.*"/>
 
     <extensions defaultExtensionNs="com.intellij">
-        <compiler.buildTargetScopeProvider implementation="org.metaborg.intellij.jps.builders.SpoofaxBuildTargetScopeProvider" />
+        <compiler.buildTargetScopeProvider implementation="org.metaborg.intellij.idea.builders.SpoofaxBuildTargetScopeProvider" />
         <facetType implementation="org.metaborg.intellij.idea.facets.MetaborgFacetType" />
         <sdkType implementation="org.metaborg.intellij.idea.sdks.MetaborgSdkType"/>
         <moduleType id="METABORG_MODULE" implementationClass="org.metaborg.intellij.idea.projects.MetaborgModuleType"/>
@@ -49,7 +31,8 @@
         <applicationService serviceInterface="org.metaborg.intellij.configuration.IMetaborgApplicationConfig" serviceImplementation="org.metaborg.intellij.idea.configuration.IdeaMetaborgApplicationConfig" />
         <projectService serviceInterface="org.metaborg.intellij.configuration.IMetaborgProjectConfig" serviceImplementation="org.metaborg.intellij.idea.configuration.IdeaMetaborgProjectConfig" />
         <moduleService serviceInterface="org.metaborg.intellij.configuration.IMetaborgModuleConfig" serviceImplementation="org.metaborg.intellij.idea.configuration.IdeaMetaborgModuleConfig" />
-        <compileServer.plugin classpath="./classes/;../classes/jpslib/slf4j-api-1.7.12.jar;org.metaborg.intellij.deps-2.0.0-SNAPSHOT.jar"/>
+
+        <compileServer.plugin classpath="org.metaborg.jps-2.1.0-SNAPSHOT.jar;aopalliance-1.0.jar;commons-lang3-3.4.jar;commons-logging-1.2.jar;commons-vfs2-2.1.jar;guava-17.0.jar;guice-4.0.jar;guice-assistedinject-4.0.jar;guice-multibindings-4.0.jar;javassist-3.20.0-GA.jar;javax.inject-1.jar;jsr305-3.0.0.jar;org.metaborg.spoofax-common-2.1.0-SNAPSHOT.jar;org.metaborg.spoofax-deps-2.1.0-SNAPSHOT.jar;slf4j-api-1.7.10.jar"/>
     </extensions>
 
     <extensionPoints>

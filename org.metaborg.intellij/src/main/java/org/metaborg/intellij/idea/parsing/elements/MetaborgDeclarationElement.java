@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.intellij.psi.*;
+import com.intellij.psi.PsiNamedElement;
 
 /**
  * A PSI element that's a declaration.

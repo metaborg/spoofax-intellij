@@ -18,14 +18,18 @@
 
 package org.metaborg.intellij.idea.facets;
 
-import com.google.inject.*;
-import com.intellij.facet.*;
-import com.intellij.facet.ui.*;
+import com.google.inject.Inject;
+import com.intellij.facet.Facet;
+import com.intellij.facet.ui.FacetEditorContext;
+import com.intellij.facet.ui.FacetEditorTab;
+import com.intellij.facet.ui.FacetValidatorsManager;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.roots.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.logging.*;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.ModuleRootManager;
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NotNull;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
 import javax.swing.*;

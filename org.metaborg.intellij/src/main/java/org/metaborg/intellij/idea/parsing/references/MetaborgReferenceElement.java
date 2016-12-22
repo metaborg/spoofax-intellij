@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.idea.parsing.elements.MetaborgElement;
 
 /**
  * A PSI element that's a reference to a declaration.

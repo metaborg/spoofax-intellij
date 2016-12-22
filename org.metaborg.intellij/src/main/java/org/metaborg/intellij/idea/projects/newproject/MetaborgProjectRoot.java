@@ -18,9 +18,9 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
-import com.intellij.ide.util.projectWizard.importSources.*;
+import com.intellij.ide.util.projectWizard.importSources.DetectedProjectRoot;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * A detected Metaborg project's root.

@@ -18,13 +18,12 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import org.metaborg.intellij.resources.IIntelliJResourceService;
-import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
-import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
-
 import com.google.inject.Inject;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
+import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
+import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
 
 /**
  * Default implementation of the {@link IMetaborgPsiElementFactory} interface.

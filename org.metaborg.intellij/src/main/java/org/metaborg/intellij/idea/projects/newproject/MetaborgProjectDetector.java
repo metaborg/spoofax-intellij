@@ -18,33 +18,43 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
-import com.google.inject.*;
-import com.intellij.ide.util.importProject.*;
-import com.intellij.ide.util.projectWizard.*;
-import com.intellij.ide.util.projectWizard.importSources.*;
-import com.intellij.openapi.module.*;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.intellij.ide.util.importProject.ModuleDescriptor;
+import com.intellij.ide.util.importProject.ProjectDescriptor;
+import com.intellij.ide.util.projectWizard.ModuleBuilder;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.ProjectWizardStepFactory;
+import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.ide.util.projectWizard.importSources.DetectedProjectRoot;
+import com.intellij.ide.util.projectWizard.importSources.ProjectFromSourcesBuilder;
+import com.intellij.ide.util.projectWizard.importSources.ProjectStructureDetector;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.options.*;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.roots.*;
-import com.intellij.openapi.util.*;
-import com.intellij.openapi.vfs.*;
-import org.apache.commons.vfs2.*;
-import org.jetbrains.annotations.*;
+import com.intellij.openapi.roots.ContentEntry;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.util.Pair;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.jetbrains.annotations.NotNull;
 import org.metaborg.core.build.*;
 import org.metaborg.core.config.*;
 import org.metaborg.core.language.*;
 import org.metaborg.core.resource.*;
-import org.metaborg.intellij.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.idea.projects.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.resources.*;
+import org.metaborg.intellij.UnhandledException;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.projects.MetaborgModuleType;
+import org.metaborg.intellij.idea.projects.ModuleBuilderUtils;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.*;
 
 import javax.swing.*;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Detects whether a project is a Spoofax project when imported through the <em>Create from existing sources</em>

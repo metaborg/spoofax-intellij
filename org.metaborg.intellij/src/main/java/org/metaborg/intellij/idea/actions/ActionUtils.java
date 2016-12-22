@@ -18,12 +18,13 @@
 
 package org.metaborg.intellij.idea.actions;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
+import com.google.inject.Inject;
+import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
@@ -31,24 +32,14 @@ import org.metaborg.core.project.IProject;
 import org.metaborg.intellij.idea.projects.IIdeaProjectService;
 import org.metaborg.intellij.idea.transformations.TransformResource;
 import org.metaborg.intellij.logging.InjectLogger;
-import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
 
-import com.google.inject.Inject;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.Anchor;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.Constraints;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Utility functions for working with IntelliJ IDEA actions.
@@ -260,7 +251,7 @@ public final class ActionUtils {
             if (psiFiles[i] == null) {
                 // If one of the files wasn't found in the project, it's probably a file
                 // in a different project. No support for mixing projects like that.
-                throw LoggerUtils.exception(this.logger, RuntimeException.class,
+                throw LoggerUtils2.exception(this.logger, RuntimeException.class,
                         "Couldn't determine PsiFile for VirtualFile: {}", files[i]);
             }
         }

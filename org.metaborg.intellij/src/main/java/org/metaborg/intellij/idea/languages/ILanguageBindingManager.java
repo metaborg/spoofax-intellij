@@ -19,7 +19,7 @@
 package org.metaborg.intellij.idea.languages;
 
 import org.metaborg.core.language.*;
-import org.metaborg.intellij.idea.parsing.elements.*;
+import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 
 /**
  * Manages objects bound to specific languages and language implementations.

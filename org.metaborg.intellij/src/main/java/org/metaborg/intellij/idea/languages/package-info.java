@@ -37,4 +37,4 @@
 @NonNullByDefault
 package org.metaborg.intellij.idea.languages;
 
-import org.metaborg.intellij.*;
+import org.metaborg.intellij.NonNullByDefault;

@@ -43,4 +43,4 @@
 @NonNullByDefault
 package org.metaborg.intellij.idea.extensions;
 
-import org.metaborg.intellij.*;
+import org.metaborg.intellij.NonNullByDefault;

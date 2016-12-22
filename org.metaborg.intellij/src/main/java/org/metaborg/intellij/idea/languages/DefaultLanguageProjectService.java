@@ -18,20 +18,23 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.google.common.collect.*;
-import com.google.inject.*;
-import org.apache.commons.vfs2.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.inject.Inject;
+import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.*;
 import org.metaborg.core.build.dependency.*;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
-import org.metaborg.intellij.logging.*;
-import org.metaborg.intellij.logging.LoggerUtils;
+import org.metaborg.intellij.logging.InjectLogger;
+import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.meta.core.project.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.*;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 // TODO: Retry with all active languages if not found in project languages,
 // just like `getImpl(IProject, FileObject)`
@@ -88,7 +91,7 @@ public final class DefaultLanguageProjectService implements ILanguageProjectServ
         @Nullable final Iterable<? extends ILanguageImpl> impls = language != null ? language.impls() : null;
         final Set<LanguageDialect> candidates = getCandidateImpls(impls, project, file);
         if (candidates.size() > 1) {
-            throw LoggerUtils.exception(this.logger, IllegalStateException.class,
+            throw LoggerUtils2.exception(this.logger, IllegalStateException.class,
                     "For language {} more than one candidate implementation found for file {} in project {}: {}",
                     language, file, project, candidates);
         }

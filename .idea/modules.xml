@@ -5,6 +5,15 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.intellij.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.intellij.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.intellij_main.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.intellij_main.iml" group="org.metaborg.intellij" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.intellij_test.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.intellij_test.iml" group="org.metaborg.intellij" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1786663781/org.metaborg.jps.iml" filepath="$PROJECT_DIR$/.idea/modules/-1786663781/org.metaborg.jps.iml" group="org.metaborg.jps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1786663781/org.metaborg.jps_main.iml" filepath="$PROJECT_DIR$/.idea/modules/-1786663781/org.metaborg.jps_main.iml" group="org.metaborg.jps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1786663781/org.metaborg.jps_test.iml" filepath="$PROJECT_DIR$/.idea/modules/-1786663781/org.metaborg.jps_test.iml" group="org.metaborg.jps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/892253674/org.metaborg.spoofax-common.iml" filepath="$PROJECT_DIR$/.idea/modules/892253674/org.metaborg.spoofax-common.iml" group="org.metaborg.spoofax-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/892253674/org.metaborg.spoofax-common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/892253674/org.metaborg.spoofax-common_main.iml" group="org.metaborg.spoofax-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/892253674/org.metaborg.spoofax-common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/892253674/org.metaborg.spoofax-common_test.iml" group="org.metaborg.spoofax-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1212120579/org.metaborg.spoofax-deps.iml" filepath="$PROJECT_DIR$/.idea/modules/1212120579/org.metaborg.spoofax-deps.iml" group="org.metaborg.spoofax-deps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1212120579/org.metaborg.spoofax-deps_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1212120579/org.metaborg.spoofax-deps_main.iml" group="org.metaborg.spoofax-deps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1212120579/org.metaborg.spoofax-deps_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1212120579/org.metaborg.spoofax-deps_test.iml" group="org.metaborg.spoofax-deps" />
     </modules>
   </component>
 </project>

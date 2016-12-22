@@ -18,10 +18,10 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import com.google.common.base.*;
-import com.intellij.ui.treeStructure.treetable.*;
+import com.google.common.base.Preconditions;
+import com.intellij.ui.treeStructure.treetable.TreeColumnInfo;
 
-import javax.swing.table.*;
+import javax.swing.table.TableCellRenderer;
 
 /**
  * Key column in a tree table view.

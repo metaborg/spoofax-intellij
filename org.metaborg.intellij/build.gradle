@@ -1,74 +1,109 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
-plugins {
-    id "org.jetbrains.intellij" version "0.0.43"
-}
-
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-apply plugin: 'maven'
-apply plugin: 'org.jetbrains.intellij'
-
-group 'org.metaborg'
-version '2.0.0'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenLocal()
-    mavenCentral()
+  repositories {
     maven {
-        url "http://artifacts.metaborg.org/content/repositories/releases/"
+      url "https://plugins.gradle.org/m2/"
     }
     maven {
-        url "http://artifacts.metaborg.org/content/repositories/snapshots/"
+      url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
     }
+
+  }
+  dependencies {
+    classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
+  }
 }
 
-// FIX: Circular dependency due to adding test class dependencies
-// https://issues.gradle.org/browse/GRADLE-2470
-subprojects {
+allprojects {
     apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+    apply plugin: 'maven'
+
+    ext {
+        metaborgVersion = "2.1.0-SNAPSHOT"
+        guiceVersion = "4.0"
+    }
+
+    group "org.metaborg"
+    version "$metaborgVersion"
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url "http://artifacts.metaborg.org/content/repositories/releases/"
+        }
+        maven {
+            url "http://artifacts.metaborg.org/content/repositories/snapshots/"
+        }
+        maven {
+            url "https://raw.githubusercontent.com/pluto-build/pluto-build.github.io/master/mvnrepository/"
+        }
+        maven {
+            url "http://sugar-lang.github.io/mvnrepository/"
+        }
+    }
+
+    configurations {
+        provided
+    }
+
+    sourceSets.main.compileClasspath += configurations.provided
+
+    idea {
+        module {
+            inheritOutputDirs = true
+            scopes.PROVIDED.plus += [configurations.provided]
+        }
+    }
+
+    eclipse {
+        classpath {
+            plusConfigurations += [configurations.provided]
+        }
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                mavenLocal()
+            }
+        }
+    }
+}
+
+configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
+  apply plugin: 'org.jetbrains.intellij'
+
+  intellij {
+      version = "2016.3"
+
+      // FIXME: hack to support both IDEA 15 and IDEA 16.
+      // See https://github.com/intellij-rust/intellij-rust/issues/243
+      updateSinceUntilBuild = false
+  }
+}
+
+intellij {
+    type = "IC"
 }
 
 configurations {
-    provided
     language
     languageBaseline
     testLanguage
     testLanguageBaseline
-
-    jpsRuntime {
-        //extendsFrom runtime
-        exclude group: 'com.jetbrains'
-    }
-}
-
-intellij {
-    //version 'IC-15.0.3'
-
-    // FIXME: hack to support both IDEA 15 and IDEA 16.
-    // See https://github.com/intellij-rust/intellij-rust/issues/243
-    updateSinceUntilBuild = false
 }
 
 // To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
 // (Ctrl+Shift+A), then start a build and attach a remote debugger to port 5005.
 // https://github.com/JetBrains/gradle-intellij-plugin/issues/23
 afterEvaluate {
-    task("debugJps", type: org.jetbrains.intellij.RunIdeaTask, group: 'intellij', dependsOn: 'prepareSandbox', description: 'Runs Intellij IDEA with installed plugin and debugger support for JPS on port 5005.') {
+    tasks.getByName('runIdea') {
         jvmArgs += ["-Dcompiler.process.debug.port=5005"]
     }
-}
-
-task copyJpsLibraries(type: Copy, description: 'Copies the JPS libraries to the resources.') {
-    into "src/main/resources/jpslib/"
-    from configurations.jpsRuntime
 }
 
 task copyLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the resources.') {
@@ -92,50 +127,27 @@ task copyTestLanguageBaselineDependencies(type: Copy, description: 'Copies the l
 }
 
 processResources.dependsOn copyLanguageBaselineDependencies
-processResources.dependsOn copyJpsLibraries
 processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
 dependencies {
-	compile 'org.metaborg:org.metaborg.intellij.deps:2.0.0'
-    compile 'org.slf4j:slf4j-api:1.7.10'
-    provided 'com.google.guava:guava:17.0'
-    provided 'com.google.code.findbugs:jsr305:3.0.0'
-    
-    jpsRuntime 'org.slf4j:slf4j-api:1.7.12'
-
-    language 'org.metaborg:org.metaborg.meta.lang.esv:2.0.0@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.nabl:2.0.0@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.template:2.0.0@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.ts:2.0.0@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.stratego:2.0.0@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lang.analysis:2.0.0@spoofax-language'
-    language 'org.metaborg:org.metaborg.meta.lib.analysis:2.0.0@spoofax-language'
-
-    testCompile 'junit:junit:4.12'
-
-    testLanguage 'org.metaborg:org.metaborg.meta.lang.sdf:2.0.0@spoofax-language'
-}
-
-sourceSets.main.compileClasspath += configurations.provided
-
-idea {
-    module {
-        inheritOutputDirs = true
-        scopes.PROVIDED.plus += [configurations.provided]
+    // Main dependencies
+    compile     project(":org.metaborg.spoofax-common")
+    compile     (project(":org.metaborg.jps")) {
+        // Fixes an issue where the IntelliJ sources cause class loading to fail.
+        //   ClassNotFoundException: org.jetbrains.jps.intellilang.model.impl.JpsIntelliLangModelSerializerExtension
+        exclude module: "idea"
     }
-}
 
-eclipse {
-    classpath {
-        plusConfigurations += [configurations.provided]
-    }
-}
+    language    "org.metaborg:org.metaborg.meta.lang.esv:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.nabl:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.template:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.ts:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.stratego:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.analysis:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lib.analysis:$metaborgVersion@spoofax-language"
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            mavenLocal()
-        }
-    }
+    testCompile "junit:junit:4.12"
+
+    testLanguage "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
 }

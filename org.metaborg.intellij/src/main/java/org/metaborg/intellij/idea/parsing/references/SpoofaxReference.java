@@ -18,9 +18,10 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import com.intellij.openapi.vfs.*;
-import com.intellij.psi.*;
-import org.jetbrains.annotations.*;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.source.*;
 
 /**

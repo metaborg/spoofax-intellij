@@ -18,9 +18,10 @@
 
 package org.metaborg.intellij.idea.actions;
 
-import com.google.inject.*;
-import com.google.inject.assistedinject.*;
-import com.intellij.openapi.actionSystem.*;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import org.metaborg.core.language.*;
 
 /**

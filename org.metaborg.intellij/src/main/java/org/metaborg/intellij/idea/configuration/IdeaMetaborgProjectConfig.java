@@ -18,13 +18,14 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.*;
+import com.google.inject.Inject;
 import com.intellij.openapi.components.*;
-import com.intellij.openapi.project.*;
-import org.jetbrains.annotations.*;
-import org.metaborg.intellij.configuration.*;
-import org.metaborg.intellij.idea.*;
-import org.metaborg.intellij.logging.*;
+import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.configuration.IMetaborgProjectConfig;
+import org.metaborg.intellij.configuration.MetaborgProjectConfigState;
+import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
 /**

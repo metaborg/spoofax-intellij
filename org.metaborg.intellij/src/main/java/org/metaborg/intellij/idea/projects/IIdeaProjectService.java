@@ -18,11 +18,11 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.intellij.openapi.module.*;
-import com.intellij.psi.*;
+import com.intellij.openapi.module.Module;
+import com.intellij.psi.PsiElement;
 import org.metaborg.core.project.*;
 
-import javax.annotation.*;
+import javax.annotation.Nullable;
 
 /**
  * Project service for IntelliJ IDEA.
