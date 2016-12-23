@@ -6,3 +6,4 @@ org.metaborg:org.metaborg.meta.lang.stratego:2.1.0-SNAPSHOT
 org.metaborg:org.metaborg.meta.lang.template:2.1.0-SNAPSHOT
 org.metaborg:org.metaborg.meta.lang.ts:2.1.0-SNAPSHOT
 org.metaborg:org.metaborg.meta.lib.analysis:2.1.0-SNAPSHOT
+org.metaborg:meta.lib.spoofax:2.1.0-SNAPSHOT

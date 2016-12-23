@@ -57,6 +57,7 @@ dependencies {
     language    "org.metaborg:org.metaborg.meta.lang.stratego:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lang.analysis:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lib.analysis:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:meta.lib.spoofax:$metaborgVersion@spoofax-language"
 
     testLanguage "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
 }
