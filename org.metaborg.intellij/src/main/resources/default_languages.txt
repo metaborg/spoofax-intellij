@@ -1,8 +1,0 @@
-org.metaborg:org.metaborg.meta.lang.analysis:2.1.0-SNAPSHOT
-org.metaborg:org.metaborg.meta.lang.esv:2.1.0-SNAPSHOT
-org.metaborg:org.metaborg.meta.lang.nabl:2.1.0-SNAPSHOT
-org.metaborg:org.metaborg.meta.lang.sdf:2.1.0-SNAPSHOT
-org.metaborg:org.metaborg.meta.lang.stratego:2.1.0-SNAPSHOT
-org.metaborg:org.metaborg.meta.lang.template:2.1.0-SNAPSHOT
-org.metaborg:org.metaborg.meta.lang.ts:2.1.0-SNAPSHOT
-org.metaborg:org.metaborg.meta.lib.analysis:2.1.0-SNAPSHOT
