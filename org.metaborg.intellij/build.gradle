@@ -90,13 +90,6 @@ intellij {
     type = "IC"
 }
 
-configurations {
-    language
-    languageBaseline
-    testLanguage
-    testLanguageBaseline
-}
-
 // To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
 // (Ctrl+Shift+A), then start a build and attach a remote debugger to port 5005.
 // https://github.com/JetBrains/gradle-intellij-plugin/issues/23
@@ -105,29 +98,6 @@ afterEvaluate {
         jvmArgs += ["-Dcompiler.process.debug.port=5005"]
     }
 }
-
-task copyLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the resources.') {
-    into "src/main/resources/languages/"
-    from configurations.language
-}
-
-task copyTestLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the test resources.') {
-    into "src/test/resources/languages/"
-    from configurations.testLanguage
-}
-
-task copyLanguageBaselineDependencies(type: Copy, description: 'Copies the language dependencies to the resources.', dependsOn: copyLanguageDependencies) {
-    into "src/main/resources/languages/"
-    from configurations.languageBaseline
-}
-
-task copyTestLanguageBaselineDependencies(type: Copy, description: 'Copies the language dependencies to the test resources.', dependsOn: copyTestLanguageDependencies) {
-    into "src/test/resources/languages/"
-    from configurations.testLanguageBaseline
-}
-
-processResources.dependsOn copyLanguageBaselineDependencies
-processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
 dependencies {
     // Main dependencies
@@ -138,16 +108,5 @@ dependencies {
         exclude module: "idea"
     }
 
-    language    "org.metaborg:org.metaborg.meta.lang.esv:$metaborgVersion@spoofax-language"
-    language    "org.metaborg:org.metaborg.meta.lang.nabl:$metaborgVersion@spoofax-language"
-    language    "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
-    language    "org.metaborg:org.metaborg.meta.lang.template:$metaborgVersion@spoofax-language"
-    language    "org.metaborg:org.metaborg.meta.lang.ts:$metaborgVersion@spoofax-language"
-    language    "org.metaborg:org.metaborg.meta.lang.stratego:$metaborgVersion@spoofax-language"
-    language    "org.metaborg:org.metaborg.meta.lang.analysis:$metaborgVersion@spoofax-language"
-    language    "org.metaborg:org.metaborg.meta.lib.analysis:$metaborgVersion@spoofax-language"
-
     testCompile "junit:junit:4.12"
-
-    testLanguage "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
 }

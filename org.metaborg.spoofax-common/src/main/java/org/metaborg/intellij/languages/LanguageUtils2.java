@@ -113,7 +113,7 @@ public final class LanguageUtils2 {
     public static String getArtifactUri(final FileObject artifact) {
         final String zipUri;
         try {
-            zipUri = "zip://" + artifact.getURL().getPath();
+            zipUri = "zip:" + artifact.getURL() + "!/";
         } catch (final FileSystemException e) {
             throw new UnhandledException(e);
         }
