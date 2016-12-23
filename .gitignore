@@ -34,22 +34,10 @@ gradle-app.setting
 
 
 ### Intellij ###
+.idea/
+*.iml
 *.ipr
 *.iws
-**/.idea/workspace.xml
-**/.idea/tasks.xml
-**/.idea/vcs.xml
-**/.idea/jsLibraryMappings.xml
-**/.idea/dataSources.ids
-**/.idea/dataSources.xml
-**/.idea/dataSources.local.xml
-**/.idea/sqlDataSources.xml
-**/.idea/dynamic.xml
-**/.idea/uiDesigner.xml
-**/.idea/gradle.xml
-**/.idea/mongoSettings.xml
-**/.idea/dictionaries/
-**/.idea/libraries/
 out/
 atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
@@ -58,9 +46,9 @@ crashlytics-build.properties
 
 
 ### Eclipse ###
-#.project
-#.classpath
-#.settings/
+.project
+.classpath
+.settings/
 .metadata
 bin/
 tmp/
