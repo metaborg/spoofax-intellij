@@ -49,15 +49,23 @@ dependencies {
 
     testCompile "junit:junit:4.12"
 
+    language    "org.metaborg:dynsem:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:dynsem2coq:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.lang.coq:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.aterm:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lang.esv:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lang.nabl:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.nabl2.shared:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.nabl2.lang:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.nabl2.runtime:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.stratego:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lang.template:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lang.ts:$metaborgVersion@spoofax-language"
-    language    "org.metaborg:org.metaborg.meta.lang.stratego:$metaborgVersion@spoofax-language"
-    language    "org.metaborg:org.metaborg.meta.lang.analysis:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.spt.interactive:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lib.analysis:$metaborgVersion@spoofax-language"
     language    "org.metaborg:meta.lib.spoofax:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.analysis:$metaborgVersion@spoofax-language"
 
     testLanguage "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
 }
