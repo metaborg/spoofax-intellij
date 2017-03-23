@@ -38,6 +38,7 @@ public final class ResourceLanguageSource implements ILanguageSource {
 
     @Inject
     public ResourceLanguageSource(IResourceService resourceService) {
+        assert resourceService != null;
         this.resourceService = resourceService;
     }
 

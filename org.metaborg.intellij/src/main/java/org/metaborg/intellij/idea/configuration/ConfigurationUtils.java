@@ -44,6 +44,7 @@ public final class ConfigurationUtils {
 
     @Inject
     public ConfigurationUtils(final IIdeaLanguageManager languageManager) {
+        assert languageManager != null;
         this.languageManager = languageManager;
     }
 

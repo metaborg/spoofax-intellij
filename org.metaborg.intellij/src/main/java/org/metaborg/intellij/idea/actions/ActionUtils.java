@@ -57,6 +57,10 @@ public final class ActionUtils {
             final IIntelliJResourceService resourceService,
             final IIdeaProjectService projectService,
             final ILanguageIdentifierService identifierService) {
+        assert resourceService != null;
+        assert projectService != null;
+        assert identifierService != null;
+
         this.resourceService = resourceService;
         this.projectService = projectService;
         this.identifierService = identifierService;

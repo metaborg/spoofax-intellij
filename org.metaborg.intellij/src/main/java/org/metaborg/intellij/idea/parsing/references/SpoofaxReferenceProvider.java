@@ -67,6 +67,11 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
             final ISpoofaxResolverService resolverService,
             final ISpoofaxAnalysisResultRequester analysisResultRequester) {
         super(projectService, resourceService, languageProjectService);
+        assert projectService != null;
+        assert resourceService != null;
+        assert languageProjectService != null;
+        assert resolverService != null;
+        assert analysisResultRequester != null;
         this.resourceService = resourceService;
         this.resolverService = resolverService;
         this.analysisResultRequester = analysisResultRequester;

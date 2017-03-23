@@ -51,6 +51,7 @@ public final class IdeaProjectService implements IIdeaProjectService {
      */
     @Inject
     private IdeaProjectService(final IIntelliJResourceService resourceService) {
+        assert resourceService != null;
         this.resourceService = resourceService;
     }
 

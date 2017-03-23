@@ -26,6 +26,10 @@ import org.metaborg.spoofax.meta.core.*;
 
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import com.intellij.openapi.diagnostic.Logger;
 
 public interface SpoofaxJpsPlugin {
 
@@ -64,27 +68,37 @@ public interface SpoofaxJpsPlugin {
 
     // Static //
 
+    static final Logger LOG = Logger.getInstance(SpoofaxJpsPlugin.class);
+
     LazyInitializer<SpoofaxJpsPlugin> pluginLazy = new LazyInitializer<SpoofaxJpsPlugin>() {
         @Override
         protected SpoofaxJpsPlugin initialize() throws ConcurrentException {
-            return new SpoofaxJpsPluginImpl();
-//            final ClassLoader parentClassLoader = this.getClass().getClassLoader();
-//            final PriorityURLClassLoader classLoader;
-//            final URL[] urls;
-//            if (parentClassLoader instanceof URLClassLoader) {
-//                urls = ((URLClassLoader)parentClassLoader).getURLs();
-//            } else {
-//                urls = new URL[0];
-//            }
-//            classLoader = new PriorityURLClassLoader(parentClassLoader, urls, new String[] { "org.metaborg.intellij.jps.SpoofaxJpsPlugin" });
-//            Thread.currentThread().setContextClassLoader(classLoader);
-//            try {
-//                final Class pluginClass = classLoader.loadClass("org.metaborg.intellij.jps.SpoofaxJpsPluginImpl");
-//                final Object pluginObject = pluginClass.newInstance();
-//                return (SpoofaxJpsPlugin)pluginObject;
-//            } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-//                throw new UnhandledException("An unexpected unhandled exception occurred during object creation.", e);
-//            }
+//            return new SpoofaxJpsPluginImpl();
+            LOG.info("Getting current classloader.");
+            final ClassLoader parentClassLoader = this.getClass().getClassLoader();
+            final PriorityURLClassLoader classLoader;
+            final URL[] urls;
+            if (parentClassLoader instanceof URLClassLoader) {
+                urls = ((URLClassLoader)parentClassLoader).getURLs();
+            } else {
+                urls = new URL[0];
+            }
+            LOG.info("Found urls: " + String.join(", ", Arrays.stream(urls).map(URL::toString).collect(Collectors.toList())));
+            classLoader = new PriorityURLClassLoader(parentClassLoader, urls, new String[] { "org.metaborg.intellij.jps.SpoofaxJpsPlugin" });
+            LOG.info("Created class loader: " + classLoader.toString());
+            Thread.currentThread().setContextClassLoader(classLoader);
+            LOG.info("Set context class loader.");
+            try {
+                @SuppressWarnings("unchecked")
+                final Class<SpoofaxJpsPlugin> pluginClass = (Class<SpoofaxJpsPlugin>)classLoader.loadClass("org.metaborg.intellij.jps.SpoofaxJpsPluginImpl");
+                LOG.info("Found plugin class: " + pluginClass.toString());
+                final SpoofaxJpsPlugin pluginObject = pluginClass.newInstance();
+                LOG.info("Created plugin instance: " + pluginObject.toString());
+                LOG.info("  with class loader: " + pluginObject.getClass().getClassLoader().toString());
+                return pluginObject;
+            } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                throw new UnhandledException("An unexpected unhandled exception occurred during object creation.", e);
+            }
         }
     };
 

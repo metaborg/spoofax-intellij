@@ -91,8 +91,8 @@ public final class SpoofaxTokenTypeManager {
      */
     public SpoofaxTokenType getTokenType(@Nullable IStyle style) {
         style = style != null ? style : getDefaultStyle();
-
-        return this.tokenCache.getUnchecked(style);
+        return new SpoofaxTokenType(language, style);
+//        return this.tokenCache.getUnchecked(style);
     }
 
     /**

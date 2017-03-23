@@ -64,6 +64,9 @@ public final class SpoofaxBuilderService extends BuilderService {
             final Collection<BuildTargetType<?>> targets,
             final Collection<TargetBuilder<?, ?>> builders,
             final Collection<ModuleLevelBuilder> moduleLevelBuilders) {
+        assert targets != null;
+        assert builders != null;
+        assert moduleLevelBuilders != null;
         this.targets = Collections.unmodifiableList(new ArrayList<>(targets));
         this.builders = Collections.unmodifiableList(new ArrayList<>(builders));
         this.moduleLevelBuilders = Collections.unmodifiableList(new ArrayList<>(moduleLevelBuilders));

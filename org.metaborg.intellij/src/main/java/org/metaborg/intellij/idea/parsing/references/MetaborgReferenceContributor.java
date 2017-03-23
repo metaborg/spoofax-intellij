@@ -45,6 +45,7 @@ public final class MetaborgReferenceContributor extends PsiReferenceContributor 
     @SuppressWarnings("unused")
     @Inject
     private void inject(final IMetaborgReferenceProviderFactory referenceProviderFactory) {
+        assert referenceProviderFactory != null;
         this.referenceProviderFactory = referenceProviderFactory;
     }
 

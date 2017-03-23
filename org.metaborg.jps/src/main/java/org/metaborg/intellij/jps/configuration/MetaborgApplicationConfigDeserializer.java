@@ -40,6 +40,8 @@ public final class MetaborgApplicationConfigDeserializer extends JpsGlobalExtens
     public MetaborgApplicationConfigDeserializer(final IJpsMetaborgApplicationConfigFactory configFactory,
                                                  final IMetaborgConfigService extensionService) {
         super(IMetaborgApplicationConfig.CONFIG_FILE, IMetaborgApplicationConfig.CONFIG_NAME);
+        assert configFactory != null;
+        assert extensionService != null;
         this.configFactory = configFactory;
         this.extensionService = extensionService;
     }

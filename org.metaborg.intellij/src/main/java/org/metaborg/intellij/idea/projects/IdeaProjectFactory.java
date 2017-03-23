@@ -44,6 +44,8 @@ public final class IdeaProjectFactory implements IIdeaProjectFactory {
     @Inject
     private IdeaProjectFactory(final IProjectConfigService projectConfigService,
                                final ISourceTextService sourceTextService) {
+        assert projectConfigService != null;
+        assert sourceTextService != null;
         this.projectConfigService = projectConfigService;
         this.sourceTextService = sourceTextService;
     }

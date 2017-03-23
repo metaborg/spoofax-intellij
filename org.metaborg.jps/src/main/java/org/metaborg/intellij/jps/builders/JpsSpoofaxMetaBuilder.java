@@ -85,6 +85,15 @@ public final class JpsSpoofaxMetaBuilder {
             final IJpsProjectService projectService,
             final ISpoofaxLanguageSpecService languageSpecService
     ) {
+        assert builder != null;
+        assert languageManager != null;
+        assert extensionService != null;
+        assert languagePathService != null;
+        assert dependencyService != null;
+        assert processorRunner != null;
+        assert messageFormatter != null;
+        assert projectService != null;
+        assert languageSpecService != null;
         this.builder = builder;
         this.languageManager = languageManager;
         this.extensionService = extensionService;

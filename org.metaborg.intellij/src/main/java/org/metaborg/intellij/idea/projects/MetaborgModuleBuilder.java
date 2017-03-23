@@ -191,6 +191,13 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
                                   final ISpoofaxLanguageSpecConfigBuilder configBuilder, final INewModuleWizardStepFactory wizardStepFactory,
                                   final IIconManager iconManager, final MetaborgModuleType moduleType) {
         super();
+        assert languageSpecFactory != null;
+        assert resourceService != null;
+        assert projectService != null;
+        assert configBuilder != null;
+        assert wizardStepFactory != null;
+        assert iconManager != null;
+        assert moduleType != null;
         this.languageSpecFactory = languageSpecFactory;
         this.resourceService = resourceService;
         this.projectService = projectService;

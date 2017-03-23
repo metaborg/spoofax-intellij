@@ -82,6 +82,7 @@ public final class LanguagesPanel extends JPanel {
     @Inject
     @SuppressWarnings("unused")
     protected void inject(final IIconManager iconManager) {
+        assert iconManager != null;
         this.iconManager = iconManager;
     }
 

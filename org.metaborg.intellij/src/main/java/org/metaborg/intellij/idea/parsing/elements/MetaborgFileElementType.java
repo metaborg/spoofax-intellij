@@ -74,6 +74,16 @@ public final class MetaborgFileElementType extends IFileElementType { // IStubFi
                                    final ISpoofaxSyntaxService syntaxService, final IIdeaProjectService projectService,
                                    final IATermAstElementTypeProviderFactory elementTypeProviderFactory) {
         super(language);
+        assert language != null;
+        assert tokenTypesManager != null;
+        assert languageManager != null;
+        assert languageProjectService != null;
+        assert resourceService != null;
+        assert parseResultProcessor != null;
+        assert unitService != null;
+        assert syntaxService != null;
+        assert projectService != null;
+        assert elementTypeProviderFactory != null;
         assert language instanceof MetaborgIdeaLanguage;
 
         this.languageManager = languageManager;

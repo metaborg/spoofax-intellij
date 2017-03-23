@@ -85,6 +85,8 @@ import java.util.Collections;
     public final Collection<TargetBuilder<?, ?>> provideTargetBuilders(
             final SpoofaxPreBuilder preBuilder,
             final SpoofaxPostBuilder postBuilder) {
+        assert preBuilder != null;
+        assert postBuilder != null;
         return Arrays.asList(preBuilder, postBuilder);
     }
 
@@ -95,6 +97,7 @@ import java.util.Collections;
     @Inject
     public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders(
             final MetaborgLanguageBuilder languageBuilder) {
+        assert languageBuilder != null;
         return Collections.singletonList(languageBuilder);
     }
 
@@ -105,6 +108,8 @@ import java.util.Collections;
     public final Collection<BuildTargetType<?>> provideTargetTypes(
             final SpoofaxPreTargetType preTargetType,
             final SpoofaxPostTargetType postTargetType) {
+        assert preTargetType != null;
+        assert postTargetType != null;
         return Arrays.asList(preTargetType, postTargetType);
     }
 }

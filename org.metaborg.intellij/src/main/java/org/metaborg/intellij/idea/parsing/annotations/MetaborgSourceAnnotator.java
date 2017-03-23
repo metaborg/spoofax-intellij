@@ -57,7 +57,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
     private final IIdeaProjectService projectService;
     private final IIntelliJResourceService resourceService;
     private final ILanguageIdentifierService identifierService;
-    private final ISpoofaxInputUnitService unitSerivce;
+    private final ISpoofaxInputUnitService unitService;
     private final ISpoofaxAnalysisResultRequester analysisResultProcessor;
     @InjectLogger
     private ILogger logger;
@@ -66,12 +66,18 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
     @Inject
     public MetaborgSourceAnnotator(IContextService contextService, IIdeaProjectService projectService,
                                    IIntelliJResourceService resourceService, ILanguageIdentifierService identifierService,
-                                   ISpoofaxInputUnitService unitSerivce, ISpoofaxAnalysisResultRequester analysisResultProcessor) {
+                                   ISpoofaxInputUnitService unitService, ISpoofaxAnalysisResultRequester analysisResultProcessor) {
+        assert contextService != null;
+        assert projectService != null;
+        assert resourceService != null;
+        assert identifierService != null;
+        assert unitService != null;
+        assert analysisResultProcessor != null;
         this.contextService = contextService;
         this.projectService = projectService;
         this.resourceService = resourceService;
         this.identifierService = identifierService;
-        this.unitSerivce = unitSerivce;
+        this.unitService = unitService;
         this.analysisResultProcessor = analysisResultProcessor;
     }
 
@@ -123,7 +129,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
         try {
             final IContext context = info.context();
             final ISpoofaxInputUnit input =
-                unitSerivce.inputUnit(info.resource(), info.text(), context.language(), null);
+                    unitService.inputUnit(info.resource(), info.text(), context.language(), null);
             analysisResult = this.analysisResultProcessor.request(input, context).toBlocking().single();
         } catch(final RuntimeException ex) {
             // FIXME: Dedicated exception!

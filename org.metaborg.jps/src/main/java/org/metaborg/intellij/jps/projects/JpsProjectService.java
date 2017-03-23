@@ -54,6 +54,9 @@ public final class JpsProjectService implements IJpsProjectService {
     public JpsProjectService(final ISourceTextService sourceTextService,
                              final IResourceService resourceService,
                              final IProjectConfigService projectConfigService) {
+        assert sourceTextService != null;
+        assert resourceService != null;
+        assert projectConfigService != null;
         this.sourceTextService = sourceTextService;
         this.resourceService = resourceService;
         this.projectConfigService = projectConfigService;

@@ -40,6 +40,8 @@ public class IdeaProject extends Project {
             @Assisted final FileObject location,
             @Assisted @Nullable final IProjectConfig config) {
         super(location, config);
+        assert module != null;
+        assert location != null;
         this.module = module;
     }
 

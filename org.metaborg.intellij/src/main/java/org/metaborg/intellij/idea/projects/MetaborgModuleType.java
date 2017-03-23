@@ -58,6 +58,7 @@ public final class MetaborgModuleType extends ModuleType<MetaborgModuleBuilder> 
     @Inject
     @SuppressWarnings("unused")
     private void inject(final IIconManager iconManager) {
+        assert iconManager != null;
         this.iconManager = iconManager;
     }
 

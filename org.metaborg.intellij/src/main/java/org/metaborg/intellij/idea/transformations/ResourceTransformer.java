@@ -63,6 +63,11 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
     public ResourceTransformer(IContextService contextService, IInputUnitService<I> unitService,
                                IParseResultRequester<I, P> parseResultRequester, IAnalysisResultRequester<I, A> analysisResultRequester,
                                ITransformService<P, A, TP, TA> transformService) {
+        assert contextService != null;
+        assert unitService != null;
+        assert parseResultRequester != null;
+        assert analysisResultRequester != null;
+        assert transformService != null;
         this.contextService = contextService;
         this.unitService = unitService;
         this.parseResultRequester = parseResultRequester;

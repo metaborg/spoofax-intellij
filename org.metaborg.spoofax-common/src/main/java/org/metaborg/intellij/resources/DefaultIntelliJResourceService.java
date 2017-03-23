@@ -59,6 +59,8 @@ public final class DefaultIntelliJResourceService extends ResourceService implem
             final FileSystemManager fileSystemManager,
             @Named("ResourceClassLoader") final ClassLoader classLoader) {
         super(fileSystemManager, classLoader);
+        assert fileSystemManager != null;
+        assert classLoader != null;
     }
 
     /**

@@ -61,6 +61,10 @@ public final class ConfigurationFileEventListener extends VirtualFileAdapter {
                                           final IdeaProjectService projectService,
                                           final ConfigurationUtils configurationUtils,
                                           final ProjectUtils projectUtils) {
+        assert metaborgModuleType != null;
+        assert projectService != null;
+        assert configurationUtils != null;
+        assert projectUtils != null;
         this.metaborgModuleType = metaborgModuleType;
         this.projectService = projectService;
         this.configurationUtils = configurationUtils;

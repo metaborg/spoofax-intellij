@@ -62,6 +62,9 @@ public class IdeaLanguageSpec extends IdeaProject implements ISpoofaxLanguageSpe
             @Assisted final FileObject location,
             @Assisted final ISpoofaxLanguageSpecConfig config) {
         super(module, location, config);
+        assert module != null;
+        assert location != null;
+        assert config != null;
         this.config = config;
     }
 

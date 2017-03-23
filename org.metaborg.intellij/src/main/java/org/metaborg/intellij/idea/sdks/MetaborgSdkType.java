@@ -74,6 +74,8 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     @Inject
     @SuppressWarnings("unused")
     private void inject(final LibraryService libraryService, final IIconManager iconManager) {
+        assert libraryService != null;
+        assert iconManager != null;
         this.libraryService = libraryService;
         this.iconManager = iconManager;
     }

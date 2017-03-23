@@ -38,6 +38,8 @@ public final class ArtifactProjectFactory implements IArtifactProjectFactory {
     @Inject
     public ArtifactProjectFactory(final ISourceTextService sourceTextService,
                                   final IProjectConfigService projectConfigService) {
+        assert sourceTextService != null;
+        assert projectConfigService != null;
         this.sourceTextService = sourceTextService;
         this.projectConfigService = projectConfigService;
     }

@@ -45,6 +45,7 @@ public final class CompoundProjectService implements IProjectService {
 
     @Inject
     public CompoundProjectService(@Compound final Set<IProjectService> services) {
+        assert services != null;
         this.services = services;
     }
 

@@ -73,9 +73,11 @@ public abstract class LanguagesSettings extends BaseConfigurable {
     protected void inject(final IIdeaLanguageManager languageManager,
                           final ILanguageService languageService,
                           final IMetaborgApplicationConfig applicationConfig) {
+        assert languageManager != null;
+        assert languageService != null;
+        assert applicationConfig != null;
         this.languageManager = languageManager;
         this.languageService = languageService;
-        this.languageManager = languageManager;
         this.applicationConfig = applicationConfig;
     }
 

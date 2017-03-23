@@ -48,6 +48,8 @@ public class MetaborgJpsProject extends Project {
             @Assisted final FileObject location,
             @Assisted @Nullable final IProjectConfig config) {
         super(location, config);
+        assert module != null;
+        assert location != null;
         this.module = module;
         // TODO: Get location from JpsModule?
         // NOTE: A module can have multiple content roots, or none at all.

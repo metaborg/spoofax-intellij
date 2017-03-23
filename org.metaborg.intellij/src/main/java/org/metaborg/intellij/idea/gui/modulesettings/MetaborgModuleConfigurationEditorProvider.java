@@ -48,6 +48,7 @@ public final class MetaborgModuleConfigurationEditorProvider implements ModuleCo
     @SuppressWarnings("unused")
     @Inject
     private void inject(final MetaborgModuleType metaborgModuleType) {
+        assert metaborgModuleType != null;
         this.metaborgModuleType = metaborgModuleType;
     }
 

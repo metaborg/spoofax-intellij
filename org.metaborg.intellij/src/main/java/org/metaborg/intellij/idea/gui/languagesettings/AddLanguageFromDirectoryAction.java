@@ -65,6 +65,7 @@ public class AddLanguageFromDirectoryAction extends LanguagesAction {
     @SuppressWarnings("unused")
     private void inject(
             final IIdeaLanguageManager languageManager) {
+        assert languageManager != null;
         this.languageManager = languageManager;
     }
 

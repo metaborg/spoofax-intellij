@@ -44,6 +44,10 @@ public final class BuilderMenuBuilder {
             final IMenuService menuService,
             final IBuilderActionGroupFactory builderActionGroupFactory,
             final ITransformIdeaActionFactory transformationActionFactory) {
+        assert menuService != null;
+        assert builderActionGroupFactory != null;
+        assert transformationActionFactory != null;
+
         this.menuService = menuService;
         this.builderActionGroupFactory = builderActionGroupFactory;
         this.transformationActionFactory = transformationActionFactory;

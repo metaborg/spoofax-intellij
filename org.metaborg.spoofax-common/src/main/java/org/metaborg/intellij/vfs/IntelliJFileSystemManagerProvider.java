@@ -40,6 +40,7 @@ public final class IntelliJFileSystemManagerProvider extends DefaultFileSystemMa
      */
     @Inject
     public IntelliJFileSystemManagerProvider(final IIntelliJFileProviderFactory fileProviderFactory) {
+        assert fileProviderFactory != null;
         this.fileProviderFactory = fileProviderFactory;
     }
 

@@ -72,6 +72,17 @@ public final class TransformationAction extends AnActionWithId {
                                  final ISpoofaxParseResultRequester parseResultRequester,
                                  final ISpoofaxAnalysisResultRequester analysisResultRequester) {
         super(id, action.name(), null, null);
+        assert id != null;
+        assert action != null;
+        assert language != null;
+        assert actionUtils != null;
+        assert resourceService != null;
+        assert contextService != null;
+        assert unitService != null;
+        assert transformService != null;
+        assert parseResultRequester != null;
+        assert analysisResultRequester != null;
+
         this.language = language;
         this.goal = action.goal();
         this.actionUtils = actionUtils;

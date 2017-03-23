@@ -107,6 +107,16 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
                                       final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
                                       final BuilderMenuBuilder builderMenuBuilder, final ActionUtils actionUtils) {
         super(languageService, languageSource, discoveryService);
+        assert languageService != null;
+        assert languageSource != null;
+        assert discoveryService != null;
+        assert resourceService != null;
+        assert metaborgSourceAnnotator != null;
+        assert fileElementTypeFactory != null;
+        assert parserDefinitionFactory != null;
+        assert syntaxHighlighterFactoryProvider != null;
+        assert builderMenuBuilder != null;
+        assert actionUtils != null;
         this.metaborgSourceAnnotator = metaborgSourceAnnotator;
         this.fileElementTypeFactory = fileElementTypeFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;

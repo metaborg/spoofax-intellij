@@ -58,6 +58,11 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
             final IIdeaLanguageManager languageManager,
             final ILanguageBindingManager bindingManager) {
         super();
+        assert resourceService != null;
+        assert identifierService != null;
+        assert highlightingLexerFactory != null;
+        assert languageManager != null;
+        assert bindingManager != null;
         this.resourceService = resourceService;
         this.identifierService = identifierService;
         this.highlightingLexerFactory = highlightingLexerFactory;

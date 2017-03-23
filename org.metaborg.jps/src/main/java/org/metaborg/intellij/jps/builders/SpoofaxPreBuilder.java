@@ -47,6 +47,10 @@ public final class SpoofaxPreBuilder extends MetaborgMetaBuilder2<SpoofaxPreTarg
             final ISpoofaxLanguageSpecService languageSpecService,
             final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder) {
         super(targetType, jpsSpoofaxMetaBuilder, projectService, languageSpecService);
+        assert targetType != null;
+        assert projectService != null;
+        assert languageSpecService != null;
+        assert jpsSpoofaxMetaBuilder != null;
 
     }
 

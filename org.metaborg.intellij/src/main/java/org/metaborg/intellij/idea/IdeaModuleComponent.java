@@ -75,6 +75,15 @@ public final class IdeaModuleComponent implements ModuleComponent {
             final ProjectUtils projectUtils,
             final ISourceTextService sourceTextService,
             final ISpoofaxLanguageSpecConfigService configService) {
+        assert projectService != null;
+        assert projectFactory != null;
+        assert languageSpecFactory != null;
+        assert languageManager != null;
+        assert resourceService != null;
+        assert configurationUtils != null;
+        assert projectUtils != null;
+        assert sourceTextService != null;
+        assert configService != null;
         this.projectService = projectService;
         this.projectFactory = projectFactory;
         this.languageSpecFactory = languageSpecFactory;

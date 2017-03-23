@@ -44,6 +44,7 @@ public final class MultiLanguageSource implements ILanguageSource {
      */
     @Inject
     public MultiLanguageSource(@Compound final Set<ILanguageSource> sources) {
+        assert sources != null;
         this.sources = sources;
     }
 

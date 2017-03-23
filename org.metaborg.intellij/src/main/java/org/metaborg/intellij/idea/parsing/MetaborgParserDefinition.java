@@ -54,6 +54,11 @@ public final class MetaborgParserDefinition implements ParserDefinition {
             final IMetaborgPsiElementFactory psiElementFactory,
             final ICharacterLexerFactory characterLexerFactory,
             final ILanguageBindingManager bindingManager) {
+        assert fileType != null;
+        assert fileElementType != null;
+        assert psiElementFactory != null;
+        assert characterLexerFactory != null;
+        assert bindingManager != null;
         this.fileType = fileType;
         this.fileElement = fileElementType;
         this.psiElementFactory = psiElementFactory;

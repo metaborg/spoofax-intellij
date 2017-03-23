@@ -47,6 +47,7 @@ public final class ArtifactProjectService implements IProjectService {
 
     @Inject
     public ArtifactProjectService(final IArtifactProjectFactory artifactProjectFactory) {
+        assert artifactProjectFactory != null;
         this.artifactProjectFactory = artifactProjectFactory;
     }
 

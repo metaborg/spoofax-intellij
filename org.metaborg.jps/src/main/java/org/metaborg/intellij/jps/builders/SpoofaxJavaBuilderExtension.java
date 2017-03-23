@@ -46,6 +46,7 @@ public final class SpoofaxJavaBuilderExtension extends JavaBuilderExtension {
     @SuppressWarnings("unused")
     @Inject
     private void inject(final JpsMetaborgModuleType moduleType) {
+        assert moduleType != null;
         this.moduleType = moduleType;
     }
 

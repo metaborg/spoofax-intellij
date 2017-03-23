@@ -42,6 +42,9 @@ public final class DefaultMetaborgPsiElementFactory implements IMetaborgPsiEleme
             final ISpoofaxResolverService resolverService,
             final IIntelliJResourceService resourceService,
             final ISpoofaxAnalysisResultRequester analysisResultRequester) {
+        assert resolverService != null;
+        assert resourceService != null;
+        assert analysisResultRequester != null;
         this.resolverService = resolverService;
         this.resourceService = resourceService;
         this.analysisResultRequester = analysisResultRequester;

@@ -57,6 +57,10 @@ public final class DefaultLanguageProjectService implements ILanguageProjectServ
             final IDependencyService dependencyService,
             final ILanguageService languageService,
             final ILanguageSpecService languageSpecService) {
+        assert identifierService != null;
+        assert dependencyService != null;
+        assert languageService != null;
+        assert languageSpecService != null;
         this.identifierService = identifierService;
         this.dependencyService = dependencyService;
         this.languageService = languageService;

@@ -49,6 +49,10 @@ public final class ATermAstElementTypeProvider implements IAstElementTypeProvide
             @Assisted final ISpoofaxParseUnit parseResult,
             @Assisted final SpoofaxTokenTypeManager tokenTypesManager,
             final ISpoofaxCategorizerService categorizerService) {
+        assert language != null;
+        assert parseResult != null;
+        assert tokenTypesManager != null;
+        assert categorizerService != null;
         this.language = language;
         this.parseResult = parseResult;
         this.tokenTypesManager = tokenTypesManager;

@@ -60,6 +60,7 @@ public final class MetaborgFacetType extends FacetType<MetaborgFacet, IdeaMetabo
     @Inject
     @SuppressWarnings("unused")
     private void inject(final IIconManager iconManager) {
+        assert iconManager != null;
         this.iconManager = iconManager;
     }
 

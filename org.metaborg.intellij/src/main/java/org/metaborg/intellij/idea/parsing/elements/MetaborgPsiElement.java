@@ -54,6 +54,10 @@ public class MetaborgPsiElement extends ASTWrapperPsiElement implements PsiEleme
             final IIntelliJResourceService resourceService,
             final ISpoofaxAnalysisResultRequester analysisResultRequester) {
         super(node);
+        assert node != null;
+        assert resolverService != null;
+        assert resourceService != null;
+        assert analysisResultRequester != null;
         this.resolverService = resolverService;
         this.resourceService = resourceService;
         this.analysisResultRequester = analysisResultRequester;

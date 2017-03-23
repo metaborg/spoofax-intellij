@@ -62,7 +62,10 @@ public final class JpsLanguageSpecService implements ISpoofaxLanguageSpecService
                                   final ISpoofaxLanguageSpecConfigService configService,
                                   final IResourceService resourceService,
                                   final ISpoofaxLanguageSpecConfigService languageSpecConfigService) {
-
+        assert sourceTextService != null;
+        assert configService != null;
+        assert resourceService != null;
+        assert languageSpecConfigService != null;
         this.sourceTextService = sourceTextService;
         this.configService = configService;
         this.resourceService = resourceService;

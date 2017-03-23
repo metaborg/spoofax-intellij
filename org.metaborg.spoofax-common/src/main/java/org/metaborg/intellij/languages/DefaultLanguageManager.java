@@ -61,6 +61,9 @@ public class DefaultLanguageManager implements ILanguageManager {
     public DefaultLanguageManager(final ILanguageService languageService,
                                   final ILanguageSource languageSource,
                                   final ILanguageDiscoveryService discoveryService) {
+        assert languageService != null;
+        assert languageSource != null;
+        assert discoveryService != null;
         this.languageService = languageService;
         this.languageSource = languageSource;
         this.discoveryService = discoveryService;

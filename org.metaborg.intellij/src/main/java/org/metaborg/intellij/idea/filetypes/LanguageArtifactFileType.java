@@ -42,6 +42,7 @@ public final class LanguageArtifactFileType extends ArchiveFileType implements I
      */
     @Inject
     public LanguageArtifactFileType(final IIconManager iconManager) {
+        assert iconManager != null;
         this.iconManager = iconManager;
     }
 

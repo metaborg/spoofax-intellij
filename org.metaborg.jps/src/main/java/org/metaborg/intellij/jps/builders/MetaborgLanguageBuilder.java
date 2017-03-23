@@ -54,7 +54,9 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
                                    final ILanguageManager languageManager,
                                    final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder) {
         super(BuilderCategory.SOURCE_GENERATOR);
-
+        assert extensionService != null;
+        assert languageManager != null;
+        assert jpsSpoofaxMetaBuilder != null;
         this.extensionService = extensionService;
         this.languageManager = languageManager;
         this.jpsSpoofaxMetaBuilder = jpsSpoofaxMetaBuilder;

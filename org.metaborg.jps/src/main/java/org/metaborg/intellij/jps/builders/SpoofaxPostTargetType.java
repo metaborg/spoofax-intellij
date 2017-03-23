@@ -43,6 +43,11 @@ public final class SpoofaxPostTargetType extends SpoofaxTargetType<SpoofaxPostTa
             final JpsSpoofaxMetaBuilder metaBuilder,
             final ISpoofaxLanguageSpecService languageSpecService) {
         super(TargetTypeConstants.PostTargetType, projectService, moduleType, metaBuilder, languageSpecService);
+        assert projectService != null;
+        assert preTargetType != null;
+        assert moduleType != null;
+        assert metaBuilder != null;
+        assert languageSpecService != null;
         this.preTargetType = preTargetType;
     }
 

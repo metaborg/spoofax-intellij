@@ -42,6 +42,7 @@ public final class ProjectUtils {
 
     @Inject
     public ProjectUtils(final IProjectService projectService) {
+        assert projectService != null;
         this.projectService = projectService;
     }
 

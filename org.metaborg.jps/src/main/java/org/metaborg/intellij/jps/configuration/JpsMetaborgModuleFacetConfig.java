@@ -63,6 +63,7 @@ public final class JpsMetaborgModuleFacetConfig
     @Inject
     public JpsMetaborgModuleFacetConfig(final IJpsMetaborgModuleFacetConfigFactory configFactory) {
         super(new MetaborgModuleFacetConfigState());
+        assert configFactory != null;
         // Don't initialize fields that depend on the state here. Initialize in loadState().
         this.configFactory = configFactory;
     }

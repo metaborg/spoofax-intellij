@@ -81,6 +81,9 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
     @SuppressWarnings("unused")
     private void inject(final MetaborgModuleType moduleType, final IIntelliJResourceService resourceService,
                         final ILanguageComponentConfigService configService) {
+        assert moduleType != null;
+        assert resourceService != null;
+        assert configService != null;
         this.moduleType = moduleType;
         this.resourceService = resourceService;
         this.configService = configService;

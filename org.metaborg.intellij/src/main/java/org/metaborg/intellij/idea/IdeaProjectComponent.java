@@ -54,6 +54,8 @@ public final class IdeaProjectComponent implements ProjectComponent {
     @SuppressWarnings("unused")
     private void inject(final Set<IBeforeCompileTask> beforeCompileTasks,
                         final Set<IAfterCompileTask> afterCompileTasks) {
+        assert beforeCompileTasks != null;
+        assert afterCompileTasks != null;
         this.beforeCompileTasks = beforeCompileTasks;
         this.afterCompileTasks = afterCompileTasks;
     }

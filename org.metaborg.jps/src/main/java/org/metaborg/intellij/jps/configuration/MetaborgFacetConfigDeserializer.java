@@ -42,6 +42,7 @@ public final class MetaborgFacetConfigDeserializer extends JpsFacetConfiguration
     @Inject
     public MetaborgFacetConfigDeserializer(final IJpsMetaborgModuleFacetConfigFactory configFactory) {
         super(JpsMetaborgModuleFacetConfig.ROLE, MetaborgFacetConstants.ID, MetaborgFacetConstants.NAME);
+        assert configFactory != null;
 
         this.configFactory = configFactory;
     }

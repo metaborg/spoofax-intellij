@@ -43,6 +43,7 @@ public final class MetaborgModuleConfigDeserializer extends JpsModulePropertiesS
     public MetaborgModuleConfigDeserializer(final JpsMetaborgModuleType moduleType,
                                             final IJpsMetaborgModuleConfigFactory configFactory) {
         super(moduleType, MetaborgModuleConstants.ModuleID, IMetaborgModuleConfig.CONFIG_NAME);
+        assert configFactory != null;
         this.configFactory = configFactory;
     }
 

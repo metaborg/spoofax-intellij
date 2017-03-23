@@ -60,6 +60,8 @@ public abstract class MetaborgLanguageFileType extends LanguageFileType implemen
     @Inject
     @SuppressWarnings("unused")
     private void inject(final IIconManager iconManager, final IIdeaLanguageManager languageManager) {
+        assert iconManager != null;
+        assert languageManager != null;
         this.iconManager = iconManager;
         this.languageManager = languageManager;
     }

@@ -48,6 +48,10 @@ public class SpoofaxIdentifier extends MetaborgPsiElement
             final IIntelliJResourceService resourceService,
             final ISpoofaxAnalysisResultRequester analysisResultRequester) {
         super(node, resolverService, resourceService, analysisResultRequester);
+        assert node != null;
+        assert resolverService != null;
+        assert resourceService != null;
+        assert analysisResultRequester != null;
     }
 
     /**

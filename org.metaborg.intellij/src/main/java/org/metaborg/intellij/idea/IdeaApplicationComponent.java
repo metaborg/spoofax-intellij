@@ -55,6 +55,9 @@ public final class IdeaApplicationComponent implements ApplicationComponent {
     private void inject(final IMetaborgApplicationConfig configuration,
                         final ConfigurationUtils configurationUtils,
                         final ConfigurationFileEventListener configurationFileEventListener) {
+        assert configuration != null;
+        assert configurationUtils != null;
+        assert configurationFileEventListener != null;
         this.configuration = configuration;
         this.configurationUtils = configurationUtils;
         this.configurationFileEventListener = configurationFileEventListener;

@@ -67,6 +67,8 @@ public class AddLanguageFromArtifactAction extends LanguagesAction {
     private void inject(
             final IIdeaLanguageManager languageManager,
             final LanguageArtifactFileType artifactFileType) {
+        assert languageManager != null;
+        assert artifactFileType != null;
         this.artifactFileType = artifactFileType;
         this.languageManager = languageManager;
     }

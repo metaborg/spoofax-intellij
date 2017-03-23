@@ -47,6 +47,7 @@ public final class CharacterLexer extends LexerBase {
     @Inject
     private CharacterLexer(@Assisted final SpoofaxTokenTypeManager tokenTypesManager) {
         super();
+        assert tokenTypesManager != null;
         this.tokenTypesManager = tokenTypesManager;
     }
 

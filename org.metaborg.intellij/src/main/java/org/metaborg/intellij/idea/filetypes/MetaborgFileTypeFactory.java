@@ -50,6 +50,7 @@ public final class MetaborgFileTypeFactory extends FileTypeFactory {
     @Inject
     @SuppressWarnings("unused")
     private void inject(final LanguageArtifactFileType artifactFileType) {
+        assert artifactFileType != null;
         this.artifactFileType = artifactFileType;
     }
 

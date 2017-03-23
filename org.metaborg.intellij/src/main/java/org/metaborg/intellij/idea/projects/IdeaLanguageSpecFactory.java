@@ -46,6 +46,8 @@ public final class IdeaLanguageSpecFactory implements IIdeaLanguageSpecFactory {
     public IdeaLanguageSpecFactory(
             final ISourceTextService sourceTextService,
             final ISpoofaxLanguageSpecConfigService configService) {
+        assert sourceTextService != null;
+        assert configService != null;
         this.sourceTextService = sourceTextService;
         this.configService = configService;
     }

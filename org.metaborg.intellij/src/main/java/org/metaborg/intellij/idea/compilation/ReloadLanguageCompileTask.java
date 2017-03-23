@@ -49,9 +49,12 @@ public final class ReloadLanguageCompileTask implements IAfterCompileTask {
      * Initializes a new instance of the {@link ReloadLanguageCompileTask} class.
      */
     @Inject
-    public ReloadLanguageCompileTask( final IIdeaProjectService projectService,
+    public ReloadLanguageCompileTask(final IIdeaProjectService projectService,
             final IIdeaLanguageManager languageManager,
             final ILanguageDiscoveryService discoveryService) {
+        assert projectService != null;
+        assert languageManager != null;
+        assert discoveryService != null;
         this.projectService = projectService;
         this.languageManager = languageManager;
         this.discoveryService = discoveryService;

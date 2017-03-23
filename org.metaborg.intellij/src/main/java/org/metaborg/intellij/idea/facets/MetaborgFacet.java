@@ -99,6 +99,13 @@ public class MetaborgFacet extends Facet {
                         final IIdeaProjectFactory projectFactory,
                         final ISourceTextService sourceTextService,
                         final IIntelliJResourceService resourceService) {
+        assert configBuilder != null;
+        assert configWriter != null;
+        assert configService != null;
+        assert projectService != null;
+        assert projectFactory != null;
+        assert sourceTextService != null;
+        assert resourceService != null;
         this.configBuilder = configBuilder;
         this.configWriter = configWriter;
         this.configService = configService;

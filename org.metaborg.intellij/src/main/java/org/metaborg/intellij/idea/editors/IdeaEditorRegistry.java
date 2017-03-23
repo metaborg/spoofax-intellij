@@ -46,6 +46,7 @@ public final class IdeaEditorRegistry implements IEditorRegistry {
 
     @Inject
     public IdeaEditorRegistry(final IIntelliJResourceService resourceService) {
+        assert resourceService != null;
         this.resourceService = resourceService;
     }
 

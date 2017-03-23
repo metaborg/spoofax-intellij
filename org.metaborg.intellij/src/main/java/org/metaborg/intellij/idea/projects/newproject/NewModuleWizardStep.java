@@ -105,7 +105,9 @@ public class NewModuleWizardStep extends ModuleWizardStep {
             @Assisted final MetaborgModuleBuilder builder,
             @Assisted final WizardContext context,
             final IIconManager iconManager) {
-
+        assert builder != null;
+        assert context != null;
+        assert iconManager != null;
         this.builder = builder;
         this.context = context;
         this.iconManager = iconManager;

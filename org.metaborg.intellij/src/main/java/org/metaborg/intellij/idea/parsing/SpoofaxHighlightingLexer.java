@@ -93,6 +93,13 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
                                      ISpoofaxInputUnitService unitService, ISpoofaxSyntaxService syntaxService,
                                      ISpoofaxCategorizerService categorizer, ISpoofaxStylerService styler,
                                      JSGLRParserConfiguration parserConfiguration) {
+        assert languageImpl != null;
+        assert tokenTypesManager != null;
+        assert unitService != null;
+        assert syntaxService != null;
+        assert categorizer != null;
+        assert styler != null;
+        assert parserConfiguration != null;
         this.file = file;
         this.project = project;
         this.languageImpl = languageImpl;

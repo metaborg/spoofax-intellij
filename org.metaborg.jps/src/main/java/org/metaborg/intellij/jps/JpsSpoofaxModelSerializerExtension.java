@@ -58,6 +58,11 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
                         final MetaborgProjectConfigDeserializer projectConfigDeserializer,
                         final MetaborgModuleConfigDeserializer moduleConfigDeserializer,
                         final MetaborgFacetConfigDeserializer facetConfigDeserializer) {
+        assert applicationConfigDeserializer != null;
+        assert projectConfigDeserializer != null;
+        assert moduleConfigDeserializer != null;
+        assert facetConfigDeserializer != null;
+
         this.applicationConfigDeserializer = applicationConfigDeserializer;
         this.projectConfigDeserializer = projectConfigDeserializer;
         this.moduleConfigDeserializer = moduleConfigDeserializer;

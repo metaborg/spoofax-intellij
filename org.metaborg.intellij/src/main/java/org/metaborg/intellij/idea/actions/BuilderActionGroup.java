@@ -42,6 +42,7 @@ public final class BuilderActionGroup extends DefaultActionGroup {
             @Assisted final ILanguageImpl languageImpl,
             final ActionUtils actionUtils) {
         super(getName(languageImpl), true);
+
         this.languageImpl = languageImpl;
         this.actionUtils = actionUtils;
     }
