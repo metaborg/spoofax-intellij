@@ -52,10 +52,11 @@ public final class SpoofaxBuilderService extends BuilderService {
      */
     public SpoofaxBuilderService() {
         super();
-        SpoofaxJpsPlugin.plugin().injector().injectMembers(this);
+        // TODO: This doesn't find the inject() method due to annotation classloader mismatch?
+        SpoofaxJpsPlugin.plugin().injectMembers(this);
 
-        this.logger.debug("Builder service constructed! Classloader: {}",
-                this.getClass().getClassLoader().getClass().getName());
+//        this.logger.debug("Builder service constructed! Classloader: {}",
+//                this.getClass().getClassLoader().getClass().getName());
     }
 
     @SuppressWarnings("unused")

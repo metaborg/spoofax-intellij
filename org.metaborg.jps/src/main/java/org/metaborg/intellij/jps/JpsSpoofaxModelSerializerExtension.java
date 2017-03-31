@@ -39,25 +39,45 @@ import java.util.List;
 @Singleton
 public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializerExtension {
 
-    private MetaborgApplicationConfigDeserializer applicationConfigDeserializer;
-    private MetaborgProjectConfigDeserializer projectConfigDeserializer;
-    private MetaborgModuleConfigDeserializer moduleConfigDeserializer;
-    private MetaborgFacetConfigDeserializer facetConfigDeserializer;
+    private JpsGlobalExtensionSerializer applicationConfigDeserializer;
+    private JpsProjectExtensionSerializer projectConfigDeserializer;
+    private JpsModulePropertiesSerializer<?> moduleConfigDeserializer;
+    private JpsFacetConfigurationSerializer<?> facetConfigDeserializer;
 
     /**
      * This instance is created by IntelliJ's plugin system.
      * Do not call this constructor manually.
      */
     public JpsSpoofaxModelSerializerExtension() {
-        SpoofaxJpsPlugin.plugin().injectMembers(this);
+        SpoofaxJpsPlugin plugin = SpoofaxJpsPlugin.plugin();
+        // This class is loaded by the JPS ServiceLoader, which uses its own class loader
+        // instead of the one we want to use. In turn, this causes the @Inject annotation
+        // of the inject() method below to be created by the URLClassLoader instead of our
+        // own PriorityURLClassLoader. This then prevents the dependency injector from
+        // discovering the inject() method below, as the @Inject annotation of the URLClassLoader
+        // is different from the PriorityURLClassLoader's @Inject annotation that the
+        // dependency injector expects. And this then prevents the object from being injected
+        // properly when using `plugin.injectMembers(this)`. Therefore we do it manually.
+
+        // Note that for this trick to work, we can never refer to the class we want to load
+        // by its actual name, which is why for the fields and in the inject() method
+        // we use a supertype of the classes instead.
+        Object instance = plugin.getInstance(MetaborgApplicationConfigDeserializer.class);
+
+        inject(
+            plugin.getInstance(MetaborgApplicationConfigDeserializer.class),
+            plugin.getInstance(MetaborgProjectConfigDeserializer.class),
+            plugin.getInstance(MetaborgModuleConfigDeserializer.class),
+            plugin.getInstance(MetaborgFacetConfigDeserializer.class)
+        );
     }
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final MetaborgApplicationConfigDeserializer applicationConfigDeserializer,
-                        final MetaborgProjectConfigDeserializer projectConfigDeserializer,
-                        final MetaborgModuleConfigDeserializer moduleConfigDeserializer,
-                        final MetaborgFacetConfigDeserializer facetConfigDeserializer) {
+    private void inject(final JpsGlobalExtensionSerializer applicationConfigDeserializer,
+                        final JpsProjectExtensionSerializer projectConfigDeserializer,
+                        final JpsModulePropertiesSerializer<?> moduleConfigDeserializer,
+                        final JpsFacetConfigurationSerializer<?> facetConfigDeserializer) {
         assert applicationConfigDeserializer != null;
         assert projectConfigDeserializer != null;
         assert moduleConfigDeserializer != null;

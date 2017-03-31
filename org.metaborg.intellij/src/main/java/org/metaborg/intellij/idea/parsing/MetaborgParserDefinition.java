@@ -87,7 +87,7 @@ public final class MetaborgParserDefinition implements ParserDefinition {
      */
     @Override
     public PsiParser createParser(final Project project) {
-        throw new UnsupportedOperationException("See SpoofaxFileElementType class.");
+        throw new UnsupportedOperationException("See MetaborgFileElementType class.");
     }
 
     /**

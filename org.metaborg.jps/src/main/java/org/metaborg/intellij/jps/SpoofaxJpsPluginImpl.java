@@ -66,7 +66,7 @@ public final class SpoofaxJpsPluginImpl implements SpoofaxJpsPlugin {
      *
      * @return The current injector.
      */
-    public Injector injector() {
+    private Injector injector() {
         return this.spoofaxMeta.injector;
     }
 
@@ -130,8 +130,32 @@ public final class SpoofaxJpsPluginImpl implements SpoofaxJpsPlugin {
      * @param obj The object whose members to inject.
      */
     public void injectMembers(Object obj) {
+//        if (obj.getClass().getClassLoader() != this.getClass().getClassLoader())
+//            throw new IllegalStateException("Trying to inject into class " + obj.getClass().getName() + " created by a different classloader.");
         this.injector().injectMembers(obj);
     }
+
+    private <T> Class<T> loadClass(Class<? extends T> cls) throws ClassNotFoundException {
+        //noinspection unchecked
+        return (Class<T>)this.getClass().getClassLoader().loadClass(cls.getName());
+    }
+
+
+    public <T> T getInstance(Class<T> type) {
+        try {
+            return this.injector().getInstance(loadClass(type));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+//    public <T> T getInstance(Key<T> key) {
+//        try {
+//            return this.injector().getInstance(key);
+//        } catch (ClassNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     /**
      * Cleans up the plugin.
