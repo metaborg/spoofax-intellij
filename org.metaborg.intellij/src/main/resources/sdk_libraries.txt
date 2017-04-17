@@ -1,1 +1,1 @@
-org.metaborg.spoofax-deps-2.1.0.jar
+org.metaborg.spoofax-deps-2.2.0-SNAPSHOT.jar
