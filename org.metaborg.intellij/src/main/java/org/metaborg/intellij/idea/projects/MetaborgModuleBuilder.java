@@ -420,15 +420,21 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
             final LangSpecGenerator newGenerator = new LangSpecGenerator(settings);
             newGenerator.generateAll();
-            SdfVersion version;
+            final @Nullable SdfVersion version;
+            final boolean enabled;
             if(settings.syntaxType == SyntaxType.SDF2) {
                 version = SdfVersion.sdf2;
-            } else {
+                enabled = true;
+            } else if(settings.syntaxType == SyntaxType.SDF3) {
                 version = SdfVersion.sdf3;
-            }            
+                enabled = true;
+            } else {
+                version = null;
+                enabled = false;
+            }      
             
             final ContinuousLanguageSpecGenerator generator =
-                new ContinuousLanguageSpecGenerator(settings.generatorSettings, version);
+                new ContinuousLanguageSpecGenerator(settings.generatorSettings, enabled, version);
             generator.generateAll();
         } catch(ProjectException | IOException e) {
             throw LoggerUtils2.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);
