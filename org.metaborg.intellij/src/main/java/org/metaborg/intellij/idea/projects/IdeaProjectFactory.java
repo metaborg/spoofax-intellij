@@ -62,7 +62,7 @@ public final class IdeaProjectFactory implements IIdeaProjectFactory {
             return null;
         }
 
-        final ConfigRequest<IProjectConfig> configRequest = this.projectConfigService.get(rootFolder);
+        final ConfigRequest<? extends IProjectConfig> configRequest = this.projectConfigService.get(rootFolder);
         if(!configRequest.valid()) {
             this.logger.error(
                     "An error occurred while retrieving the configuration for the project at: {}", rootFolder);

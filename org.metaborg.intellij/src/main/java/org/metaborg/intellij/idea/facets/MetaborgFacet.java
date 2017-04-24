@@ -144,7 +144,7 @@ public class MetaborgFacet extends Facet {
             // FIXME: We shouldn't just pick the first content root.
             final FileObject rootFolder = this.resourceService.resolve(contentRoots[0]);
 
-            final ConfigRequest<IProjectConfig> configRequest = this.configService.get(rootFolder);
+            final ConfigRequest<? extends IProjectConfig> configRequest = this.configService.get(rootFolder);
             if (!configRequest.valid()) {
                 this.logger.error(
                         "An error occurred while retrieving the configuration for the project at {}", rootFolder);

@@ -47,7 +47,7 @@ public final class ArtifactProjectFactory implements IArtifactProjectFactory {
                                   @Nullable IProjectConfig config) {
 
         if (config == null) {
-            final ConfigRequest<IProjectConfig> configRequest = this.projectConfigService.get(artifactRoot);
+            final ConfigRequest<? extends IProjectConfig> configRequest = this.projectConfigService.get(artifactRoot);
             if (!configRequest.valid()) {
                 this.logger.error("Errors occurred when retrieving project configuration from project directory: {}",
                         artifactRoot);
