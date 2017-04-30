@@ -54,7 +54,7 @@ import org.metaborg.intellij.idea.sdks.MetaborgSdkType;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
-import org.metaborg.spoofax.meta.core.build.LangSpecCommonPaths;
+import org.metaborg.spoofax.meta.core.build.SpoofaxLangSpecCommonPaths;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
 import org.metaborg.spoofax.meta.core.config.SdfVersion;
@@ -272,7 +272,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         assert languageSpec != null;
 
         setContentRoots(rootModel);
-        setCompilerOutputPath(rootModel, new LangSpecCommonPaths(languageSpec.location()));
+        setCompilerOutputPath(rootModel, new SpoofaxLangSpecCommonPaths(languageSpec.location()));
         setSdk(rootModel);
 
         // Set the module.
@@ -302,7 +302,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
             ModuleBuilderUtils.addSourceRoots(contentEntry, getSourcePaths());
             final FileObject root = this.resourceService.resolve(getContentEntryPath());
             ModuleBuilderUtils.excludeRoots(contentEntry, root);
-//            final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
+//            final SpoofaxLangSpecCommonPaths paths = new SpoofaxLangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
 //            // TODO: Remove unnecessary folders:
 //            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
 //            contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".mvn");
@@ -315,7 +315,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         this.logger.info("Added content and source roots.");
     }
 
-    private void setCompilerOutputPath(final ModifiableRootModel rootModel, final LangSpecCommonPaths paths) {
+    private void setCompilerOutputPath(final ModifiableRootModel rootModel, final SpoofaxLangSpecCommonPaths paths) {
         // Set the compiler output path.
         this.logger.debug("Setting compiler output path.");
 
@@ -517,7 +517,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
         final FileObject contentEntry = this.resourceService.resolve(getContentEntryPath());
         return ModuleBuilderUtils.getSourcePaths(languageId, contentEntry);
 
-//        final LangSpecCommonPaths paths = new LangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
+//        final SpoofaxLangSpecCommonPaths paths = new SpoofaxLangSpecCommonPaths(this.resourceService.resolve(getContentEntryPath()));
 //        final List<Pair<String, String>> sourcePaths = new ArrayList<>();
 //        for (final FileObject javaSrcDir : paths.javaSrcDirs(languageId.id)) {
 //            sourcePaths.add(Pair.create(javaSrcDir.toString(), ""));
