@@ -66,7 +66,7 @@ public final class JpsProjectService implements IJpsProjectService {
     @Nullable
     public MetaborgJpsProject create(final JpsModule module) {
         final FileObject rootFolder = this.resourceService.resolve(module.getContentRootsList().getUrls().get(0));
-        final ConfigRequest<IProjectConfig> configRequest = this.projectConfigService.get(rootFolder);
+        final ConfigRequest<? extends IProjectConfig> configRequest = this.projectConfigService.get(rootFolder);
         if(!configRequest.valid()) {
             this.logger.error(
                     "An error occurred while retrieving the configuration for the project at {}", rootFolder);
