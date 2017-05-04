@@ -20,7 +20,7 @@ allprojects {
     apply plugin: 'maven'
 
     ext {
-        metaborgVersion = "2.3.0-SNAPSHOT"
+        metaborgVersion = "2.2.1"
         guiceVersion = "4.0"
     }
 
