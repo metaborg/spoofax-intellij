@@ -1,2 +1,2 @@
 Spoofax for IntelliJ IDEA plugin
-Copyright 2015-2016 - Daniel Pelsmaeker
+Copyright 2015-2017 - Daniel Pelsmaeker
