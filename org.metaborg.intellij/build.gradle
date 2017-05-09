@@ -1,16 +1,20 @@
 buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-    maven {
-      url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
-    }
+    ext.kotlin_version = '1.1.2-2'
+    ext.javaVersion = '1.8'
 
-  }
-  dependencies {
-    classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
-  }
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    }
+    dependencies {
+        classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.2.9"
 }
 
 allprojects {
@@ -18,6 +22,7 @@ allprojects {
     apply plugin: 'idea'
     apply plugin: 'eclipse'
     apply plugin: 'maven'
+    apply plugin: 'kotlin'
 
     ext {
         metaborgVersion = "2.3.0-SNAPSHOT"
@@ -26,8 +31,8 @@ allprojects {
 
     group "org.metaborg"
     version "$metaborgVersion"
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 
     repositories {
         mavenLocal()
@@ -44,6 +49,12 @@ allprojects {
         maven {
             url "http://sugar-lang.github.io/mvnrepository/"
         }
+    }
+
+    dependencies {
+        compile     "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     }
 
     configurations {
