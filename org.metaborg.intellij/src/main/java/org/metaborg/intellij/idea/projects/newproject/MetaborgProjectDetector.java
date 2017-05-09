@@ -104,20 +104,11 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
 
         this.logger.info("Detecting Spoofax project in subdirectory {} of base {}", dir, base);
 
-        final CommonPaths paths = new CommonPaths(this.resourceService.resolve(base));
-        try {
-            if (this.resourceService.resolve(dir).equals(paths.esvMainFile().getParent())) {
-                for (final File child : children) {
-                    if (child.isFile() && this.resourceService.resolve(child).equals(paths.esvMainFile())) {
-                        this.logger.info("Detected Spoofax project in {}", base);
+        if(this.configService.available(this.resourceService.resolve(dir))) {
+            this.logger.info("Detected Spoofax project in {}", base);
 //                        result.add(new DetectedContentRoot(base, "Spoofax", this.moduleType, JavaModuleType.getModuleType()));
-                        result.add(new MetaborgProjectRoot(base));
-                        return DirectoryProcessingResult.SKIP_CHILDREN;
-                    }
-                }
-            }
-        } catch (final FileSystemException e) {
-            throw new UnhandledException(e);
+            result.add(new MetaborgProjectRoot(base));
+            return DirectoryProcessingResult.SKIP_CHILDREN;
         }
 
         return DirectoryProcessingResult.PROCESS_CHILDREN;
