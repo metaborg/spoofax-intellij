@@ -62,7 +62,8 @@ class WrongModuleTypeNotificationProvider(private val project: Project)
 
     override fun createNotificationPanel(file: VirtualFile, fileEditor: FileEditor): EditorNotificationPanel? {
         // First we have to find a Metaborg configuration file in the project.
-        if (!SpoofaxModuleUtils.isMetaborgConfigurationFile(file)) return null
+        if (!SpoofaxModuleUtils.isMetaborgConfigurationFile(file) && !SpoofaxModuleUtils.isMetaborgLanguageFile(file))
+            return null
 
         // Now we know it's supposed to be a Metaborg module.
         // Display a dialog if it hasn't been marked as such.

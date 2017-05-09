@@ -4,6 +4,7 @@ import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleType
 import com.intellij.openapi.vfs.VirtualFile
 import org.metaborg.intellij.idea.configuration.ConfigurationFileEventListener
+import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType
 import org.metaborg.intellij.idea.projects.MetaborgModuleType
 
 /**
@@ -35,5 +36,16 @@ object SpoofaxModuleUtils {
      */
     fun isMetaborgConfigurationFile(file: VirtualFile): Boolean {
         return file.name == METABORG_CONFIG_FILENAME
+    }
+
+    /**
+     * Tests whether the specified file is a source file of a loaded Metaborg language.
+     *
+     * @param file The file to test.
+     * @return True when the file is a source file of a loaded Metaborg language; otherwise, false.
+     */
+    fun isMetaborgLanguageFile(file: VirtualFile): Boolean {
+        // Determine whether the file has one of the loaded languages.
+        return file.fileType is MetaborgLanguageFileType
     }
 }
