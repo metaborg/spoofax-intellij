@@ -20,6 +20,10 @@ package org.metaborg.intellij.idea.parsing;
 
 import com.google.inject.Inject;
 import com.intellij.lexer.Lexer;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.openapi.fileTypes.PlainSyntaxHighlighter;
+import com.intellij.openapi.fileTypes.PlainSyntaxHighlighterFactory;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.project.Project;
@@ -31,6 +35,7 @@ import org.metaborg.core.project.*;
 import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.intellij.idea.languages.ILanguageBindingManager;
 import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.idea.NotificationUtils;
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 
@@ -81,7 +86,20 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
         @Nullable final FileObject file = this.resourceService.resolve(virtualFile);
 
         if (file != null) {
-            implementation = this.identifierService.identify(file);
+            try {
+                implementation = this.identifierService.identify(file);
+            } catch (IllegalStateException ex) {
+                // Multiple possible languages identified
+                // (e.g. when different languages have the same extension,
+                // such as TypeScript and TS both having .ts extension)
+                // TODO: Better error message,
+                // but to do that the exception needs to have its own class (derived from IllegalStateException)
+                // that contains a list of languages.
+                Notification notification = NotificationUtils.METABORG_NOTIFICATIONS.createNotification(ex.getMessage(), NotificationType.ERROR);
+                NotificationUtils.INSTANCE.notify(project, notification);
+                implementation = null;
+
+            }
         }
         else if (virtualFile instanceof LightVirtualFile) {
             final com.intellij.lang.Language ideaLanguage = ((LightVirtualFile)virtualFile).getLanguage();
@@ -92,8 +110,9 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
         }
 
         if (implementation == null){
-            // FIXME: What to do? Can I return null to get the default highlighting?
-            return null;
+            // We don't know the language, so
+            // let's return the plain syntax highlighter instead.
+            return new PlainSyntaxHighlighter();
         }
 
         @Nullable final IProject metaborgProject = null;  // FIXME: Get IProject from Project
