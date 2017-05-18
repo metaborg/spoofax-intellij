@@ -1,7 +1,4 @@
 buildscript {
-    ext.kotlin_version = '1.1.2-2'
-    ext.javaVersion = '1.8'
-
     repositories {
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
@@ -9,7 +6,7 @@ buildscript {
     }
     dependencies {
         classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -30,9 +27,9 @@ allprojects {
     }
 
     group "org.metaborg"
-    version "$metaborgVersion"
+    version version
     sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
+    targetCompatibility = javaTargetVersion
 
     repositories {
         mavenLocal()
@@ -52,9 +49,9 @@ allprojects {
     }
 
     dependencies {
-        compile     "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        compile     "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     }
 
     configurations {
@@ -89,17 +86,20 @@ configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
   apply plugin: 'org.jetbrains.intellij'
 
   intellij {
-      version = "2016.3"
-
-      // FIXME: hack to support both IDEA 15 and IDEA 16.
-      // See https://github.com/intellij-rust/intellij-rust/issues/243
-      updateSinceUntilBuild = false
+      type = "IC"
+      version ideaVersion
+      pluginName 'Spoofax'
+      downloadSources Boolean.valueOf(sources)
+      sameSinceUntilBuild Boolean.valueOf(isEAP)
+      alternativeIdePath localIdePath
   }
 }
 
-intellij {
-    type = "IC"
-}
+//publishPlugin {
+//    username publishUsername
+//    password publishPassword
+//    channels publishChannel
+//}
 
 // To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
 // (Ctrl+Shift+A), then start a build and attach a remote debugger to port 5005.
