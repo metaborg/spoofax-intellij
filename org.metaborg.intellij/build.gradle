@@ -5,7 +5,7 @@ buildscript {
         maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
     }
     dependencies {
-        classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
+
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
@@ -20,11 +20,6 @@ allprojects {
     apply plugin: 'eclipse'
     apply plugin: 'maven'
     apply plugin: 'kotlin'
-
-    ext {
-        metaborgVersion = "2.3.0-SNAPSHOT"
-        guiceVersion = "4.0"
-    }
 
     group "org.metaborg"
     version version
@@ -95,17 +90,20 @@ configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
   }
 }
 
-//publishPlugin {
-//    username publishUsername
-//    password publishPassword
-//    channels publishChannel
-//}
+subprojects { runIde.enabled = false }
+runIde.enabled = true
+
+publishPlugin {
+    username publishUsername
+    password publishPassword
+    channels publishChannel
+}
 
 // To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
 // (Ctrl+Shift+A), then start a build and attach a remote debugger to port 5005.
 // https://github.com/JetBrains/gradle-intellij-plugin/issues/23
 afterEvaluate {
-    tasks.getByName('runIdea') {
+    tasks.getByName('runIde') {
         jvmArgs += ["-Dcompiler.process.debug.port=5005"]
     }
 }
