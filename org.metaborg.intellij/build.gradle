@@ -83,7 +83,7 @@ configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
   intellij {
       type = "IC"
       version ideaVersion
-      pluginName 'Spoofax'
+      pluginName 'org.metaborg.intellij'
       downloadSources Boolean.valueOf(sources)
       sameSinceUntilBuild Boolean.valueOf(isEAP)
       alternativeIdePath localIdePath
