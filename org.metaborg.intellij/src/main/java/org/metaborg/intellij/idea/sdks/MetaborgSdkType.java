@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
+import org.metaborg.intellij.idea.SpoofaxPlugin;
 import org.metaborg.intellij.idea.graphics.IIconManager;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils2;
@@ -130,7 +131,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     @Nullable
     @Override
     public String suggestHomePath() {
-        final String path = this.libraryService.getPluginLibPath();
+        final String path = SpoofaxPlugin.INSTANCE.getLibPath().getAbsolutePath();
         this.logger.debug("Suggested Metaborg SDK home path: {}", path);
         return path;
     }

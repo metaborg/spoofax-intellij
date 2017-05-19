@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin>
     <id>org.metaborg.intellij</id>
     <name>Spoofax</name>
     <version>2.3.0-SNAPSHOT</version>
