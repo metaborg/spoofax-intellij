@@ -12,6 +12,7 @@ buildscript {
 
 plugins {
     id "org.jetbrains.intellij" version "0.2.9"
+    id "de.fuerstenau.buildconfig" version "1.1.8"
 }
 
 allprojects {
@@ -20,9 +21,10 @@ allprojects {
     apply plugin: 'eclipse'
     apply plugin: 'maven'
     apply plugin: 'kotlin'
+    apply plugin: 'de.fuerstenau.buildconfig'
 
-    group "org.metaborg"
-    version version
+    group = projectGroup
+    version = projectVersion
     sourceCompatibility = javaVersion
     targetCompatibility = javaTargetVersion
 
@@ -82,21 +84,31 @@ configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
 
   intellij {
       type = "IC"
-      version ideaVersion
-      pluginName 'org.metaborg.intellij'
-      downloadSources Boolean.valueOf(sources)
-      sameSinceUntilBuild Boolean.valueOf(isEAP)
-      alternativeIdePath localIdePath
   }
 }
 
 subprojects { runIde.enabled = false }
 runIde.enabled = true
 
-publishPlugin {
-    username publishUsername
-    password publishPassword
-    channels publishChannel
+intellij {
+    version intellijVersion
+    pluginName projectName
+    downloadSources Boolean.valueOf(intellijSources)
+    sameSinceUntilBuild Boolean.valueOf(intellijEAP)
+    alternativeIdePath intellijLocalPath
+
+    patchPluginXml {
+        sinceBuild intellijSinceBuild
+        untilBuild intellijUntilBuild
+        pluginDescription projectDescription
+        changeNotes projectChangeNotes
+    }
+
+    publishPlugin {
+        username publishUsername
+        password publishPassword
+        channels publishChannel
+    }
 }
 
 // To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance

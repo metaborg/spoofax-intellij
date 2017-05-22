@@ -3,6 +3,17 @@ intellij {
     type = "JPS"
 }
 
+buildConfig {
+    appName = project.name
+    version = project.version
+
+    clsName = 'BuildConfig'
+    packageName = 'org.metaborg.intellij'
+    charset = 'UTF-8'
+
+    buildConfigField 'String', 'METABORG_VERSION', metaborgVersion
+}
+
 configurations {
     language
     languageBaseline
