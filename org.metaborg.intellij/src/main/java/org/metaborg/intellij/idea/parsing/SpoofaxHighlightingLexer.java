@@ -43,7 +43,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
 import org.metaborg.util.log.ILogger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.IToken;
-import org.spoofax.jsglr.client.imploder.ITokenizer;
+import org.spoofax.jsglr.client.imploder.ITokens;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 
 import javax.annotation.Nullable;
@@ -184,7 +184,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
         // https://github.com/metaborg/spoofax/blob/master/org.metaborg.spoofax.core/src/main/java/org/metaborg/spoofax/core/style/CategorizerService.java#L48
 
         final ImploderAttachment rootImploderAttachment = ImploderAttachment.get(result.ast());
-        final ITokenizer tokenizer = rootImploderAttachment.getLeftToken().getTokenizer();
+        final ITokens tokenizer = rootImploderAttachment.getLeftToken().getTokenizer();
 
         final Iterable<IRegionCategory<IStrategoTerm>> categorizedTokens = categorizer.categorize(languageImpl, result);
         final Iterable<IRegionStyle<IStrategoTerm>> styledTokens = styler.styleParsed(languageImpl, categorizedTokens);
