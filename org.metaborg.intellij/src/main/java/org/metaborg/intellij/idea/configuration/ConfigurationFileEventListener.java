@@ -29,6 +29,7 @@ import com.intellij.openapi.vfs.VirtualFileAdapter;
 import com.intellij.openapi.vfs.VirtualFileEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metaborg.intellij.idea.modules.SpoofaxModuleUtils;
 import org.metaborg.intellij.idea.projects.IdeaProject;
 import org.metaborg.intellij.idea.projects.IdeaProjectService;
 import org.metaborg.intellij.idea.projects.MetaborgModuleType;
@@ -45,7 +46,7 @@ import java.util.Set;
  */
 public final class ConfigurationFileEventListener extends VirtualFileAdapter {
 
-    private static final String CONFIG_FILE = "metaborg.yaml";
+//    private static final String CONFIG_FILE = "metaborg.yaml";
     private final MetaborgModuleType metaborgModuleType;
     private final IdeaProjectService projectService;
     private final ConfigurationUtils configurationUtils;
@@ -76,7 +77,7 @@ public final class ConfigurationFileEventListener extends VirtualFileAdapter {
 
         // TODO: Reload languages?
 
-        this.logger.info("Recognized change in {}!", CONFIG_FILE);
+        this.logger.info("Recognized change in {}!", SpoofaxModuleUtils.METABORG_CONFIG_FILENAME);
     }
 
     /**
@@ -116,7 +117,7 @@ public final class ConfigurationFileEventListener extends VirtualFileAdapter {
     }
 
     private boolean respondsToFile(final VirtualFile file) {
-        return file.getName().equals(CONFIG_FILE);
+        return file.getName().equals(SpoofaxModuleUtils.METABORG_CONFIG_FILENAME);
     }
 
 }

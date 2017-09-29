@@ -38,15 +38,17 @@ Or to create a Java project in which you can use Spoofax languages, go to the _F
 Want to learn more? [Read the manual][2].
 
 
+
 ## Features
 The Spoofax for IntelliJ IDEA plugin has the following features:
 
-* Create new Spoofax Language Specification project.
-* Import existing Spoofax Language Specification project (e.g. Eclipse project).
-* Syntax highlighting.
-* Reference resolution for most languages.
-* Load/unload languages on-the-fly.
-* Use your own language in the same editor.
+- Create new Spoofax Language Specification project.
+- Import existing Spoofax Language Specification project (e.g. Eclipse/Maven/Gradle projects).
+- Syntax highlighting.
+- Reference resolution for most languages.
+- Load/unload languages on-the-fly.
+- Use your own language in the same editor.
+
 
 
 ## Limitations
@@ -55,6 +57,13 @@ The Spoofax for IntelliJ IDEA plugin has the following limitations:
 * Languages are loaded application-wide.
 
 
+
+## License
+Copyright 2016-2017 Daniel Pelsmaeker
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at <http://www.apache.org/licenses/LICENSE-2.0>.
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an **"as is" basis, without warranties or conditions of any kind**, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 
 [1]: http://www.spoofax.org/

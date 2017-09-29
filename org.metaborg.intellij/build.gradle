@@ -1,16 +1,18 @@
 buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
     }
-    maven {
-      url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
-    }
+    dependencies {
 
-  }
-  dependencies {
-    classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
-  }
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.2.9"
+    id "de.fuerstenau.buildconfig" version "1.1.8"
 }
 
 allprojects {
@@ -18,16 +20,13 @@ allprojects {
     apply plugin: 'idea'
     apply plugin: 'eclipse'
     apply plugin: 'maven'
+    apply plugin: 'kotlin'
+    apply plugin: 'de.fuerstenau.buildconfig'
 
-    ext {
-        metaborgVersion = "2.2.1"
-        guiceVersion = "4.0"
-    }
-
-    group "org.metaborg"
-    version "$metaborgVersion"
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    group = projectGroup
+    version = projectVersion
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaTargetVersion
 
     repositories {
         mavenLocal()
@@ -44,6 +43,12 @@ allprojects {
         maven {
             url "http://sugar-lang.github.io/mvnrepository/"
         }
+    }
+
+    dependencies {
+        compile     "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     }
 
     configurations {
@@ -78,23 +83,39 @@ configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
   apply plugin: 'org.jetbrains.intellij'
 
   intellij {
-      version = "2016.3"
-
-      // FIXME: hack to support both IDEA 15 and IDEA 16.
-      // See https://github.com/intellij-rust/intellij-rust/issues/243
-      updateSinceUntilBuild = false
+      type = "IC"
   }
 }
 
+subprojects { runIde.enabled = false }
+runIde.enabled = true
+
 intellij {
-    type = "IC"
+    version intellijVersion
+    pluginName projectName
+    downloadSources Boolean.valueOf(intellijSources)
+    sameSinceUntilBuild Boolean.valueOf(intellijEAP)
+    alternativeIdePath intellijLocalPath
+
+    patchPluginXml {
+        sinceBuild intellijSinceBuild
+        untilBuild intellijUntilBuild
+        pluginDescription projectDescription
+        changeNotes projectChangeNotes
+    }
+
+    publishPlugin {
+        username publishUsername
+        password publishPassword
+        channels publishChannel
+    }
 }
 
 // To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
 // (Ctrl+Shift+A), then start a build and attach a remote debugger to port 5005.
 // https://github.com/JetBrains/gradle-intellij-plugin/issues/23
 afterEvaluate {
-    tasks.getByName('runIdea') {
+    tasks.getByName('runIde') {
         jvmArgs += ["-Dcompiler.process.debug.port=5005"]
     }
 }

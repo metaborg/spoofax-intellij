@@ -176,7 +176,7 @@ public class DefaultLanguageManager implements ILanguageManager {
      */
     @Override
     public void unloadComponentRange(final Iterable<ILanguageComponent> components) {
-        for (final ILanguageComponent component : components) {
+        for (final ILanguageComponent component : Lists.newArrayList(components)) {
             unload(component);
         }
     }
@@ -186,7 +186,7 @@ public class DefaultLanguageManager implements ILanguageManager {
      */
     @Override
     public void unloadImplRange(final Iterable<? extends ILanguageImpl> impls) {
-        for (final ILanguageImpl impl : impls) {
+        for (final ILanguageImpl impl : Lists.newArrayList(impls)) {
             unloadComponentRange(impl.components());
         }
     }
@@ -196,7 +196,7 @@ public class DefaultLanguageManager implements ILanguageManager {
      */
     @Override
     public void unloadRange(final Iterable<ILanguage> languages) {
-        for (final ILanguage language : languages) {
+        for (final ILanguage language : Lists.newArrayList(languages)) {
             unloadImplRange(language.impls());
         }
     }

@@ -45,7 +45,7 @@ public class ModuleBuilderUtils {
     public static List<Pair<String, String>> getSourcePaths(final LanguageIdentifier languageIdentifier,
                                                             final FileObject contentEntry)
             throws ConfigurationException {
-        final LangSpecCommonPaths paths = new LangSpecCommonPaths(contentEntry);
+        final SpoofaxLangSpecCommonPaths paths = new SpoofaxLangSpecCommonPaths(contentEntry);
         final List<Pair<String, String>> sourcePaths = new ArrayList<>();
         for (final FileObject javaSrcDir : paths.javaSrcDirs(languageIdentifier.id)) {
             sourcePaths.add(Pair.create(javaSrcDir.toString(), ""));
@@ -69,7 +69,7 @@ public class ModuleBuilderUtils {
     }
 
     public static void excludeRoots(final ContentEntry contentEntry, final FileObject root) {
-        final LangSpecCommonPaths paths = new LangSpecCommonPaths(root);
+        final SpoofaxLangSpecCommonPaths paths = new SpoofaxLangSpecCommonPaths(root);
         // TODO: Remove unnecessary folders:
         contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".idea");
         contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + ".mvn");

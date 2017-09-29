@@ -1,17 +1,17 @@
 <short summary of the issue>
 
-I tried to do this:
+### I tried to do this:
 
 <description of what you did>
 
-I expected this to happen:
+### I expected this to happen:
 
 <explanation>
 
-Instead, this happened:
+### Instead, this happened:
 
 <explanation>
 
 ---
 
-<Spoofax plugin version>
+> Spoofax: <plugin version>
