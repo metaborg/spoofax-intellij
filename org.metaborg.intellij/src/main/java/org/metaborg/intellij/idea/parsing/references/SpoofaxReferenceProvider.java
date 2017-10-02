@@ -98,6 +98,9 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
 
                 return getMetaborgReferences(element, resolution);
             } catch (final MetaborgException e) {
+                if (e.getMessage().endsWith("it does not have a resolver facet"))
+                    return Collections.emptyList();
+
                 throw new RuntimeException(e);
             }
         }
