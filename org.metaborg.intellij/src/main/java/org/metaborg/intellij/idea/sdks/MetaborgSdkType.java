@@ -460,7 +460,9 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
 
         final List<Pair<String, VirtualFile>> files = new ArrayList<>(filenames.length);
         for (final String filename : filenames) {
-            final File file = new File(sdkHomePath, filename);
+            final String finalFilename = filename.replace("${version}", SpoofaxPlugin.INSTANCE.getVersion());
+
+            final File file = new File(sdkHomePath, finalFilename);
 
             @Nullable final VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
 //            if (virtualFile == null) {
