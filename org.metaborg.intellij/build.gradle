@@ -28,6 +28,15 @@ allprojects {
     sourceCompatibility = javaVersion
     targetCompatibility = javaTargetVersion
 
+    dependencies {
+        // Added to fix IntelliJ dependency resolution across shadow dependencies
+        // This list must be the same as those defined in spoofax-deps, minus commons-io.
+        compileClasspath "org.metaborg:org.metaborg.core:$metaborgVersion"
+        compileClasspath "org.metaborg:org.metaborg.spoofax.core:$metaborgVersion"
+        compileClasspath "org.metaborg:org.metaborg.spoofax.meta.core:$metaborgVersion"
+        // compileClasspath 'commons-io:commons-io:2.4'
+    }
+
     repositories {
         mavenLocal()
         mavenCentral()
