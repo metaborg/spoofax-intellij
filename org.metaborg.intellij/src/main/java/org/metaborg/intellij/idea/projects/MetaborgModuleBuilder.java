@@ -451,16 +451,6 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     }
 
     /**
-     * Gets the module's big icon.
-     *
-     * @return The big icon.
-     */
-    // TODO: Use project's ILanguage facet defined icon.
-    @Override public final Icon getBigIcon() {
-        return this.iconManager.getDefaultIcon();
-    }
-
-    /**
      * Gets the module's normal icon.
      *
      * @return The normal icon.

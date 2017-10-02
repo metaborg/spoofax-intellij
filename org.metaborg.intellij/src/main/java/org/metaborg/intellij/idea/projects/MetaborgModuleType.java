@@ -98,7 +98,7 @@ public final class MetaborgModuleType extends ModuleType<MetaborgModuleBuilder> 
      * @return The big icon.
      */
     @Override
-    public Icon getBigIcon() {
+    public Icon getIcon() {
         return this.iconManager.getDefaultIcon();
     }
 

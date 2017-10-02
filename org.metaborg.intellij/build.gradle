@@ -44,13 +44,6 @@ allprojects {
             url "http://sugar-lang.github.io/mvnrepository/"
         }
     }
-
-    dependencies {
-        compile     "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-    }
-
     configurations {
         provided
     }
@@ -81,6 +74,11 @@ allprojects {
 
 configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
   apply plugin: 'org.jetbrains.intellij'
+
+  dependencies {
+      compile     "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+      testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+  }
 
   intellij {
       type = "IC"
