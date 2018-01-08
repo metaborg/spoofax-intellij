@@ -1,5 +1,6 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "1.2.4"
+    id "com.github.johnrengelman.shadow" version "2.0.1"
+//    id "com.github.johnrengelman.shadow" version "1.2.4"
 }
 
 assemble.dependsOn shadowJar
@@ -49,11 +50,4 @@ shadowJar {
     zip64 = true
 
     relocate 'org.apache.commons.io', 'intellij.org.apache.commons.io'
-
-    dependencies {
-    //     include(dependency('org.metaborg::'))
-    //     include(dependency('build.pluto:.*'))
-    //     include(dependency('org.sugarj:common:.*'))
-    //     include(dependency('commons-io:commons-io'))
-    }
 }

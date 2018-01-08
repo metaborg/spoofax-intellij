@@ -19,12 +19,6 @@ To install the plugin, either:
   curl https://raw.githubusercontent.com/metaborg/spoofax-intellij/master/repository/install.sh -sSLf | bash
   ```
 
-* download [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) and install the Spoofax plugin from this plugin repository:
-
-  ```
-  http://download.spoofax.org/update/nightly/updatePlugins.xml
-  ```
-
 ---
 
 To create a new Spoofax language specification, go to the _File_ → _New_ → _Project_ menu, and select _Spoofax Language_. Finish the wizard.
