@@ -68,23 +68,6 @@ public interface SpoofaxJpsPlugin {
         @Override
         protected SpoofaxJpsPlugin initialize() throws ConcurrentException {
             return new SpoofaxJpsPluginImpl();
-//            final ClassLoader parentClassLoader = this.getClass().getClassLoader();
-//            final PriorityURLClassLoader classLoader;
-//            final URL[] urls;
-//            if (parentClassLoader instanceof URLClassLoader) {
-//                urls = ((URLClassLoader)parentClassLoader).getURLs();
-//            } else {
-//                urls = new URL[0];
-//            }
-//            classLoader = new PriorityURLClassLoader(parentClassLoader, urls, new String[] { "org.metaborg.intellij.jps.SpoofaxJpsPlugin" });
-//            Thread.currentThread().setContextClassLoader(classLoader);
-//            try {
-//                final Class pluginClass = classLoader.loadClass("org.metaborg.intellij.jps.SpoofaxJpsPluginImpl");
-//                final Object pluginObject = pluginClass.newInstance();
-//                return (SpoofaxJpsPlugin)pluginObject;
-//            } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-//                throw new UnhandledException("An unexpected unhandled exception occurred during object creation.", e);
-//            }
         }
     };
 

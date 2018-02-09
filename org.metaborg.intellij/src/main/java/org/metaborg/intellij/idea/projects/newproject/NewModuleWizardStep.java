@@ -24,10 +24,12 @@ import com.google.inject.assistedinject.Assisted;
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
+import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.graphics.IIconManager;
@@ -96,8 +98,8 @@ public class NewModuleWizardStep extends ModuleWizardStep {
     /**
      * Initializes a new instance of the {@link NewModuleWizardStep} class.
      *
-     * @param builder The {@link ModuleBuilder}.
-     * @param context The {@link WizardContext}.
+     * @param builder     The {@link ModuleBuilder}.
+     * @param context     The {@link WizardContext}.
      * @param iconManager The icon manager.
      */
     @Inject
@@ -117,7 +119,7 @@ public class NewModuleWizardStep extends ModuleWizardStep {
      * {@inheritDoc}
      */
     @Override
-    public boolean validate() throws com.intellij.openapi.options.ConfigurationException {
+    public boolean validate() throws ConfigurationException {
         validateLanguageIdentifier("name", this.txtName.getText());
         validateExtension("file extension", this.txtExtensions.getText());
         validateLanguageIdentifier("group identifier", this.txtGroupID.getText());
@@ -133,15 +135,17 @@ public class NewModuleWizardStep extends ModuleWizardStep {
      * @param fieldName The human-readable name of the field. Usually the label.
      * @param text      The text to validate.
      * @return Always <code>true</code>.
-     * @throws com.intellij.openapi.options.ConfigurationException Validation failed.
+     * @throws ConfigurationException Validation failed.
      */
     private boolean validateLanguageIdentifier(final String fieldName, final String text) throws
-            com.intellij.openapi.options.ConfigurationException {
-        if (StringUtil.isEmptyOrSpaces(text))
-            throw new com.intellij.openapi.options.ConfigurationException("Please specify a " + fieldName + ".");
-        if (!LanguageIdentifier.validId(text))
-            throw new com.intellij.openapi.options.ConfigurationException("Please specify a valid " + fieldName + "; " +
+            ConfigurationException {
+        if (StringUtil.isEmptyOrSpaces(text)) {
+            throw new ConfigurationException("Please specify a " + fieldName + ".");
+        }
+        if (!LanguageIdentifier.validId(text)) {
+            throw new ConfigurationException("Please specify a valid " + fieldName + "; " +
                     LanguageIdentifier.errorDescription);
+        }
         return true;
     }
 
@@ -151,14 +155,16 @@ public class NewModuleWizardStep extends ModuleWizardStep {
      * @param fieldName The human-readable name of the field. Usually the label.
      * @param text      The text to validate.
      * @return Always <code>true</code>.
-     * @throws com.intellij.openapi.options.ConfigurationException Validation failed.
+     * @throws ConfigurationException Validation failed.
      */
-    private boolean validateLanguageVersion(final String fieldName, final String text) throws com.intellij.openapi.options.ConfigurationException {
-        if (StringUtil.isEmptyOrSpaces(text))
-            throw new com.intellij.openapi.options.ConfigurationException("Please specify a " + fieldName + ".");
-        if (!LanguageVersion.valid(text))
-            throw new com.intellij.openapi.options.ConfigurationException("Please specify a valid " + fieldName + "; " +
+    private boolean validateLanguageVersion(final String fieldName, final String text) throws ConfigurationException {
+        if (StringUtil.isEmptyOrSpaces(text)) {
+            throw new ConfigurationException("Please specify a " + fieldName + ".");
+        }
+        if (!LanguageVersion.valid(text)) {
+            throw new ConfigurationException("Please specify a valid " + fieldName + "; " +
                     LanguageVersion.errorDescription);
+        }
         return true;
     }
 
@@ -168,14 +174,16 @@ public class NewModuleWizardStep extends ModuleWizardStep {
      * @param fieldName The human-readable name of the field. Usually the label.
      * @param text      The text to validate.
      * @return Always <code>true</code>.
-     * @throws com.intellij.openapi.options.ConfigurationException Validation failed.
+     * @throws ConfigurationException Validation failed.
      */
-    private boolean validateExtension(final String fieldName, final String text) throws com.intellij.openapi.options.ConfigurationException {
-        if (StringUtil.isEmptyOrSpaces(text))
-            throw new com.intellij.openapi.options.ConfigurationException("Please specify a " + fieldName + ".");
-        if (!isValidExtension(text))
-            throw new com.intellij.openapi.options.ConfigurationException("Please specify a valid " + fieldName +
+    private boolean validateExtension(final String fieldName, final String text) throws ConfigurationException {
+        if (StringUtil.isEmptyOrSpaces(text)) {
+            throw new ConfigurationException("Please specify a " + fieldName + ".");
+        }
+        if (!isValidExtension(text)) {
+            throw new ConfigurationException("Please specify a valid " + fieldName +
                     "; only alphanumeric characters and dot.");
+        }
         return true;
     }
 
@@ -242,8 +250,8 @@ public class NewModuleWizardStep extends ModuleWizardStep {
                 LanguageVersion.parse(this.txtVersion.getText())
         ));
         this.builder.setExtensions(CreateLanguageSpecWizard.splitExtensions(cleanupExtension(this.txtExtensions.getText())));
-        this.builder.setSyntaxType(SyntaxType.mapping().get((String)this.cmbSyntaxType.getSelectedItem()));
-        this.builder.setAnalysisType(AnalysisType.mapping().get((String)this.cmbAnalysisType.getSelectedItem()));
+        this.builder.setSyntaxType(SyntaxType.mapping().get((String) this.cmbSyntaxType.getSelectedItem()));
+        this.builder.setAnalysisType(AnalysisType.mapping().get((String) this.cmbAnalysisType.getSelectedItem()));
         this.context.setProjectName(this.builder.getName());
     }
 
@@ -304,8 +312,9 @@ public class NewModuleWizardStep extends ModuleWizardStep {
 
     private void addLanguageOption(final int row, final String label, @Nullable final Component component) {
         this.pnlLanguageOptions.add(new JLabel(label), new GridConstraints(row, 0, 1, 1, 8, 0, 0, 0, null, null, null, 0, false));
-        if (component != null)
+        if (component != null) {
             this.pnlLanguageOptions.add(component, new GridConstraints(row, 1, 1, 1, 8, 1, 2, 0, null, null, null, 0, false));
+        }
     }
 
     /**
@@ -357,5 +366,68 @@ public class NewModuleWizardStep extends ModuleWizardStep {
         this.txtVersion.setText(this.builder.getLanguageIdentifier().version.toString());
         this.cmbSyntaxType.setSelectedItem(this.builder.getSyntaxType().name);
         this.cmbAnalysisType.setSelectedItem(this.builder.getAnalysisType().name);
+    }
+
+    {
+// GUI initializer generated by IntelliJ IDEA GUI Designer
+// >>> IMPORTANT!! <<<
+// DO NOT EDIT OR ADD ANY CODE HERE!
+        $$$setupUI$$$();
+    }
+
+    /**
+     * Method generated by IntelliJ IDEA GUI Designer
+     * >>> IMPORTANT!! <<<
+     * DO NOT edit this method OR call it in your code!
+     *
+     * @noinspection ALL
+     */
+    private void $$$setupUI$$$() {
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        pnlLanguageIdentification = new JPanel();
+        pnlLanguageIdentification.setLayout(new GridLayoutManager(5, 2, new Insets(0, 0, 0, 0), -1, -1));
+        pnlLanguageIdentification.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");
+        mainPanel.add(pnlLanguageIdentification, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        pnlLanguageIdentification.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Language identification"));
+        final JLabel label1 = new JLabel();
+        label1.setText("Name:");
+        pnlLanguageIdentification.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label2 = new JLabel();
+        label2.setText("Identifier:");
+        pnlLanguageIdentification.add(label2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label3 = new JLabel();
+        label3.setText("Version:");
+        pnlLanguageIdentification.add(label3, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label4 = new JLabel();
+        label4.setText("Extensions:");
+        pnlLanguageIdentification.add(label4, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label5 = new JLabel();
+        label5.setText("Group identifier:");
+        pnlLanguageIdentification.add(label5, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        txtName = new JTextField();
+        pnlLanguageIdentification.add(txtName, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        txtExtensions = new JTextField();
+        pnlLanguageIdentification.add(txtExtensions, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        txtGroupID = new JTextField();
+        pnlLanguageIdentification.add(txtGroupID, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        txtID = new JTextField();
+        pnlLanguageIdentification.add(txtID, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        txtVersion = new JTextField();
+        pnlLanguageIdentification.add(txtVersion, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        pnlLanguageOptions = new JPanel();
+        pnlLanguageOptions.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        pnlLanguageOptions.putClientProperty("BorderFactoryClass", "com.intellij.ui.IdeBorderFactory$PlainSmallWithIndent");
+        mainPanel.add(pnlLanguageOptions, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        pnlLanguageOptions.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Language options"));
+        final Spacer spacer1 = new Spacer();
+        mainPanel.add(spacer1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    public JComponent $$$getRootComponent$$$() {
+        return mainPanel;
     }
 }

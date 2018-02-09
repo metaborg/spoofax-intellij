@@ -10,7 +10,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.2.17"
+    id "org.jetbrains.intellij" version "0.2.18"
     id "de.fuerstenau.buildconfig" version "1.1.8"
 }
 
@@ -82,6 +82,10 @@ intellij {
     downloadSources Boolean.valueOf(intellijSources)
     sameSinceUntilBuild Boolean.valueOf(intellijEAP)
     alternativeIdePath intellijLocalPath
+    // WORKAROUND: For Java 9, instrumentation fails with the error:
+    //     Class not found: javax.swing.JPanel
+    // https://github.com/JetBrains/gradle-intellij-plugin/issues/235
+    instrumentCode false
 
     patchPluginXml {
         sinceBuild intellijSinceBuild

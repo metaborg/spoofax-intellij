@@ -93,27 +93,6 @@ public final class SpoofaxJpsPluginImpl implements SpoofaxJpsPlugin {
     public SpoofaxJpsPluginImpl() {
         logger.debug("Loading Spoofax for JPS plugin using classloader: ",
                 this.getClass().getClassLoader().getClass().getName());
-//        logger.debug("URLs:");
-//        final ClassLoader classLoader = this.getClass().getClassLoader();
-//        if (classLoader instanceof URLClassLoader) {
-//            final URLClassLoader parent = (URLClassLoader)this.getClass().getClassLoader();
-//            for (final URL url : parent.getURLs()) {
-//                logger.debug("  " + url.toString());
-//            }
-//            try {
-//                final PriorityURLClassLoader p = PriorityURLClassLoader.createWithBaseUrl(new URL("file:/home/daniel/repos/releng/spoofax-intellij/org.metaborg.intellij/build/idea-sandbox/plugins/org.metaborg.intellij/"), parent);
-//                logger.debug("Priority URLs:");
-//                for (final URL url : p.getURLs()) {
-//                    logger.debug("  " + url.toString());
-//                }
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            }
-//
-//        } else {
-//            logger.debug("  N/A: " + classLoader.getClass().getName());
-//        }
-//        logger.debug("Stack trace: " + Arrays.toString(Thread.currentThread().getStackTrace()));
 
         try {
             this.spoofax = new Spoofax(new JpsSpoofaxModule());
