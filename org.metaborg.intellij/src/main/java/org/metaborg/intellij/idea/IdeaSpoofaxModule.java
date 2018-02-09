@@ -20,6 +20,8 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.Multibinder;
+import com.virtlink.editorservices.AesiBaseModule;
+import com.virtlink.editorservices.intellij.AesiIntellijModule;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.metaborg.core.editor.IEditorRegistry;
 import org.metaborg.core.project.IProjectService;
@@ -37,6 +39,7 @@ import org.metaborg.intellij.idea.facets.MetaborgFacetType;
 import org.metaborg.intellij.idea.filetypes.LanguageArtifactFileType;
 import org.metaborg.intellij.idea.graphics.DefaultIconManager;
 import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.parsing.MetaborgAesiParserDefinition;
 import org.metaborg.intellij.idea.parsing.annotations.MetaborgSourceAnnotator;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
@@ -74,6 +77,10 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
     @Override protected void configure() {
         super.configure();
 
+        install(new AesiIntellijModule());
+        // TODO: Replace this by a module from aesi-spoofax.
+        install(new AesiBaseModule());
+
         bindModule();
         bindLanguageSources();
         bindLoggerListeners();
@@ -85,6 +92,11 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
         bindConfiguration();
         bindLibraryService();
         bindFacets();
+
+
+        install(new FactoryModuleBuilder()
+                .implement(MetaborgAesiParserDefinition.class, MetaborgAesiParserDefinition.class)
+                .build(MetaborgAesiParserDefinition.IFactory.class));
     }
 
     /**

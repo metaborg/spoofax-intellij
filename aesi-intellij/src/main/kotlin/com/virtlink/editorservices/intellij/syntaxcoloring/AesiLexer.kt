@@ -19,7 +19,7 @@ import java.net.URI
 
 class AesiLexer @Inject constructor(
         @Assisted private val documentUri: URI,
-        private val tokenTypeManager: AesiTokenTypeManager,
+        @Assisted private val tokenTypeManager: AesiTokenTypeManager,
         private val syntaxColoringService: ISyntaxColoringService,
         private val scopeManager: ScopeManager,
         private val resourceManager: IntellijResourceManager)
@@ -34,8 +34,9 @@ class AesiLexer @Inject constructor(
          * Creates the lexer.
          *
          * @param documentUri The document URI.
+         * @param tokenTypeManager The token type manager.
          */
-        fun create(documentUri: URI): AesiLexer
+        fun create(documentUri: URI, tokenTypeManager: AesiTokenTypeManager): AesiLexer
     }
 
     private val LOG = Logger.getInstance(this.javaClass)

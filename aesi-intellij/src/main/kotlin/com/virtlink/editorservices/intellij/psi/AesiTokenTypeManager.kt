@@ -1,10 +1,13 @@
 package com.virtlink.editorservices.intellij.psi
 
 import com.google.inject.Inject
+import com.google.inject.assistedinject.Assisted
 import com.intellij.lang.Language
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.psi.tree.TokenSet
+import com.virtlink.editorservices.intellij.syntaxcoloring.AesiLexer
 import com.virtlink.editorservices.intellij.syntaxcoloring.AesiSyntaxHighlighter
+import java.net.URI
 
 /**
  * Tracks token types.
@@ -16,7 +19,20 @@ import com.virtlink.editorservices.intellij.syntaxcoloring.AesiSyntaxHighlighter
  * The token type manager is specific to a single language.
  */
 class AesiTokenTypeManager
-@Inject constructor(private val language: Language) {
+@Inject constructor(@Assisted private val language: Language) {
+
+    /**
+     * Factory.
+     */
+    interface IFactory {
+
+        /**
+         * Creates the token type manager.
+         *
+         * @param language The language.
+         */
+        fun create(language: Language): AesiTokenTypeManager
+    }
 
     val scopedElementTypes = HashMap<String, AesiTokenType>()
 

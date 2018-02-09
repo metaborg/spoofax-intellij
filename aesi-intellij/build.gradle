@@ -6,10 +6,14 @@ intellij {
 }
 
 dependencies {
+    // Required dependencies
     compile project(":aesi")
     compile "com.google.guava:guava:$guavaVersion"
     compile "com.google.inject:guice:$guiceVersion"
     compile "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
     compile "com.google.inject.extensions:guice-multibindings:$guiceVersion"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
+
+    // Optional dependencies
+    compileOnly project(":aesix-spoofax")
 }

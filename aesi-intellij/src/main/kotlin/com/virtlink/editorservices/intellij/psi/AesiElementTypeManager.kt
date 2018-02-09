@@ -1,6 +1,7 @@
 package com.virtlink.editorservices.intellij.psi
 
 import com.google.inject.Inject
+import com.google.inject.assistedinject.Assisted
 import com.intellij.lang.Language
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.psi.tree.TokenSet
@@ -11,7 +12,20 @@ import com.intellij.psi.tree.TokenSet
  * For token types, see [AesiTokenTypeManager].
  */
 class AesiElementTypeManager
-@Inject constructor(language: Language)  {
+@Inject constructor(@Assisted language: Language)  {
+
+    /**
+     * Factory.
+     */
+    interface IFactory {
+
+        /**
+         * Creates the element type manager.
+         *
+         * @param language The language.
+         */
+        fun create(language: Language): AesiElementTypeManager
+    }
 
     val rootElementType = AesiRootElementType(language)
     val defaultElementType = AesiElementType(language)

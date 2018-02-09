@@ -52,7 +52,7 @@ import javax.annotation.Nullable;
 /**
  * Metaborg source file PSI element type.
  */
-public final class MetaborgFileElementType extends IFileElementType { // IStubFileElementType {
+public final class MetaborgFileElementType extends IFileElementType {
     private final IIdeaLanguageManager languageManager;
     private final IIdeaProjectService projectService;
     private final ILanguageProjectService languageProjectService;

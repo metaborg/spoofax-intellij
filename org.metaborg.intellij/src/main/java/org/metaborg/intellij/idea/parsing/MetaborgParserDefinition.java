@@ -33,6 +33,7 @@ import com.intellij.psi.tree.TokenSet;
 import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType;
 import org.metaborg.intellij.idea.languages.ILanguageBindingManager;
 import org.metaborg.intellij.idea.parsing.elements.IMetaborgPsiElementFactory;
+import org.metaborg.intellij.idea.parsing.elements.MetaborgAesiFileElementType;
 import org.metaborg.intellij.idea.parsing.elements.MetaborgFile;
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 
@@ -69,9 +70,10 @@ public final class MetaborgParserDefinition implements ParserDefinition {
      */
     @Override
     public Lexer createLexer(final Project project) {
-        final SpoofaxTokenTypeManager tokenTypeManager
-                = this.bindingManager.getTokenTypeManager(this.fileType.getMetaborgLanguage());
-        return this.characterLexerFactory.create(tokenTypeManager);
+        throw new UnsupportedOperationException("See MetaborgAesiFileElementType class.");
+//        final SpoofaxTokenTypeManager tokenTypeManager
+//                = this.bindingManager.getTokenTypeManager(this.fileType.getMetaborgLanguage());
+//        return this.characterLexerFactory.create(tokenTypeManager);
     }
 
     /**
@@ -82,7 +84,7 @@ public final class MetaborgParserDefinition implements ParserDefinition {
      */
     @Override
     public PsiParser createParser(final Project project) {
-        throw new UnsupportedOperationException("See SpoofaxFileElementType class.");
+        throw new UnsupportedOperationException("See MetaborgAesiFileElementType class.");
     }
 
     /**

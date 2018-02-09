@@ -24,6 +24,9 @@ import com.google.inject.multibindings.Multibinder;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
 import com.intellij.psi.tree.IFileElementType;
+import com.virtlink.editorservices.intellij.AesiIntellijModule;
+import com.virtlink.editorservices.intellij.psi.AesiElementTypeManager;
+import com.virtlink.editorservices.intellij.psi.AesiTokenTypeManager;
 import org.metaborg.core.syntax.*;
 import org.metaborg.intellij.idea.compilation.IAfterCompileTask;
 import org.metaborg.intellij.idea.compilation.IBeforeCompileTask;
@@ -94,8 +97,8 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
     protected void bindElements() {
         bind(IMetaborgPsiElementFactory.class).to(DefaultMetaborgPsiElementFactory.class).in(Singleton.class);
         install(new FactoryModuleBuilder()
-                .implement(IFileElementType.class, MetaborgFileElementType.class)
-                .build(IFileElementTypeFactory.class));
+                .implement(MetaborgAesiFileElementType.class, MetaborgAesiFileElementType.class)
+                .build(MetaborgAesiFileElementType.IFactory.class));
         install(new FactoryModuleBuilder()
                 .implement(ATermAstElementTypeProvider.class, ATermAstElementTypeProvider.class)
                 .build(IATermAstElementTypeProviderFactory.class));
@@ -164,8 +167,5 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
         install(new FactoryModuleBuilder()
                 .implement(Lexer.class, CharacterLexer.class)
                 .build(ICharacterLexerFactory.class));
-        install(new FactoryModuleBuilder()
-                .implement(ParserDefinition.class, MetaborgParserDefinition.class)
-                .build(IParserDefinitionFactory.class));
     }
 }

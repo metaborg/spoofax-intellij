@@ -27,6 +27,10 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IFileElementType;
+import com.virtlink.editorservices.intellij.psi.AesiAstBuilder;
+import com.virtlink.editorservices.intellij.psi.AesiElementTypeManager;
+import com.virtlink.editorservices.intellij.psi.AesiTokenTypeManager;
+import com.virtlink.editorservices.intellij.resources.IntellijResourceManager;
 import javassist.util.proxy.ProxyFactory;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
@@ -43,10 +47,10 @@ import org.metaborg.intellij.idea.extensions.InstanceLanguageExtensionPoint;
 import org.metaborg.intellij.idea.extensions.InstanceSyntaxHighlighterFactoryExtensionPoint;
 import org.metaborg.intellij.idea.filetypes.FileTypeUtils;
 import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType;
-import org.metaborg.intellij.idea.parsing.IParserDefinitionFactory;
+import org.metaborg.intellij.idea.parsing.MetaborgAesiParserDefinition;
 import org.metaborg.intellij.idea.parsing.SpoofaxSyntaxHighlighterFactory;
 import org.metaborg.intellij.idea.parsing.annotations.MetaborgSourceAnnotator;
-import org.metaborg.intellij.idea.parsing.elements.IFileElementTypeFactory;
+import org.metaborg.intellij.idea.parsing.elements.MetaborgAesiFileElementType;
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 import org.metaborg.intellij.idea.projects.IdeaLanguageSpec;
 import org.metaborg.intellij.languages.DefaultLanguageManager;
@@ -80,9 +84,12 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
 
     private final Object objectLock = new Object();
     private final ProxyFactory proxyFactory;
+    private final AesiTokenTypeManager.IFactory tokenTypeManager2Factory;
+    private final AesiElementTypeManager.IFactory elementTypeManagerFactory;
+    private final AesiAstBuilder.IFactory astBuilderFactory;
     private final MetaborgSourceAnnotator metaborgSourceAnnotator;
-    private final IFileElementTypeFactory fileElementTypeFactory;
-    private final IParserDefinitionFactory parserDefinitionFactory;
+    private final MetaborgAesiFileElementType.IFactory fileElementTypeFactory;
+    private final MetaborgAesiParserDefinition.IFactory parserDefinitionFactory;
     private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
     private final BuilderMenuBuilder builderMenuBuilder;
     private final IIntelliJResourceService resourceService;
@@ -103,9 +110,12 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     public DefaultIdeaLanguageManager(final ILanguageService languageService,
                                       final ILanguageSource languageSource, final ILanguageDiscoveryService discoveryService,
                                       final IIntelliJResourceService resourceService, final MetaborgSourceAnnotator metaborgSourceAnnotator,
-                                      final IFileElementTypeFactory fileElementTypeFactory, final IParserDefinitionFactory parserDefinitionFactory,
+                                      final MetaborgAesiFileElementType.IFactory fileElementTypeFactory, final MetaborgAesiParserDefinition.IFactory parserDefinitionFactory,
                                       final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
-                                      final BuilderMenuBuilder builderMenuBuilder, final ActionUtils actionUtils) {
+                                      final BuilderMenuBuilder builderMenuBuilder, final ActionUtils actionUtils,
+                                      final AesiTokenTypeManager.IFactory tokenTypeManager2Factory,
+                                      final AesiElementTypeManager.IFactory elementTypeManagerFactory,
+                                      final AesiAstBuilder.IFactory astBuilderFactory) {
         super(languageService, languageSource, discoveryService);
         this.metaborgSourceAnnotator = metaborgSourceAnnotator;
         this.fileElementTypeFactory = fileElementTypeFactory;
@@ -114,6 +124,9 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         this.builderMenuBuilder = builderMenuBuilder;
         this.actionUtils = actionUtils;
         this.resourceService = resourceService;
+        this.tokenTypeManager2Factory = tokenTypeManager2Factory;
+        this.elementTypeManagerFactory = elementTypeManagerFactory;
+        this.astBuilderFactory = astBuilderFactory;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -356,10 +369,13 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     private LanguageBindings createLanguageBindings(final ILanguage language) {
         final MetaborgIdeaLanguage ideaLanguage = createIdeaLanguage(language);
         final MetaborgLanguageFileType fileType = createFileType(ideaLanguage);
+        final AesiElementTypeManager elementTypeManager = createElementTypeFactory(ideaLanguage);
+        final AesiTokenTypeManager tokenTypeManager2 = createTokenTypeManager2(ideaLanguage);
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
-        final IFileElementType fileElementType = createFileElementType(ideaLanguage, tokenTypeManager);
-        final ParserDefinition parserDefinition = createParserDefinition(fileType, fileElementType);
+        final IFileElementType fileElementType = createFileElementType(ideaLanguage, tokenTypeManager2, elementTypeManager);
+        final ParserDefinition parserDefinition = createParserDefinition(fileType, fileElementType, tokenTypeManager2);
         final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory();
+        final AesiAstBuilder astBuilder = createAstBuilder(elementTypeManager);
 
         final InstanceLanguageExtensionPoint<?> parserDefinitionExtension =
             new InstanceLanguageExtensionPoint<>(ExtensionIds.ParserDefinition, ideaLanguage, parserDefinition);
@@ -369,7 +385,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
             ExtensionIds.ExternalAnnotator, ideaLanguage, this.metaborgSourceAnnotator);
 
         return new LanguageBindings(tokenTypeManager, fileType, parserDefinitionExtension,
-            syntaxHighlighterFactoryExtension, externalAnnotatorExtension);
+            syntaxHighlighterFactoryExtension, externalAnnotatorExtension, elementTypeManager, tokenTypeManager2, astBuilder);
     }
 
     /**
@@ -491,8 +507,9 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      * @return The created parser definition.
      */
     private ParserDefinition createParserDefinition(final MetaborgLanguageFileType fileType,
-                                                    final IFileElementType fileElementType) {
-        return this.parserDefinitionFactory.create(fileType, fileElementType);
+                                                    final IFileElementType fileElementType,
+                                                    final AesiTokenTypeManager tokenTypeManager) {
+        return this.parserDefinitionFactory.create(fileType, fileElementType, tokenTypeManager);
     }
 
     /**
@@ -516,6 +533,40 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     }
 
     /**
+     * Creates a new AESI token type manager for an IDEA language.
+     *
+     * @param language
+     *            The IDEA language.
+     * @return The created token type manager.
+     */
+    private AesiTokenTypeManager createTokenTypeManager2(final MetaborgIdeaLanguage language) {
+        return this.tokenTypeManager2Factory.create(language);
+    }
+
+    /**
+     * Creates a new AESI element type manager for an IDEA language.
+     *
+     * @param language
+     *            The IDEA language.
+     * @return The created element type manager.
+     */
+    private AesiElementTypeManager createElementTypeFactory(final MetaborgIdeaLanguage language) {
+        return this.elementTypeManagerFactory.create(language);
+    }
+
+    /**
+     * Creates a new AESI element type manager for an IDEA language.
+     *
+     * @param elementTypeManager
+     *            The element type manager.
+     * @return The created AST builder.
+     */
+    private AesiAstBuilder createAstBuilder(final AesiElementTypeManager elementTypeManager) {
+        return this.astBuilderFactory.create(elementTypeManager);
+    }
+
+
+    /**
      * Creates a new file type for an IDEA language.
      *
      * @param language
@@ -531,13 +582,14 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *
      * @param language
      *            The language.
-     * @param tokenTypesManager
-     *            The token types manager.
+     * @param tokenTypeManager
+     *            The token type manager.
      * @return The file element type.
      */
-    private IFileElementType createFileElementType(final Language language,
-                                                   final SpoofaxTokenTypeManager tokenTypesManager) {
-        return this.fileElementTypeFactory.create(language, tokenTypesManager);
+    private IFileElementType createFileElementType(final MetaborgIdeaLanguage language,
+                                                   final AesiTokenTypeManager tokenTypeManager,
+                                                   final AesiElementTypeManager elementTypeManager) {
+        return this.fileElementTypeFactory.create(language, tokenTypeManager, elementTypeManager);
     }
 
     /**

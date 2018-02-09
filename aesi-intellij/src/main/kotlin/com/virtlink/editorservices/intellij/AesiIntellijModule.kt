@@ -16,10 +16,7 @@ import com.virtlink.editorservices.resources.IResourceManager
 
 class AesiIntellijModule : AbstractModule() {
     override fun configure() {
-        bind(AesiTokenTypeManager::class.java).`in`(Singleton::class.java)
-        bind(AesiElementTypeManager::class.java).`in`(Singleton::class.java)
         bind(ScopeManager::class.java).`in`(Singleton::class.java)
-        bind(IFileElementType::class.java).to(AesiFileElementType::class.java).`in`(Singleton::class.java)
         bind(IntellijResourceManager::class.java).`in`(Singleton::class.java)
         bind(IResourceManager::class.java).to(IntellijResourceManager::class.java)
         bind(SessionManager::class.java).`in`(Singleton::class.java)
@@ -29,10 +26,16 @@ class AesiIntellijModule : AbstractModule() {
                 .implement(AesiLexer::class.java, AesiLexer::class.java)
                 .build(AesiLexer.IFactory::class.java))
         install(FactoryModuleBuilder()
-                .implement(AesiAstBuilder::class.java, AesiAstBuilder::class.java)
-                .build(IAstBuilderFactory::class.java))
-        install(FactoryModuleBuilder()
                 .implement(AesiSyntaxHighlighter::class.java, AesiSyntaxHighlighter::class.java)
                 .build(AesiSyntaxHighlighter.IFactory::class.java))
+        install(FactoryModuleBuilder()
+                .implement(AesiTokenTypeManager::class.java, AesiTokenTypeManager::class.java)
+                .build(AesiTokenTypeManager.IFactory::class.java))
+        install(FactoryModuleBuilder()
+                .implement(AesiElementTypeManager::class.java, AesiElementTypeManager::class.java)
+                .build(AesiElementTypeManager.IFactory::class.java))
+        install(FactoryModuleBuilder()
+                .implement(AesiAstBuilder::class.java, AesiAstBuilder::class.java)
+                .build(AesiAstBuilder.IFactory::class.java))
     }
 }

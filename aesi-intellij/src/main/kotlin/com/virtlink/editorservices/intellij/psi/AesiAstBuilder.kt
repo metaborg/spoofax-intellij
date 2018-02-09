@@ -1,11 +1,27 @@
 package com.virtlink.editorservices.intellij.psi
 
 import com.google.inject.Inject
+import com.google.inject.assistedinject.Assisted
 import com.intellij.lang.ASTNode
+import com.intellij.lang.Language
 import com.intellij.lang.PsiBuilder
 import com.intellij.psi.tree.IElementType
 
-class AesiAstBuilder @Inject constructor(private val elementTypeManager: AesiElementTypeManager) {
+class AesiAstBuilder @Inject constructor(
+        @Assisted private val elementTypeManager: AesiElementTypeManager) {
+
+    /**
+     * Factory.
+     */
+    interface IFactory {
+
+        /**
+         * Creates the AST builder.
+         *
+         * @param elementTypeManager The element type manager.
+         */
+        fun create(elementTypeManager: AesiElementTypeManager): AesiAstBuilder
+    }
 
     fun build(root: IElementType, builder: PsiBuilder): ASTNode {
         val m = builder.mark()
