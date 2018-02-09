@@ -1,3 +1,5 @@
+// This is a subproject of org.metaborg.intellij
+
 plugins {
     id "com.github.johnrengelman.shadow" version "2.0.2"
 }
@@ -40,7 +42,7 @@ dependencies {
         exclude group: "org.slf4j"
         exclude group: "com.google.guava"
     }
-    compile 'commons-io:commons-io:2.4'
+    compile "commons-io:commons-io:$commonsIoVersion"
 }
 
 shadowJar {

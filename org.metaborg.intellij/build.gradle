@@ -57,12 +57,15 @@ allprojects {
     }
 }
 
-configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
+
+configure([project,
+           project(':org.metaborg.jps'),
+           project(':org.metaborg.spoofax-common')]) {
   apply plugin: 'kotlin'
   apply plugin: 'org.jetbrains.intellij'
 
   dependencies {
-      compile     "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+      compile     "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
       testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 
       // Added to fix IntelliJ dependency resolution across shadow dependencies
@@ -70,11 +73,7 @@ configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
       compileClasspath "org.metaborg:org.metaborg.core:$metaborgVersion"
       compileClasspath "org.metaborg:org.metaborg.spoofax.core:$metaborgVersion"
       compileClasspath "org.metaborg:org.metaborg.spoofax.meta.core:$metaborgVersion"
-      // compileClasspath 'commons-io:commons-io:2.4'
-  }
-
-  intellij {
-      type = "IC"
+      // compileClasspath 'commons-io:commons-io:...'
   }
 }
 
@@ -82,6 +81,8 @@ subprojects { runIde.enabled = false }
 runIde.enabled = true
 
 intellij {
+    type = "IC"
+
     version intellijVersion
     pluginName projectName
     downloadSources Boolean.valueOf(intellijSources)
@@ -124,5 +125,5 @@ dependencies {
         exclude module: "idea"
     }
 
-    testCompile "junit:junit:4.12"
+    testCompile "junit:junit:$junitVersion"
 }

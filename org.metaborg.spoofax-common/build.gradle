@@ -1,3 +1,4 @@
+// This is a subproject of org.metaborg.intellij
 
 intellij {
     type = "JPS"
@@ -47,16 +48,16 @@ processTestResources.dependsOn copyTestLanguageBaselineDependencies
 dependencies {
     compile     project(path: ":org.metaborg.spoofax-deps", configuration: "shadow")
 
-    compile     "com.google.guava:guava:17.0"
-    compile     "org.slf4j:slf4j-api:1.7.10"
+    compile     "com.google.guava:guava:$guavaVersion"
+    compile     "org.slf4j:slf4j-api:$slf4jVersion"
 
-    compile     "com.google.code.findbugs:jsr305:3.0.1"
-    compile     "org.apache.commons:commons-lang3:3.4"
-    compile     "org.apache.commons:commons-vfs2:2.1"
+    compile     "com.google.code.findbugs:jsr305:$findbugsVersion"
+    compile     "org.apache.commons:commons-lang3:$commonsLang3Version"
+    compile     "org.apache.commons:commons-vfs2:$commonsVfs2Version"
     compile     "com.google.inject:guice:$guiceVersion"
     compile     "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
     compile     "com.google.inject.extensions:guice-multibindings:$guiceVersion"
-    compile     "org.javassist:javassist:3.20.0-GA"
+    compile     "org.javassist:javassist:$javassistVersion"
 
     testCompile "junit:junit:4.12"
 
