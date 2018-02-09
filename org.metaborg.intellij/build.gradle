@@ -57,17 +57,70 @@ allprojects {
     }
 }
 
+configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
+    apply plugin: 'kotlin'
+
+    compileKotlin {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+
+        kotlinOptions {
+            jvmTarget = javaVersion
+        }
+    }
+    compileTestKotlin {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+
+        kotlinOptions {
+            jvmTarget = javaVersion
+        }
+    }
+
+    dependencies {
+        compile     "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    }
+}
+
+configure([project,
+           project(':org.metaborg.jps'),
+           project(':org.metaborg.spoofax-common'),
+           project(':aesi-intellij')]) {
+    apply plugin: 'org.jetbrains.intellij'
+
+    intellij {
+        type = "IC"
+
+        version intellijVersion
+        pluginName projectName
+        downloadSources Boolean.valueOf(intellijSources)
+        sameSinceUntilBuild Boolean.valueOf(intellijEAP)
+        alternativeIdePath intellijLocalPath
+        // WORKAROUND: For Java 9, instrumentation fails with the error:
+        //     Class not found: javax.swing.JPanel
+        // https://github.com/JetBrains/gradle-intellij-plugin/issues/235
+        instrumentCode false
+
+        patchPluginXml {
+            sinceBuild intellijSinceBuild
+            untilBuild intellijUntilBuild
+            pluginDescription projectDescription
+            changeNotes projectChangeNotes
+        }
+
+        publishPlugin {
+            username publishUsername
+            password publishPassword
+            channels publishChannel
+        }
+    }
+}
 
 configure([project,
            project(':org.metaborg.jps'),
            project(':org.metaborg.spoofax-common')]) {
-  apply plugin: 'kotlin'
-  apply plugin: 'org.jetbrains.intellij'
-
   dependencies {
-      compile     "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-      testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-
       // Added to fix IntelliJ dependency resolution across shadow dependencies
       // This list must be the same as those defined in spoofax-deps, minus commons-io.
       compileClasspath "org.metaborg:org.metaborg.core:$metaborgVersion"
@@ -80,33 +133,6 @@ configure([project,
 subprojects { runIde.enabled = false }
 runIde.enabled = true
 
-intellij {
-    type = "IC"
-
-    version intellijVersion
-    pluginName projectName
-    downloadSources Boolean.valueOf(intellijSources)
-    sameSinceUntilBuild Boolean.valueOf(intellijEAP)
-    alternativeIdePath intellijLocalPath
-    // WORKAROUND: For Java 9, instrumentation fails with the error:
-    //     Class not found: javax.swing.JPanel
-    // https://github.com/JetBrains/gradle-intellij-plugin/issues/235
-    instrumentCode false
-
-    patchPluginXml {
-        sinceBuild intellijSinceBuild
-        untilBuild intellijUntilBuild
-        pluginDescription projectDescription
-        changeNotes projectChangeNotes
-    }
-
-    publishPlugin {
-        username publishUsername
-        password publishPassword
-        channels publishChannel
-    }
-}
-
 // To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
 // (Ctrl+Shift+A), then start a build and attach a remote debugger to port 5005.
 // https://github.com/JetBrains/gradle-intellij-plugin/issues/23
@@ -118,6 +144,7 @@ afterEvaluate {
 
 dependencies {
     // Main dependencies
+    compile     project(":aesi-intellij")
     compile     project(":org.metaborg.spoofax-common")
     compile     (project(":org.metaborg.jps")) {
         // Fixes an issue where the IntelliJ sources cause class loading to fail.

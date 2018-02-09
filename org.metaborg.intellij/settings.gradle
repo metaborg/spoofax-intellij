@@ -2,3 +2,6 @@ rootProject.name = projectName
 includeFlat 'org.metaborg.jps'
 includeFlat 'org.metaborg.spoofax-common'
 includeFlat 'org.metaborg.spoofax-deps'
+includeFlat 'aesi'
+includeFlat 'aesix-spoofax'
+includeFlat 'aesi-intellij'

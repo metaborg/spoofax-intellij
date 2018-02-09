@@ -1,9 +1,5 @@
 // This is a subproject of org.metaborg.intellij
 
-intellij {
-    type = "JPS"
-}
-
 buildConfig {
     appName = project.name
     version = project.version
@@ -59,7 +55,7 @@ dependencies {
     compile     "com.google.inject.extensions:guice-multibindings:$guiceVersion"
     compile     "org.javassist:javassist:$javassistVersion"
 
-    testCompile "junit:junit:4.12"
+    testCompile "junit:junit:$junitVersion"
 
     language    "org.metaborg:dynsem:$metaborgVersion@spoofax-language"
     language    "org.metaborg:dynsem2coq:$metaborgVersion@spoofax-language"
