@@ -53,6 +53,7 @@ import org.metaborg.intellij.idea.parsing.annotations.MetaborgSourceAnnotator;
 import org.metaborg.intellij.idea.parsing.elements.MetaborgAesiFileElementType;
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 import org.metaborg.intellij.idea.projects.IdeaLanguageSpec;
+import org.metaborg.intellij.idea.syntaxcoloring.MetaborgAesiSyntaxHighlighterFactory;
 import org.metaborg.intellij.languages.DefaultLanguageManager;
 import org.metaborg.intellij.languages.ILanguageManager;
 import org.metaborg.intellij.languages.LanguageLoadingFailedException;
@@ -90,7 +91,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     private final MetaborgSourceAnnotator metaborgSourceAnnotator;
     private final MetaborgAesiFileElementType.IFactory fileElementTypeFactory;
     private final MetaborgAesiParserDefinition.IFactory parserDefinitionFactory;
-    private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
+    private final MetaborgAesiSyntaxHighlighterFactory.IFactory syntaxHighlighterFactoryFactory;
+//    private final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider;
     private final BuilderMenuBuilder builderMenuBuilder;
     private final IIntelliJResourceService resourceService;
     private final ActionUtils actionUtils;
@@ -111,7 +113,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
                                       final ILanguageSource languageSource, final ILanguageDiscoveryService discoveryService,
                                       final IIntelliJResourceService resourceService, final MetaborgSourceAnnotator metaborgSourceAnnotator,
                                       final MetaborgAesiFileElementType.IFactory fileElementTypeFactory, final MetaborgAesiParserDefinition.IFactory parserDefinitionFactory,
-                                      final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
+                                      final MetaborgAesiSyntaxHighlighterFactory.IFactory syntaxHighlighterFactoryFactory,
+//                                      final Provider<SpoofaxSyntaxHighlighterFactory> syntaxHighlighterFactoryProvider,
                                       final BuilderMenuBuilder builderMenuBuilder, final ActionUtils actionUtils,
                                       final AesiTokenTypeManager.IFactory tokenTypeManager2Factory,
                                       final AesiElementTypeManager.IFactory elementTypeManagerFactory,
@@ -120,7 +123,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         this.metaborgSourceAnnotator = metaborgSourceAnnotator;
         this.fileElementTypeFactory = fileElementTypeFactory;
         this.parserDefinitionFactory = parserDefinitionFactory;
-        this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
+        this.syntaxHighlighterFactoryFactory = syntaxHighlighterFactoryFactory;
+//        this.syntaxHighlighterFactoryProvider = syntaxHighlighterFactoryProvider;
         this.builderMenuBuilder = builderMenuBuilder;
         this.actionUtils = actionUtils;
         this.resourceService = resourceService;
@@ -374,7 +378,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
         final IFileElementType fileElementType = createFileElementType(ideaLanguage, tokenTypeManager2, elementTypeManager);
         final ParserDefinition parserDefinition = createParserDefinition(fileType, fileElementType, tokenTypeManager2);
-        final SpoofaxSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory();
+        final MetaborgAesiSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory(tokenTypeManager2);
         final AesiAstBuilder astBuilder = createAstBuilder(elementTypeManager);
 
         final InstanceLanguageExtensionPoint<?> parserDefinitionExtension =
@@ -517,8 +521,9 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *
      * @return The syntax highlighter factory.
      */
-    private SpoofaxSyntaxHighlighterFactory createSyntaxHighlighterFactory() {
-        return this.syntaxHighlighterFactoryProvider.get();
+    private MetaborgAesiSyntaxHighlighterFactory createSyntaxHighlighterFactory(final AesiTokenTypeManager tokenTypeManager) {
+        return this.syntaxHighlighterFactoryFactory.create(tokenTypeManager);
+//        return this.syntaxHighlighterFactoryProvider.get();
     }
 
     /**

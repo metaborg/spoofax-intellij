@@ -44,6 +44,7 @@ import org.metaborg.intellij.idea.parsing.annotations.MetaborgSourceAnnotator;
 import org.metaborg.intellij.idea.projects.*;
 import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactory;
 import org.metaborg.intellij.idea.projects.newproject.NewModuleWizardStep;
+import org.metaborg.intellij.idea.syntaxcoloring.MetaborgAesiSyntaxHighlighterFactory;
 import org.metaborg.intellij.idea.transformations.IResourceTransformer;
 import org.metaborg.intellij.idea.transformations.ResourceTransformer;
 import org.metaborg.intellij.injections.IntelliJExtensionProviderFactory;
@@ -97,6 +98,9 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
         install(new FactoryModuleBuilder()
                 .implement(MetaborgAesiParserDefinition.class, MetaborgAesiParserDefinition.class)
                 .build(MetaborgAesiParserDefinition.IFactory.class));
+        install(new FactoryModuleBuilder()
+                .implement(MetaborgAesiSyntaxHighlighterFactory.class, MetaborgAesiSyntaxHighlighterFactory.class)
+                .build(MetaborgAesiSyntaxHighlighterFactory.IFactory.class));
     }
 
     /**
