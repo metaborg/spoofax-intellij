@@ -8,6 +8,7 @@ intellij {
 dependencies {
     // Required dependencies
     compile project(":aesi")
+    compile project(":org.metaborg.spoofax-common")
     compile "com.google.guava:guava:$guavaVersion"
     compile "com.google.inject:guice:$guiceVersion"
     compile "com.google.inject.extensions:guice-assistedinject:$guiceVersion"

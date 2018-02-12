@@ -19,6 +19,7 @@ class MetaborgAesiSyntaxHighlighterFactory @Inject constructor(
     : AesiSyntaxHighlighterFactory(tokenTypeManager, resourceManager, lexerFactory, highlighterFactory) {
 
     interface IFactory {
-        fun create(tokenTypeManager: AesiTokenTypeManager): MetaborgAesiSyntaxHighlighterFactory
+        fun create(tokenTypeManager: AesiTokenTypeManager)
+                : MetaborgAesiSyntaxHighlighterFactory
     }
 }

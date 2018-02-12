@@ -22,7 +22,7 @@ class LineList private constructor(private val lines: List<Line>, val length: In
         fun create(text: String): LineList {
             val lines = mutableListOf<Line>()
             var currentLine = 0
-            var currentOffset = 0L
+            var currentOffset = 0
 
             var nextLine = indexAfterNextNewline(text, currentOffset)
             while (nextLine != null) {
@@ -49,25 +49,25 @@ class LineList private constructor(private val lines: List<Line>, val length: In
          * (which may be at the end of the string), and the length of the EOL terminator;
          * or null when no next line was found.
          */
-        private fun indexAfterNextNewline(text: CharSequence, startOffset: Long): Pair<Long, Int>? {
+        private fun indexAfterNextNewline(text: CharSequence, startOffset: Offset): Pair<Offset, Int>? {
             if (startOffset >= text.length) {
                 // No more characters in the text.
                 return null
             }
 
-            val nextOffset = text.indexOfAny(charArrayOf('\r', '\n'), startOffset.toInt())
+            val nextOffset = text.indexOfAny(charArrayOf('\r', '\n'), startOffset)
             return if (nextOffset == -1) {
                 // Not found.
                 null
             } else if (nextOffset == text.length - 1) {
                 // Last character of the file
-                Pair((nextOffset + 1).toLong(), 1)
+                Pair(nextOffset + 1, 1)
             } else if (text[nextOffset] == '\r' && text[nextOffset + 1] == '\n') {
                 // CRLF (Windows newline)
-                Pair((nextOffset + 2).toLong(), 2)
+                Pair(nextOffset + 2, 2)
             } else {
                 // LF (Unix newline) or CR (old Mac newline)
-                Pair((nextOffset + 1).toLong(), 1)
+                Pair(nextOffset + 1, 1)
             }
         }
     }
@@ -91,7 +91,7 @@ class LineList private constructor(private val lines: List<Line>, val length: In
     private fun getLineEnd(line: Int): Offset {
         assert(line < 0 || line >= this.size)
         // The end of the line is the start of the next, or the end of the document.
-        return if (line < this.size) getLineStart(line + 1) else this.length.toLong()
+        return if (line < this.size) getLineStart(line + 1) else this.length
     }
 
     private fun getEndOfLineLength(line: Int): Int {
@@ -142,7 +142,7 @@ class LineList private constructor(private val lines: List<Line>, val length: In
 
         val line = getLineWithOffset(offset)
         val character = offset - getLineStart(line)
-        return Position(line, character.toInt())
+        return Position(line, character)
     }
 
     override fun getOffset(position: Position): Offset {

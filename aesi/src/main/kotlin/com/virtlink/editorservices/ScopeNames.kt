@@ -1,19 +1,30 @@
 package com.virtlink.editorservices
 
 /**
- * A collection of scope names.
+ * A set of scope names.
  */
 class ScopeNames constructor(
-        vararg val scopes: String) {
+        val scopes: List<ScopeName>): Iterable<ScopeName> {
+
+    constructor(vararg scopeNames: String)
+        : this(scopeNames.map { ScopeName(it) })
+
+    operator fun get(scopePrefix: String): ScopeName? {
+        return this.scopes.firstOrNull { it.contains(scopePrefix) }
+    }
 
     /**
-     * Determines whether the scopes list contains the specified scope name prefix.
+     * Determines whether the scopes list contains any scope name with the specified scope name prefix.
      *
      * @param scopePrefix The scope name prefix to look for.
-     * @return True when the scope was found; otherwise, false.
+     * @return True when the scope name was found; otherwise, false.
      */
     operator fun contains(scopePrefix: String): Boolean {
-        return scopes.any { it.startsWith(scopePrefix, true) }
+        return this[scopePrefix] != null
+    }
+
+    override fun iterator(): Iterator<ScopeName> {
+        return this.scopes.iterator()
     }
 
     override fun toString(): String {

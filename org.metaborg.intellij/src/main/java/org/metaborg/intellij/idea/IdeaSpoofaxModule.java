@@ -22,6 +22,7 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.Multibinder;
 import com.virtlink.editorservices.AesiBaseModule;
 import com.virtlink.editorservices.intellij.AesiIntellijModule;
+import com.virtlink.editorservices.spoofax.SpoofaxAesiModule;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.metaborg.core.editor.IEditorRegistry;
 import org.metaborg.core.project.IProjectService;
@@ -79,8 +80,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
         super.configure();
 
         install(new AesiIntellijModule());
-        // TODO: Replace this by a module from aesi-spoofax.
-        install(new AesiBaseModule());
+        install(new SpoofaxAesiModule());
 
         bindModule();
         bindLanguageSources();

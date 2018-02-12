@@ -5,7 +5,34 @@ import com.intellij.openapi.editor.HighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.virtlink.editorservices.ScopeNames
 
-class ScopeManager {
+/**
+ * Manages the token scope names.
+ *
+ * A single scope name, which is an identifier of the form `a.b.c.d`, determines the coloring and style
+ * of tokens.  For example, `entity.name.function.java` is the scope name for the name of a function in Java.
+ * However, the scope manager could not possibly know all the possible scope names for all the possible languages.
+ * Therefore, scope names get more specific with each additional identifier, i.e. `a` is the most general scope and
+ * `a.b.c.d.e.f` is a very specific scope.  The scope manager will try to find a coloring and style for the most
+ * specific scope name it knows, such as `a.b.c`, which is a prefix of the actual scope name.  For example, the scope
+ * manager may know how to style `entity.name` in general, and apply that whenever it sees `entity.name.function.java`.
+ *
+ * As a special case, exact coloring and styling can be specified in a scope name.  They start with a dot (`.`),
+ * followed by a sequence of tags, each separated by an underscore.  Each tag specifies a property of the exact coloring
+ * and styling.  The following tags are defined:
+ *
+ *     FC#RRGGBB       (foreground color #RRGGBB)
+ *     BC#RRGGBB       (background color #RRGGBB)
+ *     B               (bold)
+ *     I               (italic)
+ *     U               (underline)
+ *     S               (strikethrough)
+ *
+ * For example, to color text red, bold and italic:
+ *
+ *     .FC#FF0000_B_I
+ *
+ */
+class TokenScopeManager {
 
     val EMPTY_KEYS = emptyArray<TextAttributesKey>()
     val DEFAULT_SCOPE = "text"
@@ -103,6 +130,6 @@ class ScopeManager {
     }
 
     private fun createScopeName(prefix: String): String {
-        return "AESI_" + prefix.toUpperCase().replace('.', '_');
+        return "AESI_" + prefix.toUpperCase().replace('.', '_')
     }
 }

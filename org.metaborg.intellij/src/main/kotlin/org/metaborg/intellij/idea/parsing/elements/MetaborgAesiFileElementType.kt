@@ -20,20 +20,11 @@ constructor(@Assisted language: MetaborgIdeaLanguage,
             astBuilderFactory: AesiAstBuilder.IFactory)
     : AesiFileElementType(language, tokenTypeManager, elementTypeManager, lexerFactory, resourceManager, astBuilderFactory) {
 
-    /**
-     * Factory for file element types.
-     */
     interface IFactory {
-
-        /**
-         * Creates a new file element type.
-         *
-         * @param language            The IntelliJ language.
-         * @param tokenTypeManager    The token type manager.
-         * @param elementTypeManager  The element type manager.
-         * @return The created parser definition.
-         */
-        fun create(language: MetaborgIdeaLanguage, tokenTypeManager: AesiTokenTypeManager, elementTypeManager: AesiElementTypeManager): MetaborgAesiFileElementType
+        fun create(language: MetaborgIdeaLanguage,
+                   tokenTypeManager: AesiTokenTypeManager,
+                   elementTypeManager: AesiElementTypeManager)
+                : MetaborgAesiFileElementType
 
     }
 

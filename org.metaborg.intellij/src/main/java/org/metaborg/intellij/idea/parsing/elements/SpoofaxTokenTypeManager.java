@@ -58,8 +58,7 @@ public final class SpoofaxTokenTypeManager {
         this.tokenCache = CacheBuilder.newBuilder().weakValues()
             .build(new CacheLoader<IStyle, SpoofaxTokenType>() {
                 @Override
-                public SpoofaxTokenType load(final IStyle style)
-                        throws Exception {
+                public SpoofaxTokenType load(final IStyle style) {
                     return new SpoofaxTokenType(language, style);
                 }
             });

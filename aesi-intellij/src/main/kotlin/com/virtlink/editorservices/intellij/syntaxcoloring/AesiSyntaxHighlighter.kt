@@ -6,15 +6,12 @@ import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
-import com.intellij.openapi.editor.HighlighterColors
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
-import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
 import com.virtlink.editorservices.intellij.psi.AesiTokenType
-import java.net.URI
 
 class AesiSyntaxHighlighter @Inject constructor(
         @Assisted val lexer: Lexer,
-        private val scopeManager: ScopeManager)
+        private val scopeNamesManager: IScopeNamesManager,
+        private val tokenScopeManager: TokenScopeManager)
     : SyntaxHighlighterBase() {
 
     /** Factory */
@@ -22,11 +19,19 @@ class AesiSyntaxHighlighter @Inject constructor(
         fun create(lexer: Lexer): AesiSyntaxHighlighter
     }
 
+    /**
+     * Returns the text attributes for the specified token type.
+     *
+     * Note that the order of the returned attributes matters,
+     * as they are merged from first to last, where the attributes
+     * of later attributes supersede those of earlier attributes.
+     */
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> {
         if (tokenType !is AesiTokenType)
-            return this.scopeManager.EMPTY_KEYS
+            return this.tokenScopeManager.EMPTY_KEYS
 
-        return this.scopeManager.getTokenHighlights(tokenType.scope)
+//        return this.scopeNamesManager.getTextAttributes(tokenType.scope)
+        return this.tokenScopeManager.getTokenHighlights(tokenType.scope)
     }
 
     override fun getHighlightingLexer(): Lexer {

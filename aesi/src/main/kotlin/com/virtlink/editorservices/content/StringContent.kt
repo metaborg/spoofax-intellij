@@ -38,7 +38,7 @@ class StringContent constructor(
         private fun getLines(text: String): List<Offset> {
             val lines = mutableListOf<Offset>()
             var currentLine = 0
-            var currentOffset = 0L
+            var currentOffset = 0
             lines.add(currentOffset)
 
             var nextLine = text.indexAfterNextNewline(currentOffset)
@@ -65,7 +65,7 @@ class StringContent constructor(
             return null
 
         val startOffset = this.lines[position.line]
-        val endOffset = if (position.line < this.lines.size - 1) this.lines[position.line + 1] else this.text.length.toLong()
+        val endOffset = if (position.line < this.lines.size - 1) this.lines[position.line + 1] else this.text.length
         val length = endOffset - startOffset
 
         if (position.character > length)

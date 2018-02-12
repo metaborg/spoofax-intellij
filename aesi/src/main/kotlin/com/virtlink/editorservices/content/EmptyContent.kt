@@ -21,10 +21,10 @@ class EmptyContent : IAesiContent {
         get() = 1
 
     override fun getOffset(position: Position): Offset?
-            = if (position == Position(0, 0)) 0L else null
+            = if (position == Position(0, 0)) 0 else null
 
     override fun getPosition(offset: Offset): Position?
-            = if (offset == 0L) Position(0, 0) else null
+            = if (offset == 0) Position(0, 0) else null
 
     override fun withChanges(changes: List<TextChange>, newStamp: Long): IContent
             = StringContent.empty.withChanges(changes, newStamp)

@@ -79,6 +79,7 @@ configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
 
     dependencies {
         compile     "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+        compile     "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     }
 }
@@ -119,7 +120,8 @@ configure([project,
 
 configure([project,
            project(':org.metaborg.jps'),
-           project(':org.metaborg.spoofax-common')]) {
+           project(':org.metaborg.spoofax-common'),
+           project(':spoofax-aesi')]) {
   dependencies {
       // Added to fix IntelliJ dependency resolution across shadow dependencies
       // This list must be the same as those defined in spoofax-deps, minus commons-io.
@@ -145,6 +147,7 @@ afterEvaluate {
 dependencies {
     // Main dependencies
     compile     project(":aesi-intellij")
+    compile     project(":spoofax-aesi")
     compile     project(":org.metaborg.spoofax-common")
     compile     (project(":org.metaborg.jps")) {
         // Fixes an issue where the IntelliJ sources cause class loading to fail.

@@ -48,6 +48,7 @@ dependencies {
     compile     "org.slf4j:slf4j-api:$slf4jVersion"
 
     compile     "com.google.code.findbugs:jsr305:$findbugsVersion"
+    compile     "org.apache.commons:commons-text:$commonsTextVersion"
     compile     "org.apache.commons:commons-lang3:$commonsLang3Version"
     compile     "org.apache.commons:commons-vfs2:$commonsVfs2Version"
     compile     "com.google.inject:guice:$guiceVersion"

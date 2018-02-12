@@ -1,3 +1,3 @@
 package com.virtlink.editorservices
 
-typealias Offset = Long
+typealias Offset = Int

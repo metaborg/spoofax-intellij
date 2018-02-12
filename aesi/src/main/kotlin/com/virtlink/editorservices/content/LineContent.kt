@@ -65,7 +65,7 @@ open class LineContent constructor(
          * @return The list of lines.
          */
         private fun getLines(text: String): List<Line> {
-            val lines = mutableListOf(Line(0L, ""))
+            val lines = mutableListOf(Line(0, ""))
             applyChange(lines, Position(0, 0), Position(0, 0), text)
             return lines
         }
@@ -84,7 +84,7 @@ open class LineContent constructor(
 
             // Construct the new lines
             val newLines = mutableListOf<Line>()
-            var currentLineOffset = 0L
+            var currentLineOffset = 0
             var nextLineOffset = newText.indexAfterNextNewline(currentLineOffset)
             if (nextLineOffset != null) {
                 // Construct the first line

@@ -6,9 +6,9 @@ import com.virtlink.editorservices.Span
 /**
  * Converts a [Span] to a [TextRange].
  */
-fun Span.toTextRange(): TextRange = TextRange(this.startOffset.toInt(), this.endOffset.toInt())
+fun Span.toTextRange(): TextRange = TextRange(this.startOffset, this.endOffset)
 
 /**
  * Converts a [TextRange] to a [Span].
  */
-fun TextRange.toSpan(): Span = Span(this.startOffset.toLong(), this.endOffset.toLong())
+fun TextRange.toSpan(): Span = Span(this.startOffset, this.endOffset)

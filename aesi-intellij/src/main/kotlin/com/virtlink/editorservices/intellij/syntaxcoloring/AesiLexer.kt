@@ -21,7 +21,7 @@ class AesiLexer @Inject constructor(
         @Assisted private val documentUri: URI,
         @Assisted private val tokenTypeManager: AesiTokenTypeManager,
         private val syntaxColoringService: ISyntaxColoringService,
-        private val scopeManager: ScopeManager,
+        private val tokenScopeManager: TokenScopeManager,
         private val resourceManager: IntellijResourceManager)
     : LexerBase() {
 
@@ -55,8 +55,8 @@ class AesiLexer @Inject constructor(
         LOG.debug("Lexing $documentUri...")
 
         this.buffer = buffer
-        this.startOffset = startOffset.toLong()
-        this.endOffset = endOffset.toLong()
+        this.startOffset = startOffset
+        this.endOffset = endOffset
         this.tokenIndex = 0
 
 
@@ -82,7 +82,7 @@ class AesiLexer @Inject constructor(
 
     private fun tokenize(tokens: List<IToken>): List<AesiToken> {
         val newTokens = mutableListOf<AesiToken>()
-        var offset = 0L
+        var offset = 0
 
         for (token in tokens) {
             val tokenStart = token.location.startOffset
@@ -138,7 +138,7 @@ class AesiLexer @Inject constructor(
     }
 
     private fun getTokenType(token: IToken?): IElementType {
-        val name = this.scopeManager.getSimplifiedScope(token?.scopes ?: ScopeNames(this.scopeManager.DEFAULT_SCOPE))
+        val name = this.tokenScopeManager.getSimplifiedScope(token?.scopes ?: ScopeNames(this.tokenScopeManager.DEFAULT_SCOPE))
         val tokenType = this.tokenTypeManager.getTokenType(name)
         return tokenType
     }
