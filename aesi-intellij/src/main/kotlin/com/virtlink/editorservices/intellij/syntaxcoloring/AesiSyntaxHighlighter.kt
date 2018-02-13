@@ -6,6 +6,7 @@ import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
+import com.virtlink.editorservices.ScopeNames
 import com.virtlink.editorservices.intellij.psi.AesiTokenType
 
 class AesiSyntaxHighlighter @Inject constructor(
@@ -28,10 +29,11 @@ class AesiSyntaxHighlighter @Inject constructor(
      */
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> {
         if (tokenType !is AesiTokenType)
-            return this.tokenScopeManager.EMPTY_KEYS
+            return this.scopeNamesManager.getTextAttributes(ScopeNames())
+//            return this.tokenScopeManager.EMPTY_KEYS
 
-//        return this.scopeNamesManager.getTextAttributes(tokenType.scope)
-        return this.tokenScopeManager.getTokenHighlights(tokenType.scope)
+        return this.scopeNamesManager.getTextAttributes(tokenType.scopes)
+//        return this.tokenScopeManager.getTokenHighlights(tokenType.scope)
     }
 
     override fun getHighlightingLexer(): Lexer {

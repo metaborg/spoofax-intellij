@@ -245,6 +245,6 @@ data class Span(val startOffset: Offset, val endOffset: Offset): Serializable {
         }
 
     override fun toString(): String
-        = "(${this.startOffset}-${this.endOffset})"
+        = "(${this.startOffset}-${this.endOffset}]"
 
 }

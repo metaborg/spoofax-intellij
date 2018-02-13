@@ -19,7 +19,7 @@
 package org.metaborg.intellij.idea.parsing.elements;
 
 import com.intellij.psi.tree.IElementType;
-import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage;
 
 /**
  * Token type for a single character.
@@ -33,7 +33,7 @@ public final class CharacterTokenType extends IElementType {
      *
      * @param language The associated IDEA language.
      */
-    public CharacterTokenType(final MetaborgIdeaLanguage language) {
+    public CharacterTokenType(final SpoofaxIdeaLanguage language) {
         super("CHARACTER", language);
     }
 

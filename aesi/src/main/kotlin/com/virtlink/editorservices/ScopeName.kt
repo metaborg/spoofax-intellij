@@ -3,7 +3,7 @@ package com.virtlink.editorservices
 /**
  * A scope name.
  */
-class ScopeName constructor(val name: String) {
+data class ScopeName constructor(val name: String) {
 
     /**
      * Determines whether the scope name starts with the specified scope name prefix.

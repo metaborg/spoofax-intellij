@@ -20,7 +20,7 @@ package org.metaborg.intellij.idea.parsing.elements;
 
 import com.intellij.psi.tree.IElementType;
 import org.metaborg.core.style.*;
-import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage;
 
 /**
  * The type of a Spoofax token.
@@ -35,7 +35,7 @@ public final class SpoofaxTokenType extends IElementType {
      * @param language The associated IDEA language.
      * @param style    The token style.
      */
-    public SpoofaxTokenType(final MetaborgIdeaLanguage language, final IStyle style) {
+    public SpoofaxTokenType(final SpoofaxIdeaLanguage language, final IStyle style) {
         super(style.toString(), language);
         this.style = style;
     }

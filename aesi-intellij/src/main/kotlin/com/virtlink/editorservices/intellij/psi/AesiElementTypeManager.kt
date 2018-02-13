@@ -37,7 +37,7 @@ class AesiElementTypeManager
 
     fun getElementType(type: AesiTokenType): AesiElementType {
         return this.scopes
-                .filter { (prefix, _) -> type.scope.startsWith(prefix, true) }
+                .filter { (prefix, _) -> prefix in type.scopes }
                 .map { (_, type) -> type() }
                 .firstOrNull() ?: defaultElementType
     }

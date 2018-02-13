@@ -2,6 +2,7 @@ package com.virtlink.editorservices.intellij.syntaxcoloring
 
 import com.google.inject.Inject
 import com.google.inject.assistedinject.Assisted
+import com.intellij.lang.Language
 import com.intellij.lexer.LexerBase
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.tree.IElementType
@@ -11,6 +12,7 @@ import com.virtlink.editorservices.ScopeNames
 import com.virtlink.editorservices.Span
 import com.virtlink.editorservices.intellij.psi.AesiTokenTypeManager
 import com.virtlink.editorservices.intellij.resources.IntellijResourceManager
+import com.virtlink.editorservices.spoofax.syntaxcoloring.ISpoofaxSyntaxColoringService
 import com.virtlink.editorservices.syntaxcoloring.ISyntaxColoringService
 import com.virtlink.editorservices.syntaxcoloring.IToken
 import com.virtlink.editorservices.syntaxcoloring.SyntaxColoringInfo
@@ -19,8 +21,10 @@ import java.net.URI
 
 class AesiLexer @Inject constructor(
         @Assisted private val documentUri: URI,
+        @Assisted private val language: Language,
         @Assisted private val tokenTypeManager: AesiTokenTypeManager,
-        private val syntaxColoringService: ISyntaxColoringService,
+        private val syntaxColoringService: ISpoofaxSyntaxColoringService,
+        private val scopeNamesManager: ScopeNamesManager,
         private val tokenScopeManager: TokenScopeManager,
         private val resourceManager: IntellijResourceManager)
     : LexerBase() {
@@ -36,7 +40,7 @@ class AesiLexer @Inject constructor(
          * @param documentUri The document URI.
          * @param tokenTypeManager The token type manager.
          */
-        fun create(documentUri: URI, tokenTypeManager: AesiTokenTypeManager): AesiLexer
+        fun create(documentUri: URI, language: Language, tokenTypeManager: AesiTokenTypeManager): AesiLexer
     }
 
     private val LOG = Logger.getInstance(this.javaClass)
@@ -66,6 +70,7 @@ class AesiLexer @Inject constructor(
         } else {
             val coloringInfo = this.syntaxColoringService.getSyntaxColoringInfo(
                     this.documentUri,
+                    this.language.toString(),
                     Span(this.startOffset, this.endOffset),
                     NullCancellationToken) ?: getDefaultTokens(this.documentUri)
 
@@ -138,9 +143,9 @@ class AesiLexer @Inject constructor(
     }
 
     private fun getTokenType(token: IToken?): IElementType {
-        val name = this.tokenScopeManager.getSimplifiedScope(token?.scopes ?: ScopeNames(this.tokenScopeManager.DEFAULT_SCOPE))
-        val tokenType = this.tokenTypeManager.getTokenType(name)
-        return tokenType
+//        val name = this.tokenScopeManager.getSimplifiedScope(token?.scopes ?: ScopeNames(this.tokenScopeManager.DEFAULT_SCOPE))
+//        this.scopeNamesManager.getTextAttributes()
+        return this.tokenTypeManager.getTokenType(token?.scopes ?: ScopeNames())
     }
 
     override fun advance() {

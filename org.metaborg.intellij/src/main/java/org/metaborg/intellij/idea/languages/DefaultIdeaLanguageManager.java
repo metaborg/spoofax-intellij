@@ -18,9 +18,7 @@ package org.metaborg.intellij.idea.languages;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.actionSystem.Anchor;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
@@ -30,7 +28,6 @@ import com.intellij.psi.tree.IFileElementType;
 import com.virtlink.editorservices.intellij.psi.AesiAstBuilder;
 import com.virtlink.editorservices.intellij.psi.AesiElementTypeManager;
 import com.virtlink.editorservices.intellij.psi.AesiTokenTypeManager;
-import com.virtlink.editorservices.intellij.resources.IntellijResourceManager;
 import javassist.util.proxy.ProxyFactory;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
@@ -48,7 +45,6 @@ import org.metaborg.intellij.idea.extensions.InstanceSyntaxHighlighterFactoryExt
 import org.metaborg.intellij.idea.filetypes.FileTypeUtils;
 import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType;
 import org.metaborg.intellij.idea.parsing.MetaborgAesiParserDefinition;
-import org.metaborg.intellij.idea.parsing.SpoofaxSyntaxHighlighterFactory;
 import org.metaborg.intellij.idea.parsing.annotations.MetaborgSourceAnnotator;
 import org.metaborg.intellij.idea.parsing.elements.MetaborgAesiFileElementType;
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
@@ -247,11 +243,11 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     /**
      * {@inheritDoc}
      */
-    @Override public ILanguage getLanguage(final MetaborgIdeaLanguage ideaLanguage) {
+    @Override public ILanguage getLanguage(final SpoofaxIdeaLanguage ideaLanguage) {
         @Nullable final ILanguage language = this.languageService.getLanguage(ideaLanguage.getID());
         if(language == null) {
             throw LoggerUtils2.exception(this.logger, IllegalArgumentException.class,
-                "There is no language associated with the specified MetaborgIdeaLanguage: {}", ideaLanguage);
+                "There is no language associated with the specified SpoofaxIdeaLanguage: {}", ideaLanguage);
         }
         return language;
     }
@@ -371,14 +367,14 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      * @return The created IDEA language.
      */
     private LanguageBindings createLanguageBindings(final ILanguage language) {
-        final MetaborgIdeaLanguage ideaLanguage = createIdeaLanguage(language);
+        final SpoofaxIdeaLanguage ideaLanguage = createIdeaLanguage(language);
         final MetaborgLanguageFileType fileType = createFileType(ideaLanguage);
         final AesiElementTypeManager elementTypeManager = createElementTypeFactory(ideaLanguage);
         final AesiTokenTypeManager tokenTypeManager2 = createTokenTypeManager2(ideaLanguage);
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
         final IFileElementType fileElementType = createFileElementType(ideaLanguage, tokenTypeManager2, elementTypeManager);
         final ParserDefinition parserDefinition = createParserDefinition(fileType, fileElementType, tokenTypeManager2);
-        final MetaborgAesiSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory(tokenTypeManager2);
+        final MetaborgAesiSyntaxHighlighterFactory syntaxHighlighterFactory = createSyntaxHighlighterFactory(ideaLanguage, tokenTypeManager2);
         final AesiAstBuilder astBuilder = createAstBuilder(elementTypeManager);
 
         final InstanceLanguageExtensionPoint<?> parserDefinitionExtension =
@@ -499,8 +495,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The language.
      * @return The created IDEA language.
      */
-    private MetaborgIdeaLanguage createIdeaLanguage(final ILanguage language) {
-        return instantiate(MetaborgIdeaLanguage.class, new Class<?>[] { ILanguage.class }, language);
+    private SpoofaxIdeaLanguage createIdeaLanguage(final ILanguage language) {
+        return instantiate(SpoofaxIdeaLanguage.class, new Class<?>[] { ILanguage.class }, language);
     }
 
     /**
@@ -521,8 +517,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *
      * @return The syntax highlighter factory.
      */
-    private MetaborgAesiSyntaxHighlighterFactory createSyntaxHighlighterFactory(final AesiTokenTypeManager tokenTypeManager) {
-        return this.syntaxHighlighterFactoryFactory.create(tokenTypeManager);
+    private MetaborgAesiSyntaxHighlighterFactory createSyntaxHighlighterFactory(final SpoofaxIdeaLanguage language, final AesiTokenTypeManager tokenTypeManager) {
+        return this.syntaxHighlighterFactoryFactory.create(language, tokenTypeManager);
 //        return this.syntaxHighlighterFactoryProvider.get();
     }
 
@@ -533,7 +529,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The IDEA language.
      * @return The created token type manager.
      */
-    private SpoofaxTokenTypeManager createTokenTypeManager(final MetaborgIdeaLanguage language) {
+    private SpoofaxTokenTypeManager createTokenTypeManager(final SpoofaxIdeaLanguage language) {
         return new SpoofaxTokenTypeManager(language);
     }
 
@@ -544,7 +540,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The IDEA language.
      * @return The created token type manager.
      */
-    private AesiTokenTypeManager createTokenTypeManager2(final MetaborgIdeaLanguage language) {
+    private AesiTokenTypeManager createTokenTypeManager2(final SpoofaxIdeaLanguage language) {
         return this.tokenTypeManager2Factory.create(language);
     }
 
@@ -555,7 +551,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The IDEA language.
      * @return The created element type manager.
      */
-    private AesiElementTypeManager createElementTypeFactory(final MetaborgIdeaLanguage language) {
+    private AesiElementTypeManager createElementTypeFactory(final SpoofaxIdeaLanguage language) {
         return this.elementTypeManagerFactory.create(language);
     }
 
@@ -578,8 +574,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The IDEA language.
      * @return The created file type.
      */
-    private MetaborgLanguageFileType createFileType(final MetaborgIdeaLanguage language) {
-        return instantiate(MetaborgLanguageFileType.class, new Class<?>[] { MetaborgIdeaLanguage.class }, language);
+    private MetaborgLanguageFileType createFileType(final SpoofaxIdeaLanguage language) {
+        return instantiate(MetaborgLanguageFileType.class, new Class<?>[] { SpoofaxIdeaLanguage.class }, language);
     }
 
     /**
@@ -591,7 +587,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The token type manager.
      * @return The file element type.
      */
-    private IFileElementType createFileElementType(final MetaborgIdeaLanguage language,
+    private IFileElementType createFileElementType(final SpoofaxIdeaLanguage language,
                                                    final AesiTokenTypeManager tokenTypeManager,
                                                    final AesiElementTypeManager elementTypeManager) {
         return this.fileElementTypeFactory.create(language, tokenTypeManager, elementTypeManager);

@@ -1,14 +1,16 @@
 package com.virtlink.editorservices.spoofax
 
-import com.google.inject.Singleton
-import com.virtlink.editorservices.AesiBaseModule
-import com.virtlink.editorservices.spoofax.syntaxcoloring.SpoofaxSyntaxColoringService
-import com.virtlink.editorservices.syntaxcoloring.ISyntaxColoringService
+import com.google.inject.AbstractModule
 
-class SpoofaxAesiModule: AesiBaseModule() {
+/**
+ * Spoofax for AESI dependency injection bindings.
+ */
+class SpoofaxAesiModule: AbstractModule() {
 
-    override fun configureSyntaxColoring() {
-        bind(ISyntaxColoringService::class.java).to(SpoofaxSyntaxColoringService::class.java).`in`(Singleton::class.java)
+    override fun configure() {
+        install(AesiModule())
+        install(SpoofaxCoreModule())
+        install(SpoofaxCoreMetaModule())
     }
 
 }

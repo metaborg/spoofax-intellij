@@ -21,7 +21,7 @@ open class AesiFileElementType @Inject constructor(
 
     override fun doParseContents(chameleon: ASTNode, psi: PsiElement): ASTNode {
         val documentUri = this.resourceManager.getUri(psi.containingFile)
-        val lexer = this.lexerFactory.create(documentUri, tokenTypeManager)
+        val lexer = this.lexerFactory.create(documentUri, language, tokenTypeManager)
         val builder = PsiBuilderFactory.getInstance().createBuilder(psi.project, chameleon, lexer, language, chameleon.chars)
         val astBuilder = this.astBuilderFactory.create(elementTypeManager)
         val tree = astBuilder.build(this, builder)

@@ -35,7 +35,7 @@ import org.metaborg.core.syntax.ParseException;
 import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.intellij.idea.languages.ILanguageProjectService;
 import org.metaborg.intellij.idea.languages.LanguageDialect;
-import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage;
 import org.metaborg.intellij.idea.projects.IIdeaProjectService;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils2;
@@ -74,7 +74,7 @@ public final class MetaborgFileElementType extends IFileElementType {
                                    final ISpoofaxSyntaxService syntaxService, final IIdeaProjectService projectService,
                                    final IATermAstElementTypeProviderFactory elementTypeProviderFactory) {
         super(language);
-        assert language instanceof MetaborgIdeaLanguage;
+        assert language instanceof SpoofaxIdeaLanguage;
 
         this.languageManager = languageManager;
         this.languageProjectService = languageProjectService;
@@ -91,7 +91,7 @@ public final class MetaborgFileElementType extends IFileElementType {
     @Override protected ASTNode doParseContents(final ASTNode chameleon, final PsiElement psi) {
         final Project project = psi.getProject();
 
-        final MetaborgIdeaLanguage language = getMetaborgIdeaLanguage();
+        final SpoofaxIdeaLanguage language = getMetaborgIdeaLanguage();
         final PsiBuilder builder =
             PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, language, chameleon.getChars());
 
@@ -120,8 +120,8 @@ public final class MetaborgFileElementType extends IFileElementType {
      *
      * @return The language object.
      */
-    public MetaborgIdeaLanguage getMetaborgIdeaLanguage() {
-        return (MetaborgIdeaLanguage) getLanguage();
+    public SpoofaxIdeaLanguage getMetaborgIdeaLanguage() {
+        return (SpoofaxIdeaLanguage) getLanguage();
     }
 
     /**
@@ -152,7 +152,7 @@ public final class MetaborgFileElementType extends IFileElementType {
     private ILanguageImpl getLanguageImpl(@Nullable final FileObject resource,
                                           final PsiElement psi,
                                           final IElementType root) {
-        final ILanguage language = this.languageManager.getLanguage((MetaborgIdeaLanguage) root.getLanguage());
+        final ILanguage language = this.languageManager.getLanguage((SpoofaxIdeaLanguage) root.getLanguage());
         @Nullable final IProject project;
         if (resource != null)
             project = this.projectService.get(resource);

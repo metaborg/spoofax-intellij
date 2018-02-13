@@ -18,6 +18,7 @@
 
 package org.metaborg.intellij.idea;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
@@ -50,15 +51,16 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
 /**
  * The Guice dependency injection module for the Spoofax IntelliJ IDEA meta plugin.
  */
-/* package private */ final class IdeaSpoofaxMetaModule extends SpoofaxMetaModule {
+/* package private */ final class IdeaSpoofaxMetaModule extends AbstractModule {//} extends SpoofaxMetaModule {
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected void configure() {
-        super.configure();
+//        super.configure();
 
+        bindLanguageSpecFactory();
         bindLanguageProject();
         bindMetaProject();
         bindElements();
@@ -70,10 +72,7 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
         bindParsing();
     }
 
-    @Override
-    protected void bindLanguageSpec() {
-        super.bindLanguageSpec();
-
+    protected void bindLanguageSpecFactory() {
         this.bind(IIdeaLanguageSpecFactory.class).to(IdeaLanguageSpecFactory.class).in(Singleton.class);
     }
 

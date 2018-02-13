@@ -92,12 +92,12 @@ public interface IIdeaLanguageManager extends ILanguageManager {
 
     /**
      * Gets the {@link ILanguage} object that corresponds to the
-     * specified {@link MetaborgIdeaLanguage} object.
+     * specified {@link SpoofaxIdeaLanguage} object.
      *
      * @param language The Spoofax IDEA language.
      * @return The associated {@link ILanguage}.
      */
-    ILanguage getLanguage(MetaborgIdeaLanguage language);
+    ILanguage getLanguage(SpoofaxIdeaLanguage language);
 
     /**
      * Requests languages from a language artifact.

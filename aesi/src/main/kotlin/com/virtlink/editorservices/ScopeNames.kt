@@ -3,8 +3,8 @@ package com.virtlink.editorservices
 /**
  * A set of scope names.
  */
-class ScopeNames constructor(
-        val scopes: List<ScopeName>): Iterable<ScopeName> {
+data class ScopeNames constructor(
+        private val scopes: List<ScopeName>): Iterable<ScopeName> {
 
     constructor(vararg scopeNames: String)
         : this(scopeNames.map { ScopeName(it) })

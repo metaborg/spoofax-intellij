@@ -13,4 +13,9 @@ import com.virtlink.editorservices.syntaxcoloring.IToken
 class SpoofaxToken(
         override val location: Span,
         override val scopes: ScopeNames)
-    : IToken
+    : IToken {
+
+    override fun toString(): String
+            = "{$location $scopes}"
+
+}

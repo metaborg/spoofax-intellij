@@ -21,7 +21,12 @@ import javax.swing.Icon
 
 class ScopeNamesManager: IScopeNamesManager {
 
+    private val EMPTY_KEYS = emptyArray<TextAttributesKey>()
+
     override fun getTextAttributes(scopes: ScopeNames): Array<TextAttributesKey> {
+        // When no scope names are defined, return no text attributes.
+        if (scopes == ScopeNames()) return EMPTY_KEYS
+
         // NOTE: The first scope name produces the first text attribute,
         // whose values are overridden by later scope names.
         return scopes
@@ -195,7 +200,10 @@ class ScopeNamesManager: IScopeNamesManager {
      * @return The [TextAttributesKey].
      */
     private fun TextAttributes.toKey(name: String): TextAttributesKey {
-        return TextAttributesKey.createTempTextAttributesKey(name, this)
+        // We have to use this deprecated method to get custom colors in our text.
+        // IntelliJ instead wants us to use the color scheme colors.
+        @Suppress("DEPRECATION")
+        return TextAttributesKey.createTextAttributesKey(name, this)
     }
 
     /**
@@ -222,9 +230,9 @@ class ScopeNamesManager: IScopeNamesManager {
     private fun parseColor(colorString: String?): Color? {
         if (colorString == null || !colorString.startsWith('#') || colorString.length != 7)
             return null
-        val r = tryParseHex(colorString.substring(1, 2)) ?: return null
-        val g = tryParseHex(colorString.substring(3, 2)) ?: return null
-        val b = tryParseHex(colorString.substring(5, 2)) ?: return null
+        val r = tryParseHex(colorString.substring(1, 3)) ?: return null
+        val g = tryParseHex(colorString.substring(3, 5)) ?: return null
+        val b = tryParseHex(colorString.substring(5, 7)) ?: return null
         return Color(r, g, b)
     }
 

@@ -5,6 +5,7 @@ import com.google.inject.assistedinject.Assisted
 import com.intellij.lang.Language
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.psi.tree.TokenSet
+import com.virtlink.editorservices.ScopeNames
 import com.virtlink.editorservices.intellij.syntaxcoloring.AesiLexer
 import com.virtlink.editorservices.intellij.syntaxcoloring.AesiSyntaxHighlighter
 import java.net.URI
@@ -34,30 +35,30 @@ class AesiTokenTypeManager
         fun create(language: Language): AesiTokenTypeManager
     }
 
-    val scopedElementTypes = HashMap<String, AesiTokenType>()
+    val scopedElementTypes = HashMap<ScopeNames, AesiTokenType>()
 
-    val defaultScope: String get() = "text"
+    val defaultScope: ScopeNames get() = ScopeNames("text")
 
     val whitespaceTokens get() = TokenSet.create(
-            getTokenType("text.whitespace")
+            getTokenType(ScopeNames("text.whitespace"))
     )
     val commentTokens get() = TokenSet.create(
-            getTokenType("comment.block"),
-            getTokenType("comment.line"),
-            getTokenType("comment")
+            getTokenType(ScopeNames("comment.block")),
+            getTokenType(ScopeNames("comment.line")),
+            getTokenType(ScopeNames("comment"))
     )
     val stringLiteralTokens get() = TokenSet.create(
-            getTokenType("string.quoted.single"),
-            getTokenType("string.quoted.double"),
-            getTokenType("string.quoted.triple"),
-            getTokenType("string.quoted"),
-            getTokenType("string.unquoted"),
-            getTokenType("string.interpolated"),
-            getTokenType("string.regexp"),
-            getTokenType("string")
+            getTokenType(ScopeNames("string.quoted.single")),
+            getTokenType(ScopeNames("string.quoted.double")),
+            getTokenType(ScopeNames("string.quoted.triple")),
+            getTokenType(ScopeNames("string.quoted")),
+            getTokenType(ScopeNames("string.unquoted")),
+            getTokenType(ScopeNames("string.interpolated")),
+            getTokenType(ScopeNames("string.regexp")),
+            getTokenType(ScopeNames("string"))
     )
 
-    fun getTokenType(scope: String?): AesiTokenType
-        = scopedElementTypes.getOrPut(scope ?: defaultScope, { AesiTokenType(scope ?: defaultScope, language) })
+    fun getTokenType(scopes: ScopeNames): AesiTokenType
+        = scopedElementTypes.getOrPut(scopes, { AesiTokenType(scopes, language) })
 
 }

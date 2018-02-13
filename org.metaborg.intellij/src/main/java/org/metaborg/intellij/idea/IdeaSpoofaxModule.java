@@ -15,13 +15,14 @@
 
 package org.metaborg.intellij.idea;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.Multibinder;
-import com.virtlink.editorservices.AesiBaseModule;
 import com.virtlink.editorservices.intellij.AesiIntellijModule;
+import com.virtlink.editorservices.spoofax.AesiModule;
 import com.virtlink.editorservices.spoofax.SpoofaxAesiModule;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.metaborg.core.editor.IEditorRegistry;
@@ -69,7 +70,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
 /**
  * The Guice dependency injection module for the Spoofax IntelliJ IDEA plugin.
  */
-/* package private */ final class IdeaSpoofaxModule extends SpoofaxModule {
+/* package private */ final class IdeaSpoofaxModule extends AbstractModule {//} extends SpoofaxModule {
 
     // TODO: Annotate singleton classes with @Singleton annotation.
 
@@ -77,12 +78,19 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
      * {@inheritDoc}
      */
     @Override protected void configure() {
-        super.configure();
+//        super.configure();
 
+        // AESI IntelliJ adapter
         install(new AesiIntellijModule());
+        // Spoofax for AESI
         install(new SpoofaxAesiModule());
 
         bindModule();
+        bindAction();
+        bindResource();
+        bindProject();
+        bindEditor();
+
         bindLanguageSources();
         bindLoggerListeners();
         bindGraphics();
@@ -135,7 +143,8 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
     /**
      * {@inheritDoc}
      */
-    @Override protected void bindResource() {
+//    @Override
+    protected void bindResource() {
         bind(DefaultIntelliJResourceService.class).in(Singleton.class);
         bind(IResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
         bind(IIntelliJResourceService.class).to(DefaultIntelliJResourceService.class).in(Singleton.class);
@@ -150,7 +159,8 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
     /**
      * {@inheritDoc}
      */
-    @Override protected void bindProject() {
+//    @Override
+    protected void bindProject() {
         this.bind(IIdeaProjectFactory.class).to(IdeaProjectFactory.class).in(Singleton.class);
         this.bind(IArtifactProjectFactory.class).to(ArtifactProjectFactory.class).in(Singleton.class);
 
@@ -202,8 +212,9 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
     /**
      * {@inheritDoc}
      */
-    @Override protected void bindAction() {
-        super.bindAction();
+//    @Override
+    protected void bindAction() {
+//        super.bindAction();
 
         bind(ActionUtils.class).in(Singleton.class);
         bind(BuilderMenuBuilder.class).in(Singleton.class);
@@ -227,7 +238,8 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
     /**
      * {@inheritDoc}
      */
-    @Override protected void bindEditor() {
+//    @Override
+    protected void bindEditor() {
         bind(IEditorRegistry.class).to(IdeaEditorRegistry.class).in(Singleton.class);
     }
 

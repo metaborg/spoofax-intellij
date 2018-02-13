@@ -4,13 +4,10 @@ import com.virtlink.editorservices.ICancellationToken
 import com.virtlink.editorservices.ScopeNames
 import com.virtlink.editorservices.Span
 import com.virtlink.editorservices.resources.IResourceManager
-import com.virtlink.editorservices.spoofax.ILanguage
 import com.virtlink.editorservices.syntaxcoloring.*
 import com.virtlink.logging.format
-import org.apache.commons.vfs2.FileObject
 import org.metaborg.core.MetaborgRuntimeException
 import org.metaborg.core.language.ILanguageImpl
-import org.metaborg.core.project.IProject
 import org.metaborg.core.style.IRegionStyle
 import org.metaborg.core.syntax.ParseException
 import org.metaborg.spoofax.core.style.ISpoofaxCategorizerService
@@ -28,13 +25,18 @@ import org.slf4j.helpers.MessageFormatter
 import java.awt.Color
 import com.virtlink.logging.logger
 import com.google.inject.Inject
+import com.virtlink.editorservices.spoofax.LanguageHelper
 
 /**
  * Spoofax Core syntax coloring service implementation.
  */
 class SpoofaxSyntaxColoringService @Inject constructor(
-        private val resourceService: IResourceManager,
-        private val languageImpl: ILanguageImpl,
+//        private val resourceService: IResourceService,
+        private val resourceManager: IResourceManager,
+        private val languageHelper: LanguageHelper,
+//        private val languageService: ILanguageService,
+//        private val languageIdentifierService: LanguageIdentifierService,
+//        private val languageImpl: ILanguageImpl,
         private val parserConfiguration: JSGLRParserConfiguration,
         private val unitService: ISpoofaxInputUnitService,
         private val syntaxService: ISpoofaxSyntaxService,
@@ -55,9 +57,11 @@ class SpoofaxSyntaxColoringService @Inject constructor(
         // Nothing to do.
     }
 
-    override fun getSyntaxColoringInfo(document: URI, language: ILanguage?, span: Span, cancellationToken: ICancellationToken): ISyntaxColoringInfo? {
+    override fun getSyntaxColoringInfo(document: URI, language: String?, span: Span, cancellationToken: ICancellationToken): ISyntaxColoringInfo? {
 
-        val content = this.resourceService.getContent(document) ?: return null
+        val languageImpl = this.languageHelper.determineLanguageOf(document, language) ?: return null
+
+        val content = this.resourceManager.getContent(document) ?: return null
 
         val text = content.text
 
@@ -69,20 +73,21 @@ class SpoofaxSyntaxColoringService @Inject constructor(
         LOG.debug("Parsing ({} characters) to get requested span {} from file: {}",
                 text.length, span, document)
 
-        val result = parseAll(text)
+        val result = parseAll(text, languageImpl)
 
         LOG.debug("Tokenizing the parse result of document: {}", document)
 
-        return SyntaxColoringInfo(tokenizeAll(text, span, result))
+        return SyntaxColoringInfo(tokenizeAll(text, languageImpl, span, result))
     }
 
     /**
      * Parses the whole buffer.
      *
      * @param text The content of the file being parsed.
+     * @param languageImpl The language of the content.
      * @return The parse result.
      */
-    private fun parseAll(text: String): ISpoofaxParseUnit {
+    private fun parseAll(text: String, languageImpl: ILanguageImpl): ISpoofaxParseUnit {
         // TODO: Optimize parsing? Is there a parse cache? I think so.
         val inputUnit = unitService.inputUnit(null, text, languageImpl, null, parserConfiguration)
         try {
@@ -97,10 +102,11 @@ class SpoofaxSyntaxColoringService @Inject constructor(
      * Uses the Spoofax tokenizer to tokenize the parse result, and adds the tokens to the list of tokens.
      *
      * @param text The input text that was parsed.
+     * @param languageImpl The language of the content.
      * @param parseResult The parse result to tokenize.
      * @return The resulting list of tokens.
      */
-    private fun tokenizeAll(text: String, inputSpan: Span, parseResult: ISpoofaxParseUnit): List<IToken> {
+    private fun tokenizeAll(text: String, languageImpl: ILanguageImpl, inputSpan: Span, parseResult: ISpoofaxParseUnit): List<IToken> {
         val tokens = mutableListOf<IToken>()
 
         if (!parseResult.valid()) {
@@ -254,13 +260,13 @@ class SpoofaxSyntaxColoringService @Inject constructor(
 
         val foregroundColor = style.color()
         if (foregroundColor != null) {
-            sb.append(".FC")
+            sb.append(".FC:")
             sb.append(formatColor(foregroundColor))
         }
 
-        val backgroundColor = style.color()
+        val backgroundColor = style.backgroundColor()
         if (backgroundColor != null) {
-            sb.append(".BC")
+            sb.append(".BC:")
             sb.append(formatColor(backgroundColor))
         }
 

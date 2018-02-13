@@ -19,6 +19,7 @@
 package org.metaborg.intellij.idea;
 
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.intellij.openapi.diagnostic.Logger;
 import org.apache.commons.lang3.concurrent.ConcurrentException;
 import org.apache.commons.lang3.concurrent.LazyInitializer;
@@ -27,7 +28,9 @@ import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.extensions.IntelliJSpoofaxMetaPluginLoader;
 import org.metaborg.intellij.idea.extensions.IntelliJSpoofaxPluginLoader;
 import org.metaborg.spoofax.core.Spoofax;
+import org.metaborg.spoofax.core.SpoofaxModule;
 import org.metaborg.spoofax.meta.core.SpoofaxMeta;
+import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
 
 /**
  * IntelliJ IDEA plugin class.
@@ -91,8 +94,9 @@ public final class SpoofaxIdeaPlugin {
     private SpoofaxIdeaPlugin() {
         logger.debug("Loading Spoofax for IDEA plugin.");
         try {
-            this.spoofax = new Spoofax(new IntelliJSpoofaxPluginLoader(), new IdeaSpoofaxModule());
-            this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new IntelliJSpoofaxMetaPluginLoader(), new IdeaSpoofaxMetaModule());
+            this.spoofax = new Spoofax(new IntelliJSpoofaxPluginLoader(), new NullSpoofaxModule(), new IdeaSpoofaxModule());
+            this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new IntelliJSpoofaxMetaPluginLoader(), new NullSpoofaxMetaModule(), new IdeaSpoofaxMetaModule());
+//            this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new IntelliJSpoofaxMetaPluginLoader(), new IdeaSpoofaxMetaModule());
         } catch (final MetaborgException e) {
             throw new RuntimeException(e);
         }

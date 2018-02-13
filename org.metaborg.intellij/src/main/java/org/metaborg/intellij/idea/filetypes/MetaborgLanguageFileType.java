@@ -25,8 +25,8 @@ import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.intellij.idea.graphics.IIconManager;
 import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage;
 import org.metaborg.intellij.languages.LanguageUtils2;
-import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
@@ -52,7 +52,7 @@ public abstract class MetaborgLanguageFileType extends LanguageFileType implemen
      *
      * @param language The language.
      */
-    protected MetaborgLanguageFileType(final MetaborgIdeaLanguage language) {
+    protected MetaborgLanguageFileType(final SpoofaxIdeaLanguage language) {
         super(language);
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
@@ -80,7 +80,7 @@ public abstract class MetaborgLanguageFileType extends LanguageFileType implemen
      * @return The Metaborg language.
      */
     public final ILanguage getMetaborgLanguage() {
-        return this.languageManager.getLanguage((MetaborgIdeaLanguage)super.getLanguage());
+        return this.languageManager.getLanguage((SpoofaxIdeaLanguage)super.getLanguage());
     }
 
     /**

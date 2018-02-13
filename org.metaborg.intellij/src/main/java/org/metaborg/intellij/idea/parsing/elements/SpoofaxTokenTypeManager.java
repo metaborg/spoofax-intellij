@@ -22,7 +22,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.metaborg.core.style.*;
-import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -39,7 +39,7 @@ import java.awt.*;
 public final class SpoofaxTokenTypeManager {
 
     private final LoadingCache<IStyle, SpoofaxTokenType> tokenCache;
-    private final MetaborgIdeaLanguage language;
+    private final SpoofaxIdeaLanguage language;
     private final CharacterTokenType characterTokenType;
     private final SpoofaxElementType elementType;
     private final MetaborgIdentifierElementType identifierType;
@@ -49,7 +49,7 @@ public final class SpoofaxTokenTypeManager {
      *
      * @param language The IDEA language.
      */
-    public SpoofaxTokenTypeManager(final MetaborgIdeaLanguage language) {
+    public SpoofaxTokenTypeManager(final SpoofaxIdeaLanguage language) {
         this.language = language;
         this.characterTokenType = new CharacterTokenType(language);
         this.elementType = new SpoofaxElementType(language);

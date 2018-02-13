@@ -23,7 +23,6 @@ import com.intellij.lexer.Lexer;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.fileTypes.PlainSyntaxHighlighter;
-import com.intellij.openapi.fileTypes.PlainSyntaxHighlighterFactory;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.project.Project;
@@ -34,7 +33,7 @@ import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.intellij.idea.languages.ILanguageBindingManager;
-import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage;
 import org.metaborg.intellij.idea.NotificationUtils;
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
@@ -103,8 +102,8 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
         }
         else if (virtualFile instanceof LightVirtualFile) {
             final com.intellij.lang.Language ideaLanguage = ((LightVirtualFile)virtualFile).getLanguage();
-            if (ideaLanguage instanceof MetaborgIdeaLanguage) {
-                final ILanguage language = this.languageManager.getLanguage((MetaborgIdeaLanguage)ideaLanguage);
+            if (ideaLanguage instanceof SpoofaxIdeaLanguage) {
+                final ILanguage language = this.languageManager.getLanguage((SpoofaxIdeaLanguage)ideaLanguage);
                 implementation = language.activeImpl();
             }
         }

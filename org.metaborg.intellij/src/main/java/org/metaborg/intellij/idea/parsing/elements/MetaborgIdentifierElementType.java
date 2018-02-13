@@ -19,7 +19,7 @@
 package org.metaborg.intellij.idea.parsing.elements;
 
 
-import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage;
 
 /**
  * Element type for an identifier in a Metaborg language.
@@ -31,7 +31,7 @@ public class MetaborgIdentifierElementType extends SpoofaxElementType {
      *
      * @param language The language.
      */
-    public MetaborgIdentifierElementType(final MetaborgIdeaLanguage language) {
+    public MetaborgIdentifierElementType(final SpoofaxIdeaLanguage language) {
         super(language, "SPOOFAX_IDENTIFIER_TYPE");
     }
 

@@ -21,7 +21,7 @@ package org.metaborg.intellij.idea.parsing.elements;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
-import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
+import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage;
 
 /**
  * A Spoofax element type.
@@ -34,7 +34,7 @@ public class SpoofaxElementType extends IElementType {
      * @param language The language.
      */
     public SpoofaxElementType(
-            @Nullable final MetaborgIdeaLanguage language) {
+            @Nullable final SpoofaxIdeaLanguage language) {
         this(language, "SPOOFAX_ELEMENT_TYPE");
     }
 
@@ -45,17 +45,17 @@ public class SpoofaxElementType extends IElementType {
      * @param debugName The debug name.
      */
     protected SpoofaxElementType(
-            @Nullable final MetaborgIdeaLanguage language,
+            @Nullable final SpoofaxIdeaLanguage language,
             @NonNls final String debugName) {
         super(debugName, language);
     }
 
     /**
-     * Gets the {@link MetaborgIdeaLanguage} of this element type.
+     * Gets the {@link SpoofaxIdeaLanguage} of this element type.
      *
-     * @return The {@link MetaborgIdeaLanguage}.
+     * @return The {@link SpoofaxIdeaLanguage}.
      */
     @Nullable
-    public MetaborgIdeaLanguage getMetaborgIdeaLanguage() { return (MetaborgIdeaLanguage)getLanguage(); }
+    public SpoofaxIdeaLanguage getMetaborgIdeaLanguage() { return (SpoofaxIdeaLanguage)getLanguage(); }
 
 }
