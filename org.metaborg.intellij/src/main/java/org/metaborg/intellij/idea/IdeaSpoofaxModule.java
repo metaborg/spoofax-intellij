@@ -38,6 +38,7 @@ import org.metaborg.intellij.discovery.ResourceLanguageSource;
 import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.idea.editors.IdeaEditorRegistry;
 import org.metaborg.intellij.idea.facets.MetaborgFacetType;
+import org.metaborg.intellij.idea.files.SpoofaxFileType;
 import org.metaborg.intellij.idea.filetypes.LanguageArtifactFileType;
 import org.metaborg.intellij.idea.graphics.DefaultIconManager;
 import org.metaborg.intellij.idea.graphics.IIconManager;
@@ -109,6 +110,11 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
         install(new FactoryModuleBuilder()
                 .implement(MetaborgAesiSyntaxHighlighterFactory.class, MetaborgAesiSyntaxHighlighterFactory.class)
                 .build(MetaborgAesiSyntaxHighlighterFactory.IFactory.class));
+        install(new FactoryModuleBuilder()
+                .implement(SpoofaxFileType.class, SpoofaxFileType.class)
+                .build(SpoofaxFileType.IFactory.class));
+
+
     }
 
     /**

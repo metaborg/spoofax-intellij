@@ -30,6 +30,7 @@ import org.metaborg.util.log.*;
 /**
  * Lexer that always lexes a single character.
  */
+@Deprecated
 public final class CharacterLexer extends LexerBase {
 
     private final SpoofaxTokenTypeManager tokenTypesManager;

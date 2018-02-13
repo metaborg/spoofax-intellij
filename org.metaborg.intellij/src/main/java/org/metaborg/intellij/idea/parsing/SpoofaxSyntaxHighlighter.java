@@ -37,6 +37,7 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 /**
  * Highlighter for Spoofax languages.
  */
+@Deprecated
 public final class SpoofaxSyntaxHighlighter extends SyntaxHighlighterBase {
 
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];

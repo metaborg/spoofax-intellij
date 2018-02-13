@@ -28,6 +28,10 @@ class LanguageHelper @Inject constructor(
         val languageImpl = determineLanguageOf(languageID)
         if (languageImpl != null) return languageImpl
 
+        // TODO: We need a way to convert from the intellij:///project/folder/file.ext
+        // to a local file system path.  Of course, this is not supported by AESI
+        // out-of-the-box, as AESI should work even across network boundaries.
+
         val localFile = try {
             // NOTE: Spoofax does not (yet) support a virtual file system,
             // which means the Spoofax AESI implementation must always reside

@@ -24,6 +24,7 @@ import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 /**
  * Factory for character lexers.
  */
+@Deprecated
 public interface ICharacterLexerFactory {
 
     /**

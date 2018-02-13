@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NonNls;
 /**
  * Consumer for file types implementing the {@link IMetaborgFileType} interface.
  */
+@Deprecated
 public final class MetaborgFileTypeConsumer {
 
     private final FileTypeConsumer consumer;

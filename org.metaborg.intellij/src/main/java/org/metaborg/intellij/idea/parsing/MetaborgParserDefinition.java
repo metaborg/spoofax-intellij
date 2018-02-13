@@ -40,6 +40,7 @@ import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 /**
  * A Spoofax parser definition.
  */
+@Deprecated
 public final class MetaborgParserDefinition implements ParserDefinition {
 
     private final MetaborgLanguageFileType fileType;

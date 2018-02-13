@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 /**
  * Factory for highlighting lexers.
  */
+@Deprecated
 public interface IHighlightingLexerFactory {
 
     /**

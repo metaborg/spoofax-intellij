@@ -25,6 +25,7 @@ import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.intellij.idea.graphics.IIconManager;
 import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
+import org.metaborg.intellij.idea.languages.LanguageExtKt;
 import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage;
 import org.metaborg.intellij.languages.LanguageUtils2;
 import org.metaborg.intellij.logging.InjectLogger;
@@ -39,7 +40,9 @@ import javax.swing.*;
  * <p>
  * There are no implementations of this class because it's instantiated dynamically.
  */
-public abstract class MetaborgLanguageFileType extends LanguageFileType implements IMetaborgFileType {
+@Deprecated
+public class MetaborgLanguageFileType extends LanguageFileType implements IMetaborgFileType {
+//public abstract class MetaborgLanguageFileType extends LanguageFileType implements IMetaborgFileType {
 
     private IIconManager iconManager;
     private IIdeaLanguageManager languageManager;
@@ -52,7 +55,8 @@ public abstract class MetaborgLanguageFileType extends LanguageFileType implemen
      *
      * @param language The language.
      */
-    protected MetaborgLanguageFileType(final SpoofaxIdeaLanguage language) {
+    public MetaborgLanguageFileType(final SpoofaxIdeaLanguage language) {
+//    protected MetaborgLanguageFileType(final SpoofaxIdeaLanguage language) {
         super(language);
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
@@ -103,7 +107,7 @@ public abstract class MetaborgLanguageFileType extends LanguageFileType implemen
      */
     @Override
     public String getDefaultExtension() {
-        return LanguageUtils2.getDefaultExtension(this.getMetaborgLanguage());
+        return LanguageExtKt.getDefaultExtension(this.getMetaborgLanguage());
     }
 
     /**
@@ -124,7 +128,7 @@ public abstract class MetaborgLanguageFileType extends LanguageFileType implemen
      */
     @Override
     public Iterable<String> getExtensions() {
-        return LanguageUtils2.getExtensions(this.getMetaborgLanguage());
+        return LanguageExtKt.getExtensions(this.getMetaborgLanguage());
     }
 
 }

@@ -21,3 +21,17 @@ abstract class AesiFileImpl(elementType: IElementType, provider: FileViewProvide
         return ReferenceProvidersRegistry.getReferencesFromProviders(this)
     }
 }
+//
+//abstract class AesiFileImpl(elementType: IElementType, provider: FileViewProvider)
+//    : PsiFileImpl(elementType, elementType, provider), AesiFile {
+//
+//    abstract override fun getFileType(): FileType
+//
+//    override fun accept(visitor: PsiElementVisitor) {
+//        visitor.visitFile(this)
+//    }
+//
+//    override fun getReferences(): Array<PsiReference> {
+//        return ReferenceProvidersRegistry.getReferencesFromProviders(this)
+//    }
+//}

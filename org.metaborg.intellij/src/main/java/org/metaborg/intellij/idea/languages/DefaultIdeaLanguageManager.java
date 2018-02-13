@@ -25,6 +25,7 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IFileElementType;
+import com.virtlink.editorservices.intellij.files.AesiFileType;
 import com.virtlink.editorservices.intellij.psi.AesiAstBuilder;
 import com.virtlink.editorservices.intellij.psi.AesiElementTypeManager;
 import com.virtlink.editorservices.intellij.psi.AesiTokenTypeManager;
@@ -42,6 +43,7 @@ import org.metaborg.intellij.idea.extensions.ExtensionIds;
 import org.metaborg.intellij.idea.extensions.ExtensionUtils;
 import org.metaborg.intellij.idea.extensions.InstanceLanguageExtensionPoint;
 import org.metaborg.intellij.idea.extensions.InstanceSyntaxHighlighterFactoryExtensionPoint;
+import org.metaborg.intellij.idea.files.SpoofaxFileType;
 import org.metaborg.intellij.idea.filetypes.FileTypeUtils;
 import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType;
 import org.metaborg.intellij.idea.parsing.MetaborgAesiParserDefinition;
@@ -97,6 +99,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     private final Cache<ILanguage, LanguageBindings> ideaLanguageCache = CacheBuilder.newBuilder().weakKeys().build();
     private final Cache<ILanguageImpl, LanguageImplBindings> ideaLanguageImplCache =
         CacheBuilder.newBuilder().weakKeys().build();
+    private final SpoofaxFileType.IFactory fileTypeFactory;
 
     @InjectLogger
     private ILogger logger;
@@ -114,7 +117,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
                                       final BuilderMenuBuilder builderMenuBuilder, final ActionUtils actionUtils,
                                       final AesiTokenTypeManager.IFactory tokenTypeManager2Factory,
                                       final AesiElementTypeManager.IFactory elementTypeManagerFactory,
-                                      final AesiAstBuilder.IFactory astBuilderFactory) {
+                                      final AesiAstBuilder.IFactory astBuilderFactory,
+                                      final SpoofaxFileType.IFactory fileTypeFactory) {
         super(languageService, languageSource, discoveryService);
         this.metaborgSourceAnnotator = metaborgSourceAnnotator;
         this.fileElementTypeFactory = fileElementTypeFactory;
@@ -127,6 +131,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         this.tokenTypeManager2Factory = tokenTypeManager2Factory;
         this.elementTypeManagerFactory = elementTypeManagerFactory;
         this.astBuilderFactory = astBuilderFactory;
+        this.fileTypeFactory = fileTypeFactory;
 
         this.proxyFactory = new ProxyFactory();
         this.proxyFactory.setUseCache(false);
@@ -292,7 +297,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
             this.logger.info("Cannot activate language. Language already active: {}", language);
             return false;
         }
-        if(!LanguageUtils2.isRealLanguage(language)) {
+        if(!LanguageExtKt.isReal(language)) {
             this.logger.warn("Cannot activate language. Language is not a real language: {}", language);
             return false;
         }
@@ -368,7 +373,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      */
     private LanguageBindings createLanguageBindings(final ILanguage language) {
         final SpoofaxIdeaLanguage ideaLanguage = createIdeaLanguage(language);
-        final MetaborgLanguageFileType fileType = createFileType(ideaLanguage);
+        final SpoofaxFileType fileType = createFileType(ideaLanguage);
         final AesiElementTypeManager elementTypeManager = createElementTypeFactory(ideaLanguage);
         final AesiTokenTypeManager tokenTypeManager2 = createTokenTypeManager2(ideaLanguage);
         final SpoofaxTokenTypeManager tokenTypeManager = createTokenTypeManager(ideaLanguage);
@@ -411,7 +416,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         ExtensionUtils.register(languageBindings.getParserDefinitionExtension());
         ExtensionUtils.register(languageBindings.getSyntaxHighlighterFactoryExtension());
         ExtensionUtils.register(languageBindings.getExternalAnnotatorExtension());
-        FileTypeUtils.register(languageBindings.getFileType());
+        AesiFileType.Companion.register(languageBindings.getFileType());
+//        FileTypeUtils.register(languageBindings.getFileType());
     }
 
     /**
@@ -432,7 +438,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The bindings of the language to deactivate.
      */
     private void deactivateLanguage(final LanguageBindings languageBindings) {
-        FileTypeUtils.unregister(languageBindings.getFileType());
+        AesiFileType.Companion.unregister(languageBindings.getFileType());
+//        FileTypeUtils.unregister(languageBindings.getFileType());
         ExtensionUtils.unregister(languageBindings.getExternalAnnotatorExtension());
         ExtensionUtils.unregister(languageBindings.getSyntaxHighlighterFactoryExtension());
         ExtensionUtils.unregister(languageBindings.getParserDefinitionExtension());
@@ -506,7 +513,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The language file type.
      * @return The created parser definition.
      */
-    private ParserDefinition createParserDefinition(final MetaborgLanguageFileType fileType,
+    private ParserDefinition createParserDefinition(final SpoofaxFileType fileType,
                                                     final IFileElementType fileElementType,
                                                     final AesiTokenTypeManager tokenTypeManager) {
         return this.parserDefinitionFactory.create(fileType, fileElementType, tokenTypeManager);
@@ -574,8 +581,10 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The IDEA language.
      * @return The created file type.
      */
-    private MetaborgLanguageFileType createFileType(final SpoofaxIdeaLanguage language) {
-        return instantiate(MetaborgLanguageFileType.class, new Class<?>[] { SpoofaxIdeaLanguage.class }, language);
+    private SpoofaxFileType createFileType(final SpoofaxIdeaLanguage language) {
+        return this.fileTypeFactory.create(language);
+//        return new MetaborgLanguageFileType(language);
+//        return instantiate(MetaborgLanguageFileType.class, new Class<?>[] { SpoofaxIdeaLanguage.class }, language);
     }
 
     /**

@@ -25,6 +25,7 @@ import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenType;
  * Represents a Spoofax token. This class contains enough information
  * to reconstruct the Spoofax AST.
  */
+@Deprecated
 /* package private */ final class SpoofaxToken {
 
     private final SpoofaxTokenType type;

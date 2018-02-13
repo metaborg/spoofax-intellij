@@ -43,6 +43,7 @@ import javax.annotation.Nullable;
 /**
  * Factory for the {@link SpoofaxSyntaxHighlighter} class.
  */
+@Deprecated
 public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
 
     private final IIntelliJResourceService resourceService;

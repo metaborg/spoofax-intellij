@@ -38,19 +38,19 @@ public final class LanguageUtils2 {
 
     private LanguageUtils2() {}
 
-    /**
-     * Returns whether the specified language is an actual language with syntax,
-     * or just a support library packaged as a language.
-     *
-     * @param language The language to check.
-     * @return <code>true</code> when the language is an actual language;
-     * otherwise, <code>false</code> when the language is not an actual language.
-     */
-    public static boolean isRealLanguage(final ILanguage language) {
-        // For now, we test this by checking the file extensions.
-        // If there are none, then it's not a language.
-        return !getExtensions(language).isEmpty();
-    }
+//    /**
+//     * Returns whether the specified language is an actual language with syntax,
+//     * or just a support library packaged as a language.
+//     *
+//     * @param language The language to check.
+//     * @return <code>true</code> when the language is an actual language;
+//     * otherwise, <code>false</code> when the language is not an actual language.
+//     */
+//    public static boolean isRealLanguage(final ILanguage language) {
+//        // For now, we test this by checking the file extensions.
+//        // If there are none, then it's not a language.
+//        return !getExtensions(language).isEmpty();
+//    }
 
     /**
      * Gets the set of language identifiers for the given language implementations.
@@ -120,40 +120,40 @@ public final class LanguageUtils2 {
         return zipUri;
     }
 
-    /**
-     * Returns a set with all supported file extensions for a particular language.
-     *
-     * @param language The language.
-     * @return A set of extensions, which may be empty.
-     */
-    public static Set<String> getExtensions(final ILanguage language) {
-        // FIXME: The extensions for a language should be stored in the ILanguage object,
-        // not the ILanguageImpl objects.
-        // For now, we take all known language implementations and use all those extensions.
-        // The downside is that: if two implementations for a language define different extensions,
-        // then both are used everywhere. Additionally, if the extension for an implementation
-        // changes, then any users of the result of this method are not notified of the change.
-        final Set<String> extensions = Sets.newHashSet();
-        for (final ILanguageImpl impl : language.impls()) {
-            for (final ResourceExtensionFacet facet : impl.facets(ResourceExtensionFacet.class)) {
-                Iterables.addAll(extensions, facet.extensions());
-            }
-        }
-        return extensions;
-    }
+//    /**
+//     * Returns a set with all supported file extensions for a particular language.
+//     *
+//     * @param language The language.
+//     * @return A set of extensions, which may be empty.
+//     */
+//    public static Set<String> getExtensions(final ILanguage language) {
+//        // FIXME: The extensions for a language should be stored in the ILanguage object,
+//        // not the ILanguageImpl objects.
+//        // For now, we take all known language implementations and use all those extensions.
+//        // The downside is that: if two implementations for a language define different extensions,
+//        // then both are used everywhere. Additionally, if the extension for an implementation
+//        // changes, then any users of the result of this method are not notified of the change.
+//        final Set<String> extensions = Sets.newHashSet();
+//        for (final ILanguageImpl impl : language.impls()) {
+//            for (final ResourceExtensionFacet facet : impl.facets(ResourceExtensionFacet.class)) {
+//                Iterables.addAll(extensions, facet.extensions());
+//            }
+//        }
+//        return extensions;
+//    }
 
-    /**
-     * Returns the default file extension for a particular language.
-     *
-     * @param language The language.
-     * @return The default file extension; or <code>null</code>.
-     */
-    public static String getDefaultExtension(final ILanguage language) {
-        // FIXME: The first of a set is non-deterministic! Also, shouldn't every language
-        // have a settable default extension that is used when files of that language are created?
-        final Set<String> extensions = getExtensions(language);
-        if (extensions.isEmpty())
-            throw new RuntimeException("No extensions registered for language.");
-        return extensions.iterator().next();
-    }
+//    /**
+//     * Returns the default file extension for a particular language.
+//     *
+//     * @param language The language.
+//     * @return The default file extension; or <code>null</code>.
+//     */
+//    public static String getDefaultExtension(final ILanguage language) {
+//        // FIXME: The first of a set is non-deterministic! Also, shouldn't every language
+//        // have a settable default extension that is used when files of that language are created?
+//        final Set<String> extensions = getExtensions(language);
+//        if (extensions.isEmpty())
+//            throw new RuntimeException("No extensions registered for language.");
+//        return extensions.iterator().next();
+//    }
 }

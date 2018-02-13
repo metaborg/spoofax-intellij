@@ -5,6 +5,7 @@ import com.virtlink.editorservices.intellij.psi.AesiElementTypeManager
 import com.virtlink.editorservices.intellij.psi.AesiTokenTypeManager
 import org.metaborg.intellij.idea.extensions.InstanceLanguageExtensionPoint
 import org.metaborg.intellij.idea.extensions.InstanceSyntaxHighlighterFactoryExtensionPoint
+import org.metaborg.intellij.idea.files.SpoofaxFileType
 import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager
 
@@ -26,7 +27,7 @@ import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager
 internal data class LanguageBindings
 (
         val tokenTypeManager: SpoofaxTokenTypeManager,
-        val fileType: MetaborgLanguageFileType,
+        val fileType: SpoofaxFileType,
         val parserDefinitionExtension: InstanceLanguageExtensionPoint<*>,
         val syntaxHighlighterFactoryExtension: InstanceSyntaxHighlighterFactoryExtensionPoint,
         val externalAnnotatorExtension: InstanceLanguageExtensionPoint<*>,

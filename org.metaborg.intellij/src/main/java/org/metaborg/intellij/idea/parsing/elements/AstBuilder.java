@@ -30,6 +30,7 @@ import java.util.Stack;
 /**
  * Builds an IntelliJ AST from a ATerm AST.
  */
+@Deprecated
 public final class AstBuilder {
 
     private final ILanguageImpl language;

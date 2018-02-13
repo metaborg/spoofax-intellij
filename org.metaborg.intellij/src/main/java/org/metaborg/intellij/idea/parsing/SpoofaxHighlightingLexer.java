@@ -60,6 +60,7 @@ import java.util.List;
  * threads, we have to construct a new lexer for each. As we're creating a lexer for each file, we might as well store
  * the file's information.
  */
+@Deprecated
 public final class SpoofaxHighlightingLexer extends LexerBase {
     // Whether to show debug info from the lexer.
     private static final boolean DEBUG_INFO = false;

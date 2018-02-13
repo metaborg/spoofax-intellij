@@ -157,6 +157,7 @@ import org.metaborg.spoofax.meta.core.SpoofaxMetaModule;
     /**
      * Binds lexing and parsing.
      */
+    @Deprecated
     protected void bindParsing() {
         bind(SpoofaxSyntaxHighlighterFactory.class);
 
