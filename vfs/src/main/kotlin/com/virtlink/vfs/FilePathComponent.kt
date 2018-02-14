@@ -1,5 +1,7 @@
 package com.virtlink.vfs
 
+import java.io.Serializable
+
 /**
  * A single component in a [FilePath].
  *
@@ -10,7 +12,7 @@ package com.virtlink.vfs
 data class FilePathComponent private constructor(
         val name: String?,
         val kind: FilePathComponentKind
-) {
+): Serializable {
 
     companion object {
 
