@@ -4,53 +4,53 @@ import com.google.inject.Inject
 import com.google.inject.assistedinject.Assisted
 import com.intellij.lang.Language
 import com.intellij.lexer.LexerBase
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.tree.IElementType
 import com.virtlink.editorservices.NullCancellationToken
 import com.virtlink.editorservices.Offset
 import com.virtlink.editorservices.ScopeNames
 import com.virtlink.editorservices.Span
 import com.virtlink.editorservices.intellij.psi.AesiTokenTypeManager
-import com.virtlink.editorservices.intellij.resources.IntellijResourceManager
-import com.virtlink.editorservices.spoofax.syntaxcoloring.ISpoofaxSyntaxColoringService
 import com.virtlink.editorservices.syntaxcoloring.ISyntaxColoringService
+import com.virtlink.editorservices.spoofax.syntaxcoloring.ISpoofaxSyntaxColoringService
 import com.virtlink.editorservices.syntaxcoloring.IToken
 import com.virtlink.editorservices.syntaxcoloring.SyntaxColoringInfo
 import com.virtlink.editorservices.syntaxcoloring.Token
+import com.virtlink.logging.logger
 import java.net.URI
 
+/**
+ * IntelliJ lexer used to produce tokens for AST construction and highlighting.
+ */
 class AesiLexer @Inject constructor(
         @Assisted private val documentUri: URI,
         @Assisted private val language: Language,
         @Assisted private val tokenTypeManager: AesiTokenTypeManager,
-        private val syntaxColoringService: ISpoofaxSyntaxColoringService,
-        private val scopeNamesManager: ScopeNamesManager,
-        private val tokenScopeManager: TokenScopeManager,
-        private val resourceManager: IntellijResourceManager)
+        private val syntaxColoringService: ISpoofaxSyntaxColoringService)
     : LexerBase() {
 
-    /**
-     * Factory for the language-specific lexer.
-     */
     interface IFactory {
-
-        /**
-         * Creates the lexer.
-         *
-         * @param documentUri The document URI.
-         * @param tokenTypeManager The token type manager.
-         */
         fun create(documentUri: URI, language: Language, tokenTypeManager: AesiTokenTypeManager): AesiLexer
     }
 
-    private val LOG = Logger.getInstance(this.javaClass)
+    @Suppress("PrivatePropertyName")
+    private val LOG by logger()
 
     private var buffer: CharSequence? = null
     private var startOffset: Offset = 0
     private var endOffset: Offset = 0
-    private var tokens = emptyList<AesiToken>()
+    private var tokens = emptyList<IntelliJToken>()
     private var tokenIndex: Int = 0
 
+    /**
+     * Called by IntelliJ at the start of a lexing session.
+     *
+     * We call the [ISyntaxColoringService], and store the tokens it returns.
+     * IntelliJ then calls the [advance] method to iterate the tokens,
+     * and extracts their information using the [getTokenType], [getTokenStart],
+     * and [getTokenEnd] methods.
+     *
+     * We ignore the initial state parameter, which is used in incremental parsing.
+     */
     override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
         assert(initialState == 0)
         assert(0 <= startOffset && startOffset <= buffer.length)
@@ -63,7 +63,6 @@ class AesiLexer @Inject constructor(
         this.endOffset = endOffset
         this.tokenIndex = 0
 
-
         if (buffer.isEmpty()) {
             LOG.debug("Buffer is empty.")
             this.tokens = emptyList()
@@ -72,21 +71,31 @@ class AesiLexer @Inject constructor(
                     this.documentUri,
                     this.language.toString(),
                     Span(this.startOffset, this.endOffset),
-                    NullCancellationToken) ?: getDefaultTokens(this.documentUri)
+                    NullCancellationToken) ?: getDefaultColoringInfo(buffer)
 
             LOG.debug("Colorizer returned ${coloringInfo.tokens.size} tokens")
-            this.tokens = tokenize(coloringInfo.tokens)
+            this.tokens = toIntelliJTokens(coloringInfo.tokens)
         }
         LOG.debug("Tokenizer produced ${this.tokens.size} tokens")
     }
 
-    private fun getDefaultTokens(documentUri: URI): SyntaxColoringInfo {
-        val content = this.resourceManager.getContent(documentUri) ?: return SyntaxColoringInfo(emptyList())
-        return SyntaxColoringInfo(listOf(Token(Span.fromLength(0, content.length.toInt()), ScopeNames("text"))))
+    /**
+     * Returns the default coloring info when the syntax coloring service
+     * does not return anything.
+     */
+    private fun getDefaultColoringInfo(buffer: CharSequence): SyntaxColoringInfo {
+        return SyntaxColoringInfo(listOf(Token(Span.fromLength(0, buffer.length), ScopeNames("text"))))
     }
 
-    private fun tokenize(tokens: List<IToken>): List<AesiToken> {
-        val newTokens = mutableListOf<AesiToken>()
+    /**
+     * Converts the list of colorizer service tokens into tokens
+     * that IntelliJ can understand.
+     *
+     * Invalid tokens, that overlap, are empty, or that are in the
+     * wrong order, are discarded.
+     */
+    private fun toIntelliJTokens(tokens: List<IToken>): List<IntelliJToken> {
+        val newTokens = mutableListOf<IntelliJToken>()
         var offset = 0
 
         for (token in tokens) {
@@ -136,15 +145,27 @@ class AesiLexer @Inject constructor(
         return newTokens
     }
 
-    private fun addTokenElement(tokenList: MutableList<AesiToken>, token: IToken?, offset: Offset, endOffset: Offset): Offset {
-        val tokenType = getTokenType(token)
-        tokenList.add(AesiToken(offset, endOffset, tokenType))
+    /**
+     * Constructs and adds an IntelliJ token to the list.
+     *
+     * @param tokenList The list of IntelliJ tokens to add the new token to.
+     * @param token The AESI token that must be converted to an IntelliJ token; or null.
+     * @param startOffset The start offset of the token.
+     * @param endOffset The end offset of the token.
+     */
+    private fun addTokenElement(tokenList: MutableList<IntelliJToken>, token: IToken?, startOffset: Offset, endOffset: Offset): Offset {
+        val tokenType = getTokenElementType(token)
+        tokenList.add(IntelliJToken(startOffset, endOffset, tokenType))
         return endOffset
     }
 
-    private fun getTokenType(token: IToken?): IElementType {
-//        val name = this.tokenScopeManager.getSimplifiedScope(token?.scopes ?: ScopeNames(this.tokenScopeManager.DEFAULT_SCOPE))
-//        this.scopeNamesManager.getTextAttributes()
+    /**
+     * Determines the token element type, given the token's scope names.
+     *
+     * @param token The token
+     * @return The element type.
+     */
+    private fun getTokenElementType(token: IToken?): IElementType {
         return this.tokenTypeManager.getTokenType(token?.scopes ?: ScopeNames())
     }
 
@@ -155,13 +176,13 @@ class AesiLexer @Inject constructor(
     override fun getTokenStart(): Int {
         assert(0 <= tokenIndex && tokenIndex < tokens.size,
                 { "Expected index 0 <= $tokenIndex < ${tokens.size}." })
-        return tokens[tokenIndex].startOffset.toInt()
+        return tokens[tokenIndex].startOffset
     }
 
     override fun getTokenEnd(): Int {
         assert(0 <= tokenIndex && tokenIndex < tokens.size,
                 { "Expected index 0 <= $tokenIndex < ${tokens.size}." })
-        return tokens[tokenIndex].endOffset.toInt()
+        return tokens[tokenIndex].endOffset
     }
 
     override fun getTokenType(): IElementType? {
@@ -173,11 +194,14 @@ class AesiLexer @Inject constructor(
 
     override fun getBufferSequence(): CharSequence = this.buffer!!
 
-    override fun getBufferEnd(): Int = this.endOffset.toInt()
+    override fun getBufferEnd(): Int = this.endOffset
 
     override fun getState(): Int = 0
 
-    private class AesiToken(
+    /**
+     * Represents an IntelliJ token.
+     */
+    private data class IntelliJToken(
             val startOffset: Offset,
             val endOffset: Offset,
             val tokenType: IElementType)

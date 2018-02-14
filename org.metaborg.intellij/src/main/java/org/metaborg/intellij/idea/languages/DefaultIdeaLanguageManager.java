@@ -25,7 +25,7 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IFileElementType;
-import com.virtlink.editorservices.intellij.files.AesiFileType;
+import com.virtlink.editorservices.intellij.files.IFileTypeExt;
 import com.virtlink.editorservices.intellij.psi.AesiAstBuilder;
 import com.virtlink.editorservices.intellij.psi.AesiElementTypeManager;
 import com.virtlink.editorservices.intellij.psi.AesiTokenTypeManager;
@@ -44,8 +44,6 @@ import org.metaborg.intellij.idea.extensions.ExtensionUtils;
 import org.metaborg.intellij.idea.extensions.InstanceLanguageExtensionPoint;
 import org.metaborg.intellij.idea.extensions.InstanceSyntaxHighlighterFactoryExtensionPoint;
 import org.metaborg.intellij.idea.files.SpoofaxFileType;
-import org.metaborg.intellij.idea.filetypes.FileTypeUtils;
-import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType;
 import org.metaborg.intellij.idea.parsing.MetaborgAesiParserDefinition;
 import org.metaborg.intellij.idea.parsing.annotations.MetaborgSourceAnnotator;
 import org.metaborg.intellij.idea.parsing.elements.MetaborgAesiFileElementType;
@@ -416,7 +414,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
         ExtensionUtils.register(languageBindings.getParserDefinitionExtension());
         ExtensionUtils.register(languageBindings.getSyntaxHighlighterFactoryExtension());
         ExtensionUtils.register(languageBindings.getExternalAnnotatorExtension());
-        AesiFileType.Companion.register(languageBindings.getFileType());
+        IFileTypeExt.Companion.register(languageBindings.getFileType());
 //        FileTypeUtils.register(languageBindings.getFileType());
     }
 
@@ -438,7 +436,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      *            The bindings of the language to deactivate.
      */
     private void deactivateLanguage(final LanguageBindings languageBindings) {
-        AesiFileType.Companion.unregister(languageBindings.getFileType());
+        IFileTypeExt.Companion.unregister(languageBindings.getFileType());
 //        FileTypeUtils.unregister(languageBindings.getFileType());
         ExtensionUtils.unregister(languageBindings.getExternalAnnotatorExtension());
         ExtensionUtils.unregister(languageBindings.getSyntaxHighlighterFactoryExtension());

@@ -2,23 +2,12 @@ package org.metaborg.intellij.idea.files
 
 import com.google.inject.Inject
 import com.google.inject.assistedinject.Assisted
-import com.intellij.lang.Language
-import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher
-import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.fileTypes.LanguageFileType
-import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx
-import com.intellij.psi.LanguageSubstitutor
-import com.intellij.psi.LanguageSubstitutors
-import com.intellij.psi.tree.IFileElementType
-import com.virtlink.editorservices.intellij.files.AesiFileType
-import com.virtlink.editorservices.intellij.psi.AesiTokenTypeManager
-import org.metaborg.intellij.idea.filetypes.MetaborgLanguageFileType
+import com.virtlink.editorservices.intellij.files.IFileTypeExt
 import org.metaborg.intellij.idea.graphics.IIconManager
-import org.metaborg.intellij.idea.languages.IIdeaLanguageManager
 import org.metaborg.intellij.idea.languages.SpoofaxIdeaLanguage
 import org.metaborg.intellij.idea.languages.defaultExtension
 import org.metaborg.intellij.idea.languages.extensions
-import org.metaborg.intellij.idea.parsing.MetaborgAesiParserDefinition
 import javax.swing.Icon
 
 /**
@@ -29,7 +18,7 @@ import javax.swing.Icon
 class SpoofaxFileType @Inject constructor(
         @Assisted language: SpoofaxIdeaLanguage,
         private val iconManager: IIconManager)
-    : AesiFileType(language) {
+    : LanguageFileType(language), IFileTypeExt {
 
     companion object {
         /**
@@ -51,13 +40,19 @@ class SpoofaxFileType @Inject constructor(
     val spoofaxLanguage: SpoofaxIdeaLanguage get() = super.getLanguage() as SpoofaxIdeaLanguage
 
     override fun getName(): String {
-        // TODO SPOOFAX: This should be a human-readable custom name, a 'displayName'.
+        // NOTE: This is the ID of the language.
         return this.spoofaxLanguage.language.name()
     }
 
     override fun getDescription(): String {
-        // TODO SPOOFAX: This should be a custom description (where this may be the fallback if none is specified).
+        // NOTE: This is displayed as the name of the language.
+        // TODO SPOOFAX: This should be a human-readable custom name, a 'displayName'.
         return "$name (Spoofax)"
+    }
+
+    override fun getIcon(): Icon? {
+        // TODO SPOOFAX: Spoofax should allow a custom icon for the language.
+        return this.iconManager.getLanguageFileIcon(this.spoofaxLanguage.language)
     }
 
     override fun getDefaultExtension(): String {
@@ -66,9 +61,4 @@ class SpoofaxFileType @Inject constructor(
 
     override val extensions: Set<String>
         get() = this.spoofaxLanguage.language.extensions
-
-    override fun getIcon(): Icon? {
-        // TODO SPOOFAX: Spoofax should allow a custom icon for the language.
-        return this.iconManager.getLanguageFileIcon(this.spoofaxLanguage.language)
-    }
 }

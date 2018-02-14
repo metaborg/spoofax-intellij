@@ -8,7 +8,6 @@ import com.virtlink.editorservices.syntaxcoloring.*
 import com.virtlink.logging.format
 import org.metaborg.core.MetaborgRuntimeException
 import org.metaborg.core.language.ILanguageImpl
-import org.metaborg.core.style.IRegionStyle
 import org.metaborg.core.syntax.ParseException
 import org.metaborg.spoofax.core.style.ISpoofaxCategorizerService
 import org.metaborg.spoofax.core.style.ISpoofaxStylerService
@@ -19,13 +18,15 @@ import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit
 import org.spoofax.interpreter.terms.IStrategoTerm
 import org.spoofax.jsglr.client.imploder.ImploderAttachment
 import org.apache.commons.text.StringEscapeUtils
-import org.metaborg.core.style.IStyle
 import java.net.URI
 import org.slf4j.helpers.MessageFormatter
 import java.awt.Color
 import com.virtlink.logging.logger
 import com.google.inject.Inject
+import com.virtlink.editorservices.ScopeName
 import com.virtlink.editorservices.spoofax.LanguageHelper
+import org.metaborg.core.style.*
+import org.spoofax.terms.StrategoTerm
 
 /**
  * Spoofax Core syntax coloring service implementation.
@@ -57,7 +58,12 @@ class SpoofaxSyntaxColoringService @Inject constructor(
         // Nothing to do.
     }
 
-    override fun getSyntaxColoringInfo(document: URI, language: String?, span: Span, cancellationToken: ICancellationToken): ISyntaxColoringInfo? {
+    override fun getSyntaxColoringInfo(
+            document: URI,
+            language: String?,
+            span: Span,
+            cancellationToken: ICancellationToken)
+            : ISyntaxColoringInfo? {
 
         val languageImpl = this.languageHelper.determineLanguageOf(document, language) ?: return null
 
@@ -77,7 +83,9 @@ class SpoofaxSyntaxColoringService @Inject constructor(
 
         LOG.debug("Tokenizing the parse result of document: {}", document)
 
-        return SyntaxColoringInfo(tokenizeAll(text, languageImpl, span, result))
+        val tokens = tokenizeAll(text, languageImpl, span, result)
+
+        return SyntaxColoringInfo(tokens)
     }
 
     /**
@@ -130,10 +138,12 @@ class SpoofaxSyntaxColoringService @Inject constructor(
         val tokenizer = rootImploderAttachment.leftToken.tokenizer
 
         val categorizedTokens = categorizer.categorize(languageImpl, parseResult)
+        val categorizedTokenIterator = categorizedTokens.iterator()
         val styledTokens = styler.styleParsed(languageImpl, categorizedTokens)
         val styledTokenIterator = styledTokens.iterator()
 
-        var currentRegionStyle: IRegionStyle<IStrategoTerm>? = if (styledTokenIterator.hasNext()) styledTokenIterator.next() else null
+        var currentRegionCategory = if (categorizedTokenIterator.hasNext()) categorizedTokenIterator.next() else null
+        var currentRegionStyle = if (styledTokenIterator.hasNext()) styledTokenIterator.next() else null
 
         val tokenCount = tokenizer.tokenCount
         var offset = 0
@@ -187,14 +197,23 @@ class SpoofaxSyntaxColoringService @Inject constructor(
                 while (currentRegionStyle != null && currentRegionStyle.region().endOffset() + 1 <= tokenSpan.startOffset)
                     currentRegionStyle = if (styledTokenIterator.hasNext()) styledTokenIterator.next() else null
 
+                // Iterate until we find a category that ends after the token start.
+                while (currentRegionCategory != null && currentRegionCategory.region().endOffset() + 1 <= tokenSpan.startOffset)
+                    currentRegionCategory = if (categorizedTokenIterator.hasNext()) categorizedTokenIterator.next() else null
+
                 // Get the style of the token
                 val tokenStyle = if (currentRegionStyle != null && currentRegionStyle.region().startOffset() <= tokenSpan.startOffset)
                     currentRegionStyle.style()
                 else
                     null
-                val scopeName = if (tokenStyle != null) ScopeNames(getScopeName(tokenStyle)) else ScopeNames()
 
-                val spoofaxToken = SpoofaxToken(tokenSpan, scopeName)
+                // Get the category of the token
+                val tokenCategory = if (currentRegionCategory != null && currentRegionCategory.region().startOffset() <= tokenSpan.startOffset)
+                    currentRegionCategory.category()
+                else
+                    null
+
+                val spoofaxToken = createToken(tokenSpan, tokenCategory, tokenStyle)
                 tokens.add(spoofaxToken)
 
                 if (DEBUG_INFO) {
@@ -221,6 +240,15 @@ class SpoofaxSyntaxColoringService @Inject constructor(
         }
 
         return tokens
+    }
+
+    private fun createToken(span: Span, category: ICategory?, style: IStyle?): SpoofaxToken {
+        val scopeNames = when {
+            category != null -> getScopeNamesFromCategory(category)
+            style != null -> getScopeNamesFromStyle(style)
+            else -> ScopeNames()
+        }
+        return SpoofaxToken(span, scopeNames)
     }
 
     /**
@@ -250,12 +278,12 @@ class SpoofaxSyntaxColoringService @Inject constructor(
     }
 
     /**
-     * Creates the custom scope name for the exact style.
+     * Gets the custom scope name for the exact style.
      *
      * @param style The style.
      * @return The custom scope name.
      */
-    private fun getScopeName(style: IStyle): String {
+    private fun getScopeNamesFromStyle(style: IStyle): ScopeNames {
         val sb = StringBuilder()
 
         val foregroundColor = style.color()
@@ -275,7 +303,33 @@ class SpoofaxSyntaxColoringService @Inject constructor(
         if (style.underscore()) sb.append(".U")
         if (style.strikeout()) sb.append(".S")
 
-        return sb.toString()
+        return ScopeNames(sb.toString())
+    }
+
+    /**
+     * Gets the scope name for the category.
+     *
+     * @param category The category.
+     * @return The scope name.
+     */
+    private fun getScopeNamesFromCategory(category: ICategory): ScopeNames {
+        return when (category.name()) {
+            "TK_KEYWORD" -> ScopeNames("keyword")
+            "TK_LAYOUT" -> ScopeNames("text")
+            "TK_IDENTIFIER" -> ScopeNames("entity.name")
+            "TK_OPERATOR" -> ScopeNames("keyword.operator")
+            "TK_NUMBER" -> ScopeNames("constant.numeric")
+            "TK_STRING" -> ScopeNames("string")
+            "StrategyDef._" -> ScopeNames("entity.name")
+            "RuleDef._" -> ScopeNames("entity.name")
+            "SVar._" -> ScopeNames("variable")
+            "_.Constructor" -> ScopeNames("entity.name")
+            "_.Wld" -> ScopeNames("variable.wildcard")
+            "_.App" -> ScopeNames("support")
+            "_.Str" -> ScopeNames("string")
+            "_.Lit" -> ScopeNames("constant")
+            else -> ScopeNames()
+        }
     }
 
     /**

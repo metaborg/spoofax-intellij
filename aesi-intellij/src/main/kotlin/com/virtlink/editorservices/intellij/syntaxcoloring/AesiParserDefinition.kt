@@ -14,6 +14,12 @@ import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import com.virtlink.editorservices.intellij.psi.*
 
+/**
+ * Defines the implementation of a parser for a custom language.
+ *
+ * We have overridden the code that would use the lexer and parser
+ * returned by this class in [AesiFileElementType.doParseContents].
+ */
 open class AesiParserDefinition @Inject constructor(
         private val fileType: LanguageFileType,
         private val fileElementType: IFileElementType,

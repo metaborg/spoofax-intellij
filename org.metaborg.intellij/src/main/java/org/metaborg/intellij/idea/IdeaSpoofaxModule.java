@@ -39,6 +39,7 @@ import org.metaborg.intellij.idea.actions.*;
 import org.metaborg.intellij.idea.editors.IdeaEditorRegistry;
 import org.metaborg.intellij.idea.facets.MetaborgFacetType;
 import org.metaborg.intellij.idea.files.SpoofaxFileType;
+import org.metaborg.intellij.idea.files.SpoofaxLanguageArtifactFileType;
 import org.metaborg.intellij.idea.filetypes.LanguageArtifactFileType;
 import org.metaborg.intellij.idea.graphics.DefaultIconManager;
 import org.metaborg.intellij.idea.graphics.IIconManager;
@@ -143,7 +144,8 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
      * Binds file types.
      */
     protected void bindFileTypes() {
-        bind(LanguageArtifactFileType.class).in(Singleton.class);
+//        bind(LanguageArtifactFileType.class).in(Singleton.class);
+        bind(SpoofaxLanguageArtifactFileType.class).in(Singleton.class);
     }
 
     /**

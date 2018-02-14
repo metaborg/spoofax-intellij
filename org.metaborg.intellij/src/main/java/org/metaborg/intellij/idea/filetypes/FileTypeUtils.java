@@ -26,6 +26,7 @@ import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx;
 /**
  * Utility functions for working with IntelliJ IDEA file types.
  */
+@Deprecated
 public final class FileTypeUtils {
 
     /**
@@ -33,6 +34,7 @@ public final class FileTypeUtils {
      *
      * @param fileType The file type to register.
      */
+    @Deprecated
     public static void register(final IMetaborgFileType fileType) {
         FileTypeManagerEx.getInstanceEx().registerFileType(fileType);
 
@@ -49,6 +51,7 @@ public final class FileTypeUtils {
      *
      * @param fileType The file type to unregister.
      */
+    @Deprecated
     public static void unregister(final IMetaborgFileType fileType) {
         FileTypeManagerEx.getInstanceEx().unregisterFileType(fileType);
     }

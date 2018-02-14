@@ -69,6 +69,7 @@ public final class SpoofaxTokenTypeManager {
      *
      * @return The token type.
      */
+    @Deprecated
     public CharacterTokenType getCharacterTokenType() {
         return this.characterTokenType;
     }
@@ -88,6 +89,7 @@ public final class SpoofaxTokenTypeManager {
      *              The style may be <code>null</code>, in which case the default token style is assumed.
      * @return The token type.
      */
+    @Deprecated
     public SpoofaxTokenType getTokenType(@Nullable IStyle style) {
         style = style != null ? style : getDefaultStyle();
 
@@ -99,6 +101,7 @@ public final class SpoofaxTokenTypeManager {
      *
      * @return The default style.
      */
+    @Deprecated
     public IStyle getDefaultStyle() {
         // FIXME: Get this from the IStylerService?
         return new Style(Color.black, Color.white, false, false, false, false);

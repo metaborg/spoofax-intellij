@@ -29,6 +29,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
 /**
  * Metaborg source file PSI element.
  */
+@Deprecated
 public final class MetaborgFile extends PsiFileBase {
 
     public static final Key<ISpoofaxParseUnit> PARSE_RESULT_KEY = new Key<>("PARSE_RESULT_KEY");

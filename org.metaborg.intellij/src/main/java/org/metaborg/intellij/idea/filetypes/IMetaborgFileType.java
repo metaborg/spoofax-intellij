@@ -23,6 +23,7 @@ import com.intellij.openapi.fileTypes.FileType;
 /**
  * An interface for file types of Metaborg languages.
  */
+@Deprecated
 public interface IMetaborgFileType extends FileType {
 
     /**

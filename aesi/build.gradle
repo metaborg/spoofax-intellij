@@ -1,6 +1,7 @@
 // This is a subproject of org.metaborg.intellij
 
 dependencies {
+	project (":vfs")
     compile "com.google.guava:guava:$guavaVersion"
     compile "com.google.inject:guice:$guiceVersion"
     compile "com.google.inject.extensions:guice-assistedinject:$guiceVersion"

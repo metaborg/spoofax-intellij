@@ -24,22 +24,23 @@ import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileNameMatcher;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import com.virtlink.editorservices.intellij.files.IFileTypeExt;
 import org.jetbrains.annotations.NonNls;
 
 /**
  * Consumer for file types implementing the {@link IMetaborgFileType} interface.
  */
 @Deprecated
-public final class MetaborgFileTypeConsumer {
+public final class SpoofaxLanguageArtifactFileTypeConsumerX {
 
     private final FileTypeConsumer consumer;
 
     /**
-     * Initializes a new instance of the {@link MetaborgFileTypeConsumer} class.
+     * Initializes a new instance of the {@link SpoofaxLanguageArtifactFileTypeConsumer} class.
      *
      * @param consumer The file type consumer to wrap.
      */
-    public MetaborgFileTypeConsumer(final FileTypeConsumer consumer) {
+    public SpoofaxLanguageArtifactFileTypeConsumerX(final FileTypeConsumer consumer) {
         Preconditions.checkNotNull(consumer);
 
         this.consumer = consumer;
@@ -50,7 +51,7 @@ public final class MetaborgFileTypeConsumer {
      *
      * @param fileType The file type.
      */
-    public void consume(final IMetaborgFileType fileType) {
+    public void consume(final IFileTypeExt fileType) {
         Preconditions.checkNotNull(fileType);
 
         consume(fileType, Iterables.toArray(fileType.getExtensions(), String.class));

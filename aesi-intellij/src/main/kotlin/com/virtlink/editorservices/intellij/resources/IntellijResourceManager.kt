@@ -28,6 +28,9 @@ import com.virtlink.editorservices.resources.IAesiContent
 
 /**
  * IntelliJ resource manager.
+ *
+ * This class provides access to the files, folders, and modules in an IntelliJ project,
+ * and allows AESI services to get their attributes and content.
  */
 @Suppress("PrivatePropertyName", "unused")
 class IntellijResourceManager: IResourceManager {
@@ -53,39 +56,96 @@ class IntellijResourceManager: IResourceManager {
 
     fun getUri(file: PsiFile): URI {
         val module = getModule(file)
-        if (module != null) {
-            return getUri(file.originalFile.virtualFile, module)
-        } else {
-            TODO()
-        }
+//        if (module != null) {
+        return getUri(file.originalFile.virtualFile, module, file.project)
+//        } else {
+//            return getUri(file.originalFile.virtualFile, null)
+//        }
     }
 
     fun getUri(file: VirtualFile, project: Project): URI {
         val module = getModule(file, project)
-        if (module != null) {
-            return getUri(file, module)
-        } else {
-            TODO()
-        }
+        return getUri(file, module, project)
+//
+//        return if (module != null) {
+//            getUri(file, module)
+//        } else {
+//            URI("$INTELLIJ_SCHEME:///${file.name}")
+//        }
     }
 
-    fun getUri(module: Module): URI {
-        val projectName = module.project.name
-        val moduleName = module.name
-        return URI("$INTELLIJ_SCHEME:///$projectName/$moduleName")
-    }
+//    fun getUri(file: VirtualFile, module: Module?): URI {
+//        getUri(file, module, )
+//        if (module != null) {
+//            val modulePath = ModuleUtil.getModuleDirPath(module)
+//            val moduleVirtualFile = LocalFileSystem.getInstance().refreshAndFindFileByPath(modulePath)!!
+//            val relativeFilePath = VfsUtil.getRelativePath(file, moduleVirtualFile)
+//            if (relativeFilePath != null) {
+//                // Path relative to the module.
+//                return URI(getUri(module).toString() + "!/$relativeFilePath")
+//            }
+//        }
+////        val modulePath = ModuleUtil.getModuleDirPath(module)
+////        val moduleVirtualFile = LocalFileSystem.getInstance().refreshAndFindFileByPath(modulePath)!!
+////        val relativeFilePath = VfsUtil.getRelativePath(file, moduleVirtualFile)
+////        return if (relativeFilePath != null) {
+////            // Path relative to the module.
+////            URI(getUri(module).toString() + "!/$relativeFilePath")
+////        } else {
+//            // Absolute path.
+//            URI(file.url)
+////        }
+//    }
 
-    fun getUri(file: VirtualFile, module: Module): URI {
-        val modulePath = ModuleUtil.getModuleDirPath(module)
-        val moduleVirtualFile = LocalFileSystem.getInstance().refreshAndFindFileByPath(modulePath)!!
-        val relativeFilePath = VfsUtil.getRelativePath(file, moduleVirtualFile)
+    /**
+     * Gets the URI of the specified file in the specified module (or null)
+     * in the specified project.
+     *
+     * @param file The file.
+     * @param module The module; or null when not known.
+     * @param project The project.
+     * @return The URI of the file.
+     */
+    private fun getUri(file: VirtualFile, module: Module?, project: Project): URI {
+        val relativeFilePath = if (module != null) {
+            val modulePath = ModuleUtil.getModuleDirPath(module)
+            val moduleVirtualFile = LocalFileSystem.getInstance().refreshAndFindFileByPath(modulePath)!!
+            VfsUtil.getRelativePath(file, moduleVirtualFile)
+        } else null
+
         return if (relativeFilePath != null) {
             // Path relative to the module.
-            URI(getUri(module).toString() + "!/$relativeFilePath")
+            URI("${getUri(module, project)}/$relativeFilePath")
         } else {
             // Absolute path.
             URI(file.url)
+//            URI("${getUri(module, project)}/${file.name}")
         }
+    }
+
+    /**
+     * Gets the URI of the module in a project.
+     *
+     * @param module The module; or null.
+     * @return The URI of the module.
+     */
+    fun getUri(module: Module?, project: Project): URI {
+        assert(module == null || module.project == project)
+        return if (module != null) {
+            URI("${getUri(module.project)}/${module.name}")
+        } else {
+            URI("${getUri(project)}/_")
+        }
+    }
+
+    /**
+     * Gets the URI of the project.
+     *
+     * @param project The project.
+     * @return The URI of the project.
+     */
+    fun getUri(project: Project): URI {
+        return URI("$INTELLIJ_SCHEME:///${project.name}")
     }
 
     /**
@@ -292,7 +352,7 @@ class IntellijResourceManager: IResourceManager {
 
     override fun getProjectOf(uri: URI): URI? {
         val module = getModule(uri)
-        return if (module != null) getUri(module) else module
+        return if (module != null) getUri(module, module.project) else module
     }
 
     override fun isProject(uri: URI): Boolean {
@@ -318,7 +378,7 @@ class IntellijResourceManager: IResourceManager {
     override fun getChildren(uri: URI): Iterable<URI>? {
         val (module, file) = parseUri(uri)
         if (module == null || file == null) return null
-        return file.children.map { f -> getUri(f, module) }
+        return file.children.map { f -> getUri(f, module, module.project) }
     }
 
     override fun getParent(uri: URI): URI? {
@@ -330,11 +390,11 @@ class IntellijResourceManager: IResourceManager {
     override fun getContent(uri: URI): IContent? {
         val psiFile = getPsiFile(uri)
         val document: Document?
-        if (psiFile != null) {
-            document = PsiDocumentManager.getInstance(psiFile.project).getDocument(psiFile)
+        document = if (psiFile != null) {
+            PsiDocumentManager.getInstance(psiFile.project).getDocument(psiFile)
         } else {
             val virtualFile = getFile(uri) ?: return null
-            document = if (virtualFile != null) FileDocumentManager.getInstance().getDocument(virtualFile) else null
+            FileDocumentManager.getInstance().getDocument(virtualFile)
         }
         return if (document != null) StringContent(document.text, document.modificationStamp) else null
     }

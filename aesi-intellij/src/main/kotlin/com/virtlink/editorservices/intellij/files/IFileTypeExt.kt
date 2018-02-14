@@ -1,6 +1,5 @@
 package com.virtlink.editorservices.intellij.files
 
-import com.intellij.lang.Language
 import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.fileTypes.LanguageFileType
@@ -8,11 +7,9 @@ import com.intellij.openapi.fileTypes.ex.FileTypeManagerEx
 import com.virtlink.editorservices.intellij.languages.AesiLanguage
 
 /**
- * A file type of an AESI language.
+ * An extended IntelliJ file type.
  */
-abstract class AesiFileType(
-        language: AesiLanguage)
-    : LanguageFileType(language) {
+interface IFileTypeExt: FileType {
 
     companion object {
         /**
@@ -20,7 +17,7 @@ abstract class AesiFileType(
          *
          * @param fileType The file type to register.
          */
-        fun register(fileType: AesiFileType) {
+        fun register(fileType: IFileTypeExt) {
             val fileTypeManager = FileTypeManagerEx.getInstanceEx()
             fileTypeManager.registerFileType(fileType)
             fileType.extensions
@@ -33,7 +30,7 @@ abstract class AesiFileType(
          *
          * @param fileType The file type to unregister.
          */
-        fun unregister(fileType: AesiFileType) {
+        fun unregister(fileType: IFileTypeExt) {
             val fileTypeManager = FileTypeManagerEx.getInstanceEx()
             fileTypeManager.unregisterFileType(fileType)
         }
@@ -44,6 +41,6 @@ abstract class AesiFileType(
      *
      * Each file extension is without the leading dot.
      */
-    abstract val extensions: Set<String>
+    val extensions: Set<String>
 
 }

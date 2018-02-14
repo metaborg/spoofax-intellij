@@ -29,6 +29,7 @@ import java.util.Collections;
 /**
  * The file type for Spoofax artifacts.
  */
+@Deprecated
 public final class LanguageArtifactFileType extends ArchiveFileType implements IMetaborgFileType {
 
     private static final String ID = "SPOOFAX_ARTIFACT";
