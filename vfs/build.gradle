@@ -1,7 +1,0 @@
-// This is a subproject of org.metaborg.intellij
-
-dependencies {
-    compile "org.slf4j:slf4j-api:$slf4jVersion"
-
-    testCompile "io.kotlintest:kotlintest:$kotlintestVersion"
-}
