@@ -46,6 +46,9 @@ allprojects {
         maven {
             url "http://sugar-lang.github.io/mvnrepository/"
         }
+        maven {
+            url "http://nexus.usethesource.io/content/repositories/public/"
+        }
     }
 
     uploadArchives {
