@@ -27,8 +27,11 @@ allprojects {
     targetCompatibility = javaTargetVersion
 
     compileJava.options.encoding = 'UTF-8'
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.encoding = 'UTF-8'
+            //options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
     }
 
     repositories {

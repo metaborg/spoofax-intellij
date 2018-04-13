@@ -32,7 +32,7 @@ class WrongModuleTypeNotificationProvider(private val project: Project)
                         "Update Module Type", "Reload project", "Cancel", null)
                 if (message == Messages.YES) {
                     // Set the correct module type and reload the project.
-                    module.setOption(Module.ELEMENT_TYPE, MetaborgModuleType.ID)
+                    module.setModuleType(MetaborgModuleType.ID)
                     project.save()
                     EditorNotifications.getInstance(project).updateAllNotifications()
                     ProjectManager.getInstance().reloadProject(project)
