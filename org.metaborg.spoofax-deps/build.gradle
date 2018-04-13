@@ -44,7 +44,7 @@ dependencies {
 }
 
 shadowJar {
-    baseName = 'spoofax-deps'
+    baseName = 'org.metaborg.spoofax-deps'
     classifier = null
     zip64 = true
 

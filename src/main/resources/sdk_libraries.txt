@@ -1,1 +1,0 @@
-spoofax-deps-${version}.jar

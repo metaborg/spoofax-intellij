@@ -3,13 +3,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 ## [Unreleased]
-- Simplify project structure
-- Various fixes
-
-## [2.5.0] - 2018-01-09
-- Various fixes
-
-## [2.4.0] - 2017-09-29
 - Add support to import Maven/Gradle (multi)-projects
 - Add notification to convert to Spoofax project
 - Fix conflicting languages throws exception

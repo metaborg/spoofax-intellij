@@ -1,0 +1,4 @@
+rootProject.name = projectName
+includeFlat 'org.metaborg.jps'
+includeFlat 'org.metaborg.spoofax-common'
+includeFlat 'org.metaborg.spoofax-deps'

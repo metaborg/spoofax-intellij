@@ -1,7 +1,7 @@
-[![Jenkins](https://img.shields.io/jenkins/s/https/buildfarm.metaborg.org/job/metaborg/job/spoofax-releng/job/master.svg)](https://buildfarm.metaborg.org/job/metaborg/job/spoofax-releng/job/master/)
+[![Jenkins](https://img.shields.io/jenkins/s/http/buildfarm.metaborg.org/job/metaborg/job/spoofax-releng/metaborg.svg)](http://buildfarm.metaborg.org/job/metaborg/job/spoofax-releng/job/master/)
 [![GitHub license](https://img.shields.io/github/license/metaborg/spoofax-intellij.svg)](./LICENSE.md)
 
-# Spoofax Language Workbench plugin for IntelliJ IDEA
+# Spoofax plugin for IntelliJ IDEA
 Develop and use languages with the [Spoofax Language Workbench][1] in IntelliJ IDEA.
 
 Want to learn more? [Read the manual][2].
@@ -12,7 +12,7 @@ Want to contribute to this plugin? [More information][3].
 ## Quick Start
 To install the plugin, either:
 
-* clone this repository, then execute `./gradlew runIde` (or `gradlew.bat runIde` on Windows) from the repository's root to start an instance of IntelliJ IDEA with the Spoofax plugin loaded; or
+* clone this repository, then execute `./gradlew runIde` (or `gradlew.bat runIde` on Windows) from the repository's `org.metaborg.intellij` subdirectory to start an instance of IntelliJ IDEA with the Spoofax plugin loaded; or
 * ensure you have Git and a JDK installed, then execute this from the command line; or
 
   ```
@@ -53,7 +53,7 @@ The Spoofax for IntelliJ IDEA plugin has the following limitations:
 
 
 ## License
-Copyright 2016-2018 Daniel Pelsmaeker
+Copyright 2016-2017 Daniel Pelsmaeker
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at <http://www.apache.org/licenses/LICENSE-2.0>.
 
