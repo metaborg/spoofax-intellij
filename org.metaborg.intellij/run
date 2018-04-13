@@ -1,3 +1,0 @@
-#!/bin/sh
-
-./gradlew runIde -Dorg.gradle.java.home=/usr/lib/jvm/intellij-jdk/jre/

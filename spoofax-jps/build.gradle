@@ -7,7 +7,7 @@ task(printAllDependencies, description: 'Prints all runtime dependencies.') {
     doLast {
         def deps = configurations.runtime
         def jars = deps.resolve().collect { it.name }.findAll { !it.startsWith('tools.jar') }
-        def jarList = [ "org.metaborg.jps-${metaborgVersion}.jar" ] + jars.sort()
+        def jarList = [ "spoofax-jps-${metaborgVersion}.jar" ] + jars.sort()
         def depString = jarList.join('\n')
 
         def compileDependenciesResource = "${project.rootDir}/src/main/resources/compile_dependencies.txt"
@@ -25,5 +25,5 @@ task(printAllDependencies, description: 'Prints all runtime dependencies.') {
 }
 
 dependencies {
-    compile     project(":org.metaborg.spoofax-common")
+    compile     project(":spoofax-common")
 }

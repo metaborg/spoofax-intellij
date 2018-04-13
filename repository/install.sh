@@ -38,12 +38,12 @@ main() {
 	require_command make
 
 	ensure git clone https://github.com/metaborg/spoofax-intellij.git
-	ensure cd spoofax-intellij/org.metaborg.intellij
+	ensure cd spoofax-intellij/
 	ensure ./gradlew install
 
 	say "Ensure you have a JDK installed."
 	say "To start IntelliJ IDEA:"
-	say "  cd spoofax-intellij/org.metaborg.intellij"
+	say "  cd spoofax-intellij/"
 	say "  ./gradlew runide"
 
 	return 0

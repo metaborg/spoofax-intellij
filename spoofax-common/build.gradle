@@ -45,7 +45,7 @@ processResources.dependsOn copyLanguageBaselineDependencies
 processTestResources.dependsOn copyTestLanguageBaselineDependencies
 
 dependencies {
-    compile     project(path: ":org.metaborg.spoofax-deps", configuration: "shadow")
+    compile     project(path: ":spoofax-deps", configuration: "shadow")
 
     compile     "com.google.guava:guava:17.0"
     compile     "org.slf4j:slf4j-api:1.7.10"
