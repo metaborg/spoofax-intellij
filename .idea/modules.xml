@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.intellij.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.intellij.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.intellij_main.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.intellij_main.iml" group="org.metaborg.intellij" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.metaborg.intellij_test.iml" filepath="$PROJECT_DIR$/.idea/modules/org.metaborg.intellij_test.iml" group="org.metaborg.intellij" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spoofax-common/spoofax-common.iml" filepath="$PROJECT_DIR$/.idea/modules/spoofax-common/spoofax-common.iml" group="spoofax-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spoofax-common/spoofax-common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/spoofax-common/spoofax-common_main.iml" group="spoofax-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spoofax-common/spoofax-common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/spoofax-common/spoofax-common_test.iml" group="spoofax-common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spoofax-deps/spoofax-deps.iml" filepath="$PROJECT_DIR$/.idea/modules/spoofax-deps/spoofax-deps.iml" group="spoofax-deps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spoofax-deps/spoofax-deps_main.iml" filepath="$PROJECT_DIR$/.idea/modules/spoofax-deps/spoofax-deps_main.iml" group="spoofax-deps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spoofax-deps/spoofax-deps_test.iml" filepath="$PROJECT_DIR$/.idea/modules/spoofax-deps/spoofax-deps_test.iml" group="spoofax-deps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spoofax-jps/spoofax-jps.iml" filepath="$PROJECT_DIR$/.idea/modules/spoofax-jps/spoofax-jps.iml" group="spoofax-jps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spoofax-jps/spoofax-jps_main.iml" filepath="$PROJECT_DIR$/.idea/modules/spoofax-jps/spoofax-jps_main.iml" group="spoofax-jps" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spoofax-jps/spoofax-jps_test.iml" filepath="$PROJECT_DIR$/.idea/modules/spoofax-jps/spoofax-jps_test.iml" group="spoofax-jps" />
+    </modules>
+  </component>
+</project>
