@@ -43,6 +43,7 @@ import org.metaborg.intellij.idea.projects.newproject.INewModuleWizardStepFactor
 import org.metaborg.intellij.idea.projects.newproject.NewModuleWizardStep;
 import org.metaborg.intellij.idea.transformations.IResourceTransformer;
 import org.metaborg.intellij.idea.transformations.ResourceTransformer;
+import org.metaborg.intellij.idea.utils.SimpleConfigUtil;
 import org.metaborg.intellij.injections.IntelliJExtensionProviderFactory;
 import org.metaborg.intellij.injections.IntelliJModuleTypeProvider;
 import org.metaborg.intellij.injections.IntelliJServiceProviderFactory;
@@ -85,6 +86,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
         bindConfiguration();
         bindLibraryService();
         bindFacets();
+        bindUtils();
     }
 
     /**
@@ -237,5 +239,12 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
      */
     protected void bindFacets() {
         install(new IntelliJExtensionProviderFactory().provide(MetaborgFacetType.class, "com.intellij.facetType"));
+    }
+
+    /**
+     * Binds utility classes.
+     */
+    protected void bindUtils() {
+        bind(SimpleConfigUtil.class).in(Singleton.class);
     }
 }

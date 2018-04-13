@@ -39,6 +39,7 @@ import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.intellij.idea.SpoofaxPlugin;
 import org.metaborg.intellij.idea.graphics.IIconManager;
+import org.metaborg.intellij.idea.utils.SimpleConfigUtil;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.intellij.resources.LibraryService;
@@ -60,6 +61,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
 
     private IIconManager iconManager;
     private LibraryService libraryService;
+    private SimpleConfigUtil configUtil;
     @InjectLogger
     private ILogger logger;
 
@@ -74,9 +76,10 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
 
     @Inject
     @SuppressWarnings("unused")
-    private void inject(final LibraryService libraryService, final IIconManager iconManager) {
+    private void inject(final LibraryService libraryService, final IIconManager iconManager, final SimpleConfigUtil configUtil) {
         this.libraryService = libraryService;
         this.iconManager = iconManager;
+        this.configUtil = configUtil;
     }
 
     /**
@@ -439,42 +442,16 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      */
     private List<Pair<String, VirtualFile>> getSdkJars(final String sdkHomePath) {
 
-        // Specify the Metaborg SDK dependencies in this file.
-        final URL url = Resources.getResource(SpoofaxIdeaPlugin.class, "/sdk_libraries.txt");
-
-        // The JARs mentioned must be in the plugin's lib folder (plugins/org.metaborg.intellij/lib)
-        // at runtime. To get them there, the JAR must either be a dependency of this plugin (as plugin
-        // dependencies are automatically copied to the lib folder), or it must be copied or
-        // downloaded to the lib folder at runtime (e.g. from a Maven repository). The LibraryService
-        // can help you download stuff to the lib folder.
-
-        final String text;
-        try {
-            text = Resources.toString(url, Charsets.UTF_8);
-        } catch (final IOException e) {
-            throw LoggerUtils2.exception(this.logger, UnhandledException.class,
-                    "Cannot get resource content of resource: {}", e, url);
-        }
-
-        final String[] filenames = text.split("\\r?\\n");
-
-        final List<Pair<String, VirtualFile>> files = new ArrayList<>(filenames.length);
+        final List<String> filenames = configUtil.readResource("/sdk_libraries.txt");
+        final List<Pair<String, VirtualFile>> files = new ArrayList<>(filenames.size());
         for (final String filename : filenames) {
             final String finalFilename = filename.replace("${version}", SpoofaxPlugin.INSTANCE.getVersion());
 
             final File file = new File(sdkHomePath, finalFilename);
 
             @Nullable final VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
-//            if (virtualFile == null) {
-//                files.add(null);
-//                continue;
-//            }
 
             @Nullable final VirtualFile jarFile = virtualFile != null ? JarFileSystemImpl.getInstance().getJarRootForLocalFile(virtualFile) : null;
-//            if (jarFile == null) {
-//                files.add(null);
-//                continue;
-//            }
 
             files.add(Pair.of(filename, jarFile));
         }

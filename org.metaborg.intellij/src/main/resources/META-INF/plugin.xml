@@ -35,7 +35,9 @@
         <projectService serviceInterface="org.metaborg.intellij.configuration.IMetaborgProjectConfig" serviceImplementation="org.metaborg.intellij.idea.configuration.IdeaMetaborgProjectConfig" />
         <moduleService serviceInterface="org.metaborg.intellij.configuration.IMetaborgModuleConfig" serviceImplementation="org.metaborg.intellij.idea.configuration.IdeaMetaborgModuleConfig" />
 
-        <compileServer.plugin classpath="org.metaborg.jps-2.5.0-SNAPSHOT.jar;annotations-13.0.jar;aopalliance-1.0.jar;commons-lang3-3.4.jar;commons-logging-1.2.jar;commons-vfs2-2.1.jar;guava-17.0.jar;guice-4.0.jar;guice-assistedinject-4.0.jar;guice-multibindings-4.0.jar;javassist-3.20.0-GA.jar;javax.inject-1.jar;jsr305-3.0.1.jar;kotlin-stdlib-1.2.21.jar;org.metaborg.spoofax-common-2.5.0-SNAPSHOT.jar;org.metaborg.spoofax-deps-2.5.0-SNAPSHOT.jar;slf4j-api-1.7.10.jar"/>
+        <buildProcess.parametersProvider
+                implementation="org.metaborg.intellij.idea.compilation.BuildClasspathProvider"/>
+        <compileServer.plugin classpath=""/>
 
     </extensions>
 

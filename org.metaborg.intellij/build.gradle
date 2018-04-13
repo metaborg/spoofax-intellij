@@ -10,7 +10,7 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.intellij" version "0.2.18"
+    id "org.jetbrains.intellij" version "0.3.1"
     id "de.fuerstenau.buildconfig" version "1.1.8"
 }
 
@@ -79,6 +79,10 @@ configure(allprojects.findAll {it.name != 'org.metaborg.spoofax-deps'}) {
   intellij {
       type = "IC"
   }
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn 'org.metaborg.jps:printAllDependencies'
 }
 
 subprojects { runIde.enabled = false }
