@@ -1,0 +1,4 @@
+rootProject.name = projectName
+include 'spoofax-jps'
+include 'spoofax-common'
+include 'spoofax-deps'
