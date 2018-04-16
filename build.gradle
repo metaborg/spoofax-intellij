@@ -94,6 +94,7 @@ configure(allprojects.findAll {it.name != 'spoofax-deps' && it.name != 'org.meta
     project.tasks.getByPath("runIde").enabled false
     project.tasks.getByPath("publishPlugin").enabled false
     project.tasks.getByPath("verifyPlugin").enabled false
+    project.tasks.getByPath("install").enabled false
 }
 
 tasks.withType(JavaCompile) {
