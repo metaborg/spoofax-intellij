@@ -82,6 +82,11 @@ configure(allprojects.findAll {it.name != 'spoofax-deps'}) {
 
   intellij {
       type = "IC"
+      version intellijVersion
+      pluginName projectName
+      downloadSources Boolean.valueOf(intellijSources)
+      sameSinceUntilBuild Boolean.valueOf(intellijEAP)
+      alternativeIdePath intellijLocalPath
   }
 }
 
