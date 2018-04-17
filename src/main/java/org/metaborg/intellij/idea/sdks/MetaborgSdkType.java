@@ -164,47 +164,58 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
     @Override
     public boolean setupSdkPaths(final Sdk metaborgSdk, final SdkModel sdkModel) {
 
-        @Nullable final JavaSdkVersion minimumJdkVersion = getMinimumJdkVersion(metaborgSdk);
-        final List<String> jdkCandidates = new ArrayList<>();
-        for (final Sdk sdk : sdkModel.getSdks()) {
-            if (isAcceptableJdk(sdk, minimumJdkVersion)) {
-                jdkCandidates.add(sdk.getName());
+        final SdkModificator sdkModificator = metaborgSdk.getSdkModificator();
+        boolean success = setupSdkPaths(metaborgSdk, sdkModificator, sdkModel);
+        if (success && sdkModificator.getSdkAdditionalData() == null) {
+
+            @Nullable final JavaSdkVersion minimumJdkVersion = getMinimumJdkVersion(metaborgSdk);
+            final List<String> jdkCandidates = new ArrayList<>();
+            for (final Sdk sdk : sdkModel.getSdks()) {
+                if (isAcceptableJdk(sdk, minimumJdkVersion)) {
+                    jdkCandidates.add(sdk.getName());
+                }
             }
-        }
 
-        if (jdkCandidates.isEmpty()) {
-            Messages.showErrorDialog("No JDK found" +
-                    (minimumJdkVersion != null ? " of at least version " + minimumJdkVersion.getDescription() : "")
-                    + ". Please configure one.", "JDK Not Found");
-            return false;
-        }
-
-        String jdkName = jdkCandidates.get(0);
-
-        if (jdkCandidates.size() > 1) {
-            final int choice = Messages
-                    .showChooseDialog("Select the JDK to use with Metaborg.", "Select JDK",
-                            ArrayUtil.toStringArray(jdkCandidates), jdkName, Messages.getQuestionIcon());
-
-            if (choice == -1) {
-                // User cancelled.
+            if (jdkCandidates.isEmpty()) {
+                Messages.showErrorDialog("No JDK found" +
+                        (minimumJdkVersion != null ? " of at least version " + minimumJdkVersion.getDescription() : "")
+                        + ". Please configure one.", "JDK Not Found");
                 return false;
             }
 
-            jdkName = jdkCandidates.get(choice);
+            String jdkName = jdkCandidates.get(0);
+
+            if (jdkCandidates.size() > 1) {
+                @SuppressWarnings("deprecation") final int choice
+                        = Messages.showChooseDialog("Select the JDK to use with Metaborg.", "Select JDK",
+                                ArrayUtil.toStringArray(jdkCandidates), jdkName, Messages.getQuestionIcon());
+
+                if (choice == -1) {
+                    // User cancelled.
+                    success = false;
+                }
+
+                jdkName = jdkCandidates.get(choice);
+            }
+
+            @Nullable final Sdk jdk = sdkModel.findSdk(jdkName);
+            assert jdk != null;
+            setJdk(metaborgSdk, sdkModificator, jdk);
         }
+        sdkModificator.commitChanges();
 
-        @Nullable final Sdk jdk = sdkModel.findSdk(jdkName);
-        assert jdk != null;
+        return success;
+    }
 
-        final SdkModificator sdkModificator = metaborgSdk.getSdkModificator();
+    private boolean setupSdkPaths(Sdk metaborgSdk, SdkModificator sdkModificator, SdkModel model) {
+        return true;
+    }
+
+    private void setJdk(Sdk metaborgSdk, SdkModificator sdkModificator, Sdk jdk) {
         addJdkPaths(sdkModificator, jdk);
         addMetaborgSdkPaths(sdkModificator, metaborgSdk.getHomePath());
         sdkModificator.setSdkAdditionalData(new MetaborgSdkAdditionalData(metaborgSdk, jdk));
         sdkModificator.setVersionString(jdk.getVersionString());
-        sdkModificator.commitChanges();
-
-        return true;
     }
 
     /**
@@ -259,7 +270,6 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
         @Nullable final Sdk jdk = getJdk(sdk);
         if (jdk == null) return null;
         return JavaSdk.getInstance().getBinPath(jdk);
-//        return ((JavaSdk)jdk.getSdkType()).getBinPath(jdk);
     }
 
     /**
@@ -271,7 +281,6 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
         @Nullable final Sdk jdk = getJdk(sdk);
         if (jdk == null || jdk.getVersionString() == null) return null;
         return JavaSdk.getInstance().getToolsPath(jdk);
-//        return ((JavaSdk)jdk.getSdkType()).getToolsPath(jdk);
     }
 
     /**
@@ -283,7 +292,6 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
         @Nullable final Sdk jdk = getJdk(sdk);
         if (jdk == null) return null;
         return JavaSdk.getInstance().getVMExecutablePath(jdk);
-//        return ((JavaSdk)jdk.getSdkType()).getVMExecutablePath(jdk);
     }
 
     /**
@@ -293,7 +301,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      * @return The JDK; or <code>null</code>.
      */
     @Nullable
-    public static Sdk getJdk(final Sdk sdk) {
+    private static Sdk getJdk(final Sdk sdk) {
         @Nullable final MetaborgSdkAdditionalData data = getMetaborgSdkAdditionalData(sdk);
         if (data == null) return null;
         return data.getJdk();
@@ -306,35 +314,13 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      * @return The Metaborg data; or <code>null</code>.
      */
     @Nullable
-    public static MetaborgSdkAdditionalData getMetaborgSdkAdditionalData(final Sdk sdk) {
+    private static MetaborgSdkAdditionalData getMetaborgSdkAdditionalData(final Sdk sdk) {
         @Nullable final SdkAdditionalData data = sdk.getSdkAdditionalData();
         if (data instanceof MetaborgSdkAdditionalData) {
             return (MetaborgSdkAdditionalData)data;
         } else {
             return null;
         }
-    }
-
-    /**
-     * Gets the best fitting JDK.
-     *
-     * @return The JDK; or <code>null</code> if not found.
-     */
-    @Nullable
-    public static Sdk getBestJdk() {
-        @Nullable Sdk bestJdk = null;
-        @Nullable JavaSdkVersion bestJdkVersion = null;
-
-        for(@Nullable final Sdk jdk : ProjectJdkTable.getInstance().getAllJdks()) {
-
-            if (isAcceptableJdk(jdk, bestJdkVersion)) {
-                bestJdk = jdk;
-                bestJdkVersion = ((JavaSdk) jdk.getSdkType()).getVersion(bestJdk);
-                assert bestJdkVersion != null;
-            }
-
-        }
-        return bestJdk;
     }
 
     /**
@@ -345,8 +331,8 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      * @return <code>true</code> when the JDK is acceptable;
      * otherwise, <code>false</code>.
      */
-    public static boolean isAcceptableJdk(@Nullable final Sdk jdk,
-                                          @Nullable final JavaSdkVersion minimumJdkVersion) {
+    private static boolean isAcceptableJdk(@Nullable final Sdk jdk,
+                                           @Nullable final JavaSdkVersion minimumJdkVersion) {
         if(jdk == null || !(jdk.getSdkType() instanceof JavaSdk))
             return false;
 
@@ -366,8 +352,8 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      * @return <code>true</code> when the JDK is acceptable;
      * otherwise, <code>false</code>.
      */
-    public static boolean isAcceptableJdk(@Nullable final Sdk jdk,
-                                          @Nullable final Sdk sdk) {
+    /* package private */ static boolean isAcceptableJdk(@Nullable final Sdk jdk,
+                                   @Nullable final Sdk sdk) {
         return isAcceptableJdk(jdk, getMinimumJdkVersion(sdk));
     }
 
@@ -378,9 +364,9 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
      * @return The minimum required JDK version; or <code>null</code>.
      */
     @Nullable
-    public static JavaSdkVersion getMinimumJdkVersion(@Nullable final Sdk sdk) {
+    private static JavaSdkVersion getMinimumJdkVersion(@Nullable final Sdk sdk) {
         // TODO: Determine the minimum JDK version based on the SDK.
-        return JavaSdkVersion.JDK_1_7;
+        return JavaSdkVersion.JDK_1_8;
     }
 
     /**
