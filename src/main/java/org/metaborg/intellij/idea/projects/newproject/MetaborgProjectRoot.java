@@ -19,6 +19,7 @@
 package org.metaborg.intellij.idea.projects.newproject;
 
 import com.intellij.ide.util.projectWizard.importSources.DetectedProjectRoot;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -36,11 +37,18 @@ public final class MetaborgProjectRoot extends DetectedProjectRoot {
         super(directory);
     }
 
+    @Override
+    public boolean canContainRoot(@NotNull DetectedProjectRoot root) {
+        // Prevent the Java DetectedSourceRoot (or any other root for that matter)
+        // to appear _under_ this project.
+        return false;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String getRootTypeName() {
-        return "Spoofax module";
+        return "Spoofax language";
     }
 }

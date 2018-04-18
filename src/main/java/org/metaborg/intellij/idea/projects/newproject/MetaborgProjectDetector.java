@@ -35,19 +35,18 @@ import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.Pair;
 import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
-import org.metaborg.core.build.*;
-import org.metaborg.core.config.*;
-import org.metaborg.core.language.*;
-import org.metaborg.core.resource.*;
+import org.metaborg.core.config.ConfigRequest;
+import org.metaborg.core.config.ILanguageComponentConfig;
+import org.metaborg.core.config.ILanguageComponentConfigService;
+import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.intellij.idea.projects.MetaborgModuleType;
 import org.metaborg.intellij.idea.projects.ModuleBuilderUtils;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
-import org.metaborg.util.log.*;
+import org.metaborg.util.log.ILogger;
 
 import javax.swing.*;
 import java.io.File;
@@ -103,7 +102,6 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
 
         if(this.configService.available(this.resourceService.resolve(dir))) {
             this.logger.info("Detected Spoofax project in {}", base);
-//                        result.add(new DetectedContentRoot(base, "Spoofax", this.moduleType, JavaModuleType.getModuleType()));
             result.add(new MetaborgProjectRoot(base));
             return DirectoryProcessingResult.SKIP_CHILDREN;
         }
