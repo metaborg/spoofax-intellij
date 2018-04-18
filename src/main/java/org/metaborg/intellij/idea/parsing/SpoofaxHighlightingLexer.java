@@ -37,9 +37,7 @@ import org.metaborg.spoofax.core.style.ISpoofaxCategorizerService;
 import org.metaborg.spoofax.core.style.ISpoofaxStylerService;
 import org.metaborg.spoofax.core.syntax.ISpoofaxSyntaxService;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
-import org.metaborg.spoofax.core.unit.ISpoofaxInputUnit;
-import org.metaborg.spoofax.core.unit.ISpoofaxInputUnitService;
-import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
+import org.metaborg.spoofax.core.unit.*;
 import org.metaborg.util.log.ILogger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.IToken;
@@ -70,10 +68,11 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     private final ILanguageImpl languageImpl;
     private final JSGLRParserConfiguration parserConfiguration;
     private final SpoofaxTokenTypeManager tokenTypesManager;
-    private final ISpoofaxInputUnitService unitService;
+    private final ISpoofaxInputUnitService inputUnitService;
     private final ISpoofaxSyntaxService syntaxService;
     private final ISpoofaxCategorizerService categorizer;
     private final ISpoofaxStylerService styler;
+    private final ISpoofaxUnitService unitService;
     @InjectLogger
     private ILogger logger;
 
@@ -90,18 +89,19 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     @Inject
     private SpoofaxHighlightingLexer(@Assisted @Nullable FileObject file, @Assisted @Nullable IProject project,
                                      @Assisted ILanguageImpl languageImpl, @Assisted SpoofaxTokenTypeManager tokenTypesManager,
-                                     ISpoofaxInputUnitService unitService, ISpoofaxSyntaxService syntaxService,
+                                     ISpoofaxInputUnitService inputUnitService, ISpoofaxSyntaxService syntaxService,
                                      ISpoofaxCategorizerService categorizer, ISpoofaxStylerService styler,
-                                     JSGLRParserConfiguration parserConfiguration) {
+                                     JSGLRParserConfiguration parserConfiguration, ISpoofaxUnitService unitService) {
         this.file = file;
         this.project = project;
         this.languageImpl = languageImpl;
         this.parserConfiguration = parserConfiguration;
         this.tokenTypesManager = tokenTypesManager;
-        this.unitService = unitService;
+        this.inputUnitService = inputUnitService;
         this.syntaxService = syntaxService;
         this.categorizer = categorizer;
         this.styler = styler;
+        this.unitService = unitService;
     }
 
 
@@ -149,9 +149,12 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     private ISpoofaxParseUnit parseAll() {
         // TODO: Optimize parsing? Is there a parse cache? I think so.
         final ISpoofaxInputUnit input =
-            unitService.inputUnit(file, buffer.toString(), languageImpl, null, parserConfiguration);
+            inputUnitService.inputUnit(file, buffer.toString(), languageImpl, null, parserConfiguration);
         try {
             return syntaxService.parse(input);
+        } catch(final AssertionError e) {
+            logger.error("Assertion failed in parser", e);
+            return this.unitService.emptyParseUnit(input);
         } catch(final ParseException e) {
             throw new MetaborgRuntimeException("Unhandled exception", e);
         }
