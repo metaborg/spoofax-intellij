@@ -17,7 +17,7 @@ guice-multibindings-4.0.jar
 javassist-3.20.0-GA.jar
 javax.inject-1.jar
 jsr305-3.0.1.jar
-kotlin-stdlib-1.2.21.jar
+kotlin-stdlib-1.2.40.jar
 slf4j-api-1.7.10.jar
 spoofax-common-2.5.0-SNAPSHOT.jar
 spoofax-deps-2.5.0-SNAPSHOT.jar

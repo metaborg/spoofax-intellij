@@ -1,27 +1,14 @@
 <idea-plugin>
     <id>org.metaborg.intellij</id>
     <name>Spoofax</name>
-    <!--<version>2.5.0-SNAPSHOT</version>-->
     <vendor email="intellij@metaborg.org" url="http://www.metaborg.org/">Metaborg</vendor>
-
-    <!--<description><![CDATA[-->
-      <!--Spoofax plugin for IntelliJ IDEA.-->
-    <!--]]></description>-->
-
-    <!--<change-notes><![CDATA[-->
-      <!--Bug fixes and improvements.-->
-    <!--]]>-->
-    <!--</change-notes>-->
-
-    <!-- See http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
-    <!--<idea-version since-build="143.381.42" until-build="171.*"/>-->
 
     <extensions defaultExtensionNs="com.intellij">
         <compiler.buildTargetScopeProvider implementation="org.metaborg.intellij.idea.builders.SpoofaxBuildTargetScopeProvider" />
         <facetType implementation="org.metaborg.intellij.idea.facets.MetaborgFacetType" />
         <sdkType implementation="org.metaborg.intellij.idea.sdks.MetaborgSdkType"/>
 
-        <moduleType id="METABORG_MODULE" implementationClass="org.metaborg.intellij.idea.projects.MetaborgModuleType"/>
+        <moduleType id="METABORG_MODULE" implementationClass="org.metaborg.intellij.idea.projects.MetaborgModuleType" classpathProvider="true" />
         <editorNotificationProvider implementation="org.metaborg.intellij.idea.modules.WrongModuleTypeNotificationProvider"/>
         <moduleConfigurationEditorProvider implementation="org.metaborg.intellij.idea.gui.modulesettings.MetaborgModuleConfigurationEditorProvider"/>
 
