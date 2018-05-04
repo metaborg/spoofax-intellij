@@ -21,8 +21,11 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
+import org.spoofax.interpreter.terms.IStrategoConstructor;
+import org.spoofax.interpreter.terms.IStrategoList;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
+import org.spoofax.terms.Term;
 
 import javax.annotation.Nullable;
 import java.util.Stack;
@@ -88,6 +91,17 @@ public final class AstBuilder {
     }
 
     /**
+     * Checks whether the term is amb or not.
+     *
+     * @param term term to check
+     * @return true if term is amb
+     */
+    private boolean isAmbNode(final IStrategoTerm term) {
+        IStrategoConstructor ctor = Term.tryGetConstructor(term);
+        return ctor != null && ctor.getArity() == 1 && Term.termAt(term, 0).isList() && ctor.getName().equals("amb");
+    }
+
+    /**
      * Builds the AST for the specified term, iteratively.
      *
      * @param root
@@ -107,9 +121,14 @@ public final class AstBuilder {
                 marker = buildTermStart(builder, term);
                 tasks.push(new TermTask(term, marker));
 
-                final IStrategoTerm[] subterms = term.getAllSubterms();
-                for(int i = subterms.length - 1; i >= 0; i--) {
-                    tasks.push(new TermTask(subterms[i]));
+                if (isAmbNode(term)) {
+                    final IStrategoList list = Term.termAt(term, 0);
+                    tasks.push(new TermTask(list.head()));
+                } else {
+                    final IStrategoTerm[] subterms = term.getAllSubterms();
+                    for(int i = subterms.length - 1; i >= 0; i--) {
+                        tasks.push(new TermTask(subterms[i]));
+                    }
                 }
             } else {
                 // End
@@ -184,25 +203,6 @@ public final class AstBuilder {
         // We assume the lexer to have a 1 character step increments,
         // so we can't overshoot our target.
         assert builder.getCurrentOffset() == offset;
-    }
-
-    /**
-     * Builds the AST for the specified term, recursively.
-     *
-     * @param term
-     *            The term.
-     */
-    @SuppressWarnings("unused") private void buildTermRecursive(final PsiBuilder builder, final IStrategoTerm term,
-                                                                final ATermAstElementTypeProvider elementTypeProvider) {
-        final PsiBuilder.Marker marker = buildTermStart(builder, term);
-
-        final IStrategoTerm[] subterms = term.getAllSubterms();
-        for(final IStrategoTerm subterm : subterms) {
-            // Recurse
-            buildTermRecursive(builder, subterm, elementTypeProvider);
-        }
-
-        buildTermEnd(builder, term, marker, elementTypeProvider);
     }
 
     private static class TermTask {
