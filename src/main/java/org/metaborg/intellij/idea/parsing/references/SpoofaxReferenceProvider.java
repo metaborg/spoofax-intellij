@@ -110,8 +110,8 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
     private Iterable<MetaborgReference> getMetaborgReferences(final MetaborgReferenceElement element,
                                                               final Resolution resolution) {
         final List<MetaborgReference> references = new ArrayList<>();
-        for (final ISourceLocation location : resolution.targets) {
-            @Nullable final SpoofaxReference reference = getMetaborgReference(element, location);
+        for (final Resolution.Target target : resolution.targets) {
+            @Nullable final SpoofaxReference reference = getMetaborgReference(element, target.location);
             if (reference != null) {
                 references.add(reference);
             }
