@@ -28,6 +28,7 @@ import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.source.ISourceLocation;
 import org.metaborg.core.tracing.Resolution;
+import org.metaborg.core.tracing.ResolutionTarget;
 import org.metaborg.intellij.idea.languages.ILanguageProjectService;
 import org.metaborg.intellij.idea.projects.IIdeaProjectService;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
@@ -110,7 +111,7 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
     private Iterable<MetaborgReference> getMetaborgReferences(final MetaborgReferenceElement element,
                                                               final Resolution resolution) {
         final List<MetaborgReference> references = new ArrayList<>();
-        for (final Resolution.Target target : resolution.targets) {
+        for (final ResolutionTarget target : resolution.targets) {
             @Nullable final SpoofaxReference reference = getMetaborgReference(element, target.location);
             if (reference != null) {
                 references.add(reference);
