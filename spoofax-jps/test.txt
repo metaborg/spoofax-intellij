@@ -4,10 +4,10 @@ aopalliance-1.0.jar
 commons-lang3-3.4.jar
 commons-logging-1.2.jar
 commons-vfs2-2.1.jar
-guava-17.0.jar
-guice-4.0.jar
-guice-assistedinject-4.0.jar
-guice-multibindings-4.0.jar
+guava-20.0.jar
+guice-4.2.0.jar
+guice-assistedinject-4.2.0.jar
+guice-multibindings-4.2.0.jar
 javassist-3.20.0-GA.jar
 javax.inject-1.jar
 jsr305-3.0.1.jar
