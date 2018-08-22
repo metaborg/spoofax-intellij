@@ -69,6 +69,7 @@ dependencies {
     language    "org.metaborg:org.metaborg.meta.nabl2.shared:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.nabl2.lang:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.nabl2.runtime:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:flowspec.lang:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lang.stratego:$metaborgVersion@spoofax-language"
     language    "org.metaborg:org.metaborg.meta.lang.template:$metaborgVersion@spoofax-language"
