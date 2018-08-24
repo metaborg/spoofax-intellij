@@ -6,9 +6,6 @@ Develop and use languages with the [Spoofax Language Workbench][1] in IntelliJ I
 
 Want to learn more? [Read the manual][2].
 
-Want to contribute to this plugin? [More information][3].
-
-
 ## Quick Start
 To install the plugin, either:
 
@@ -62,4 +59,3 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 [1]: http://www.spoofax.org/
 [2]: http://www.metaborg.org/en/latest/source/langdev/manual/env/intellij/index.html
-[3]: ./CONTRIBUTE.md
