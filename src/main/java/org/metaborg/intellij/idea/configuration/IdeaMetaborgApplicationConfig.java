@@ -43,9 +43,7 @@ import java.util.Set;
  */
 @State(
         name = IMetaborgApplicationConfig.CONFIG_NAME,
-        storages = {
-                @Storage(file = StoragePathMacros.APP_CONFIG + "/" + IMetaborgApplicationConfig.CONFIG_FILE)
-        }
+        storages = { @Storage(IMetaborgApplicationConfig.CONFIG_FILE) }
 )
 public final class IdeaMetaborgApplicationConfig
         implements IMetaborgApplicationConfig, PersistentStateComponent<MetaborgApplicationConfigState> {

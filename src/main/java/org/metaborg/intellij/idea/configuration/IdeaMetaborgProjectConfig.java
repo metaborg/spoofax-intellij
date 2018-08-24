@@ -33,11 +33,7 @@ import org.metaborg.util.log.*;
  */
 @State(
         name = IMetaborgProjectConfig.CONFIG_NAME,
-        storages = {
-                @Storage(file = StoragePathMacros.PROJECT_FILE),
-                @Storage(file = StoragePathMacros.PROJECT_CONFIG_DIR + "/" + IMetaborgProjectConfig.CONFIG_FILE,
-                        scheme = StorageScheme.DIRECTORY_BASED)
-        }
+        storages = { @Storage(IMetaborgProjectConfig.CONFIG_FILE) }
 )
 public final class IdeaMetaborgProjectConfig
         implements IMetaborgProjectConfig, PersistentStateComponent<MetaborgProjectConfigState> {
