@@ -1,0 +1,152 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.3.1"
+    id "de.fuerstenau.buildconfig" version "1.1.8"
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+    apply plugin: 'maven'
+    apply plugin: 'de.fuerstenau.buildconfig'
+
+    group = projectGroup
+    version = projectVersion
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaTargetVersion
+
+    compileJava.options.encoding = 'UTF-8'
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.encoding = 'UTF-8'
+            //options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url "https://artifacts.metaborg.org/content/repositories/releases/"
+        }
+        maven {
+            url "https://artifacts.metaborg.org/content/repositories/snapshots/"
+        }
+        maven {
+            url "https://raw.githubusercontent.com/pluto-build/pluto-build.github.io/master/mvnrepository/"
+        }
+        maven {
+            url "http://sugar-lang.github.io/mvnrepository/"
+        }
+        maven {
+            url "http://nexus.usethesource.io/content/repositories/public/"
+        }
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                mavenLocal()
+            }
+        }
+    }
+}
+
+configure(allprojects.findAll {it.name != 'spoofax-deps'}) {
+  apply plugin: 'kotlin'
+  apply plugin: 'org.jetbrains.intellij'
+
+  dependencies {
+      compile     "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+      testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+
+      // Added to fix IntelliJ dependency resolution across shadow dependencies
+      // This list must be the same as those defined in spoofax-deps, minus commons-io.
+      compileClasspath "org.metaborg:org.metaborg.core:$metaborgVersion"
+      compileClasspath "org.metaborg:org.metaborg.spoofax.core:$metaborgVersion"
+      compileClasspath "org.metaborg:org.metaborg.spoofax.meta.core:$metaborgVersion"
+      // compileClasspath 'commons-io:commons-io:2.4'
+  }
+
+  intellij {
+      type = "IC"
+      version intellijVersion
+      pluginName projectName
+      downloadSources Boolean.valueOf(intellijSources)
+      sameSinceUntilBuild Boolean.valueOf(intellijEAP)
+      alternativeIdePath intellijLocalPath
+  }
+}
+
+configure(allprojects.findAll {it.name != 'spoofax-deps' && it.name != 'org.metaborg.intellij'}) {
+    // We don't want these tasks in the subprojects.
+    project.tasks.getByPath("buildPlugin").enabled false
+    project.tasks.getByPath("patchPluginXml").enabled false
+    project.tasks.getByPath("prepareSandbox").enabled false
+    project.tasks.getByPath("prepareTestingSandbox").enabled false
+    project.tasks.getByPath("runIde").enabled false
+    project.tasks.getByPath("publishPlugin").enabled false
+    project.tasks.getByPath("verifyPlugin").enabled false
+    project.tasks.getByPath("install").enabled false
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn ':spoofax-jps:printAllDependencies'
+}
+
+intellij {
+    version intellijVersion
+    pluginName projectName
+    downloadSources Boolean.valueOf(intellijSources)
+    sameSinceUntilBuild Boolean.valueOf(intellijEAP)
+    alternativeIdePath intellijLocalPath
+    // WORKAROUND: For Java 9, instrumentation fails with the error:
+    //     Class not found: javax.swing.JPanel
+    // https://github.com/JetBrains/gradle-intellij-plugin/issues/235
+    instrumentCode false
+
+    patchPluginXml {
+        sinceBuild intellijSinceBuild
+        untilBuild intellijUntilBuild
+        pluginDescription projectDescription
+        changeNotes projectChangeNotes
+    }
+
+    publishPlugin {
+        username publishUsername
+        password publishPassword
+        channels publishChannel
+    }
+}
+
+// To debug the JPS plugin: enable the "Debug Build Process" action in the sandbox instance
+// (Ctrl+Shift+A), then start a build and attach a remote debugger to port 5005.
+// https://github.com/JetBrains/gradle-intellij-plugin/issues/23
+afterEvaluate {
+    tasks.getByName('runIde') {
+        jvmArgs += ["-Dcompiler.process.debug.port=5005"]
+    }
+}
+
+dependencies {
+    // Main dependencies
+    compile     project(":spoofax-common")
+    compile     (project(":spoofax-jps")) {
+        // Fixes an issue where the IntelliJ sources cause class loading to fail.
+        //   ClassNotFoundException: org.jetbrains.jps.intellilang.model.impl.JpsIntelliLangModelSerializerExtension
+        exclude module: "idea"
+    }
+
+    testCompile "junit:junit:4.12"
+}

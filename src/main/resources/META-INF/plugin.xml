@@ -1,0 +1,60 @@
+<idea-plugin>
+    <id>org.metaborg.intellij</id>
+    <name>Spoofax</name>
+    <vendor email="intellij@metaborg.org" url="http://www.metaborg.org/">Metaborg</vendor>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <compiler.buildTargetScopeProvider implementation="org.metaborg.intellij.idea.builders.SpoofaxBuildTargetScopeProvider" />
+        <facetType implementation="org.metaborg.intellij.idea.facets.MetaborgFacetType" />
+        <sdkType implementation="org.metaborg.intellij.idea.sdks.MetaborgSdkType"/>
+
+        <moduleType id="METABORG_MODULE" implementationClass="org.metaborg.intellij.idea.projects.MetaborgModuleType" classpathProvider="true" />
+        <editorNotificationProvider implementation="org.metaborg.intellij.idea.modules.WrongModuleTypeNotificationProvider"/>
+        <moduleConfigurationEditorProvider implementation="org.metaborg.intellij.idea.gui.modulesettings.MetaborgModuleConfigurationEditorProvider"/>
+
+        <frameworkSupport implementation="org.metaborg.intellij.idea.facets.MetaborgFacetFrameworkSupport"/>
+        <projectStructureDetector implementation="org.metaborg.intellij.idea.projects.newproject.MetaborgProjectDetector"/>
+        <fileTypeFactory implementation="org.metaborg.intellij.idea.filetypes.MetaborgFileTypeFactory"/>
+        <lang.elementManipulator forClass="org.metaborg.intellij.idea.parsing.elements.SpoofaxIdentifier" implementationClass="org.metaborg.intellij.idea.parsing.references.SpoofaxIdentifierManipulator"/>
+        <psi.referenceContributor implementation="org.metaborg.intellij.idea.parsing.references.MetaborgReferenceContributor"/>
+        <projectConfigurable id="metaborg.project.language.settings" groupId="language" instance="org.metaborg.intellij.idea.gui.languagesettings.MetaborgProjectLanguagesSettings" />
+        <applicationService serviceInterface="org.metaborg.intellij.configuration.IMetaborgApplicationConfig" serviceImplementation="org.metaborg.intellij.idea.configuration.IdeaMetaborgApplicationConfig" />
+        <projectService serviceInterface="org.metaborg.intellij.configuration.IMetaborgProjectConfig" serviceImplementation="org.metaborg.intellij.idea.configuration.IdeaMetaborgProjectConfig" />
+        <moduleService serviceInterface="org.metaborg.intellij.configuration.IMetaborgModuleConfig" serviceImplementation="org.metaborg.intellij.idea.configuration.IdeaMetaborgModuleConfig" />
+
+        <buildProcess.parametersProvider
+                implementation="org.metaborg.intellij.idea.compilation.BuildClasspathProvider"/>
+        <compileServer.plugin classpath=""/>
+
+    </extensions>
+
+    <extensionPoints>
+        <extensionPoint name="spoofaxPlugin" interface="org.metaborg.core.plugin.IServiceModulePlugin" />
+        <extensionPoint name="spoofaxMetaPlugin" interface="org.metaborg.meta.core.plugin.IServiceMetaModulePlugin" />
+    </extensionPoints>
+
+    <extensions defaultExtensionNs="org.metaborg.intellij">
+        <spoofaxPlugin implementation="org.metaborg.spoofax.meta.core.SpoofaxExtensionModulePlugin" />
+    </extensions>
+
+    <application-components>
+        <component>
+            <implementation-class>org.metaborg.intellij.idea.IdeaApplicationComponent</implementation-class>
+        </component>
+    </application-components>
+
+    <project-components>
+        <component>
+            <implementation-class>org.metaborg.intellij.idea.IdeaProjectComponent</implementation-class>
+        </component>
+    </project-components>
+
+    <module-components>
+        <component>
+            <implementation-class>org.metaborg.intellij.idea.IdeaModuleComponent</implementation-class>
+        </component>
+    </module-components>
+
+    <actions>
+    </actions>
+</idea-plugin>

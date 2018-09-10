@@ -1,0 +1,83 @@
+
+intellij {
+    type = "JPS"
+}
+
+buildConfig {
+    appName = project.name
+    version = project.version
+
+    clsName = 'BuildConfig'
+    packageName = 'org.metaborg.intellij'
+    charset = 'UTF-8'
+
+    buildConfigField 'String', 'METABORG_VERSION', metaborgVersion
+}
+
+configurations {
+    language
+    languageBaseline
+    testLanguage
+    testLanguageBaseline
+}
+
+task copyLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the resources.') {
+    into "src/main/resources/languages/"
+    from configurations.language
+}
+
+task copyTestLanguageDependencies(type: Copy, description: 'Copies the language dependencies to the test resources.') {
+    into "src/test/resources/languages/"
+    from configurations.testLanguage
+}
+
+task copyLanguageBaselineDependencies(type: Copy, description: 'Copies the language dependencies to the resources.', dependsOn: copyLanguageDependencies) {
+    into "src/main/resources/languages/"
+    from configurations.languageBaseline
+}
+
+task copyTestLanguageBaselineDependencies(type: Copy, description: 'Copies the language dependencies to the test resources.', dependsOn: copyTestLanguageDependencies) {
+    into "src/test/resources/languages/"
+    from configurations.testLanguageBaseline
+}
+
+processResources.dependsOn copyLanguageBaselineDependencies
+processTestResources.dependsOn copyTestLanguageBaselineDependencies
+
+dependencies {
+    compile     project(path: ":spoofax-deps", configuration: "shadow")
+
+    compile     "com.google.guava:guava:26.0-jre"
+    compile     "org.slf4j:slf4j-api:1.7.10"
+
+    compile     "com.google.code.findbugs:jsr305:3.0.1"
+    compile     "org.apache.commons:commons-lang3:3.4"
+    compile     "org.apache.commons:commons-vfs2:2.1"
+    compile     "com.google.inject:guice:$guiceVersion"
+    compile     "com.google.inject.extensions:guice-assistedinject:$guiceVersion"
+    compile     "com.google.inject.extensions:guice-multibindings:$guiceVersion"
+    compile     "org.javassist:javassist:3.20.0-GA"
+
+    testCompile "junit:junit:4.12"
+
+    language    "org.metaborg:dynsem:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:dynsem2coq:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.lang.coq:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.aterm:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.esv:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.nabl:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.nabl2.shared:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.nabl2.lang:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.nabl2.runtime:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:flowspec.lang:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.stratego:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.template:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.ts:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.spt.interactive:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lib.analysis:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:meta.lib.spoofax:$metaborgVersion@spoofax-language"
+    language    "org.metaborg:org.metaborg.meta.lang.analysis:$metaborgVersion@spoofax-language"
+
+    testLanguage "org.metaborg:org.metaborg.meta.lang.sdf:$metaborgVersion@spoofax-language"
+}
