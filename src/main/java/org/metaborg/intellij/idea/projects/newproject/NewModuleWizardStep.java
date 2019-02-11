@@ -161,10 +161,6 @@ public class NewModuleWizardStep extends ModuleWizardStep {
         if (StringUtil.isEmptyOrSpaces(text)) {
             throw new ConfigurationException("Please specify a " + fieldName + ".");
         }
-        if (!LanguageVersion.valid(text)) {
-            throw new ConfigurationException("Please specify a valid " + fieldName + "; " +
-                    LanguageVersion.errorDescription);
-        }
         return true;
     }
 
