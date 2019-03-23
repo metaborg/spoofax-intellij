@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgException;
+import org.metaborg.core.action.ITransformAction;
 import org.metaborg.core.action.ITransformGoal;
 import org.metaborg.core.analysis.IAnalyzeUnit;
 import org.metaborg.core.context.ContextException;
@@ -45,13 +46,13 @@ import javax.annotation.*;
 /**
  * Executes a transformation action on resources.
  */
-public final class ResourceTransformer<I extends IInputUnit, P extends IParseUnit, A extends IAnalyzeUnit, T extends ITransformUnit<?>, TP extends ITransformUnit<P>, TA extends ITransformUnit<A>>
+public final class ResourceTransformer<I extends IInputUnit, P extends IParseUnit, A extends IAnalyzeUnit, T extends ITransformUnit<?>, TUP extends ITransformUnit<P>, TUA extends ITransformUnit<A>, TA extends ITransformAction>
     implements IResourceTransformer {
     private final IContextService contextService;
     private final IInputUnitService<I> unitService;
     private final IParseResultRequester<I, P> parseResultRequester;
     private final IAnalysisResultRequester<I, A> analysisResultRequester;
-    private final ITransformService<P, A, TP, TA> transformService;
+    private final ITransformService<P, A, TUP, TUA, TA> transformService;
     @InjectLogger
     private ILogger logger;
 
@@ -62,7 +63,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
     @Inject
     public ResourceTransformer(IContextService contextService, IInputUnitService<I> unitService,
                                IParseResultRequester<I, P> parseResultRequester, IAnalysisResultRequester<I, A> analysisResultRequester,
-                               ITransformService<P, A, TP, TA> transformService) {
+                               ITransformService<P, A, TUP, TUA, TA> transformService) {
         this.contextService = contextService;
         this.unitService = unitService;
         this.parseResultRequester = parseResultRequester;
@@ -128,12 +129,12 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
         final I input = unitService.inputUnit(resource, text, language, null);
         final Collection<T> results = Lists.newArrayList();
         if(this.transformService.requiresAnalysis(context, goal)) {
-            for(TA result : transformAnalysis(input, context, goal)) {
+            for(TUA result : transformAnalysis(input, context, goal)) {
                 @SuppressWarnings("unchecked") final T genericResult = (T) result;
                 results.add(genericResult);
             }
         } else {
-            for(TP result : transformParse(input, context, goal)) {
+            for(TUP result : transformParse(input, context, goal)) {
                 @SuppressWarnings("unchecked") final T genericResult = (T) result;
                 results.add(genericResult);
             }
@@ -157,7 +158,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
      * @return The transformation results.
      * @throws TransformException
      */
-    private Collection<TP> transformParse(I input, IContext context, ITransformGoal goal) throws TransformException {
+    private Collection<TUP> transformParse(I input, IContext context, ITransformGoal goal) throws TransformException {
         final P parseResult = parseResultRequester.request(input).toBlocking().single();
         return transformService.transform(parseResult, context, goal);
     }
@@ -176,7 +177,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
      * @return The transformation results.
      * @throws TransformException
      */
-    private Collection<TA> transformAnalysis(I input, IContext context, ITransformGoal goal) throws TransformException {
+    private Collection<TUA> transformAnalysis(I input, IContext context, ITransformGoal goal) throws TransformException {
         final A analysisResult = analysisResultRequester.request(input, context).toBlocking().single();
         // noinspection unused
         try(IClosableLock lock = context.read()) {

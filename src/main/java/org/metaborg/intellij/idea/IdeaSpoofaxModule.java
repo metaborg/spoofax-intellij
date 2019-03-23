@@ -57,6 +57,7 @@ import org.metaborg.intellij.vfs.IIntelliJFileProviderFactory;
 import org.metaborg.intellij.vfs.IntelliJFileProvider;
 import org.metaborg.intellij.vfs.IntelliJFileSystemManagerProvider;
 import org.metaborg.spoofax.core.SpoofaxModule;
+import org.metaborg.spoofax.core.transform.ISpoofaxTransformAction;
 import org.metaborg.spoofax.core.unit.ISpoofaxAnalyzeUnit;
 import org.metaborg.spoofax.core.unit.ISpoofaxInputUnit;
 import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
@@ -203,7 +204,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxTransformUnit;
      */
     protected void bindTransformations() {
         bind(IResourceTransformer.class)
-            .to(new TypeLiteral<ResourceTransformer<ISpoofaxInputUnit, ISpoofaxParseUnit, ISpoofaxAnalyzeUnit, ISpoofaxTransformUnit<?>, ISpoofaxTransformUnit<ISpoofaxParseUnit>, ISpoofaxTransformUnit<ISpoofaxAnalyzeUnit>>>() {})
+            .to(new TypeLiteral<ResourceTransformer<ISpoofaxInputUnit, ISpoofaxParseUnit, ISpoofaxAnalyzeUnit, ISpoofaxTransformUnit<?>, ISpoofaxTransformUnit<ISpoofaxParseUnit>, ISpoofaxTransformUnit<ISpoofaxAnalyzeUnit>, ISpoofaxTransformAction>>() {})
             .in(Singleton.class);
 
         install(new FactoryModuleBuilder().implement(TransformationAction.class, TransformationAction.class)
