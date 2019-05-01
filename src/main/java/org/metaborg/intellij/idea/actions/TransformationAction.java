@@ -131,7 +131,7 @@ public final class TransformationAction extends AnActionWithId {
         final Collection<? extends ISpoofaxTransformUnit<?>> transformResults;
         final IContext context = contextService.get(resource, project, language);
         final ISpoofaxInputUnit input = unitService.inputUnit(resource, text, language, null);
-        if(transformService.requiresAnalysis(context, goal)) {
+        if(transformService.requiresAnalysis(language, goal)) {
             logger.debug("Requesting analysis result.");
             final ISpoofaxAnalyzeUnit result = analysisResultRequester.request(input, context).toBlocking().single();
             logger.debug("Requesting context read lock.");
