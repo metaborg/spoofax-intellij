@@ -128,7 +128,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
         final IContext context = this.contextService.get(resource, project, language);
         final I input = unitService.inputUnit(resource, text, language, null);
         final Collection<T> results = Lists.newArrayList();
-        if(this.transformService.requiresAnalysis(context, goal)) {
+        if(this.transformService.requiresAnalysis(language, goal)) {
             for(TUA result : transformAnalysis(input, context, goal)) {
                 @SuppressWarnings("unchecked") final T genericResult = (T) result;
                 results.add(genericResult);
