@@ -21,7 +21,8 @@ j2objc-annotations-1.1.jar
 javassist-3.20.0-GA.jar
 javax.inject-1.jar
 jsr305-3.0.2.jar
-kotlin-stdlib-1.2.40.jar
+kotlin-stdlib-1.3.61.jar
+kotlin-stdlib-common-1.3.61.jar
 slf4j-api-1.7.10.jar
 spoofax-common-2.6.0-SNAPSHOT.jar
 spoofax-deps-2.6.0-SNAPSHOT.jar
