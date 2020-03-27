@@ -196,10 +196,8 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
         @Nullable IRegionStyle<IStrategoTerm> currentRegionStyle =
             styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
 
-        final int tokenCount = tokenizer.getTokenCount();
         int offset = 0;
-        for(int i = 0; i < tokenCount; ++i) {
-            final IToken token = tokenizer.getTokenAt(i);
+        for (IToken token : tokenizer) {
 
             // ASSUME: The list of regions is ordered by offset.
             // ASSUME: No region overlaps another region.
