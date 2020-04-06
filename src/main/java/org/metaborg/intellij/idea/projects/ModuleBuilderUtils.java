@@ -64,7 +64,7 @@ public class ModuleBuilderUtils {
         for(final Pair<String, String> sourcePath : sourcePaths) {
             final String first = sourcePath.first;
             assert sourcePath.second.equals("") : "Package prefixes are not supported here.";
-            contentEntry.addSourceFolder(first, false);
+            contentEntry.addSourceFolder(fixUrl(first), false);
         }
     }
 
@@ -77,8 +77,17 @@ public class ModuleBuilderUtils {
         contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "lib");
         contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "include");
         contentEntry.addExcludeFolder(contentEntry.getUrl() + File.separator + "target");
-        contentEntry.addExcludeFolder(paths.strCacheDir().toString());
-//        contentEntry.addExcludeFolder(paths.srcGenDir().toString());
+        contentEntry.addExcludeFolder(fixUrl(paths.strCacheDir().toString()));
+//        contentEntry.addExcludeFolder(fixUrl(paths.srcGenDir().toString()));
+    }
+
+    private static String fixUrl(final String url) {
+        if (url.startsWith("file:///") && url.charAt(9) == ':') {
+            // It's a Windows URL
+            return "file://" + url.substring(8);
+        } else {
+            return url;
+        }
     }
 
 }
