@@ -95,7 +95,7 @@ public final class SpoofaxJpsPluginImpl implements SpoofaxJpsPlugin {
                 this.getClass().getClassLoader().getClass().getName());
 
         try {
-            this.spoofax = new Spoofax(new JpsSpoofaxModule());
+            this.spoofax = new Spoofax(new JpsSpoofaxModule(), new SpoofaxExtensionModule());
             this.spoofaxMeta = new SpoofaxMeta(this.spoofax, new JpsSpoofaxMetaModule());
         } catch (final MetaborgException e) {
             throw new RuntimeException(e);
