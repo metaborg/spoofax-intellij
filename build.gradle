@@ -36,21 +36,8 @@ allprojects {
 
     repositories {
         mavenLocal()
-        mavenCentral()
         maven {
-            url "https://artifacts.metaborg.org/content/repositories/releases/"
-        }
-        maven {
-            url "https://artifacts.metaborg.org/content/repositories/snapshots/"
-        }
-        maven {
-            url "https://raw.githubusercontent.com/pluto-build/pluto-build.github.io/master/mvnrepository/"
-        }
-        maven {
-            url "http://sugar-lang.github.io/mvnrepository/"
-        }
-        maven {
-            url "http://nexus.usethesource.io/content/repositories/public/"
+            url "https://artifacts.metaborg.org/content/groups/public/"
         }
     }
 
