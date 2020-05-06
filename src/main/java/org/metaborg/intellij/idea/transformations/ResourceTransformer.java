@@ -158,7 +158,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
      * @throws TransformException
      */
     private Collection<TP> transformParse(I input, IContext context, ITransformGoal goal) throws TransformException {
-        final P parseResult = parseResultRequester.request(input).toBlocking().single();
+        final P parseResult = parseResultRequester.request(input).blockingSingle();
         return transformService.transform(parseResult, context, goal);
     }
 
@@ -177,7 +177,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
      * @throws TransformException
      */
     private Collection<TA> transformAnalysis(I input, IContext context, ITransformGoal goal) throws TransformException {
-        final A analysisResult = analysisResultRequester.request(input, context).toBlocking().single();
+        final A analysisResult = analysisResultRequester.request(input, context).blockingSingle();
         // noinspection unused
         try(IClosableLock lock = context.read()) {
             return transformService.transform(analysisResult, context, goal);

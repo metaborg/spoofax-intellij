@@ -133,7 +133,7 @@ public final class TransformationAction extends AnActionWithId {
         final ISpoofaxInputUnit input = unitService.inputUnit(resource, text, language, null);
         if(transformService.requiresAnalysis(language, goal)) {
             logger.debug("Requesting analysis result.");
-            final ISpoofaxAnalyzeUnit result = analysisResultRequester.request(input, context).toBlocking().single();
+            final ISpoofaxAnalyzeUnit result = analysisResultRequester.request(input, context).blockingSingle();
             logger.debug("Requesting context read lock.");
             try(IClosableLock lock = context.read()) {
                 logger.debug("Transforming: {}", resource);
@@ -142,7 +142,7 @@ public final class TransformationAction extends AnActionWithId {
             }
         } else {
             logger.debug("Requesting parse result.");
-            final ISpoofaxParseUnit result = parseResultRequester.request(input).toBlocking().single();
+            final ISpoofaxParseUnit result = parseResultRequester.request(input).blockingSingle();
             logger.debug("Transforming: {}", resource);
             transformResults = transformService.transform(result, context, goal);
             logger.info("Transformed: {}", resource);
