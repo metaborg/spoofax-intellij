@@ -124,7 +124,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
             final IContext context = info.context();
             final ISpoofaxInputUnit input =
                 unitSerivce.inputUnit(info.resource(), info.text(), context.language(), null);
-            analysisResult = this.analysisResultProcessor.request(input, context).toBlocking().single();
+            analysisResult = this.analysisResultProcessor.request(input, context).blockingSingle();
         } catch(final RuntimeException ex) {
             // FIXME: Dedicated exception!
             if(ex.getCause() instanceof AnalysisException
@@ -192,7 +192,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
 
     /**
      * Gets the {@link HighlightSeverity} that corresponds to the specified {@link MessageSeverity}.
-     * 
+     *
      * @param messageSeverity
      *            The severity (of the message).
      * @return The severity (of the annotation).
