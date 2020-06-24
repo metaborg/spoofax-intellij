@@ -15,16 +15,16 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import com.intellij.lexer.LexerBase;
-import com.intellij.psi.tree.IElementType;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgRuntimeException;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.project.IProject;
+import org.metaborg.core.source.ISourceRegion;
 import org.metaborg.core.style.IRegionCategory;
 import org.metaborg.core.style.IRegionStyle;
 import org.metaborg.core.style.IStyle;
@@ -37,16 +37,18 @@ import org.metaborg.spoofax.core.style.ISpoofaxCategorizerService;
 import org.metaborg.spoofax.core.style.ISpoofaxStylerService;
 import org.metaborg.spoofax.core.syntax.ISpoofaxSyntaxService;
 import org.metaborg.spoofax.core.syntax.JSGLRParserConfiguration;
-import org.metaborg.spoofax.core.unit.*;
+import org.metaborg.spoofax.core.unit.ISpoofaxInputUnit;
+import org.metaborg.spoofax.core.unit.ISpoofaxInputUnitService;
+import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
+import org.metaborg.spoofax.core.unit.ISpoofaxUnitService;
 import org.metaborg.util.log.ILogger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
-import org.spoofax.jsglr.client.imploder.IToken;
-import org.spoofax.jsglr.client.imploder.ITokens;
-import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 
-import javax.annotation.Nullable;
-import java.util.Iterator;
-import java.util.List;
+import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.intellij.lexer.LexerBase;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * Adapts the Spoofax SGLR parser to allow it to be used as an IntelliJ IDEA highlighting lexer.
@@ -186,70 +188,24 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
         // Found here:
         // https://github.com/metaborg/spoofax/blob/master/org.metaborg.spoofax.core/src/main/java/org/metaborg/spoofax/core/style/CategorizerService.java#L48
 
-        final ImploderAttachment rootImploderAttachment = ImploderAttachment.get(result.ast());
-        final ITokens tokenizer = rootImploderAttachment.getLeftToken().getTokenizer();
-
         final Iterable<IRegionCategory<IStrategoTerm>> categorizedTokens = categorizer.categorize(languageImpl, result);
         final Iterable<IRegionStyle<IStrategoTerm>> styledTokens = styler.styleParsed(languageImpl, categorizedTokens);
-        final Iterator<IRegionStyle<IStrategoTerm>> styledTokenIterator = styledTokens.iterator();
 
-        @Nullable IRegionStyle<IStrategoTerm> currentRegionStyle =
-            styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
-
-        final int tokenCount = tokenizer.getTokenCount();
-        int offset = 0;
-        for(int i = 0; i < tokenCount; ++i) {
-            final IToken token = tokenizer.getTokenAt(i);
+        for (IRegionStyle<IStrategoTerm> currentRegionStyle : styledTokens) {
 
             // ASSUME: The list of regions is ordered by offset.
             // ASSUME: No region overlaps another region.
             // ASSUME: Every character in the input is covered by a region.
-            final int tokenStart = token.getStartOffset();
-            final int tokenEnd = token.getEndOffset() + 1;
-            final IntRange tokenRange = IntRange.between(tokenStart, tokenEnd);
-
-            if(tokenRange.isEmpty()) {
-                // The tokenizer may return empty tokens. Don't know why.
-                // Let's ignore those.
-
-                if(DEBUG_INFO) {
-                    logger.info("Token {} is empty. Token ignored.", printToken(tokenRange));
-                }
-
-                continue;
-            }
-
-            if(tokenRange.start < offset) {
-                // Due to a bug in the tokenizer we may see another token covering the same character(s)
-                // as the previous token. Let's ignore those tokens for now.
-                // From what I've seem it's always the same token as the previous token, but I may be wrong.
-                // From that follows that the next token should start where the previous (non-ignored) token
-                // ended. If that's not the case, the next assertion will fail.
-
-                if(DEBUG_INFO) {
-                    logger.info("Token {} overlaps previous token {}. Token ignored.", printToken(tokenRange),
-                        printToken(getLastTokenRange()));
-                }
-
-                continue;
-            }
-
-            assert offset == tokenRange.start : logger.format(
-                "The current token {} must start where the previous token left off {}.", printToken(tokenRange),
-                printToken(getLastTokenRange()));
+            ISourceRegion currentRegion = currentRegionStyle.region();
+            final IntRange tokenRange = IntRange.between(currentRegion.startOffset(), currentRegion.endOffset() + 1);
 
             if(tokenRange.overlapsRange(bufferRange)) {
                 // ASSUME: The styled tokens are ordered by offset.
                 // ASSUME: No styled region overlaps another styled region.
 
-                // Iterate until we find a style that ends after the token start.
-                while(currentRegionStyle != null && currentRegionStyle.region().endOffset() + 1 <= tokenRange.start)
-                    currentRegionStyle = styledTokenIterator.hasNext() ? styledTokenIterator.next() : null;
-
                 // Get the style of the token
                 @Nullable final IStyle tokenStyle =
-                    currentRegionStyle != null && currentRegionStyle.region().startOffset() <= tokenRange.start
-                        ? currentRegionStyle.style() : null;
+                    currentRegion.startOffset() <= tokenRange.start ? currentRegionStyle.style() : null;
                 final SpoofaxTokenType styledTokenType = tokenTypesManager.getTokenType(tokenStyle);
 
                 final SpoofaxToken spoofaxToken = new SpoofaxToken(styledTokenType, tokenRange);
@@ -270,12 +226,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
                     logger.trace("Token {} outside requested range.", printToken(tokenRange));
                 }
             }
-            offset = tokenRange.end;
         }
-
-        assert offset == buffer.length() : logger.format(
-            "The last token {} ended at {}, which is not at the end of the buffer @ {}.",
-            printToken(getLastTokenRange()), offset, buffer.length());
     }
 
     /**
