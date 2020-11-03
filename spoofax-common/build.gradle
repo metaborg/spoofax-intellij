@@ -58,7 +58,7 @@ dependencies {
     compile     "com.google.inject.extensions:guice-multibindings:$guiceVersion"
     compile     "org.javassist:javassist:3.20.0-GA"
 
-    testCompile "junit:junit:4.12"
+    testCompile "junit:junit:4.13.1"
 
     language    "org.metaborg:dynsem:$metaborgVersion@spoofax-language"
     language    "org.metaborg:dynsem2coq:$metaborgVersion@spoofax-language"
