@@ -47,7 +47,7 @@ public class ModuleBuilderUtils {
             throws ConfigurationException {
         final SpoofaxLangSpecCommonPaths paths = new SpoofaxLangSpecCommonPaths(contentEntry);
         final List<Pair<String, String>> sourcePaths = new ArrayList<>();
-        for (final FileObject javaSrcDir : paths.javaSrcDirs(languageIdentifier.id)) {
+        for (final FileObject javaSrcDir : paths.javaSrcDirs()) {
             sourcePaths.add(Pair.create(javaSrcDir.toString(), ""));
         }
         return sourcePaths;
