@@ -58,7 +58,14 @@ import org.metaborg.spoofax.meta.core.build.SpoofaxLangSpecCommonPaths;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfigBuilder;
 import org.metaborg.spoofax.meta.core.config.SdfVersion;
-import org.metaborg.spoofax.meta.core.generator.general.*;
+import org.metaborg.spoofax.meta.core.config.StrategoVersion;
+import org.metaborg.spoofax.meta.core.generator.general.AnalysisType;
+import org.metaborg.spoofax.meta.core.generator.general.ContinuousLanguageSpecGenerator;
+import org.metaborg.spoofax.meta.core.generator.general.LangSpecGenerator;
+import org.metaborg.spoofax.meta.core.generator.general.LangSpecGeneratorSettings;
+import org.metaborg.spoofax.meta.core.generator.general.LangSpecGeneratorSettingsBuilder;
+import org.metaborg.spoofax.meta.core.generator.general.SyntaxType;
+import org.metaborg.spoofax.meta.core.generator.general.TransformationType;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 import org.metaborg.util.log.ILogger;
 
@@ -93,6 +100,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     private LanguageIdentifier languageId;
     private SyntaxType syntaxType;
     private AnalysisType analysisType;
+    private TransformationType transformationType;
 
 
     /**
@@ -182,6 +190,22 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
      */
     public void setAnalysisType(final AnalysisType analysisType) {
         this.analysisType = analysisType;
+    }
+
+    /**
+     * Gets the transformation type.
+     *
+     * @return The analysis type.
+     */
+    public TransformationType getTransformationType() { return this.transformationType;}
+
+    /**
+     * Sets the transformation type.
+     *
+     * @param transformationType The analysis type.
+     */
+    public void setTransformationType(final TransformationType transformationType) {
+        this.transformationType = transformationType;
     }
 
 
@@ -414,27 +438,43 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
                 .withExtensions(this.extensions)
                 .withSyntaxType(this.syntaxType)
                 .withAnalysisType(this.analysisType)
+                .withTransformationType(transformationType)
                 .build(languageSpec.location(), configBuilder)
                 ;
             // @formatter:on        
 
             final LangSpecGenerator newGenerator = new LangSpecGenerator(settings);
             newGenerator.generateAll();
-            final @Nullable SdfVersion version;
-            final boolean enabled;
-            if(settings.syntaxType == SyntaxType.SDF2) {
-                version = SdfVersion.sdf2;
-                enabled = true;
-            } else if(settings.syntaxType == SyntaxType.SDF3) {
-                version = SdfVersion.sdf3;
-                enabled = true;
-            } else {
-                version = null;
-                enabled = false;
-            }      
-            
+            final @Nullable SdfVersion sdfVersion;
+            final @Nullable StrategoVersion strategoVersion;
+            final boolean sdfEnabled;
+            switch(syntaxType) {
+                case SDF2:
+                    sdfVersion = SdfVersion.sdf2;
+                    sdfEnabled = true;
+                    break;
+                case SDF3:
+                    sdfVersion = SdfVersion.sdf3;
+                    sdfEnabled = true;
+                    break;
+                default:
+                    sdfVersion = null;
+                    sdfEnabled = false;
+                    break;
+            }
+            switch(transformationType) {
+                case Stratego1:
+                    strategoVersion = StrategoVersion.v1;
+                    break;
+                case Stratego2:
+                    strategoVersion = StrategoVersion.v2;
+                    break;
+                default:
+                    strategoVersion = null;
+                    break;
+            }
             final ContinuousLanguageSpecGenerator generator =
-                new ContinuousLanguageSpecGenerator(settings.generatorSettings, enabled, version);
+                new ContinuousLanguageSpecGenerator(settings.generatorSettings, sdfEnabled, sdfVersion, strategoVersion);
             generator.generateAll();
         } catch(ProjectException | IOException e) {
             throw LoggerUtils2.exception(this.logger, UnhandledException.class, "Unexpected unhandled exception.", e);

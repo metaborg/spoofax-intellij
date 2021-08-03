@@ -60,6 +60,7 @@ public class NewModuleWizardStep extends ModuleWizardStep {
 
     private JComboBox cmbSyntaxType;
     private JComboBox cmbAnalysisType;
+    private JComboBox cmbTransformationType;
 
 
     private final IIconManager iconManager;
@@ -248,6 +249,7 @@ public class NewModuleWizardStep extends ModuleWizardStep {
         this.builder.setExtensions(CreateLanguageSpecWizard.splitExtensions(cleanupExtension(this.txtExtensions.getText())));
         this.builder.setSyntaxType(SyntaxType.mapping().get((String) this.cmbSyntaxType.getSelectedItem()));
         this.builder.setAnalysisType(AnalysisType.mapping().get((String) this.cmbAnalysisType.getSelectedItem()));
+        this.builder.setTransformationType(TransformationType.mapping().get((String) this.cmbTransformationType.getSelectedItem()));
         this.context.setProjectName(this.builder.getName());
     }
 
@@ -296,14 +298,16 @@ public class NewModuleWizardStep extends ModuleWizardStep {
     }
 
     public void addLanguageOptions() {
-        final int rows = 2;
+        final int rows = 3;
         this.pnlLanguageOptions.setLayout(new GridLayoutManager(rows, 2));
 
         this.cmbSyntaxType = new JComboBox(Lists.newArrayList(SyntaxType.mapping().keySet()).toArray());
         this.cmbAnalysisType = new JComboBox(Lists.newArrayList(AnalysisType.mapping().keySet()).toArray());
+        this.cmbTransformationType = new JComboBox(Lists.newArrayList(TransformationType.mapping().keySet()).toArray());
 
         addLanguageOption(0, "Syntax type:", this.cmbSyntaxType);
         addLanguageOption(1, "Analysis type:", this.cmbAnalysisType);
+        addLanguageOption(2, "Transformation type:", this.cmbTransformationType);
     }
 
     private void addLanguageOption(final int row, final String label, @Nullable final Component component) {
@@ -362,6 +366,7 @@ public class NewModuleWizardStep extends ModuleWizardStep {
         this.txtVersion.setText(this.builder.getLanguageIdentifier().version.toString());
         this.cmbSyntaxType.setSelectedItem(this.builder.getSyntaxType().name);
         this.cmbAnalysisType.setSelectedItem(this.builder.getAnalysisType().name);
+        this.cmbTransformationType.setSelectedItem(this.builder.getTransformationType().name);
     }
 
     {
