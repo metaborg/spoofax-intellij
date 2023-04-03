@@ -18,7 +18,6 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
@@ -301,9 +300,9 @@ public class NewModuleWizardStep extends ModuleWizardStep {
         final int rows = 3;
         this.pnlLanguageOptions.setLayout(new GridLayoutManager(rows, 2));
 
-        this.cmbSyntaxType = new JComboBox(Lists.newArrayList(SyntaxType.mapping().keySet()).toArray());
-        this.cmbAnalysisType = new JComboBox(Lists.newArrayList(AnalysisType.mapping().keySet()).toArray());
-        this.cmbTransformationType = new JComboBox(Lists.newArrayList(TransformationType.mapping().keySet()).toArray());
+        this.cmbSyntaxType = new JComboBox(SyntaxType.mapping().keySet().toArray());
+        this.cmbAnalysisType = new JComboBox(AnalysisType.mapping().keySet().toArray());
+        this.cmbTransformationType = new JComboBox(TransformationType.mapping().keySet().toArray());
 
         addLanguageOption(0, "Syntax type:", this.cmbSyntaxType);
         addLanguageOption(1, "Analysis type:", this.cmbAnalysisType);

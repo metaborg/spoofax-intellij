@@ -18,13 +18,15 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+import org.metaborg.util.iterators.Iterables2;
+
 import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
 import com.intellij.openapi.fileTypes.FileNameMatcher;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
-import org.jetbrains.annotations.NonNls;
 
 /**
  * Consumer for file types implementing the {@link IMetaborgFileType} interface.
@@ -39,7 +41,9 @@ public final class MetaborgFileTypeConsumer {
      * @param consumer The file type consumer to wrap.
      */
     public MetaborgFileTypeConsumer(final FileTypeConsumer consumer) {
-        Preconditions.checkNotNull(consumer);
+        if (consumer == null) {
+          throw new NullPointerException();
+        }
 
         this.consumer = consumer;
     }
@@ -50,9 +54,11 @@ public final class MetaborgFileTypeConsumer {
      * @param fileType The file type.
      */
     public void consume(final IMetaborgFileType fileType) {
-        Preconditions.checkNotNull(fileType);
+        if (fileType == null) {
+          throw new NullPointerException();
+        }
 
-        consume(fileType, Iterables.toArray(fileType.getExtensions(), String.class));
+        consume(fileType, fileType.getExtensions());
     }
 
     /**
@@ -61,15 +67,16 @@ public final class MetaborgFileTypeConsumer {
      * @param fileType   The file type.
      * @param extensions The file extensions, without a leading '.'.
      */
-    public void consume(final FileType fileType, @NonNls final String... extensions) {
-        Preconditions.checkNotNull(fileType);
-        Preconditions.checkNotNull(extensions);
-
-        final FileNameMatcher[] matchers = new FileNameMatcher[extensions.length];
-        for (int i = 0; i < extensions.length; i++) {
-            matchers[i] = new ExtensionFileNameMatcher(extensions[i]);
+    public void consume(final FileType fileType, final Iterable<String> extensions) {
+        if (fileType == null) {
+          throw new NullPointerException();
         }
-        consume(fileType, matchers);
+        if (extensions == null) {
+          throw new NullPointerException();
+        }
+
+        consume(fileType, Iterables2.stream(extensions).map(ExtensionFileNameMatcher::new)
+            .collect(Collectors.toList()));
     }
 
     /**
@@ -78,11 +85,15 @@ public final class MetaborgFileTypeConsumer {
      * @param fileType The file type.
      * @param matchers The file name matchers.
      */
-    public void consume(final FileType fileType, final FileNameMatcher... matchers) {
-        Preconditions.checkNotNull(fileType);
-        Preconditions.checkNotNull(matchers);
+    public void consume(final FileType fileType, final Collection<FileNameMatcher> matchers) {
+        if (fileType == null) {
+          throw new NullPointerException();
+        }
+        if (matchers == null) {
+          throw new NullPointerException();
+        }
 
-        this.consumer.consume(fileType, matchers);
+        this.consumer.consume(fileType, matchers.toArray(new FileNameMatcher[0]));
     }
 
 }

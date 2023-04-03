@@ -18,8 +18,6 @@
 
 package org.metaborg.intellij.languages;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileObject;
@@ -28,6 +26,7 @@ import org.metaborg.core.language.*;
 import org.metaborg.intellij.discovery.ILanguageSource;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.utils.ExceptionUtils;
+import org.metaborg.util.iterators.Iterables2;
 import org.metaborg.util.log.*;
 
 import javax.annotation.Nullable;
@@ -70,8 +69,8 @@ public class DefaultLanguageManager implements ILanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public Collection<ILanguage> getLoadedLanguages() {
-        return Lists.newArrayList(this.languageService.getAllLanguages());
+    public Collection<? extends ILanguage> getLoadedLanguages() {
+        return Iterables2.toArrayList(this.languageService.getAllLanguages());
     }
 
     /**
@@ -92,7 +91,7 @@ public class DefaultLanguageManager implements ILanguageManager {
             final Iterable<ILanguageDiscoveryRequest> requests;
             try {
                 requests = this.discoveryService.request(rootLocation);
-                if (Iterables.isEmpty(requests)) {
+                if (Iterables2.isEmpty(requests)) {
                     this.logger.error("Got no discovery requests for language '{}' at: {}", id, rootLocation);
                     return Collections.emptyList();
                 }
@@ -176,7 +175,8 @@ public class DefaultLanguageManager implements ILanguageManager {
      */
     @Override
     public void unloadComponentRange(final Iterable<ILanguageComponent> components) {
-        for (final ILanguageComponent component : Lists.newArrayList(components)) {
+        // safety copy: unload may modify iterable
+        for (final ILanguageComponent component : Iterables2.toArrayList(components)) {
             unload(component);
         }
     }
@@ -186,7 +186,8 @@ public class DefaultLanguageManager implements ILanguageManager {
      */
     @Override
     public void unloadImplRange(final Iterable<? extends ILanguageImpl> impls) {
-        for (final ILanguageImpl impl : Lists.newArrayList(impls)) {
+        // safety copy: unload may modify iterable
+        for (final ILanguageImpl impl : Iterables2.toArrayList(impls)) {
             unloadComponentRange(impl.components());
         }
     }
@@ -195,8 +196,9 @@ public class DefaultLanguageManager implements ILanguageManager {
      * {@inheritDoc}
      */
     @Override
-    public void unloadRange(final Iterable<ILanguage> languages) {
-        for (final ILanguage language : Lists.newArrayList(languages)) {
+    public void unloadRange(final Iterable<? extends ILanguage> languages) {
+        // safety copy: unload may modify iterable
+        for (final ILanguage language : Iterables2.toArrayList(languages)) {
             unloadImplRange(language.impls());
         }
     }

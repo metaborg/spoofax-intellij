@@ -18,8 +18,6 @@
 
 package org.metaborg.intellij.idea.gui.languagesettings;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.options.BaseConfigurable;
@@ -33,6 +31,7 @@ import org.metaborg.intellij.languages.LanguageLoadingFailedException;
 import org.metaborg.intellij.languages.LanguageUtils2;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils2;
+import org.metaborg.util.iterators.Iterables2;
 import org.metaborg.util.log.*;
 
 import java.util.Collection;
@@ -51,7 +50,7 @@ public abstract class LanguagesSettings extends BaseConfigurable {
     protected ILanguageService languageService;
     protected IIdeaLanguageManager languageManager;
     protected final Project project;
-    private Set<ILanguageImpl> languages = Sets.newHashSet();
+    private Set<ILanguageImpl> languages = new HashSet<ILanguageImpl>();
     private final Set<ILanguageDiscoveryRequest> languagesToLoad = new HashSet<>();
     private final Set<ILanguageComponent> languagesToUnload = new HashSet<>();
     @InjectLogger
@@ -63,7 +62,9 @@ public abstract class LanguagesSettings extends BaseConfigurable {
      */
     protected LanguagesSettings(final Project project) {
         super();
-        Preconditions.checkNotNull(project);
+        if (project == null) {
+          throw new NullPointerException();
+        }
 
         this.project = project;
     }
@@ -105,7 +106,7 @@ public abstract class LanguagesSettings extends BaseConfigurable {
      */
     @Override
     public void reset() {
-        this.languages = Sets.newHashSet(this.languageService.getAllImpls());
+        this.languages = Iterables2.toHashSet(this.languageService.getAllImpls());
         this.languagesToLoad.clear();
         this.languagesToUnload.clear();
         updateLanguagesList();

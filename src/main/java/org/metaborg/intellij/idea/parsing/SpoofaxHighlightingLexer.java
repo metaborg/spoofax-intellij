@@ -15,6 +15,7 @@
 
 package org.metaborg.intellij.idea.parsing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -44,7 +45,6 @@ import org.metaborg.spoofax.core.unit.ISpoofaxUnitService;
 import org.metaborg.util.log.ILogger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lexer.LexerBase;
@@ -83,7 +83,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     // The range of characters in the buffer to lex.
     private IntRange bufferRange;
     // A list of tokens gathered from the lexed characters.
-    private final List<SpoofaxToken> tokens = Lists.newArrayList();
+    private final List<SpoofaxToken> tokens = new ArrayList<>();
     // The current index in {@link #tokens}.
     private int tokenIndex;
 

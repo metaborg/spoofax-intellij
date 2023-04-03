@@ -25,6 +25,8 @@ import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
 
 import javax.annotation.Nullable;
+
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -92,7 +94,7 @@ public interface ILanguageProjectService {
      * combination.
      */
     Set<LanguageDialect> getCandidateImpls(
-            @Nullable Iterable<? extends ILanguageImpl> languages,
+            @Nullable Collection<? extends ILanguageImpl> languages,
             @Nullable IProject project,
             @Nullable FileObject file);
 

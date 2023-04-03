@@ -15,8 +15,6 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -63,6 +61,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
@@ -89,9 +88,8 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     private final ActionUtils actionUtils;
     private final ConcurrentMap<ILanguage, LanguageBindings> loadedLanguages = new ConcurrentHashMap<>();
     private final ConcurrentMap<ILanguageImpl, LanguageImplBindings> loadedLanguageImpls = new ConcurrentHashMap<>();
-    private final Cache<ILanguage, LanguageBindings> ideaLanguageCache = CacheBuilder.newBuilder().weakKeys().build();
-    private final Cache<ILanguageImpl, LanguageImplBindings> ideaLanguageImplCache =
-        CacheBuilder.newBuilder().weakKeys().build();
+    private final WeakHashMap<ILanguage, LanguageBindings> ideaLanguageCache = new WeakHashMap<>();
+    private final WeakHashMap<ILanguageImpl, LanguageImplBindings> ideaLanguageImplCache = new WeakHashMap<>();
 
     @InjectLogger
     private ILogger logger;
@@ -315,14 +313,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      * @return The associated IDEA language.
      */
     private LanguageBindings getOrCreateIdeaLanguage(final ILanguage language) {
-        final LanguageBindings activatedLanguage;
-        try {
-            activatedLanguage = this.ideaLanguageCache.get(language, () -> createLanguageBindings(language));
-        } catch(final ExecutionException ex) {
-            throw LoggerUtils2.exception(this.logger, UnhandledException.class,
-                "An unhandled checked exception was thrown from createLanguageBindings().", ex);
-        }
-        return activatedLanguage;
+        return this.ideaLanguageCache.computeIfAbsent(language, k -> createLanguageBindings(language));
     }
 
     /**
@@ -335,15 +326,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
      * @return The associated IDEA language implementation.
      */
     private LanguageImplBindings getOrCreateIdeaLanguageImpl(final ILanguageImpl languageImpl) {
-        final LanguageImplBindings activatedLanguageImpl;
-        try {
-            activatedLanguageImpl =
-                this.ideaLanguageImplCache.get(languageImpl, () -> createLanguageImplBindings(languageImpl));
-        } catch(final ExecutionException ex) {
-            throw LoggerUtils2.exception(this.logger, UnhandledException.class,
-                "An unhandled checked exception was thrown from createLanguageBindings().", ex);
-        }
-        return activatedLanguageImpl;
+        return this.ideaLanguageImplCache.computeIfAbsent(languageImpl, k -> createLanguageImplBindings(languageImpl));
     }
 
     /**
