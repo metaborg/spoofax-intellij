@@ -94,7 +94,7 @@ public interface ILanguageProjectService {
      * combination.
      */
     Set<LanguageDialect> getCandidateImpls(
-            @Nullable Collection<? extends ILanguageImpl> languages,
+            @Nullable Iterable<? extends ILanguageImpl> languages,
             @Nullable IProject project,
             @Nullable FileObject file);
 

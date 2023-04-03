@@ -35,6 +35,7 @@ import org.metaborg.util.iterators.Iterables2;
 import org.metaborg.util.log.*;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -157,7 +158,7 @@ public abstract class LanguagesSettings extends BaseConfigurable {
      * @return A list of language implementations.
      */
     public Set<ILanguageImpl> getLanguages() {
-        return Sets.newHashSet(this.languages);
+        return Collections.unmodifiableSet(this.languages);
     }
 
     protected abstract void updateLanguagesList();
