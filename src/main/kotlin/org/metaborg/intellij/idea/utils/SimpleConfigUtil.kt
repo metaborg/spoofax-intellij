@@ -1,13 +1,15 @@
 package org.metaborg.intellij.idea.utils
 
-import com.google.common.base.Charsets
-import com.google.common.io.Resources
+import mb.common.util.ResourceUtil
 import org.metaborg.intellij.UnhandledException
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin
 import org.metaborg.intellij.logging.InjectLogger
 import org.metaborg.intellij.logging.LoggerUtils2
 import org.metaborg.util.log.ILogger
+import org.metaborg.util.resource.ResourceUtils
 import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.util.*
 
 /**
  * Reads simple configuration files that consist of lines of content.
@@ -26,11 +28,11 @@ class SimpleConfigUtil {
      * @return The read lines, trimmed, excluding comment-only lines and empty lines.
      */
     fun readResource(path: String): List<String> {
-        val url = Resources.getResource(SpoofaxIdeaPlugin::class.java, path)
+        val url = SpoofaxIdeaPlugin::class.java.getResource(path)!!
 
         val text: String
         try {
-            text = Resources.toString(url, Charsets.UTF_8)
+            text = ResourceUtils.readInputStream(url.openStream(), StandardCharsets.UTF_8)
         } catch (e: IOException) {
             throw LoggerUtils2.exception(this.logger, UnhandledException::class.java,
                     "Cannot get resource content of resource: {}", e, url)

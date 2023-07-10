@@ -18,12 +18,12 @@
 
 package org.metaborg.intellij.idea.extensions;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.inject.Module;
 import org.metaborg.core.*;
 import org.metaborg.core.plugin.*;
+import org.metaborg.util.iterators.Iterables2;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class IntelliJPluginLoader<T extends IServiceModulePlugin> implements IModulePluginLoader {
@@ -34,10 +34,10 @@ public abstract class IntelliJPluginLoader<T extends IServiceModulePlugin> imple
     public Collection<Module> modules() throws MetaborgException {
         try {
             final Iterable<T> plugins = getPlugins();
-            final Collection<Module> modules = Lists.newLinkedList();
+            final Collection<Module> modules = new ArrayList<>();
             for(final T plugin : plugins)
             {
-                Iterables.addAll(modules, plugin.modules());
+                Iterables2.addAll(modules, plugin.modules());
             }
             return modules;
         } catch(final Exception e) {

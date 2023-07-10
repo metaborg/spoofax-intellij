@@ -15,7 +15,6 @@
 
 package org.metaborg.intellij.idea.transformations;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgException;
@@ -126,7 +125,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
                                     final String text, final ITransformGoal goal) throws ContextException, TransformException {
         final IContext context = this.contextService.get(resource, project, language);
         final I input = unitService.inputUnit(resource, text, language, null);
-        final Collection<T> results = Lists.newArrayList();
+        final Collection<T> results = new ArrayList<>();
         if(this.transformService.requiresAnalysis(language, goal)) {
             for(TA result : transformAnalysis(input, context, goal)) {
                 @SuppressWarnings("unchecked") final T genericResult = (T) result;

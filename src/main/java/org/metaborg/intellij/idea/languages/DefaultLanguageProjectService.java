@@ -18,8 +18,6 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.*;
@@ -29,6 +27,8 @@ import org.metaborg.core.project.*;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.meta.core.project.*;
+import org.metaborg.util.collection.Sets;
+import org.metaborg.util.iterators.Iterables2;
 import org.metaborg.util.log.*;
 
 import javax.annotation.Nullable;
@@ -67,7 +67,7 @@ public final class DefaultLanguageProjectService implements ILanguageProjectServ
      * {@inheritDoc}
      */
     @Override
-    public Iterable<ILanguageImpl> activeImpls(@Nullable final IProject project) {
+    public Set<ILanguageImpl> activeImpls(@Nullable final IProject project) {
         try {
 //            @Nullable final ILanguageSpec languageSpec = this.languageSpecService.get(project);
 //            // FIXME: Do something when languageSpec == null.
@@ -137,9 +137,7 @@ public final class DefaultLanguageProjectService implements ILanguageProjectServ
             }
         } else if (project != null) {
             // Find all implementations that the project supports.
-            final Set<ILanguageImpl> input = Sets.newHashSet(activeImpls(project));
-            input.retainAll(Lists.newArrayList(languages));
-            for (final ILanguageImpl impl : input) {
+            for (final ILanguageImpl impl : Sets.intersection(activeImpls(project), Iterables2.toHashSet(languages))) {
                 candidates.add(new LanguageDialect(impl, null));
             }
         } else {

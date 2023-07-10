@@ -18,8 +18,6 @@
 
 package org.metaborg.intellij.idea.sdks;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
 import com.google.inject.Inject;
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.projectRoots.impl.JavaDependentSdkType;

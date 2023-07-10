@@ -18,9 +18,9 @@
 
 package org.metaborg.intellij.vfs;
 
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.vfs2.*;
 import org.apache.commons.vfs2.provider.AbstractOriginatingFileProvider;
+import org.metaborg.util.collection.ImList;
 
 import java.util.Collection;
 
@@ -30,7 +30,7 @@ import java.util.Collection;
 public class IntelliJFileProvider extends AbstractOriginatingFileProvider {
 
     // @formatter:off
-    public static final Collection<Capability> capabilities = ImmutableList.of(
+    public static final Collection<Capability> capabilities = ImList.Immutable.of(
             Capability.CREATE,
             Capability.DELETE,
             Capability.RENAME,

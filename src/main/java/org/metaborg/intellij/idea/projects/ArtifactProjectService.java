@@ -18,7 +18,6 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
@@ -56,7 +55,9 @@ public final class ArtifactProjectService implements IProjectService {
     @Nullable
     @Override
     public IProject get(final FileObject resource) {
-        Preconditions.checkNotNull(resource);
+        if (resource == null) {
+          throw new NullPointerException();
+        }
 
         @Nullable final FileObject artifactRoot = getArtifactRoot(resource);
         if (artifactRoot == null)

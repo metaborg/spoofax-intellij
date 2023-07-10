@@ -20,7 +20,6 @@ package org.metaborg.intellij.idea.projects;
 
 // TODO: Move this to metaborg core?
 
-import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.*;
@@ -57,7 +56,9 @@ public final class CompoundProjectService implements IProjectService {
     @Nullable
     @Override
     public IProject get(final FileObject resource) {
-        Preconditions.checkNotNull(resource);
+        if (resource == null) {
+          throw new NullPointerException();
+        }
 
         final List<IProject> projects = new ArrayList<>(1);
         for (final IProjectService service : this.services) {

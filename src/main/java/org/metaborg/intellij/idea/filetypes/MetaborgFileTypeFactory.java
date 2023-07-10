@@ -18,7 +18,6 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
@@ -26,6 +25,7 @@ import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -64,7 +64,7 @@ public final class MetaborgFileTypeFactory extends FileTypeFactory {
      * @param consumer The consumer.
      */
     public void createFileTypes(final MetaborgFileTypeConsumer consumer) {
-        final List<IMetaborgFileType> fileTypes = Lists.newArrayList(this.artifactFileType);
+        final List<IMetaborgFileType> fileTypes = Arrays.asList(this.artifactFileType);
         for (final IMetaborgFileType fileType : fileTypes) {
             this.logger.debug("Registering file type: {}", fileType);
             consumer.consume(fileType);

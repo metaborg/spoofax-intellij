@@ -18,7 +18,6 @@
 
 package org.metaborg.intellij.logging;
 
-import com.google.common.base.Preconditions;
 import com.google.inject.MembersInjector;
 import org.metaborg.util.log.ILogger;
 import org.metaborg.util.log.LoggerUtils;
@@ -41,7 +40,9 @@ import java.lang.reflect.Field;
      * @param field The field to inject.
      */
     public MetaborgLoggerMembersInjector(final Field field) {
-        Preconditions.checkNotNull(field);
+        if (field == null) {
+          throw new NullPointerException();
+        }
 
         this.field = field;
         this.logger = createLogger(field.getDeclaringClass());
@@ -65,7 +66,9 @@ import java.lang.reflect.Field;
      */
     @Override
     public void injectMembers(final T obj) {
-        Preconditions.checkNotNull(obj);
+        if (obj == null) {
+          throw new NullPointerException();
+        }
 
         try {
             this.field.set(obj, this.logger);

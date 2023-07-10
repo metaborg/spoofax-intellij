@@ -18,7 +18,6 @@
 
 package org.metaborg.intellij.resources;
 
-import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.provider.LayeredFileName;
@@ -44,7 +43,9 @@ public final class FileNameUtils {
      */
     @Nullable
     public static FileName getOuterFileName(final FileName fileName) {
-        Preconditions.checkNotNull(fileName);
+        if (fileName == null) {
+          throw new NullPointerException();
+        }
 
         if (fileName instanceof LayeredFileName) {
             return ((LayeredFileName)fileName).getOuterName();

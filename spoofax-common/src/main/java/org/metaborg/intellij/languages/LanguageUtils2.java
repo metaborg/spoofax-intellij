@@ -18,13 +18,11 @@
 
 package org.metaborg.intellij.languages;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.UnhandledException;
+import org.metaborg.util.iterators.Iterables2;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -99,7 +97,7 @@ public final class LanguageUtils2 {
     public static Set<ILanguageImpl> getLanguageImplsOfComponents(final Iterable<ILanguageComponent> components) {
         final Set<ILanguageImpl> languageImpls = new HashSet<>();
         for (final ILanguageComponent component : components) {
-            languageImpls.addAll(Lists.newArrayList(component.contributesTo()));
+            Iterables2.addAll(languageImpls, component.contributesTo());
         }
         return languageImpls;
     }
@@ -133,10 +131,10 @@ public final class LanguageUtils2 {
         // The downside is that: if two implementations for a language define different extensions,
         // then both are used everywhere. Additionally, if the extension for an implementation
         // changes, then any users of the result of this method are not notified of the change.
-        final Set<String> extensions = Sets.newHashSet();
+        final Set<String> extensions = new HashSet<>();
         for (final ILanguageImpl impl : language.impls()) {
             for (final ResourceExtensionFacet facet : impl.facets(ResourceExtensionFacet.class)) {
-                Iterables.addAll(extensions, facet.extensions());
+                Iterables2.addAll(extensions, facet.extensions());
             }
         }
         return extensions;
