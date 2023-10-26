@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.Inject;
+
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.idea.projects.IdeaProject;
@@ -27,7 +27,7 @@ import org.metaborg.meta.core.config.ILanguageSpecConfig;
 import org.metaborg.meta.core.project.ILanguageSpec;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -40,7 +40,7 @@ public final class ProjectUtils {
     @InjectLogger
     private ILogger logger;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ProjectUtils(final IProjectService projectService) {
         this.projectService = projectService;
     }

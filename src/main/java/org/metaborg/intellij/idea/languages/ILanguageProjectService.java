@@ -24,7 +24,7 @@ import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 import java.util.Collection;
 import java.util.Set;

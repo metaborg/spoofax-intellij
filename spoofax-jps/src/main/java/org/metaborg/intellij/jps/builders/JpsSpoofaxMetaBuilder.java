@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.jps.builders;
 
-import com.google.inject.Inject;
+
 import org.jetbrains.jps.incremental.CompileContext;
 import org.jetbrains.jps.incremental.ProjectBuildException;
 import org.jetbrains.jps.model.module.JpsModule;
@@ -54,7 +54,7 @@ import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecService;
 import org.metaborg.util.file.CollectionFileAccess;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
@@ -73,7 +73,7 @@ public final class JpsSpoofaxMetaBuilder {
     @InjectLogger
     private ILogger logger;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public JpsSpoofaxMetaBuilder(
             final LanguageSpecBuilder builder,
             final ILanguageManager languageManager,

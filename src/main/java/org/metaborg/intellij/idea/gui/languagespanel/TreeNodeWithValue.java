@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**

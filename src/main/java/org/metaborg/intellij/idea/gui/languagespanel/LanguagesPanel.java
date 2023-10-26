@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import com.google.inject.Inject;
+
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
@@ -34,7 +34,7 @@ import org.metaborg.intellij.idea.gui.languagesettings.AddLanguageFromArtifactAc
 import org.metaborg.intellij.idea.gui.languagesettings.AddLanguageFromDirectoryAction;
 import org.metaborg.intellij.idea.gui.languagesettings.LanguagesSettings;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -79,7 +79,7 @@ public final class LanguagesPanel extends JPanel {
         setBorder(IdeBorderFactory.createTitledBorder("Loaded languages", false));
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     protected void inject(final IIconManager iconManager) {
         this.iconManager = iconManager;

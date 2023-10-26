@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -41,7 +41,7 @@ public class SpoofaxIdentifier extends MetaborgPsiElement
      *
      * @param node The AST node to wrap.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public SpoofaxIdentifier(
             @Assisted final ASTNode node,
             final ISpoofaxResolverService resolverService,

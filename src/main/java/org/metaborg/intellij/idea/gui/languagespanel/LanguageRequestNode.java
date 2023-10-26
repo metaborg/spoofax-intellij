@@ -22,7 +22,7 @@ import org.metaborg.core.config.ILanguageComponentConfig;
 import org.metaborg.core.language.ILanguageDiscoveryRequest;
 import org.metaborg.core.language.LanguageVersion;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.*;
 
 /**

@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;
@@ -47,7 +47,7 @@ public final class MetaborgParserDefinition implements ParserDefinition {
     private final ICharacterLexerFactory characterLexerFactory;
     private final ILanguageBindingManager bindingManager;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     /* package private */ MetaborgParserDefinition(
             @Assisted final MetaborgLanguageFileType fileType,
             @Assisted final IFileElementType fileElementType,

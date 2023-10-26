@@ -21,7 +21,7 @@ package org.metaborg.intellij.idea.projects;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Factory for IntelliJ IDEA language specification projects.

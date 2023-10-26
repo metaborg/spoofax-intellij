@@ -18,7 +18,7 @@ package org.metaborg.intellij.idea.parsing;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.vfs2.FileObject;
@@ -45,7 +45,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxUnitService;
 import org.metaborg.util.log.ILogger;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lexer.LexerBase;
 import com.intellij.psi.tree.IElementType;
@@ -88,7 +88,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     private int tokenIndex;
 
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private SpoofaxHighlightingLexer(@Assisted @Nullable FileObject file, @Assisted @Nullable IProject project,
                                      @Assisted ILanguageImpl languageImpl, @Assisted SpoofaxTokenTypeManager tokenTypesManager,
                                      ISpoofaxInputUnitService inputUnitService, ISpoofaxSyntaxService syntaxService,

@@ -22,7 +22,7 @@ import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.projects.MetaborgModuleConstants;
 import org.metaborg.util.resource.ResourceUtils;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;

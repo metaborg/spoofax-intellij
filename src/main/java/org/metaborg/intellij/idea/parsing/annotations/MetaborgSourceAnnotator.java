@@ -15,7 +15,7 @@
 
 package org.metaborg.intellij.idea.parsing.annotations;
 
-import com.google.inject.Inject;
+
 import com.google.inject.Singleton;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.ExternalAnnotator;
@@ -62,7 +62,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
     private ILogger logger;
 
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public MetaborgSourceAnnotator(IContextService contextService, IIdeaProjectService projectService,
                                    IIntelliJResourceService resourceService, ILanguageIdentifierService identifierService,
                                    ISpoofaxInputUnitService unitSerivce, ISpoofaxAnalysisResultRequester analysisResultProcessor) {

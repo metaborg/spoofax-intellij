@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ProcessingContext;
 import org.apache.commons.vfs2.FileObject;
@@ -36,7 +36,7 @@ import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultReques
 import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
 import org.metaborg.spoofax.core.unit.ISpoofaxAnalyzeUnit;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -60,7 +60,7 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
      * @param resourceService        The resource service.
      * @param languageProjectService The language project service.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public SpoofaxReferenceProvider(
             final IIdeaProjectService projectService,
             final IIntelliJResourceService resourceService,

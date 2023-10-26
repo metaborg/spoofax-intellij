@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.gui.languagesettings;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
@@ -70,7 +70,7 @@ public abstract class LanguagesSettings extends BaseConfigurable {
         this.project = project;
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     protected void inject(final IIdeaLanguageManager languageManager,
                           final ILanguageService languageService,

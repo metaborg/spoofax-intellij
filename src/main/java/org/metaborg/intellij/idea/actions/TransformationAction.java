@@ -15,7 +15,7 @@
 
 package org.metaborg.intellij.idea.actions;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -42,7 +42,7 @@ import org.metaborg.spoofax.core.unit.*;
 import org.metaborg.util.concurrent.IClosableLock;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,7 +64,7 @@ public final class TransformationAction extends AnActionWithId {
     private ILogger logger;
 
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private TransformationAction(@Assisted final String id, @Assisted final ITransformAction action,
                                  @Assisted final ILanguageImpl language, final ActionUtils actionUtils,
                                  final IIntelliJResourceService resourceService, final IContextService contextService,

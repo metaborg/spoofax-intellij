@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
@@ -30,7 +30,7 @@ import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -49,7 +49,7 @@ public final class IdeaProjectService implements IIdeaProjectService {
     /**
      * Initializes a new instance of the {@link IdeaProjectService} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private IdeaProjectService(final IIntelliJResourceService resourceService) {
         this.resourceService = resourceService;
     }

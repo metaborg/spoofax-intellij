@@ -22,7 +22,7 @@ import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.provider.LayeredFileName;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Utility functions for working with Apache {@link FileName} objects.

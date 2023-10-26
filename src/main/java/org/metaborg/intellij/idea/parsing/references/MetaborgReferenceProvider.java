@@ -35,7 +35,7 @@ import org.metaborg.intellij.idea.projects.IdeaProject;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.intellij.utils.CollectionUtils;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Provides the references for a certain PSI element in a certain context.

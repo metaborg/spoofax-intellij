@@ -19,7 +19,7 @@
 package org.metaborg.intellij.idea.projects;
 
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleTypeManager;
@@ -55,7 +55,7 @@ public final class MetaborgModuleType extends ModuleType<MetaborgModuleBuilder> 
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final IIconManager iconManager) {
         this.iconManager = iconManager;

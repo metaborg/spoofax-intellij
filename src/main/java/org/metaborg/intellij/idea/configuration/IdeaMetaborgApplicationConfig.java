@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -72,7 +72,7 @@ public final class IdeaMetaborgApplicationConfig
         loadState(new MetaborgApplicationConfigState());
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject() {
 

@@ -23,7 +23,7 @@ import com.intellij.psi.PsiFile;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.resource.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * IntelliJ resource service.

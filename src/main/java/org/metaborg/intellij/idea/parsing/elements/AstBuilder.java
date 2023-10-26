@@ -26,7 +26,7 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 import org.spoofax.terms.Term;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.Stack;
 
 /**

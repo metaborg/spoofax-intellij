@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.*;
@@ -57,7 +57,7 @@ public abstract class MetaborgLanguageFileType extends LanguageFileType implemen
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final IIconManager iconManager, final IIdeaLanguageManager languageManager) {
         this.iconManager = iconManager;

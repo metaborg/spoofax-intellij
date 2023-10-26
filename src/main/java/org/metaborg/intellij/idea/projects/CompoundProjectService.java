@@ -20,7 +20,7 @@ package org.metaborg.intellij.idea.projects;
 
 // TODO: Move this to metaborg core?
 
-import com.google.inject.Inject;
+
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.*;
 import org.metaborg.core.project.*;
@@ -28,7 +28,7 @@ import org.metaborg.intellij.Compound;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -42,7 +42,7 @@ public final class CompoundProjectService implements IProjectService {
     private ILogger logger;
     private final Set<IProjectService> services;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public CompoundProjectService(@Compound final Set<IProjectService> services) {
         this.services = services;
     }

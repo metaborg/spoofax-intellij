@@ -20,7 +20,7 @@ package org.metaborg.intellij.idea.languages;
 
 import org.metaborg.core.language.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * A language implementation/dialect tuple.

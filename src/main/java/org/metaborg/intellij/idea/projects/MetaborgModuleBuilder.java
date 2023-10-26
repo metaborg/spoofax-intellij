@@ -15,7 +15,7 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.Inject;
+
 import com.google.inject.Singleton;
 import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.Disposable;
@@ -209,7 +209,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     }
 
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private MetaborgModuleBuilder(final IIdeaLanguageSpecFactory languageSpecFactory,
                                   final IIntelliJResourceService resourceService, final IIdeaProjectService projectService,
                                   final ISpoofaxLanguageSpecConfigBuilder configBuilder, final INewModuleWizardStepFactory wizardStepFactory,

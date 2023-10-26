@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.google.inject.Inject;
+
 import com.intellij.ide.highlighter.ArchiveFileType;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.intellij.idea.graphics.IIconManager;
@@ -40,7 +40,7 @@ public final class LanguageArtifactFileType extends ArchiveFileType implements I
     /**
      * Initializes a new instance of the {@link LanguageArtifactFileType} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public LanguageArtifactFileType(final IIconManager iconManager) {
         this.iconManager = iconManager;
     }

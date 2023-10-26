@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.configuration;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.Objects;
 
 /**

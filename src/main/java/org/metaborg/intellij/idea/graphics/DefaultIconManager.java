@@ -23,7 +23,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.IconLoader;
 import org.metaborg.core.language.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.*;
 
 /**

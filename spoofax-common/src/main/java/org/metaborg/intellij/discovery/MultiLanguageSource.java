@@ -18,12 +18,12 @@
 
 package org.metaborg.intellij.discovery;
 
-import com.google.inject.Inject;
+
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.Compound;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.Set;
 
 /**
@@ -42,7 +42,7 @@ public final class MultiLanguageSource implements ILanguageSource {
      * Initializes a new instance of the {@link MultiLanguageSource} class.
      * @param sources The sources.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public MultiLanguageSource(@Compound final Set<ILanguageSource> sources) {
         this.sources = sources;
     }

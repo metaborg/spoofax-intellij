@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.sdks;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.projectRoots.*;
 import com.intellij.openapi.projectRoots.impl.JavaDependentSdkType;
 import com.intellij.openapi.roots.OrderRootType;
@@ -72,7 +72,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final LibraryService libraryService, final IIconManager iconManager, final SimpleConfigUtil configUtil) {
         this.libraryService = libraryService;

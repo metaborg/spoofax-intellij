@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.compilation;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompilerMessageCategory;
@@ -32,7 +32,7 @@ import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.meta.core.project.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Reloads the project's languages after compile.
@@ -48,7 +48,7 @@ public final class ReloadLanguageCompileTask implements IAfterCompileTask {
     /**
      * Initializes a new instance of the {@link ReloadLanguageCompileTask} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ReloadLanguageCompileTask( final IIdeaProjectService projectService,
             final IIdeaLanguageManager languageManager,
             final ILanguageDiscoveryService discoveryService) {

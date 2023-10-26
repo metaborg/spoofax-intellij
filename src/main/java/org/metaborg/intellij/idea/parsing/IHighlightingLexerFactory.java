@@ -24,7 +24,7 @@ import org.metaborg.core.language.*;
 import org.metaborg.core.project.*;
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Factory for highlighting lexers.

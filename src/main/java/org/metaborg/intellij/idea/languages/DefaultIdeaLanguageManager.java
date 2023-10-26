@@ -15,7 +15,7 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.google.inject.Inject;
+
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.intellij.lang.Language;
@@ -56,7 +56,7 @@ import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -97,7 +97,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     /**
      * Initializes a new instance of the {@link DefaultIdeaLanguageManager} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public DefaultIdeaLanguageManager(final ILanguageService languageService,
                                       final ILanguageSource languageSource, final ILanguageDiscoveryService discoveryService,
                                       final IIntelliJResourceService resourceService, final MetaborgSourceAnnotator metaborgSourceAnnotator,

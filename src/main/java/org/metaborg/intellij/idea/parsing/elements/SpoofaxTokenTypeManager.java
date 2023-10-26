@@ -21,7 +21,7 @@ package org.metaborg.intellij.idea.parsing.elements;
 import org.metaborg.core.style.*;
 import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.awt.*;
 import java.util.WeakHashMap;
 

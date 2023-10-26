@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.google.inject.Inject;
+
 import com.intellij.lexer.Lexer;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
@@ -39,7 +39,7 @@ import org.metaborg.intellij.idea.NotificationUtils;
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenTypeManager;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Factory for the {@link SpoofaxSyntaxHighlighter} class.
@@ -55,7 +55,7 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
     /**
      * Initializes a new instance of the {@link SpoofaxSyntaxHighlighterFactory} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public SpoofaxSyntaxHighlighterFactory(
             final IIntelliJResourceService resourceService,
             final ILanguageIdentifierService identifierService,

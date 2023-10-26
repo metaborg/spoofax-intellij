@@ -21,7 +21,7 @@ package org.metaborg.intellij.idea.gui.languagespanel;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.graphics.IIconManager;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.*;
 
 /**

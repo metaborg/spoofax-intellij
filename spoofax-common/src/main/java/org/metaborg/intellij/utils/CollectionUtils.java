@@ -20,7 +20,7 @@ package org.metaborg.intellij.utils;
 
 import com.google.inject.Singleton;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.util.*;
 

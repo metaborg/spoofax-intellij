@@ -15,7 +15,7 @@
 
 package org.metaborg.intellij.idea.transformations;
 
-import com.google.inject.Inject;
+
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.MetaborgException;
 import org.metaborg.core.action.ITransformGoal;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.*;
+import jakarta.annotation.*;
 
 /**
  * Executes a transformation action on resources.
@@ -58,7 +58,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
     /**
      * Initializes a new instance of the {@link ResourceTransformer} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ResourceTransformer(IContextService contextService, IInputUnitService<I> unitService,
                                IParseResultRequester<I, P> parseResultRequester, IAnalysisResultRequester<I, A> analysisResultRequester,
                                ITransformService<P, A, TP, TA> transformService) {

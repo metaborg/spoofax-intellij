@@ -27,7 +27,7 @@ import org.metaborg.intellij.configuration.MetaborgModuleConfigState;
 import org.metaborg.intellij.jps.JpsMetaborgModuleType;
 import org.metaborg.intellij.projects.MetaborgModuleConstants;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Deserializes module-specific configuration in JPS.
@@ -39,7 +39,7 @@ public final class MetaborgModuleConfigDeserializer extends JpsModulePropertiesS
     /**
      * Initializes a new instance of the {@link MetaborgModuleConfigDeserializer} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public MetaborgModuleConfigDeserializer(final JpsMetaborgModuleType moduleType,
                                             final IJpsMetaborgModuleConfigFactory configFactory) {
         super(moduleType, MetaborgModuleConstants.ModuleID, IMetaborgModuleConfig.CONFIG_NAME);

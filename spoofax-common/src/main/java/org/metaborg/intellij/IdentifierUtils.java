@@ -20,7 +20,7 @@ package org.metaborg.intellij;
 
 import com.google.inject.Singleton;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 // TODO: Add to Metaborg Core?

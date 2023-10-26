@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.filetypes;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
@@ -47,7 +47,7 @@ public final class MetaborgFileTypeFactory extends FileTypeFactory {
     }
 
     // TODO: Maybe multi-inject a Set and register them all?
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final LanguageArtifactFileType artifactFileType) {
         this.artifactFileType = artifactFileType;

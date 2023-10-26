@@ -60,7 +60,7 @@ public final class JpsMetaborgModuleFacetConfig
     /**
      * Initializes a new instance of the {@link JpsMetaborgModuleConfig} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public JpsMetaborgModuleFacetConfig(final IJpsMetaborgModuleFacetConfigFactory configFactory) {
         super(new MetaborgModuleFacetConfigState());
         // Don't initialize fields that depend on the state here. Initialize in loadState().

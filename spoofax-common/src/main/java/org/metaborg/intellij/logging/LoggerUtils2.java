@@ -21,7 +21,7 @@ package org.metaborg.intellij.logging;
 import org.metaborg.intellij.utils.ExceptionUtils;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;

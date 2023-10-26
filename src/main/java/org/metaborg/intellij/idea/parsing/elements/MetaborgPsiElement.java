@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
@@ -47,7 +47,7 @@ public class MetaborgPsiElement extends ASTWrapperPsiElement implements PsiEleme
      *
      * @param node The AST node to wrap.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public MetaborgPsiElement(
             @Assisted final ASTNode node,
             final ISpoofaxResolverService resolverService,

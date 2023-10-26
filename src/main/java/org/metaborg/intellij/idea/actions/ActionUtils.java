@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.actions;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -36,7 +36,7 @@ import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +52,7 @@ public final class ActionUtils {
     @InjectLogger
     private ILogger logger;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ActionUtils(
             final IIntelliJResourceService resourceService,
             final IIdeaProjectService projectService,

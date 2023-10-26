@@ -23,7 +23,7 @@ import org.metaborg.core.config.IProjectConfig;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.Project;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 // TODO: Move this to Spoofax core?
 

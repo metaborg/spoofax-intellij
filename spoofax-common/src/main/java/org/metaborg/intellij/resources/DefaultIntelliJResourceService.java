@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.resources;
 
-import com.google.inject.Inject;
+
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.intellij.openapi.vfs.StandardFileSystems;
@@ -37,7 +37,7 @@ import org.metaborg.intellij.vfs.IntelliJFileObject;
 import org.metaborg.intellij.vfs.IntelliJFileSystemManagerProvider;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -54,10 +54,10 @@ public final class DefaultIntelliJResourceService extends ResourceService implem
     /**
      * Initializes a new instance of the {@link DefaultIntelliJResourceService} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public DefaultIntelliJResourceService(
             final FileSystemManager fileSystemManager,
-            @Named("ResourceClassLoader") final ClassLoader classLoader) {
+            @jakarta.inject.Named("ResourceClassLoader") @javax.inject.Named("ResourceClassLoader") final ClassLoader classLoader) {
         super(fileSystemManager, classLoader);
     }
 

@@ -26,7 +26,7 @@ import org.jetbrains.jps.model.serialization.JpsGlobalExtensionSerializer;
 import org.metaborg.intellij.configuration.IMetaborgApplicationConfig;
 import org.metaborg.intellij.configuration.MetaborgApplicationConfigState;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Deserializes the application-wide configuration in JPS.
@@ -36,7 +36,7 @@ public final class MetaborgApplicationConfigDeserializer extends JpsGlobalExtens
     private final IJpsMetaborgApplicationConfigFactory configFactory;
     private final IMetaborgConfigService extensionService;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public MetaborgApplicationConfigDeserializer(final IJpsMetaborgApplicationConfigFactory configFactory,
                                                  final IMetaborgConfigService extensionService) {
         super(IMetaborgApplicationConfig.CONFIG_FILE, IMetaborgApplicationConfig.CONFIG_NAME);

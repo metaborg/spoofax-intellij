@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
@@ -39,7 +39,7 @@ import org.metaborg.meta.core.wizard.*;
 import org.metaborg.spoofax.meta.core.generator.general.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
@@ -102,7 +102,7 @@ public class NewModuleWizardStep extends ModuleWizardStep {
      * @param context     The {@link WizardContext}.
      * @param iconManager The icon manager.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public NewModuleWizardStep(
             @Assisted final MetaborgModuleBuilder builder,
             @Assisted final WizardContext context,

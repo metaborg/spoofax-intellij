@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.Inject;
+
 import com.intellij.facet.FacetConfiguration;
 import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
@@ -36,7 +36,7 @@ import org.metaborg.intellij.idea.facets.MetaborgFacetEditorTab;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Module-level facet configuration of the plugin.
@@ -75,7 +75,7 @@ public final class IdeaMetaborgModuleFacetConfig
     /**
      * Initializes a new instance of the {@link IdeaMetaborgModuleFacetConfig} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public IdeaMetaborgModuleFacetConfig() {
         // Don't initialize fields that depend on the state here. Initialize in loadState().
         loadState(new MetaborgModuleFacetConfigState());

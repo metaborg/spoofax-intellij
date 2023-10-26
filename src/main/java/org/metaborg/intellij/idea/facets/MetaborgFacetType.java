@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.facets;
 
-import com.google.inject.Inject;
+
 import com.intellij.facet.Facet;
 import com.intellij.facet.FacetType;
 import com.intellij.openapi.module.Module;
@@ -57,7 +57,7 @@ public final class MetaborgFacetType extends FacetType<MetaborgFacet, IdeaMetabo
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final IIconManager iconManager) {
         this.iconManager = iconManager;

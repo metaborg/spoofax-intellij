@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.gui.languagesettings;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +42,7 @@ public final class MetaborgProjectLanguagesSettings extends LanguagesSettings {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     protected void inject() {
     }
