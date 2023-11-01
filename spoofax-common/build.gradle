@@ -50,7 +50,7 @@ dependencies {
     compile     "com.google.guava:guava:31.1-jre"
     compile     "org.slf4j:slf4j-api:1.7.10"
 
-    compile     "jakarta.annotation:jakarta.annotation-api:2.1.0"
+    implementation     "jakarta.annotation:jakarta.annotation-api:2.1.0"
     compile     "org.apache.commons:commons-lang3:3.4"
     compile     "org.apache.commons:commons-vfs2:2.1"
     compile     "com.google.inject:guice:$guiceVersion"
