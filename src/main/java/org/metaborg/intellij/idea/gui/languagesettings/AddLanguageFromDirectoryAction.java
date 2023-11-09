@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.gui.languagesettings;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.fileChooser.FileChooser;
@@ -36,7 +36,7 @@ import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.logging.LoggerUtils2;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 
 /**
@@ -61,7 +61,7 @@ public class AddLanguageFromDirectoryAction extends LanguagesAction {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(
             final IIdeaLanguageManager languageManager) {

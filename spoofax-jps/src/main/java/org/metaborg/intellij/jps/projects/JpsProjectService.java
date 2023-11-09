@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.jps.projects;
 
-import com.google.inject.Inject;
+
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
@@ -31,7 +31,7 @@ import org.metaborg.core.source.ISourceTextService;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +50,7 @@ public final class JpsProjectService implements IJpsProjectService {
     @InjectLogger
     private ILogger logger;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public JpsProjectService(final ISourceTextService sourceTextService,
                              final IResourceService resourceService,
                              final IProjectConfigService projectConfigService) {

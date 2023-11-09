@@ -25,7 +25,7 @@ import com.intellij.openapi.projectRoots.SdkModel;
 import com.intellij.openapi.projectRoots.ValidatableSdkAdditionalData;
 import org.jdom.Element;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 public final class MetaborgSdkAdditionalData implements ValidatableSdkAdditionalData {
 

@@ -27,7 +27,7 @@ import com.intellij.psi.tree.IElementType;
 import org.metaborg.core.style.*;
 import org.metaborg.intellij.idea.parsing.elements.SpoofaxTokenType;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;

@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.jps.projects;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.jps.model.module.JpsModule;
@@ -38,7 +38,7 @@ public final class JpsLanguageSpec extends MetaborgJpsProject implements ISpoofa
      * @param location
      *            The location of the project root.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public JpsLanguageSpec(@Assisted final JpsModule module,
                            @Assisted final FileObject location,
                            @Assisted final ISpoofaxLanguageSpecConfig config) {

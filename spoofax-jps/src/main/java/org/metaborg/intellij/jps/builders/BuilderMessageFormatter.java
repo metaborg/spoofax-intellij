@@ -30,7 +30,7 @@ import org.metaborg.util.log.*;
 import org.spoofax.interpreter.terms.*;
 import org.strategoxt.lang.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Builder message formatting functions.
@@ -40,7 +40,7 @@ public final class BuilderMessageFormatter {
     @InjectLogger
     private ILogger logger;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public BuilderMessageFormatter() {
 
     }

@@ -21,7 +21,7 @@ package org.metaborg.intellij.discovery;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * A language source.

@@ -18,7 +18,6 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import com.google.common.base.Preconditions;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -36,7 +35,7 @@ import org.metaborg.intellij.idea.projects.IdeaProject;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.intellij.utils.CollectionUtils;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Provides the references for a certain PSI element in a certain context.
@@ -59,9 +58,15 @@ public abstract class MetaborgReferenceProvider extends PsiReferenceProvider {
             final IIntelliJResourceService resourceService,
             final ILanguageProjectService languageProjectService) {
         super();
-        Preconditions.checkNotNull(projectService);
-        Preconditions.checkNotNull(resourceService);
-        Preconditions.checkNotNull(languageProjectService);
+        if (projectService == null) {
+          throw new NullPointerException();
+        }
+        if (resourceService == null) {
+          throw new NullPointerException();
+        }
+        if (languageProjectService == null) {
+          throw new NullPointerException();
+        }
 
         this.projectService = projectService;
         this.resourceService = resourceService;

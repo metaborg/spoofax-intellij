@@ -15,7 +15,6 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.common.base.Preconditions;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -27,7 +26,7 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 import org.spoofax.terms.Term;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.Stack;
 
 /**
@@ -48,9 +47,15 @@ public final class AstBuilder {
     public AstBuilder(final ILanguageImpl language,
         final IATermAstElementTypeProviderFactory elementTypeProviderFactory,
         final SpoofaxTokenTypeManager tokenTypesManager) {
-        Preconditions.checkNotNull(language);
-        Preconditions.checkNotNull(elementTypeProviderFactory);
-        Preconditions.checkNotNull(tokenTypesManager);
+        if (language == null) {
+          throw new NullPointerException();
+        }
+        if (elementTypeProviderFactory == null) {
+          throw new NullPointerException();
+        }
+        if (tokenTypesManager == null) {
+          throw new NullPointerException();
+        }
 
         this.language = language;
         this.tokenTypesManager = tokenTypesManager;

@@ -18,7 +18,6 @@
 
 package org.metaborg.intellij.idea.gui.languagespanel;
 
-import com.google.common.base.Preconditions;
 import com.intellij.ui.treeStructure.treetable.TreeColumnInfo;
 
 import javax.swing.table.TableCellRenderer;
@@ -35,7 +34,9 @@ public class TreeKeyColumnInfo extends TreeColumnInfo {
      */
     public TreeKeyColumnInfo(final String name) {
         super(name);
-        Preconditions.checkNotNull(name);
+        if (name == null) {
+          throw new NullPointerException();
+        }
     }
 
     /**

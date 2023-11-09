@@ -40,7 +40,7 @@ public final class SpoofaxPreBuilder extends MetaborgMetaBuilder2<SpoofaxPreTarg
     /**
      * Initializes a new instance of the {@link SpoofaxPreBuilder} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public SpoofaxPreBuilder(
             final SpoofaxPreTargetType targetType,
             final IJpsProjectService projectService,

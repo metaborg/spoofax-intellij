@@ -18,10 +18,9 @@
 
 package org.metaborg.intellij.utils;
 
-import com.google.common.base.Preconditions;
 import com.google.inject.Singleton;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -44,7 +43,9 @@ public final class CollectionUtils {
      * @return An immutable list.
      */
     public static <T> List<T> toList(final Iterable<? extends T> iterable) {
-        Preconditions.checkNotNull(iterable);
+        if (iterable == null) {
+          throw new NullPointerException();
+        }
 
         return Collections.unmodifiableList(toMutableList(iterable));
     }
@@ -57,7 +58,9 @@ public final class CollectionUtils {
      * @return A mutable list.
      */
     public static <T> List<T> toMutableList(final Iterable<? extends T> iterable) {
-        Preconditions.checkNotNull(iterable);
+        if (iterable == null) {
+          throw new NullPointerException();
+        }
 
         final ArrayList<T> list = new ArrayList<>();
         for (final T item : iterable) {
@@ -74,7 +77,9 @@ public final class CollectionUtils {
      * @return A sorted list.
      */
     public static <T extends Comparable<? super T>> List<T> toSortedList(final Collection<T> collection) {
-        Preconditions.checkNotNull(collection);
+        if (collection == null) {
+          throw new NullPointerException();
+        }
 
         return toSortedList(collection, null);
     }
@@ -90,7 +95,9 @@ public final class CollectionUtils {
     public static <T> List<T> toSortedList(
             final Collection<T> collection,
             @Nullable final Comparator<? super T> comparator) {
-        Preconditions.checkNotNull(collection);
+        if (collection == null) {
+          throw new NullPointerException();
+        }
 
         final List<T> list = new ArrayList<>(collection);
         list.sort(comparator);
@@ -105,8 +112,12 @@ public final class CollectionUtils {
      * @return An array.
      */
     public static <T> T[] toArray(final Iterable<? extends T> iterable, final Class<T> clazz) {
-        Preconditions.checkNotNull(iterable);
-        Preconditions.checkNotNull(clazz);
+        if (iterable == null) {
+          throw new NullPointerException();
+        }
+        if (clazz == null) {
+          throw new NullPointerException();
+        }
 
         return toArray(toMutableList(iterable), clazz);
     }
@@ -120,8 +131,12 @@ public final class CollectionUtils {
      * @return An array.
      */
     public static <T> T[] toArray(final Collection<? extends T> collection, final Class<T> clazz) {
-        Preconditions.checkNotNull(collection);
-        Preconditions.checkNotNull(clazz);
+        if (collection == null) {
+          throw new NullPointerException();
+        }
+        if (clazz == null) {
+          throw new NullPointerException();
+        }
 
         @SuppressWarnings("unchecked") final
         T[] result = (T[])Array.newInstance(clazz, collection.size());

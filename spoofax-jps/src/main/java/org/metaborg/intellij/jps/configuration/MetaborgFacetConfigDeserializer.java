@@ -27,7 +27,7 @@ import org.jetbrains.jps.model.serialization.facet.JpsFacetConfigurationSerializ
 import org.metaborg.intellij.configuration.MetaborgModuleFacetConfigState;
 import org.metaborg.intellij.facets.MetaborgFacetConstants;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Deserializes facet-specific configuration in JPS.
@@ -39,7 +39,7 @@ public final class MetaborgFacetConfigDeserializer extends JpsFacetConfiguration
     /**
      * Initializes a new instance of the {@link MetaborgFacetConfigDeserializer} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public MetaborgFacetConfigDeserializer(final IJpsMetaborgModuleFacetConfigFactory configFactory) {
         super(JpsMetaborgModuleFacetConfig.ROLE, MetaborgFacetConstants.ID, MetaborgFacetConstants.NAME);
 

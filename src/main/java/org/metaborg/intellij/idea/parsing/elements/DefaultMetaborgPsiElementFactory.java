@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.inject.Inject;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
@@ -37,7 +37,7 @@ public final class DefaultMetaborgPsiElementFactory implements IMetaborgPsiEleme
     /**
      * Initializes a new instance of the {@link DefaultMetaborgPsiElementFactory} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public DefaultMetaborgPsiElementFactory(
             final ISpoofaxResolverService resolverService,
             final IIntelliJResourceService resourceService,

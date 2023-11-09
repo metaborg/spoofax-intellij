@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lexer.LexerBase;
 import com.intellij.psi.tree.IElementType;
@@ -44,7 +44,7 @@ public final class CharacterLexer extends LexerBase {
     // The current zero-based offset in the character buffer.
     private int offst;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private CharacterLexer(@Assisted final SpoofaxTokenTypeManager tokenTypesManager) {
         super();
         this.tokenTypesManager = tokenTypesManager;

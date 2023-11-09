@@ -23,7 +23,7 @@ import com.intellij.util.ui.ColumnInfo;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.graphics.IIconManager;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;

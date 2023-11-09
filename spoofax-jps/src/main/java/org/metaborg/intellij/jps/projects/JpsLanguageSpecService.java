@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.jps.projects;
 
-import com.google.inject.Inject;
+
 import com.google.inject.Singleton;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.ConfigException;
@@ -34,7 +34,7 @@ import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpec;
 import org.metaborg.spoofax.meta.core.project.ISpoofaxLanguageSpecService;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +57,7 @@ public final class JpsLanguageSpecService implements ISpoofaxLanguageSpecService
     /**
      * Initializes a new instance of the {@link JpsLanguageSpecService} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public JpsLanguageSpecService(final ISourceTextService sourceTextService,
                                   final ISpoofaxLanguageSpecConfigService configService,
                                   final IResourceService resourceService,

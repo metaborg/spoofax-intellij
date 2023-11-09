@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.resources;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.application.PathManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.containers.ContainerUtil;
@@ -44,7 +44,7 @@ public final class LibraryService {
     /**
      * Initializes a new instance of the {@link LibraryService} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public LibraryService() {
     }
 

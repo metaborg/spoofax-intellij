@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.google.inject.Inject;
+
 import com.intellij.lang.Language;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
@@ -45,7 +45,7 @@ public abstract class MetaborgIdeaLanguage extends Language {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject() {
     }

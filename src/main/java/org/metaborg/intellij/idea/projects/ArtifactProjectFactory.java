@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.Inject;
+
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.*;
 import org.metaborg.core.messages.*;
@@ -26,7 +26,7 @@ import org.metaborg.core.source.*;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 public final class ArtifactProjectFactory implements IArtifactProjectFactory {
 
@@ -35,7 +35,7 @@ public final class ArtifactProjectFactory implements IArtifactProjectFactory {
     @InjectLogger
     private ILogger logger;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ArtifactProjectFactory(final ISourceTextService sourceTextService,
                                   final IProjectConfigService projectConfigService) {
         this.sourceTextService = sourceTextService;

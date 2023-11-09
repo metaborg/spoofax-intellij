@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.references;
 
-import com.google.inject.Inject;
+
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiReferenceContributor;
 import com.intellij.psi.PsiReferenceRegistrar;
@@ -43,7 +43,7 @@ public final class MetaborgReferenceContributor extends PsiReferenceContributor 
     }
 
     @SuppressWarnings("unused")
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private void inject(final IMetaborgReferenceProviderFactory referenceProviderFactory) {
         this.referenceProviderFactory = referenceProviderFactory;
     }

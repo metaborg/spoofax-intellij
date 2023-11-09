@@ -59,7 +59,7 @@ public final class SpoofaxBuilderService extends BuilderService {
     }
 
     @SuppressWarnings("unused")
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private void inject(
             final Collection<BuildTargetType<?>> targets,
             final Collection<TargetBuilder<?, ?>> builders,

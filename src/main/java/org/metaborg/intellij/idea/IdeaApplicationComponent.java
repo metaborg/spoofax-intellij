@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +50,7 @@ public final class IdeaApplicationComponent implements ApplicationComponent {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final IMetaborgApplicationConfig configuration,
                         final ConfigurationUtils configurationUtils,

@@ -21,7 +21,7 @@ package org.metaborg.intellij.jps.projects;
 import org.jetbrains.jps.model.module.JpsModule;
 import org.metaborg.core.project.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * A project service for JPS.

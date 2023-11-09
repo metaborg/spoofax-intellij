@@ -26,7 +26,7 @@ import org.jetbrains.jps.model.module.JpsModule;
 import org.metaborg.core.config.*;
 import org.metaborg.core.project.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -42,7 +42,7 @@ public class MetaborgJpsProject extends Project {
      * @param location
      *            The location of the project root.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public MetaborgJpsProject(
             @Assisted final JpsModule module,
             @Assisted final FileObject location,

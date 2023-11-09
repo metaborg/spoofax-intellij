@@ -22,7 +22,7 @@ import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Factory for IntelliJ IDEA projects.

@@ -15,8 +15,7 @@
 
 package org.metaborg.intellij.idea.parsing.annotations;
 
-import com.google.common.base.MoreObjects;
-import com.google.inject.Inject;
+
 import com.google.inject.Singleton;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.ExternalAnnotator;
@@ -63,7 +62,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
     private ILogger logger;
 
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public MetaborgSourceAnnotator(IContextService contextService, IIdeaProjectService projectService,
                                    IIntelliJResourceService resourceService, ILanguageIdentifierService identifierService,
                                    ISpoofaxInputUnitService unitSerivce, ISpoofaxAnalysisResultRequester analysisResultProcessor) {
@@ -91,7 +90,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
         @Nullable final IProject project = this.projectService.get(file);
         if(project == null) {
             this.logger.warn("Cannot annotate source code; cannot get language specification for resource {}. "
-                + "Is the file excluded?", MoreObjects.firstNonNull(file.getVirtualFile(), "<unknown>"));
+                + "Is the file excluded?", file.getVirtualFile() == null ? "<unknown>" : file.getVirtualFile());
             return null;
         }
 

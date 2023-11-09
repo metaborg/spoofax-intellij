@@ -10,7 +10,7 @@ import com.intellij.util.ui.UIUtil;
 import org.junit.After;
 import org.junit.Before;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 public abstract class SpoofaxTestCase {
 

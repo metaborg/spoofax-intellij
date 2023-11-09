@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
-import com.google.inject.Inject;
+
 import com.google.inject.Singleton;
 import com.intellij.ide.util.importProject.ModuleDescriptor;
 import com.intellij.ide.util.importProject.ProjectDescriptor;
@@ -76,7 +76,7 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final MetaborgModuleType moduleType, final IIntelliJResourceService resourceService,
                         final ILanguageComponentConfigService configService) {

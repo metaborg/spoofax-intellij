@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -30,7 +30,7 @@ import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Module-level configuration of the plugin.
@@ -77,7 +77,7 @@ public final class IdeaMetaborgModuleConfig
         loadState(new MetaborgModuleConfigState());
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject() {
     }

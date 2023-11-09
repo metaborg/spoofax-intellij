@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
@@ -29,7 +29,7 @@ import org.metaborg.intellij.languages.LanguageUtils2;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.Collection;
 import java.util.Set;
 
@@ -42,7 +42,7 @@ public final class ConfigurationUtils {
     @InjectLogger
     private ILogger logger;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ConfigurationUtils(final IIdeaLanguageManager languageManager) {
         this.languageManager = languageManager;
     }

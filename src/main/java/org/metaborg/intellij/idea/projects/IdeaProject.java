@@ -18,14 +18,14 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.module.Module;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.IProjectConfig;
 import org.metaborg.core.project.Project;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * An IntelliJ IDEA project.
@@ -34,7 +34,7 @@ public class IdeaProject extends Project {
 
     private final Module module;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     /* package private */ IdeaProject(
             @Assisted final Module module,
             @Assisted final FileObject location,

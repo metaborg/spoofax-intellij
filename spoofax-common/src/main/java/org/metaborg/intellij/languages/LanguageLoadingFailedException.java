@@ -21,7 +21,7 @@ package org.metaborg.intellij.languages;
 import org.metaborg.core.*;
 import org.metaborg.intellij.utils.ExceptionUtils;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Exception thrown when language loading fails.

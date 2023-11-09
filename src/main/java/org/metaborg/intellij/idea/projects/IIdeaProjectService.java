@@ -22,7 +22,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiElement;
 import org.metaborg.core.project.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Project service for IntelliJ IDEA.

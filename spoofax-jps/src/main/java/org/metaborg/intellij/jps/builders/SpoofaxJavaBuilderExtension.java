@@ -18,13 +18,14 @@
 
 package org.metaborg.intellij.jps.builders;
 
-import com.google.common.collect.Sets;
 import com.google.inject.*;
 import org.jetbrains.jps.builders.java.JavaBuilderExtension;
 import org.jetbrains.jps.model.module.JpsModuleType;
 import org.metaborg.intellij.jps.JpsMetaborgModuleType;
 import org.metaborg.intellij.jps.SpoofaxJpsPlugin;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -44,13 +45,13 @@ public final class SpoofaxJavaBuilderExtension extends JavaBuilderExtension {
     }
 
     @SuppressWarnings("unused")
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private void inject(final JpsMetaborgModuleType moduleType) {
         this.moduleType = moduleType;
     }
 
     @Override
     public Set<? extends JpsModuleType<?>> getCompilableModuleTypes() {
-        return Sets.newHashSet(this.moduleType);
+        return new HashSet<>(Arrays.asList(this.moduleType));
     }
 }

@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.facets;
 
-import com.google.inject.Inject;
+
 import com.intellij.facet.Facet;
 import com.intellij.facet.ui.FacetEditorContext;
 import com.intellij.facet.ui.FacetEditorTab;
@@ -56,7 +56,7 @@ public class MetaborgFacetEditorTab extends FacetEditorTab {
         this.editorContext = editorContext;
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject() {
     }

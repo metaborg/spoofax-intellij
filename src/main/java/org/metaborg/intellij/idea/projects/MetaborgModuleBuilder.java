@@ -15,8 +15,7 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
+
 import com.google.inject.Singleton;
 import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.Disposable;
@@ -73,6 +72,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -209,7 +209,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     }
 
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private MetaborgModuleBuilder(final IIdeaLanguageSpecFactory languageSpecFactory,
                                   final IIntelliJResourceService resourceService, final IIdeaProjectService projectService,
                                   final ISpoofaxLanguageSpecConfigBuilder configBuilder, final INewModuleWizardStepFactory wizardStepFactory,
@@ -234,7 +234,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
 
         // Pick sensible defaults here.
         this.name = "Untitled-" + uuid;
-        this.extensions = Lists.newArrayList("u");
+        this.extensions = new ArrayList<>(Collections.singletonList("u"));
         this.languageId =
             new LanguageIdentifier("org.example", "untitled-" + uuid, LanguageVersion.parse("1.0.0-SNAPSHOT"));
         this.syntaxType = SyntaxType.SDF3;

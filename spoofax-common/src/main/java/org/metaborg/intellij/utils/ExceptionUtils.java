@@ -21,7 +21,7 @@ package org.metaborg.intellij.utils;
 import org.metaborg.util.log.*;
 import org.metaborg.util.log.LoggerUtils;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 

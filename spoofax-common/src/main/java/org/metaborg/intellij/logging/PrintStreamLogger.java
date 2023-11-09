@@ -21,7 +21,7 @@ package org.metaborg.intellij.logging;
 import org.metaborg.util.log.AbstractLogger;
 import org.slf4j.helpers.MessageFormatter;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.PrintStream;
 
 // TODO: Move to Metaborg Core.

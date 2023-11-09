@@ -36,7 +36,7 @@ public interface ILanguageManager {
      *
      * @return A collection of all loaded languages.
      */
-    Collection<ILanguage> getLoadedLanguages();
+    Collection<? extends ILanguage> getLoadedLanguages();
 
     /**
      * Loads a language component with the specified identifier.
@@ -121,5 +121,5 @@ public interface ILanguageManager {
      *
      * @param languages The languages to unload.
      */
-    void unloadRange(Iterable<ILanguage> languages);
+    void unloadRange(Iterable<? extends ILanguage> languages);
 }

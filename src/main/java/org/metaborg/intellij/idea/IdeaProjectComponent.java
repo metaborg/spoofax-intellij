@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
@@ -50,7 +50,7 @@ public final class IdeaProjectComponent implements ProjectComponent {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final Set<IBeforeCompileTask> beforeCompileTasks,
                         final Set<IAfterCompileTask> afterCompileTasks) {

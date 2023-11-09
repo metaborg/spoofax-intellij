@@ -23,7 +23,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.gui.languagespanel.LanguageTreeModel;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.*;
 
 /**

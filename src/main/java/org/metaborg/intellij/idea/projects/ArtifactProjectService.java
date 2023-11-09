@@ -18,8 +18,7 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
+
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
@@ -29,7 +28,7 @@ import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.resources.FileNameUtils;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +44,7 @@ public final class ArtifactProjectService implements IProjectService {
     @InjectLogger
     private ILogger logger;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ArtifactProjectService(final IArtifactProjectFactory artifactProjectFactory) {
         this.artifactProjectFactory = artifactProjectFactory;
     }
@@ -56,7 +55,9 @@ public final class ArtifactProjectService implements IProjectService {
     @Nullable
     @Override
     public IProject get(final FileObject resource) {
-        Preconditions.checkNotNull(resource);
+        if (resource == null) {
+          throw new NullPointerException();
+        }
 
         @Nullable final FileObject artifactRoot = getArtifactRoot(resource);
         if (artifactRoot == null)

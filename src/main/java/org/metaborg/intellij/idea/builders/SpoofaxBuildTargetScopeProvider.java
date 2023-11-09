@@ -50,7 +50,7 @@ public final class SpoofaxBuildTargetScopeProvider extends BuildTargetScopeProvi
     }
 
     @SuppressWarnings("unused")
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private void inject() {
 
     }

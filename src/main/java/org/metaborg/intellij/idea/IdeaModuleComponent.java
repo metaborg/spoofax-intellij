@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
@@ -36,7 +36,7 @@ import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.meta.core.config.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Module-level component.
@@ -63,7 +63,7 @@ public final class IdeaModuleComponent implements ModuleComponent {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(
             final IIdeaProjectService projectService,

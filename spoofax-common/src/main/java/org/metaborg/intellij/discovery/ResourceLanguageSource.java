@@ -15,7 +15,7 @@
 
 package org.metaborg.intellij.discovery;
 
-import com.google.inject.Inject;
+
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.LanguageIdentifier;
 import org.metaborg.core.resource.IResourceService;
@@ -23,7 +23,7 @@ import org.metaborg.intellij.languages.LanguageUtils2;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -36,7 +36,7 @@ public final class ResourceLanguageSource implements ILanguageSource {
     @InjectLogger private ILogger logger;
 
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ResourceLanguageSource(IResourceService resourceService) {
         this.resourceService = resourceService;
     }

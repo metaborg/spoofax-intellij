@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.vfs;
 
-import com.google.inject.Inject;
+
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
 import org.apache.commons.vfs2.provider.local.DefaultLocalFileProvider;
@@ -38,7 +38,7 @@ public final class IntelliJFileSystemManagerProvider extends DefaultFileSystemMa
      *
      * @param fileProviderFactory The file provider factory.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public IntelliJFileSystemManagerProvider(final IIntelliJFileProviderFactory fileProviderFactory) {
         this.fileProviderFactory = fileProviderFactory;
     }

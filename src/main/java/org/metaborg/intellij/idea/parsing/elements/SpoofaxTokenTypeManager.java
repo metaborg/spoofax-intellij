@@ -18,14 +18,12 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import org.metaborg.core.style.*;
 import org.metaborg.intellij.idea.languages.MetaborgIdeaLanguage;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.awt.*;
+import java.util.WeakHashMap;
 
 /**
  * Tracks token types.
@@ -38,7 +36,7 @@ import java.awt.*;
  */
 public final class SpoofaxTokenTypeManager {
 
-    private final LoadingCache<IStyle, SpoofaxTokenType> tokenCache;
+    private final WeakHashMap<IStyle, SpoofaxTokenType> tokenCache;
     private final MetaborgIdeaLanguage language;
     private final CharacterTokenType characterTokenType;
     private final SpoofaxElementType elementType;
@@ -55,14 +53,7 @@ public final class SpoofaxTokenTypeManager {
         this.elementType = new SpoofaxElementType(language);
         this.identifierType = new MetaborgIdentifierElementType(language);
 
-        this.tokenCache = CacheBuilder.newBuilder().weakValues()
-            .build(new CacheLoader<IStyle, SpoofaxTokenType>() {
-                @Override
-                public SpoofaxTokenType load(final IStyle style)
-                        throws Exception {
-                    return new SpoofaxTokenType(language, style);
-                }
-            });
+        this.tokenCache = new WeakHashMap<>();
     }
 
     /**
@@ -92,7 +83,7 @@ public final class SpoofaxTokenTypeManager {
     public SpoofaxTokenType getTokenType(@Nullable IStyle style) {
         style = style != null ? style : getDefaultStyle();
 
-        return this.tokenCache.getUnchecked(style);
+        return this.tokenCache.computeIfAbsent(style, s -> new SpoofaxTokenType(language, s));
     }
 
     /**

@@ -18,16 +18,20 @@
 
 package org.metaborg.intellij.configuration;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.projects.MetaborgModuleConstants;
+import org.metaborg.util.resource.ResourceUtils;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -64,16 +68,16 @@ public final class MetaborgApplicationConfigState {
     private static Set<String> getDefaultLoadedLanguages() {
         // Specify the default loaded languages in this file as a list of language IDs, one on each line.
         final String text;
-        final URL url = com.google.common.io.Resources.getResource(MetaborgModuleConstants.class, "/default_languages.txt");
+        final URL url = Objects.requireNonNull(MetaborgModuleConstants.class.getResource("/default_languages.txt"));
         try {
-            text = com.google.common.io.Resources.toString(url, Charsets.UTF_8);
+            text = ResourceUtils.readInputStream(url.openStream(), StandardCharsets.UTF_8);
         } catch (final IOException e) {
             throw new UnhandledException("Cannot get resource content of resource: " + url, e);
         }
 
         final String[] ids = text.split("\\r?\\n");
 
-        return Sets.newHashSet(ids);
+        return new HashSet<>(Arrays.asList(ids));
     }
 
     /**
@@ -105,6 +109,21 @@ public final class MetaborgApplicationConfigState {
         if (other == null) return false;
 
         // Compare the fields here.
-        return Iterables.elementsEqual(this.loadedLanguages, other.loadedLanguages);
+        if (this.loadedLanguages.size() != other.loadedLanguages.size()) {
+          return false;
+        }
+        Iterator<?> iterator1 = this.loadedLanguages.iterator();
+        Iterator<?> iterator2 = other.loadedLanguages.iterator();
+        while (iterator1.hasNext()) {
+          if (!iterator2.hasNext()) {
+            return false;
+          }
+          Object o1 = iterator1.next();
+          Object o2 = iterator2.next();
+          if (!Objects.equals(o1, o2)) {
+            return false;
+          }
+        }
+        return !iterator2.hasNext();
     }
 }

@@ -18,7 +18,6 @@
 
 package org.metaborg.intellij.logging;
 
-import com.google.common.base.Preconditions;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
@@ -38,8 +37,12 @@ public final class Slf4JLoggerTypeListener implements TypeListener {
     public final <I> void hear(
             final TypeLiteral<I> typeLiteral,
             final TypeEncounter<I> typeEncounter) {
-        Preconditions.checkNotNull(typeLiteral);
-        Preconditions.checkNotNull(typeEncounter);
+        if (typeLiteral == null) {
+          throw new NullPointerException();
+        }
+        if (typeEncounter == null) {
+          throw new NullPointerException();
+        }
 
         // Go through the class and its ancestors to find fields like this:
         //     @InjectLogger private Logger logger;

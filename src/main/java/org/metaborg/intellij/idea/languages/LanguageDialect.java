@@ -18,10 +18,9 @@
 
 package org.metaborg.intellij.idea.languages;
 
-import com.google.common.base.Preconditions;
 import org.metaborg.core.language.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * A language implementation/dialect tuple.
@@ -39,7 +38,9 @@ public final class LanguageDialect {
      * @param dialectLanguage The dialect language implementation; or <code>null</code>.
      */
     public LanguageDialect(final ILanguageImpl baseLanguage, @Nullable final ILanguageImpl dialectLanguage) {
-        Preconditions.checkNotNull(baseLanguage);
+        if (baseLanguage == null) {
+          throw new NullPointerException();
+        }
 
         this.baseLanguage = baseLanguage;
         this.dialectLanguage = dialectLanguage;

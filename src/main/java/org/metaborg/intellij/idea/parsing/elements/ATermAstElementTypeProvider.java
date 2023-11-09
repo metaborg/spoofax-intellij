@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.psi.tree.IElementType;
 import org.metaborg.core.language.ILanguageImpl;
@@ -33,7 +33,7 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.imploder.IToken;
 import org.spoofax.jsglr.client.imploder.ImploderAttachment;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 public final class ATermAstElementTypeProvider implements IAstElementTypeProvider<IStrategoTerm> {
 
@@ -43,7 +43,7 @@ public final class ATermAstElementTypeProvider implements IAstElementTypeProvide
     private final ISpoofaxCategorizerService categorizerService;
     private final Iterable<IRegionCategory<IStrategoTerm>> categories;
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ATermAstElementTypeProvider(
             @Assisted final ILanguageImpl language,
             @Assisted final ISpoofaxParseUnit parseResult,

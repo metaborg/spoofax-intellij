@@ -15,7 +15,7 @@
 
 package org.metaborg.intellij.idea.parsing.elements;
 
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -47,7 +47,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxInputUnitService;
 import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
 import org.metaborg.util.log.ILogger;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 /**
  * Metaborg source file PSI element type.
@@ -66,7 +66,7 @@ public final class MetaborgFileElementType extends IFileElementType { // IStubFi
     private ILogger logger;
 
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public MetaborgFileElementType(@Assisted final Language language,
                                    @Assisted final SpoofaxTokenTypeManager tokenTypesManager, final IIdeaLanguageManager languageManager,
                                    final ILanguageProjectService languageProjectService, final IIntelliJResourceService resourceService,

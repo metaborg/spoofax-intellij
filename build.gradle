@@ -48,6 +48,13 @@ allprojects {
             }
         }
     }
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
 }
 
 configure(allprojects.findAll {it.name != 'spoofax-deps'}) {

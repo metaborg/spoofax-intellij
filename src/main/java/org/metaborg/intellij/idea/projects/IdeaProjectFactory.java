@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.module.JavaModuleType;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
@@ -29,7 +29,7 @@ import org.metaborg.core.source.*;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 public final class IdeaProjectFactory implements IIdeaProjectFactory {
 
@@ -41,7 +41,7 @@ public final class IdeaProjectFactory implements IIdeaProjectFactory {
     /**
      * Initializes a new instance of the {@link IdeaProjectFactory} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private IdeaProjectFactory(final IProjectConfigService projectConfigService,
                                final ISourceTextService sourceTextService) {
         this.projectConfigService = projectConfigService;

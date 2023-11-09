@@ -18,13 +18,12 @@
 
 package org.metaborg.intellij.idea.projects;
 
-import com.google.common.base.Preconditions;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.IProjectConfig;
 import org.metaborg.core.project.IProject;
 import org.metaborg.core.project.Project;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 // TODO: Move this to Spoofax core?
 
@@ -39,6 +38,8 @@ public final class ArtifactProject extends Project implements IProject {
      */
     public ArtifactProject(final FileObject location, @Nullable final IProjectConfig config) {
         super(location, config);
-        Preconditions.checkNotNull(location);
+        if (location == null) {
+          throw new NullPointerException();
+        }
     }
 }

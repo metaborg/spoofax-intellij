@@ -52,7 +52,7 @@ public final class JpsSpoofaxModelSerializerExtension extends JpsModelSerializer
         SpoofaxJpsPlugin.plugin().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final MetaborgApplicationConfigDeserializer applicationConfigDeserializer,
                         final MetaborgProjectConfigDeserializer projectConfigDeserializer,

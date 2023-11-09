@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.gui.modulesettings;
 
-import com.google.inject.Inject;
+
 import com.google.inject.Singleton;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleConfigurationEditor;
@@ -46,7 +46,7 @@ public final class MetaborgModuleConfigurationEditorProvider implements ModuleCo
     }
 
     @SuppressWarnings("unused")
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     private void inject(final MetaborgModuleType metaborgModuleType) {
         this.metaborgModuleType = metaborgModuleType;
     }

@@ -18,8 +18,7 @@
 
 package org.metaborg.intellij.idea.projects.newproject;
 
-import com.google.common.collect.Lists;
-import com.google.inject.Inject;
+
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
@@ -40,7 +39,7 @@ import org.metaborg.meta.core.wizard.*;
 import org.metaborg.spoofax.meta.core.generator.general.*;
 import org.metaborg.util.log.*;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
@@ -103,7 +102,7 @@ public class NewModuleWizardStep extends ModuleWizardStep {
      * @param context     The {@link WizardContext}.
      * @param iconManager The icon manager.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public NewModuleWizardStep(
             @Assisted final MetaborgModuleBuilder builder,
             @Assisted final WizardContext context,
@@ -301,9 +300,9 @@ public class NewModuleWizardStep extends ModuleWizardStep {
         final int rows = 3;
         this.pnlLanguageOptions.setLayout(new GridLayoutManager(rows, 2));
 
-        this.cmbSyntaxType = new JComboBox(Lists.newArrayList(SyntaxType.mapping().keySet()).toArray());
-        this.cmbAnalysisType = new JComboBox(Lists.newArrayList(AnalysisType.mapping().keySet()).toArray());
-        this.cmbTransformationType = new JComboBox(Lists.newArrayList(TransformationType.mapping().keySet()).toArray());
+        this.cmbSyntaxType = new JComboBox(SyntaxType.mapping().keySet().toArray());
+        this.cmbAnalysisType = new JComboBox(AnalysisType.mapping().keySet().toArray());
+        this.cmbTransformationType = new JComboBox(TransformationType.mapping().keySet().toArray());
 
         addLanguageOption(0, "Syntax type:", this.cmbSyntaxType);
         addLanguageOption(1, "Analysis type:", this.cmbAnalysisType);

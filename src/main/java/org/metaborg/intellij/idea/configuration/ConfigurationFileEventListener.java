@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.configuration;
 
-import com.google.inject.Inject;
+
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleUtil;
@@ -57,7 +57,7 @@ public final class ConfigurationFileEventListener extends VirtualFileAdapter {
     /**
      * Initializes a new instance of the {@link ConfigurationFileEventListener} class.
      */
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     public ConfigurationFileEventListener(final MetaborgModuleType metaborgModuleType,
                                           final IdeaProjectService projectService,
                                           final ConfigurationUtils configurationUtils,

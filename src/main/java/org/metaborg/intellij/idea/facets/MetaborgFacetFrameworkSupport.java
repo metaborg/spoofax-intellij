@@ -18,7 +18,7 @@
 
 package org.metaborg.intellij.idea.facets;
 
-import com.google.inject.Inject;
+
 import com.intellij.facet.ui.FacetBasedFrameworkSupportProvider;
 import com.intellij.ide.util.frameworkSupport.FrameworkVersion;
 import com.intellij.openapi.roots.ModifiableRootModel;
@@ -47,7 +47,7 @@ public class MetaborgFacetFrameworkSupport extends FacetBasedFrameworkSupportPro
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @Inject
+    @jakarta.inject.Inject @javax.inject.Inject
     @SuppressWarnings("unused")
     private void inject() {
     }
