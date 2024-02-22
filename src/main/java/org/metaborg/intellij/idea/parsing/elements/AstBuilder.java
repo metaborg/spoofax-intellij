@@ -23,7 +23,7 @@ import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
 import org.spoofax.interpreter.terms.IStrategoConstructor;
 import org.spoofax.interpreter.terms.IStrategoList;
 import org.spoofax.interpreter.terms.IStrategoTerm;
-import jsglr.shared.ImploderAttachment;
+import mb.jsglr.shared.ImploderAttachment;
 import org.spoofax.terms.Term;
 
 import jakarta.annotation.Nullable;
