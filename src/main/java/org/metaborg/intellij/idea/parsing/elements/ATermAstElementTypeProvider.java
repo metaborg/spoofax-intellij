@@ -30,8 +30,8 @@ import org.metaborg.spoofax.core.style.TokenCategory;
 import org.metaborg.spoofax.core.syntax.JSGLRSourceRegionFactory;
 import org.metaborg.spoofax.core.unit.ISpoofaxParseUnit;
 import org.spoofax.interpreter.terms.IStrategoTerm;
-import org.spoofax.jsglr.client.imploder.IToken;
-import org.spoofax.jsglr.client.imploder.ImploderAttachment;
+import jsglr.shared.IToken;
+import jsglr.shared.ImploderAttachment;
 
 import jakarta.annotation.Nullable;
 
