@@ -47,6 +47,7 @@ shadowJar {
     baseName = 'spoofax-deps'
     classifier = null
     zip64 = true
+    exclude 'META-INF/**/*'
 
     relocate 'org.apache.commons.io', 'intellij.org.apache.commons.io'
 }
