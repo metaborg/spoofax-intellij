@@ -6,7 +6,7 @@ import org.metaborg.intellij.idea.SpoofaxIdeaPlugin
 import org.metaborg.intellij.logging.InjectLogger
 import org.metaborg.intellij.logging.LoggerUtils2
 import org.metaborg.util.log.ILogger
-import org.metaborg.util.resource.ResourceUtils
+import mb.util.vfs2.resource.ResourceUtils
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.*
