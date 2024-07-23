@@ -20,7 +20,7 @@ package org.metaborg.intellij.configuration;
 
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.projects.MetaborgModuleConstants;
-import org.metaborg.util.resource.ResourceUtils;
+import mb.util.vfs2.resource.ResourceUtils;
 
 import jakarta.annotation.Nullable;
 import java.io.IOException;
