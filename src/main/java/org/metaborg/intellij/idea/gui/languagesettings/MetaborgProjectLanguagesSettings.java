@@ -42,7 +42,7 @@ public final class MetaborgProjectLanguagesSettings extends LanguagesSettings {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     protected void inject() {
     }

@@ -26,6 +26,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
 import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.LightVirtualFile;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
@@ -54,10 +55,10 @@ public final class DefaultIntelliJResourceService extends ResourceService implem
     /**
      * Initializes a new instance of the {@link DefaultIntelliJResourceService} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public DefaultIntelliJResourceService(
             final FileSystemManager fileSystemManager,
-            @jakarta.inject.Named("ResourceClassLoader") @javax.inject.Named("ResourceClassLoader") final ClassLoader classLoader) {
+            @jakarta.inject.Named("ResourceClassLoader") final ClassLoader classLoader) {
         super(fileSystemManager, classLoader);
     }
 

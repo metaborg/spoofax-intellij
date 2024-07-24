@@ -19,6 +19,7 @@
 package org.metaborg.intellij.idea.languages;
 
 
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.*;
 import org.metaborg.core.build.dependency.*;
@@ -51,7 +52,7 @@ public final class DefaultLanguageProjectService implements ILanguageProjectServ
     @InjectLogger
     private ILogger logger;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public DefaultLanguageProjectService(
             final ILanguageIdentifierService identifierService,
             final IDependencyService dependencyService,

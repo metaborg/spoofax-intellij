@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea.configuration;
 
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.intellij.configuration.IMetaborgProjectConfig;
 import org.metaborg.intellij.configuration.MetaborgProjectConfigState;
@@ -71,7 +72,7 @@ public final class IdeaMetaborgProjectConfig
         loadState(new MetaborgProjectConfigState());
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     @SuppressWarnings("unused")
     private void inject() {
     }

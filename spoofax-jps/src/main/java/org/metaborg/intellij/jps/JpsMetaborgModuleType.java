@@ -33,7 +33,7 @@ public final class JpsMetaborgModuleType implements JpsModuleType<JpsMetaborgMod
     /**
      * Initializes a new instance of the {@link JpsMetaborgModuleType} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public JpsMetaborgModuleType() {
         super();
     }

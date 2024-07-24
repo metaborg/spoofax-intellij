@@ -22,6 +22,7 @@ package org.metaborg.intellij.idea.projects;
 import com.intellij.openapi.module.JavaModuleType;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.*;
 import org.metaborg.core.messages.*;
@@ -41,7 +42,7 @@ public final class IdeaProjectFactory implements IIdeaProjectFactory {
     /**
      * Initializes a new instance of the {@link IdeaProjectFactory} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     private IdeaProjectFactory(final IProjectConfigService projectConfigService,
                                final ISourceTextService sourceTextService) {
         this.projectConfigService = projectConfigService;

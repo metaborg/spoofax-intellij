@@ -58,7 +58,7 @@ public final class JpsMetaborgApplicationConfig
     /**
      * Initializes a new instance of the {@link JpsMetaborgApplicationConfig} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public JpsMetaborgApplicationConfig(final IJpsMetaborgApplicationConfigFactory configFactory) {
         super(new MetaborgApplicationConfigState());
         // Don't initialize fields that depend on the state here. Initialize in loadState().

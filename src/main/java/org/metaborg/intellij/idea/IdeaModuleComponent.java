@@ -23,6 +23,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleComponent;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +64,7 @@ public final class IdeaModuleComponent implements ModuleComponent {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     @SuppressWarnings("unused")
     private void inject(
             final IIdeaProjectService projectService,

@@ -43,7 +43,7 @@ public final class MetaborgReferenceContributor extends PsiReferenceContributor 
     }
 
     @SuppressWarnings("unused")
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     private void inject(final IMetaborgReferenceProviderFactory referenceProviderFactory) {
         this.referenceProviderFactory = referenceProviderFactory;
     }

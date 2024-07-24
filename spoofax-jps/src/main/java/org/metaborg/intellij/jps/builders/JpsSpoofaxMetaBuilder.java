@@ -73,7 +73,7 @@ public final class JpsSpoofaxMetaBuilder {
     @InjectLogger
     private ILogger logger;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public JpsSpoofaxMetaBuilder(
             final LanguageSpecBuilder builder,
             final ILanguageManager languageManager,

@@ -39,7 +39,7 @@ public final class MetaborgFacetConfigDeserializer extends JpsFacetConfiguration
     /**
      * Initializes a new instance of the {@link MetaborgFacetConfigDeserializer} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public MetaborgFacetConfigDeserializer(final IJpsMetaborgModuleFacetConfigFactory configFactory) {
         super(JpsMetaborgModuleFacetConfig.ROLE, MetaborgFacetConstants.ID, MetaborgFacetConstants.NAME);
 

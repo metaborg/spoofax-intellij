@@ -60,7 +60,7 @@ public final class SpoofaxReferenceProvider extends MetaborgReferenceProvider {
      * @param resourceService        The resource service.
      * @param languageProjectService The language project service.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public SpoofaxReferenceProvider(
             final IIdeaProjectService projectService,
             final IIntelliJResourceService resourceService,

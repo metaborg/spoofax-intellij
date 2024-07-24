@@ -27,6 +27,7 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileAdapter;
 import com.intellij.openapi.vfs.VirtualFileEvent;
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.intellij.idea.modules.SpoofaxModuleUtils;
@@ -57,7 +58,7 @@ public final class ConfigurationFileEventListener extends VirtualFileAdapter {
     /**
      * Initializes a new instance of the {@link ConfigurationFileEventListener} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public ConfigurationFileEventListener(final MetaborgModuleType metaborgModuleType,
                                           final IdeaProjectService projectService,
                                           final ConfigurationUtils configurationUtils,

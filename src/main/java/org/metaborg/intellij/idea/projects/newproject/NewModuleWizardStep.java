@@ -102,7 +102,7 @@ public class NewModuleWizardStep extends ModuleWizardStep {
      * @param context     The {@link WizardContext}.
      * @param iconManager The icon manager.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public NewModuleWizardStep(
             @Assisted final MetaborgModuleBuilder builder,
             @Assisted final WizardContext context,

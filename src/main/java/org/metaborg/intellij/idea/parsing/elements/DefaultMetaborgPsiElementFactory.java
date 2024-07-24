@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea.parsing.elements;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
+import jakarta.inject.Inject;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
 import org.metaborg.spoofax.core.processing.analyze.ISpoofaxAnalysisResultRequester;
 import org.metaborg.spoofax.core.tracing.ISpoofaxResolverService;
@@ -37,7 +38,7 @@ public final class DefaultMetaborgPsiElementFactory implements IMetaborgPsiEleme
     /**
      * Initializes a new instance of the {@link DefaultMetaborgPsiElementFactory} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public DefaultMetaborgPsiElementFactory(
             final ISpoofaxResolverService resolverService,
             final IIntelliJResourceService resourceService,

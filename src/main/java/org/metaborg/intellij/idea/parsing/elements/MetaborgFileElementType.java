@@ -66,7 +66,7 @@ public final class MetaborgFileElementType extends IFileElementType { // IStubFi
     private ILogger logger;
 
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public MetaborgFileElementType(@Assisted final Language language,
                                    @Assisted final SpoofaxTokenTypeManager tokenTypesManager, final IIdeaLanguageManager languageManager,
                                    final ILanguageProjectService languageProjectService, final IIntelliJResourceService resourceService,

@@ -57,7 +57,7 @@ public final class JpsLanguageSpecService implements ISpoofaxLanguageSpecService
     /**
      * Initializes a new instance of the {@link JpsLanguageSpecService} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public JpsLanguageSpecService(final ISourceTextService sourceTextService,
                                   final ISpoofaxLanguageSpecConfigService configService,
                                   final IResourceService resourceService,

@@ -46,7 +46,7 @@ public final class MetaborgModuleConfigurationEditorProvider implements ModuleCo
     }
 
     @SuppressWarnings("unused")
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     private void inject(final MetaborgModuleType metaborgModuleType) {
         this.metaborgModuleType = metaborgModuleType;
     }

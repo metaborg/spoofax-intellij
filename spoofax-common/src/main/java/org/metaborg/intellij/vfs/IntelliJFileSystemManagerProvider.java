@@ -38,7 +38,7 @@ public final class IntelliJFileSystemManagerProvider extends DefaultFileSystemMa
      *
      * @param fileProviderFactory The file provider factory.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public IntelliJFileSystemManagerProvider(final IIntelliJFileProviderFactory fileProviderFactory) {
         this.fileProviderFactory = fileProviderFactory;
     }

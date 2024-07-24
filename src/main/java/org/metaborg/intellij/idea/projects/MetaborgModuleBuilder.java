@@ -209,7 +209,7 @@ public final class MetaborgModuleBuilder extends ModuleBuilder implements Source
     }
 
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     private MetaborgModuleBuilder(final IIdeaLanguageSpecFactory languageSpecFactory,
                                   final IIntelliJResourceService resourceService, final IIdeaProjectService projectService,
                                   final ISpoofaxLanguageSpecConfigBuilder configBuilder, final INewModuleWizardStepFactory wizardStepFactory,

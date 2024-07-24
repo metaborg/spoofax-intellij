@@ -33,7 +33,7 @@ public final class SpoofaxPreTargetType extends SpoofaxTargetType<SpoofaxPreTarg
     /**
      * Initializes a new instance of the {@link SpoofaxPreTargetType} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public SpoofaxPreTargetType(final IJpsProjectService projectService,
                                 final JpsMetaborgModuleType moduleType,
                                 final JpsSpoofaxMetaBuilder metaBuilder,

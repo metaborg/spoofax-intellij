@@ -76,7 +76,7 @@ public final class MetaborgProjectDetector extends ProjectStructureDetector {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final MetaborgModuleType moduleType, final IIntelliJResourceService resourceService,
                         final ILanguageComponentConfigService configService) {

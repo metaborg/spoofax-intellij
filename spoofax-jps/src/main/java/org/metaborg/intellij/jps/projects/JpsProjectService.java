@@ -50,7 +50,7 @@ public final class JpsProjectService implements IJpsProjectService {
     @InjectLogger
     private ILogger logger;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public JpsProjectService(final ISourceTextService sourceTextService,
                              final IResourceService resourceService,
                              final IProjectConfigService projectConfigService) {

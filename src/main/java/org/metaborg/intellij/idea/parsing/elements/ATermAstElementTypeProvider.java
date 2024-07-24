@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea.parsing.elements;
 
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.psi.tree.IElementType;
+import jakarta.inject.Inject;
 import org.metaborg.core.language.ILanguageImpl;
 import org.metaborg.core.source.ISourceRegion;
 import org.metaborg.core.style.ICategory;
@@ -43,7 +44,7 @@ public final class ATermAstElementTypeProvider implements IAstElementTypeProvide
     private final ISpoofaxCategorizerService categorizerService;
     private final Iterable<IRegionCategory<IStrategoTerm>> categories;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public ATermAstElementTypeProvider(
             @Assisted final ILanguageImpl language,
             @Assisted final ISpoofaxParseUnit parseResult,

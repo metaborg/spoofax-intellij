@@ -38,7 +38,7 @@ public final class JpsLanguageSpec extends MetaborgJpsProject implements ISpoofa
      * @param location
      *            The location of the project root.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public JpsLanguageSpec(@Assisted final JpsModule module,
                            @Assisted final FileObject location,
                            @Assisted final ISpoofaxLanguageSpecConfig config) {

@@ -79,7 +79,7 @@ public final class LanguagesPanel extends JPanel {
         setBorder(IdeBorderFactory.createTitledBorder("Loaded languages", false));
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     protected void inject(final IIconManager iconManager) {
         this.iconManager = iconManager;

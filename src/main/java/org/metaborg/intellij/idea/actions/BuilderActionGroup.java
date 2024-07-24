@@ -22,6 +22,7 @@ package org.metaborg.intellij.idea.actions;
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import jakarta.inject.Inject;
 import org.metaborg.core.language.*;
 
 /**
@@ -37,7 +38,7 @@ public final class BuilderActionGroup extends DefaultActionGroup {
      *
      * @param languageImpl The language implementation to respond to.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public BuilderActionGroup(
             @Assisted final ILanguageImpl languageImpl,
             final ActionUtils actionUtils) {

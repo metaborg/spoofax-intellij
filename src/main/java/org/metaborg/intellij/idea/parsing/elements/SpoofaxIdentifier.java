@@ -41,7 +41,7 @@ public class SpoofaxIdentifier extends MetaborgPsiElement
      *
      * @param node The AST node to wrap.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public SpoofaxIdentifier(
             @Assisted final ASTNode node,
             final ISpoofaxResolverService resolverService,

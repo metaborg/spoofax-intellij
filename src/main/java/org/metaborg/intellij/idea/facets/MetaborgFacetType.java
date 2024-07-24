@@ -57,7 +57,7 @@ public final class MetaborgFacetType extends FacetType<MetaborgFacet, IdeaMetabo
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final IIconManager iconManager) {
         this.iconManager = iconManager;

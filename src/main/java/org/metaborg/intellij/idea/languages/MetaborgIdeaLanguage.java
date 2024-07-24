@@ -45,7 +45,7 @@ public abstract class MetaborgIdeaLanguage extends Language {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     private void inject() {
     }

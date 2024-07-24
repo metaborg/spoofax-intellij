@@ -36,7 +36,7 @@ public final class MetaborgApplicationConfigDeserializer extends JpsGlobalExtens
     private final IJpsMetaborgApplicationConfigFactory configFactory;
     private final IMetaborgConfigService extensionService;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public MetaborgApplicationConfigDeserializer(final IJpsMetaborgApplicationConfigFactory configFactory,
                                                  final IMetaborgConfigService extensionService) {
         super(IMetaborgApplicationConfig.CONFIG_FILE, IMetaborgApplicationConfig.CONFIG_NAME);

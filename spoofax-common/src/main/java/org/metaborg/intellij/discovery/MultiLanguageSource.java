@@ -42,7 +42,7 @@ public final class MultiLanguageSource implements ILanguageSource {
      * Initializes a new instance of the {@link MultiLanguageSource} class.
      * @param sources The sources.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public MultiLanguageSource(@Compound final Set<ILanguageSource> sources) {
         this.sources = sources;
     }
