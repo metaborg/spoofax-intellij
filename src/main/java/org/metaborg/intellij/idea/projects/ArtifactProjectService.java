@@ -19,6 +19,7 @@
 package org.metaborg.intellij.idea.projects;
 
 
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
@@ -44,7 +45,7 @@ public final class ArtifactProjectService implements IProjectService {
     @InjectLogger
     private ILogger logger;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public ArtifactProjectService(final IArtifactProjectFactory artifactProjectFactory) {
         this.artifactProjectFactory = artifactProjectFactory;
     }

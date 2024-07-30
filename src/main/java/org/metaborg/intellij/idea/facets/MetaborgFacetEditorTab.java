@@ -56,7 +56,7 @@ public class MetaborgFacetEditorTab extends FacetEditorTab {
         this.editorContext = editorContext;
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     private void inject() {
     }

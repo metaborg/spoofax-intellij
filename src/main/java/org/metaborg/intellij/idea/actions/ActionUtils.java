@@ -25,6 +25,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.ILanguageIdentifierService;
 import org.metaborg.core.language.ILanguageImpl;
@@ -52,7 +53,7 @@ public final class ActionUtils {
     @InjectLogger
     private ILogger logger;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public ActionUtils(
             final IIntelliJResourceService resourceService,
             final IIdeaProjectService projectService,

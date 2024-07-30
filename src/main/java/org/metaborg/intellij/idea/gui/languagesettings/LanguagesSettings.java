@@ -70,7 +70,7 @@ public abstract class LanguagesSettings extends BaseConfigurable {
         this.project = project;
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     protected void inject(final IIdeaLanguageManager languageManager,
                           final ILanguageService languageService,

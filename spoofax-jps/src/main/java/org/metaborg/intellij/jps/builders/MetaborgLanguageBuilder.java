@@ -49,7 +49,7 @@ public class MetaborgLanguageBuilder extends ModuleLevelBuilder {
     /**
      * Initializes a new instance of the {@link MetaborgLanguageBuilder} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public MetaborgLanguageBuilder(final IMetaborgConfigService extensionService,
                                    final ILanguageManager languageManager,
                                    final JpsSpoofaxMetaBuilder jpsSpoofaxMetaBuilder) {

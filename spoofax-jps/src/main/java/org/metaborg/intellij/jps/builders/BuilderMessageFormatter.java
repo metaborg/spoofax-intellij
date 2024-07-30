@@ -19,6 +19,7 @@
 package org.metaborg.intellij.jps.builders;
 
 import com.google.inject.*;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.jetbrains.jps.incremental.messages.BuildMessage;
 import org.jetbrains.jps.incremental.messages.CompilerMessage;
@@ -40,7 +41,7 @@ public final class BuilderMessageFormatter {
     @InjectLogger
     private ILogger logger;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public BuilderMessageFormatter() {
 
     }

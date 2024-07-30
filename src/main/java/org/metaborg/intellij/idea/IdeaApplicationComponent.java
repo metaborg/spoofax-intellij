@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea;
 
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.intellij.configuration.IMetaborgApplicationConfig;
 import org.metaborg.intellij.idea.configuration.ConfigurationFileEventListener;
@@ -50,7 +51,7 @@ public final class IdeaApplicationComponent implements ApplicationComponent {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     @SuppressWarnings("unused")
     private void inject(final IMetaborgApplicationConfig configuration,
                         final ConfigurationUtils configurationUtils,

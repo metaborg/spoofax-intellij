@@ -40,7 +40,7 @@ public final class ProjectUtils {
     @InjectLogger
     private ILogger logger;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public ProjectUtils(final IProjectService projectService) {
         this.projectService = projectService;
     }

@@ -72,7 +72,7 @@ public final class MetaborgSdkType extends JavaDependentSdkType implements JavaS
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final LibraryService libraryService, final IIconManager iconManager, final SimpleConfigUtil configUtil) {
         this.libraryService = libraryService;

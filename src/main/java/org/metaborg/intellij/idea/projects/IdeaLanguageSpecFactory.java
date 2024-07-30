@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea.projects;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.ConfigRequest;
 import org.metaborg.core.messages.StreamMessagePrinter;
@@ -42,7 +43,7 @@ public final class IdeaLanguageSpecFactory implements IIdeaLanguageSpecFactory {
     /**
      * Initializes a new instance of the {@link IdeaLanguageSpecFactory} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public IdeaLanguageSpecFactory(
             final ISourceTextService sourceTextService,
             final ISpoofaxLanguageSpecConfigService configService) {

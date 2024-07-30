@@ -24,6 +24,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.module.Module;
+import jakarta.inject.Inject;
 import org.metaborg.intellij.configuration.IMetaborgModuleConfig;
 import org.metaborg.intellij.configuration.MetaborgModuleConfigState;
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
@@ -77,7 +78,7 @@ public final class IdeaMetaborgModuleConfig
         loadState(new MetaborgModuleConfigState());
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     @SuppressWarnings("unused")
     private void inject() {
     }

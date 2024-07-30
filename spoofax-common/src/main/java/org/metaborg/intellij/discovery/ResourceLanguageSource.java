@@ -36,7 +36,7 @@ public final class ResourceLanguageSource implements ILanguageSource {
     @InjectLogger private ILogger logger;
 
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public ResourceLanguageSource(IResourceService resourceService) {
         this.resourceService = resourceService;
     }

@@ -47,7 +47,7 @@ public class MetaborgFacetFrameworkSupport extends FacetBasedFrameworkSupportPro
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     private void inject() {
     }

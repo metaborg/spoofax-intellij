@@ -23,6 +23,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.components.StoragePathMacros;
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.Nullable;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.configuration.AdaptingSet;
@@ -72,7 +73,7 @@ public final class IdeaMetaborgApplicationConfig
         loadState(new MetaborgApplicationConfigState());
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     @SuppressWarnings("unused")
     private void inject() {
 

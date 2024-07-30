@@ -62,7 +62,7 @@ public class MetaborgSourceAnnotator extends ExternalAnnotator<MetaborgSourceAnn
     private ILogger logger;
 
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public MetaborgSourceAnnotator(IContextService contextService, IIdeaProjectService projectService,
                                    IIntelliJResourceService resourceService, ILanguageIdentifierService identifierService,
                                    ISpoofaxInputUnitService unitSerivce, ISpoofaxAnalysisResultRequester analysisResultProcessor) {

@@ -47,7 +47,7 @@ public class MetaborgPsiElement extends ASTWrapperPsiElement implements PsiEleme
      *
      * @param node The AST node to wrap.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public MetaborgPsiElement(
             @Assisted final ASTNode node,
             final ISpoofaxResolverService resolverService,

@@ -29,6 +29,7 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
+import jakarta.inject.Inject;
 import org.jdom.Element;
 import org.metaborg.intellij.configuration.IMetaborgModuleFacetConfig;
 import org.metaborg.intellij.configuration.MetaborgModuleFacetConfigState;
@@ -75,7 +76,7 @@ public final class IdeaMetaborgModuleFacetConfig
     /**
      * Initializes a new instance of the {@link IdeaMetaborgModuleFacetConfig} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public IdeaMetaborgModuleFacetConfig() {
         // Don't initialize fields that depend on the state here. Initialize in loadState().
         loadState(new MetaborgModuleFacetConfigState());

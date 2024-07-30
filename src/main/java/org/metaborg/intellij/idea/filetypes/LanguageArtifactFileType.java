@@ -40,7 +40,7 @@ public final class LanguageArtifactFileType extends ArchiveFileType implements I
     /**
      * Initializes a new instance of the {@link LanguageArtifactFileType} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public LanguageArtifactFileType(final IIconManager iconManager) {
         this.iconManager = iconManager;
     }

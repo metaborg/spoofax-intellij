@@ -20,6 +20,7 @@ package org.metaborg.intellij.languages;
 
 
 import com.google.inject.Singleton;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.*;
 import org.metaborg.core.language.*;
@@ -56,7 +57,7 @@ public class DefaultLanguageManager implements ILanguageManager {
     /**
      * Initializes a new instance of the {@link DefaultLanguageManager} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public DefaultLanguageManager(final ILanguageService languageService,
                                   final ILanguageSource languageSource,
                                   final ILanguageDiscoveryService discoveryService) {

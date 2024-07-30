@@ -55,7 +55,7 @@ public final class SpoofaxSyntaxHighlighterFactory extends SyntaxHighlighterFact
     /**
      * Initializes a new instance of the {@link SpoofaxSyntaxHighlighterFactory} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public SpoofaxSyntaxHighlighterFactory(
             final IIntelliJResourceService resourceService,
             final ILanguageIdentifierService identifierService,

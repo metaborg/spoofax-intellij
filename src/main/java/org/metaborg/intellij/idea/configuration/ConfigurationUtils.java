@@ -22,6 +22,7 @@ package org.metaborg.intellij.idea.configuration;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
+import jakarta.inject.Inject;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.idea.languages.IIdeaLanguageManager;
 import org.metaborg.intellij.languages.LanguageLoadingFailedException;
@@ -42,7 +43,7 @@ public final class ConfigurationUtils {
     @InjectLogger
     private ILogger logger;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public ConfigurationUtils(final IIdeaLanguageManager languageManager) {
         this.languageManager = languageManager;
     }

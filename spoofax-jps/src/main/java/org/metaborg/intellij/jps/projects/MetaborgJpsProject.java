@@ -42,7 +42,7 @@ public class MetaborgJpsProject extends Project {
      * @param location
      *            The location of the project root.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public MetaborgJpsProject(
             @Assisted final JpsModule module,
             @Assisted final FileObject location,

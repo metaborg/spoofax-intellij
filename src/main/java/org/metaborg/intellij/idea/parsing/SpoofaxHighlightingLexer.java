@@ -88,7 +88,7 @@ public final class SpoofaxHighlightingLexer extends LexerBase {
     private int tokenIndex;
 
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     private SpoofaxHighlightingLexer(@Assisted @Nullable FileObject file, @Assisted @Nullable IProject project,
                                      @Assisted ILanguageImpl languageImpl, @Assisted SpoofaxTokenTypeManager tokenTypesManager,
                                      ISpoofaxInputUnitService inputUnitService, ISpoofaxSyntaxService syntaxService,

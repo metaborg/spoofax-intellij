@@ -81,7 +81,7 @@ import java.util.Collections;
     @SuppressWarnings("unused")
     @Singleton
     @Provides
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public final Collection<TargetBuilder<?, ?>> provideTargetBuilders(
             final SpoofaxPreBuilder preBuilder,
             final SpoofaxPostBuilder postBuilder) {
@@ -92,7 +92,7 @@ import java.util.Collections;
     @SuppressWarnings("unused")
     @Singleton
     @Provides
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public final Collection<ModuleLevelBuilder> provideModuleLevelBuilders(
             final MetaborgLanguageBuilder languageBuilder) {
         return Collections.singletonList(languageBuilder);
@@ -101,7 +101,7 @@ import java.util.Collections;
     @SuppressWarnings("unused")
     @Singleton
     @Provides
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public final Collection<BuildTargetType<?>> provideTargetTypes(
             final SpoofaxPreTargetType preTargetType,
             final SpoofaxPostTargetType postTargetType) {

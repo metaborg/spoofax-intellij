@@ -47,7 +47,7 @@ public final class MetaborgParserDefinition implements ParserDefinition {
     private final ICharacterLexerFactory characterLexerFactory;
     private final ILanguageBindingManager bindingManager;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     /* package private */ MetaborgParserDefinition(
             @Assisted final MetaborgLanguageFileType fileType,
             @Assisted final IFileElementType fileElementType,

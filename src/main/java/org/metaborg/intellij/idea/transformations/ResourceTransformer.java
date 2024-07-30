@@ -58,7 +58,7 @@ public final class ResourceTransformer<I extends IInputUnit, P extends IParseUni
     /**
      * Initializes a new instance of the {@link ResourceTransformer} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public ResourceTransformer(IContextService contextService, IInputUnitService<I> unitService,
                                IParseResultRequester<I, P> parseResultRequester, IAnalysisResultRequester<I, A> analysisResultRequester,
                                ITransformService<P, A, TP, TA> transformService) {

@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea.projects;
 
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.module.Module;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.config.IProjectConfig;
 import org.metaborg.core.project.Project;
@@ -34,7 +35,7 @@ public class IdeaProject extends Project {
 
     private final Module module;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     /* package private */ IdeaProject(
             @Assisted final Module module,
             @Assisted final FileObject location,

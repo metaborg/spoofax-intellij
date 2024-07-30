@@ -25,6 +25,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.intellij.logging.InjectLogger;
 import org.metaborg.intellij.resources.IIntelliJResourceService;
@@ -49,7 +50,7 @@ public final class IdeaProjectService implements IIdeaProjectService {
     /**
      * Initializes a new instance of the {@link IdeaProjectService} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     private IdeaProjectService(final IIntelliJResourceService resourceService) {
         this.resourceService = resourceService;
     }

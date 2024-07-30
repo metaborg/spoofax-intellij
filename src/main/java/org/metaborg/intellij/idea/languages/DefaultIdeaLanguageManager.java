@@ -25,6 +25,7 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.IdeActions;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.tree.IFileElementType;
+import jakarta.inject.Inject;
 import javassist.util.proxy.ProxyFactory;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
@@ -97,7 +98,7 @@ public final class DefaultIdeaLanguageManager extends DefaultLanguageManager
     /**
      * Initializes a new instance of the {@link DefaultIdeaLanguageManager} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public DefaultIdeaLanguageManager(final ILanguageService languageService,
                                       final ILanguageSource languageSource, final ILanguageDiscoveryService discoveryService,
                                       final IIntelliJResourceService resourceService, final MetaborgSourceAnnotator metaborgSourceAnnotator,

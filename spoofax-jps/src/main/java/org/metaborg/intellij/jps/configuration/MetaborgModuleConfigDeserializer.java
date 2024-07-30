@@ -39,7 +39,7 @@ public final class MetaborgModuleConfigDeserializer extends JpsModulePropertiesS
     /**
      * Initializes a new instance of the {@link MetaborgModuleConfigDeserializer} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public MetaborgModuleConfigDeserializer(final JpsMetaborgModuleType moduleType,
                                             final IJpsMetaborgModuleConfigFactory configFactory) {
         super(moduleType, MetaborgModuleConstants.ModuleID, IMetaborgModuleConfig.CONFIG_NAME);

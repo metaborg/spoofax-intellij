@@ -27,6 +27,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.module.StdModuleTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import jakarta.inject.Inject;
 import org.metaborg.core.language.*;
 import org.metaborg.intellij.UnhandledException;
 import org.metaborg.intellij.idea.SpoofaxIdeaPlugin;
@@ -61,7 +62,7 @@ public class AddLanguageFromDirectoryAction extends LanguagesAction {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     @SuppressWarnings("unused")
     private void inject(
             final IIdeaLanguageManager languageManager) {

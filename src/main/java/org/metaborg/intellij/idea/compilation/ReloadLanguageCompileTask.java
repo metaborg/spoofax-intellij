@@ -48,7 +48,7 @@ public final class ReloadLanguageCompileTask implements IAfterCompileTask {
     /**
      * Initializes a new instance of the {@link ReloadLanguageCompileTask} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public ReloadLanguageCompileTask( final IIdeaProjectService projectService,
             final IIdeaLanguageManager languageManager,
             final ILanguageDiscoveryService discoveryService) {

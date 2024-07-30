@@ -22,6 +22,7 @@ package org.metaborg.intellij.idea;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.metaborg.intellij.idea.compilation.IAfterCompileTask;
 import org.metaborg.intellij.idea.compilation.IBeforeCompileTask;
@@ -50,7 +51,7 @@ public final class IdeaProjectComponent implements ProjectComponent {
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     @SuppressWarnings("unused")
     private void inject(final Set<IBeforeCompileTask> beforeCompileTasks,
                         final Set<IAfterCompileTask> afterCompileTasks) {

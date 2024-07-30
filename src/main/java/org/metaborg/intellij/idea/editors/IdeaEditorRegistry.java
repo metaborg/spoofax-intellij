@@ -22,6 +22,7 @@ package org.metaborg.intellij.idea.editors;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.editor.*;
 import org.metaborg.core.project.*;
@@ -44,7 +45,7 @@ public final class IdeaEditorRegistry implements IEditorRegistry {
     @InjectLogger
     private ILogger logger;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     public IdeaEditorRegistry(final IIntelliJResourceService resourceService) {
         this.resourceService = resourceService;
     }

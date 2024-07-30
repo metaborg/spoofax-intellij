@@ -55,7 +55,7 @@ public final class MetaborgModuleType extends ModuleType<MetaborgModuleBuilder> 
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final IIconManager iconManager) {
         this.iconManager = iconManager;

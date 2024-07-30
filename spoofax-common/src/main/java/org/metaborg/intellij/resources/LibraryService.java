@@ -44,7 +44,7 @@ public final class LibraryService {
     /**
      * Initializes a new instance of the {@link LibraryService} class.
      */
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     public LibraryService() {
     }
 

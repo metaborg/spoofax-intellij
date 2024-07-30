@@ -64,7 +64,7 @@ public final class TransformationAction extends AnActionWithId {
     private ILogger logger;
 
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     private TransformationAction(@Assisted final String id, @Assisted final ITransformAction action,
                                  @Assisted final ILanguageImpl language, final ActionUtils actionUtils,
                                  final IIntelliJResourceService resourceService, final IContextService contextService,

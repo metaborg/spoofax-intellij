@@ -47,7 +47,7 @@ public final class MetaborgFileTypeFactory extends FileTypeFactory {
     }
 
     // TODO: Maybe multi-inject a Set and register them all?
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final LanguageArtifactFileType artifactFileType) {
         this.artifactFileType = artifactFileType;

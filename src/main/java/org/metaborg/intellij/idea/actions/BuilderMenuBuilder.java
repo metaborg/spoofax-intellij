@@ -22,6 +22,7 @@ package org.metaborg.intellij.idea.actions;
 import com.google.inject.Singleton;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import jakarta.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.metaborg.core.*;
 import org.metaborg.core.language.*;
@@ -39,7 +40,7 @@ public final class BuilderMenuBuilder {
     private final IBuilderActionGroupFactory builderActionGroupFactory;
     private final ITransformIdeaActionFactory transformationActionFactory;
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     /* package private */ BuilderMenuBuilder(
             final IMenuService menuService,
             final IBuilderActionGroupFactory builderActionGroupFactory,

@@ -21,6 +21,7 @@ package org.metaborg.intellij.idea.projects;
 
 import com.google.inject.assistedinject.Assisted;
 import com.intellij.openapi.module.Module;
+import jakarta.inject.Inject;
 import org.apache.commons.vfs2.FileObject;
 import org.metaborg.core.language.ILanguageComponent;
 import org.metaborg.spoofax.meta.core.config.ISpoofaxLanguageSpecConfig;
@@ -56,7 +57,7 @@ public class IdeaLanguageSpec extends IdeaProject implements ISpoofaxLanguageSpe
         this.components = components;
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @Inject
     /* package private */ IdeaLanguageSpec(
             @Assisted final Module module,
             @Assisted final FileObject location,

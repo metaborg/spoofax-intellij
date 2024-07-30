@@ -57,7 +57,7 @@ public abstract class MetaborgLanguageFileType extends LanguageFileType implemen
         SpoofaxIdeaPlugin.injector().injectMembers(this);
     }
 
-    @jakarta.inject.Inject @javax.inject.Inject
+    @jakarta.inject.Inject
     @SuppressWarnings("unused")
     private void inject(final IIconManager iconManager, final IIdeaLanguageManager languageManager) {
         this.iconManager = iconManager;
